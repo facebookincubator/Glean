@@ -1,0 +1,2009 @@
+[
+  "@generated",
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 20,
+            "columnBegin": 13,
+            "lineEnd": 20,
+            "columnEnd": 29
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)initWithCoder:"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 33,
+            "columnBegin": 12,
+            "lineEnd": 33,
+            "columnEnd": 15
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)initWithFrame:"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 20,
+            "columnBegin": 39,
+            "lineEnd": 20,
+            "columnEnd": 42
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)layoutSubviews"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 37,
+            "columnBegin": 24,
+            "lineEnd": 37,
+            "columnEnd": 37
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 17,
+            "columnBegin": 20,
+            "lineEnd": 17,
+            "columnEnd": 32
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)addOrUpdateBallWithId:position:altitude:color:supportsUpdate:"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 47,
+            "columnBegin": 21,
+            "lineEnd": 47,
+            "columnEnd": 35
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)delegate" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 20,
+            "columnBegin": 20,
+            "lineEnd": 20,
+            "columnEnd": 27
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)initWithCoder:"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 43,
+            "columnBegin": 12,
+            "lineEnd": 43,
+            "columnEnd": 15
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)initWithFrame:"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 22,
+            "columnBegin": 19,
+            "lineEnd": 22,
+            "columnEnd": 22
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)performRainbowAnimationWithId:completion:"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 71,
+            "columnBegin": 21,
+            "lineEnd": 71,
+            "columnEnd": 43
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)removeAll" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 64,
+            "columnBegin": 21,
+            "lineEnd": 64,
+            "columnEnd": 29
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)removeBallWithId:"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 59,
+            "columnBegin": 21,
+            "lineEnd": 59,
+            "columnEnd": 30
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)setDelegate:"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 20,
+            "columnBegin": 20,
+            "lineEnd": 20,
+            "columnEnd": 27
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(py)delegate" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 20,
+            "columnBegin": 20,
+            "lineEnd": 20,
+            "columnEnd": 27
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 5,
+            "columnBegin": 23,
+            "lineEnd": 5,
+            "columnEnd": 43
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didDoubleTapBallId:"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 10,
+            "columnBegin": 14,
+            "lineEnd": 10,
+            "columnEnd": 23
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didDoubleTapPosition:"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 8,
+            "columnBegin": 14,
+            "lineEnd": 8,
+            "columnEnd": 23
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didLongPressBallId:"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 12,
+            "columnBegin": 14,
+            "lineEnd": 12,
+            "columnEnd": 23
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didPanBallId:position:"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 13,
+            "columnBegin": 14,
+            "lineEnd": 13,
+            "columnEnd": 23
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTapBallId:"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 6,
+            "columnBegin": 14,
+            "lineEnd": 6,
+            "columnEnd": 23
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTapPosition:"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 7,
+            "columnBegin": 14,
+            "lineEnd": 7,
+            "columnEnd": 23
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTripleTapBallId:"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 11,
+            "columnBegin": 14,
+            "lineEnd": 11,
+            "columnEnd": 23
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTripleTapPosition:"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 9,
+            "columnBegin": 14,
+            "lineEnd": 9,
+            "columnEnd": 23
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_12didPanBallId8positionyAA0aB0C_SSSo7CGPointVtF1_L_AHvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 13,
+            "columnBegin": 25,
+            "lineEnd": 13,
+            "columnEnd": 25
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_12didPanBallId8positionyAA0aB0C_SSSo7CGPointVtFAEL_SSvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 13,
+            "columnBegin": 43,
+            "lineEnd": 13,
+            "columnEnd": 54
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_12didPanBallId8positionyAA0aB0C_SSSo7CGPointVtFAFL_AJvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 13,
+            "columnBegin": 65,
+            "lineEnd": 13,
+            "columnEnd": 72
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_12didTapBallIdyAA0aB0C_SStF1_L_AGvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 6,
+            "columnBegin": 25,
+            "lineEnd": 6,
+            "columnEnd": 25
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_12didTapBallIdyAA0aB0C_SStFAEL_SSvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 6,
+            "columnBegin": 43,
+            "lineEnd": 6,
+            "columnEnd": 54
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_14didTapPositionyAA0aB0C_So7CGPointVtF1_L_AGvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 7,
+            "columnBegin": 25,
+            "lineEnd": 7,
+            "columnEnd": 25
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_14didTapPositionyAA0aB0C_So7CGPointVtFAEL_AIvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 7,
+            "columnBegin": 43,
+            "lineEnd": 7,
+            "columnEnd": 56
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didDoubleTapBallIdyAA0aB0C_SStF1_L_AGvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 10,
+            "columnBegin": 25,
+            "lineEnd": 10,
+            "columnEnd": 25
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didDoubleTapBallIdyAA0aB0C_SStFAEL_SSvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 10,
+            "columnBegin": 43,
+            "lineEnd": 10,
+            "columnEnd": 60
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didLongPressBallIdyAA0aB0C_SStF1_L_AGvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 12,
+            "columnBegin": 25,
+            "lineEnd": 12,
+            "columnEnd": 25
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didLongPressBallIdyAA0aB0C_SStFAEL_SSvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 12,
+            "columnBegin": 43,
+            "lineEnd": 12,
+            "columnEnd": 60
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didTripleTapBallIdyAA0aB0C_SStF1_L_AGvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 11,
+            "columnBegin": 25,
+            "lineEnd": 11,
+            "columnEnd": 25
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didTripleTapBallIdyAA0aB0C_SStFAEL_SSvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 11,
+            "columnBegin": 43,
+            "lineEnd": 11,
+            "columnEnd": 60
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_20didDoubleTapPositionyAA0aB0C_So7CGPointVtF1_L_AGvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 8,
+            "columnBegin": 25,
+            "lineEnd": 8,
+            "columnEnd": 25
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_20didDoubleTapPositionyAA0aB0C_So7CGPointVtFAEL_AIvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 8,
+            "columnBegin": 43,
+            "lineEnd": 8,
+            "columnEnd": 62
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_20didTripleTapPositionyAA0aB0C_So7CGPointVtF1_L_AGvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 9,
+            "columnBegin": 25,
+            "lineEnd": 9,
+            "columnEnd": 25
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_20didTripleTapPositionyAA0aB0C_So7CGPointVtFAEL_AIvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 9,
+            "columnBegin": 43,
+            "lineEnd": 9,
+            "columnEnd": 62
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC010createBallB8IfNeeded33_0B3BAAE45C5B973AC393596A4D2DE873LLyAA0adB0CSSF"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 77,
+            "columnBegin": 16,
+            "lineEnd": 77,
+            "columnEnd": 37
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC010createBallB8IfNeeded33_0B3BAAE45C5B973AC393596A4D2DE873LLyAA0adB0CSSF6ballIdL_SSvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 77,
+            "columnBegin": 41,
+            "lineEnd": 77,
+            "columnEnd": 46
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC10ballPanned33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UIPanGestureRecognizerC_tF"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 113,
+            "columnBegin": 22,
+            "lineEnd": 113,
+            "columnEnd": 31
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC10ballPanned33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UIPanGestureRecognizerC_tFAFL_AHvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 113,
+            "columnBegin": 33,
+            "lineEnd": 113,
+            "columnEnd": 38
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC10ballTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 124,
+            "columnBegin": 22,
+            "lineEnd": 124,
+            "columnEnd": 31
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC10ballTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 124,
+            "columnBegin": 33,
+            "lineEnd": 124,
+            "columnEnd": 38
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC10removeBall6withIdySS_tF04ballF0L_SSvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 59,
+            "columnBegin": 39,
+            "lineEnd": 59,
+            "columnEnd": 44
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC12canvasTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 163,
+            "columnBegin": 22,
+            "lineEnd": 163,
+            "columnEnd": 33
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC12canvasTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 163,
+            "columnBegin": 35,
+            "lineEnd": 163,
+            "columnEnd": 40
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC15addOrUpdateBall6withId8position8altitude5color08supportsE0ySS_So7CGPointV14CoreFoundation7CGFloatVSo7UIColorCSbtF04ballH0L_SSvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 48,
+            "columnBegin": 12,
+            "lineEnd": 48,
+            "columnEnd": 17
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC15addOrUpdateBall6withId8position8altitude5color08supportsE0ySS_So7CGPointV14CoreFoundation7CGFloatVSo7UIColorCSbtFAFL_AKvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 49,
+            "columnBegin": 5,
+            "lineEnd": 49,
+            "columnEnd": 12
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC15addOrUpdateBall6withId8position8altitude5color08supportsE0ySS_So7CGPointV14CoreFoundation7CGFloatVSo7UIColorCSbtFAGL_ANvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 50,
+            "columnBegin": 5,
+            "lineEnd": 50,
+            "columnEnd": 12
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC15addOrUpdateBall6withId8position8altitude5color08supportsE0ySS_So7CGPointV14CoreFoundation7CGFloatVSo7UIColorCSbtFAHL_APvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 51,
+            "columnBegin": 5,
+            "lineEnd": 51,
+            "columnEnd": 9
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC15addOrUpdateBall6withId8position8altitude5color08supportsE0ySS_So7CGPointV14CoreFoundation7CGFloatVSo7UIColorCSbtFAIL_Sbvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 52,
+            "columnBegin": 5,
+            "lineEnd": 52,
+            "columnEnd": 18
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC15ballLongPressed33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo28UILongPressGestureRecognizerC_tF"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 148,
+            "columnBegin": 22,
+            "lineEnd": 148,
+            "columnEnd": 36
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC15ballLongPressed33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo28UILongPressGestureRecognizerC_tFAFL_AHvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 148,
+            "columnBegin": 38,
+            "lineEnd": 148,
+            "columnEnd": 43
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC16ballDoubleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 132,
+            "columnBegin": 22,
+            "lineEnd": 132,
+            "columnEnd": 37
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC16ballDoubleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 132,
+            "columnBegin": 39,
+            "lineEnd": 132,
+            "columnEnd": 44
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC16ballTripleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 140,
+            "columnBegin": 22,
+            "lineEnd": 140,
+            "columnEnd": 37
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC16ballTripleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 140,
+            "columnBegin": 39,
+            "lineEnd": 140,
+            "columnEnd": 44
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC18canvasDoubleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 172,
+            "columnBegin": 22,
+            "lineEnd": 172,
+            "columnEnd": 39
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC18canvasDoubleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 172,
+            "columnBegin": 41,
+            "lineEnd": 172,
+            "columnEnd": 46
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC18canvasTripleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 181,
+            "columnBegin": 22,
+            "lineEnd": 181,
+            "columnEnd": 39
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC18canvasTripleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 181,
+            "columnBegin": 41,
+            "lineEnd": 181,
+            "columnEnd": 46
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC23performRainbowAnimation6withId10completionySS_yyctF04ballG0L_SSvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 71,
+            "columnBegin": 52,
+            "lineEnd": 71,
+            "columnEnd": 57
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC23performRainbowAnimation6withId10completionySS_yyctFAFL_yyYbcvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 71,
+            "columnBegin": 68,
+            "lineEnd": 71,
+            "columnEnd": 77
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC5coderACSgSo7NSCoderC_tcfcADL_AGvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 43,
+            "columnBegin": 18,
+            "lineEnd": 43,
+            "columnEnd": 22
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC5frameACSo6CGRectV_tcfcADL_AFvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 22,
+            "columnBegin": 24,
+            "lineEnd": 22,
+            "columnEnd": 28
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A4ViewC5viewsSDySSAA0a4BallB0CGvg" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 18,
+            "columnBegin": 7,
+            "lineEnd": 18,
+            "columnEnd": 11
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A4ViewC5viewsSDySSAA0a4BallB0CGvp" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 18,
+            "columnBegin": 7,
+            "lineEnd": 18,
+            "columnEnd": 11
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A4ViewC5viewsSDySSAA0a4BallB0CGvs" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 18,
+            "columnBegin": 7,
+            "lineEnd": 18,
+            "columnEnd": 11
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A8BallViewC23performRainbowAnimationyyyycF"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 57,
+            "columnBegin": 8,
+            "lineEnd": 57,
+            "columnEnd": 30
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A8BallViewC23performRainbowAnimationyyyycF10completionL_yyYbcvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 57,
+            "columnBegin": 34,
+            "lineEnd": 57,
+            "columnEnd": 43
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A8BallViewC5coderACSgSo7NSCoderC_tcfcADL_AGvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 33,
+            "columnBegin": 18,
+            "lineEnd": 33,
+            "columnEnd": 22
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC5labelSo7UILabelCvg" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 23,
+            "columnBegin": 7,
+            "lineEnd": 23,
+            "columnEnd": 11
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC5labelSo7UILabelCvp" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 23,
+            "columnBegin": 7,
+            "lineEnd": 23,
+            "columnEnd": 11
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC5labelSo7UILabelCvs" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 23,
+            "columnBegin": 7,
+            "lineEnd": 23,
+            "columnEnd": 11
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC6ballIdACSS_tcfc" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 25,
+            "columnBegin": 3,
+            "lineEnd": 25,
+            "columnEnd": 6
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC6ballIdACSS_tcfcADL_SSvp" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 25,
+            "columnBegin": 8,
+            "lineEnd": 25,
+            "columnEnd": 13
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC6ballIdSSvg" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 22,
+            "columnBegin": 7,
+            "lineEnd": 22,
+            "columnEnd": 12
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC6ballIdSSvp" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 22,
+            "columnBegin": 7,
+            "lineEnd": 22,
+            "columnEnd": 12
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC6ballIdSSvs" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 22,
+            "columnBegin": 7,
+            "lineEnd": 22,
+            "columnEnd": 12
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A8BallViewC6update8altitude5color14supportsUpdatey14CoreFoundation7CGFloatV_So7UIColorCSbtF"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 48,
+            "columnBegin": 8,
+            "lineEnd": 48,
+            "columnEnd": 13
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A8BallViewC6update8altitude5color14supportsUpdatey14CoreFoundation7CGFloatV_So7UIColorCSbtFAEL_AJvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 48,
+            "columnBegin": 15,
+            "lineEnd": 48,
+            "columnEnd": 22
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A8BallViewC6update8altitude5color14supportsUpdatey14CoreFoundation7CGFloatV_So7UIColorCSbtFAFL_ALvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 48,
+            "columnBegin": 34,
+            "lineEnd": 48,
+            "columnEnd": 38
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A8BallViewC6update8altitude5color14supportsUpdatey14CoreFoundation7CGFloatV_So7UIColorCSbtFAGL_Sbvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 48,
+            "columnBegin": 50,
+            "lineEnd": 48,
+            "columnEnd": 63
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas14kRainbowColors33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSaySo7UIColorCGvg"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 5,
+            "columnBegin": 13,
+            "lineEnd": 5,
+            "columnEnd": 26
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas14kRainbowColors33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSaySo7UIColorCGvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 5,
+            "columnBegin": 13,
+            "lineEnd": 5,
+            "columnEnd": 26
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas14kRainbowColors33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSaySo7UIColorCGvs"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 5,
+            "columnBegin": 13,
+            "lineEnd": 5,
+            "columnEnd": 26
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas14kTotalDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvg"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 16,
+            "columnBegin": 13,
+            "lineEnd": 16,
+            "columnEnd": 26
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas14kTotalDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 16,
+            "columnBegin": 13,
+            "lineEnd": 16,
+            "columnEnd": 26
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas14kTotalDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvs"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 16,
+            "columnBegin": 13,
+            "lineEnd": 16,
+            "columnEnd": 26
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas17kRelativeDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvg"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 17,
+            "columnBegin": 13,
+            "lineEnd": 17,
+            "columnEnd": 29
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas17kRelativeDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 17,
+            "columnBegin": 13,
+            "lineEnd": 17,
+            "columnEnd": 29
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas17kRelativeDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvs"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 17,
+            "columnBegin": 13,
+            "lineEnd": 17,
+            "columnEnd": 29
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas21kTotalTransformations33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSivg"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 15,
+            "columnBegin": 13,
+            "lineEnd": 15,
+            "columnEnd": 33
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas21kTotalTransformations33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSivp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 15,
+            "columnBegin": 13,
+            "lineEnd": 15,
+            "columnEnd": 33
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas21kTotalTransformations33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSivs"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 15,
+            "columnBegin": 13,
+            "lineEnd": 15,
+            "columnEnd": 33
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas9kBallSize33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSo6CGSizeVvg"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 18,
+            "columnBegin": 13,
+            "lineEnd": 18,
+            "columnEnd": 21
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas9kBallSize33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSo6CGSizeVvp"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 18,
+            "columnBegin": 13,
+            "lineEnd": 18,
+            "columnEnd": 21
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas9kBallSize33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSo6CGSizeVvs"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 18,
+            "columnBegin": 13,
+            "lineEnd": 18,
+            "columnEnd": 21
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:e:s:9CIBCanvas0A4ViewC10ballPanned33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UIPanGestureRecognizerC_tF"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 111,
+            "columnBegin": 11,
+            "lineEnd": 111,
+            "columnEnd": 23
+          }
+        }
+      }
+    }
+  }
+]

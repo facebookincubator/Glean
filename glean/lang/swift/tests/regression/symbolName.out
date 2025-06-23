@@ -1,0 +1,2100 @@
+[
+  "@generated",
+  {
+    "key": {
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)bounds" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)frame" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)setAlpha:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)setBackgroundColor:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)setCenter:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)setFrame:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@CM@UIKit@@objc(cs)UIView(im)setMultipleTouchEnabled:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@E@UIGestureRecognizerState@UIGestureRecognizerStateBegan"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@E@UIGestureRecognizerState@UIGestureRecognizerStateCancelled"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@E@UIGestureRecognizerState@UIGestureRecognizerStateChanged"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@E@UIGestureRecognizerState@UIGestureRecognizerStateEnded"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@E@UIGestureRecognizerState@UIGestureRecognizerStateFailed"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@E@UIViewKeyframeAnimationOptions@UIViewKeyframeAnimationOptionAllowUserInteraction"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@E@UIViewKeyframeAnimationOptions@UIViewKeyframeAnimationOptionCalculationModeLinear"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)initWithCoder:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)initWithFrame:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)layoutSubviews"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)addOrUpdateBallWithId:position:altitude:color:supportsUpdate:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)delegate" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)initWithCoder:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)initWithFrame:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)performRainbowAnimationWithId:completion:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)removeAll" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)removeBallWithId:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)setDelegate:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(py)delegate" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didDoubleTapBallId:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didDoubleTapPosition:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didLongPressBallId:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didPanBallId:position:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTapBallId:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTapPosition:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTripleTapBallId:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTripleTapPosition:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  { "key": { "symbol": { "key": "c:@M@UIKit" }, "name": { "key": "" } } },
+  { "key": { "symbol": { "key": "c:@S@CGPoint" }, "name": { "key": "" } } },
+  { "key": { "symbol": { "key": "c:@S@CGRect" }, "name": { "key": "" } } },
+  {
+    "key": {
+      "symbol": { "key": "c:@S@CGRect@FI@origin" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": { "symbol": { "key": "c:@S@CGRect@FI@size" }, "name": { "key": "" } }
+  },
+  { "key": { "symbol": { "key": "c:@S@CGSize" }, "name": { "key": "" } } },
+  {
+    "key": {
+      "symbol": { "key": "c:@S@CGSize@FI@width" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": { "symbol": { "key": "c:@T@NSTimeInterval" }, "name": { "key": "" } }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)CALayer(im)setBorderColor:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)CALayer(im)setBorderWidth:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)CALayer(im)setCornerRadius:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)CALayer(im)setMasksToBounds:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)CALayer(py)borderColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)CALayer(py)borderWidth" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)CALayer(py)cornerRadius" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)CALayer(py)masksToBounds" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": { "symbol": { "key": "c:objc(cs)NSCoder" }, "name": { "key": "" } }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)NSObject(im)init" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": { "symbol": { "key": "c:objc(cs)UIColor" }, "name": { "key": "" } }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cm)blackColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cm)blueColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cm)clearColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cm)grayColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cm)greenColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cm)lightGrayColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cm)orangeColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cm)purpleColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cm)redColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cm)whiteColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cm)yellowColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)blackColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)blueColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)clearColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)grayColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)greenColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)lightGrayColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)orangeColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)purpleColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)redColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)whiteColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)yellowColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(im)CGColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(im)initWithWhite:alpha:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(py)CGColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(cs)UIGestureRecognizer(im)initWithTarget:action:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIGestureRecognizer(im)locationInView:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(cs)UIGestureRecognizer(im)requireGestureRecognizerToFail:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIGestureRecognizer(im)state" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIGestureRecognizer(im)view" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIGestureRecognizer(py)state" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIGestureRecognizer(py)view" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": { "symbol": { "key": "c:objc(cs)UILabel" }, "name": { "key": "" } }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UILabel(im)setText:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UILabel(im)setTextColor:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UILabel(py)text" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UILabel(py)textColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UILongPressGestureRecognizer" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIPanGestureRecognizer" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UITapGestureRecognizer" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(cs)UITapGestureRecognizer(im)setNumberOfTapsRequired:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(cs)UITapGestureRecognizer(py)numberOfTapsRequired"
+      },
+      "name": { "key": "" }
+    }
+  },
+  { "key": { "symbol": { "key": "c:objc(cs)UIView" }, "name": { "key": "" } } },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(cs)UIView(cm)addKeyframeWithRelativeStartTime:relativeDuration:animations:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(cs)UIView(cm)animateKeyframesWithDuration:delay:options:animations:completion:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(im)addGestureRecognizer:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(im)addSubview:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(im)initWithFrame:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(im)layer" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(im)layoutSubviews" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(im)removeFromSuperview" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(im)setLayer:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(im)setNeedsLayout" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(im)sizeToFit" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(py)alpha" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(py)backgroundColor" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(py)bounds" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(py)center" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(py)frame" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(py)layer" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(py)multipleTouchEnabled" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSCoding(im)encodeWithCoder:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSCoding(im)initWithCoder:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": { "symbol": { "key": "c:objc(pl)NSObject" }, "name": { "key": "" } }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)autorelease" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)class" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)conformsToProtocol:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)isEqual:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)isKindOfClass:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)isMemberOfClass:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)isProxy" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)performSelector:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)performSelector:withObject:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)NSObject(im)performSelector:withObject:withObject:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)release" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)respondsToSelector:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)retain" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)retainCount" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)self" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)zone" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(py)debugDescription" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(py)description" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(py)hash" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(py)superclass" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIAccessibilityIdentification(py)accessibilityIdentifier"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIActivityItemsConfigurationProviding(py)activityItemsConfiguration"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)UIAppearance(cm)appearance" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIAppearance(cm)appearanceForTraitCollection:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIAppearance(cm)appearanceForTraitCollection:whenContainedInInstancesOfClasses:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIAppearance(cm)appearanceWhenContainedInInstancesOfClasses:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UICoordinateSpace(im)convertPoint:fromCoordinateSpace:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UICoordinateSpace(im)convertPoint:toCoordinateSpace:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UICoordinateSpace(im)convertRect:fromCoordinateSpace:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UICoordinateSpace(im)convertRect:toCoordinateSpace:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)UICoordinateSpace(py)bounds" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)UIDynamicItem(py)bounds" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)UIDynamicItem(py)center" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)UIDynamicItem(py)collisionBoundingPath" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)UIDynamicItem(py)collisionBoundsType" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)UIDynamicItem(py)transform" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(im)didUpdateFocusInContext:withAnimationCoordinator:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(im)setNeedsFocusUpdate"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(im)shouldUpdateFocusInContext:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(im)updateFocusIfNeeded"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(py)focusGroupIdentifier"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)UIFocusEnvironment(py)focusItemContainer" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(py)parentFocusEnvironment"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(py)preferredFocusEnvironments"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(py)preferredFocusedView"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)UIFocusItem(py)canBecomeFocused" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)UIFocusItem(py)focusEffect" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)UIFocusItem(py)focusGroupPriority" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)UIFocusItem(py)focusItemDeferralMode" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)UIFocusItem(py)frame" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)UIFocusItem(py)isTransparentFocusItem" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIFocusItemContainer(im)focusItemsInRect:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)UIFocusItemContainer(py)coordinateSpace" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UILargeContentViewerItem(py)largeContentImage"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UILargeContentViewerItem(py)largeContentImageInsets"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UILargeContentViewerItem(py)largeContentTitle"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UILargeContentViewerItem(py)scalesLargeContentImage"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UILargeContentViewerItem(py)showsLargeContentViewer"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIPasteConfigurationSupporting(py)pasteConfiguration"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIPopoverPresentationControllerSourceItem(im)frameInView:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UITraitChangeObservable(im)registerForTraitChanges:withAction:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UITraitChangeObservable(im)registerForTraitChanges:withHandler:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UITraitChangeObservable(im)registerForTraitChanges:withTarget:action:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UITraitChangeObservable(im)unregisterForTraitChanges:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UITraitEnvironment(im)traitCollectionDidChange:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)UITraitEnvironment(py)traitCollection" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIUserActivityRestoring(im)restoreUserActivityState:"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:14CoreFoundation7CGFloatV" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:14CoreFoundation7CGFloatV12floatLiteralACSd_tcfc" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:14CoreFoundation7CGFloatV14integerLiteralACSi_tcfc"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:14CoreFoundation7CGFloatV1doiyA2C_ACtFZ" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:14CoreFoundation7CGFloatV1poiyA2C_ACtFZ" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:14CoreFoundation7CGFloatV1soiyA2C_ACtFZ" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_12didPanBallId8positionyAA0aB0C_SSSo7CGPointVtF1_L_AHvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_12didPanBallId8positionyAA0aB0C_SSSo7CGPointVtFAEL_SSvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_12didPanBallId8positionyAA0aB0C_SSSo7CGPointVtFAFL_AJvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_12didTapBallIdyAA0aB0C_SStF1_L_AGvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_12didTapBallIdyAA0aB0C_SStFAEL_SSvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_14didTapPositionyAA0aB0C_So7CGPointVtF1_L_AGvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_14didTapPositionyAA0aB0C_So7CGPointVtFAEL_AIvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didDoubleTapBallIdyAA0aB0C_SStF1_L_AGvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didDoubleTapBallIdyAA0aB0C_SStFAEL_SSvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didLongPressBallIdyAA0aB0C_SStF1_L_AGvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didLongPressBallIdyAA0aB0C_SStFAEL_SSvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didTripleTapBallIdyAA0aB0C_SStF1_L_AGvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didTripleTapBallIdyAA0aB0C_SStFAEL_SSvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_20didDoubleTapPositionyAA0aB0C_So7CGPointVtF1_L_AGvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_20didDoubleTapPositionyAA0aB0C_So7CGPointVtFAEL_AIvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_20didTripleTapPositionyAA0aB0C_So7CGPointVtF1_L_AGvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A12ViewDelegateP06canvasB0_20didTripleTapPositionyAA0aB0C_So7CGPointVtFAEL_AIvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC010createBallB8IfNeeded33_0B3BAAE45C5B973AC393596A4D2DE873LLyAA0adB0CSSF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC010createBallB8IfNeeded33_0B3BAAE45C5B973AC393596A4D2DE873LLyAA0adB0CSSF6ballIdL_SSvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC10ballPanned33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UIPanGestureRecognizerC_tF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC10ballPanned33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UIPanGestureRecognizerC_tFAFL_AHvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC10ballTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC10ballTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC10removeBall6withIdySS_tF04ballF0L_SSvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC12canvasTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC12canvasTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC15addOrUpdateBall6withId8position8altitude5color08supportsE0ySS_So7CGPointV14CoreFoundation7CGFloatVSo7UIColorCSbtF04ballH0L_SSvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC15addOrUpdateBall6withId8position8altitude5color08supportsE0ySS_So7CGPointV14CoreFoundation7CGFloatVSo7UIColorCSbtFAFL_AKvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC15addOrUpdateBall6withId8position8altitude5color08supportsE0ySS_So7CGPointV14CoreFoundation7CGFloatVSo7UIColorCSbtFAGL_ANvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC15addOrUpdateBall6withId8position8altitude5color08supportsE0ySS_So7CGPointV14CoreFoundation7CGFloatVSo7UIColorCSbtFAHL_APvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC15addOrUpdateBall6withId8position8altitude5color08supportsE0ySS_So7CGPointV14CoreFoundation7CGFloatVSo7UIColorCSbtFAIL_Sbvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC15ballLongPressed33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo28UILongPressGestureRecognizerC_tF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC15ballLongPressed33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo28UILongPressGestureRecognizerC_tFAFL_AHvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC16ballDoubleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC16ballDoubleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC16ballTripleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC16ballTripleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC18canvasDoubleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC18canvasDoubleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC18canvasTripleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC18canvasTripleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC23performRainbowAnimation6withId10completionySS_yyctF04ballG0L_SSvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC23performRainbowAnimation6withId10completionySS_yyctFAFL_yyYbcvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC5coderACSgSo7NSCoderC_tcfcADL_AGvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC5frameACSo6CGRectV_tcfcADL_AFvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A4ViewC5viewsSDySSAA0a4BallB0CGvg" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A4ViewC5viewsSDySSAA0a4BallB0CGvp" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A4ViewC5viewsSDySSAA0a4BallB0CGvs" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A8BallViewC23performRainbowAnimationyyyycF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A8BallViewC23performRainbowAnimationyyyycF10completionL_yyYbcvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A8BallViewC5coderACSgSo7NSCoderC_tcfcADL_AGvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC5labelSo7UILabelCvg" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC5labelSo7UILabelCvp" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC5labelSo7UILabelCvs" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC6ballIdACSS_tcfc" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC6ballIdACSS_tcfcADL_SSvp" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC6ballIdSSvg" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC6ballIdSSvp" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC6ballIdSSvs" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A8BallViewC6update8altitude5color14supportsUpdatey14CoreFoundation7CGFloatV_So7UIColorCSbtF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A8BallViewC6update8altitude5color14supportsUpdatey14CoreFoundation7CGFloatV_So7UIColorCSbtFAEL_AJvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A8BallViewC6update8altitude5color14supportsUpdatey14CoreFoundation7CGFloatV_So7UIColorCSbtFAFL_ALvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A8BallViewC6update8altitude5color14supportsUpdatey14CoreFoundation7CGFloatV_So7UIColorCSbtFAGL_Sbvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas14kRainbowColors33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSaySo7UIColorCGvg"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas14kRainbowColors33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSaySo7UIColorCGvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas14kRainbowColors33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSaySo7UIColorCGvs"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas14kTotalDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvg"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas14kTotalDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas14kTotalDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvs"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas17kRelativeDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvg"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas17kRelativeDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas17kRelativeDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvs"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas21kTotalTransformations33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSivg"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas21kTotalTransformations33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSivp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas21kTotalTransformations33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSivs"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas9kBallSize33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSo6CGSizeVvg"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas9kBallSize33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSo6CGSizeVvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas9kBallSize33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSo6CGSizeVvs"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:SD17dictionaryLiteralSDyxq_Gx_q_td_tcfc" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:SD9removeAll15keepingCapacityySb_tF" },
+      "name": { "key": "" }
+    }
+  },
+  { "key": { "symbol": { "key": "s:SDyq_Sgxcig" }, "name": { "key": "" } } },
+  { "key": { "symbol": { "key": "s:SDyq_Sgxcip" }, "name": { "key": "" } } },
+  { "key": { "symbol": { "key": "s:SDyq_Sgxcis" }, "name": { "key": "" } } },
+  {
+    "key": { "symbol": { "key": "s:SFsE1goiySbx_xtFZ" }, "name": { "key": "" } }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:SLsE3zzloiySnyxGx_xtFZ" },
+      "name": { "key": "" }
+    }
+  },
+  { "key": { "symbol": { "key": "s:SS" }, "name": { "key": "" } } },
+  {
+    "key": {
+      "symbol": { "key": "s:SS10FoundationE6format_S2Sh_s7CVarArg_pdtcfc" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:Sa12arrayLiteralSayxGxd_tcfc" },
+      "name": { "key": "" }
+    }
+  },
+  { "key": { "symbol": { "key": "s:Sa5countSivg" }, "name": { "key": "" } } },
+  { "key": { "symbol": { "key": "s:Sa5countSivp" }, "name": { "key": "" } } },
+  { "key": { "symbol": { "key": "s:SayxSicig" }, "name": { "key": "" } } },
+  { "key": { "symbol": { "key": "s:SayxSicip" }, "name": { "key": "" } } },
+  { "key": { "symbol": { "key": "s:Sb" }, "name": { "key": "" } } },
+  { "key": { "symbol": { "key": "s:Sd" }, "name": { "key": "" } } },
+  {
+    "key": { "symbol": { "key": "s:Sd1doiyS2d_SdtFZ" }, "name": { "key": "" } }
+  },
+  {
+    "key": { "symbol": { "key": "s:Sd1moiyS2d_SdtFZ" }, "name": { "key": "" } }
+  },
+  { "key": { "symbol": { "key": "s:SdySdSicfc" }, "name": { "key": "" } } },
+  {
+    "key": { "symbol": { "key": "s:Si1roiyS2i_SitFZ" }, "name": { "key": "" } }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So30UIViewKeyframeAnimationOptionsV20allowUserInteractionABvgZ"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So30UIViewKeyframeAnimationOptionsV21calculationModeLinearABvgZ"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE1x1y5width6heightAB0B10Foundation7CGFloatV_A3Jtcfc"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE4minX0B10Foundation7CGFloatVvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:So6CGRectV12CoreGraphicsE4minXAC7CGFloatVvg" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE4minY0B10Foundation7CGFloatVvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:So6CGRectV12CoreGraphicsE4minYAC7CGFloatVvg" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE5width0B10Foundation7CGFloatVvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:So6CGRectV12CoreGraphicsE5widthAC7CGFloatVvg" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE6height0B10Foundation7CGFloatVvp"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:So6CGRectV12CoreGraphicsE6heightAC7CGFloatVvg" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE8containsySbSo7CGPointVF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGRectV6origin4sizeABSo7CGPointV_So6CGSizeVtcfc"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGSizeV12CoreGraphicsE5width6heightABSi_Sitcfc"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:So6CGSizeV5width12CoreGraphics7CGFloatVvg" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6UIViewC5UIKitE23registerForTraitChanges_6actionSo25UITraitChangeRegistration_pSayAC0H10Definition_pXpG_10ObjectiveC8SelectorVtF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6UIViewC5UIKitE23registerForTraitChanges_6target6actionSo25UITraitChangeRegistration_pSayAC0I10Definition_pXpG_yp10ObjectiveC8SelectorVtF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6UIViewC5UIKitE23registerForTraitChanges_7handlerSo25UITraitChangeRegistration_pSayAC0H10Definition_pXpG_yx_So0H10CollectionCtctSo0H11EnvironmentRzlF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6UIViewC5UIKitE25unregisterForTraitChangesyySo25UITraitChangeRegistration_pF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:So7CGPointV12CoreGraphicsE4zeroABvgZ" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:So7CGPointV12CoreGraphicsE4zeroABvpZ" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:So8NSObjectC10ObjectiveCE2eeoiySbAB_ABtFZ" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So8NSObjectC10ObjectiveCE4hash4intoys6HasherVz_tF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:So8NSObjectC10ObjectiveCE9hashValueSivp" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:e:s:9CIBCanvas0A4ViewC10ballPanned33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UIPanGestureRecognizerC_tF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:s10SetAlgebraPs7ElementQz012ArrayLiteralC0RtzrlE05arrayE0xAFd_tcfc"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:s10fatalError_4file4lines5NeverOSSyXK_s12StaticStringVSutF"
+      },
+      "name": { "key": "" }
+    }
+  },
+  { "key": { "symbol": { "key": "s:s4Voida" }, "name": { "key": "" } } }
+]
