@@ -1217,6 +1217,7 @@ library glass-lib
         Glean.Glass.Neighborhood
         Glean.Glass.Options
         Glean.Glass.Path
+        Glean.Glass.Pretty.Angle
         Glean.Glass.Pretty.Cxx
         Glean.Glass.Pretty.Flow
         Glean.Glass.Pretty.Fbthrift

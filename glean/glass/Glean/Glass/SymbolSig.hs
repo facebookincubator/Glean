@@ -22,6 +22,7 @@ import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.CodeLsif.Types as Lsif
 import qualified Glean.Schema.CodeScip.Types as Scip
 
+import Glean.Glass.Pretty.Angle as Angle ( prettyAngleSignature )
 import Glean.Glass.Pretty.Cxx as Cxx ( prettyCxxSignature, Qualified(..) )
 import Glean.Glass.Pretty.Flow as Flow ( prettyFlowSignature )
 import Glean.Glass.Pretty.Hack as Hack ( prettyHackSignature )
@@ -121,6 +122,7 @@ class ToSymbolSignature a where
 -- symbols in the signature will always remain fully qualified.
 instance ToSymbolSignature Code.Entity where
   toSymbolSignature opts e repo sym qualified = case e of
+    Code.Entity_angle x -> Angle.prettyAngleSignature opts x
     -- cxx pretty signatures
     Code.Entity_cxx x -> pure $ Cxx.prettyCxxSignature opts x qualified
     Code.Entity_pp{} -> pure Nothing
