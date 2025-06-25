@@ -372,6 +372,8 @@ instance SourceControl MockSourceControl where
       -> return True
     _ -> return False
 
+  getFileLineDiff _ _ _ _ _ = return Nothing
+
 -- Used to check scenarios where we don't expect to call
 -- getGeneration, such as when exact_revision = True
 data FailSourceControl = FailSourceControl
@@ -380,6 +382,7 @@ instance SourceControl FailSourceControl where
   getGeneration _ _ _ = throwIO $ ErrorCall "FailSourceControl.getGeneration"
   getFileContentHash _ _repo _path _rev0 = return Nothing
   isDescendantBranch _ _ _ _ = return False
+  getFileLineDiff _ _ _ _ _ = return Nothing
 
 failSourceControl :: Glass.Env -> Glass.Env
 failSourceControl env =

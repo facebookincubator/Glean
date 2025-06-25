@@ -40,6 +40,9 @@ class SourceControl scm where
   getFileContentHash
     :: scm -> RepoName -> Path -> Revision -> RepoHaxl u w (Maybe ContentHash)
 
+  getFileLineDiff
+    :: scm -> RepoName -> Path -> Revision -> Revision -> RepoHaxl u w (Maybe Text)
+
   -- | Check if the given branch is reachable (descendant)
   -- from a given revision. In case of a failure,
   -- returns False and logs an error.
@@ -56,8 +59,10 @@ instance SourceControl NilSourceControl where
   getGeneration _ _ _ = return Nothing
   getFileContentHash _ _ _ _ = return Nothing
   isDescendantBranch _ _ _ _ = return False
+  getFileLineDiff _ _ _ _ _ = return Nothing
 
 instance SourceControl (Some SourceControl) where
   getGeneration (Some scm) = getGeneration scm
   getFileContentHash (Some scm) = getFileContentHash scm
   isDescendantBranch (Some scm) = isDescendantBranch scm
+  getFileLineDiff (Some scm) = getFileLineDiff scm
