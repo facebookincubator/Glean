@@ -38,6 +38,8 @@ module Glean.Glass.Query
   -- * Query helpers
   , entityLocation
 
+  , symbolToEntity
+
   ) where
 
 import Data.Text (Text)
@@ -247,3 +249,14 @@ entityLocation entity file rangespan name =
           field @"location" rangespan
         end)
     end)
+
+symbolToEntity :: Angle Code.SymbolId -> Angle (Code.SymbolId, Code.Entity)
+symbolToEntity symbol =
+  vars $ \(entity :: Angle Code.Entity) ->
+    tuple (symbol, entity) `where_` [
+      wild .= predicate @Code.SymbolToEntity (
+        rec $
+          field @"symbol" symbol $
+          field @"entity" entity
+        end)
+    ]

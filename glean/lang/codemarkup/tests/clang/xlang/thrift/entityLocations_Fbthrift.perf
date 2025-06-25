@@ -1,0 +1,35 @@
+{
+  "@generated": null,
+  "facts_searched": {
+    "cxx1.DeclarationNameSpan.5": 33,
+    "cxx1.EnumDeclaration.5": 1,
+    "cxx1.EnumDefinition.5": 1,
+    "cxx1.Enumerator.5": 3,
+    "cxx1.FunctionDeclaration.5": 4,
+    "cxx1.FunctionDefinition.5": 1,
+    "cxx1.Name.5": 21,
+    "cxx1.NamespaceDeclaration.5": 1,
+    "cxx1.NamespaceDefinition.5": 1,
+    "cxx1.RecordDeclaration.5": 4,
+    "cxx1.RecordDefinition.5": 4,
+    "cxx1.VariableDeclaration.5": 16,
+    "fbthrift.File.1": 1,
+    "pp1.Include.1": 2,
+    "src.File.1": 4
+  },
+  "full_scans": [
+    "cxx1.EnumDeclaration.5",
+    "cxx1.EnumDefinition.5",
+    "cxx1.FunctionDeclaration.5",
+    "cxx1.FunctionDefinition.5",
+    "cxx1.Name.5",
+    "cxx1.NamespaceDeclaration.5",
+    "cxx1.NamespaceDefinition.5",
+    "cxx1.RecordDeclaration.5",
+    "cxx1.RecordDefinition.5",
+    "cxx1.VariableDeclaration.5",
+    "cxx1.VariableDeclaration.5",
+    "fbthrift.File.1",
+    "src.File.1"
+  ]
+}

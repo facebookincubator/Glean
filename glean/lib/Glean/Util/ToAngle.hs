@@ -43,31 +43,35 @@ import qualified Glean.Schema.CodeBuck.Types as Buck
 import qualified Glean.Schema.CodeFlow.Types as Flow
 import qualified Glean.Schema.CodeFbthrift.Types as Fbthrift
 import qualified Glean.Schema.CodeHs.Types as Hs
-
--- | Convert a value to a query for that value. Useful when we want to
--- use a result we got back from a query in another query.
---
--- toAngle returns a shallow query and will use fact IDs instead
--- of matching by structure, so the resulting query only works on the
--- same DB that the value was obtained from.
---
--- toAngleFull returns deep queries, provided the parameter is fully
--- resolved. Useful for querying a different db from the one the value
--- was obtained.
---
--- normalize returns a canonical representation of Glean fact where
--- identifiers are replaced with 0. Useful for comparing facts generated
--- from different dbs, as long as the facts are fully computed (all keys
--- are present).
+import Data.Text (Text)
 
 class ToAngle a where
+  -- | Convert a value to a query for that value. Useful when we want to
+  -- use a result we got back from a query in another query.
+  --
+  -- Returns a shallow query and will use fact IDs instead
+  -- of matching by structure, so the resulting query only works on the
+  -- same DB that the value was obtained from. See also toAngleFull.
   toAngle :: a -> Angle a
 
 class ToAngleFull a where
+  -- | Convert a value to a query for that value. Useful when we want to
+  -- use a result we got back from a query in another query.
+  --
+  -- Return deep queries, provided the parameter is fully
+  -- resolved. Useful for querying a different db from the one the value
+  -- was obtained. See also toAngle.
   toAngleFull :: a -> Angle a
 
 class Normalize a where
+  -- | Return a canonical representation of Glean fact where
+  -- identifiers are replaced with 0. Useful for comparing facts generated
+  -- from different dbs, as long as the facts are fully computed (all keys
+  -- are present).
   normalize :: a -> a
+
+instance Normalize Glean.Id where
+  normalize _ = 0
 
 -- | Prune keys, leaving only fact IDs. Useful for hashing values cheaply.
 class Prune a where
@@ -86,6 +90,33 @@ instance Prune Code.Entity where
 -- | Generically get an Angle key query
 mkKey :: Glean.Predicate p => p -> Angle (Glean.KeyType p)
 mkKey x = asPredicate (factId (Glean.getId x))
+
+-- Haskell types
+
+instance Normalize Nat where
+  normalize = id
+
+instance Normalize Bool where
+  normalize = id
+
+-- Src
+
+instance Normalize Src.FileLocation where
+  normalize (Src.FileLocation x y) =
+    Src.FileLocation (normalize x) (normalize y)
+
+instance Normalize Src.ByteSpan where
+  normalize (Src.ByteSpan x y) =
+    Src.ByteSpan (normalize x) (normalize y)
+
+instance Normalize Src.Range where
+  normalize (Src.Range a b c d e) =
+    Src.Range
+      (normalize a)
+      (normalize b)
+      (normalize c)
+      (normalize d)
+      (normalize e)
 
 -- C pre-processor
 
@@ -203,6 +234,177 @@ instance ToAngle Cxx.ObjcSelectorSlotEntity where
       field @"objcMethod" (toAngle method) $
       field @"index" (nat $ fromNat idx)
     end
+
+instance Normalize Cxx.Declaration where
+  normalize (Cxx.Declaration_objcContainer x) =
+    Cxx.Declaration_objcContainer $ normalize x
+  normalize (Cxx.Declaration_objcMethod x) =
+    Cxx.Declaration_objcMethod $ normalize x
+  normalize (Cxx.Declaration_objcProperty x) =
+    Cxx.Declaration_objcProperty $ normalize x
+  normalize Cxx.Declaration_EMPTY = error "unknown Declaration"
+  normalize _ = error "expected Objc Declaration"
+
+instance Normalize Cxx.ObjcContainerDeclaration where
+  normalize (Cxx.ObjcContainerDeclaration x y) =
+    Cxx.ObjcContainerDeclaration (normalize x) (normalize y)
+
+instance Normalize Cxx.ObjcMethodDeclaration where
+  normalize (Cxx.ObjcMethodDeclaration x y) =
+    Cxx.ObjcMethodDeclaration (normalize x) (normalize y)
+
+instance Normalize Cxx.ObjcPropertyDeclaration where
+  normalize (Cxx.ObjcPropertyDeclaration x y) =
+    Cxx.ObjcPropertyDeclaration (normalize x) (normalize y)
+
+instance Normalize Cxx.ObjcContainerDeclaration_key where
+  normalize (Cxx.ObjcContainerDeclaration_key x y) =
+    Cxx.ObjcContainerDeclaration_key
+      (normalize x)
+      (normalize y)
+
+instance Normalize Cxx.ObjcMethodDeclaration_key where
+  normalize (Cxx.ObjcMethodDeclaration_key a b c d e f g h) =
+    Cxx.ObjcMethodDeclaration_key
+      (normalize a)
+      (normalize b)
+      (normalize c)
+      (normalize d)
+      (normalize e)
+      (normalize f)
+      (normalize g)
+      (normalize h)
+
+instance Normalize Cxx.ObjcPropertyDeclaration_key where
+  normalize (Cxx.ObjcPropertyDeclaration_key a b c d e f g h) =
+    Cxx.ObjcPropertyDeclaration_key
+      (normalize a)
+      (normalize b)
+      (normalize c)
+      (normalize d)
+      (normalize e)
+      (normalize f)
+      (normalize g)
+      (normalize h)
+
+instance Normalize Cxx.ObjcContainerId where
+  normalize (Cxx.ObjcContainerId_protocol x) =
+    Cxx.ObjcContainerId_protocol (normalize x)
+  normalize (Cxx.ObjcContainerId_interface_ x) =
+    Cxx.ObjcContainerId_interface_ (normalize x)
+  normalize (Cxx.ObjcContainerId_implementation x) =
+    Cxx.ObjcContainerId_implementation (normalize x)
+  normalize (Cxx.ObjcContainerId_categoryInterface x) =
+    Cxx.ObjcContainerId_categoryInterface (normalize x)
+  normalize (Cxx.ObjcContainerId_extensionInterface x) =
+    Cxx.ObjcContainerId_extensionInterface (normalize x)
+  normalize (Cxx.ObjcContainerId_categoryImplementation x) =
+    Cxx.ObjcContainerId_categoryImplementation (normalize x)
+  normalize Cxx.ObjcContainerId_EMPTY = error "unknown ObjcContainerId"
+
+instance Normalize Cxx.ObjcCategoryId where
+  normalize (Cxx.ObjcCategoryId x y) =
+    Cxx.ObjcCategoryId (normalize x) (normalize y)
+
+instance Normalize Cxx.ObjcSelector where
+  normalize (Cxx.ObjcSelector x y) =
+    Cxx.ObjcSelector (normalize x) (normalize y)
+
+instance Normalize Cxx.Name where
+  normalize (Cxx.Name x y) = Cxx.Name (normalize x) (normalize y)
+
+instance Normalize Cxx.Type where
+  normalize (Cxx.Type x y) = Cxx.Type (normalize x) (normalize y)
+
+instance Normalize Cxx.Signature where
+  normalize (Cxx.Signature x y) = Cxx.Signature (normalize x) (normalize y)
+
+instance Normalize Cxx.Signature_key where
+  normalize (Cxx.Signature_key x y) =
+    Cxx.Signature_key (normalize x) (normalize y)
+
+instance Normalize Cxx.Parameter where
+  normalize (Cxx.Parameter x y) = Cxx.Parameter (normalize x) (normalize y)
+
+instance ToAngleFull Cxx.Declaration where
+  toAngleFull
+      (Cxx.Declaration_objcContainer (Cxx.ObjcContainerDeclaration _ (Just x))) =
+    alt @"objcContainer" (toAngleFull x)
+  toAngleFull
+      (Cxx.Declaration_objcMethod (Cxx.ObjcMethodDeclaration _ (Just x))) =
+    alt @"objcMethod" (toAngleFull x)
+  toAngleFull
+      (Cxx.Declaration_objcProperty (Cxx.ObjcPropertyDeclaration _ (Just x))) =
+    alt @"objcProperty" (toAngleFull x)
+  toAngleFull Cxx.Declaration_EMPTY = error "unknown Declaration"
+  toAngleFull _ = error "toAngleFull not implemented"
+
+instance ToAngleFull Cxx.ObjcContainerDeclaration_key where
+  toAngleFull (Cxx.ObjcContainerDeclaration_key x y) =
+    rec $
+      field @"id" (toAngleFull x) $
+      field @"source" (toAngleFull y)
+    end
+
+instance ToAngleFull Cxx.ObjcMethodDeclaration_key where
+  toAngleFull
+      (Cxx.ObjcMethodDeclaration_key
+        (Cxx.ObjcSelector _ (Just x)) _ z _ _ _ _ _) =
+    rec $
+      field @"selector" (toAngleFull x) $
+      field @"container" (toAngleFull z)
+    end
+  toAngleFull _ = error "toAngleFull not implemented"
+
+instance ToAngleFull Cxx.ObjcPropertyDeclaration_key where
+  toAngleFull
+      (Cxx.ObjcPropertyDeclaration_key (Cxx.Name _ (Just x)) y _ _ _ _ _ _) =
+    rec $
+      field @"name" (toAngleFull x) $
+      field @"container" (toAngleFull y)
+    end
+  toAngleFull _ = error "toAngleFull not implemented"
+
+instance ToAngleFull Cxx.ObjcContainerId where
+  toAngleFull (Cxx.ObjcContainerId_protocol (Cxx.Name _ (Just x))) =
+    alt @"protocol" (toAngleFull x)
+  toAngleFull (Cxx.ObjcContainerId_interface_ (Cxx.Name _ (Just x))) =
+    alt @"interface_" (toAngleFull x)
+  toAngleFull (Cxx.ObjcContainerId_categoryInterface x) =
+    alt @"categoryInterface" (toAngleFull x)
+  toAngleFull (Cxx.ObjcContainerId_categoryImplementation x) =
+    alt @"categoryImplementation" (toAngleFull x)
+  toAngleFull (Cxx.ObjcContainerId_extensionInterface (Cxx.Name _ (Just x))) =
+    alt @"extensionInterface" (toAngleFull x)
+  toAngleFull (Cxx.ObjcContainerId_implementation (Cxx.Name _ (Just x))) =
+    alt @"implementation" (toAngleFull x)
+  toAngleFull Cxx.ObjcContainerId_EMPTY = error "unknown ObjcContainerId"
+  toAngleFull _ = error "toAngleFull not implemented"
+
+instance ToAngleFull Cxx.ObjcCategoryId where
+  toAngleFull (Cxx.ObjcCategoryId (Cxx.Name _ (Just x)) (Cxx.Name _ (Just y))) =
+    rec $
+      field @"className" (toAngleFull x) $
+      field @"categoryName" (toAngleFull y)
+    end
+  toAngleFull _ = error "toAngleFull not implemented"
+
+instance ToAngleFull Src.Range where
+  toAngleFull (Src.Range (Src.File _ (Just f)) x y z t) =
+    rec $
+      field @"file" (toAngleFull f) $
+      field @"lineBegin" (toAngleFull x) $
+      field @"columnBegin" (toAngleFull y) $
+      field @"lineEnd" (toAngleFull z) $
+      field @"columnEnd" (toAngleFull t)
+    end
+  toAngleFull _ = error "toAngleFull not implemented"
+
+instance ToAngleFull Nat where
+  toAngleFull x = nat $ fromNat x
+
+instance ToAngleFull a => ToAngleFull [a] where
+  toAngleFull = array . map toAngleFull
 
 -- Erlang
 
@@ -772,12 +974,32 @@ instance ToAngle Scip.SomeEntity where
 -- Codemarkup
 
 instance ToAngleFull Code.Entity where
-    toAngleFull entity = case entity of
-      Code.Entity_fbthrift (Fbthrift.Entity_decl x) ->
-        alt @"fbthrift" (alt @"decl" (toAngleFull x))
-      Code.Entity_python (Py.Entity_decl x) ->
-        alt @"python" (alt @"decl" (toAngleFull x))
-      _ -> error "Only thrift or python entities are expected"
+  toAngleFull entity = case entity of
+    Code.Entity_fbthrift (Fbthrift.Entity_decl x) ->
+      alt @"fbthrift" (alt @"decl" (toAngleFull x))
+    Code.Entity_python (Py.Entity_decl x) ->
+      alt @"python" (alt @"decl" (toAngleFull x))
+    Code.Entity_cxx (Cxx.Entity_decl x) ->
+      alt @"cxx" (alt @"decl" (toAngleFull x))
+    _ -> error "Only thrift or python entities are expected"
+
+instance ToAngleFull Code.SymbolId where
+  toAngleFull (Code.SymbolId_cxx x) = alt @"cxx" (toAngleFull x)
+  toAngleFull (Code.SymbolId_scip x) = alt @"scip" (toAngleFull x)
+  toAngleFull Code.SymbolId_EMPTY = error "unknown Code.SymbolId"
+
+instance ToAngleFull Scip.Symbol where
+  toAngleFull (Scip.Symbol _ (Just x)) = predicate $ toAngleFull x
+  toAngleFull _ = error "Not fully resolved"
+
+instance Normalize Code.SymbolId  where
+  normalize (Code.SymbolId_cxx x) = Code.SymbolId_cxx (normalize x)
+  normalize (Code.SymbolId_scip x) = Code.SymbolId_scip (normalize x)
+  normalize Code.SymbolId_EMPTY = Code.SymbolId_EMPTY
+
+instance Normalize Scip.Symbol where
+  normalize (Scip.Symbol _ x) = Scip.Symbol 0 (normalize x)
+
 
 instance Normalize Code.Entity where
     normalize entity = case entity of
@@ -785,4 +1007,16 @@ instance Normalize Code.Entity where
         Code.Entity_fbthrift (Fbthrift.Entity_decl (normalize x))
       Code.Entity_python (Py.Entity_decl x) ->
         Code.Entity_python (Py.Entity_decl (normalize x))
-      _ -> error "Only thrift or python entities are expected"
+      Code.Entity_cxx (Cxx.Entity_decl x) ->
+        Code.Entity_cxx (Cxx.Entity_decl (normalize x))
+      _ -> error $
+        "Only thrift or python or cxx entities are expected, got: " <> show entity
+
+instance ToAngleFull Text where
+  toAngleFull x = string x
+
+instance Normalize Text where
+  normalize x = x
+
+instance (Functor f, Normalize x) => Normalize (f x) where
+  normalize x = normalize <$> x

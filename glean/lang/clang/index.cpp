@@ -196,8 +196,9 @@ struct Counters {
 std::unique_ptr<clang::tooling::CompilationDatabase> loadCompilationDatabase(
     const std::string& dir) {
   std::string contents;
-  if (!folly::readFile((dir + "/compile_commands.json").c_str(), contents)) {
-    throw std::runtime_error(std::string("couldn't read ") + dir);
+  auto path = dir + "/compile_commands.json";
+  if (!folly::readFile(path.c_str(), contents)) {
+    throw std::runtime_error(std::string("couldn't read ") + path);
   }
   auto json = folly::parseJson(contents);
   auto cwd = std::filesystem::current_path().string();

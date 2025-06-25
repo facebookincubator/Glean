@@ -1,0 +1,980 @@
+[
+    "@generated",
+    {
+        "referenced_file_digests": {},
+        "revision": "testhash",
+        "size": 33,
+        "symbols": {
+            "15": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "NSObject"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 27,
+                        "columnEnd": 35,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "sym": "test-xlang/cpp/fbobjc/NSObject/.decl",
+                    "target": {
+                        "filepath": "buck-out/glean-indexer/gen/fbsource/digest_50f85c75e5d76949b8623e93c88886ad0e941e94/xplat/toolchains/apple/__xcode_16.4.0_16f6-iphonesimulator-sdk_genrule-actual__/iPhoneSimulator18.5.sdk/usr/include/objc/NSObject.h",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 5,
+                            "lineBegin": 53,
+                            "lineEnd": 111
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "c:@M@SwiftObjc@objc(cs)SwiftCaller"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 25,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "sym": "test-xlang/swift/c:%40M%40SwiftObjc%40objc%28cs%29SwiftCaller"
+                }
+            ],
+            "18": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "SwiftObjcBridge"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 24,
+                        "columnEnd": 39,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "sym": "test-xlang/cpp/fbobjc/SwiftObjcBridge/.decl",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.h",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 5,
+                            "lineBegin": 15,
+                            "lineEnd": 37
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 21,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg"
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 21,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp"
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvs"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 21,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvs"
+                }
+            ],
+            "23": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "c:@M@SwiftObjc@objc(cs)SwiftCaller(im)init"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 23,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "sym": "test-xlang/swift/c:%40M%40SwiftObjc%40objc%28cs%29SwiftCaller%28im%29init"
+                }
+            ],
+            "27": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC16callSimpleMethodyyF"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 21,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC16callSimpleMethodyyF",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 31,
+                            "lineBegin": 42,
+                            "lineEnd": 42
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "30": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC14accessPropertyyyF"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 19,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC14accessPropertyyyF",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 29,
+                            "lineBegin": 51,
+                            "lineEnd": 51
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "33": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC23processStringWithBridgeyyF"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 28,
+                        "lineBegin": 33,
+                        "lineEnd": 33
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC23processStringWithBridgeyyF",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 38,
+                            "lineBegin": 64,
+                            "lineEnd": 64
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "36": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC14useClassMethodyyF"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 19,
+                        "lineBegin": 36,
+                        "lineEnd": 36
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC14useClassMethodyyF",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 29,
+                            "lineBegin": 80,
+                            "lineEnd": 80
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "42": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC16callSimpleMethodyyF"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 31,
+                        "lineBegin": 42,
+                        "lineEnd": 42
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC16callSimpleMethodyyF"
+                }
+            ],
+            "44": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "simpleMethod"
+                        },
+                        "symbolParent": {
+                            "aString": "SwiftObjcBridge"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 12,
+                        "columnEnd": 24,
+                        "lineBegin": 44,
+                        "lineEnd": 44
+                    },
+                    "sym": "test-xlang/cpp/fbobjc/SwiftObjcBridge/simpleMethod/.decl",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 21,
+                            "lineEnd": 24
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 11,
+                        "lineBegin": 44,
+                        "lineEnd": 44
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 21,
+                            "lineBegin": 18,
+                            "lineEnd": 18
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 11,
+                        "lineBegin": 44,
+                        "lineEnd": 44
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 21,
+                            "lineBegin": 18,
+                            "lineEnd": 18
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "51": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC14accessPropertyyyF"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 29,
+                        "lineBegin": 51,
+                        "lineEnd": 51
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC14accessPropertyyyF"
+                }
+            ],
+            "53": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 25,
+                        "columnEnd": 31,
+                        "lineBegin": 53,
+                        "lineEnd": 53
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 21,
+                            "lineBegin": 18,
+                            "lineEnd": 18
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 25,
+                        "columnEnd": 31,
+                        "lineBegin": 53,
+                        "lineEnd": 53
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 21,
+                            "lineBegin": 18,
+                            "lineEnd": 18
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "57": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 11,
+                        "lineBegin": 57,
+                        "lineEnd": 57
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 21,
+                            "lineBegin": 18,
+                            "lineEnd": 18
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 11,
+                        "lineBegin": 57,
+                        "lineEnd": 57
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 21,
+                            "lineBegin": 18,
+                            "lineEnd": 18
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvs"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 11,
+                        "lineBegin": 57,
+                        "lineEnd": 57
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvs",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 21,
+                            "lineBegin": 18,
+                            "lineEnd": 18
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "58": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 39,
+                        "columnEnd": 45,
+                        "lineBegin": 58,
+                        "lineEnd": 58
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 21,
+                            "lineBegin": 18,
+                            "lineEnd": 18
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 39,
+                        "columnEnd": 45,
+                        "lineBegin": 58,
+                        "lineEnd": 58
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 21,
+                            "lineBegin": 18,
+                            "lineEnd": 18
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "64": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC23processStringWithBridgeyyF"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 38,
+                        "lineBegin": 64,
+                        "lineEnd": 64
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC23processStringWithBridgeyyF"
+                }
+            ],
+            "69": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "withFlag"
+                        },
+                        "symbolParent": {
+                            "aString": "SwiftObjcBridge::processString"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 30,
+                        "columnEnd": 43,
+                        "lineBegin": 69,
+                        "lineEnd": 69
+                    },
+                    "sym": "test-xlang/cpp/fbobjc/SwiftObjcBridge/processString/withFlag/.decl",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 26,
+                            "lineEnd": 33
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 29,
+                        "lineBegin": 69,
+                        "lineEnd": 69
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 21,
+                            "lineBegin": 18,
+                            "lineEnd": 18
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 29,
+                        "lineBegin": 69,
+                        "lineEnd": 69
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 21,
+                            "lineBegin": 18,
+                            "lineEnd": 18
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "73": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "withFlag"
+                        },
+                        "symbolParent": {
+                            "aString": "SwiftObjcBridge::processString"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 30,
+                        "columnEnd": 43,
+                        "lineBegin": 73,
+                        "lineEnd": 73
+                    },
+                    "sym": "test-xlang/cpp/fbobjc/SwiftObjcBridge/processString/withFlag/.decl",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 26,
+                            "lineEnd": 33
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 29,
+                        "lineBegin": 73,
+                        "lineEnd": 73
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 21,
+                            "lineBegin": 18,
+                            "lineEnd": 18
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 29,
+                        "lineBegin": 73,
+                        "lineEnd": 73
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                        "range": {
+                            "columnBegin": 15,
+                            "columnEnd": 21,
+                            "lineBegin": 18,
+                            "lineEnd": 18
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "80": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 20
+                        },
+                        "symbolName": {
+                            "aString": "s:9SwiftObjc0A6CallerC14useClassMethodyyF"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 29,
+                        "lineBegin": 80,
+                        "lineEnd": 80
+                    },
+                    "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC14useClassMethodyyF"
+                }
+            ],
+            "82": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "SwiftObjcBridge"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 18,
+                        "columnEnd": 33,
+                        "lineBegin": 82,
+                        "lineEnd": 82
+                    },
+                    "sym": "test-xlang/cpp/fbobjc/SwiftObjcBridge/.decl",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.h",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 5,
+                            "lineBegin": 15,
+                            "lineEnd": 37
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "andB"
+                        },
+                        "symbolParent": {
+                            "aString": "SwiftObjcBridge::computeValueWithA"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 34,
+                        "columnEnd": 46,
+                        "lineBegin": 82,
+                        "lineEnd": 82
+                    },
+                    "sym": "test-xlang/cpp/fbobjc/SwiftObjcBridge/computeValueWithA/andB/.decl",
+                    "target": {
+                        "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 35,
+                            "lineEnd": 38
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ]
+        },
+        "truncated": false
+    }
+]

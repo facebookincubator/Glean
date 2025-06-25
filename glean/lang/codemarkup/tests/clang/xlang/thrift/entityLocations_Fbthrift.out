@@ -1,0 +1,2109 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "enum_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "CountOnlyMode" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "isScoped": true,
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 26,
+                  "columnBegin": 1,
+                  "lineEnd": 30,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "CountOnlyMode",
+        "file": { "key": "test_types.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test_types.h" },
+            "lineBegin": 26,
+            "columnBegin": 1,
+            "lineEnd": 30,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test_types.h" },
+          "span": { "start": 742, "length": 13 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "get_identifier" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "GetNavigationRequest" },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 18,
+                  "columnBegin": 4,
+                  "lineEnd": 18,
+                  "columnEnd": 23
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "get_identifier",
+        "file": { "key": "test_types.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test_types.h" },
+            "lineBegin": 18,
+            "columnBegin": 4,
+            "lineEnd": 18,
+            "columnEnd": 23
+          }
+        },
+        "destination": {
+          "file": { "key": "test_types.h" },
+          "span": { "start": 502, "length": 14 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "thrift1" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 12,
+                  "columnBegin": 1,
+                  "lineEnd": 12,
+                  "columnEnd": 14
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "thrift1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 12,
+            "columnBegin": 1,
+            "lineEnd": 12,
+            "columnEnd": 14
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 354, "length": 7 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "thrift2" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "TestService" },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.h" },
+                  "lineBegin": 14,
+                  "columnBegin": 3,
+                  "lineEnd": 14,
+                  "columnEnd": 23
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "thrift2",
+        "file": { "key": "test.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test.h" },
+            "lineBegin": 14,
+            "columnBegin": 3,
+            "lineEnd": 14,
+            "columnEnd": 23
+          }
+        },
+        "destination": {
+          "file": { "key": "test.h" },
+          "span": { "start": 410, "length": 7 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "thriftCaller" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 15,
+                  "columnBegin": 1,
+                  "lineEnd": 25,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "thriftCaller",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 15,
+            "columnBegin": 1,
+            "lineEnd": 25,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 398, "length": 12 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "namespace_": {
+              "key": {
+                "name": { "key": { "name": { "key": "module_constants" } } },
+                "source": {
+                  "file": { "key": "test.h" },
+                  "lineBegin": 18,
+                  "columnBegin": 1,
+                  "lineEnd": 23,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "module_constants",
+        "file": { "key": "test.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test.h" },
+            "lineBegin": 18,
+            "columnBegin": 1,
+            "lineEnd": 23,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.h" },
+          "span": { "start": 474, "length": 16 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "GetNavigationException" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "kind": { "class_": { } },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 22,
+                  "columnBegin": 1,
+                  "lineEnd": 23,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "GetNavigationException",
+        "file": { "key": "test_types.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test_types.h" },
+            "lineBegin": 22,
+            "columnBegin": 1,
+            "lineEnd": 23,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test_types.h" },
+          "span": { "start": 623, "length": 22 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "GetNavigationRequest" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "kind": { "class_": { } },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 14,
+                  "columnBegin": 1,
+                  "lineEnd": 19,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "GetNavigationRequest",
+        "file": { "key": "test_types.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test_types.h" },
+            "lineBegin": 14,
+            "columnBegin": 1,
+            "lineEnd": 19,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test_types.h" },
+          "span": { "start": 419, "length": 20 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "ResponseCard" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "kind": { "class_": { } },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 10,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "ResponseCard",
+        "file": { "key": "test_types.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test_types.h" },
+            "lineBegin": 10,
+            "columnBegin": 1,
+            "lineEnd": 11,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test_types.h" },
+          "span": { "start": 306, "length": 12 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "TestService" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "kind": { "struct_": { } },
+                "source": {
+                  "file": { "key": "test.h" },
+                  "lineBegin": 12,
+                  "columnBegin": 1,
+                  "lineEnd": 15,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "TestService",
+        "file": { "key": "test.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test.h" },
+            "lineBegin": 12,
+            "columnBegin": 1,
+            "lineEnd": 15,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.h" },
+          "span": { "start": 294, "length": 11 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "MY_CONST" },
+                    "scope": {
+                      "namespace_": {
+                        "key": { "name": { "key": "module_constants" } }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "const int" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 0, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.h" },
+                  "lineBegin": 21,
+                  "columnBegin": 3,
+                  "lineEnd": 21,
+                  "columnEnd": 25
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "MY_CONST",
+        "file": { "key": "test.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test.h" },
+            "lineBegin": 21,
+            "columnBegin": 3,
+            "lineEnd": 21,
+            "columnEnd": 25
+          }
+        },
+        "destination": {
+          "file": { "key": "test.h" },
+          "span": { "start": 548, "length": 8 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "com" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "thriftCaller" } }
+                          },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "CountOnlyMode" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 22,
+                  "columnBegin": 3,
+                  "lineEnd": 22,
+                  "columnEnd": 19
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "com",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 22,
+            "columnBegin": 3,
+            "lineEnd": 22,
+            "columnEnd": 19
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 599, "length": 3 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "e" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "thriftCaller" } }
+                          },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "CountOnlyMode" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 23,
+                  "columnBegin": 3,
+                  "lineEnd": 23,
+                  "columnEnd": 34
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "e",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 23,
+            "columnBegin": 3,
+            "lineEnd": 23,
+            "columnEnd": 34
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 612, "length": 1 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "f" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "thriftCaller" } }
+                          },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 18,
+                  "columnBegin": 3,
+                  "lineEnd": 18,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "f",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 18,
+            "columnBegin": 3,
+            "lineEnd": 18,
+            "columnEnd": 35
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 479, "length": 1 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "request" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "thriftCaller" } }
+                          },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "GetNavigationRequest" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 17,
+                  "columnBegin": 3,
+                  "lineEnd": 17,
+                  "columnEnd": 30
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "request",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 17,
+            "columnBegin": 3,
+            "lineEnd": 17,
+            "columnEnd": 30
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 463, "length": 7 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "request2" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "thriftCaller" } }
+                          },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "GetNavigationException" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 19,
+                  "columnBegin": 3,
+                  "lineEnd": 19,
+                  "columnEnd": 33
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "request2",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 19,
+            "columnBegin": 3,
+            "lineEnd": 19,
+            "columnEnd": 33
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 534, "length": 8 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "response" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "thriftCaller" } }
+                          },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "ResponseCard" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 16,
+                  "columnBegin": 3,
+                  "lineEnd": 16,
+                  "columnEnd": 23
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "response",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 16,
+            "columnBegin": 3,
+            "lineEnd": 16,
+            "columnEnd": 23
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 430, "length": 8 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "thriftCaller" } }
+                          },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 24,
+                  "columnBegin": 3,
+                  "lineEnd": 24,
+                  "columnEnd": 36
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "x",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 24,
+            "columnBegin": 3,
+            "lineEnd": 24,
+            "columnEnd": 36
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 647, "length": 1 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "enum_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "CountOnlyMode" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "isScoped": true,
+                    "source": {
+                      "file": { "key": "test_types.h" },
+                      "lineBegin": 26,
+                      "columnBegin": 1,
+                      "lineEnd": 30,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "enumerators": [
+                  {
+                    "key": {
+                      "name": { "key": "Disabled" },
+                      "enumeration": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "CountOnlyMode" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "isScoped": true,
+                          "source": {
+                            "file": { "key": "test_types.h" },
+                            "lineBegin": 26,
+                            "columnBegin": 1,
+                            "lineEnd": 30,
+                            "columnEnd": 1
+                          }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test_types.h" },
+                        "lineBegin": 27,
+                        "columnBegin": 3,
+                        "lineEnd": 27,
+                        "columnEnd": 14
+                      }
+                    }
+                  },
+                  {
+                    "key": {
+                      "name": { "key": "HitCount" },
+                      "enumeration": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "CountOnlyMode" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "isScoped": true,
+                          "source": {
+                            "file": { "key": "test_types.h" },
+                            "lineBegin": 26,
+                            "columnBegin": 1,
+                            "lineEnd": 30,
+                            "columnEnd": 1
+                          }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test_types.h" },
+                        "lineBegin": 28,
+                        "columnBegin": 3,
+                        "lineEnd": 28,
+                        "columnEnd": 14
+                      }
+                    }
+                  },
+                  {
+                    "key": {
+                      "name": { "key": "FileCount" },
+                      "enumeration": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "CountOnlyMode" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "isScoped": true,
+                          "source": {
+                            "file": { "key": "test_types.h" },
+                            "lineBegin": 26,
+                            "columnBegin": 1,
+                            "lineEnd": 30,
+                            "columnEnd": 1
+                          }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test_types.h" },
+                        "lineBegin": 29,
+                        "columnBegin": 3,
+                        "lineEnd": 29,
+                        "columnEnd": 15
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "CountOnlyMode",
+        "file": { "key": "test_types.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test_types.h" },
+            "lineBegin": 26,
+            "columnBegin": 1,
+            "lineEnd": 30,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test_types.h" },
+          "span": { "start": 742, "length": 13 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": {
+                          "key": { "name": { "key": "thriftCaller" } }
+                        },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 15,
+                      "columnBegin": 1,
+                      "lineEnd": 25,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "thriftCaller",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 15,
+            "columnBegin": 1,
+            "lineEnd": 25,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 398, "length": 12 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "namespace_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": { "name": { "key": "module_constants" } }
+                    },
+                    "source": {
+                      "file": { "key": "test.h" },
+                      "lineBegin": 18,
+                      "columnBegin": 1,
+                      "lineEnd": 23,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "members": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "MY_CONST" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": {
+                                    "name": { "key": "module_constants" }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "const int" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 0,
+                              "definition": true
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.h" },
+                            "lineBegin": 21,
+                            "columnBegin": 3,
+                            "lineEnd": 21,
+                            "columnEnd": 25
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "module_constants",
+        "file": { "key": "test.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test.h" },
+            "lineBegin": 18,
+            "columnBegin": 1,
+            "lineEnd": 23,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.h" },
+          "span": { "start": 474, "length": 16 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "GetNavigationException" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "kind": { "class_": { } },
+                    "source": {
+                      "file": { "key": "test_types.h" },
+                      "lineBegin": 22,
+                      "columnBegin": 1,
+                      "lineEnd": 23,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": { "key": [ ] }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "GetNavigationException",
+        "file": { "key": "test_types.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test_types.h" },
+            "lineBegin": 22,
+            "columnBegin": 1,
+            "lineEnd": 23,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test_types.h" },
+          "span": { "start": 623, "length": 22 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "GetNavigationRequest" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "kind": { "class_": { } },
+                    "source": {
+                      "file": { "key": "test_types.h" },
+                      "lineBegin": 14,
+                      "columnBegin": 1,
+                      "lineEnd": 19,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": {
+                                "key": { "name": { "key": "get_identifier" } }
+                              },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "GetNavigationRequest" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test_types.h" },
+                            "lineBegin": 18,
+                            "columnBegin": 4,
+                            "lineEnd": 18,
+                            "columnEnd": 23
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "GetNavigationRequest",
+        "file": { "key": "test_types.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test_types.h" },
+            "lineBegin": 14,
+            "columnBegin": 1,
+            "lineEnd": 19,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test_types.h" },
+          "span": { "start": 419, "length": 20 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "ResponseCard" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "kind": { "class_": { } },
+                    "source": {
+                      "file": { "key": "test_types.h" },
+                      "lineBegin": 10,
+                      "columnBegin": 1,
+                      "lineEnd": 11,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": { "key": [ ] }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "ResponseCard",
+        "file": { "key": "test_types.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test_types.h" },
+            "lineBegin": 10,
+            "columnBegin": 1,
+            "lineEnd": 11,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test_types.h" },
+          "span": { "start": 306, "length": 12 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "TestService" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.h" },
+                      "lineBegin": 12,
+                      "columnBegin": 1,
+                      "lineEnd": 15,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": {
+                                "key": { "name": { "key": "thrift2" } }
+                              },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "TestService" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.h" },
+                            "lineBegin": 14,
+                            "columnBegin": 3,
+                            "lineEnd": 14,
+                            "columnEnd": 23
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "TestService",
+        "file": { "key": "test.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test.h" },
+            "lineBegin": 12,
+            "columnBegin": 1,
+            "lineEnd": 15,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.h" },
+          "span": { "start": 294, "length": 11 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "MY_CONST" },
+                    "scope": {
+                      "namespace_": {
+                        "key": { "name": { "key": "module_constants" } }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "const int" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 0, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.h" },
+                  "lineBegin": 21,
+                  "columnBegin": 3,
+                  "lineEnd": 21,
+                  "columnEnd": 25
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "MY_CONST",
+        "file": { "key": "test.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test.h" },
+            "lineBegin": 21,
+            "columnBegin": 3,
+            "lineEnd": 21,
+            "columnEnd": 25
+          }
+        },
+        "destination": {
+          "file": { "key": "test.h" },
+          "span": { "start": 548, "length": 8 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "com" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "thriftCaller" } }
+                          },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "CountOnlyMode" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 22,
+                  "columnBegin": 3,
+                  "lineEnd": 22,
+                  "columnEnd": 19
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "com",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 22,
+            "columnBegin": 3,
+            "lineEnd": 22,
+            "columnEnd": 19
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 599, "length": 3 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "e" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "thriftCaller" } }
+                          },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "CountOnlyMode" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 23,
+                  "columnBegin": 3,
+                  "lineEnd": 23,
+                  "columnEnd": 34
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "e",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 23,
+            "columnBegin": 3,
+            "lineEnd": 23,
+            "columnEnd": 34
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 612, "length": 1 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "f" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "thriftCaller" } }
+                          },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 18,
+                  "columnBegin": 3,
+                  "lineEnd": 18,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "f",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 18,
+            "columnBegin": 3,
+            "lineEnd": 18,
+            "columnEnd": 35
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 479, "length": 1 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "request" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "thriftCaller" } }
+                          },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "GetNavigationRequest" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 17,
+                  "columnBegin": 3,
+                  "lineEnd": 17,
+                  "columnEnd": 30
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "request",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 17,
+            "columnBegin": 3,
+            "lineEnd": 17,
+            "columnEnd": 30
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 463, "length": 7 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "request2" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "thriftCaller" } }
+                          },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "GetNavigationException" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 19,
+                  "columnBegin": 3,
+                  "lineEnd": 19,
+                  "columnEnd": 33
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "request2",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 19,
+            "columnBegin": 3,
+            "lineEnd": 19,
+            "columnEnd": 33
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 534, "length": 8 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "response" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "thriftCaller" } }
+                          },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "ResponseCard" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 16,
+                  "columnBegin": 3,
+                  "lineEnd": 16,
+                  "columnEnd": 23
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "response",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 16,
+            "columnBegin": 3,
+            "lineEnd": 16,
+            "columnEnd": 23
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 430, "length": 8 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "thriftCaller" } }
+                          },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 24,
+                  "columnBegin": 3,
+                  "lineEnd": 24,
+                  "columnEnd": 36
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "x",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 24,
+            "columnBegin": 3,
+            "lineEnd": 24,
+            "columnEnd": 36
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 647, "length": 1 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "Disabled" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "CountOnlyMode" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "isScoped": true,
+                  "source": {
+                    "file": { "key": "test_types.h" },
+                    "lineBegin": 26,
+                    "columnBegin": 1,
+                    "lineEnd": 30,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test_types.h" },
+                "lineBegin": 27,
+                "columnBegin": 3,
+                "lineEnd": 27,
+                "columnEnd": 14
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "Disabled",
+        "file": { "key": "test_types.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test_types.h" },
+            "lineBegin": 27,
+            "columnBegin": 3,
+            "lineEnd": 27,
+            "columnEnd": 14
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "FileCount" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "CountOnlyMode" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "isScoped": true,
+                  "source": {
+                    "file": { "key": "test_types.h" },
+                    "lineBegin": 26,
+                    "columnBegin": 1,
+                    "lineEnd": 30,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test_types.h" },
+                "lineBegin": 29,
+                "columnBegin": 3,
+                "lineEnd": 29,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "FileCount",
+        "file": { "key": "test_types.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test_types.h" },
+            "lineBegin": 29,
+            "columnBegin": 3,
+            "lineEnd": 29,
+            "columnEnd": 15
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "HitCount" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "CountOnlyMode" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "isScoped": true,
+                  "source": {
+                    "file": { "key": "test_types.h" },
+                    "lineBegin": 26,
+                    "columnBegin": 1,
+                    "lineEnd": 30,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test_types.h" },
+                "lineBegin": 28,
+                "columnBegin": 3,
+                "lineEnd": 28,
+                "columnEnd": 14
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "HitCount",
+        "file": { "key": "test_types.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test_types.h" },
+            "lineBegin": 28,
+            "columnBegin": 3,
+            "lineEnd": 28,
+            "columnEnd": 14
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "fbthrift": {
+          "decl": { "include_": { "key": { "key": "test.thrift" } } }
+        }
+      },
+      "location": {
+        "name": "test.thrift",
+        "file": { "key": "test.thrift" },
+        "location": { "span": { "start": 0, "length": 0 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": { "pp": { "include_": { "key": "test.h" } } },
+      "location": {
+        "name": "test.h",
+        "file": { "key": "test.h" },
+        "location": { "span": { "start": 0, "length": 0 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": { "pp": { "include_": { "key": "test_types.h" } } },
+      "location": {
+        "name": "test_types.h",
+        "file": { "key": "test_types.h" },
+        "location": { "span": { "start": 0, "length": 0 } }
+      }
+    }
+  }
+]

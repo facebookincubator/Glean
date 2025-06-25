@@ -66,23 +66,32 @@ import Glean.Glass.RepoMapping (
   )
 import qualified Glean.Glass.Env as Glass
 import Glean.Glass.XRefs
-  ( GenXRef(..), XRef, resolveEntitiesRange )
+  ( GenXRef(..), XRef, resolveEntitiesRange, XlangXRef )
 import Glean.Glass.SymbolMap ( toSymbolIndex )
 
 import Glean.Glass.SnapshotBackend
   ( SnapshotBackend(getSnapshot),
     SnapshotStatus() )
 import qualified Glean.Glass.SnapshotBackend as Snapshot
-import Glean.Glass.Env (Env' (tracer, sourceControl, useSnapshotsForSymbolsList))
+import Glean.Glass.Env (
+  Env' (tracer, sourceControl, useSnapshotsForSymbolsList))
 import Glean.Glass.SourceControl (SourceControl(..), NilSourceControl(..))
 import Glean.Glass.Tracing (traceSpan)
 import qualified Glean.Glass.Utils as Utils
 import Glean.Glass.Utils ( fst4 )
 import Logger.GleanGlass (GleanGlassLogger)
 import qualified Glean.Glass.Attributes.Frame as Attributes
+import qualified Glean.Schema.Scip.Types as Scip
+import Foreign.C (CString, peekCString, withCString)
+import Foreign.C.Types (CSize(..), CInt(..), CChar(..))
+import Foreign.Ptr (Ptr)
+import Foreign.Marshal.Alloc (allocaBytes)
+import Data.Either (partitionEithers, fromLeft)
+import Control.Monad.Extra (mapMaybeM)
 
 
--- | Runner for methods that are keyed by a file path
+-- | Runner for methods that are keyed by a file path.
+-- Select the right Glean DBs and pass them to the function (via a GleanBackend)
 runRepoFile
   :: (LogResult t)
   => Text
@@ -100,7 +109,7 @@ runRepoFile
 runRepoFile sym fn env@Glass.Env{..} req opts =
   withRepoFile sym env opts req repo file $ \gleanDBs dbInfo mlang ->
       fn dbInfo req opts
-         GleanBackend{..}
+         GleanBackend{gleanBackend, gleanDBs, tracer}
          snapshotBackend
          mlang
   where
@@ -224,7 +233,7 @@ fetchSymbolsAndAttributesGlean
       file mlimit be res1
 
   let be = fromMaybe (gleanBackend, dbInfo) mOtherBackend
-  res3 <- resolveXlangXrefs env path res2 repo be
+  res3 <- resolveXlangXrefs env path res2 repo be mlang
 
   let res4 = toDocumentSymbolResult res3
   let res5 = translateMirroredRepoListXResult req res4
@@ -282,7 +291,7 @@ chooseGleanOrSnapshot RequestOptions{..} revision glean esnapshot
     returnGlean
   where
     returnGlean = return $
-      addStatus (either id (const Snapshot.Ignored) esnapshot) glean
+      addStatus (fromLeft Snapshot.Ignored esnapshot) glean
 
     doMatching
       | Just True <- resultContentMatch glean = returnGlean
@@ -344,9 +353,8 @@ fallbackForNewFiles Glass.Env{..} RequestOptions{..} snapshotbe repo file res
       gen <- getGeneration sourceControl repo revision
       bestSnapshot <- getSnapshot tracer snapshotbe repo file Nothing gen
       case bestSnapshot of
-        Right (_, fetch) -> do
-          snap <- fetch
-          return $ maybe res (`returnSnapshot` Snapshot.Latest) snap
+        Right (_, fetch) ->
+          maybe res (`returnSnapshot` Snapshot.Latest) <$> fetch
         Left _ ->
           return res
   | otherwise =
@@ -524,9 +532,7 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
         let digest = toDigest <$> fileDigest
 
         -- only handle XlangEntities with known entity
-        let unresolvedXrefsXlang = [ (ent, rangeSpan) |
-              XlangXRef (rangeSpan, Code.IdlEntity {
-                idlEntity_entity = Just ent }) <- xrefs ]
+        let unresolvedXrefsXlang = [ ref | XlangXRef ref <- xrefs ]
 
         let (refs2, defs2, _) = Attributes.augmentSymbols
               Attributes.SymbolKindAttr
@@ -583,33 +589,78 @@ resolveXlangXrefs
   -> DocumentSymbols
   -> RepoName
   -> (b, GleanDBInfo)
+  -> Maybe Language
   -> IO DocumentSymbols
 resolveXlangXrefs
-  env@Glass.Env{tracer, sourceControl, repoMapping}
-  path
-  docSyms@DocumentSymbols{..}
-  scsrepo
-  (gleanBackend, dbInfo) = do
+    env@Glass.Env{tracer, sourceControl, repoMapping}
+    path
+    docSyms@DocumentSymbols{..}
+    scsrepo
+    (gleanBackend, dbInfo)
+    sourceLang = do
   case (unresolvedXrefsXlang, srcFile) of
-    ((ent, _) : _, Just srcFile) -> do
+    ((_, xref) : _, Just srcFile) -> do
        -- we assume all xlang xrefs belong to the same db
        -- we pick the xlang dbs based on target lang and
        -- repo. Corner case: the document is in a mirror repo,
        -- use to origin repo to determine xlang db
-      let lang = entityLanguage ent
+      let targetLang = targetLanguage xref sourceLang
           targetRepo = case repoPathToMirror scsrepo path of
               Just (Mirror _mirror _prefix origin) -> origin
               Nothing -> scsrepo
       gleanDBs <- getGleanRepos tracer sourceControl repoMapping dbInfo
-        targetRepo (Just lang) Nothing ChooseLatest Nothing
+        targetRepo (Just targetLang) Nothing ChooseLatest Nothing
       let gleanBe = GleanBackend {gleanDBs, tracer, gleanBackend}
+      (ents, symbols) <-
+        partitionEithers <$> mapMaybeM (mangle targetLang) unresolvedXrefsXlang
       xlangRefs <- backendRunHaxl gleanBe env $ do
-        xrefsXlang <- withRepo (snd (NonEmpty.head gleanDBs)) $ do
-          xrefs <- resolveEntitiesRange targetRepo fst unresolvedXrefsXlang
-          mapM (toReferenceSymbolXlang targetRepo srcFile offsets lang) xrefs
+        xrefsXlang <- join <$>
+          mapM (\gleanDB -> withRepo (snd gleanDB) $ do
+            xrefs <- resolveEntitiesRange targetRepo symbols ents
+            mapM
+              (toReferenceSymbolXlang targetRepo srcFile offsets targetLang)
+              xrefs)
+          (NonEmpty.toList gleanDBs)
         return $ xRefDataToRefEntitySymbol <$> xrefsXlang
       return $ docSyms  { refs = refs ++ xlangRefs, unresolvedXrefsXlang = [] }
     _ -> return docSyms
+  where
+    targetLanguage xref mlang =
+      case xref of
+        Left (Code.IdlEntity _ _ ent _)  ->
+          maybe (Language__UNKNOWN 0) entityLanguage ent
+        Right _ ->
+          case mlang of
+            Just Language_Swift -> Language_Cpp
+            _ -> Language__UNKNOWN 0
+
+    mangle :: Language -> XlangXRef
+      -> IO (Maybe (Either
+        (Code.Entity, Code.RangeSpan) (Code.SymbolId, Code.RangeSpan)))
+    mangle targetLang (range, ref) = case ref of
+      Left (Code.IdlEntity _ _ mEnt _) ->
+        pure $ Left . (,range) <$> mEnt
+      Right symbol -> do
+        Just . Right . (,range) <$> translateSymbol sourceLang targetLang symbol
+
+    translateSymbol ::
+      Maybe Language -> Language -> Code.SymbolId -> IO Code.SymbolId
+    translateSymbol
+        (Just Language_Swift)
+        Language_Cpp
+        (Code.SymbolId_scip (Scip.Symbol _ (Just usr))) =
+      Code.SymbolId_cxx . Text.pack <$>
+        withCString (Text.unpack usr) (\usr ->
+        let size = 32 in
+        allocaBytes size $ \hash -> do
+          ret <- hash_ffi usr hash size
+          if ret == 0
+            then peekCString hash
+            else error "hash_ffi buffer too small")
+    translateSymbol _ _ symId = return symId
+
+foreign import ccall unsafe
+  hash_ffi :: CString -> Ptr CChar -> CSize -> IO CInt
 
 -- | Wrapper for tracking symbol/entity pairs through processing
 data DocumentSymbols = DocumentSymbols
@@ -620,7 +671,7 @@ data DocumentSymbols = DocumentSymbols
   , truncated :: !Bool
   , digest :: Maybe FileDigest
   , xref_digests :: Map.Map Text FileDigestMap
-  , unresolvedXrefsXlang :: [(Code.Entity, Code.RangeSpan)]
+  , unresolvedXrefsXlang :: [XlangXRef]
   , srcFile :: Maybe Src.File
   , offsets :: Maybe Range.LineOffsets
   , attributes :: Maybe AttributeList

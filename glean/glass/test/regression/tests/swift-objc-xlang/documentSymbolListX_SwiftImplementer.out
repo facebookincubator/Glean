@@ -1,0 +1,925 @@
+[
+    "@generated",
+    {
+        "definitions": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@M@SwiftObjc@objc(cs)SwiftImplementer"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 14,
+                    "columnEnd": 30,
+                    "lineBegin": 15,
+                    "lineEnd": 15
+                },
+                "sym": "test-xlang/swift/c:%40M%40SwiftObjc%40objc%28cs%29SwiftImplementer"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@M@SwiftObjc@objc(cs)SwiftImplementer(im)calculateResultWithValue:"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 30,
+                    "lineBegin": 48,
+                    "lineEnd": 48
+                },
+                "sym": "test-xlang/swift/c:%40M%40SwiftObjc%40objc%28cs%29SwiftImplementer%28im%29calculateResultWithValue:"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@M@SwiftObjc@objc(cs)SwiftImplementer(im)init"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 19,
+                    "columnEnd": 23,
+                    "lineBegin": 23,
+                    "lineEnd": 23
+                },
+                "sym": "test-xlang/swift/c:%40M%40SwiftObjc%40objc%28cs%29SwiftImplementer%28im%29init"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@M@SwiftObjc@objc(cs)SwiftImplementer(im)optionalMethod:"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 29,
+                    "lineBegin": 59,
+                    "lineEnd": 59
+                },
+                "sym": "test-xlang/swift/c:%40M%40SwiftObjc%40objc%28cs%29SwiftImplementer%28im%29optionalMethod:"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@M@SwiftObjc@objc(cs)SwiftImplementer(im)requiredProtocolMethod"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 37,
+                    "lineBegin": 40,
+                    "lineEnd": 40
+                },
+                "sym": "test-xlang/swift/c:%40M%40SwiftObjc%40objc%28cs%29SwiftImplementer%28im%29requiredProtocolMethod"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvg"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 29,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvg"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvp"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 29,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvp"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvs"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 29,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvs"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s:9SwiftObjc0A11ImplementerC14optionalMethodySSSgSSF5inputL_SSvp"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 32,
+                    "columnEnd": 37,
+                    "lineBegin": 59,
+                    "lineEnd": 59
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A11ImplementerC14optionalMethodySSSgSSF5inputL_SSvp"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s:9SwiftObjc0A11ImplementerC15calculateResult9withValueS2i_tF5valueL_Sivp"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 41,
+                    "columnEnd": 46,
+                    "lineBegin": 48,
+                    "lineEnd": 48
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A11ImplementerC15calculateResult9withValueS2i_tF5valueL_Sivp"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s:9SwiftObjc0A11ImplementerC33demonstrateProtocolImplementationyyF"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 48,
+                    "lineBegin": 68,
+                    "lineEnd": 68
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A11ImplementerC33demonstrateProtocolImplementationyyF"
+            }
+        ],
+        "referenced_file_digests": {},
+        "references": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "NSObject"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 32,
+                    "columnEnd": 40,
+                    "lineBegin": 15,
+                    "lineEnd": 15
+                },
+                "sym": "test-xlang/cpp/fbobjc/NSObject/.decl",
+                "target": {
+                    "filepath": "buck-out/glean-indexer/gen/fbsource/digest_50f85c75e5d76949b8623e93c88886ad0e941e94/xplat/toolchains/apple/__xcode_16.4.0_16f6-iphonesimulator-sdk_genrule-actual__/iPhoneSimulator18.5.sdk/usr/include/objc/NSObject.h",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 5,
+                        "lineBegin": 53,
+                        "lineEnd": 111
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "SwiftObjcDelegate"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 31,
+                    "columnEnd": 48,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "sym": "test-xlang/cpp/fbobjc/SwiftObjcDelegate/.decl",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/SwiftObjcProtocol.h",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 5,
+                        "lineBegin": 38,
+                        "lineEnd": 50
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "SwiftObjcDelegate"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 22,
+                    "columnEnd": 39,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test-xlang/cpp/fbobjc/SwiftObjcDelegate/.decl",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/SwiftObjcProtocol.h",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 5,
+                        "lineBegin": 38,
+                        "lineEnd": 50
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "performDelegateOperations"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "SwiftObjcDelegate"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 21,
+                    "columnEnd": 38,
+                    "lineBegin": 33,
+                    "lineEnd": 33
+                },
+                "sym": "test-xlang/cpp/fbobjc/SwiftObjcDelegate/performDelegateOperations/.decl",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/SwiftObjcDelegate.m",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 21,
+                        "lineEnd": 40
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "performDelegateOperations"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "SwiftObjcDelegate"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 21,
+                    "columnEnd": 38,
+                    "lineBegin": 72,
+                    "lineEnd": 72
+                },
+                "sym": "test-xlang/cpp/fbobjc/SwiftObjcDelegate/performDelegateOperations/.decl",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/SwiftObjcDelegate.m",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 21,
+                        "lineEnd": 40
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "SwiftObjcProtocol"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 42,
+                    "columnEnd": 59,
+                    "lineBegin": 15,
+                    "lineEnd": 15
+                },
+                "sym": "test-xlang/cpp/fbobjc/SwiftObjcProtocol/.decl",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/SwiftObjcProtocol.h",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 5,
+                        "lineBegin": 15,
+                        "lineEnd": 33
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvg"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 19,
+                    "lineBegin": 30,
+                    "lineEnd": 30
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvg",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftImplementer.swift",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 29,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvg"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 19,
+                    "lineBegin": 33,
+                    "lineEnd": 33
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvg",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftImplementer.swift",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 29,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvg"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 19,
+                    "lineBegin": 72,
+                    "lineEnd": 72
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvg",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftImplementer.swift",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 29,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvp"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 19,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvp",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftImplementer.swift",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 29,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvp"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 19,
+                    "lineBegin": 30,
+                    "lineEnd": 30
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvp",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftImplementer.swift",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 29,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvp"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 19,
+                    "lineBegin": 33,
+                    "lineEnd": 33
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvp",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftImplementer.swift",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 29,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvp"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 19,
+                    "lineBegin": 72,
+                    "lineEnd": 72
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvp",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftImplementer.swift",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 29,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvs"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 19,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A11ImplementerC14delegateObject33_FDC8509B3D4552709FA59AEB92BF4944LLSo0aB8DelegateCSgvs",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftImplementer.swift",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 29,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test-xlang"
+                }
+            }
+        ],
+        "revision": "testhash",
+        "truncated": false
+    }
+]

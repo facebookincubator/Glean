@@ -28,6 +28,8 @@ import System.Process
 import Thrift.Protocol (deserializeGen)
 import Thrift.Protocol.Compact (Compact)
 import Util.List (chunk)
+import qualified Data.ByteString.Lazy.Char8 as BL
+import qualified Data.Text as Text
 
 import Facebook.Fb303
 import Facebook.Service
@@ -38,7 +40,13 @@ import qualified Thrift.Server.CppServer as ThriftServer
 import qualified Thrift.Server.HTTP as ThriftServer
 #endif
 
-import Glean (sendBatch, clientConfig_serv, showRepo, completePredicates, CompletePredicates (CompletePredicates_axiom), CompleteAxiomPredicates(..))
+import Glean
+  ( sendBatch
+  , clientConfig_serv
+  , showRepo
+  , completePredicates
+  , CompletePredicates (CompletePredicates_axiom), CompleteAxiomPredicates(..)
+  )
 import Glean.Remote (thriftBackendClientConfig)
 import Glean.Indexer
 import Glean.LocalOrRemote ( BackendKind(..),
@@ -46,12 +54,16 @@ import Glean.LocalOrRemote ( BackendKind(..),
 import Glean.Util.Service
 import qualified Glean.Interprocess.Worklist as Worklist
 import qualified Glean.Handler as GleanHandler
+import System.Posix (changeWorkingDirectory)
+import Data.Aeson (decode, Object, Value (String))
+import Data.Foldable (toList)
 
 data Clang = Clang
   { clangIndexBin     :: Maybe FilePath -- ^ path to @clang-index@ binary
   , clangDeriveBin    :: Maybe FilePath -- ^ path to @clang-derive@ binary
   , clangCompileDBDir :: Maybe FilePath
       -- ^ (optional) path to pre-existing @compile_commands.json@
+  , clangTarget       :: Maybe String -- ^ (optional) target to index
   , clangJobs         :: Int -- ^ number of indexers to run concurrently
   , clangVerbose      :: Bool -- ^ display debugging information
   , clangProgress     :: Bool -- ^ display indexing progress
@@ -67,8 +79,11 @@ options = do
     long "deriver" <>
     help "path to the clang-derive binary"
   clangCompileDBDir <- optional $ strOption $
-    long "cdb" <>
+    long "cdb-dir" <>
     help "path to a directory containing an existing compile_commands.json file"
+  clangTarget <- optional $ strOption $
+    long "c-target" <>
+    help "target to index (e.g. //path/to:target)"
   clangJobs <- option auto $
     short 'j' <>
     long "jobs" <>
@@ -93,7 +108,9 @@ indexerNoDeriv :: Indexer Clang
 indexerNoDeriv = indexerWith False
 
 -- | C++ indexer. The 'Bool' specifies whether the indexer
---   also runs the deriver.
+--   also runs the deriver. It creates a compilation database, either
+--   using CMake or taking the one provided as param, and then creates
+--   glean facts from it.
 indexerWith :: Bool -> Indexer Clang
 indexerWith deriveToo = Indexer {
   indexerShortName = "cpp-cmake",
@@ -106,7 +123,12 @@ indexerWith deriveToo = Indexer {
     generateInventory backend repo inventoryFile
     compileDBDir <-
       case clangCompileDBDir of
-        Nothing  -> cmake clangVerbose indexerRoot tmpDir >> return tmpDir
+        Nothing  ->
+          case clangTarget of
+            Nothing -> cmake clangVerbose indexerRoot tmpDir >> return tmpDir
+            Just target -> do
+              cdb <- runBuckFullCompilationDatabase target
+              return $ takeDirectory cdb
         Just dir -> return dir
     indexerData <-
       index clang inventoryFile indexerRoot compileDBDir indexerOutput
@@ -120,6 +142,33 @@ indexerWith deriveToo = Indexer {
   }
 
   where
+    runBuckFullCompilationDatabase :: String -> IO String
+    runBuckFullCompilationDatabase target = do
+      let args =
+            [ "--isolation-dir=glean-indexer"
+            , "build"
+            , target <> "[full-compilation-database]"
+            , "--show-full-json-output"
+            ]
+      (exit, out, err) <- readProcessWithExitCode "buck" args ""
+      case exit of
+        ExitSuccess -> do
+          let json :: Maybe Object = decode $ BL.pack $ head $ lines out
+          case json of
+            Nothing -> invalidJson out
+            Just obj -> do
+              case toList obj of
+                [cdb] -> case cdb of
+                  String cdb -> return $ Text.unpack cdb
+                  _ -> invalidJson out
+                _ -> invalidJson out
+        ExitFailure i -> error $ unwords (args ++
+          [ "returned exit code", show i
+          , "with output", out
+          , "and error", err])
+        where
+          invalidJson out = error $ "buck returned invalid JSON: " ++ out
+
     generateInventory backend repo outFile =
       serializeInventory backend repo >>= BS.writeFile outFile
 
@@ -141,7 +190,7 @@ indexerWith deriveToo = Indexer {
             ]
 
       -- get the total number of source files
-      sources <- do
+      sourceCount <- do
         let pargs = args ++ ["--print_sources_count"]
         s <- readProcess clangIndex pargs ""
         case reads s of
@@ -149,22 +198,22 @@ indexerWith deriveToo = Indexer {
           _ -> error $ unwords (clangIndex:pargs)
             ++ " produced unexpect output \"" ++ s ++ "\""
 
-      case sources of
+      case sourceCount of
         0 -> do
           -- TODO: should this be an error?
           putStrLn "No source files to index"
           return []
         _ ->
           -- set up worklist
-          let ranges =
-                map (\(i,n) -> Worklist.Range i (i+n)) $ chunk clangJobs sources
+          let ranges = map (\(i,n) -> Worklist.Range i (i+n)) $
+                  chunk clangJobs sourceCount
               !workers = length ranges
           in
           Worklist.withTemp ranges $ \wfile worklist ->
 
           -- progress and logging
           (if clangProgress || not clangVerbose
-            then withProgress worklist clangJobs sources
+            then withProgress worklist clangJobs sourceCount
             else id) $
           withLog clangVerbose (void . evaluate . length) $ \stream -> do
 
@@ -176,13 +225,16 @@ indexerWith deriveToo = Indexer {
                 , "--worker_index", show i
                 , "--worker_count", show workers
                 ]
+          currentDir <- getCurrentDirectory
+          let cdUp = not $ isPathPrefixOf currentDir buildDir
           forConcurrently_ [0 .. workers-1] $ \i -> bracket
             -- createProcess_ because we don't want the stdout/stderr handles
             -- to be closed
-            (createProcess_
-              "Cpp.index"
-              (proc clangIndex $ workerargs i)
-                {std_out = stream, std_err = stream})
+            ( (if cdUp then pushd ".." else id) $
+              createProcess_
+                "Cpp.index"
+                (proc clangIndex $ workerargs i)
+                  {std_out = stream, std_err = stream})
             cleanupProcess
             $ \(_, _, _, ph) -> do
               ex <- waitForProcess ph
@@ -193,6 +245,17 @@ indexerWith deriveToo = Indexer {
 
           -- return data file names
           return $ map dataFile [0 .. workers-1]
+
+    isPathPrefixOf :: FilePath -> FilePath -> Bool
+    isPathPrefixOf prefix path = prefix == take (length prefix) path
+
+    pushd :: FilePath -> IO a -> IO a
+    pushd dir f = do
+      currentDir <- getCurrentDirectory
+      changeWorkingDirectory dir
+      res <- f
+      changeWorkingDirectory currentDir
+      pure res
 
     writeToDB backend repo = mapM_ $ \dataFile -> do
       dat <- BS.readFile dataFile
