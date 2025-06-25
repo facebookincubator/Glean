@@ -62,4 +62,4 @@ instance ToAttributes FrameAttr where
         Attributes $ Map.singleton "frame" $ Attribute_aString frame
 
 
-  queryMetadataForFile _ _ _ _ = pure []
+  queryMetadataForFile _ _ _ _ _ = pure []

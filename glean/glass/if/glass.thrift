@@ -103,6 +103,7 @@ struct AttributeOptions {
   5: bool fetch_frame_matches = false;
   6: bool fetch_assembly_data = false;
   7: bool fetch_strobelight_frames = false;
+  8: bool fetch_default_view = false;
 }
 
 typedef string ServiceID (hs.newtype)

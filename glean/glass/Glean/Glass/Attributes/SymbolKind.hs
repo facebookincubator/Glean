@@ -52,7 +52,7 @@ instance ToAttributes SymbolKindAttr where
   fileAttrsToAttributeList _ _ = undefined
 
 
-  queryForFile _ lim fileId _ =
+  queryForFile _ lim fileId _ _ =
     fst <$> Utils.searchRecursiveWithLimit lim q
     where
     -- We actually make two queries!
@@ -73,7 +73,7 @@ instance ToAttributes SymbolKindAttr where
           (fromThriftEnum $ symbolKindToSymbolKind kind)))
 
 
-  queryMetadataForFile _ _ _ _ = pure []
+  queryMetadataForFile _ _ _ _ _ = pure []
 
 fileEntityKinds :: Glean.IdOf Src.File -> Angle.Angle EntityKindLabel
 fileEntityKinds fileId =
