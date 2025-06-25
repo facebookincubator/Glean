@@ -24,9 +24,11 @@ import qualified Data.Map as Map
 
 import qualified Glean
 import qualified Glean.Haxl.Repos as Glean
+import qualified Haxl.DataSource.Glean as Glean (HasRepo)
 
 import Glean.Glass.Types
 import Glean.Glass.Logging
+import Glean.Glass.SourceControl
 import qualified Glean.Schema.Src.Types as Src ( File )
 import qualified Glean.Schema.Code.Types as Code
 
@@ -55,10 +57,15 @@ class LogResult (AttrLog key) => ToAttributes key where
 
   -- | Fetch the data for this attribute type for a file
   queryForFile
-    :: key
+    :: (SourceControl scm, Glean.HasRepo u)
+    => key
     -> Maybe Int
     -> Glean.IdOf Src.File
     -> AttributeOptions
+    -> scm
+    -> RepoName
+    -> Path
+    -> Revision
     -> [FileAttrRep key]
     -> Glean.RepoHaxl u w [AttrRep key]
 

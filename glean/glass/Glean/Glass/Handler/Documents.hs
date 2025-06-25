@@ -42,6 +42,7 @@ import qualified Glean
 import Glean.Haxl as Glean ( keyOf, haxlRepo )
 import Glean.Haxl.Repos as Glean
 import Glean.Util.Some as Glean ( Some )
+import qualified Haxl.DataSource.Glean as Glean (HasRepo)
 import qualified Glean.Util.Range as Range
 
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
@@ -73,7 +74,7 @@ import Glean.Glass.SnapshotBackend
     SnapshotStatus() )
 import qualified Glean.Glass.SnapshotBackend as Snapshot
 import Glean.Glass.Env (Env' (tracer, sourceControl, useSnapshotsForSymbolsList))
-import Glean.Glass.SourceControl
+import Glean.Glass.SourceControl (SourceControl(..), NilSourceControl(..))
 import Glean.Glass.Tracing (traceSpan)
 import qualified Glean.Glass.Utils as Utils
 import Glean.Glass.Utils ( fst4 )
@@ -703,26 +704,30 @@ documentSymbolKinds _mlimit (Just Language_Cpp) _fileId _ =
 
 -- Anything else, just load from Glean
 documentSymbolKinds mlimit _ fileId attrOpts =
-  searchFileAttributes
-    Attributes.SymbolKindAttr mlimit fileId attrOpts (Revision "")
+  searchFileAttributes Attributes.SymbolKindAttr mlimit fileId attrOpts
+    NilSourceControl (RepoName "") (Path "") (Revision "")
 
 searchFileAttributes
-  :: Attributes.ToAttributes key
+  :: (Attributes.ToAttributes key, SourceControl scm, Glean.HasRepo u)
   => key
   -> Maybe Int
   -> Glean.IdOf Src.File
   -> AttributeOptions
+  -> scm
+  -> RepoName
+  -> Path
   -> Revision
   -> Glean.RepoHaxl u w
     ([Attributes.AttrRep key], [Attributes.FileAttrRep key], Maybe ErrorLogger)
-searchFileAttributes key mlimit fileId attrOpts revision = do
+searchFileAttributes key mlimit fileId attrOpts sourceControl scsrepo repoPath revision = do
   eraw_file <- (
     if attributeOptions_fetch_per_line_data attrOpts then
         searchFileAttributesMetadata key mlimit fileId attrOpts revision
     else
         mempty)
 
-  eraw <- try $ Attributes.queryForFile key mlimit fileId attrOpts eraw_file
+  eraw <- try $ Attributes.queryForFile key mlimit fileId attrOpts
+    sourceControl scsrepo repoPath revision eraw_file
   repo <- Glean.haxlRepo
   case eraw of
     Left (err::SomeException) -- logic errors or transient errors
@@ -990,6 +995,9 @@ getSymbolAttributes env dbInfo repo opts repofile mlimit
             (theGleanPath repofile)
             mlimit
             (requestOptions_attribute_opts opts)
+            (sourceControl env)
+            (_repoName repofile)
+            (symbolPath (fromGleanPath (_repoName repofile) (theGleanPath repofile)))
             (fromMaybe revision (requestOptions_revision opts))
 
           let augment refs defs = case Attributes.augmentSymbols
@@ -1009,21 +1017,24 @@ getSymbolAttributes env dbInfo repo opts repofile mlimit
 
 -- | External (non-local db) Attributes of symbols. Just Hack only for now
 genericFetchFileAttributes
-  :: Attributes.ToAttributes key
+  :: (Attributes.ToAttributes key, SourceControl scm, Glean.HasRepo u)
   => key
   -> GleanPath
   -> Maybe Int
   -> AttributeOptions
+  -> scm
+  -> RepoName
+  -> Path
   -> Revision
   -> RepoHaxl u w (
      [Attributes.AttrRep key],
      [Attributes.FileAttrRep key],
      Maybe ErrorLogger)
-genericFetchFileAttributes key path mlimit attrOpts revision = do
+genericFetchFileAttributes key path mlimit attrOpts sourceControl scsrepo repoPath revision = do
   efile <- getFile path
   repo <- Glean.haxlRepo
   case efile of
     Left err ->
       return (mempty, mempty, Just (logError err <> logError repo))
     Right fileId -> do searchFileAttributes
-                        key mlimit (Glean.getId fileId) attrOpts revision
+                        key mlimit (Glean.getId fileId) attrOpts sourceControl scsrepo repoPath revision

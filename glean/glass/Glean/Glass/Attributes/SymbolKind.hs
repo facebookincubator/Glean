@@ -52,7 +52,7 @@ instance ToAttributes SymbolKindAttr where
   fileAttrsToAttributeList _ _ = undefined
 
 
-  queryForFile _ lim fileId _ _ =
+  queryForFile _ lim fileId _ _ _ _ _ _ =
     fst <$> Utils.searchRecursiveWithLimit lim q
     where
     -- We actually make two queries!

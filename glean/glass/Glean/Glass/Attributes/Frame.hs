@@ -45,7 +45,7 @@ instance ToAttributes FrameAttr where
   fileAttrsToAttributeList _ _ = undefined
 
 
-  queryForFile _ _ _ _ = undefined
+  queryForFile _ _ _ _ _ _ _ _ _ = undefined
 
   augmentSymbols _ frames refs defs _ =
     (refs_result, defs_result, ())
