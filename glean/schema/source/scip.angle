@@ -55,6 +55,13 @@ predicate DisplayNameSymbol:
     symbol: Symbol
   }
 
+predicate SymbolDisplayName:
+  {
+    symbol: Symbol,
+    displayName: DisplayName
+  } stored { Symbol, DisplayName } where
+    scip.DisplayNameSymbol { DisplayName, Symbol }
+
 # These correspond to SCIP occurrences with symbol_role = `Definition`
 predicate Definition:
   {
@@ -155,6 +162,13 @@ predicate IsImplementation:
     symbol: Symbol,
     implemented: Symbol,
   }
+
+predicate IsImplemented:
+  {
+    implemented: Symbol,
+    symbol: Symbol,
+  } stored { Implemented, Symbol } where
+    scip.IsImplementation { Symbol, Implemented }
 
 # TODO is_reference, is_definition, is_type_definition relationships
 

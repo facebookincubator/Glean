@@ -71,4 +71,6 @@ scipDerivedPredicates :: [Text]
 scipDerivedPredicates =
   [ "scip.DefinitionLocation"
   , "scip.ReferenceLocation"
+  , "scip.SymbolDisplayName"
+  , "scip.IsImplemented"
   ]
