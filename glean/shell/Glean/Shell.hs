@@ -79,7 +79,7 @@ import Glean.Database.Schema.Types ( SchemaSelector(..) )
 import Glean.Database.Schema.ComputeIds (
   emptyHashedSchema, HashedSchema(..), RefTargetId )
 import Glean.Database.Config (parseSchemaDir, SchemaIndex(..),
-  ProcessedSchema(..))
+  ProcessedSchema(..), SchemaLocation(..), schemaLocation)
 import qualified Glean.Database.Config as DB (Config(..))
 import Glean.Database.Storage (describe)
 import Glean.Database.Types (Env(..))
@@ -95,6 +95,7 @@ import Glean.Shell.Terminal
 import Glean.Shell.Types
 import Glean.Shell.Error (Ann, BadQuery(..), prettyBadQuery)
 import qualified Glean.Types as Thrift
+import Glean.Util.ConfigProvider
 #if GLEAN_FACEBOOK
 import Glean.Util.CxxXRef
 #endif
@@ -1348,74 +1349,71 @@ parseAndTypecheckSchema env dir = do
   return parsed
 
 setupLocalSchema
-  :: Glean.Service
+  :: ConfigProvider cfg
+  => cfg
+  -> Glean.Service
   -> IO (Glean.Service, Maybe (Eval ()), Maybe String)
-setupLocalSchema service = do
+setupLocalSchema cfgAPI service = do
   case service of
     Remote{} -> return (service, Nothing, Nothing)
-    Local dbConfig logging -> case DB.cfgSchemaDir dbConfig of
-      Nothing -> return (service, Nothing, Nothing)
-      Just dir -> do
-        r <- try $ parseAndTypecheckSchema Nothing dir
-        (schema, maybeErr) <- case r of
-          Right schema -> return (schema, Nothing)
-          Left (ErrorCall err) -> do
-            let proc = ProcessedSchema
-                  (SourceSchemas (AngleVersion 0) [] [])
-                  (ResolvedSchemas Nothing [])
-                  emptyHashedSchema
-            return (SchemaIndex proc [], Just err)
-        (schemaTS, update) <- ThriftSource.mutable schema
-        let
-          updateSchema :: Eval ()
-          updateSchema = do
-            be <- backend <$> getState
-            case backendKind be of
-              BackendThrift{} -> return ()
-              BackendEnv env -> do
-                new <- liftIO $ parseAndTypecheckSchema (Just env) dir
-                liftIO $ update (const new)
-                let current = schemaIndexCurrent new
+    Local dbConfig logging -> do
+      server_config <- ThriftSource.load cfgAPI (DB.cfgServerConfig dbConfig)
+      loc <- schemaLocation dbConfig server_config
+      case loc of
+        SchemaLocation_dir dir -> do
+          r <- try $ parseAndTypecheckSchema Nothing (Text.unpack dir)
+          (schema, maybeErr) <- case r of
+            Right schema -> return (schema, Nothing)
+            Left (ErrorCall err) -> do
+              let proc = ProcessedSchema
+                    (SourceSchemas (AngleVersion 0) [] [])
+                    (ResolvedSchemas Nothing [])
+                    emptyHashedSchema
+              return (SchemaIndex proc [], Just err)
+          (schemaTS, update) <- ThriftSource.mutable schema
+          let
+            updateSchema :: Eval ()
+            updateSchema = do
+              be <- backend <$> getState
+              case backendKind be of
+                BackendThrift{} -> return ()
+                BackendEnv env -> do
+                  new <- liftIO $
+                    parseAndTypecheckSchema (Just env) (Text.unpack dir)
+                  liftIO $ update (const new)
+                  let current = schemaIndexCurrent new
 
-                -- Update all the schemas for open DBs. This would
-                -- normally be done in the background by the schema
-                -- updater thread, but we're doing it manually and
-                -- disabling the auto-update so that we can
-                -- synchronously check for errors and update our local
-                -- view of the schema in the monad.
-                liftIO $ schemaUpdated env Nothing
+                  -- Update all the schemas for open DBs. This would
+                  -- normally be done in the background by the schema
+                  -- updater thread, but we're doing it manually and
+                  -- disabling the auto-update so that we can
+                  -- synchronously check for errors and update our local
+                  -- view of the schema in the monad.
+                  liftIO $ schemaUpdated env Nothing
+                  state <- getState
+                  whenJust (repo state) $ \r -> do
+                    info <- liftIO $
+                      Glean.getSchemaInfo env (Just r)
+                        def { Thrift.getSchemaInfo_select = useSchemaId state }
 
-                state <- getState
-                whenJust (repo state) $ \r -> do
-                  info <- liftIO $
-                    Glean.getSchemaInfo env (Just r)
-                      def { Thrift.getSchemaInfo_select = useSchemaId state }
+                    Eval $ State.modify $ \s ->
+                      s { schemaInfo = Just info, schemas = Just current }
 
-                  Eval $ State.modify $ \s ->
-                    s { schemaInfo = Just info, schemas = Just current }
+                  let
+                    numSchemas = length (srcSchemas (procSchemaSource current))
+                    numPredicates = HashMap.size (hashedPreds
+                      (procSchemaHashed current))
+                  output $ "reloading schema [" <>
+                    pretty numSchemas <> " schemas, " <>
+                    pretty numPredicates <> " predicates]"
+          return
+            ( Local dbConfig {
+                DB.cfgSchemaHook = const (schemaTS, False) } logging
+            , Just updateSchema
+            , maybeErr
+            )
 
-                let
-                  numSchemas = length (srcSchemas (procSchemaSource current))
-                  numPredicates = HashMap.size (hashedPreds
-                    (procSchemaHashed current))
-                output $ "reloading schema [" <>
-                  pretty numSchemas <> " schemas, " <>
-                  pretty numPredicates <> " predicates]"
-
-          -- When using --schema, we also set --db-schema-override. This
-          -- allows the local schema to override whatever was in the DB,
-          -- and also allows the local schema to take effect when the
-          -- DB is writable.
-          dbConfig' = dbConfig {
-            DB.cfgSchemaSource = schemaTS,
-            DB.cfgUpdateSchema = False
-          }
-
-        return
-          ( Local dbConfig' logging
-          , Just updateSchema
-          , maybeErr
-          )
+        _other -> return (service, Nothing, Nothing)
 
 type ShellCommand = Config
 
@@ -1427,7 +1425,7 @@ instance Plugin ShellCommand where
     | otherwise = "--minloglevel=2" : args
 
   withService evb cfgAPI service cfg = do
-    (service', updateSchema, maybeErr) <- setupLocalSchema service
+    (service', updateSchema, maybeErr) <- setupLocalSchema cfgAPI service
     Glean.withBackendWithDefaultOptions evb cfgAPI
       service' Nothing $ \backend -> do
     withSystemTempFile "scratch-query.angle" $ \q handle -> do

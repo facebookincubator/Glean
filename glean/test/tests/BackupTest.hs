@@ -108,7 +108,7 @@ withTestEnv dbs init_server_cfg action evb cfgAPI backupdir = do
   (l, events) <- recorder
   let config = def
         { cfgDataStore = tmpDataStore
-        , cfgSchemaSource = schemaSourceFiles
+        , cfgSchemaLocation = Just schemaLocationFiles
         , cfgServerConfig = server_cfg
         , cfgReadOnly = False
         , cfgMockWrites = False
