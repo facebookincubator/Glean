@@ -8,16 +8,17 @@
 
 #pragma once
 
-#include <llvm/ADT/StringRef.h>
+#include <folly/Range.h>
 #include <string>
 
 namespace facebook::glean::clangx::hash {
 
-std::string hash(llvm::StringRef usr);
+std::string hash(folly::ByteRange input);
 
 } // namespace facebook::glean::clangx::hash
 
 extern "C" {
 
-int hash_ffi(const char* usr, char* hash, size_t hash_size);
+const char *hash_ffi(const char *input, // nul-terminated
+                     char *output, size_t output_size, int *result);
 }
