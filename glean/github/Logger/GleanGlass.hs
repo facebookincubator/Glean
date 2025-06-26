@@ -112,3 +112,6 @@ setNumAssignedAttributeSamples _ = GleanGlassLogger
 
 setAttributeDbs :: [Text] -> GleanGlassLogger
 setAttributeDbs _ = GleanGlassLogger
+
+setAttributeOptions :: Text -> GleanGlassLogger
+setAttributeOptions _ = GleanGlassLogger

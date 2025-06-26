@@ -40,9 +40,9 @@ import Logger.GleanGlass (GleanGlassLogger)
 import qualified Logger.GleanGlass as Logger
 
 import Glean (Repo(..), repoToText)
-
 import Glean.Glass.Types
 import Glean.Glass.SnapshotBackend ( SnapshotStatus(..) )
+import qualified Thrift.Protocol.JSON as Thrift
 
 instance ActionLog GleanGlassLogger where
   successLog = Logger.setSuccess True
@@ -66,7 +66,12 @@ instance LogRequest RequestOptions where
     Logger.setExactRevision requestOptions_exact_revision <>
     Logger.setMatchingRevision requestOptions_matching_revision <>
     Logger.setContentCheck requestOptions_content_check <>
-    logRequest requestOptions_feature_flags
+    logRequest requestOptions_feature_flags <>
+    logRequest requestOptions_attribute_opts
+
+instance LogRequest AttributeOptions where
+  logRequest AttributeOptions{..} =
+    Logger.setAttributeOptions $ textShow $ Thrift.serializeJSON AttributeOptions{..}
 
 instance LogRequest FeatureFlags where
   logRequest FeatureFlags{..} =
