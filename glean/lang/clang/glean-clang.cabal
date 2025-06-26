@@ -112,7 +112,7 @@ executable clang-index
     build-depends:
         glean:rts,
         glean:client-cpp,
-        glean-hash:glean-hash
+        glean:hash
     extra-libraries:
         clang-cpp,
         LLVM,

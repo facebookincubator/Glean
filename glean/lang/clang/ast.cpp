@@ -63,7 +63,7 @@ std::optional<std::string> getUsrHash(const clang::Decl* decl) {
   //
   // These cases does not really matter much to us and not going to lead to any
   // false positives. Also, Glean and clangd uses the same implementation.
-  return hash::hash(usr);
+  return hash::hash(folly::range(usr));
 }
 
 std::optional<std::string> getMangledNameHash(const clang::FunctionDecl* decl) {
