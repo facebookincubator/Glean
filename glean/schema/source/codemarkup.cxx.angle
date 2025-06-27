@@ -984,6 +984,18 @@ predicate SymbolToEntity:
   }
   { Symbol, Entity } where
   cxx1.USRToDeclaration { hash = Symbol, declaration = Decl };
+  Decl = cxx1.Declaration D;
+  ( (D = { objcContainer = { id =
+    { protocol = _ }
+    | { interface_ = _ }
+    | { categoryInterface = _ }
+    | { extensionInterface = _ } } })
+  | (D = { objcMethod = { container =
+    { protocol = _ }
+    | { implementation = _ }
+    | { categoryImplementation = _ }
+    | { extensionInterface = _ } } })
+  | !(D = { objcContainer = _ } | { objcMethod = _ }) );
   Entity = { decl = Decl };
 
 predicate CxxEntityMangledNameHash :
