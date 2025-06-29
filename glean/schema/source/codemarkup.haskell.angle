@@ -69,7 +69,7 @@ predicate HaskellEntityUses:
     span: src.ByteSpan,
   }
   { { name = Name }, File, (Spans[..]).span } where
-    hs.NameRefs { target = Name, file = File, uses = Spans }
+    hs.Reference { name = Name, file = File, refs = Spans }
 
 #
 # Contains
