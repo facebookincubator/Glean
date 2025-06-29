@@ -257,18 +257,31 @@ type RefSpan =
 
 # It's useful to be able to distinguish import/export refs from code refs,
 # because e.g. dead code can still have import/export refs.
-type RefKind = enum { importref | exportref | coderef }
+type RefKind = enum { importref | exportref | coderef | tydecl }
 
-predicate Reference:
+type RefTarget =
   {
-    name: Name,
+    name: Name |
+    modName: ModuleName |
+    # We would much prefer Module for the xref from an import
+    # declaration, but the HieAST only provides ModuleName. We'll try
+    # to resolve this to a Module in the codemarkup layer later.
+  }
+
+# Note that references are indexed by Name, so this supports
+# find-references. Go-to-def is provided by FileXRefs, which gives all
+# the references for a file.
+predicate XRef:
+  {
+    target: RefTarget,
+    file: src.File,
     refs: [RefSpan],
   }
 
 predicate FileXRefs :
   {
     file : src.File,
-    refs : [Reference],
+    xrefs : [XRef],
   }
 
 predicate OccNameLowerCase:
@@ -277,14 +290,5 @@ predicate OccNameLowerCase:
     occName: OccName,
   }
   stored { prim.toLower Str, N } where N = OccName { name = Str }
-
-predicate NameRefs:
-  {
-    target: Name,
-    file: src.File,
-    uses: [RefSpan]
-  } stored {Name, File, Uses} where
-  FileXRefs {file = File, refs = Refs};
-  {name = Name, refs = Uses} = Refs[..];
 
 }
