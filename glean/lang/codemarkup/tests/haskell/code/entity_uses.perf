@@ -1,5 +1,10 @@
 {
   "@generated": null,
-  "facts_searched": { "hs.NameRefs.3": 43 },
-  "full_scans": [ "hs.NameRefs.3" ]
+  "facts_searched": {
+    "hs.Module.3": 2,
+    "hs.ModuleDeclarations.3": 2,
+    "hs.ModuleName.3": 2,
+    "hs.XRef.3": 28
+  },
+  "full_scans": [ ]
 }
