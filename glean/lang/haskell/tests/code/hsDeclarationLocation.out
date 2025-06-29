@@ -27,7 +27,7 @@
           "sort": { "external": { } }
         }
       },
-      "span": { "length": 40, "start": 492 }
+      "span": { "length": 53, "start": 492 }
     }
   },
   {
@@ -189,10 +189,10 @@
             "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
           },
           "occ": { "key": { "name": "a", "namespace_": 2 } },
-          "sort": { "internal": { "length": 15, "start": 591 } }
+          "sort": { "internal": { "length": 15, "start": 604 } }
         }
       },
-      "span": { "length": 15, "start": 591 }
+      "span": { "length": 15, "start": 604 }
     }
   },
   {
@@ -207,7 +207,7 @@
           "sort": { "external": { } }
         }
       },
-      "span": { "length": 68, "start": 607 }
+      "span": { "length": 68, "start": 620 }
     }
   },
   {
@@ -264,10 +264,25 @@
             "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
           },
           "occ": { "key": { "name": "m", "namespace_": 0 } },
-          "sort": { "internal": { "length": 12, "start": 557 } }
+          "sort": { "internal": { "length": 10, "start": 535 } }
         }
       },
-      "span": { "length": 12, "start": 557 }
+      "span": { "length": 10, "start": 535 }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/haskell/tests/code/A.hs" },
+      "name": {
+        "key": {
+          "mod": {
+            "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+          },
+          "occ": { "key": { "name": "m", "namespace_": 0 } },
+          "sort": { "internal": { "length": 12, "start": 570 } }
+        }
+      },
+      "span": { "length": 12, "start": 570 }
     }
   },
   {
@@ -279,6 +294,36 @@
             "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
           },
           "occ": { "key": { "name": "r", "namespace_": 0 } },
+          "sort": { "internal": { "length": 1, "start": 643 } }
+        }
+      },
+      "span": { "length": 1, "start": 643 }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/haskell/tests/code/A.hs" },
+      "name": {
+        "key": {
+          "mod": {
+            "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+          },
+          "occ": { "key": { "name": "x", "namespace_": 0 } },
+          "sort": { "internal": { "length": 1, "start": 572 } }
+        }
+      },
+      "span": { "length": 1, "start": 572 }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/haskell/tests/code/A.hs" },
+      "name": {
+        "key": {
+          "mod": {
+            "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+          },
+          "occ": { "key": { "name": "x", "namespace_": 0 } },
           "sort": { "internal": { "length": 1, "start": 630 } }
         }
       },
@@ -293,41 +338,11 @@
           "mod": {
             "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
           },
-          "occ": { "key": { "name": "x", "namespace_": 0 } },
-          "sort": { "internal": { "length": 1, "start": 559 } }
-        }
-      },
-      "span": { "length": 1, "start": 559 }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "glean/lang/haskell/tests/code/A.hs" },
-      "name": {
-        "key": {
-          "mod": {
-            "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-          },
-          "occ": { "key": { "name": "x", "namespace_": 0 } },
-          "sort": { "internal": { "length": 1, "start": 617 } }
-        }
-      },
-      "span": { "length": 1, "start": 617 }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "glean/lang/haskell/tests/code/A.hs" },
-      "name": {
-        "key": {
-          "mod": {
-            "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-          },
           "occ": { "key": { "name": "zero", "namespace_": 0 } },
           "sort": { "external": { } }
         }
       },
-      "span": { "length": 8, "start": 581 }
+      "span": { "length": 8, "start": 594 }
     }
   },
   {
