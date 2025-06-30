@@ -89,7 +89,7 @@ genNamespace namespaces version
     , " * This source code is licensed under the MIT license found in the"
     , " * LICENSE file in the root directory of this source tree."
     , " *"
-    , " * @generated"
+    , " * \x40generated"
     , " * Regenerate with glean/schema/gen/Glean/Schema/Gen/Rust.hs"
     , " *  buck2 run glean/schema/gen:gen-schema -- --dir glean/schema/source --rust pyrefly/pyrefly/lib/report/glean"
     , " */"
@@ -118,6 +118,9 @@ addExtraDecls act = do
 
 indentLines :: [Text] -> [Text]
 indentLines = map (\t -> if Text.null t then t else "    " <> t)
+
+addIndent :: Int -> Text
+addIndent n = Text.replicate n "    "
 
 optionalize :: Text -> Text
 optionalize name = "Option<" <> name <> ">"
@@ -177,6 +180,34 @@ annotation :: Text
 annotation = "#[derive(Clone, Debug, Deserialize, Eq, Hash, "
     <> "PartialEq, Serialize)]"
 
+wrapInBoxIf :: Bool -> Text -> Text
+wrapInBoxIf useBox text =
+  if useBox
+    then "Box::new(" <> text <> ")"
+    else text
+
+-- Returns a tuple of the param string and the construction string
+getFieldsForConstructor :: NameSpaces -> ResolvedType' s -> Text -> Text -> Bool
+                        -> M ([Text], Text)
+getFieldsForConstructor here ty typeName defaultParamName useBox = case ty of
+  RecordTy fields -> do
+    params <- forM fields $ \(FieldDef nm fieldTy) -> do
+      tyName <- rustTy here fieldTy
+      return $ nm <> ": " <> tyName
+    let fieldAssignments = map (\(FieldDef nm _) -> nm) fields
+        construction = typeName <> " {"
+                        <>  "\n" <> addIndent 4
+                        <> Text.intercalate
+                            (",\n" <> addIndent 4)
+                            fieldAssignments <>
+                            "\n" <> addIndent 3 <> "}"
+    return (params, wrapInBoxIf useBox construction)
+
+  _ -> do
+    tyName <- rustTy here ty
+    let param = defaultParamName <> ": " <> tyName
+    return ([param], wrapInBoxIf useBox defaultParamName)
+
 genPred :: NameSpaces -> ResolvedPredicateDef -> M ([Text], [Text])
 genPred here PredicateDef{..} = do
   pName <- predicateName predicateDefRef
@@ -206,6 +237,16 @@ genPred here PredicateDef{..} = do
         then return ("()", [])
         else do
             define_kt here predicateDefValueType name_value
+  -- Generate the new() function parameters and construction
+  (keyParams, keyConstruction) <-
+    getFieldsForConstructor here predicateDefKeyType type_key "key" True
+  (valueParams, valueConstruction) <-
+    if has_value
+      then getFieldsForConstructor here predicateDefValueType type_value "value" False
+      else return ([], "")
+  let allParams = keyParams ++ valueParams
+      paramList = Text.intercalate ", " allParams
+
   let
     -- Predicate struct definition
     define = (:[]) $ myUnlines $ concat
@@ -218,6 +259,31 @@ genPred here PredicateDef{..} = do
             then Just $ "pub value: " <> type_value <> ","
             else Nothing
           ]
+        , [ "}" ]
+        , [ ""]
+        , [ "impl " <> name <> " {" ]
+        , indentLines
+            [ "pub fn GLEAN_name() -> String {"
+            , addIndent 1
+              <> "String::from(\""
+              <> predicateRef_name predicateDefRef
+              <> "."
+              <> showt (predicateRef_version predicateDefRef)
+              <> "\")"
+            , "}"
+            , ""
+            , "pub fn new(" <> paramList <> ") -> Self {"
+            , addIndent 1 <> name <> " {"
+            , addIndent 2 <> "id: 0,"
+            , addIndent 2 <> "key: " <> keyConstruction <> ","
+            ] ++
+            [addIndent 3
+              <> "value: " <> valueConstruction
+              <> ","
+            | has_value] ++
+            [ addIndent 2 <> "}"
+            , addIndent 1 <> "}"
+            ]
         , [ "}" ]
         ]
   extra <- popDefs
@@ -247,7 +313,6 @@ genType here tref ty = addExtraDecls $ do
   let name = rustName here tName
 
   withTypeDefHint root $ do
-
   let
     structLike structType fields withFieldHint = do
       fieldTexts <- forM fields $ \(FieldDef nm ty) -> do
