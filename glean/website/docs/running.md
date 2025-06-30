@@ -97,11 +97,14 @@ FB-only: whether to use shards when connecting to a host in the tier.
 
 ### Using local databases
 
-* `--db-root DIR`<br />
-The path where Glean databases are stored.
+* `--db-root DIR | --db-tmp | --db-memory`<br />
+**Default**: `--db-tmp`<br />
+Where Glean databases are stored. When `--db-tmp` is used, Glean
+creates a temporary directory for storage, and deletes it on
+exit. `--db-memory` stores databases in memory.
 
 * `--schema (file:FILE | dir:DIR | config:PATH | DIR)`<br />
-**Default**: <Alt internal="config:glean/schema/all" external="config:schema" /><br />
+**Default**: <Alt internal="indexconfig:glean/schema/index" external="dir:$datadir/glean/schema/source" /><br />
 The location of the schema definition. This can either be:
   * `dir:DIR` or just `DIR`<br />
     All the files with the extension `.angle` under `DIR` (or in
@@ -111,8 +114,14 @@ The location of the schema definition. This can either be:
     If you are running a fleet of Glean servers, you would normally
     sync schema changes across the fleet by putting the schema
     in `config:schema`.
-
-* `--schema-version VERSION`<br />
+  * `index:FILE` or `indexconfig:PATH`<br/> A *schema index*, which
+    contains multiple versions of the schema. When using a schema
+    index, the server uses the version of the schema requested by the
+    client. A schema index can be produced by `gen-schema
+    --update-index`. The purpose of a schema index is so that in a
+    production environment, when you deploy a new version of the
+    schema, existing deployed clients and indexing jobs can continue
+    to use the version of the schema they were compiled against.
 
 <FbInternalOnly>
 
@@ -155,12 +164,11 @@ this doesn't do anything yet).
 
 ### Testing options
 
-* `--db-schema-override`<br />
-The current schema will override the schema in the
-database. Normally you don't want this, because the schema stored in
-the database is the one that was active at the time when the DB was
-created, so it is likely to be a correct description of the data in
-the database.
-
 * `--db-mock-writes`<br />
 Allow write operations, but discard the data and don't write it to the DB.
+
+* `--debug-tc`<br />
+Enable debugging output for the Angle typechecker.
+
+* `--debug-query`<br />
+Enable debugging output for the Angle query compiler.

@@ -26,6 +26,13 @@ working on; the compatibility rules only come into effect when the
 schema is landed. From that point there might be existing clients and
 databases in use, so Glean will reject any incompatible schema changes.
 
+<OssOnly>
+The incompatibility error would show up if you try to use a DB that
+was created with a schema that is incompatible with the current
+schema, or if you change the schema in an incompatible way while the
+server is running.
+</OssOnly>
+
 <FbInternalOnly>
 The compatibility check shows up in CI as `sync-cf-main-diff` and is
 performed on any diff that changes a schema. It checks that the new

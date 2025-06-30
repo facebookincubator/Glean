@@ -27,14 +27,16 @@ designed for collecting and storing detailed information about code
 structure, and providing access to the data to power tools and
 experiences from online IDE features to offline code analysis.
 
-For example, Glean could answer all the questions you'd expect your
-IDE to answer, accurately and efficiently on a large-scale
-codebase. Things like:
+For example, Glean can return results for queries that your IDE might
+need to perform, such as:
 
 * *Where is the definition of this method?*
 * *Where are all the callers of this function?*
 * *Who inherits from this class?*
 * *What are all the declarations in this file?*
+
+Moreover, Glean can return results for these kinds of queries
+accurately and efficiently on a large-scale codebase.
 
 But Glean isn't limited to storing particular kinds of data, or
 answering particular queries. Glean comes with indexers and schemas

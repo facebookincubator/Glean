@@ -43,8 +43,8 @@ where
 * `P` is the name of the predicate. e.g. `src.File`
 * `KeyType` is the *key type*
 
-For example, the example schema that we saw in the [Introduction](../introduction.md)
-contains the `Class` predicate:
+For example, the example schema in the [Angle
+Guide](../angle/guide.md) contains the `Class` predicate:
 
 ```
 schema example.1 {
@@ -174,7 +174,7 @@ Now there will only be one fact for each unique value of `List` stored
 in the DB. Using a `type` would not have the same effect:
 
 ```
-type List: [nat]
+type List = [nat]
 
 predicate P: { a : string, b : List }
 ```
