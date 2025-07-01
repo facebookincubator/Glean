@@ -14,10 +14,6 @@ jobs:
         ghc: [9.2.8, 9.4.7]
         compiler: [gcc]
         index-state: [2025-04-14T00:00:00Z]
-        include:
-          - ghc: 9.2.8
-            compiler: clang
-            index-state: 2025-01-17T00:00:00Z
     runs-on: 32-core-ubuntu
     container:
       image: ubuntu:24.04
