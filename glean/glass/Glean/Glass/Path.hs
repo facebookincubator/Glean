@@ -8,8 +8,6 @@
 
 module Glean.Glass.Path where
 
-import qualified Data.Text as Text
-
 import Glean.Glass.Base ( SymbolRepoPath(..), GleanPath(GleanPath) )
 import qualified Glean.Glass.Types as Glass
 

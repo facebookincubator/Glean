@@ -9,6 +9,7 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE RecursiveDo #-}
+{-# LANGUAGE CPP #-}
 module Glean.Query.Transform
   ( transformationsFor
   , transformResultsBack
