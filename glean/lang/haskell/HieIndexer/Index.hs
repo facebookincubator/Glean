@@ -62,7 +62,6 @@ import Glean.Util.Range
   - DuplicateRecordFields generates names like $sel:field:Rec
   - weird references to the record constructor from field decls
   - why do we get a ref for the field decl?
-  - span of record field in pattern match is wrong
 
 - types
   - types on constructors
@@ -318,13 +317,13 @@ indexHieFile writer srcPaths path hie = do
           | otherwise =
             rangeToByteSpan (toByteRange (srcSpanToSrcRange filefact sp))
 
-    let allIds = [ (n, p) | (Right n, ps) <- Map.toList refmap, p <- ps ]
-
+    let allIds = [ (n, p) | (n, ps) <- Map.toList refmap, p <- ps ]
         declInfo = Map.unions $ fmap getDeclInfos $ getAsts $ hie_asts hie
 
     -- produce names & declarations
-    names <- fmap catMaybes $ forM allIds $ \(name, (span, dets)) -> if
-      | Just sp <- getBindSpan span (identInfo dets)
+    names <- fmap catMaybes $ forM allIds $ \(ident, (span, dets)) -> if
+      | Right name <- ident
+      , Just sp <- getBindSpan span (identInfo dets)
       , localOrGlobal name smod
       , GHC.srcSpanFile sp == hsFileFS -> do -- Note [#included source files]
         let byteSpan = toByteSpan sp
@@ -364,32 +363,42 @@ indexHieFile writer srcPaths path hie = do
       modfact (map snd names) (catMaybes eNames)
 
     let refs = Map.fromListWith (Map.unionWith (++))
-          [ (n, Map.singleton kind [span])
-          | (n, (span, dets)) <- allIds,
+          [ (ident, Map.singleton kind [span])
+          | (ident, (span, dets)) <- allIds,
             Just kind <- map isRef (Set.toList (identInfo dets)),
-            not (GHC.isSystemName n),
-            -- TODO: we should exclude generated names in a cleaner way
-            not (GHC.isDerivedOccName (nameOccName n))
+            case ident of
+              Left{} -> True
+              Right n ->
+                not (GHC.isSystemName n) &&
+                -- TODO: we should exclude generated names in a cleaner way
+                not (GHC.isDerivedOccName (nameOccName n))
           ]
 
-    refs <- fmap catMaybes $ forM (Map.toList refs) $ \(name, kindspans) -> do
-      maybe_namefact <-
-        case Map.lookup name nameMap of
-          Just fact -> return $ Just fact
-          Nothing -> case nameModule_maybe name of
-            Nothing ->
-              -- This shouldn't happen, it's probably a bug in the hie file.
-              -- But it does happen, so let's not crash.
-              return Nothing
-            Just mod -> do
-              namemod <- mkModule mod
-              Just <$> mkName name namemod (Hs.NameSort_external def)
-      forM maybe_namefact $ \namefact -> do
-        refspans <- forM (Map.toList kindspans) $ \(kind, spans) -> do
-          let gleanspans = map toByteSpan spans
-          return $ map (Hs.RefSpan kind) gleanspans
-        Glean.makeFact @Hs.Reference $
-          Hs.Reference_key namefact (concat refspans)
+    refs <- fmap catMaybes $ forM (Map.toList refs) $ \(ident, kindspans) -> do
+      refspans <- fmap concat $ forM (Map.toList kindspans) $ \(kind, spans) -> do
+        let gleanspans = map toByteSpan spans
+        return $ map (Hs.RefSpan kind) gleanspans
+      case ident of
+        Left modName -> do
+          gleanMod <- Glean.makeFact @Hs.ModuleName $
+            fsToText (GHC.moduleNameFS modName)
+          fmap Just $ Glean.makeFact @Hs.XRef $
+            Hs.XRef_key (Hs.RefTarget_modName gleanMod) filefact refspans
+        Right name -> do
+          maybe_namefact <-
+            case Map.lookup name nameMap of
+              Just fact -> return $ Just fact
+              Nothing -> case nameModule_maybe name of
+                Nothing ->
+                  -- This shouldn't happen, it's probably a bug in the hie file.
+                  -- But it does happen, so let's not crash.
+                  return Nothing
+                Just mod -> do
+                  namemod <- mkModule mod
+                  Just <$> mkName name namemod (Hs.NameSort_external def)
+          forM maybe_namefact $ \namefact -> do
+            Glean.makeFact @Hs.XRef $
+              Hs.XRef_key (Hs.RefTarget_name namefact) filefact refspans
 
     Glean.makeFact_ @Hs.FileXRefs $ Hs.FileXRefs_key filefact refs
 
@@ -409,7 +418,7 @@ indexHieFile writer srcPaths path hie = do
   isRef (RecField r _) | isRecFieldRef r = Just Hs.RefKind_coderef
   isRef (ValBind InstanceBind _ _) = Just Hs.RefKind_coderef
     -- treat these as refs, not binds
-  isRef TyDecl{} = Just Hs.RefKind_coderef
+  isRef TyDecl{} = Just Hs.RefKind_tydecl
   isRef (IEThing Export) = Just Hs.RefKind_exportref
   isRef (IEThing _) = Just Hs.RefKind_importref
   isRef _ = Nothing

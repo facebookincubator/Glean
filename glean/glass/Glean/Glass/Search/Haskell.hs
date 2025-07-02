@@ -50,13 +50,13 @@ instance Search (ResultLocation Haskell.Entity) where
 
 
 symbolIdQuery
-  :: Text  -- ^ package (ignored (TODO))
+  :: Text  -- ^ package
   -> Text  -- ^ module name
   -> Text  -- ^ identifier
   -> Hs.Namespace -- ^ namespace (var, datacon, tycon, tyvar)
   -> Maybe (Int, Int)  -- ^ span, for local names
   -> Angle (ResultLocation Haskell.Entity)
-symbolIdQuery _pkg mod ident ns sort =
+symbolIdQuery pkg mod ident ns sort =
   vars $ \name file span ->
     tuple (
       alt @"name" (asPredicate name),
@@ -70,7 +70,8 @@ symbolIdQuery _pkg mod ident ns sort =
               field @"name" (string ident) $
               field @"namespace_" (enum ns) end) $
             field @"mod" (rec $
-              field @"name" (string mod) end) $
+              field @"name" (string mod) $
+              field @"unit" (stringPrefix pkg) end) $
             field @"sort" (
               case sort of
                 Nothing -> alt @"external" wild

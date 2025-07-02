@@ -1,3 +1,13 @@
-query: codemarkup.EntityUses _
+query: |
+   # there are small differences in the index produced by GHC 9.2 and 9.4,
+   # this query avoids the differences and generates consistent output.
+   M = hs.Module { name = "A" | "B" };
+   (
+     codemarkup.EntityUses { target = { hs = { mod = M } }}
+   ) | (
+     hs.ModuleDeclarations { module = M, names = Ns };
+     N = Ns[..];
+     codemarkup.EntityUses { target = { hs = { name = N }}}
+   )
 perf: true
 transform: [gensort, []]

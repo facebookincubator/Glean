@@ -46,17 +46,34 @@ predicate HaskellFileEntityXRefLocations:
     xref: codemarkup.types.XRefLocation,
     entity: code.hs.Entity,
   }
-  { File, { Location, { span = Span } }, { name = Name } } where
-    hs.FileXRefs { file = File, refs = XRefs };
-    { name = Name, refs = Spans } = XRefs[..];
+  { File, { Location, { span = Span } }, Entity } where
+    hs.FileXRefs { file = File, xrefs = XRefs };
+    { target = Target, refs = Spans } = XRefs[..];
+    (
+      Target = { name = Name };
+      Entity = { name = Name };
+      hs.DeclarationLocation { name = Name, file = TargetFile, span = TargetSpan };
+      Location = codemarkup.types.Location
+        {
+          name = Name.occ.name,
+          file = TargetFile,
+          location = { span = TargetSpan },
+          destination = nothing
+        };
+    ) | (
+      Target = { modName = ModuleName };
+      Module = hs.Module { name = ModuleName };
+      Entity = { mod = Module };
+      hs.ModuleSource { mod = Module, file = TargetFile };
+      Location = codemarkup.types.Location
+        {
+          name = ModuleName.*,
+          file = TargetFile,
+          location = { range = { TargetFile, 1, 1, 1, 1 }},
+          destination = nothing
+        };
+    );
     Span = (Spans[..]).span;
-    Location = codemarkup.types.Location
-      {
-        name = Name.occ.name,
-        file = File,
-        location = { span = Span },
-        destination = nothing
-      };
 
 #
 # Language entity uses
@@ -68,8 +85,16 @@ predicate HaskellEntityUses:
     file: src.File,
     span: src.ByteSpan,
   }
-  { { name = Name }, File, (Spans[..]).span } where
-    hs.NameRefs { target = Name, file = File, uses = Spans }
+  { Ent, File, (Spans[..]).span } where
+    (
+      Ent = { name = Name };
+      Target = { name = Name };
+    ) | (
+      Ent = { mod = Module };
+      Target = { modName = Module.name };
+    );
+    hs.XRef { target = Target, file = File, refs = Spans }
+
 
 #
 # Contains
