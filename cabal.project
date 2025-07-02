@@ -23,6 +23,10 @@ allow-newer: haskeline:base
 -- https://github.com/TomMD/entropy/issues/75
 constraints: entropy < 0.4.1.9
 
+-- develop with -Werror on, for consistency with internal Meta CI.
+program-options
+    ghc-options: -Werror -Wwarn=dodgy-imports
+
 package fb-util
     flags: +folly
 

@@ -14,12 +14,15 @@ module Glean.Regression.Snapshot.Options
   , optionsWith
   ) where
 
-import Control.Monad (unless)
 import qualified Options.Applicative as O
 import System.Directory
 import System.FilePath
+
+#if !defined(OSS)
+import Control.Monad (unless)
 import System.Process (readProcess)
 import Data.List (isPrefixOf, isSuffixOf)
+#endif
 
 data Config = Config
   { cfgProjectRoot :: FilePath
@@ -92,6 +95,7 @@ optionsWith other = O.info (O.helper <*> ((,) <$> parser <*> other)) O.fullDesc
         cfgReplace = replace
       }
 
+#if !defined(OSS)
 -- | Simple heuristics to get the path of the source files
 -- from the buck-out path. Will take a path like
 --
@@ -143,4 +147,4 @@ sourcePath path = do
       if x == y
       then go xs ys
       else go (x:xs) ys
-
+#endif

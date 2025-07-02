@@ -13,7 +13,7 @@ module Glean.Glass.RepoMapping
   , allGleanRepos
   , supportsCxxDeclarationSources
   , mirrorConfig
-  , Mirror(Mirror)
+  , Mirror(..)
   ) where
 
 import Data.Set (Set)
