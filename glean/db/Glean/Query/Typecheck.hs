@@ -589,8 +589,16 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     return (RTS.Alt (fromIntegral n) (RTS.Tuple []))
 
   (ty, ElementsOfArray _ pat) -> do
-    pat' <- typecheckPattern ContextExpr (ArrayTy ty) pat
-    return (Ref (MatchExt (Typed ty (TcElementsOfArray pat'))))
+    containerTy <- freshTyVarInt
+    pat' <- typecheckPattern ContextExpr (ElementsOf ty containerTy) pat
+    return (Ref (MatchExt (Typed ty (
+      TcElementsUnresolved (TyVar containerTy) pat'))))
+
+  (ty, Elements _ pat) -> do
+    containerTy <- freshTyVarInt
+    pat' <- typecheckPattern ContextExpr (ElementsOf ty containerTy) pat
+    return (Ref (MatchExt (Typed ty (
+      TcElementsUnresolved (TyVar containerTy) pat'))))
 
   (ty, OrPattern _ left right) -> do
     (left',right') <-
@@ -655,18 +663,16 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     f <- promoteTo (sourcePatSpan pat) sigty' ty
     return (f e')
 
+  (ty@(SetTy elemTy), All _ query) -> do
+    arg <- typecheckPattern ctx elemTy query
+    let q = TcQuery elemTy arg Nothing [] Unordered
+    return (Ref (MatchExt (Typed ty (TcAll q))))
+
   -- A match on a predicate type with a pattern that is not a wildcard,
   -- variable, field selector or dereference matches the key.
   (PredicateTy _ (PidRef _ ref), pat) | matchesKey pat ->
     fst <$> tcFactGenerator ref pat SeekOnAllFacts Nothing
 
-  (ty@(SetTy elemTy), All _ query) -> do
-    arg <- typecheckPattern ctx elemTy query
-    let q = TcQuery elemTy arg Nothing [] Unordered
-    return (Ref (MatchExt (Typed ty (TcAll q))))
-  (ty, Elements _ pat) -> do
-    elems <- typecheckPattern ctx (SetTy ty) pat
-    return (Ref (MatchExt (Typed ty (TcElementsOfSet elems))))
   (ty, Wildcard{}) -> return (mkWild ty)
   (ty, Never{}) -> return $ Ref (MatchNever ty)
   (ty, Variable span name) -> varOcc ctx span name ty

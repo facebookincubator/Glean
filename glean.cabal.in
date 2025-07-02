@@ -1841,6 +1841,12 @@ test-suite angle-test-derived
     main-is: Angle/DerivedTest.hs
     ghc-options: -main-is Angle.DerivedTest
 
+test-suite angle-test-set
+    import: test, angle-test
+    type: exitcode-stdio-1.0
+    main-is: Angle/SetTest.hs
+    ghc-options: -main-is Angle.SetTest
+
 test-suite angle-test-stored
     import: test, angle-test
     type: exitcode-stdio-1.0
