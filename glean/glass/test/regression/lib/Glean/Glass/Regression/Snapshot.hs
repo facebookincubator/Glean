@@ -73,13 +73,15 @@ newtype Cfg =
 data Query
   = Query {
       action :: Text, -- ^ name of glass.thrift method
-      args :: Aeson.Value -- json object of args to method
+      args :: Aeson.Value, -- json object of args to method
+      request_args :: Maybe Aeson.Value -- json object of request args to method
   } deriving (Show)
 
 instance FromJSON Query where
   parseJSON = withObject "query" $ \v -> Query
     <$> v .: "action"
     <*> v .: "args"
+    <*> v .:? "request_args"
 
 type Output = FilePath
 
@@ -179,39 +181,35 @@ mkTest cfgReplace get name qfile tempDir = TestLabel name $ TestCase $ do
       then copyFile actual expected
       else diff actual expected
 
-xlang :: RequestOptions -> RequestOptions
-xlang opts = opts { requestOptions_feature_flags = Just
-  (def { featureFlags_include_xlang_refs = Just True })
-}
 
 evalQuery :: Glass.Env -> FilePath -> Query -> FilePath -> IO ()
 evalQuery glassEnv qFile Query{..} oFile = case action of
-  "documentSymbolListX" -> withObjectArgs qFile oFile args
-    (\req opts -> Glass.documentSymbolListX glassEnv req (xlang opts))
-  "documentSymbolIndex" -> withObjectArgs qFile oFile args
-    (\req opts -> Glass.documentSymbolIndex glassEnv req (xlang opts))
+  "documentSymbolListX" -> withObjectArgs qFile oFile args request_args
+    (\req opts -> Glass.documentSymbolListX glassEnv req opts)
+  "documentSymbolIndex" -> withObjectArgs qFile oFile args request_args
+    (\req opts -> Glass.documentSymbolIndex glassEnv req opts)
   "findReferenceRanges" -> withSymbolId oFile args
     (Glass.findReferenceRanges glassEnv)
   "symbolLocation" -> withSymbolId oFile args
     (Glass.symbolLocation glassEnv)
   "describeSymbol" -> withSymbolId oFile args
     (Glass.describeSymbol glassEnv)
-  "resolveSymbols" -> withObjectArgs qFile oFile args
+  "resolveSymbols" -> withObjectArgs qFile oFile args request_args
     (Glass.resolveSymbols glassEnv)
-  "searchSymbol" ->  withObjectArgs qFile oFile args
+  "searchSymbol" ->  withObjectArgs qFile oFile args request_args
     (Glass.searchSymbol glassEnv)
   "searchRelated" -> withObjectAndSymbolId qFile oFile args
     (Glass.searchRelated glassEnv)
   "searchRelatedNeighborhood" -> withSymbolId oFile args
     (\sym opts -> Glass.searchRelatedNeighborhood glassEnv sym opts
        def { relatedNeighborhoodRequest_hide_uninteresting = True } )
-  "fileIncludeLocations" -> withObjectArgs qFile oFile args
+  "fileIncludeLocations" -> withObjectArgs qFile oFile args request_args
     (Glass.fileIncludeLocations glassEnv)
-  "usrToDefinition" -> withObjectArgs qFile oFile args
+  "usrToDefinition" -> withObjectArgs qFile oFile args request_args
     (\x y -> fst <$> Glass.usrToDefinition glassEnv x y)
   -- this lists all symbol ids in a file and then validates them
   -- wrapper for validating C++
-  "validateCxxSymbolIds" -> withObjectArgs qFile oFile args
+  "validateCxxSymbolIds" -> withObjectArgs qFile oFile args request_args
     (validateCxxSymbols glassEnv)
 
   _ -> error $ "Invalid action: " <> show action
@@ -249,15 +247,20 @@ withSymbolId oFile args f = do
   writeResult oFile res
 
 withObjectArgs
- :: (Thrift.Protocol.ThriftStruct req,
-     ToJSON req, ToJSON a, DeterministicResponse a)
+ :: (Thrift.Protocol.ThriftSerializable req,
+     Thrift.Protocol.ThriftSerializable opts,
+     ToJSON a, Default opts, DeterministicResponse a)
  => FilePath
  -> FilePath
  -> Value
- -> (req -> RequestOptions -> IO a) -> IO ()
-withObjectArgs qFile oFile args f = do
+ -> Maybe Value
+ -> (req -> opts -> IO a) -> IO ()
+withObjectArgs qFile oFile args rargs f = do
   req <- parseAsObject qFile args
-  res <- f req def
+  opts <- case rargs of
+    Nothing -> return def
+    Just rargs -> parseAsObject qFile rargs
+  res <- f req opts
   writeResult oFile res
 
 withObjectAndSymbolId
