@@ -25,6 +25,7 @@ import Glean.Schema.Gen.Utils
 import Glean.Angle.Types
 import Glean.Schema.Types
 import Glean.Types (SchemaId(..))
+import Data.List.Extra (nubOrd)
 
 genSchemaRust
   :: SchemaId
@@ -114,7 +115,7 @@ addExtraDecls :: M [Text] -> M [Text]
 addExtraDecls act = do
   most <- act
   extra <- popDefs
-  return (extra ++ most)
+  return (nubOrd (extra ++ most))
 
 indentLines :: [Text] -> [Text]
 indentLines = map (\t -> if Text.null t then t else "    " <> t)
@@ -123,12 +124,22 @@ addIndent :: Int -> Text
 addIndent n = Text.replicate n "    "
 
 optionalize :: Text -> Text
-optionalize name = "Option<" <> name <> ">"
+optionalize name = "Option<" <> safe name <> ">"
 
 box :: Text -> Text
-box name = "Box<" <> name <> ">"
+box name = "Box<" <> safe name <> ">"
 
-shareTypeDef :: NameSpaces -> ResolvedType' s -> M Text
+safe :: Text -> Text
+safe name
+  | name `elem`
+      [ "type", "super", "crate", "self", "as", "mut", "mod", "box"
+      , "ref", "const", "dyn", "use", "extern", "unsafe", "trait"
+      , "macro", "Value"
+      ]
+      = name <> "_"
+  | otherwise = if name == "builtin.Unit" then "builtin::Unit" else name
+
+shareTypeDef :: NameSpaces -> ResolvedType' s ->  M Text
 shareTypeDef here t = do
   (no, name) <- nameThisType t
   case no of
@@ -138,11 +149,10 @@ shareTypeDef here t = do
       pushDefs =<< genType here tref t
   return name
 
-
 rustTy :: NameSpaces -> ResolvedType' s -> M Text
 rustTy here t = case t of
   -- Basic types
-  ByteTy{} -> return "Byte"
+  ByteTy{} -> return "u8"
   NatTy{} -> return "u64"
   BooleanTy{} -> return "bool"
   StringTy{} -> return "String"
@@ -172,8 +182,10 @@ rustTy here t = case t of
 
 rustName :: NameSpaces -> (NameSpaces, Text) -> Text
 rustName here (ns, name)
-  | ns == here = name
-  | otherwise = underscored ns <> "::" <> name
+  | ns == here = safe name
+  | null ns = safe name
+  | Text.null (underscored ns) = safe name
+  | otherwise = underscored ns <> "::" <> safe name
 
 
 annotation :: Text
@@ -191,21 +203,20 @@ getFieldsForConstructor :: NameSpaces -> ResolvedType' s -> Text -> Text -> Bool
                         -> M ([Text], Text)
 getFieldsForConstructor here ty typeName defaultParamName useBox = case ty of
   RecordTy fields -> do
-    params <- forM fields $ \(FieldDef nm fieldTy) -> do
-      tyName <- rustTy here fieldTy
-      return $ nm <> ": " <> tyName
-    let fieldAssignments = map (\(FieldDef nm _) -> nm) fields
-        construction = typeName <> " {"
-                        <>  "\n" <> addIndent 4
-                        <> Text.intercalate
-                            (",\n" <> addIndent 4)
-                            fieldAssignments <>
-                            "\n" <> addIndent 3 <> "}"
-    return (params, wrapInBoxIf useBox construction)
+      params <- forM fields $ \(FieldDef nm fieldTy) -> do
+        tyName <- withRecordFieldHint nm (rustTy here fieldTy)
+        return $ safe nm <> ": " <> tyName
+      let fieldAssignments = map (\(FieldDef nm _) -> safe nm) fields
+          construction = typeName <> " {"
+                          <>  "\n" <> addIndent 4
+                          <> Text.intercalate
+                              (",\n" <> addIndent 4)
+                              fieldAssignments <>
+                              "\n" <> addIndent 3 <> "}"
+      return (params, wrapInBoxIf useBox construction)
 
   _ -> do
-    tyName <- rustTy here ty
-    let param = defaultParamName <> ": " <> tyName
+    let param = defaultParamName <> ": " <> typeName
     return ([param], wrapInBoxIf useBox defaultParamName)
 
 genPred :: NameSpaces -> ResolvedPredicateDef -> M ([Text], [Text])
@@ -287,7 +298,7 @@ genPred here PredicateDef{..} = do
         , [ "}" ]
         ]
   extra <- popDefs
-  return (define,  extra ++ define_key ++ define_value)
+  return (define,  nubOrd (extra ++ define_key ++ define_value))
 
 define_kt ::
   NameSpaces -> ResolvedType -> (NameSpaces, Text) -> M (Text, [Text])
@@ -313,40 +324,37 @@ genType here tref ty = addExtraDecls $ do
   let name = rustName here tName
 
   withTypeDefHint root $ do
-  let
-    structLike structType fields withFieldHint = do
-      fieldTexts <- forM fields $ \(FieldDef nm ty) -> do
-         tyName <- withFieldHint nm (rustTy here ty)
-         return $ "pub " <> nm <> ": " <> tyName <> ","
-      let
-        define | null fields =
-          annotation <> newline <>
-          "pub " <> structType <> " " <> name <> " {}"
-               | otherwise = myUnlines $ concat
-          [ [ annotation ]
-          , [ "pub " <> structType <> " " <> name <> " {" ]
-          , indentLines fieldTexts
-          , [ "}" ]
-          ]
-      return [define]
-
   case ty of
-    RecordTy fields -> structLike "struct" fields withRecordFieldHint
+    RecordTy fields -> do
+        fieldTexts <- forM fields $ \(FieldDef nm ty) -> do
+          tyName <- withRecordFieldHint nm (rustTy here ty)
+          return $ "pub " <> safe nm <> ": " <> tyName <> ","
+        let
+          define | null fields =
+            annotation <> newline <>
+            "pub struct " <> name <> " {}"
+                | otherwise = myUnlines $ concat
+            [ [ annotation ]
+            , [ "pub struct " <> name <> " {" ]
+            , indentLines fieldTexts
+            , [ "}" ]
+            ]
+        return [define]
     SumTy fields -> do
-      variantTexts <- forM fields $ \(FieldDef nm ty) -> do
-        tyName <- withUnionFieldHint nm (rustTy here ty)
-        return $ nm <> "(" <> tyName <> "),"
-      let
-        define | null fields =
-          annotation <> newline <>
-          "pub enum " <> name <> " {}"
-               | otherwise = myUnlines $ concat
-          [ [ annotation ]
-          , [ "pub enum " <> name <> " {" ]
-          , indentLines variantTexts
-          , [ "}" ]
-          ]
-      return [define]
+        variantTexts <- forM fields $ \(FieldDef nm ty) -> do
+          tyName <- withUnionFieldHint nm (rustTy here ty)
+          return $ safe nm <> "(" <> safe tyName <> "),"
+        let
+          define | null fields =
+            annotation <> newline <>
+            "pub enum " <> name <> " {}"
+                 | otherwise = myUnlines $ concat
+            [ [ annotation ]
+            , [ "pub enum " <> name <> " {" ]
+            , indentLines variantTexts
+            , [ "}" ]
+            ]
+        return [define]
 
     EnumeratedTy vals -> makeEnum name vals
 
