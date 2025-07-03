@@ -54,7 +54,6 @@ import Glean.LocalOrRemote ( BackendKind(..),
 import Glean.Util.Service
 import qualified Glean.Interprocess.Worklist as Worklist
 import qualified Glean.Handler as GleanHandler
-import System.Posix (changeWorkingDirectory)
 import Data.Aeson (decode, Object, Value (String))
 import Data.Foldable (toList)
 
@@ -225,13 +224,10 @@ indexerWith deriveToo = Indexer {
                 , "--worker_index", show i
                 , "--worker_count", show workers
                 ]
-          currentDir <- getCurrentDirectory
-          let cdUp = not $ isPathPrefixOf currentDir buildDir
           forConcurrently_ [0 .. workers-1] $ \i -> bracket
             -- createProcess_ because we don't want the stdout/stderr handles
             -- to be closed
-            ( (if cdUp then pushd ".." else id) $
-              createProcess_
+            (createProcess_
                 "Cpp.index"
                 (proc clangIndex $ workerargs i)
                   {std_out = stream, std_err = stream})
@@ -245,17 +241,6 @@ indexerWith deriveToo = Indexer {
 
           -- return data file names
           return $ map dataFile [0 .. workers-1]
-
-    isPathPrefixOf :: FilePath -> FilePath -> Bool
-    isPathPrefixOf prefix path = prefix == take (length prefix) path
-
-    pushd :: FilePath -> IO a -> IO a
-    pushd dir f = do
-      currentDir <- getCurrentDirectory
-      changeWorkingDirectory dir
-      res <- f
-      changeWorkingDirectory currentDir
-      pure res
 
     writeToDB backend repo = mapM_ $ \dataFile -> do
       dat <- BS.readFile dataFile
