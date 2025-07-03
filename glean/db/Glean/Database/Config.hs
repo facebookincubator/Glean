@@ -25,6 +25,7 @@ module Glean.Database.Config (
   SchemaIndex(..),
   schemaForSchemaId,
   ProcessedSchema(..),
+  schemaSourceIndexConfig,
   catSchemaFiles,
   schemaLocationToSource,
   schemaLocationFiles,

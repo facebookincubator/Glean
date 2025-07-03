@@ -5,8 +5,7 @@
   This source code is licensed under the BSD-style license found in the
   LICENSE file in the root directory of this source tree.
 -}
-
-{-# LANGUAGE ApplicativeDo #-}
+{-# LANGUAGE CPP, ApplicativeDo #-}
 module GleanCLI.Merge (MergeCommand) where
 
 import Control.Exception
@@ -19,10 +18,11 @@ import System.Directory
 import System.FilePath
 import System.IO
 import System.Process
-
+import Data.Text(unpack)
 import Control.Concurrent.Stream
 import Util.OptParse
-import Util.Log
+import Util.Log ( logInfo )
+import Glean.Util.ThriftSource (load)
 import Thrift.Protocol.Compact
 
 import Glean.LocalOrRemote (loadDbSchema)
@@ -35,12 +35,22 @@ import Glean.RTS.Foreign.Define (DefineFlags(..), defineBatch)
 import qualified Glean.RTS.Foreign.Inventory as Inventory
 import Glean.RTS.Foreign.Ownership
 import Glean.Database.Schema.Types
+import Glean.Database.Util (getDbSchemaFromId)
 
 import GleanCLI.Types
 import GleanCLI.Common (dbOpts, fileFormatOpt, FileFormat (..))
 import Glean.Write (fileToBatches, schemaIdToOpts)
 import Glean.Write.JSON (buildJsonBatch)
+import Glean.Database.Config (schemaSourceIndexConfig)
+import Glean.DefaultConfigs(schemaConfigPath)
 import System.Directory.Extra (listFiles)
+
+#if GLEAN_FACEBOOK
+import Configerator (
+  withConfigeratorAPI,
+  defaultConfigeratorOptions,
+ )
+#endif
 
 
 data MergeCommand = MergeCommand
@@ -88,6 +98,9 @@ instance Plugin MergeCommand where
         return (schemaInventory dbSchema, Just dbSchema)
       Right mergeInventory -> do
         inventory <- Inventory.deserialize <$> B.readFile mergeInventory
+        -- Get the schema_id from the JSON's schema ID field
+        --- this needs to be done when the file is considered later on
+        -- dbSchema <-
         return (inventory, Nothing)
     createDirectoryIfMissing True mergeOutDir
     hSetBuffering stderr LineBuffering
@@ -136,8 +149,8 @@ instance Plugin MergeCommand where
             let batch = serializeCompact $
                   batch0 { batch_owned =
                     ownershipUnits (unionOwnership ownership) }
-            hPutStrLn stderr $ "Writing " <> out <>
-              " (" <> show (B.length batch) <> ")"
+            logInfo $ "Writing " <> out <>
+              " (" <> show (B.length batch) <> " bytes)"
             B.writeFile out batch
 
       merge fileFormat inventory dbSchema files write = loop 0 0 Nothing files
@@ -145,12 +158,62 @@ instance Plugin MergeCommand where
         read :: FilePath -> Int -> FactSet -> IO FactOwnership
         read file size factSet = do
           logInfo $ "Reading " <> file <> " (" <> show size <> " bytes)"
+          -- Merge can take an existing db or an inventory.
+          -- A DB has a dbSchema, so we can use that to build the batches
+          -- to merge
+          -- An inventory doesn't have a dbSchema, so leads to "Nothing"
+          -- This means that we need to get the schema from somewhere
+          --- this will be the first JSON file we see
+          -- read the 'schema_id' field in that file and create a
+          -- new dbSchema intance with that using configerator's
+          -- stored default schema index
+
           batch <- case fileFormat of
             JsonFormat -> do
               case dbSchema of
-                Nothing -> throwIO $ ErrorCall $
-                  "No db schema to serialize json format file. "
-                  <> "Please specify the database"
+                Nothing ->
+                  #if GLEAN_FACEBOOK
+                  withConfigeratorAPI defaultConfigeratorOptions $ \configAPI ->
+                    -- Load the schema index from the schema directory
+                    let schemaIndexResult =
+                          Right $ schemaSourceIndexConfig schemaConfigPath in do
+                    hPutStrLn stderr $
+                        "Reading current schema index from default "
+                        <> "configerator with path " <> unpack schemaConfigPath
+
+                    -- Get the schema_id from the JSON file
+                    (batches, Just schema_id) <- fileToBatches file
+                    logInfo("Schema_ID from JSON file " <> file <> " is "
+                      <> show schema_id)
+
+                    -- Try to get the DbSchema from the schema ID string
+                    case schemaIndexResult of
+                      Left err -> do
+                        throwIO $ ErrorCall err
+                      Right schemaIndex -> do
+                        logInfo $ "Looking up schema with ID: " <>
+                            show schema_id
+                        -- Materialise the schema index from its Thrift source
+                        concreteIndex <- load configAPI schemaIndex
+                        dbSchemaResult <-
+                          (Right <$>
+                              getDbSchemaFromId (Just concreteIndex) schema_id
+                          )
+                          `catch` \(e :: SomeException) ->
+                          return $ Left $ "Failed to get schema: " <> show e
+
+                        case dbSchemaResult of
+                          Left err -> do
+                            throwIO $ ErrorCall("Error getting dbSchemaResult"
+                              <> " - exiting. Error is:\n" <> err)
+                          Right dbSchema -> do
+                            logInfo $ "Successfully loaded schema with ID: "
+                              <> show schema_id
+                            buildJsonBatch dbSchema
+                              (schemaIdToOpts $ Just(schemaId dbSchema)) batches
+                  #else
+                  return $ Left $ "Failed to get schema: "
+                  #endif
                 Just schema -> do
                   (batches, schema_id_file) <- fileToBatches file
                   if Just(schemaId schema) == schema_id_file then
@@ -166,7 +229,6 @@ instance Plugin MergeCommand where
                   let getSchemaId theschema = Just(schemaId theschema) in
                     buildJsonBatch schema
                         (schemaIdToOpts $ getSchemaId schema) batches
-
 
             BinaryFormat -> do
               bytes <- B.readFile file

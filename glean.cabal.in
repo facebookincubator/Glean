@@ -25,6 +25,7 @@ common fb-haskell
     default-extensions:
         BangPatterns
         BinaryLiterals
+        CPP
         DataKinds
         DeriveDataTypeable
         DeriveGeneric
@@ -132,6 +133,10 @@ common folly
     else
         build-depends: fb-util < 0.2
         pkgconfig-depends: libfolly
+
+-- Facebook-specific features
+flag facebook
+     default: False
 
 common deps
     build-depends:
@@ -1124,7 +1129,10 @@ executable glean
         GleanCLI.Restore
         GleanCLI.Write
     ghc-options: -main-is GleanCLI -with-rtsopts=-I0
+    default-extensions: CPP
     extra-libraries: stdc++
+    if flag(facebook)
+       ghc-options: -DGLEAN_FACEBOOK
     build-depends:
         glean:cli-types,
         glean:client-hs,
