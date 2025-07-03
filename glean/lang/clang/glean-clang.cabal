@@ -41,7 +41,7 @@ common deps
         ansi-terminal ^>= 0.11,
         array ^>=0.5.2.0,
         async ^>=2.2.1,
-        base >=4.11.1 && <4.18,
+        base >=4.11.1 && <4.19,
         containers,
         data-default,
         deepseq ^>=1.4.3.0,

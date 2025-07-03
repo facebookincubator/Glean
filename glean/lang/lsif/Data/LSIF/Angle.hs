@@ -27,6 +27,7 @@ module Data.LSIF.Angle (
     Env(..), emptyEnv
   ) where
 
+import Control.Monad
 import Control.Monad.Extra ( concatMapM )
 import Control.Monad.State.Strict
 import Data.Aeson
