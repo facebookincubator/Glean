@@ -13,7 +13,7 @@ module Glean.Query.Typecheck.Unify (
     zonkVars,
   ) where
 
-import Control.Monad.Except
+import Control.Monad
 import Control.Monad.State
 import qualified Data.IntMap as IntMap
 import qualified Data.Map as Map
