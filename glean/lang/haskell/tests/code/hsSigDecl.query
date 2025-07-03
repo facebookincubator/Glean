@@ -1,0 +1,4 @@
+# ValBinds that have a signature
+query: |
+  Val.sig.just? where Val : hs.ValBind
+transform: [normord, []]
