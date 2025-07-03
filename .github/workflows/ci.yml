@@ -172,7 +172,7 @@ jobs:
         run: make glean-hie
 
       - name: Run tests
-        run: make test
+        run: TASTY_NUM_THREADS=32 make test
 
   # check the vscode extension builds
   vscode:
