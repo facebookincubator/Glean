@@ -31,6 +31,7 @@ data R a = R { f1 :: Char, f2 :: [a] }
 
 class Eq a => C a where
   m :: a -> Bool
+  m _ = True
 
 instance C Int where
   m x = x == x
