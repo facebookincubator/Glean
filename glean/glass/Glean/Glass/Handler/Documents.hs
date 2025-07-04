@@ -20,7 +20,7 @@ module Glean.Glass.Handler.Documents
   ) where
 
 import Control.Monad
-import Control.Exception ( SomeException, throwIO )
+import Control.Exception ( SomeException )
 import Control.Monad.Catch ( try )
 import Data.Hashable
 import Data.List as List ( find )
@@ -34,8 +34,7 @@ import qualified Data.Text as Text
 
 import qualified Haxl.Core as Haxl
 import Glean.Util.ToAngle
-import Util.FFI
-import Util.Text ( textShow, useTextAsCString, cStringToText )
+import Util.Text ( textShow )
 
 import Thrift.Protocol ( fromThriftEnum )
 
@@ -83,7 +82,7 @@ import Glean.Glass.Utils ( fst4 )
 import Logger.GleanGlass (GleanGlassLogger)
 import qualified Glean.Glass.Attributes.Frame as Attributes
 import qualified Glean.Schema.Scip.Types as Scip
-import Foreign.C (CString)
+import Foreign.C (CString, peekCString, withCString)
 import Foreign.C.Types (CSize(..), CInt(..), CChar(..))
 import Foreign.Ptr (Ptr)
 import Foreign.Marshal.Alloc (allocaBytes)
@@ -650,18 +649,18 @@ resolveXlangXrefs
         (Just Language_Swift)
         Language_Cpp
         (Code.SymbolId_scip (Scip.Symbol _ (Just usr))) =
-      fmap Code.SymbolId_cxx $
-        useTextAsCString usr $ \cusr -> do
-          let size = 32
-          allocaBytes size $ \hash -> do
-            ret <- invoke $ hash_ffi cusr hash size
-            if ret == 0
-              then cStringToText hash
-              else throwIO $ ServerException "hash_ffi buffer too small"
+      Code.SymbolId_cxx . Text.pack <$>
+        withCString (Text.unpack usr) (\usr ->
+        let size = 32 in
+        allocaBytes size $ \hash -> do
+          ret <- hash_ffi usr hash size
+          if ret == 0
+            then peekCString hash
+            else error "hash_ffi buffer too small")
     translateSymbol _ _ symId = return symId
 
 foreign import ccall unsafe
-  hash_ffi :: CString -> Ptr CChar -> CSize -> Ptr CInt -> IO CString
+  hash_ffi :: CString -> Ptr CChar -> CSize -> IO CInt
 
 -- | Wrapper for tracking symbol/entity pairs through processing
 data DocumentSymbols = DocumentSymbols

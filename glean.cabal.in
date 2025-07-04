@@ -1284,23 +1284,14 @@ library if-glass-hs
         glean:if-index-hs,
         glean:thrift-annotation,
 
-library hash
-    import: fb-haskell, fb-cpp, deps, folly
-    visibility: public
-    cxx-sources:
-        glean/lang/clang/hash/hash.cpp
-    install-includes:
-        glean/lang/clang/hash/hash.h
-    cxx-options: -DOSS=1
-    if !flag(use-folly-clib)
-        pkgconfig-depends: openssl
-
 -- Glass core library
 library glass-lib
     import: fb-haskell, fb-cpp, deps, thrift-server
     visibility: public
     default-extensions: CPP
     hs-source-dirs: glean/glass
+    build-depends:
+        glean-hash:glean-hash,
     exposed-modules:
         Glean.Glass.Annotations
         Glean.Glass.Attributes
@@ -1388,7 +1379,6 @@ library glass-lib
         glean:client-hs,
         glean:client-hs-local,
         glean:core,
-        glean:hash,
         glean:haxl-datasource,
         glean:if-glass-hs,
         glean:if-index-hs,
