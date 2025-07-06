@@ -5,24 +5,24 @@
   This source code is licensed under the BSD-style license found in the
   LICENSE file in the root directory of this source tree.
 -}
-{-# LANGUAGE CPP, ApplicativeDo #-}
+{-# LANGUAGE ApplicativeDo #-}
 module GleanCLI.Merge (MergeCommand) where
 
 import Control.Exception
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy.Char8 as L
 import qualified Data.Aeson as Aeson
+import Data.Default
 import Data.IORef
 import Options.Applicative
 import System.Directory
+import System.Directory.Extra (listFiles)
 import System.FilePath
 import System.IO
 import System.Process
-import Data.Text(unpack)
 import Control.Concurrent.Stream
 import Util.OptParse
 import Util.Log ( logInfo )
-import Glean.Util.ThriftSource (load)
 import Thrift.Protocol.Compact
 
 import Glean.LocalOrRemote (loadDbSchema)
@@ -34,23 +34,16 @@ import qualified Glean.RTS.Foreign.FactSet as FactSet
 import Glean.RTS.Foreign.Define (DefineFlags(..), defineBatch)
 import qualified Glean.RTS.Foreign.Inventory as Inventory
 import Glean.RTS.Foreign.Ownership
+import qualified Glean.Database.Config as GleanDB
 import Glean.Database.Schema.Types
-import Glean.Database.Util (getDbSchemaFromId)
+import qualified Glean.Util.ThriftSource as ThriftSource
+import Glean.Database.Config (cfgServerConfig)
+import Glean.Database.Schema
 
 import GleanCLI.Types
 import GleanCLI.Common (dbOpts, fileFormatOpt, FileFormat (..))
 import Glean.Write (fileToBatches, schemaIdToOpts)
 import Glean.Write.JSON (buildJsonBatch)
-import Glean.Database.Config (schemaSourceIndexConfig)
-import Glean.DefaultConfigs(schemaConfigPath)
-import System.Directory.Extra (listFiles)
-
-#if GLEAN_FACEBOOK
-import Configerator (
-  withConfigeratorAPI,
-  defaultConfigeratorOptions,
- )
-#endif
 
 
 data MergeCommand = MergeCommand
@@ -88,11 +81,11 @@ instance Plugin MergeCommand where
     fileFormat <- fileFormatOpt BinaryFormat
     return MergeCommand{..}
 
-  withService _evb _cfgAPI _svc MergeCommand{..} = do
+  withService evb cfgAPI svc MergeCommand{..} = do
     (inventory, dbSchema) <- case inventorySource of
       Left repo -> do
         dbSchema <- Glean.withBackendWithDefaultOptions
-          _evb _cfgAPI _svc Nothing $ \backend -> do
+          evb cfgAPI svc Nothing $ \backend -> do
             loadDbSchema backend repo
         logInfo("db's schema ID is: "  <> show(schemaId dbSchema))
         return (schemaInventory dbSchema, Just dbSchema)
@@ -170,52 +163,24 @@ instance Plugin MergeCommand where
 
           batch <- case fileFormat of
             JsonFormat -> do
+              (batches, schema_id_file) <- fileToBatches file
               case dbSchema of
-                Nothing ->
-                  #if GLEAN_FACEBOOK
-                  withConfigeratorAPI defaultConfigeratorOptions $ \configAPI ->
-                    -- Load the schema index from the schema directory
-                    let schemaIndexResult =
-                          Right $ schemaSourceIndexConfig schemaConfigPath in do
-                    hPutStrLn stderr $
-                        "Reading current schema index from default "
-                        <> "configerator with path " <> unpack schemaConfigPath
-
-                    -- Get the schema_id from the JSON file
-                    (batches, Just schema_id) <- fileToBatches file
-                    logInfo("Schema_ID from JSON file " <> file <> " is "
-                      <> show schema_id)
-
-                    -- Try to get the DbSchema from the schema ID string
-                    case schemaIndexResult of
-                      Left err -> do
-                        throwIO $ ErrorCall err
-                      Right schemaIndex -> do
-                        logInfo $ "Looking up schema with ID: " <>
-                            show schema_id
-                        -- Materialise the schema index from its Thrift source
-                        concreteIndex <- load configAPI schemaIndex
-                        dbSchemaResult <-
-                          (Right <$>
-                              getDbSchemaFromId (Just concreteIndex) schema_id
-                          )
-                          `catch` \(e :: SomeException) ->
-                          return $ Left $ "Failed to get schema: " <> show e
-
-                        case dbSchemaResult of
-                          Left err -> do
-                            throwIO $ ErrorCall("Error getting dbSchemaResult"
-                              <> " - exiting. Error is:\n" <> err)
-                          Right dbSchema -> do
-                            logInfo $ "Successfully loaded schema with ID: "
-                              <> show schema_id
-                            buildJsonBatch dbSchema
-                              (schemaIdToOpts $ Just(schemaId dbSchema)) batches
-                  #else
-                  return $ Left $ "Failed to get schema: "
-                  #endif
+                Nothing -> do
+                  schema_id <- case schema_id_file of
+                    Nothing -> throwIO $ ErrorCall "missing schema ID"
+                    Just id -> return id
+                  let cfg = case svc of
+                        Glean.Local cfg _ -> cfg
+                        Glean.Remote{} -> def
+                  serverConfig <- ThriftSource.load cfgAPI (cfgServerConfig cfg)
+                  loc <- GleanDB.schemaLocation cfg serverConfig
+                  let (schemaSource, _) = GleanDB.cfgSchemaHook cfg loc
+                  index <- ThriftSource.load cfgAPI schemaSource
+                  dbSchema <- newDbSchema Nothing index
+                    (SpecificSchemaId schema_id) readWriteContent def
+                  buildJsonBatch dbSchema
+                    (schemaIdToOpts $ Just (schemaId dbSchema)) batches
                 Just schema -> do
-                  (batches, schema_id_file) <- fileToBatches file
                   if Just(schemaId schema) == schema_id_file then
                     logInfo(
                       "Schema matches with db schema. Merging data from "
@@ -224,7 +189,7 @@ instance Plugin MergeCommand where
                   else
                     throwIO $ ErrorCall $
                         "ERROR - ABORTING MERGE\nSchema ID mismatch:\ndb: "
-                        <> show(schemaId schema) <> "\nvs\nFile: "
+                        <> show (schemaId schema) <> "\nvs\nFile: "
                         <> file <> " has " <> show schema_id_file
                   let getSchemaId theschema = Just(schemaId theschema) in
                     buildJsonBatch schema

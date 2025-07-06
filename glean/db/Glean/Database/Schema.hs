@@ -16,8 +16,6 @@ module Glean.Database.Schema
   , newDbSchema
   , newMergedDbSchema
   , mkDbSchemaFromSource
-  , mkDbSchema
-  , findSchemaInIndex
   , lookupPid
   , compareSchemaPredicates
   , validateNewSchema
