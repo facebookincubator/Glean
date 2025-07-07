@@ -11,6 +11,7 @@ module Glean.Glass.Attributes
     SymbolKind.SymbolKindAttr(..)
     -- * class
   , ToAttributes(..)
+  , LogAttr(..)
   , RefEntitySymbol
   , DefEntitySymbol
 

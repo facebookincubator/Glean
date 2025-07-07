@@ -87,6 +87,8 @@ import Foreign.Ptr (Ptr)
 import Foreign.Marshal.Alloc (allocaBytes)
 import Data.Either (partitionEithers, fromLeft)
 import Control.Monad.Extra (mapMaybeM)
+import qualified Data.Text.Lazy as TL
+import Data.Aeson.Text (encodeToLazyText)
 
 
 -- | Runner for methods that are keyed by a file path.
@@ -969,15 +971,15 @@ addDynamicAttributes env dbInfo repo opts repofile mlimit be syms = do
   -- combine additional dynamic attributes
   (mattrs, fattrs) <-
    getSymbolAttributes env dbInfo repo opts repofile mlimit be (revision syms)
-  return $ extend mattrs mempty [] syms fattrs
+  return $ extend mattrs [] [] syms fattrs
   where
-    extend [] log dblog syms _ = (syms, log <> logResult dblog)
+    extend [] log dblog syms _ = (syms, logResult log <> logResult dblog)
     extend (augment : xs) log dblog syms [] =
      extend xs newLog newDBLog
        (syms { refs = refs' , defs = defs', attributes =  Nothing }) []
       where
       (refs',defs',log', dblog') = augment (refs syms) (defs syms)
-      newLog = log <> log'
+      newLog = log' : log
       newDBLog = dblog' : dblog
     extend (augment : xs) log dblog syms f =
       extend xs newLog newDBLog
@@ -987,16 +989,15 @@ addDynamicAttributes env dbInfo repo opts repofile mlimit be syms = do
 
       flattenAttrs :: Maybe AttributeList
       flattenAttrs = mconcat f
-      newLog = log <> log'
+      newLog = log' : log
       newDBLog = dblog' : dblog
-      -- Note: it'll only log one if multiple attrs use the same fields
 
 type Augment =
    [Attributes.RefEntitySymbol] ->
    [Attributes.DefEntitySymbol] ->
    ([Attributes.RefEntitySymbol],
     [Attributes.DefEntitySymbol],
-    GleanGlassLogger, AttrDBsLog)
+    AttrStatsLog, AttrDBsLog)
 
 -- Work out if we have extra attribute dbs and then run the queries
 getSymbolAttributes
@@ -1032,7 +1033,7 @@ getSymbolAttributes env dbInfo repo opts repofile mlimit
           let augment refs defs = case Attributes.augmentSymbols
                 attrKey attrs refs defs (requestOptions_attribute_opts opts) of
                  (refs, defs, log) ->
-                  (refs, defs, logResult log, AttrDBsLog attrDB)
+                  (refs, defs, AttrStatsLog $ TL.toStrict $ encodeToLazyText $ Attributes.toLogText log, AttrDBsLog attrDB)
 
           let fileAttributes = case fileAttrs of
                [] -> Nothing

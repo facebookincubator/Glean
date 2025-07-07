@@ -115,3 +115,6 @@ setAttributeDbs _ = GleanGlassLogger
 
 setAttributeOptions :: Text -> GleanGlassLogger
 setAttributeOptions _ = GleanGlassLogger
+
+setDynamicAttributeStats  :: [Text] -> GleanGlassLogger
+setDynamicAttributeStats _ = GleanGlassLogger

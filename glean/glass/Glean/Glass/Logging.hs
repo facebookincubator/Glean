@@ -20,6 +20,7 @@ module Glean.Glass.Logging
   , ErrorText(..)
   , ErrorLogger(..)
   , AttrDBsLog(..)
+  , AttrStatsLog(..)
   , errorText
   , errorsText
 
@@ -248,6 +249,10 @@ instance LogResult [RelatedSymbols] where
 newtype AttrDBsLog = AttrDBsLog { attrDb :: Glean.Repo }
 instance LogResult [AttrDBsLog] where
   logResult logs = Logger.setAttributeDbs (map (Glean.repoToText . attrDb) logs)
+
+newtype AttrStatsLog = AttrStatsLog { stats :: Text }
+instance LogResult [AttrStatsLog] where
+  logResult logs = Logger.setDynamicAttributeStats (map stats logs)
 
 --
 -- | Intern error logging

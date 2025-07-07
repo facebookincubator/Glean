@@ -13,6 +13,7 @@
 {-# OPTIONS_GHC -Wno-star-is-type -Wno-orphans #-}
 module Glean.Glass.Attributes.Class
   ( ToAttributes(..)
+  , LogAttr(..)
   , RefEntitySymbol
   , DefEntitySymbol
   , extendAttributes
@@ -21,20 +22,29 @@ module Glean.Glass.Attributes.Class
   ) where
 
 import qualified Data.Map as Map
+import qualified Data.Aeson as A
 
 import qualified Glean
 import qualified Glean.Haxl.Repos as Glean
 import qualified Haxl.DataSource.Glean as Glean (HasRepo)
-
 import Glean.Glass.Types
-import Glean.Glass.Logging
-import Glean.Glass.SourceControl
+
+import Glean.Glass.SourceControl ( SourceControl )
 import qualified Glean.Schema.Src.Types as Src ( File )
 import qualified Glean.Schema.Code.Types as Code
 
 
+
+-- | Class for defining log structures that can be converted to JSON text
+class LogAttr a where
+  -- | Convert the structure to a single JSON-formatted text string
+  toLogText :: a -> A.Value
+
+instance LogAttr () where
+  toLogText _ = A.Null
+
 -- | Class for querying attributes and converting them to thrift
-class LogResult (AttrLog key) => ToAttributes key where
+class LogAttr (AttrLog key) => ToAttributes key where
 
   type AttrRep key :: *
   type FileAttrRep key :: *
