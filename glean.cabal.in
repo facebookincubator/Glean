@@ -1296,7 +1296,6 @@ library glass-lib
         Glean.Glass.Annotations
         Glean.Glass.Attributes
         Glean.Glass.Attributes.Class
-        Glean.Glass.Attributes.Frame
         Glean.Glass.Attributes.SymbolKind
         Glean.Glass.Base
         Glean.Glass.Comments

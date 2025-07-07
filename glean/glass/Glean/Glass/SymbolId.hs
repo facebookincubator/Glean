@@ -36,8 +36,6 @@ module Glean.Glass.SymbolId
   , toQualifiedName
   , toSymbolLocalName
   , toSymbolQualifiedContainer
-  , toStrobelightFrame
-  , toStrobelight
 
   -- reexports
   , SymbolRepoPath(..)
@@ -71,7 +69,6 @@ import Glean.Glass.SymbolId.Class
     ( Symbol(..),
       SymbolError(SymbolError),
       ToQName(..),
-      ToStrobelightFrame(..),
       ToSymbolParent(..),
       ToNativeSymbol(..) )
 import Glean.Glass.SymbolId.Angle ({- instances -})
@@ -152,8 +149,6 @@ toQualifiedName entity = do
       Right QualifiedName {..}
     Left e -> Left $ "QualifiedName: " <> e
 
-toStrobelight :: Code.Entity -> Glean.RepoHaxl u w Text
-toStrobelight entity = do toStrobelightFrame entity
 
 toSymbolLocalName :: Code.Entity -> Glean.RepoHaxl u w (Maybe Name)
 toSymbolLocalName entity = do
@@ -444,10 +439,6 @@ instance ToSymbolParent Code.Entity where
     Code.Entity_pp{} -> return Nothing
     _ -> return Nothing
 
-instance ToStrobelightFrame Code.Entity where
-  toStrobelightFrame e = case e of
-    Code.Entity_cxx x -> toStrobelightFrame x
-    _ -> pure ("Language unsupported: " <> textShow (entityLanguage e))
 
 -- | Attribute for definition/declaration distinction
 entityDefinitionType :: Code.Entity -> Maybe Glass.DefinitionKind

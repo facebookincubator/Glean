@@ -80,7 +80,6 @@ import Glean.Glass.Tracing (traceSpan)
 import qualified Glean.Glass.Utils as Utils
 import Glean.Glass.Utils ( fst4 )
 import Logger.GleanGlass (GleanGlassLogger)
-import qualified Glean.Glass.Attributes.Frame as Attributes
 import qualified Glean.Schema.Scip.Types as Scip
 import Foreign.C (CString, peekCString, withCString)
 import Foreign.C.Types (CSize(..), CInt(..), CChar(..))
@@ -534,24 +533,11 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
         -- only handle XlangEntities with known entity
         let unresolvedXrefsXlang = [ ref | XlangXRef ref <- xrefs ]
 
-        let (refs2, defs2, _) = Attributes.augmentSymbols
+        let (refs, defs, _) = Attributes.augmentSymbols
               Attributes.SymbolKindAttr
               kinds
               (xRefDataToRefEntitySymbol <$> refsPlain)
               defs1
-              attrOpts
-
-        defsToFrames <- (
-          if attributeOptions_fetch_frame_matches attrOpts then
-             withRepo fileRepo $ do addFramesToDefs defs2
-          else
-              return mempty [])
-
-        let (refs, defs, _) = Attributes.augmentSymbols
-              Attributes.FrameAttr
-              defsToFrames
-              refs2
-              defs2
               attrOpts
 
         return (DocumentSymbols {
@@ -962,14 +948,6 @@ newtype GetStaticAttributes =
 
 -- -----------------------------------------------------------------------------
 -- Attributes
-addFramesToDefs
-  :: [(Code.Entity, DefinitionSymbolX)]
-  -> Glean.RepoHaxl u w [(Code.Entity, Text)]
-addFramesToDefs defs =
-  do forM defs
-       $ \ (entity, _)
-           -> do qName <- toStrobelight entity
-                 return (entity, qName)
 
 
 --
