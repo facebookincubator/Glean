@@ -14,7 +14,7 @@ author:              Facebook, Inc.
 maintainer:          Glean-team@fb.com
 copyright:           (c) Facebook, All Rights Reserved
 build-type:          Simple
-extra-source-files:  CHANGELOG.md
+extra-doc-files:     CHANGELOG.md, README.md
 CXX_EXTRA_SOURCE_FILES
 
 data-files:
@@ -129,7 +129,7 @@ flag use-folly-clib
 
 common folly
     if flag(use-folly-clib)
-        build-depends: fb-util >= 0.2, folly-clib
+        build-depends: fb-util >= 0.2, folly-clib > 0
     else
         build-depends: fb-util < 0.2
         pkgconfig-depends: libfolly
