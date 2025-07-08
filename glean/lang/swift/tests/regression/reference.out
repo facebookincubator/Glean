@@ -10855,6 +10855,26 @@
   {
     "key": {
       "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE4minX0B10Foundation7CGFloatVvg"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 41,
+            "columnBegin": 17,
+            "lineEnd": 41,
+            "columnEnd": 20
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
         "key": "s:So6CGRectV12CoreGraphicsE4minX0B10Foundation7CGFloatVvp"
       },
       "location": {
@@ -10874,16 +10894,18 @@
   },
   {
     "key": {
-      "symbol": { "key": "s:So6CGRectV12CoreGraphicsE4minXAC7CGFloatVvg" },
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE4minY0B10Foundation7CGFloatVvg"
+      },
       "location": {
         "key": {
           "file": {
             "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
           },
           "range": {
-            "lineBegin": 41,
+            "lineBegin": 42,
             "columnBegin": 17,
-            "lineEnd": 41,
+            "lineEnd": 42,
             "columnEnd": 20
           }
         }
@@ -10912,17 +10934,59 @@
   },
   {
     "key": {
-      "symbol": { "key": "s:So6CGRectV12CoreGraphicsE4minYAC7CGFloatVvg" },
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE5width0B10Foundation7CGFloatVvg"
+      },
       "location": {
         "key": {
           "file": {
             "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
           },
           "range": {
-            "lineBegin": 42,
-            "columnBegin": 17,
-            "lineEnd": 42,
-            "columnEnd": 20
+            "lineBegin": 41,
+            "columnBegin": 32,
+            "lineEnd": 41,
+            "columnEnd": 36
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE5width0B10Foundation7CGFloatVvg"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 41,
+            "columnBegin": 52,
+            "lineEnd": 41,
+            "columnEnd": 56
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE5width0B10Foundation7CGFloatVvg"
+      },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 43,
+            "columnBegin": 26,
+            "lineEnd": 43,
+            "columnEnd": 30
           }
         }
       }
@@ -10990,62 +11054,8 @@
   },
   {
     "key": {
-      "symbol": { "key": "s:So6CGRectV12CoreGraphicsE5widthAC7CGFloatVvg" },
-      "location": {
-        "key": {
-          "file": {
-            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
-          },
-          "range": {
-            "lineBegin": 41,
-            "columnBegin": 32,
-            "lineEnd": 41,
-            "columnEnd": 36
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "s:So6CGRectV12CoreGraphicsE5widthAC7CGFloatVvg" },
-      "location": {
-        "key": {
-          "file": {
-            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
-          },
-          "range": {
-            "lineBegin": 41,
-            "columnBegin": 52,
-            "lineEnd": 41,
-            "columnEnd": 56
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "s:So6CGRectV12CoreGraphicsE5widthAC7CGFloatVvg" },
-      "location": {
-        "key": {
-          "file": {
-            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
-          },
-          "range": {
-            "lineBegin": 43,
-            "columnBegin": 26,
-            "lineEnd": 43,
-            "columnEnd": 30
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
       "symbol": {
-        "key": "s:So6CGRectV12CoreGraphicsE6height0B10Foundation7CGFloatVvp"
+        "key": "s:So6CGRectV12CoreGraphicsE6height0B10Foundation7CGFloatVvg"
       },
       "location": {
         "key": {
@@ -11065,7 +11075,7 @@
   {
     "key": {
       "symbol": {
-        "key": "s:So6CGRectV12CoreGraphicsE6height0B10Foundation7CGFloatVvp"
+        "key": "s:So6CGRectV12CoreGraphicsE6height0B10Foundation7CGFloatVvg"
       },
       "location": {
         "key": {
@@ -11085,7 +11095,7 @@
   {
     "key": {
       "symbol": {
-        "key": "s:So6CGRectV12CoreGraphicsE6height0B10Foundation7CGFloatVvp"
+        "key": "s:So6CGRectV12CoreGraphicsE6height0B10Foundation7CGFloatVvg"
       },
       "location": {
         "key": {
@@ -11104,7 +11114,9 @@
   },
   {
     "key": {
-      "symbol": { "key": "s:So6CGRectV12CoreGraphicsE6heightAC7CGFloatVvg" },
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE6height0B10Foundation7CGFloatVvp"
+      },
       "location": {
         "key": {
           "file": {
@@ -11122,7 +11134,9 @@
   },
   {
     "key": {
-      "symbol": { "key": "s:So6CGRectV12CoreGraphicsE6heightAC7CGFloatVvg" },
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE6height0B10Foundation7CGFloatVvp"
+      },
       "location": {
         "key": {
           "file": {
@@ -11140,7 +11154,9 @@
   },
   {
     "key": {
-      "symbol": { "key": "s:So6CGRectV12CoreGraphicsE6heightAC7CGFloatVvg" },
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE6height0B10Foundation7CGFloatVvp"
+      },
       "location": {
         "key": {
           "file": {
@@ -11278,7 +11294,7 @@
   },
   {
     "key": {
-      "symbol": { "key": "s:So6CGSizeV5width12CoreGraphics7CGFloatVvg" },
+      "symbol": { "key": "s:So6CGSizeV5width14CoreFoundation7CGFloatVvg" },
       "location": {
         "key": {
           "file": {

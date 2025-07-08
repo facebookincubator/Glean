@@ -1925,6 +1925,14 @@
   {
     "key": {
       "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE4minX0B10Foundation7CGFloatVvg"
+      },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
         "key": "s:So6CGRectV12CoreGraphicsE4minX0B10Foundation7CGFloatVvp"
       },
       "name": { "key": "" }
@@ -1932,7 +1940,9 @@
   },
   {
     "key": {
-      "symbol": { "key": "s:So6CGRectV12CoreGraphicsE4minXAC7CGFloatVvg" },
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE4minY0B10Foundation7CGFloatVvg"
+      },
       "name": { "key": "" }
     }
   },
@@ -1946,7 +1956,9 @@
   },
   {
     "key": {
-      "symbol": { "key": "s:So6CGRectV12CoreGraphicsE4minYAC7CGFloatVvg" },
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE5width0B10Foundation7CGFloatVvg"
+      },
       "name": { "key": "" }
     }
   },
@@ -1960,7 +1972,9 @@
   },
   {
     "key": {
-      "symbol": { "key": "s:So6CGRectV12CoreGraphicsE5widthAC7CGFloatVvg" },
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE6height0B10Foundation7CGFloatVvg"
+      },
       "name": { "key": "" }
     }
   },
@@ -1969,12 +1983,6 @@
       "symbol": {
         "key": "s:So6CGRectV12CoreGraphicsE6height0B10Foundation7CGFloatVvp"
       },
-      "name": { "key": "" }
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "s:So6CGRectV12CoreGraphicsE6heightAC7CGFloatVvg" },
       "name": { "key": "" }
     }
   },
@@ -2004,7 +2012,7 @@
   },
   {
     "key": {
-      "symbol": { "key": "s:So6CGSizeV5width12CoreGraphics7CGFloatVvg" },
+      "symbol": { "key": "s:So6CGSizeV5width14CoreFoundation7CGFloatVvg" },
       "name": { "key": "" }
     }
   },
