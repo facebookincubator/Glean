@@ -81,15 +81,10 @@ import qualified Glean.Glass.Utils as Utils
 import Glean.Glass.Utils ( fst4 )
 import Logger.GleanGlass (GleanGlassLogger)
 import qualified Glean.Schema.Scip.Types as Scip
-import Foreign.C (CString, peekCString, withCString)
-import Foreign.C.Types (CSize(..), CInt(..), CChar(..))
-import Foreign.Ptr (Ptr)
-import Foreign.Marshal.Alloc (allocaBytes)
 import Data.Either (partitionEithers, fromLeft)
-import Control.Monad.Extra (mapMaybeM)
 import qualified Data.Text.Lazy as TL
 import Data.Aeson.Text (encodeToLazyText)
-
+import Glean.Glass.Handler.Cxx (hashUSR)
 
 -- | Runner for methods that are keyed by a file path.
 -- Select the right Glean DBs and pass them to the function (via a GleanBackend)
@@ -599,8 +594,8 @@ resolveXlangXrefs
       gleanDBs <- getGleanRepos tracer sourceControl repoMapping dbInfo
         targetRepo (Just targetLang) Nothing ChooseLatest Nothing
       let gleanBe = GleanBackend {gleanDBs, tracer, gleanBackend}
-      (ents, symbols) <-
-        partitionEithers <$> mapMaybeM (mangle targetLang) unresolvedXrefsXlang
+      let (ents, symbols) =
+            partitionEithers $ mapMaybe (mangle targetLang) unresolvedXrefsXlang
       xlangRefs <- backendRunHaxl gleanBe env $ do
         xrefsXlang <- join <$>
           mapM (\gleanDB -> withRepo (snd gleanDB) $ do
@@ -623,32 +618,22 @@ resolveXlangXrefs
             _ -> Language__UNKNOWN 0
 
     mangle :: Language -> XlangXRef
-      -> IO (Maybe (Either
-        (Code.Entity, Code.RangeSpan) (Code.SymbolId, Code.RangeSpan)))
+      -> Maybe (Either
+        (Code.Entity, Code.RangeSpan) (Code.SymbolId, Code.RangeSpan))
     mangle targetLang (range, ref) = case ref of
       Left (Code.IdlEntity _ _ mEnt _) ->
-        pure $ Left . (,range) <$> mEnt
-      Right symbol -> do
-        Just . Right . (,range) <$> translateSymbol sourceLang targetLang symbol
+        Left . (,range) <$> mEnt
+      Right symbol ->
+        Just $ Right $ (,range) $ translateSymbol sourceLang targetLang symbol
 
     translateSymbol ::
-      Maybe Language -> Language -> Code.SymbolId -> IO Code.SymbolId
+      Maybe Language -> Language -> Code.SymbolId -> Code.SymbolId
     translateSymbol
         (Just Language_Swift)
         Language_Cpp
         (Code.SymbolId_scip (Scip.Symbol _ (Just usr))) =
-      Code.SymbolId_cxx . Text.pack <$>
-        withCString (Text.unpack usr) (\usr ->
-        let size = 32 in
-        allocaBytes size $ \hash -> do
-          ret <- hash_ffi usr hash size
-          if ret == 0
-            then peekCString hash
-            else error "hash_ffi buffer too small")
-    translateSymbol _ _ symId = return symId
-
-foreign import ccall unsafe
-  hash_ffi :: CString -> Ptr CChar -> CSize -> IO CInt
+      Code.SymbolId_cxx $ hashUSR usr
+    translateSymbol _ _ symId = symId
 
 -- | Wrapper for tracking symbol/entity pairs through processing
 data DocumentSymbols = DocumentSymbols

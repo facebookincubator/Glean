@@ -1290,8 +1290,6 @@ library glass-lib
     visibility: public
     default-extensions: CPP
     hs-source-dirs: glean/glass
-    build-depends:
-        glean-hash:glean-hash,
     exposed-modules:
         Glean.Glass.Annotations
         Glean.Glass.Attributes
@@ -1387,6 +1385,7 @@ library glass-lib
         glean:stubs,
         glean:util,
         uri-encode,
+        SHA,
         split,
         ghc
 

@@ -117,12 +117,12 @@ executable clang-index
         action.cpp,
         ast.cpp,
         db.cpp,
+        hash.cpp,
         path.cpp,
         preprocessor.cpp,
     build-depends:
         glean:rts,
         glean:client-cpp,
-        glean-hash:glean-hash
     extra-libraries:
         clang-cpp,
         LLVM,

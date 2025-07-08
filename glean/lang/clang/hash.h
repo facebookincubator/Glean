@@ -16,8 +16,3 @@ namespace facebook::glean::clangx::hash {
 std::string hash(llvm::StringRef usr);
 
 } // namespace facebook::glean::clangx::hash
-
-extern "C" {
-
-int hash_ffi(const char* usr, char* hash, size_t hash_size);
-}

@@ -25,7 +25,7 @@
 #include "folly/ScopeGuard.h"
 #include "folly/lang/Assume.h"
 #include "glean/lang/clang/ast.h"
-#include "glean/lang/clang/hash/hash.h"
+#include "glean/lang/clang/hash.h"
 #include "glean/lang/clang/index.h"
 
 // This file implements the Clang AST traversal.

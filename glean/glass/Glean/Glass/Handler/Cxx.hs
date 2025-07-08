@@ -12,13 +12,19 @@ module Glean.Glass.Handler.Cxx
     fileIncludeLocations
   , clangUSRToDefinition
   , usrToDefinition
+  , hashUSR
   ) where
 
 import Control.Applicative ( (<|>) )
 import Control.Monad.Catch ( MonadThrow(throwM) )
 import Control.Monad ( forM )
+import qualified Data.Digest.Pure.SHA as SHA
 import qualified Data.Map.Strict as Map
 import Data.Foldable ( find )
+import qualified Data.Text as Text
+import Data.Text ( Text )
+import qualified Data.Text.Lazy as TextLazy
+import Data.Text.Lazy.Encoding (encodeUtf8)
 
 import Glean.Glass.Base
 import Glean.Glass.SymbolId
@@ -169,3 +175,14 @@ processFileIncludes repo rev xmap = do
     fileIncludeLocationResults_references = XRefFileList forExport,
     fileIncludeLocationResults_revision = rev
   }
+
+hashUSR :: Text -> Text
+hashUSR =
+  -- /!\ Keep in sync with glean/lang/clang/hash.cpp!
+  Text.toUpper
+    . Text.pack
+    . take 16
+    . SHA.showDigest
+    . SHA.sha1
+    . encodeUtf8
+    . TextLazy.fromStrict

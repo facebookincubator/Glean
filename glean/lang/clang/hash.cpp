@@ -19,15 +19,3 @@ std::string hash(llvm::StringRef input) {
 }
 
 } // namespace facebook::glean::clangx::hash
-
-extern "C" {
-
-int hash_ffi(const char* input, char* output, size_t output_size) {
-  auto result = facebook::glean::clangx::hash::hash(input);
-  if (result.length() + 1 > output_size) {
-    return -1; // Buffer too small
-  }
-  strcpy(output, result.c_str());
-  return 0; // Success
-}
-}
