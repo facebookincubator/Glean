@@ -27,18 +27,28 @@ want to play along with the examples, you can do so as follows:
 <OssOnly>
 
 ```lang=sh
-mkdir /tmp/glean
-mkdir /tmp/glean/db
-mkdir /tmp/glean/schema
-glean shell --db-root /tmp/glean/db --schema /tmp/glean/schema
+mkdir -p /tmp/glean/schema
 ```
 
 Put the [example
 schema](https://github.com/facebookincubator/Glean/blob/master/glean/example/schema/example.angle)
 in `/tmp/glean/schema/example.angle` and the [example
 data](https://github.com/facebookincubator/Glean/blob/master/glean/example/facts.glean)
-in `/tmp/glean/facts.glean`. Then reload schema and create a database from the example
-data using `:reload` and `:load <file>` in the shell:
+in `/tmp/glean/facts.glean`.
+
+Then start the shell:
+
+```
+glean shell --db-root /tmp/glean/db --schema /tmp/glean/schema
+```
+
+Create a database from the example data using `:load <file>` in the
+shell:
+
+```lang=sh
+> :load /tmp/glean/facts.glean
+facts>
+```
 
 </OssOnly>
 
@@ -51,12 +61,12 @@ glean shell --db-root /tmp/glean --schema glean/example/schema
 
 Then create a database from the example data with `:load <file>` in the shell:
 
-</FbInternalOnly>
-
 ```lang=sh
 > :load glean/example/facts.glean
 facts>
 ```
+
+</FbInternalOnly>
 
 Now head over to [Angle Guide](angle/guide.md) to try some example
 queries and learn about how the query language works.

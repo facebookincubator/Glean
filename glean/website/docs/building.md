@@ -19,18 +19,23 @@ that are needed for building Glean.
 * Linux. The build is only tested on Linux so far; we hope to add
   support for other OSs in the future. We build on x86\_64 and arm64v8.
 
-* [GHC](https://www.haskell.org/ghc/). To see which versions Glean is tested with, check the current [ci.yml](https://github.com/facebookincubator/Glean/blob/master/.github/workflows/ci.yml) script.
+* [GHC](https://www.haskell.org/ghc/). To see which versions Glean is tested with, check the current [ci.yml](https://github.com/facebookincubator/Glean/blob/master/.github/workflows/ci.yml) script. We recommend installing GHC using [ghcup](https://www.haskell.org/ghcup/).
 
-* Cabal/cabal-install version 3.6 or later (older versions won't work).
+* Cabal/cabal-install version 3.6 or later (older versions won't
+  work). As for GHC, install these using ghcup.
 
 Additional per-distribution setup follows.
 
 ### Ubuntu
 
-Install prerequisite packages. (many of these are dependencies of
-hsthrift; an up to date list can be found in the
-[Dockerfile](https://github.com/facebookincubator/hsthrift/blob/master/.github/workflows/Dockerfile)
-that we use for building the base image for CI).
+Our CI runs on Ubuntu, so this is the most well-tested platform. If
+you encounter problems, the source of truth for what works is the
+[github CI workflow](https://github.com/facebookincubator/Glean/blob/main/.github/workflows/ci.yml). In
+there you can also find the version of Ubuntu we test on; older
+versions may or may not work, in particular using a different version
+of `librocksdb-dev` is likely to run into problems.
+
+Install these prerequisite packages:
 
 ```
 sudo apt-get install \
@@ -38,35 +43,45 @@ sudo apt-get install \
     cmake \
     make \
     ninja-build \
-    bison flex \
-    git curl \
-    rsync m4 \
-    libzstd-dev \
+    bison \
+    flex \
+    git \
+    curl \
+    rsync \
+    m4 \
+    pkg-config \
+    binutils-dev \
     libboost-all-dev \
-    libevent-dev \
     libdouble-conversion-dev \
-    libgoogle-glog-dev \
+    libdwarf-dev \
+    libevent-dev \
+    libfast-float-dev \
+    libfftw3-dev \
+    libfmt-dev \
     libgflags-dev \
+    libgmock-dev \
+    libgoogle-glog-dev \
+    libgtest-dev \
     libiberty-dev \
+    libjemalloc-dev \
     liblz4-dev \
     liblzma-dev \
-    libsnappy-dev \
-    zlib1g-dev \
-    binutils-dev \
-    libjemalloc-dev \
-    libssl-dev \
-    pkg-config \
-    libunwind-dev \
-    libsodium-dev \
     libpcre3-dev \
-    libfftw3-dev \
+    librocksdb-dev \
+    libsnappy-dev \
+    libsodium-dev \
+    libssl-dev \
+    libtinfo-dev \
+    libunwind-dev \
     libxxhash-dev \
-    libgtest-dev \
-    libfmt-dev \
-    clang-12 \
-    llvm-12 \
-    libclang-12-dev \
-    fast_float-devel
+    libzstd-dev \
+    zlib1g-dev
+```
+
+Additionally if you want to build the C++ indexer:
+
+```
+apt install clang-15 libclang-15-dev libclang-cpp15-dev libre2-dev
 ```
 
 ### Debian
@@ -110,7 +125,35 @@ sudo dnf install \
     libfast-float-dev
 ```
 
-## Building
+## Build using Cabal
+
+Glean can be built and installed entirely using `cabal`, with:
+
+```
+cabal install glean
+```
+
+This will install the following executables in `~/.cabal/bin`:
+* `glean`: the [command-line tool](cli.md) for doing most things
+* `glean-server`: to run a [server](server.md)
+* `glass-server`: the [Glass](https://github.com/facebookincubator/Glean/tree/main/glean/glass) symbol server
+
+The schema source files will be installed somewhere under
+`~/.cabal/store` (Glean knows where to find them).
+
+Installing with `cabal install` is sufficient if you want to:
+
+* Just try it out
+* Index some source code in a supported language
+* Run queries against a DB, perhaps produced by someone else
+* Run a server (including Glass)
+* Build something that depends on Glean
+
+If you want to make changes to the schema or work on Glean itself then
+you will likely need to build from source: continue to the next
+section.
+
+## Building from the repository
 
 Clone the repository:
 
