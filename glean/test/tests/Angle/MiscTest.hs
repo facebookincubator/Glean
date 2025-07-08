@@ -37,17 +37,17 @@ import Glean.Types
 import TestDB
 
 main :: IO ()
-main = withUnitTest $ testRunner $ TestList
-  [ TestLabel "justKeys" $ justKeys id
-  , TestLabel "justKeys/page" $ justKeys (limit 1)
-  , TestLabel "reorder" reorderTest
-  , TestLabel "scoping" scopingTest
-  , TestLabel "queryOptions" angleQueryOptions
-  , TestLabel "limitBytes" limitTest
+main = withUnitTest $ withDbTests $ \dbTestCase -> testRunner $ TestList
+  [ TestLabel "justKeys" $ justKeys dbTestCase id
+  , TestLabel "justKeys/page" $ justKeys dbTestCase (limit 1)
+  , TestLabel "reorder" $ reorderTest dbTestCase
+  , TestLabel "scoping" $ scopingTest dbTestCase
+  , TestLabel "queryOptions" $ angleQueryOptions dbTestCase
+  , TestLabel "limitBytes" $ limitTest dbTestCase
   , TestLabel "fullScans" fullScansTest
   , TestLabel "newold" $ newOldTest id
-  , TestLabel "justCheck" justCheckTest
-  , TestLabel "warnDiag" warnDiagTest
+  , TestLabel "justCheck" $ justCheckTest dbTestCase
+  , TestLabel "warnDiag" $ warnDiagTest dbTestCase
   ]
 
 newOldTest :: (forall a . Query a -> Query a) -> Test
@@ -64,8 +64,8 @@ newOldTest modify = TestCase $ withStackedTestDB [] $ \env repo -> do
     [ "abba", "anonymous", "azimuth", "blubber", "book", "foo" ]
     results
 
-warnDiagTest :: Test
-warnDiagTest = dbTestCase $ \env repo -> do
+warnDiagTest :: (WithDB () -> Test) -> Test
+warnDiagTest dbTestCase = dbTestCase $ \env repo -> do
   let (Query q1) = dbgPredHasFacts $ Angle.query $
         predicate @Glean.Test.EmptyPred wild
       (Query q2) = Angle.query $ predicate @Cxx.Name wild
@@ -78,8 +78,8 @@ warnDiagTest = dbTestCase $ \env repo -> do
   where getWarns r = filter (\d -> "Warning" `isPrefixOf` Text.unpack d)
              $ userQueryResults_diagnostics r
 
-scopingTest :: Test
-scopingTest = dbTestCase $ \env repo -> do
+scopingTest :: (WithDB () -> Test) -> Test
+scopingTest dbTestCase = dbTestCase $ \env repo -> do
   r <- try $ runQuery_ env repo $ angle @Glean.Test.Predicate
     [s|
       cxx1.Name X
@@ -142,8 +142,8 @@ scopingTest = dbTestCase $ \env repo -> do
   print (r :: [Glean.Test.NothingTest])
   assertEqual "angle - nothingTest" 1 (length r)
 
-justKeys :: (forall a . Query a -> Query a) -> Test
-justKeys modify = dbTestCase $ \env repo -> do
+justKeys :: (WithDB () -> Test) -> (forall a . Query a -> Query a) -> Test
+justKeys dbTestCase modify = dbTestCase $ \env repo -> do
   results <- runQuery_ env repo $ modify $ keys $ allFacts @Cxx.Name
   assertEqual "angle - justKeys" 11 (length results)
   assertBool "angle - justKeys" $ "abba" `elem` results
@@ -189,8 +189,8 @@ factsSearched ref lookupPid maybeStats = do
       \ /
       "d"
 -}
-reorderTest :: Test
-reorderTest = dbTestCase $ \env repo -> do
+reorderTest :: (WithDB () -> Test) -> Test
+reorderTest dbTestCase = dbTestCase $ \env repo -> do
   si <- getSchemaInfo env (Just repo) def { getSchemaInfo_omit_source = True }
   let lookupPid = Map.fromList
         [ (ref,pid) | (pid,ref) <- Map.toList (schemaInfo_predicateIds si) ]
@@ -391,8 +391,8 @@ reorderTest = dbTestCase $ \env repo -> do
     |]
   assertEqual "reorder unbound choice" 3 (length results)
 
-angleQueryOptions :: Test
-angleQueryOptions = dbTestCase $ \env repo -> do
+angleQueryOptions :: (WithDB () -> Test) -> Test
+angleQueryOptions dbTestCase = dbTestCase $ \env repo -> do
   let omitResults :: Bool -> Query q -> Query q
       omitResults omit (Query query) = Query q
         where
@@ -421,8 +421,8 @@ angleQueryOptions = dbTestCase $ \env repo -> do
   assertEqual "queryOptions - not omitting results" (counts r) (2, 2)
 
 
-limitTest :: Test
-limitTest = dbTestCase $ \env repo -> do
+limitTest :: (WithDB () -> Test) -> Test
+limitTest dbTestCase = dbTestCase $ \env repo -> do
   (results, truncated) <- runQuery env repo $ limitBytes 30 $ recursive $
     Angle.query $ predicate @Glean.Test.Edge wild
   -- each Edge will be
@@ -437,8 +437,8 @@ limitTest = dbTestCase $ \env repo -> do
     Angle.query $ predicate @Glean.Test.Edge wild
   assertBool "limitBytes" (length results == 2 && truncated)
 
-justCheckTest :: Test
-justCheckTest = dbTestCase $ \env repo -> do
+justCheckTest :: (WithDB () -> Test) -> Test
+justCheckTest dbTestCase = dbTestCase $ \env repo -> do
   results <- runQuery_ env repo $ justCheck $ Angle.query $
     predicate @Cxx.Name wild
   assertEqual "just check" 0 (length results)

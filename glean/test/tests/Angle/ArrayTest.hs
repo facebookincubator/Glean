@@ -26,19 +26,21 @@ import Glean.Types
 import TestDB
 
 main :: IO ()
-main = withUnitTest $ testRunner $ TestList
-  [ TestLabel "array" $ angleArray id
-  , TestLabel "array/page" $ angleArray (limit 1)
+main = withUnitTest $ withDbTests $ \dbTestCase -> testRunner $ TestList
+  [ TestLabel "array" $ angleArray dbTestCase id
+  , TestLabel "array/page" $ angleArray dbTestCase (limit 1)
   ]
 
-angleArray :: (forall a . Query a -> Query a) -> Test
-angleArray modify = TestList
-  [ TestLabel "generators" $ angleArrayGenerator modify
-  , TestLabel "prefix" $ angleArrayPrefix modify
+angleArray :: (WithDB () -> Test) -> (forall a . Query a -> Query a) -> Test
+angleArray dbTestCase modify = TestList
+  [ TestLabel "generators" $ angleArrayGenerator dbTestCase modify
+  , TestLabel "prefix" $ angleArrayPrefix dbTestCase modify
   ]
 
-angleArrayGenerator :: (forall a . Query a -> Query a) -> Test
-angleArrayGenerator modify = TestList
+angleArrayGenerator
+  :: (WithDB () -> Test)
+  -> (forall a . Query a -> Query a) -> Test
+angleArrayGenerator dbTestCase modify = TestList
   [ TestLabel "array of pred" $
     dbTestCase $ \env repo -> do
     -- fetch all elements of an array
@@ -95,8 +97,10 @@ angleArrayGenerator modify = TestList
       (sort [Byte 1, Byte (fromIntegral (255 :: Word8))]) (sort results)
   ]
 
-angleArrayPrefix :: (forall a . Query a -> Query a) -> Test
-angleArrayPrefix modify = TestList
+angleArrayPrefix
+  :: (WithDB () -> Test)
+  -> (forall a . Query a -> Query a) -> Test
+angleArrayPrefix dbTestCase modify = TestList
   [ TestLabel "nat" $ TestList
     [ TestLabel "nested" $ dbTestCase $ \env repo -> do
         results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate

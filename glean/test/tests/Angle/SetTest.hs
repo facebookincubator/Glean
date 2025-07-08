@@ -46,11 +46,12 @@ import Util.FFI
 import TestDB
 
 main :: IO ()
-main = withUnitTest $ testRunner $ TestList
-  [ TestLabel "set parse" setParseTest
-  , TestLabel "set semantics" setSemanticsTest
-  , TestLabel "set limit" setLimitTest
-  ]
+main = withUnitTest $ withDbTests $ \dbTestCase -> testRunner $
+  TestList
+    [ TestLabel "set parse" setParseTest
+    , TestLabel "set semantics" $ setSemanticsTest dbTestCase
+    , TestLabel "set limit" setLimitTest
+    ]
 
 -- First version to support sets
 v :: AngleVersion
@@ -121,8 +122,8 @@ setParseTest = TestList
                 Right _ -> return ()
     ]
 
-setSemanticsTest :: Test
-setSemanticsTest = TestList
+setSemanticsTest :: ((Env -> Repo -> IO ()) -> Test) -> Test
+setSemanticsTest dbTestCase = TestList
   [ TestLabel "all of two strings" $ dbTestCase $ \env repo -> do
       r <- runQuery_ env repo $ angleData @(Set Text) [s| all ("foo"|"bar") |]
       assertEqual "two results in a set" r [fromList ["foo", "bar"]]

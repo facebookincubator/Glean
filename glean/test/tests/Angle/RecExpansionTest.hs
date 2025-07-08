@@ -22,13 +22,16 @@ import qualified Glean.Schema.GleanTest.Types as Glean.Test
 import TestDB
 
 main :: IO ()
-main = withUnitTest $ testRunner $ TestList
-  [ TestLabel "recExpansion" $ angleRecExpansion id
-  , TestLabel "recExpansion/page" $ angleRecExpansion (limit 1)
+main = withUnitTest $ withDbTests $ \dbTestCase -> testRunner $ TestList
+  [ TestLabel "recExpansion" $ angleRecExpansion dbTestCase id
+  , TestLabel "recExpansion/page" $ angleRecExpansion dbTestCase (limit 1)
   ]
 
-angleRecExpansion :: (forall a . Query a -> Query a) -> Test
-angleRecExpansion modify = dbTestCase $ \env repo -> do
+angleRecExpansion
+  :: (WithDB () -> Test)
+  -> (forall a . Query a -> Query a)
+  -> Test
+angleRecExpansion dbTestCase modify = dbTestCase $ \env repo -> do
   results <- runQuery_ env repo $ modify $ recursive $
     angle @Glean.Test.TreeToTree
     [s|

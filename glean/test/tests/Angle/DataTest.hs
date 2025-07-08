@@ -24,13 +24,13 @@ import Glean.Types
 import TestDB
 
 main :: IO ()
-main = withUnitTest $ testRunner $ TestList
-  [ TestLabel "angleData" $ angleDataTest id
-  , TestLabel "angleData/page" $ angleDataTest (limit 1)
+main = withUnitTest $ withDbTests $ \dbTestCase -> testRunner $ TestList
+  [ TestLabel "angleData" $ angleDataTest dbTestCase id
+  , TestLabel "angleData/page" $ angleDataTest dbTestCase (limit 1)
   ]
 
-angleDataTest :: (forall a . Query a -> Query a) -> Test
-angleDataTest modify = dbTestCase $ \env repo -> do
+angleDataTest :: (WithDB () -> Test) -> (forall a . Query a -> Query a) -> Test
+angleDataTest dbTestCase modify = dbTestCase $ \env repo -> do
   results <- runQuery_ env repo $ modify $ angleData
     [s| { 3, false } : { x : nat, y : bool } |]
   assertEqual "angleData 1" [(Nat 3, False)] results
