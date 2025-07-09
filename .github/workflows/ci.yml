@@ -146,6 +146,19 @@ jobs:
       - name: Populate hackage index
         run: cabal update
 
+      # This tells the folly-clib package to look for folly using pkg-config
+      # instead of building its own copy of the sources. Later we can switch
+      # to using bundled-folly, or have CI test both variants.
+      - name: Disable bundled-folly
+        run: echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS -f-bundled-folly" >> "$GITHUB_ENV"
+
+      - name: Grab folly sources
+        run: |
+          apt-get install -y wget
+          cd hsthrift
+          make setup-folly
+          make setup-folly-version
+
       - name: Disable some tests
         run: echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS -f-hack-tests -f-rust-tests -f-python-tests" >> "$GITHUB_ENV"
 
