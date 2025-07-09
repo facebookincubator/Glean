@@ -97,6 +97,8 @@ searchEntityLocation lang toks = case lang of
     fmap (mapResultLocation Code.Entity_scip) <$> Search.symbolSearch toks
   Language_Kotlin ->
     fmap (mapResultLocation Code.Entity_scip) <$> Search.symbolSearch toks
+  Language_Swift ->
+    fmap (mapResultLocation Code.Entity_scip) <$> Search.symbolSearch toks
   lang ->
     return $ None $ "searchEntity: language not supported: " <> toShortCode lang
 
