@@ -85,6 +85,9 @@ import Data.Either (partitionEithers, fromLeft)
 import qualified Data.Text.Lazy as TL
 import Data.Aeson.Text (encodeToLazyText)
 import Glean.Glass.Handler.Cxx (hashUSR)
+import ServiceData.GlobalStats as Stats
+import ServiceData.Types as Stats
+import Util.Time (elapsedTime, toDiffMillis)
 
 -- | Runner for methods that are keyed by a file path.
 -- Select the right Glean DBs and pass them to the function (via a GleanBackend)
@@ -224,9 +227,15 @@ fetchSymbolsAndAttributesGlean
       withContentHash
       ExtraSymbolOpts{..} be mlang dbInfo (requestOptions_attribute_opts opts)
 
-  (res2, attributesLog) <- traceSpan tracer "addDynamicAttributes" $
-    addDynamicAttributes env dbInfo repo opts
-      file mlimit be res1
+  (res2, attributesLog) <- do
+    (t, result) <- elapsedTime $ traceSpan tracer "addDynamicAttributes" $
+      addDynamicAttributes env dbInfo repo opts
+        file mlimit be res1
+    let metricName = if attributeOptions_fetch_default_view (requestOptions_attribute_opts opts)
+                     then "glass.dynamic_attributes.default_view.latency_ms"
+                     else "glass.dynamic_attributes.perf_view.latency_ms"
+    Stats.addStatValueType metricName (toDiffMillis t) Stats.Avg
+    return result
 
   let be = fromMaybe (gleanBackend, dbInfo) mOtherBackend
   res3 <- resolveXlangXrefs env path res2 repo be mlang
