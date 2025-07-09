@@ -189,14 +189,6 @@ predicate XRefsViaNameByFile:
     }
 
 # Uses of a reference via name in a particular file.
-predicate XRefsViaName:
-    {
-      xref: Name,
-      file: src.File,
-      span: src.ByteSpan,
-    }
-
-# Uses of a reference via name in a particular file.
 predicate XRefsViaNameByTarget:
     {
         target: Name,
