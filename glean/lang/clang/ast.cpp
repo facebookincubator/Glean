@@ -11,7 +11,6 @@
 
 #include <clang/AST/DeclBase.h>
 #include <clang/AST/DeclVisitor.h>
-#include <clang/AST/Mangle.h>
 #include <clang/AST/RecursiveASTVisitor.h>
 #include <clang/Index/USRGeneration.h>
 #include <clang/Sema/SemaConsumer.h>
@@ -64,33 +63,6 @@ std::optional<std::string> getUsrHash(const clang::Decl* decl) {
   // These cases does not really matter much to us and not going to lead to any
   // false positives. Also, Glean and clangd uses the same implementation.
   return hash::hash(usr);
-}
-
-std::optional<std::string> getMangledNameHash(const clang::FunctionDecl* decl) {
-  if (decl->isDependentContext()) {
-    return {};
-  }
-
-  clang::ASTContext& Context = decl->getASTContext();
-  std::unique_ptr<clang::MangleContext> Ctx{
-      clang::ItaniumMangleContext::create(Context, Context.getDiagnostics())};
-
-  std::string Buffer;
-  Buffer.reserve(128);
-  llvm::raw_string_ostream Out(Buffer);
-  clang::GlobalDecl GD;
-  if (const auto* CD = llvm::dyn_cast<clang::CXXConstructorDecl>(decl)) {
-    GD = clang::GlobalDecl(CD, clang::Ctor_Base);
-  } else if (const auto* DD = llvm::dyn_cast<clang::CXXDestructorDecl>(decl)) {
-    GD = clang::GlobalDecl(DD, clang::Dtor_Base);
-  } else {
-    GD = clang::GlobalDecl(decl);
-  }
-  Ctx->mangleName(GD, Out);
-  const auto& mangledName = Out.str();
-
-  auto hash = llvm::SHA1::hash(llvm::arrayRefFromStringRef(mangledName));
-  return llvm::toHex(llvm::ArrayRef(hash.data(), 8));
 }
 
 /// Track usage of using declarations
@@ -1746,11 +1718,6 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       if (auto usr_hash = getUsrHash(d)) {
         visitor.db.fact<Cxx::USRToDeclaration>(
             usr_hash.value(), Cxx::Declaration::function_(decl));
-      }
-
-      if (auto mangled_name_hash = getMangledNameHash(d)) {
-        visitor.db.fact<Cxx::MangledNameHashToDeclaration>(
-            mangled_name_hash.value(), Cxx::Declaration::function_(decl));
       }
 
       if (method) {
