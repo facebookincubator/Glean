@@ -8,35 +8,41 @@
 
 {-# LANGUAGE ApplicativeDo, CPP #-}
 module Glean.Database.Config (
+  -- * DataStore
   DataStore(..),
   fileDataStore,
   tmpDataStore,
   memoryDataStore,
+
+  -- * Config, and options parser
+  options,
   Config(..),
+  DebugFlags(..),
+
+  -- * Finding and parsing the schema
   ServerConfig.SchemaLocation(..),
   showSchemaLocation,
   schemaLocation,
   schemaLocationOption,
-  DebugFlags(..),
-  options,
   processSchema,
   processSchemaCached,
   processOneSchema,
   SchemaIndex(..),
   schemaForSchemaId,
   ProcessedSchema(..),
-  schemaSourceIndexConfig,
   catSchemaFiles,
   schemaLocationToSource,
-  schemaLocationFiles,
-  schemaSourceFilesFromDir,
-  schemaSourceDir,
-  schemaSourceFile,
-  schemaSourceIndexFile,
   parseSchemaDir,
   parseSchemaIndex,
-  -- testing
+  loadSchemaIndex,
+
+  -- * Testing only
+
+  -- if you're using these somewhere other than a test,
+  -- you should probably be using something from the API above instead.
   processSchemaForTesting,
+  schemaLocationFiles,
+  schemaSourceDir,
 ) where
 
 import Control.Exception
@@ -425,6 +431,16 @@ schemaLocation cfg server_cfg = do
       return (ServerConfig.SchemaLocation_index (datadir i))
     other ->
       return other
+
+-- | Find and load the SchemaIndex, taking into account command line
+-- flags, the ServerConfig, and the cfgSchemaHook. This is a
+-- convenience function used by the CLI.
+loadSchemaIndex :: ConfigProvider c => Config -> c -> IO SchemaIndex
+loadSchemaIndex cfg cfgAPI = do
+  serverConfig <- ThriftSource.load cfgAPI (cfgServerConfig cfg)
+  loc <- schemaLocation cfg serverConfig
+  let (schemaSource, _) = cfgSchemaHook cfg loc
+  ThriftSource.load cfgAPI schemaSource
 
 showSchemaLocation :: ServerConfig.SchemaLocation -> String
 showSchemaLocation = \case
