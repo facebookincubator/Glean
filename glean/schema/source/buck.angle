@@ -375,18 +375,6 @@ predicate LocatorReverseDep :
     TargetDependencies { target = { locator = Parent }, dependencies = Deps };
     { target = Child } = Deps[..];
 
-# Try to get sources of buck failures
-# Not all of buck failure, will be traceable to source files
-# e.g. when BUCK/TARGET file is broken
-predicate FailureSources :
-  {
-    source : src.File,
-    error : buck.IndexFailureX,
-  }
-  { Src, Error } where
-  buck.FileToTarget { source = Src,locator = Locator};
-  Error = buck.IndexFailureX { source = {locator = Locator}}
-
 type FailureReason = enum {
   # config was intentionally skipped
   Skipped |
