@@ -20,14 +20,14 @@ import qualified Glean.Schema.GleanTest.Types as Glean.Test
 import TestDB
 
 main :: IO ()
-main = withUnitTest $ testRunner $ TestList
-  [ TestLabel "nested" $ angleNested id
-  , TestLabel "nested/page" $ angleNested (limit 1)
+main = withUnitTest $ withDbTests $ \dbTestCase -> testRunner $ TestList
+  [ TestLabel "nested" $ angleNested dbTestCase id
+  , TestLabel "nested/page" $ angleNested dbTestCase (limit 1)
   ]
 
 -- nested patterns
-angleNested :: (forall a . Query a -> Query a) -> Test
-angleNested modify = dbTestCase $ \env repo -> do
+angleNested :: (WithDB () -> Test) -> (forall a . Query a -> Query a) -> Test
+angleNested dbTestCase modify = dbTestCase $ \env repo -> do
   results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate $
     [s|
       glean.test.Predicate { pred = "hello" }

@@ -34,15 +34,15 @@ import TestData
 import TestDB
 
 main :: IO ()
-main = withUnitTest $ testRunner $ TestList
-  [ TestLabel "angle" $ angleTest id
-  , TestLabel "angle/page" $ angleTest (limit 1)
-  , TestLabel "angleDot" angleDotTest
-  , TestLabel "angleNegation" $ angleNegationTest id
-  , TestLabel "angleNegation/page" $ angleNegationTest (limit 1)
-  , TestLabel "angleIfThenElse" $ angleIfThenElse id
-  , TestLabel "angleIfThenElse/page" $ angleIfThenElse (limit 1)
-  , TestLabel "angleTypeTest" angleTypeTest
+main = withUnitTest $ withDbTests $ \dbTestCase -> testRunner $ TestList
+  [ TestLabel "angle" $ angleTest dbTestCase id
+  , TestLabel "angle/page" $ angleTest dbTestCase (limit 1)
+  , TestLabel "angleDot" $ angleDotTest dbTestCase
+  , TestLabel "angleNegation" $ angleNegationTest dbTestCase id
+  , TestLabel "angleNegation/page" $ angleNegationTest dbTestCase (limit 1)
+  , TestLabel "angleIfThenElse" $ angleIfThenElse dbTestCase id
+  , TestLabel "angleIfThenElse/page" $ angleIfThenElse dbTestCase (limit 1)
+  , TestLabel "angleTypeTest" $ angleTypeTest dbTestCase
   ]
 
 ignorePredK :: Glean.Test.KitchenSink -> Glean.Test.KitchenSink
@@ -50,8 +50,8 @@ ignorePredK k = k {
   Glean.Test.kitchenSink_pred = def,
   Glean.Test.kitchenSink_sum_ = def }
 
-angleTest :: (forall a . Query a -> Query a) -> Test
-angleTest modify = dbTestCase $ \env repo -> do
+angleTest :: (WithDB () -> Test) -> (forall a . Query a -> Query a) -> Test
+angleTest dbTestCase modify = dbTestCase $ \env repo -> do
   -- match zero results
   results <- runQuery_ env repo $ modify $ angle @Sys.Blob
     [s|
@@ -469,6 +469,17 @@ angleTest modify = dbTestCase $ \env repo -> do
        (Nat 6, Nat 2),
        (Nat 8, Nat 3), (Nat 12, Nat 3), (Nat 15, Nat 3)] ] r
 
+  -- Test prim.reverse
+  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
+    [s|
+        glean.test.Predicate {
+            string_ = X
+        } where
+        X = prim.reverse (prim.reverse X)
+    |]
+  print results
+  assertEqual "angle - string reverse" 4 (length results)
+
   -- Test numeric comparison primitives
   r <- runQuery_ env repo $ angleData @() "prim.gtNat 2 1"
   print r
@@ -597,8 +608,8 @@ angleTest modify = dbTestCase $ \env repo -> do
     [[Nat 1, Nat 2, Nat 1, Nat 2]] r
 
 
-angleDotTest :: Test
-angleDotTest = dbTestCase $ \env repo -> do
+angleDotTest :: (WithDB () -> Test) -> Test
+angleDotTest dbTestCase = dbTestCase $ \env repo -> do
 
   -- record selection
   r <- runQuery_ env repo $ angleData @Text
@@ -697,8 +708,11 @@ angleDotTest = dbTestCase $ \env repo -> do
 
 
 -- if statements
-angleIfThenElse :: (forall a . Query a -> Query a) -> Test
-angleIfThenElse modify = dbTestCase $ \env repo -> do
+angleIfThenElse
+  :: (WithDB () -> Test)
+  -> (forall a . Query a -> Query a)
+  -> Test
+angleIfThenElse dbTestCase modify = dbTestCase $ \env repo -> do
 
   r <- runQuery_ env repo $ modify $ angleData @Nat
     "if never : {} then 1 else 2"
@@ -812,8 +826,11 @@ angleIfThenElse modify = dbTestCase $ \env repo -> do
   assertEqual "reordering disjunctions" 5 (length r)
 
 
-angleNegationTest :: (forall a . Query a -> Query a) -> Test
-angleNegationTest modify = dbTestCase $ \env repo -> do
+angleNegationTest
+  :: (WithDB () -> Test)
+  -> (forall a . Query a -> Query a)
+  -> Test
+angleNegationTest dbTestCase modify = dbTestCase $ \env repo -> do
   -- Negation
 
   -- negating a term fails
@@ -918,8 +935,8 @@ angleNegationTest modify = dbTestCase $ \env repo -> do
   assertEqual "negation -  3" 1 (length r)
 
 -- type checking
-angleTypeTest :: Test
-angleTypeTest = dbTestCase $ \env repo -> do
+angleTypeTest :: (WithDB () -> Test) -> Test
+angleTypeTest dbTestCase = dbTestCase $ \env repo -> do
     -- Test for correct handling of maybe, bool, and enums in the type checker
   r <- runQuery_ env repo $ recursive $ angleData @Nat
     [s|

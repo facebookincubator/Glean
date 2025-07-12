@@ -7,13 +7,18 @@
 -}
 
 module TestDB (
+  WithDB,
   withTestDB, withWritableTestDB, withStackedTestDB,
-  dbTestCase, dbTestCaseWritable, dbTestCaseSettings, createTestDB
+  dbTestCase, dbTestCaseWritable, dbTestCaseSettings, createTestDB,
+  withDbTests,
 ) where
 
 import Data.Default
 import Data.Either
+import Foreign.Marshal.Utils
 import Test.HUnit
+
+import Util.IO
 
 import Glean.Database.Storage (DBVersion(..), currentVersion, writableVersions)
 import Glean.Database.Test
@@ -29,25 +34,28 @@ import qualified Glean.Schema.Sys as Sys
 
 import TestData
 
-afterComplete :: (Env -> Thrift.Repo -> IO a) -> Env -> Thrift.Repo -> IO a
+-- | An action that runs on a test DB
+type WithDB a = Env -> Thrift.Repo -> IO a
+
+afterComplete :: WithDB a -> WithDB a
 afterComplete action env repo = do
   completeTestDB env repo
   action env repo
 
-withTestDB :: [Setting] -> (Env -> Thrift.Repo -> IO a) -> IO a
+withTestDB :: [Setting] -> WithDB a -> IO a
 withTestDB settings = withWritableTestDB settings . afterComplete
 
-createTestDB :: Env -> Thrift.Repo -> IO ()
+createTestDB :: WithDB ()
 createTestDB env repo = do
   kickOffTestDB env repo id
   writeTestDB env repo testFacts
 
-withWritableTestDB :: [Setting] -> (Env -> Thrift.Repo -> IO a) -> IO a
+withWritableTestDB :: [Setting] -> WithDB a -> IO a
 withWritableTestDB settings action = withEmptyTestDB settings $ \env repo -> do
   writeTestDB env repo testFacts
   action env repo
 
-withStackedTestDB :: [Setting] -> (Env -> Thrift.Repo -> IO a) -> IO a
+withStackedTestDB :: [Setting] -> WithDB a -> IO a
 withStackedTestDB settings action = withTestEnv settings $ \env -> do
   kickOffTestDB env repo1 id
   writeTestDB env repo1 testFacts1
@@ -62,30 +70,53 @@ withStackedTestDB settings action = withTestEnv settings $ \env -> do
     repo1 = Thrift.Repo "dbtest-repo" "1"
     repo2 = Thrift.Repo "dbtest-repo" "2"
 
-testCases :: [Setting] -> (Env -> Thrift.Repo -> IO ()) -> Test
-testCases testCaseSettings action = TestList
-  [ TestLabel (label1 ++ label2) $
-    TestCase $ with (settings <> testCaseSettings) action
-    | (label1, with) <-
-        [ ("", withWritableTestDB)
-        , ("stacked/", withStackedTestDB) ]
-    , (label2, settings) <-
+newtype RunTest = RunTest (forall a . WithDB a -> IO a)
+
+toTestCases :: [(String, RunTest)] -> WithDB () -> Test
+toTestCases testCases action = TestList
+  [ TestLabel label $ TestCase $ with action
+    | (label, RunTest with) <- testCases
+  ]
+
+dbFlavours :: [Setting] -> [(String, RunTest)]
+dbFlavours testCaseSettings =
+  [ (label1 ++ label2, run)
+    | (label2, settings) <-
         [ ("memory", [setMemoryStorage])
         , ("rocksdb", [])
         ]
         ++
         [ ("rocksdb-" ++ show (unDBVersion v), [setDBVersion v])
           | v <- writableVersions, v /= currentVersion ]
+    , let allSettings = settings <> testCaseSettings
+    , (label1, run) <-
+        [ ("", RunTest (withWritableTestDB allSettings))
+        , ("stacked/", RunTest (withStackedTestDB allSettings)) ]
   ]
 
-dbTestCase :: (Env -> Thrift.Repo -> IO ()) -> Test
-dbTestCase = testCases [] . afterComplete
+-- | Run a test on several flavour of test DB. For a test suite
+-- with multiple tests, use 'withDbTests' instead.
+dbTestCase :: WithDB () -> Test
+dbTestCase = toTestCases (dbFlavours []) . afterComplete
 
-dbTestCaseWritable :: (Env -> Thrift.Repo -> IO ()) -> Test
-dbTestCaseWritable = testCases []
+-- | Like dbTestCase, but the test DBs are shared between multiple
+-- tests, rather than being created afresh for each test. Useful
+-- for speeding up test suites that have many individual tests.
+withDbTests :: ((WithDB () -> Test) -> IO a) -> IO a
+withDbTests fn =
+  withMany lazify (dbFlavours []) $ fn . toTestCases
+  where
+  lazify :: (String, RunTest) -> ((String, RunTest) -> IO a) -> IO a
+  lazify (label, RunTest run) fn =
+    withLazy (run . afterComplete . curry) $ \get ->
+      fn (label, RunTest (\with -> do (env, repo) <- get; with env repo))
 
-dbTestCaseSettings :: [Setting] -> (Env -> Thrift.Repo -> IO ()) -> Test
-dbTestCaseSettings settings action = testCases settings (afterComplete action)
+dbTestCaseWritable :: WithDB () -> Test
+dbTestCaseWritable = toTestCases (dbFlavours [])
+
+dbTestCaseSettings :: [Setting] -> WithDB () -> Test
+dbTestCaseSettings settings action =
+  toTestCases (dbFlavours settings) (afterComplete action)
 
 writeTestDB :: Env -> Thrift.Repo -> (forall m. NewFact m => m ()) -> IO ()
 writeTestDB env repo facts = do
