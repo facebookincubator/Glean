@@ -15,6 +15,7 @@ module Glean.Write.JSON
   ) where
 
 import Control.Exception hiding (catch, throw)
+import Control.Monad
 import Control.Monad.Reader
 import Control.Monad.Catch
 import Data.ByteString (ByteString)

@@ -8,6 +8,8 @@
 
 module Glean.Database.Env ( withDatabases ) where
 
+import Prelude hiding (liftA2)
+
 import Control.Applicative (liftA2)
 import Control.Concurrent
 import Control.Concurrent.Async (async, waitEither, withAsync)
