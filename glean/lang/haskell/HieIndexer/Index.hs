@@ -7,11 +7,15 @@
 -}
 
 {-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE OverloadedRecordDot #-}
 module HieIndexer.Index (indexHieFile) where
 
 import Control.Applicative
 import Control.Monad
 import qualified Control.Monad.State.Strict as State
+import Control.Monad.Writer.Strict as Writer
+import Control.Monad.Trans.Maybe
 import qualified Data.Array as A
 import Data.Char
 import Data.Default
@@ -23,7 +27,6 @@ import qualified Data.List.NonEmpty as NonEmpty
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe
-import Data.Monoid
 import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -32,7 +35,7 @@ import qualified Data.Vector.Unboxed as Vector
 import HieDb.Compat (nameModule_maybe, nameOccName)
 import System.Directory
 import System.FilePath
-import Control.Monad.Extra (findM, whenJust)
+import Control.Monad.Extra (findM, whenJust, mapMaybeM)
 
 import qualified GHC
 import qualified GHC.Types.Avail as GHC (availNames)
@@ -153,8 +156,6 @@ produceDecl sigMap name maybeTy ctx = case ctx of
     Glean.makeFact_ @Hs.TypeSynDecl $ Hs.TypeSynDecl_key name
   Decl PatSynDec _ ->
     Glean.makeFact_ @Hs.PatSynDecl $ Hs.PatSynDecl_key name
-  Decl InstDec _ ->
-    Glean.makeFact_ @Hs.InstanceDecl $ Hs.InstanceDecl_key name
   PatternBind{} ->
     Glean.makeFact_ @Hs.PatBind $ Hs.PatBind_key name maybeTy
   TyVarBind{} ->
@@ -168,41 +169,72 @@ produceDecl sigMap name maybeTy ctx = case ctx of
   _ -> return ()
 
 produceDeclInfo
-  :: Glean.NewFact m
+  :: forall m . (Monad m, Glean.NewFact m)
   => Src.File
   -> (GHC.RealSrcSpan -> Src.ByteSpan)
-  -> Map GHC.Name Hs.Name
-  -> Map GHC.Name DeclInfo
+  -> (GHC.Name -> m (Maybe Hs.Name))
+  -> [DeclInfo]
   -> m (Map (Glean.IdOf Hs.Name) Hs.SigDecl)
-produceDeclInfo fileFact toByteSpan nameMap declInfoMap =
-  fmap (Map.fromList . catMaybes) $
-    forM (Map.toList declInfoMap) $ \(name, info) ->
-      flip (maybe (return Nothing)) (Map.lookup name nameMap) $ \hsName ->
-        case info of
-          SigDecl { sigDeclSpan = span } -> do
-            decl <- Glean.makeFact @Hs.SigDecl $
-              Hs.SigDecl_key hsName (
-                Src.FileLocation fileFact (toByteSpan span))
-            return (Just (Glean.getId hsName, decl))
-          DataDecl { dataDeclConstrs = cs } -> do
-            cons <- forM cs $ \(ConstrInfo cName fields) -> do
-              forM (Map.lookup cName nameMap) $ \hsCName -> do
-                fNames <- forM (mapMaybe (`Map.lookup` nameMap) fields) $
-                  \fName ->
-                    Glean.makeFact @Hs.RecordFieldDecl $
-                      Hs.RecordFieldDecl_key fName hsCName
-                Glean.makeFact @Hs.ConstrDecl $
-                  Hs.ConstrDecl_key hsCName hsName fNames
-            Glean.makeFact_ @Hs.DataDecl $
-              Hs.DataDecl_key hsName (catMaybes cons)
-            return Nothing
-          ClassDecl { classDeclMethods = ms } -> do
-            mNames <- forM (mapMaybe (`Map.lookup` nameMap) ms) $ \mName ->
-              Glean.makeFact @Hs.MethDecl $
-                Hs.MethDecl_key mName hsName
-            Glean.makeFact_ @Hs.ClassDecl $
-              Hs.ClassDecl_key hsName mNames
-            return Nothing
+produceDeclInfo fileFact toByteSpan getName_ infos =
+  fmap snd $ runWriterT $ mapM (runMaybeT . makeDecl) infos
+  where
+  glean = lift . lift
+
+  -- failure to lookup a Name will cause this DeclInfo to be ignored
+  getName name = MaybeT $ lift $ getName_ name
+
+  makeDecl
+    :: DeclInfo
+    -> MaybeT (WriterT (Map (Glean.IdOf Hs.Name) Hs.SigDecl) m) ()
+  makeDecl info =
+    case info of
+      SigDecl{} -> do
+        hsName <- getName info.name
+        decl <- glean $ Glean.makeFact @Hs.SigDecl $
+          Hs.SigDecl_key hsName (
+            Src.FileLocation fileFact (toByteSpan info.span))
+        -- collect SigDecls using WriterT
+        Writer.tell (Map.singleton (Glean.getId hsName) decl)
+      DataDecl{} -> do
+        hsName <- getName info.name
+        cons <- forM info.constrs $ \con -> do
+          hsCName <- getName con.name
+          fDecls <- forM con.fields $ \fName -> do
+            hsFName <- getName fName
+            glean $ Glean.makeFact @Hs.RecordFieldDecl $
+              Hs.RecordFieldDecl_key hsFName hsCName
+          glean $ Glean.makeFact @Hs.ConstrDecl $
+            Hs.ConstrDecl_key hsCName hsName fDecls
+        glean $ Glean.makeFact_ @Hs.DataDecl $
+          Hs.DataDecl_key hsName cons
+      ClassDecl{} -> do
+        hsName <- getName info.name
+        mDecls <- forM info.methods $ \mName -> do
+          hsMName <- getName mName
+          glean $ Glean.makeFact @Hs.MethDecl $
+            Hs.MethDecl_key hsMName hsName
+        defaults <- mapM makeInstBind info.defaults
+        decl <- glean $ Glean.makeFact @Hs.ClassDecl $
+          Hs.ClassDecl_key hsName mDecls defaults
+        forM_ defaults $ \bind ->
+          glean $ Glean.makeFact_ @Hs.InstanceBindToDecl $
+            Hs.InstanceBindToDecl_key bind
+              (Hs.InstanceBindToDecl_decl_class_ decl)
+      InstDecl{} -> do
+        binds <- mapM makeInstBind info.binds
+        decl <- glean $ Glean.makeFact @Hs.InstDecl $
+          Hs.InstDecl_key binds
+            (Src.FileLocation fileFact (toByteSpan info.span))
+        forM_ binds $ \bind ->
+          glean $ Glean.makeFact_ @Hs.InstanceBindToDecl $
+            Hs.InstanceBindToDecl_key bind
+              (Hs.InstanceBindToDecl_decl_inst decl)
+
+  makeInstBind instBind = do
+    meth <- getName instBind.method
+    glean $ Glean.makeFact @Hs.InstanceBind $
+      Hs.InstanceBind_key meth {-(IntMap.lookup instBindTy typeMap)-}
+        (Src.FileLocation fileFact (toByteSpan instBind.span))
 
 nat :: Integral a => a -> Glean.Nat
 nat = Glean.toNat . fromIntegral
@@ -330,7 +362,7 @@ indexHieFile writer srcPaths path hie = do
             rangeToByteSpan (toByteRange (srcSpanToSrcRange filefact sp))
 
     let allIds = [ (n, p) | (n, ps) <- Map.toList refmap, p <- ps ]
-        declInfo = Map.unions $ fmap getDeclInfos $ getAsts $ hie_asts hie
+        declInfo = concat $ fmap getDeclInfos $ getAsts $ hie_asts hie
 
     -- produce names & declarations
     names <- fmap catMaybes $ forM allIds $ \(ident, (span, dets)) -> if
@@ -358,7 +390,20 @@ indexHieFile writer srcPaths path hie = do
       nameMap :: Map GHC.Name Hs.Name
       nameMap = Map.fromList names
 
-    sigMap <- produceDeclInfo filefact toByteSpan nameMap declInfo
+      getName :: Glean.NewFact m => GHC.Name -> m (Maybe Hs.Name)
+      getName name =
+        case Map.lookup name nameMap of
+          Just hsName -> return $ Just hsName
+          Nothing -> case nameModule_maybe name of
+            Nothing ->
+              -- This shouldn't happen, it's probably a bug in the hie file.
+              -- But it does happen, so let's not crash.
+              return Nothing
+            Just m -> do
+              mod <- if m == smod then return modfact else mkModule m
+              Just <$> mkName name mod (Hs.NameSort_external def)
+
+    sigMap <- produceDeclInfo filefact toByteSpan getName declInfo
 
     forM_ allIds $ \(ident, (_, dets)) -> if
       | Right name <- ident
@@ -367,17 +412,10 @@ indexHieFile writer srcPaths path hie = do
         mapM_ (produceDecl sigMap namefact ty) (Set.toList (identInfo dets))
       | otherwise -> return ()
 
-    eNames <- forM (concatMap GHC.availNames (hie_exports hie)) $ \name ->
-      case Map.lookup name nameMap of
-        Just hsName -> return $ Just hsName
-        Nothing -> case nameModule_maybe name of
-          Nothing -> return Nothing -- shouldn't happen
-          Just m -> do
-            mod <- if m == smod then return modfact else mkModule m
-            Just <$> mkName name mod (Hs.NameSort_external def)
+    eNames <- mapMaybeM getName (concatMap GHC.availNames (hie_exports hie))
 
     Glean.makeFact_ @Hs.ModuleDeclarations $ Hs.ModuleDeclarations_key
-      modfact (map snd names) (catMaybes eNames)
+      modfact (map snd names) eNames
 
     let refs = Map.fromListWith (Map.unionWith (++))
           [ (ident, Map.singleton kind [span])
@@ -402,17 +440,7 @@ indexHieFile writer srcPaths path hie = do
           fmap Just $ Glean.makeFact @Hs.XRef $
             Hs.XRef_key (Hs.RefTarget_modName gleanMod) filefact refspans
         Right name -> do
-          maybe_namefact <-
-            case Map.lookup name nameMap of
-              Just fact -> return $ Just fact
-              Nothing -> case nameModule_maybe name of
-                Nothing ->
-                  -- This shouldn't happen, it's probably a bug in the hie file.
-                  -- But it does happen, so let's not crash.
-                  return Nothing
-                Just mod -> do
-                  namemod <- mkModule mod
-                  Just <$> mkName name namemod (Hs.NameSort_external def)
+          maybe_namefact <- getName name
           forM maybe_namefact $ \namefact -> do
             Glean.makeFact @Hs.XRef $
               Hs.XRef_key (Hs.RefTarget_name namefact) filefact refspans
@@ -520,76 +548,108 @@ currently ignore Names that come from another source file (TODO).
 
 data DeclInfo
   = DataDecl {
-      dataDeclConstrs :: [ConstrInfo]
+      name :: GHC.Name,
+      constrs :: [ConstrInfo]
     }
   | ClassDecl {
-      classDeclMethods :: [GHC.Name]
+      name :: GHC.Name,
+      methods :: [GHC.Name],
+      defaults :: [InstanceBindInfo]
     }
   | SigDecl {
-      sigDeclSpan :: GHC.RealSrcSpan
+      name :: GHC.Name,
+      span :: GHC.RealSrcSpan
     }
+  | InstDecl {
+      binds :: [InstanceBindInfo],
+      span :: GHC.RealSrcSpan
+    }
+
+data InstanceBindInfo = InstanceBindInfo {
+    method :: GHC.Name,
+    span :: GHC.RealSrcSpan
+    -- TODO: add type. The identifier with context ValBind InstanceBind
+    -- doesn't have a type, but there is also a ValBind RegularBind
+    -- identifier that does have the type attached.
+  }
 
 data ConstrInfo =
   ConstrInfo {
-    _constrName :: GHC.Name,
-    _constrFields :: [GHC.Name]
+    name :: GHC.Name,
+    fields :: [GHC.Name]
   }
 
-getDeclInfos :: HieAST a -> Map GHC.Name DeclInfo
-getDeclInfos node = snd $ State.runState (go node) Map.empty
+getDeclInfos :: HieAST TypeIndex -> [DeclInfo]
+getDeclInfos node = snd $ State.runState (go node) []
   where
-  go node@Node{..} = do
+  go node = do
     visit node
-    void $ traverse go nodeChildren
+    void $ traverse go node.nodeChildren
 
   visit node =
     {-
       trace ("node: " <> show (ppr (nodeAnnotations nodeInfo)) <> ": " <> show (ppr (fmap (const ()) (nodeIdentifiers nodeInfo)))) $
     -}
-    whenJust hasInfo $ \(name, info) ->
-      State.modify (Map.insert name info)
+    whenJust hasInfo $ \info ->
+      State.modify (info:)
     where
 
     nodeInfo = getNodeInfo node
 
     hasInfo
       | isDataDecl nodeInfo,
-        [name] <- findIdent dataDeclCtx nodeInfo node =
-         Just (name, DataDecl { dataDeclConstrs = findConstrs node })
+        [(name,_,_)] <- findIdent dataDeclCtx nodeInfo node =
+         Just $ DataDecl {
+           name = name,
+           constrs = findConstrs node }
       | isClassDecl nodeInfo,
-        [name] <- findIdent classDeclCtx nodeInfo node =
-         Just (name, ClassDecl { classDeclMethods = findMethods node })
+        [(name,_,_)] <- findIdent classDeclCtx nodeInfo node =
+         Just $ ClassDecl {
+           name = name,
+           methods = findMethods node,
+           defaults = findInstBinds node }
       | isTypeSig nodeInfo,
-        [name] <- findIdent tyDeclCtx nodeInfo node =
-         Just (name, SigDecl { sigDeclSpan = nodeSpan node })
+        [(name,_,_)] <- findIdent tyDeclCtx nodeInfo node =
+         Just $ SigDecl {
+           name = name,
+           span = nodeSpan node }
+      | isInstDecl nodeInfo =
+         Just $ InstDecl {
+           binds = findInstBinds node,
+           span = nodeSpan node }
       | otherwise =
           Nothing
 
     -- The Name for a decl seems to be a child of the declaration Node
-    findIdent ctx ni Node{..} =
+    findIdent ctx ni node =
       concatMap (namesWithContext ctx) $
-        map nodeIdentifiers (ni : map getNodeInfo nodeChildren)
+        map nodeIdentifiers (ni : map getNodeInfo node.nodeChildren)
 
-    isTypeSig = any (== typeSigAnnot) . nodeAnnotations
-    isDataDecl = any (== dataDeclAnnot) . nodeAnnotations
-    isConstrDecl = any (`elem` [constrAnnot, constrGadtAnnot]) . nodeAnnotations
-    isClassDecl = any (== classDeclAnnot) . nodeAnnotations
-    isMethodDecl = any (== classOpSigAnnot) . nodeAnnotations
-
-    findMethods Node{..} =
+    findMethods node =
       [ meth
-      | n <- nodeChildren
+      | n <- node.nodeChildren
       , let ni = getNodeInfo n
       , isMethodDecl ni
-      , meth <- findIdent classTyDeclCtx ni n
+      , (meth,_,_) <- findIdent classTyDeclCtx ni n
       ]
 
-    findConstrs Node{..} =
+    findInstBinds node =
+      [ InstanceBindInfo {
+          method = meth,
+          span = span
+        }
+      | n <- node.nodeChildren
+      , let ni = getNodeInfo n
+      , isInstanceBind ni
+      , (meth, _ty, ValBind _ _ (Just span))  <- findIdent instBindCtx ni n
+      ]
+
+    findConstrs node =
       [ ConstrInfo con (fields n)
-      | n <- nodeChildren
+      | n <- node.nodeChildren
       , let ni = getNodeInfo n
       , isConstrDecl ni
-      , con <- findIdent conDeclCtx ni n
+      , (con,_,_) <- findIdent conDeclCtx ni n
       ]
       where
       -- there are intermediate AST nodes between the constructor and
@@ -599,15 +659,18 @@ getDeclInfos node = snd $ State.runState (go node) Map.empty
         [ fld
         | child <- flattenAst n
         , let ni = getNodeInfo child
-        , fld <- namesWithContext recFieldDeclCtx (nodeIdentifiers ni)
+        , (fld,_,_) <- namesWithContext recFieldDeclCtx (nodeIdentifiers ni)
         ]
 
 namesWithContext
   :: (ContextInfo -> Bool)
   -> NodeIdentifiers a
-  -> [GHC.Name]
+  -> [(GHC.Name, Maybe a, ContextInfo)]
 namesWithContext p ids =
-  [ name | (Right name, dtl) <- Map.toList ids, any p (identInfo dtl) ]
+  [ (name, identType dtl, ctx)
+  | (Right name, dtl) <- Map.toList ids
+  , ctx <- Set.toList (identInfo dtl)
+  , p ctx ]
 
 getNodeInfo :: HieAST a -> NodeInfo a
 getNodeInfo =
@@ -640,6 +703,22 @@ classTyDeclCtx :: ContextInfo -> Bool
 classTyDeclCtx (ClassTyDecl _) = True
 classTyDeclCtx _ = False
 
+instBindCtx :: ContextInfo -> Bool
+instBindCtx (ValBind InstanceBind _ _) = True
+instBindCtx _ = False
+
+isTypeSig, isDataDecl, isConstrDecl, isClassDecl,
+  isMethodDecl, isInstanceBind, isInstDecl :: NodeInfo a -> Bool
+
+isTypeSig = any (== typeSigAnnot) . nodeAnnotations
+isDataDecl = any (== dataDeclAnnot) . nodeAnnotations
+isConstrDecl = any (`elem` [constrAnnot, constrGadtAnnot]) . nodeAnnotations
+isClassDecl = any (== classDeclAnnot) . nodeAnnotations
+isMethodDecl = any (== classOpSigAnnot) . nodeAnnotations
+isInstDecl = any (== instDeclAnnot) . nodeAnnotations
+isInstanceBind =
+  any (`elem` [varBindAnnot, patBindAnnot, funBindAnnot]) . nodeAnnotations
+
 typeSigAnnot :: NodeAnnotation
 typeSigAnnot = NodeAnnotation "TypeSig" "Sig"
 
@@ -657,3 +736,15 @@ classOpSigAnnot = NodeAnnotation "ClassOpSig" "Sig"
 
 classDeclAnnot :: NodeAnnotation
 classDeclAnnot = NodeAnnotation "ClassDecl" "TyClDecl"
+
+funBindAnnot :: NodeAnnotation
+funBindAnnot = NodeAnnotation "FunBind" "HsBindLR"
+
+patBindAnnot :: NodeAnnotation
+patBindAnnot = NodeAnnotation "PatBind" "HsBindLR"
+
+varBindAnnot :: NodeAnnotation
+varBindAnnot = NodeAnnotation "VarBind" "HsBindLR"
+
+instDeclAnnot :: NodeAnnotation
+instDeclAnnot = NodeAnnotation "ClsInstD" "InstDecl"
