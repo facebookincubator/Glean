@@ -132,7 +132,7 @@ type Declaration =
     patSyn: PatSynDecl |
     class_: ClassDecl |
     method: MethDecl |
-    instance: InstanceDecl |
+    instance: InstDecl |
     patBind: PatBind |
     tyVarBind: TyVarBind |
     field: RecordFieldDecl |
@@ -153,7 +153,6 @@ predicate DeclarationOfName:
   { N, { patSyn = { name = N }}} |
   { N, { class_ = { name = N }}} |
   { N, { method = { name = N }}} |
-  { N, { instance = { name = N }}} |
   { N, { patBind = { name = N }}} |
   { N, { tyVarBind = { name = N }}} |
   { N, { field = { name = N }}}
@@ -164,6 +163,20 @@ predicate ValBind:
     ty: maybe Type,
     # fixity
     sig: maybe SigDecl
+  }
+
+predicate InstanceBind:
+  {
+    name: Name,
+    # ty: maybe Type,
+    loc: src.FileLocation,
+  }
+
+# Maps an InstanceBind back to its containing decl
+predicate InstanceBindToDecl:
+  {
+    bind: InstanceBind,
+    decl: { inst: InstDecl | class_: ClassDecl }
   }
 
 predicate SigDecl:
@@ -205,7 +218,9 @@ predicate ClassDecl:
     name: Name,
     methods: [MethDecl],
     # superclass constraints
-    # defaults
+    defaults: [InstanceBind],
+    # associated types / datatypes
+    # associated type defaults
   }
 
 predicate MethDecl:
@@ -216,11 +231,12 @@ predicate MethDecl:
     # default decl
   }
 
-predicate InstanceDecl:
+predicate InstDecl:
   {
-    name: Name,
     # class
     # parameters etc.
+    methods: [InstanceBind],
+    loc: src.FileLocation,
   }
 
 predicate PatBind:
