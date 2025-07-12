@@ -226,7 +226,9 @@ library stubs
         glean:if-glean-hs,
         glean:if-index-hs,
         mangle,
-        template-haskell
+        template-haskell,
+        tasty,
+        tasty-hunit-adapter
 
 library logger
     import: fb-haskell, fb-cpp, deps
@@ -2229,6 +2231,9 @@ test-suite glean-snapshot-hack
     if !flag(hack-tests)
         buildable: False
 
+-- The Haskell indexer tests *only* work when run using Cabal with
+-- `cabal run` or `cabal test`, because Cabal puts the `hie-indexer`
+-- binary in the PATH.
 test-suite glean-snapshot-haskell
     import: fb-haskell, fb-cpp, deps, exe, haskell-indexer
     hs-source-dirs: glean/lang/haskell/tests
