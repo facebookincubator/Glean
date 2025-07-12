@@ -2,6 +2,25 @@
   "@generated",
   {
     "key": {
+      "defaults": [
+        {
+          "key": {
+            "loc": {
+              "file": { "key": "glean/lang/haskell/tests/code/A.hs" },
+              "span": { "length": 10, "start": 535 }
+            },
+            "name": {
+              "key": {
+                "mod": {
+                  "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+                },
+                "occ": { "key": { "name": "m", "namespace_": 0 } },
+                "sort": { "external": { } }
+              }
+            }
+          }
+        }
+      ],
       "methods": [
         {
           "key": {
