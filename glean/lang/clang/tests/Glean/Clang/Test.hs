@@ -39,7 +39,7 @@ driverWith deriveToo =
     driver' = driverFromIndexer indexer'
     baseIndexer = indexerWith deriveToo
     isSrcFile file = takeExtension file `elem` [".c", ".cpp", ".m", ".mm"]
-    withCompileCommandsFor opts params f = do
+    withCompileCommandsFor _opts params f = do
       srcFiles <- map (indexerRoot params </>) . filter isSrcFile <$>
         listDirectory (indexerRoot params)
       writeFile (indexerOutput params </> "compile_commands.json") $
