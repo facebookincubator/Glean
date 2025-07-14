@@ -8,6 +8,8 @@
 
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE OverloadedRecordDot #-}
 module HieIndexer.Index (indexHieFile) where
 
 import Control.Applicative
@@ -199,58 +201,53 @@ produceDeclInfo fileFact toByteSpan getName_ infos =
     -> MaybeT (WriterT (Map (Glean.IdOf Hs.Name) Hs.SigDecl) m) ()
   makeDecl info =
     case info of
-      SigDecl { sigDeclName = name, sigDeclSpan = span } -> do
-        hsName <- getName name
+      SigDecl{} -> do
+        hsName <- getName info.name
         decl <- glean $ Glean.makeFact @Hs.SigDecl $
           Hs.SigDecl_key hsName (
-            Src.FileLocation fileFact (toByteSpan span))
+            Src.FileLocation fileFact (toByteSpan info.span))
         -- collect SigDecls using WriterT
         Writer.tell (Map.singleton (Glean.getId hsName) decl)
-      DataDecl { dataDeclName = name, dataDeclConstrs = cs } -> do
-        hsName <- getName name
-        cons <- forM cs $ \(ConstrInfo cName fields) -> do
-          hsCName <- getName cName
-          fNames <- mapM getName fields
-          fDecls <- forM fNames $ \fName ->
+      DataDecl{} -> do
+        hsName <- getName info.name
+        cons <- forM info.constrs $ \con -> do
+          hsCName <- getName con.name
+          fDecls <- forM con.fields $ \fName -> do
+            hsFName <- getName fName
             glean $ Glean.makeFact @Hs.RecordFieldDecl $
-              Hs.RecordFieldDecl_key fName hsCName
+              Hs.RecordFieldDecl_key hsFName hsCName
           glean $ Glean.makeFact @Hs.ConstrDecl $
             Hs.ConstrDecl_key hsCName hsName fDecls
         glean $ Glean.makeFact_ @Hs.DataDecl $
           Hs.DataDecl_key hsName cons
-      ClassDecl {
-          classDeclName = name,
-          classDeclMethods = meths,
-          classDeclDefaults = defs } -> do
-        hsName <- getName name
-        mNames <- mapM getName meths
-        mDecls <- forM mNames $ \mName ->
+      ClassDecl{} -> do
+        hsName <- getName info.name
+        mDecls <- forM info.methods $ \mName -> do
+          hsMName <- getName mName
           glean $ Glean.makeFact @Hs.MethDecl $
-            Hs.MethDecl_key mName hsName
-        defaults <- mapM makeInstBind defs
+            Hs.MethDecl_key hsMName hsName
+        defaults <- mapM makeInstBind info.defaults
         decl <- glean $ Glean.makeFact @Hs.ClassDecl $
           Hs.ClassDecl_key hsName mDecls defaults
         forM_ defaults $ \bind ->
           glean $ Glean.makeFact_ @Hs.InstanceBindToDecl $
             Hs.InstanceBindToDecl_key bind
               (Hs.InstanceBindToDecl_decl_class_ decl)
-      InstDecl {
-          instanceDeclBinds = instBinds,
-          instanceDeclSpan = span } -> do
-        binds <- mapM makeInstBind instBinds
+      InstDecl{} -> do
+        binds <- mapM makeInstBind info.binds
         decl <- glean $ Glean.makeFact @Hs.InstDecl $
           Hs.InstDecl_key binds
-            (Src.FileLocation fileFact (toByteSpan span))
+            (Src.FileLocation fileFact (toByteSpan info.span))
         forM_ binds $ \bind ->
           glean $ Glean.makeFact_ @Hs.InstanceBindToDecl $
             Hs.InstanceBindToDecl_key bind
               (Hs.InstanceBindToDecl_decl_inst decl)
 
-  makeInstBind InstanceBindInfo{..} = do
-    meth <- getName instBindMeth
+  makeInstBind instBind = do
+    meth <- getName instBind.method
     glean $ Glean.makeFact @Hs.InstanceBind $
       Hs.InstanceBind_key meth {-(IntMap.lookup instBindTy typeMap)-}
-        (Src.FileLocation fileFact (toByteSpan instBindSpan))
+        (Src.FileLocation fileFact (toByteSpan instBind.span))
 
 nat :: Integral a => a -> Glean.Nat
 nat = Glean.toNat . fromIntegral
@@ -564,26 +561,26 @@ currently ignore Names that come from another source file (TODO).
 
 data DeclInfo
   = DataDecl {
-      dataDeclName :: GHC.Name,
-      dataDeclConstrs :: [ConstrInfo]
+      name :: GHC.Name,
+      constrs :: [ConstrInfo]
     }
   | ClassDecl {
-      classDeclName :: GHC.Name,
-      classDeclMethods :: [GHC.Name],
-      classDeclDefaults :: [InstanceBindInfo]
+      name :: GHC.Name,
+      methods :: [GHC.Name],
+      defaults :: [InstanceBindInfo]
     }
   | SigDecl {
-      sigDeclName :: GHC.Name,
-      sigDeclSpan :: GHC.RealSrcSpan
+      name :: GHC.Name,
+      span :: GHC.RealSrcSpan
     }
   | InstDecl {
-      instanceDeclBinds :: [InstanceBindInfo],
-      instanceDeclSpan :: GHC.RealSrcSpan
+      binds :: [InstanceBindInfo],
+      span :: GHC.RealSrcSpan
     }
 
 data InstanceBindInfo = InstanceBindInfo {
-    instBindMeth :: GHC.Name,
-    instBindSpan :: GHC.RealSrcSpan
+    method :: GHC.Name,
+    span :: GHC.RealSrcSpan
     -- TODO: add type. The identifier with context ValBind InstanceBind
     -- doesn't have a type, but there is also a ValBind RegularBind
     -- identifier that does have the type attached.
@@ -591,16 +588,16 @@ data InstanceBindInfo = InstanceBindInfo {
 
 data ConstrInfo =
   ConstrInfo {
-    _constrName :: GHC.Name,
-    _constrFields :: [GHC.Name]
+    name :: GHC.Name,
+    fields :: [GHC.Name]
   }
 
 getDeclInfos :: HieAST TypeIndex -> [DeclInfo]
 getDeclInfos node = snd $ State.runState (go node) []
   where
-  go node@Node{..} = do
+  go node = do
     visit node
-    void $ traverse go nodeChildren
+    void $ traverse go node.nodeChildren
 
   visit node =
     {-
@@ -615,54 +612,54 @@ getDeclInfos node = snd $ State.runState (go node) []
     hasInfo
       | isDataDecl nodeInfo,
         [(name,_,_)] <- findIdent dataDeclCtx nodeInfo node =
-         Just (DataDecl {
-           dataDeclName = name,
-           dataDeclConstrs = findConstrs node })
+         Just $ DataDecl {
+           name = name,
+           constrs = findConstrs node }
       | isClassDecl nodeInfo,
         [(name,_,_)] <- findIdent classDeclCtx nodeInfo node =
-         Just (ClassDecl {
-           classDeclName = name,
-           classDeclMethods = findMethods node,
-           classDeclDefaults = findInstBinds node })
+         Just $ ClassDecl {
+           name = name,
+           methods = findMethods node,
+           defaults = findInstBinds node }
       | isTypeSig nodeInfo,
         [(name,_,_)] <- findIdent tyDeclCtx nodeInfo node =
-         Just (SigDecl {
-           sigDeclName = name,
-           sigDeclSpan = nodeSpan node })
+         Just $ SigDecl {
+           name = name,
+           span = nodeSpan node }
       | isInstDecl nodeInfo =
-         Just (InstDecl {
-           instanceDeclBinds = findInstBinds node,
-           instanceDeclSpan = nodeSpan node })
+         Just $ InstDecl {
+           binds = findInstBinds node,
+           span = nodeSpan node }
       | otherwise =
           Nothing
 
     -- The Name for a decl seems to be a child of the declaration Node
-    findIdent ctx ni Node{..} =
+    findIdent ctx ni node =
       concatMap (namesWithContext ctx) $
-        map nodeIdentifiers (ni : map getNodeInfo nodeChildren)
+        map nodeIdentifiers (ni : map getNodeInfo node.nodeChildren)
 
-    findMethods Node{..} =
+    findMethods node =
       [ meth
-      | n <- nodeChildren
+      | n <- node.nodeChildren
       , let ni = getNodeInfo n
       , isMethodDecl ni
       , (meth,_,_) <- findIdent classTyDeclCtx ni n
       ]
 
-    findInstBinds Node{..} =
+    findInstBinds node =
       [ InstanceBindInfo {
-          instBindMeth = meth,
-          instBindSpan = span
+          method = meth,
+          span = span
         }
-      | n <- nodeChildren
+      | n <- node.nodeChildren
       , let ni = getNodeInfo n
       , isInstanceBind ni
       , (meth, _ty, ValBind _ _ (Just span))  <- findIdent instBindCtx ni n
       ]
 
-    findConstrs Node{..} =
+    findConstrs node =
       [ ConstrInfo con (fields n)
-      | n <- nodeChildren
+      | n <- node.nodeChildren
       , let ni = getNodeInfo n
       , isConstrDecl ni
       , (con,_,_) <- findIdent conDeclCtx ni n
