@@ -25,6 +25,7 @@ module Glean.Query.Typecheck
   , UseOfNegation(..)
   ) where
 
+import Control.Monad
 import Control.Applicative ((<|>))
 import Control.Monad.Except
 import Control.Monad.State

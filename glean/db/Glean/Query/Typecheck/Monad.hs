@@ -30,6 +30,7 @@ module Glean.Query.Typecheck.Monad (
     addErrSpan,
   ) where
 
+import Control.Monad
 import Control.Monad.Except
 import Control.Monad.State
 import qualified Data.HashMap.Strict as HashMap

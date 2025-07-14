@@ -18,6 +18,7 @@ module Glean.Query.Codegen
   ) where
 
 import Control.Exception
+import Control.Monad
 import Control.Monad.Extra (whenJust)
 import Control.Monad.State
 import Data.Bifunctor (bimap)

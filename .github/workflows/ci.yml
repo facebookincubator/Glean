@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ghc: [9.2.8, 9.4.7]
+        ghc: [9.2.8, 9.4.7, 9.6.7]
         compiler: [gcc]
         index-state: [2025-04-14T00:00:00Z]
     runs-on: 32-core-ubuntu

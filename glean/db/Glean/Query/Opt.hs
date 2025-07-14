@@ -10,6 +10,7 @@ module Glean.Query.Opt
   ( optimise
   ) where
 
+import Control.Monad
 import Control.Monad.Except
 import Control.Monad.State.Strict
 import qualified Data.ByteString as B

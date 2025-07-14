@@ -6,9 +6,12 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE CPP #-}
 module Glean.Database.Env ( withDatabases ) where
 
+#if !MIN_VERSION_base(4,18,0)
 import Control.Applicative (liftA2)
+#endif
 import Control.Concurrent
 import Control.Concurrent.Async (async, waitEither, withAsync)
 import Control.Exception.Safe

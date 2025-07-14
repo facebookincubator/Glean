@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE CPP #-}
 module Glean.Util.Process (withCreateProcessGroup)
 where
 
@@ -45,7 +46,9 @@ withCreateProcessGroup c action =
             fd <- openFd
               ("/proc/" ++ show pid ++ "/ns/pid")
               ReadOnly
+#if !MIN_VERSION_unix(2,8,0)
               Nothing
+#endif
               defaultFileFlags
             return $ Just (pid,fd)
           `catchAll` const (return Nothing)

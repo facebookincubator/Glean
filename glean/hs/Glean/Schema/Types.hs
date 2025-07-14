@@ -7,6 +7,7 @@
 -}
 
 
+{-# LANGUAGE DeriveFunctor #-}
 module Glean.Schema.Types (
   -- * Schema references
   SchemaRef(..), showSchemaRef,
@@ -74,7 +75,7 @@ instance Hashable SchemaRef
 
 -- | The target of a reference
 data RefTarget p t = RefPred p | RefType t
-  deriving (Eq, Ord, Show, Generic)
+  deriving (Eq, Ord, Show, Generic, Functor)
 
 instance (Binary p, Binary t) => Binary (RefTarget p t)
 
