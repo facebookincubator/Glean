@@ -70,6 +70,27 @@ async fn main(_fb: FacebookInit, args: BuildJsonArgs) -> Result<cli::ExitCode> {
     Ok(cli::ExitCode::SUCCESS)
 }
 
+fn decode_scip_data(
+    env: &mut Env,
+    path: &Path,
+    default_language: Option<LanguageId>,
+    infer_language: bool,
+    path_prefix: Option<&str>,
+) -> Result<()> {
+    info!("Loading documents from {}", path.display());
+    let scip_index = read_scip_file(path)
+        .with_context(|| format!("Error opening input file {}", path.display()))?;
+    info!("Loaded {} documents", scip_index.documents.len());
+
+    if let Some(metadata) = scip_index.metadata.into_option() {
+        env.decode_scip_metadata(metadata);
+    }
+    for doc in scip_index.documents {
+        env.decode_scip_doc(default_language, infer_language, path_prefix, doc)?;
+    }
+    Ok(())
+}
+
 fn build_json(args: BuildJsonArgs) -> Result<()> {
     println!("{:?}", args);
     let default_language = args
@@ -77,23 +98,15 @@ fn build_json(args: BuildJsonArgs) -> Result<()> {
         .as_ref()
         .and_then(|s| LanguageId::new(s).known());
 
-    info!("Loading documents");
-    let scip_index = read_scip_file(&args.input)
-        .with_context(|| format!("Error opening input file {}", args.input.display()))?;
-    info!("Loaded {} documents", scip_index.documents.len());
-
     let mut env = Env::new();
-    if let Some(metadata) = scip_index.metadata.into_option() {
-        env.decode_scip_metadata(metadata);
-    }
-    for doc in scip_index.documents {
-        env.decode_scip_doc(
-            default_language,
-            args.infer_language,
-            args.root_prefix.as_deref(),
-            doc,
-        )?;
-    }
+    decode_scip_data(
+        &mut env,
+        &args.input,
+        default_language,
+        args.infer_language,
+        args.root_prefix.as_deref(),
+    )?;
+
     let shards = if let Some(shard_size) = args.shard {
         let shards = env.output().shard(shard_size);
         // pad the output files for correct numerical sorting
