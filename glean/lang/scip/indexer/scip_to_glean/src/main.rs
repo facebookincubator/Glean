@@ -112,6 +112,7 @@ fn build_json(args: BuildJsonArgs) -> Result<()> {
         vec![(args.output, env.output())]
     };
 
+    let num_files = shards.len();
     for (file, shard) in shards {
         let write = OpenOptions::new()
             .write(true)
@@ -123,6 +124,7 @@ fn build_json(args: BuildJsonArgs) -> Result<()> {
 
         shard.write(writer)?;
     }
+    info!("Wrote {} files", num_files);
 
     Ok(())
 }
