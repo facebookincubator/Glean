@@ -97,6 +97,7 @@ genTargets slashVn info oncall =
       "\"types_cpp_splits=" <> cppSplits <> "\""
       ] <> "],"
     , "  thrift_py_options = \"utf8strings\","
+    , "  thrift_py3_options = [\"inplace_migrate\"],"
     , "  languages = [" <> Text.intercalate ", " langs <> "],"
     , "  thrift_srcs = { \"" <> namespace <> ".thrift\" : [] },"
     , "  deps = [" <> Text.intercalate ","
