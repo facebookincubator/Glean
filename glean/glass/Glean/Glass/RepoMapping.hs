@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE OverloadedRecordDot #-}
 module Glean.Glass.RepoMapping
   ( getRepoMapping
   , fixedRepoMapping
@@ -16,23 +17,57 @@ module Glean.Glass.RepoMapping
   , Mirror(..)
   ) where
 
+import qualified Data.Map.Strict as Map
+import Data.Maybe
 import Data.Set (Set)
 import qualified Data.Set as Set
-import qualified Data.Map.Strict as Map
+import Data.Text(Text)
+
+import Thrift.Protocol.JSON (deserializeJSON)
+
+import qualified Glean.Util.ThriftSource as ThriftSource
+import Glean.Util.ConfigProvider
 
 import Glean.Glass.Base
   ( GleanDBName(..)
   , RepoMapping(..)
   , GleanDBSelector(..)
   )
-import Glean.Glass.Types ( Language(..), RepoName(..) )
-import Data.Text(Text)
+import qualified Glean.Glass.Repomapping.Types as Config
+import Glean.Glass.SymbolId ( fromShortCode )
+import Glean.Glass.Types
 
-getRepoMapping :: IO RepoMapping
-getRepoMapping = return RepoMapping
-  { gleanIndices = gleanIndices_
-  , gleanAttrIndices = Map.empty
-  }
+getRepoMapping :: ConfigProvider cfg => cfg -> IO RepoMapping
+getRepoMapping cfg = ThriftSource.load cfg repoMappingSource
+
+toRepoMapping :: Config.RepoMapping -> RepoMapping
+toRepoMapping rm =
+  RepoMapping
+    { gleanIndices = Map.fromList
+        [ (RepoName repo, mapMaybe toSelector selectors)
+        | (repo, selectors) <- Map.toList rm.indices
+        ]
+    , gleanAttrIndices = Map.empty
+        -- can do this later if necessary. We would have to pattern-match
+        -- on a string and map to the ToAttributes key type.
+    }
+  where
+  toSelector :: Config.DbSelector -> Maybe GleanDBSelector
+  toSelector dbsel = do
+    lang <- fromShortCode dbsel.language
+    return GleanDBSelector
+      { dbName = GleanDBName dbsel.name
+      , language = lang
+      , branchName = dbsel.branch
+      }
+
+repoMappingSource :: ThriftSource.ThriftSource RepoMapping
+repoMappingSource =
+  ThriftSource.configWithDeserializerDefault "glass/repomapping" $
+    \bytes -> toRepoMapping <$> deserializeJSON bytes
+    -- doing the translation to RepoMapping in the deserializer ensures
+    -- that this is cached, we don't have to worry about the translation
+    -- happening on every request.
 
 fixedRepoMapping :: RepoMapping
 fixedRepoMapping = RepoMapping

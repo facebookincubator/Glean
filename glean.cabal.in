@@ -1284,7 +1284,9 @@ library glass-lib
     import: fb-haskell, fb-cpp, deps, thrift-server
     visibility: public
     default-extensions: CPP
-    hs-source-dirs: glean/glass
+    hs-source-dirs:
+        glean/glass
+        glean/config/glass/gen-hs2
     exposed-modules:
         Glean.Glass.Annotations
         Glean.Glass.Attributes
@@ -1320,6 +1322,7 @@ library glass-lib
         Glean.Glass.Query.Cxx
         Glean.Glass.Range
         Glean.Glass.RepoMapping
+        Glean.Glass.Repomapping.Types
         Glean.Glass.Repos
         Glean.Glass.Search
         Glean.Glass.Search.Angle

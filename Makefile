@@ -267,6 +267,7 @@ THRIFT_GLEAN= \
 	glean/config/server/server_config.thrift \
 	glean/config/service.thrift \
 	glean/config/client/client_config.thrift \
+	glean/config/glass/repomapping.thrift \
 	thrift/annotation/cpp.thrift \
 	thrift/annotation/hack.thrift \
 	thrift/annotation/rust.thrift \

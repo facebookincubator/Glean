@@ -15,6 +15,7 @@ module Glean.Glass.Base
   , GleanDBSelector(..)
   ) where
 
+import Data.Default
 import Data.Function
 import Data.Hashable
 import Data.List.NonEmpty(NonEmpty(..))
@@ -100,3 +101,6 @@ data RepoMapping = RepoMapping
     -- This pairs attribute Glean dbs with a key type to index the ToAttribute
     -- class, that in turns knowns how to query and marshal the attributes
   }
+
+instance Default RepoMapping where
+  def = RepoMapping { gleanIndices = def, gleanAttrIndices = def }

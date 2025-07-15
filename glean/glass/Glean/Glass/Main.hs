@@ -103,7 +103,7 @@ withEnv Glass.Config{..} gleanDB f =
   withLatestRepos backend scm (Just logger)
     (if isRemote gleanService then listDatabasesRetry else Nothing) refreshFreq
     $ \latestGleanRepos -> do
-      repoMapping <- getRepoMapping
+      repoMapping <- getRepoMapping cfgapi
       f Glass.Env
         { gleanBackend = Some backend
         , gleanDB = gleanDB
@@ -148,7 +148,7 @@ assignHeaders _ _ = []
 -- | Perform an operation with the latest RepoMapping
 withCurrentRepoMapping :: Glass.Env -> (Glass.Env -> IO a) -> IO a
 withCurrentRepoMapping env0 fn = do
-  current <- getRepoMapping
+  current <- getRepoMapping (Glass.cfgapi env0)
   fn (env0 { Glass.repoMapping = current })
 
 withRequestTracing :: Env' GlassTraceWithId -> (Env -> IO b) -> IO b
