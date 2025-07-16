@@ -18,71 +18,25 @@ module Glean.Glass.RepoMapping
 
 import Data.Set (Set)
 import qualified Data.Set as Set
-import qualified Data.Map.Strict as Map
+import Data.Text(Text)
 
 import Glean.Glass.Base
   ( GleanDBName(..)
   , RepoMapping(..)
-  , GleanDBSelector(..)
   )
-import Glean.Glass.Types ( Language(..), RepoName(..) )
-import Data.Text(Text)
+import Glean.Glass.Types ( RepoName(..) )
 
 getRepoMapping :: IO RepoMapping
-getRepoMapping = return RepoMapping
-  { gleanIndices = gleanIndices_
-  , gleanAttrIndices = Map.empty
-  }
+getRepoMapping = return AutoRepoMapping
 
 fixedRepoMapping :: RepoMapping
-fixedRepoMapping = RepoMapping
-  { gleanIndices = gleanIndices_
-  , gleanAttrIndices = Map.empty
-  }
-
--- example: the open source react repo.
-gleanIndices_ :: Map.Map RepoName [GleanDBSelector]
-gleanIndices_ = Map.fromList
-  -- demo
-  [ ( RepoName "react",
-      [ GleanDBSelector
-        { dbName = "react"
-        , language = Language_JavaScript
-        , branchName = Nothing
-        }
-      ]
-    )
-  -- for running tests with locally-indexed repos:
-  , ( RepoName "test",
-      [ testSelector Language_JavaScript
-      , testSelector Language_Hack
-      , testSelector Language_Haskell
-      , testSelector Language_Cpp
-      , testSelector Language_PreProcessor
-      , testSelector Language_Python
-      , testSelector Language_Thrift
-      , testSelector Language_Buck
-      , testSelector Language_Go
-      , testSelector Language_TypeScript
-      , testSelector Language_Rust
-      , testSelector Language_Java
-      , testSelector Language_Swift
-      ]
-    )
-  ]
-  where
-    testSelector language =
-      GleanDBSelector
-        { dbName = "test"
-        , language = language
-        , branchName = Nothing
-        }
+fixedRepoMapping = AutoRepoMapping
 
 -- | All the Glean db repo names we're aware of
--- We will only be able to query members of this set
-allGleanRepos :: Set GleanDBName
-allGleanRepos = Set.fromList $
-  map dbName (concat (Map.elems gleanIndices_))
+-- We will only be able to query members of this set.
+-- 'Nothing' means all existing Glean DBs can be used.
+allGleanRepos :: Maybe (Set GleanDBName)
+allGleanRepos = Nothing
 
 -- repos that are required
 gleanRequiredIndices :: Set.Set GleanDBName
