@@ -2232,7 +2232,7 @@ test-suite glean-snapshot-hack
         buildable: False
 
 -- The Haskell indexer tests *only* work when run using Cabal with
--- `cabal run` or `cabal test`, because Cabal puts the `hie-indexer`
+-- 'cabal run' or 'cabal test', because Cabal puts the 'hie-indexer'
 -- binary in the PATH.
 test-suite glean-snapshot-haskell
     import: fb-haskell, fb-cpp, deps, exe, haskell-indexer
