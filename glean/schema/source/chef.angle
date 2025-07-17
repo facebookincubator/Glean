@@ -1,0 +1,58 @@
+schema chef.1{
+import src
+
+predicate Name : string
+
+predicate Location: src.FileLocation
+
+# FQN = fully qualified name (name which uniquely describes the identifier)
+# Ex: methodXYZ's FQN will be moduleA.classB.classC.methodXYZ
+predicate Symbol :
+ {
+   identifier: Name, # Ex: methodXYZ
+   qualifiedName: [Name] # Qualified name of the symbol, [moduleA,classB,classC]
+ }
+
+predicate Cookbook :
+ {
+   cookbookName: Name, # name of the cookbook
+   cookbookLocation: Location,
+ }
+
+# list of cookbooks this cookbook depends on
+predicate CookbookDependsOn :
+ {
+   cookbook: Cookbook,
+   dependsOn: Cookbook,
+ }
+
+# list of cookbooks which are depending on a cookbook
+predicate CookbookDependedOnBy :
+ {
+   cookbook: Cookbook,
+   dependedOnBy: Cookbook,
+ } stored {C,D} where CookbookDependsOn {D,C}
+
+predicate DefinedAt :
+ {
+   symbol: Symbol,
+   definitionLocation: Location,
+ }
+
+predicate ReferencedAt :
+ {
+   symbol: Symbol,
+   referenceLocation: Location,
+ }
+
+ predicate DefLocationSymbol :{
+   definitionLocation: Location,
+   symbol: Symbol,
+ } stored {L,S} where DefinedAt {S,L}
+
+ predicate RefLocationSymbol :{
+   referenceLocation: Location,
+   symbol: Symbol,
+ } stored {L,S} where ReferencedAt {S,L}
+
+}

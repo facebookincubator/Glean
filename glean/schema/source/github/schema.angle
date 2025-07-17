@@ -2,6 +2,7 @@
 
 schema all.1 :
   builtin,
+  chef,
   code,
   code.anglelang,
   code.buck,

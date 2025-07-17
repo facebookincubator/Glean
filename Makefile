@@ -156,6 +156,7 @@ SCHEMAS= \
 	anglelang \
 	buck \
 	builtin \
+	chef \
 	code \
 	code_anglelang \
 	code_buck \
