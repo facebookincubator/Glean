@@ -107,8 +107,10 @@ fn build_json(args: BuildJsonArgs) -> Result<()> {
         args.root_prefix.as_deref(),
     )?;
 
+    let output_facts = env.output();
+    info!("Found {} facts total", output_facts.total_facts_count());
     let shards = if let Some(shard_size) = args.shard {
-        let shards = env.output().shard(shard_size);
+        let shards = output_facts.shard(shard_size);
         // pad the output files for correct numerical sorting
         let padding = shards.len().to_string().len();
         shards
@@ -122,7 +124,7 @@ fn build_json(args: BuildJsonArgs) -> Result<()> {
             })
             .collect()
     } else {
-        vec![(args.output, env.output())]
+        vec![(args.output, output_facts)]
     };
 
     let num_files = shards.len();

@@ -255,6 +255,24 @@ impl GleanJSONOutput {
         })
     }
 
+    pub fn total_facts_count(&self) -> usize {
+        self.src_files.len()
+            + self.file_langs.len()
+            + self.documentation.len()
+            + self.symbol_documentation.len()
+            + self.file_ranges.len()
+            + self.symbols.len()
+            + self.definitions.len()
+            + self.references.len()
+            + self.local_names.len()
+            + self.symbol_names.len()
+            + self.is_implementation.len()
+            + self.symbol_kinds.len()
+            + self.metadata.len()
+            + self.display_names.len()
+            + self.display_name_symbols.len()
+    }
+
     /// Consumes self, returns a list of GleanJSONOutput shards that are approximately of size `shard_size`
     /// The shards are complete SCIP subgraphs, per the SCIP schema definition
     /// This facilitates smaller writes to Glean without global, stateful keys
