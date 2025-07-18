@@ -81,22 +81,32 @@ data GleanDBSelector = GleanDBSelector
   -- ^ Nothing means the db is default, can be used for any branch
   }
 
-data RepoMapping = RepoMapping
-  { gleanIndices :: Map.Map Glass.RepoName [GleanDBSelector]
-    -- ^ This should be in a config
+data RepoMapping
+  = AutoRepoMapping
+    -- ^ Repo name == Glean DB name. e.g. if we get a documentSymbols
+    -- request for myrepo/lang/My/File then we query the latest
+    -- "myrepo" Glean DB.
     --
-    -- This is the set of Glean dbs that should implement codemarkup.*
-    --
-    -- Note: the order here determines the order of search/lookup
-    -- if you have overlapping dbs , for file contents, the first in the order
-    -- with a src.File fact will win.
-    --
-    -- If you add/remove a db, consider if it needs to be present in
-    -- gleanRequiredIndices as well
+    -- In this case 'RepoMapping.allGleanRepos' can be 'Nothing' to
+    -- enable use of any Glean DB, or it can be set to a list to
+    -- restrict Glass to using particular Glean DBs.
 
-  , gleanAttrIndices :: Map.Map Glass.RepoName [GleanDBAttrName]
-    -- ^ Map of source db to attr db names & attribute key types
-    --
-    -- This pairs attribute Glean dbs with a key type to index the ToAttribute
-    -- class, that in turns knowns how to query and marshal the attributes
-  }
+  | RepoMapping
+    { gleanIndices :: Map.Map Glass.RepoName [GleanDBSelector]
+      -- ^ This should be in a config
+      --
+      -- This is the set of Glean dbs that should implement codemarkup.*
+      --
+      -- Note: the order here determines the order of search/lookup
+      -- if you have overlapping dbs , for file contents, the first in the order
+      -- with a src.File fact will win.
+      --
+      -- If you add/remove a db, consider if it needs to be present in
+      -- gleanRequiredIndices as well
+  
+    , gleanAttrIndices :: Map.Map Glass.RepoName [GleanDBAttrName]
+      -- ^ Map of source db to attr db names & attribute key types
+      --
+      -- This pairs attribute Glean dbs with a key type to index the ToAttribute
+      -- class, that in turns knowns how to query and marshal the attributes
+    }
