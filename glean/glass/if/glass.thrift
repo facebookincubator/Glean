@@ -562,6 +562,7 @@ enum Language {
   Yaml = 19,
   Swift = 20,
   Angle = 21,
+  Chef = 22,
 }
 
 // Kinds of definitions. E.g. for jump-to-declaration or jump-to-definition

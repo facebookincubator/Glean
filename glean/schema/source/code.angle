@@ -4,6 +4,7 @@ schema code.24 {
 import src
 import code.anglelang
 import code.buck
+import code.chef
 import code.csharp
 import code.cxx
 import code.dataswarm
@@ -40,6 +41,7 @@ type Entity =
     graphql : code.graphql.Entity |
     dataswarm: code.dataswarm.Entity |
     angle: code.anglelang.Entity |
+    chef: code.chef.Entity |
   }
 
 type SymbolId =
@@ -56,7 +58,7 @@ type Language =
   enum {
     Cpp | PreProcessor | Java | Haskell | Python | Hack | JavaScript | Rust |
     Thrift | Buck | Erlang | FSharp | Go | Kotlin | OCaml | Scala | Swift |
-    TypeScript | CSharp | GraphQL | Dataswarm | Yaml | Angle |
+    TypeScript | CSharp | GraphQL | Dataswarm | Yaml | Angle | Chef |
   }
 
 # entity tag to language id
@@ -82,7 +84,8 @@ predicate EntityLanguage:
     ( { dataswarm = _ } = Entity; Dataswarm = Language ) |
     ( { angle = _ } = Entity; Angle = Language ) |
     ( { lsif = LSIF }  = Entity; EntityLanguageLSIF { LSIF, Language } ) |
-    ( { scip = SCIP }  = Entity; EntityLanguageSCIP { SCIP, Language } );
+    ( { scip = SCIP }  = Entity; EntityLanguageSCIP { SCIP, Language } ) |
+    ( { chef = _ } = Entity; Chef = Language );
 
 # (private) helper for the LSIF subset
 predicate EntityLanguageLSIF:

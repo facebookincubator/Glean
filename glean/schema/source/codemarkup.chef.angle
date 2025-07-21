@@ -1,0 +1,40 @@
+schema codemarkup.chef.1 {
+import src
+import chef
+import code
+import code.chef
+import codemarkup.types
+
+
+# Entity -> usage
+predicate ChefEntityUses:
+  {
+    target: code.chef.Entity,
+    file: src.File,
+    range: src.ByteSpan,
+  }
+  {{ symbol = Symbol }, File, Span } where
+  chef.ReferencedAt { Symbol, { File, Span } }
+
+predicate ChefResolveLocation:
+  {
+    location: codemarkup.types.Location,
+    entity: code.chef.Entity,
+  }
+  { { EntityName, File, {span = Span}, nothing }, { symbol = Symbol } } where
+  chef.DefinedAt { Symbol,{File, Span} };
+  Symbol.identifier = chef.Name EntityName
+
+predicate ChefFileEntityXRefLocations:
+  {
+    file: src.File, # file where the reference is located
+    xref: codemarkup.types.XRefLocation, # XRefs from source to target declaration or definition
+    entity: code.chef.Entity, # actual entity that is being referenced
+  } { File, {Location, {span = Span}}, { symbol = Symbol } } where
+  chef.ReferencedAt { Symbol, { File, Span } };
+  Symbol.identifier = chef.Name EntityName;
+  chef.DefinedAt { Symbol, {TargetFile,TargetSpan} };
+  Location = codemarkup.types.Location { EntityName, TargetFile, { span = TargetSpan }, nothing }
+
+
+}

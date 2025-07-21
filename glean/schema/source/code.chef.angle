@@ -1,0 +1,11 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
+# For Glass integration
+schema code.chef.1 {
+    import chef
+
+    type Entity =
+    {
+        symbol : chef.Symbol
+    }
+}

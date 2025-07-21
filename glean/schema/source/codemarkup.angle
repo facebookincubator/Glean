@@ -4,6 +4,7 @@ schema codemarkup.30 {
 import src
 import code.24
 import codemarkup.buck
+import codemarkup.chef
 import codemarkup.csharp
 import codemarkup.cxx
 import codemarkup.dataswarm
@@ -90,7 +91,7 @@ predicate EntityInfo:
     (codemarkup.lsif.EntityInfo { E, Info }; { lsif = E } = Entity) |
     (codemarkup.scip.EntityInfo { E, Info }; { scip = E } = Entity);
 
-# Source code digests produced by unspecified hash function
+# Source code digests produced by unspecified hash function
 predicate FileEntityDigest:
   { file: src.File
   , entity: code.Entity,
@@ -166,7 +167,9 @@ predicate ResolveLocation:
     (codemarkup.graphql.GraphQLResolveLocation { Location, E };
      { graphql = E } = Entity) |
     (codemarkup.anglelang.AngleResolveLocation { Location, E };
-     { angle = E } = Entity);
+     { angle = E } = Entity) |
+    (codemarkup.chef.ChefResolveLocation { Location, E };
+     { chef = E } = Entity);
 
 predicate EntityLocation:
   {
@@ -329,8 +332,10 @@ predicate FileEntityXRefLocations:
      { graphql = E } = Entity) |
     (codemarkup.dataswarm.DataswarmFileEntityXRefLocations { File, XRef, E };
      { dataswarm = E } = Entity) |
-     (codemarkup.anglelang.AngleFileEntityXRefLocations { File, XRef, E };
-     { angle = E } = Entity);
+    (codemarkup.anglelang.AngleFileEntityXRefLocations { File, XRef, E };
+     { angle = E } = Entity) |
+    (codemarkup.chef.ChefFileEntityXRefLocations { File, XRef, E };
+     { chef = E } = Entity);
 
 # Xrefs without the target location. This can be useful in cases
 # where we don't have a target location, but we don't need it. This
@@ -420,6 +425,8 @@ predicate EntityReferences:
      { flow = E } = Entity) |
     (codemarkup.python.PythonEntityUses { E, File, Span };
      { python = E } = Entity) |
+    (codemarkup.chef.ChefEntityUses { E, File, Span };
+    { chef = E } = Entity) |
     (codemarkup.cxx.CxxEntityUses { E, File, Span };
      { cxx = E } = Entity) |
     (codemarkup.haskell.HaskellEntityUses { E, File, Span };
@@ -948,7 +955,7 @@ predicate IndexedFile: src.File
 # You should not use this, instead use codemarkup.IndexedFile
 predicate EntityDataAvailable:  src.File
     File where
-      src.File _ = File; # bind File as demanded by the schema consistency check
+      src.File _ = File; # bind File as demanded by the schema consistency check
       # double negation is used to check for existence
       # (even if the Angle compiler could notice and optimize)
       !(!(codemarkup.FileEntityLocations { file = File } |

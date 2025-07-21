@@ -180,6 +180,7 @@ shortCodeTable :: [(Language,Text)]
 shortCodeTable =
   [ (Language_Angle , "angle")
   , (Language_Buck , "buck")
+  , (Language_Chef, "chef")
   , (Language_CSharp, "cs")
   , (Language_Cpp, "cpp")
   , (Language_Dataswarm, "dataswarm")
@@ -222,6 +223,7 @@ entityLanguage :: Code.Entity -> Language
 entityLanguage e = case e of
   Code.Entity_angle{} -> Language_Angle
   Code.Entity_buck{} -> Language_Buck
+  Code.Entity_chef{} -> Language_Chef
   Code.Entity_csharp{} -> Language_CSharp
   Code.Entity_cxx{} -> Language_Cpp
   Code.Entity_erlang{} -> Language_Erlang
@@ -256,6 +258,7 @@ languageToCodeLang :: Language -> Maybe Code.Language
 languageToCodeLang l = case l of
   Language_Angle -> Just Code.Language_Angle
   Language_Buck -> Just Code.Language_Buck
+  Language_Chef -> Just Code.Language_Chef
   Language_CSharp -> Just Code.Language_CSharp
   Language_Cpp -> Just Code.Language_Cpp
   Language_Dataswarm -> Just Code.Language_Dataswarm

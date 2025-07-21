@@ -160,6 +160,7 @@ SCHEMAS= \
 	code \
 	code_anglelang \
 	code_buck \
+	code_chef \
 	code_csharp \
 	code_cxx \
 	code_dataswarm \
@@ -175,6 +176,7 @@ SCHEMAS= \
 	codemarkup \
 	codemarkup_anglelang \
 	codemarkup_buck \
+	codemarkup_chef \
 	codemarkup_csharp \
 	codemarkup_cxx \
 	codemarkup_dataswarm \
