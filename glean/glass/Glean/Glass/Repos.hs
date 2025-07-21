@@ -104,6 +104,7 @@ data GleanDBInfo = GleanDBInfo
 
 -- return a RepoName if indexed by glean
 toRepoName :: RepoMapping -> Text -> Maybe RepoName
+toRepoName AutoRepoMapping repo = Just (RepoName repo)
 toRepoName RepoMapping{..} repo =
   case Map.lookup repoName gleanIndices of
     Just _ -> Just repoName
@@ -113,6 +114,7 @@ toRepoName RepoMapping{..} repo =
 
 -- | Additional metadata about files and methods in attribute dbs
 attrDBsForRepo :: RepoMapping -> RepoName -> [GleanDBAttrName]
+attrDBsForRepo AutoRepoMapping _ = []
 attrDBsForRepo RepoMapping{..} repo =
   Map.findWithDefault [] repo gleanAttrIndices
 
@@ -145,6 +147,12 @@ selectGleanDBs
   -> Maybe RepoName
   -> Set Language
   -> Either Text (Map.Map RepoName (Set GleanDBName))
+selectGleanDBs AutoRepoMapping (Just repoName) _langs =
+  Right (
+    Map.singleton repoName (
+      Set.singleton (GleanDBName (unRepoName repoName))))
+selectGleanDBs AutoRepoMapping Nothing _langs =
+  Right Map.empty
 selectGleanDBs repoMapping mRepoName langs0 =
   case map flatten (filter matches candidates) of
     [] -> Left err
@@ -182,6 +190,7 @@ normalizeLanguages l = l
 -- | Select universe of glean repo,(db/language) pairs.
 -- Either just the test dbs, or all the non-test dbs.
 listGleanIndices :: RepoMapping -> Bool -> [(RepoName, GleanDBSelector)]
+listGleanIndices AutoRepoMapping _ = [] -- handled earlier
 listGleanIndices RepoMapping{..} testsOnly =
   let testRepos = [RepoName "test", RepoName "test-xlang"]
       flatten (repo,langs) = map (repo,) langs
@@ -199,6 +208,8 @@ fromSCSRepo
   -> Maybe (Text -> IO Bool)
   -> Maybe Language
   -> IO [GleanDBName]
+fromSCSRepo AutoRepoMapping repo _branchFilter _mLanguage =
+  return [GleanDBName (unRepoName repo)]
 fromSCSRepo RepoMapping{..} repo branchFilter mLanguage
   | Just rs <- Map.lookup repo gleanIndices = do
     let filteredByLang = filterByLanguage mLanguage rs
@@ -279,7 +290,7 @@ fileLanguage (Path file)
     is a =  a `Text.isSuffixOf` file
 
 --
--- Operating on the latest repo statea
+-- Operating on the latest repo state
 --
 
 -- | Fetch all latest dbs we care for
@@ -295,7 +306,7 @@ getLatestRepos backend scm mlogger mretry = go mretry
     go :: Maybe Int -> IO GleanDBInfo
     go n = do
       latest <- Glean.getLatestRepos backend $ \name ->
-        GleanDBName name `Set.member` Mapping.allGleanRepos
+        maybe True (GleanDBName name `Set.member`) Mapping.allGleanRepos
 
       -- Filter unavailable DBs using hasDatabase. Glean.getLatestRepos does
       -- this for latestRepos but not allLatestRepos, in that case it's up to
@@ -317,21 +328,16 @@ getLatestRepos backend scm mlogger mretry = go mretry
             , scmRevisions = scmRevisions
             , dbByRevision = getDbByRevision dbs scmRevisions
             }
-      if required `Set.isSubsetOf` advertised
-        then return info
-        else do
+          required = Set.map unGleanDBName Mapping.gleanRequiredIndices
+          missing = required `Set.difference` advertised
+      if
+        | not (Set.null missing), Just m <- n, m > 1 -> do
           -- some required dbs are missing! this is transient? and bad
           -- in prod/full service mode this would be bad
-          let missing = required `Set.difference` advertised
+          -- if no retries allowed, give up
           logIt mlogger dbs missing n backend
-          case n of
-            Just n
-              | n > 1 -> do {- i.e. try more than 1 time -}
-                delay (seconds 1) >> go (Just (n-1))
-
-            _ -> return info -- if no retries allowed, give up
-
-    required = Set.map unGleanDBName Mapping.gleanRequiredIndices
+          delay (seconds 1) >> go (Just (m-1))
+        | otherwise -> return info
 
 -- | Log an entry in glean_glass_server_error_events if a logger is available,
 -- and locally (e.g. to stderr). Do not log otherwise (e.g. in test mode).
