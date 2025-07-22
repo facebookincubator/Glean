@@ -14,7 +14,7 @@
 namespace facebook::glean::rts::benchmarking {
 #endif
 
-// @lint-ignore-every CLANGTIDY facebook-hte-Typedef
+// @lint-ignore-every CLANGTIDY modernize-use-using
 typedef struct FactBlock FactBlock;
 
 #ifdef __cplusplus

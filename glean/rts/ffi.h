@@ -41,7 +41,7 @@ namespace glean {
 namespace rts {
 #endif
 
-// @lint-ignore-every CLANGTIDY facebook-hte-Typedef
+// @lint-ignore-every CLANGTIDY modernize-use-using
 typedef struct Lookup Lookup;
 typedef struct Define Define;
 typedef struct FactSet FactSet;
