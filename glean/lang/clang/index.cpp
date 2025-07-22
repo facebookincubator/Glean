@@ -416,7 +416,7 @@ struct SourceIndexer {
     clang::tooling::ClangTool tool(*pcdb, source.file);
     if (!FLAGS_clang_arguments.empty()) {
       clang::tooling::CommandLineArguments args;
-      folly::split(" ", FLAGS_clang_arguments, args, true);
+      folly::split(' ', FLAGS_clang_arguments, args, true);
       if (!args.empty()) {
         tool.appendArgumentsAdjuster(clang::tooling::getInsertArgumentAdjuster(
             args, clang::tooling::ArgumentInsertPosition::END));
@@ -612,7 +612,7 @@ int getSelfRSS() {
     return 0;
   }
   std::vector<std::string> lines;
-  folly::split("\n", contents, lines);
+  folly::split('\n', contents, lines);
   for (const auto& line : lines) {
     folly::StringPiece piece(line);
     if (piece.subpiece(0, 4) == "Rss:") {
