@@ -791,7 +791,7 @@ library schema
         Glean.Schema.CodeLsif.Types
         Glean.Schema.CodemarkupAnglelang.Types
         Glean.Schema.CodemarkupBuck.Types
-        lean.Schema.CodemarkupChef.Types
+        Glean.Schema.CodemarkupChef.Types
         Glean.Schema.CodemarkupCsharp.Types
         Glean.Schema.CodemarkupCxx.Types
         Glean.Schema.CodemarkupDataswarm.Types
