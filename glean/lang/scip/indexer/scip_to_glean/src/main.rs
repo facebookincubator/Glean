@@ -38,7 +38,7 @@ mod output;
 )]
 struct BuildJsonArgs {
     #[arg(short, long)]
-    input: PathBuf,
+    input: Vec<PathBuf>,
     #[arg(short, long)]
     output: PathBuf,
 
@@ -99,13 +99,15 @@ fn build_json(args: BuildJsonArgs) -> Result<()> {
         .and_then(|s| LanguageId::new(s).known());
 
     let mut env = Env::new();
-    decode_scip_data(
-        &mut env,
-        &args.input,
-        default_language,
-        args.infer_language,
-        args.root_prefix.as_deref(),
-    )?;
+    for input in &args.input {
+        decode_scip_data(
+            &mut env,
+            input,
+            default_language,
+            args.infer_language,
+            args.root_prefix.as_deref(),
+        )?;
+    }
 
     let output_facts = env.output();
     info!("Found {} facts total", output_facts.total_facts_count());
@@ -213,7 +215,7 @@ mod tests {
         let output_json = NamedTempFile::new().expect("unable to create temp file");
 
         let args = BuildJsonArgs {
-            input: scip_file.path().to_path_buf(),
+            input: vec![scip_file.path().to_path_buf()],
             output: output_json.path().to_path_buf(),
             infer_language: true,
             language: None,
@@ -235,7 +237,7 @@ mod tests {
         let output_json_dir = tempfile::TempDir::new().expect("Unable to create temp dir");
 
         let args = BuildJsonArgs {
-            input: scip_file.path().to_path_buf(),
+            input: vec![scip_file.path().to_path_buf()],
             output: output_json_dir.path().to_path_buf(),
             infer_language: true,
             language: None,

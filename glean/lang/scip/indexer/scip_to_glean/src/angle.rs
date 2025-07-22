@@ -110,7 +110,6 @@ impl Env {
         path_prefix: Option<&str>,
         doc: Document,
     ) -> Result<()> {
-        let src_file_id = self.next_id();
         // todo - adjust filepath with prefix and suffix
         let mut filepath = doc.relative_path.to_owned();
         if let Some(path_prefix) = path_prefix {
@@ -118,7 +117,13 @@ impl Env {
         }
         let filepath = filepath.into_boxed_str();
 
-        self.set_def_fact(StringPredicate::File, filepath.clone(), src_file_id);
+        // Skip files if the same file has already been seen.
+        // Note that this differs from the Haskell version, which does not have this check.
+        let (src_file_id, already_seen) =
+            self.get_or_set_fact(StringPredicate::File, filepath.clone());
+        if already_seen {
+            return Ok(());
+        }
 
         self.out.src_file(src_file_id, filepath.clone());
         let lang_file_id = self.next_id();
