@@ -128,7 +128,7 @@ data PropertyMod   = PropertyMod Abstract Final Visibility Static
 
 data Abstract = Abstract | NotAbstract deriving Eq
 data Final = Final | NotFinal deriving Eq
-data Visibility = Public | Protected | Private | Internal
+data Visibility = Public | Protected | Private | Internal | ProtectedInternal
 data Static = Static | NotStatic deriving Eq
 data Async = Async | NotAsync deriving Eq
 data ModuleInternal = IsInternal | NotInternal deriving Eq
@@ -455,6 +455,7 @@ ppMethodModifiers container
       Protected -> "protected"
       Private -> "private"
       Internal -> "internal"
+      ProtectedInternal -> "protected internal"
     when (static==Static) $ tell ["static"]
     when (readonlyThis==IsReadOnly) $ tell ["readonly"]
     when (async==Async) $ tell ["async"]
@@ -472,6 +473,7 @@ ppPropertyModifiers container (PropertyMod abstract final visibility static) =
       Public -> "public"
       Protected -> "protected"
       Private -> "private"
+      ProtectedInternal -> "protected internal"
       Internal -> "internal"
     when (static==Static) $ tell ["static"]
 
@@ -680,6 +682,7 @@ fromHackVisibility v = case v of
   Hack.Visibility_Public -> Public
   Hack.Visibility_Protected -> Protected
   Hack.Visibility_Private -> Private
+  Hack.Visibility_ProtectedInternal -> ProtectedInternal
   Hack.Visibility_Internal -> Internal
   Hack.Visibility__UNKNOWN{} -> error "unexpected visibility"
 
