@@ -6,6 +6,6 @@ schema code.chef.1 {
 
     type Entity =
     {
-        symbol : chef.Symbol
+        symbol : chef.Symbol |
     }
 }

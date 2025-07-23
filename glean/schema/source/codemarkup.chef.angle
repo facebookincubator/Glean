@@ -6,7 +6,6 @@ import code.chef
 import codemarkup.types
 
 
-# Entity -> usage
 predicate ChefEntityUses:
   {
     target: code.chef.Entity,
@@ -15,6 +14,16 @@ predicate ChefEntityUses:
   }
   {{ symbol = Symbol }, File, Span } where
   chef.ReferencedAt { Symbol, { File, Span } }
+
+
+predicate ChefEntityLocation:
+  {
+    entity: code.chef.Entity,
+    location: codemarkup.types.Location,
+  }
+  { { symbol = Symbol }, { EntityName, File, { span = Span }, nothing } } where
+    chef.DefinedAt { Symbol,{File, Span} };
+    Symbol.identifier = chef.Name EntityName;
 
 predicate ChefResolveLocation:
   {
@@ -27,9 +36,9 @@ predicate ChefResolveLocation:
 
 predicate ChefFileEntityXRefLocations:
   {
-    file: src.File, # file where the reference is located
-    xref: codemarkup.types.XRefLocation, # XRefs from source to target declaration or definition
-    entity: code.chef.Entity, # actual entity that is being referenced
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.chef.Entity,
   } { File, {Location, {span = Span}}, { symbol = Symbol } } where
   chef.ReferencedAt { Symbol, { File, Span } };
   Symbol.identifier = chef.Name EntityName;

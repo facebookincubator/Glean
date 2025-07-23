@@ -74,6 +74,7 @@ import Glean.Glass.SymbolId.Class
 import Glean.Glass.SymbolId.Angle ({- instances -})
 import Glean.Glass.SymbolId.Buck ({- instances -})
 import Glean.Glass.SymbolId.Cxx ({- instances -})
+import Glean.Glass.SymbolId.Chef ({- instances -})
 import Glean.Glass.SymbolId.Erlang ({- instances -})
 import Glean.Glass.SymbolId.Fbthrift ({- instances -})
 import Glean.Glass.SymbolId.Flow ({- instances -})
@@ -303,6 +304,7 @@ instance Symbol Code.Entity where
     Code.Entity_csharp x -> toSymbolWithPath x p
     Code.Entity_cxx x -> toSymbolWithPath x p
     Code.Entity_buck x -> toSymbolWithPath x p
+    Code.Entity_chef x -> toSymbolWithPath x p
     Code.Entity_erlang x -> toSymbolWithPath x p
     Code.Entity_graphql x -> toSymbolWithPath x p
     Code.Entity_hs x -> toSymbolWithPath x p
@@ -400,6 +402,7 @@ instance ToQName Code.Entity where
   toQName e = case e of
     Code.Entity_angle x -> toQName x
     Code.Entity_buck x -> toQName x
+    Code.Entity_chef x -> toQName x
     Code.Entity_csharp x -> toQName x
     Code.Entity_cxx x -> toQName x
     Code.Entity_erlang x -> toQName x

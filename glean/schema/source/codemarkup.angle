@@ -208,7 +208,9 @@ predicate EntityLocation:
     (codemarkup.graphql.GraphQLEntityLocation { E, Location };
      { graphql = E } = Entity) |
     (codemarkup.anglelang.AngleEntityLocation { E, Location };
-     { angle = E } = Entity);
+     { angle = E } = Entity) |
+    (codemarkup.chef.ChefEntityLocation { E, Location };
+     { chef = E } = Entity);
 
 # Maps a generated entity to its source definition
 predicate GeneratedEntityToIdlEntity:
