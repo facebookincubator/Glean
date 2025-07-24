@@ -187,6 +187,12 @@ struct DocumentSymbolsRequest {
 
 // response types
 
+// Filter for symbol based search results
+union SymbolFilter {
+  // Filters the symbol such that it is defined in the given file
+  1: string definition_file;
+}
+
 // Human-readable opaque, stable, globally unique symbol identifier
 typedef string SymbolId (hs.newtype)
 

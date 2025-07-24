@@ -40,7 +40,6 @@ import qualified Data.ByteString.Lazy as B
 import qualified Data.Map.Strict as Map
 import qualified Data.Yaml as Yaml
 import Util.List ( uniq )
-import Data.Tuple.Extra
 import Data.Either.Extra
 
 import qualified Thrift.Protocol
@@ -226,8 +225,10 @@ validateCxxSymbols glassEnv req def = do
       refs = map Glass.referenceRangeSymbolX_sym
         (Glass.documentSymbolListXResult_references res)
       syms = uniq (defns ++ refs)
-      toks = map thd3 (filter ((== Language_Cpp) . snd3) -- only cxx ids thx
+      toks = map getTokens (filter ((== Language_Cpp) . getLanguage) -- only cxx ids thx
                 (rights (map Glass.symbolTokens syms)))
+      getLanguage (_, lang, _, _) = lang
+      getTokens (_, _, tokens, _) = tokens
   return (map Cxx.validateSymbolId toks)
 
 decodeObjectAsThriftJson

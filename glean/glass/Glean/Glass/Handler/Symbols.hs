@@ -109,14 +109,22 @@ import qualified Glean.Glass.Handler.Utils as Utils
 import Glean.Glass.SymbolKind (findSymbolKind)
 import Glean.Glass.Env (Env' (tracer, sourceControl, useSnapshotsForSymbolsList))
 
+extractDefFileFilter :: [SymbolFilter] -> Maybe Text
+extractDefFileFilter [] = Nothing
+extractDefFileFilter (SymbolFilter_definition_file filePath : _) = Just filePath
+extractDefFileFilter (_ : rest) = extractDefFileFilter rest
+
+
 -- | Symbol-based find-references.
 findReferenceRanges
   :: Glass.Env -> SymbolId -> RequestOptions -> IO [LocationRange]
 findReferenceRanges env@Glass.Env{..} sym opts@RequestOptions{..} =
   withSymbol "findReferenceRanges" env opts sym
-    $ \gleanDBs _dbInfo (repo, lang, toks) ->
-      fetchSymbolReferenceRanges env repo lang toks limit
-        GleanBackend{..}
+    $ \gleanDBs _dbInfo (repo, lang, toks, symbolFilters) -> do
+      let filename = extractDefFileFilter symbolFilters
+      (ranges, maybeError) <-
+            fetchSymbolReferenceRanges env repo lang toks limit filename GleanBackend{..}
+      return (ranges, maybeError)
   where
     limit = fmap fromIntegral requestOptions_limit
 
@@ -125,8 +133,11 @@ findReferenceRanges env@Glass.Env{..} sym opts@RequestOptions{..} =
 symbolLocation :: Glass.Env -> SymbolId -> RequestOptions -> IO SymbolLocation
 symbolLocation env@Glass.Env{..} sym opts =
   withSymbol "symbolLocation" env opts sym $
-    \gleanDBs dbInfo (scmRepo, lang, toks) ->
+    \gleanDBs dbInfo (scmRepo, lang, toks, filters) ->
       backendRunHaxl GleanBackend{..} env $ do
+        case filters of
+          [] -> return ()
+          _ -> throwM (ServerException "symbolLocation: filters not supported")
         r <- Search.searchEntityLocation lang toks
         (entity, err) <- case r of
           None t -> throwM (ServerException t)
@@ -150,8 +161,11 @@ describeSymbol
   -> IO SymbolDescription
 describeSymbol env@Glass.Env{..} symId opts =
   withSymbol "describeSymbol" env opts symId $
-    \gleanDBs dbInfo (scmRepo, lang, toks) ->
+    \gleanDBs dbInfo (scmRepo, lang, toks, filters) ->
       backendRunHaxl GleanBackend{..} env $ do
+        case filters of
+          [] -> return ()
+          _ -> throwM (ServerException "describeSymbol: filters not supported")
         r <- Search.searchEntityLocation lang toks
         (first :| rest, err) <- case r of
           None t -> throwM (ServerException t)
@@ -178,8 +192,11 @@ resolveSymbols env@Glass.Env{..} (ResolveSymbolsRequest symIds) opts = do
   results <- forM symIds $ \symId -> do
     -- Try to resolve the symbol, returning any error encountered
     (resolutions, err) <- withSymbol "resolveSymbols" env opts symId $
-      \gleanDBs dbInfo (scmRepo, lang, toks) ->
+      \gleanDBs dbInfo (scmRepo, lang, toks, filters) ->
       backendRunHaxl GleanBackend{..} env $ do
+        case filters of
+          [] -> return ()
+          _ -> throwM (ServerException "resolveSymbols: filters not supported")
         r <- Search.searchEntityLocation lang toks
         (entities, err) <- case r of
           None t ->
@@ -608,9 +625,10 @@ fetchSymbolReferenceRanges
   -> Language
   -> [Text]
   -> Maybe Int
+  -> Maybe Text
   -> GleanBackend b
   -> IO ([LocationRange], Maybe ErrorLogger)
-fetchSymbolReferenceRanges env scsrepo lang toks limit b =
+fetchSymbolReferenceRanges env scsrepo lang toks limit filename b =
   backendRunHaxl b env $ do
     er <- symbolToAngleEntities lang toks
     let logDBs x = logError (gleanDBs b) <> x
@@ -621,7 +639,11 @@ fetchSymbolReferenceRanges env scsrepo lang toks limit b =
           withRepo entityRepo $ do
             let convert (targetFile, rspan) =
                   rangeSpanToLocationRange scsrepo targetFile rspan
-            uses <- searchWithLimit limit $ Query.findReferenceRangeSpan query
+            uses <- searchWithLimit limit $ case (filename, lang) of
+              -- Definition file filter only supported for Python
+              (Just filename, Language_Python) ->
+                Query.findReferenceRangeSpanByDef query filename
+              _ -> Query.findReferenceRangeSpan query
             mapM convert uses
         return (nubOrd $ concat ranges, fmap (logDBs . logError) searchErr)
 
@@ -687,9 +709,12 @@ searchRelated
 searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
     SearchRelatedRequest{..} =
   withSymbol "searchRelated" env opts sym $
-    \gleanDBs_ dbInfo (repo, lang, toks) ->
+    \gleanDBs_ dbInfo (repo, lang, toks, filters) ->
       let gleanDBs = filterDBs lang gleanDBs_ in
       backendRunHaxl GleanBackend{..} env $ do
+        case filters of
+          [] -> return ()
+          _ -> throwM (ServerException "searchRelated: filters not supported")
         entity <- searchFirstEntity lang toks
         withRepo (entityRepo entity) $ do
           (symPairs, desc, merr) <- case searchRelatedRequest_relatedBy of
@@ -922,8 +947,11 @@ searchRelatedNeighborhood
   -> IO RelatedNeighborhoodResult
 searchRelatedNeighborhood env@Glass.Env{..} sym opts@RequestOptions{..} req =
   withSymbol "searchRelatedNeighborhood" env opts sym $
-    \gleanDBs dbInfo (repo, lang, toks) ->
+    \gleanDBs dbInfo (repo, lang, toks, filters) ->
       backendRunHaxl GleanBackend{..} env $ do
+        case filters of
+          [] -> return ()
+          _ -> throwM (ServerException "searchRelatedNeighborhood: filters not supported")
         baseEntity <- searchFirstEntity lang toks
         let lang = entityLanguage (fst4 (decl baseEntity))
         (,Nothing) <$> searchNeighborhood limit req sym repo

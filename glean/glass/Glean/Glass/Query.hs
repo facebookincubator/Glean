@@ -21,6 +21,7 @@ module Glean.Glass.Query
 
   -- * Finding references to declarations
   , findReferenceRangeSpan
+  , findReferenceRangeSpanByDef
 
   -- * Finding references for call hierarchy
   , findReferenceEntities
@@ -150,6 +151,43 @@ findReferenceRangeSpan ent =
         end
       )
     ]
+
+-- | Entity-based find-references returning native range or bytespan filtered by
+-- the referenced symbols being defined in the given file.
+findReferenceRangeSpanByDef
+  :: Angle Code.Entity
+  -> Text
+  -> Angle (Src.File, Code.RangeSpan)
+findReferenceRangeSpanByDef ent filename =
+  vars $ \(reffile :: Angle Src.File)
+    (rangespan :: Angle Code.RangeSpan)
+    (deffile :: Angle Src.File)
+    (xref :: Angle Code.XRefLocation)
+    (targetLoc :: Angle Code.Location) ->
+      Angle.tuple (reffile, rangespan) `where_` [
+        wild .= predicate @Code.EntityReferences (
+          rec $
+              field @"target" ent $
+              field @"file" (asPredicate reffile) $
+              field @"range" rangespan
+            end
+          )
+        , deffile .= predicate @Src.File (string filename)
+        , wild .= predicate @Code.FileEntityXRefLocations (
+            rec $
+              field @"file" (asPredicate reffile) $
+              field @"xref" xref $
+              field @"entity" ent
+            end
+          )
+        , xref .= rec (
+            field @"target" targetLoc $
+            field @"source" rangespan
+          end)
+        , targetLoc .= rec (
+            field @"file" (asPredicate deffile)
+          end)
+      ]
 
 generatedEntityToIdlEntity
   :: Angle Code.Entity

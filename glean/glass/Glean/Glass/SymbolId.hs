@@ -43,7 +43,7 @@ module Glean.Glass.SymbolId
   ,nativeSymbol) where
 
 import Control.Monad.Catch ( throwM, try )
-import Data.Maybe ( fromMaybe )
+import Data.Maybe ( fromMaybe, mapMaybe )
 import Data.Tuple ( swap )
 import Util.Text ( textShow )
 import Data.Text ( Text )
@@ -59,7 +59,8 @@ import Glean.Glass.Types as Glass
       Language(..),
       SymbolId(SymbolId),
       RepoName(..),
-      Name, )
+      Name,
+      SymbolFilter(..) )
 
 import Glean.Angle ( alt, Angle )
 import qualified Glean.Haxl.Repos as Glean
@@ -109,11 +110,12 @@ import Glean.Schema.CodeCsharp.Types as CSharp ( Entity(Entity_decl) )
 -- If we can't encode the entity, it is still useful to return the path and
 -- file, as this is enough to navigate with.
 --
--- Symbol IDs have 3 parts:
+-- Symbol IDs have 3 fixed parts and 1 optional part:
 --
 -- - scm repo (corpus in biggrep term), e.g. "fbsource"
 -- - language short code (e.g py or php or cpp)
 -- - entity encoding
+-- - [optional] filters as defined in the thrift schema
 --
 -- We uri encode the pieces and separate with / so they look like nice urls
 --
@@ -165,16 +167,32 @@ toSymbolQualifiedContainer entity = do
     Right (_, qualifiedName_container) -> Just qualifiedName_container
     Left _ -> Nothing
 
+parseFilter :: Text -> Maybe SymbolFilter
+parseFilter f = case Text.splitOn "=" f of
+  [k, v] -> case k of
+    "definition_file" -> Just (SymbolFilter_definition_file v)
+    _ -> Nothing
+  _ -> Nothing
+
+parseFilters :: Text -> [SymbolFilter]
+parseFilters = mapMaybe parseFilter . Text.split (=='&')
+
 -- | Tokenize a symbol (inverse of the intercalate "/")
 -- Leaves the path/qname/syms for further search.
-symbolTokens :: SymbolId -> Either Text (RepoName, Language, [Text])
+symbolTokens
+  :: SymbolId
+  -> Either Text (RepoName, Language, [Text], [SymbolFilter])
 symbolTokens (SymbolId symid)
   | (repo: code: pieces) <- tokens
   , Just lang <- fromShortCode code
-  = Right (RepoName repo, lang, map URI.decodeText pieces)
+  = Right (RepoName repo, lang, map URI.decodeText pieces, filters)
   | otherwise = Left $ "Invalid symbol: " <> symid
   where
-    tokens = Text.split (=='/') symid
+    (ident, filters) = case Text.split (=='?') symid of
+      [identOnly] -> (identOnly, [])
+      [identPart, filtersPart] -> (identPart, parseFilters filtersPart)
+      _ -> (symid, [])
+    tokens = Text.split (=='/') ident
 
 -- | SymbolID-encoded language, used for db name lookups
 shortCodeTable :: [(Language,Text)]

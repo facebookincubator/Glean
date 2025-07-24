@@ -206,14 +206,14 @@ withSymbol
   -> SymbolId
   -> (  NonEmpty (GleanDBName, Glean.Repo)
      -> GleanDBInfo
-     -> (RepoName, Language, [Text])
+     -> (RepoName, Language, [Text], [SymbolFilter])
      -> IO (res, Maybe ErrorLogger))
   -> IO res
 withSymbol method env@Glass.Env{..} opts sym fn =
   fmap fst $ withRequest method env sym opts $ \dbInfo ->
     case symbolTokens sym of
       Left err -> throwM $ ServerException err
-      Right req@(repo, lang, _toks) -> do
+      Right req@(repo, lang, _toks, _filters) -> do
         dbs <- getGleanRepos tracer sourceControl repoMapping dbInfo repo
           (Just lang) (requestOptions_revision opts)
           (dbChooser repo opts) gleanDB
