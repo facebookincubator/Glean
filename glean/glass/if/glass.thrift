@@ -104,11 +104,14 @@ struct AttributeOptions {
   6: bool fetch_assembly_data = false;
   7: bool fetch_strobelight_frames = false;
   8: bool fetch_default_view = false;
+  9: optional PackageName package_name;
 }
 
 typedef string ServiceID (hs.newtype)
 
 typedef string BinaryName (hs.newtype)
+
+typedef string PackageName (hs.newtype)
 
 // Generic request options, supported by most calls
 struct RequestOptions {
