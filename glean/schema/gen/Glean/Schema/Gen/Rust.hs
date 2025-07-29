@@ -99,6 +99,7 @@ genNamespace namespaces version
     , "use serde::Deserialize;"
     , "use serde::Serialize;"
     , "use serde_json::Value;"
+    , "use serde_repr::*;"
     , ""
     , "use crate::report::glean::schema::*;"
     ] ++
@@ -187,10 +188,10 @@ rustName here (ns, name)
   | Text.null (underscored ns) = safe name
   | otherwise = underscored ns <> "::" <> safe name
 
-
-annotation :: Text
-annotation = "#[derive(Clone, Debug, Deserialize, Eq, Hash, "
-    <> "PartialEq, Serialize)]"
+data ShouldUseRepr = UseRepr | NoRepr
+annotation :: ShouldUseRepr -> Text
+annotation UseRepr = "#[derive(Clone, Debug, Deserialize_repr, Eq, Hash, PartialEq, Serialize_repr)]"
+annotation NoRepr =  "#[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]"
 
 wrapInBoxIf :: Bool -> Text -> Text
 wrapInBoxIf useBox text =
@@ -261,7 +262,7 @@ genPred here PredicateDef{..} = do
   let
     -- Predicate struct definition
     define = (:[]) $ myUnlines $ concat
-        [ [ annotation ]
+        [ [ annotation NoRepr ]
         , [ "pub struct " <> name <> " {" ]
         , indentLines $ catMaybes
           [ Just $ "pub id: " <> type_id <> ","
@@ -313,7 +314,8 @@ makeEnum :: Text -> [Name] -> M [Text]
 makeEnum name vals = do
   let
     variants = Text.unlines $ indentLines (map (<> ",") vals)
-    declare = annotation <> newline
+    declare = annotation UseRepr <> newline
+      <> "#[repr(u8)]" <> newline
       <> "pub enum " <> name <> " {" <> newline <> variants <> "}"
   return [declare]
 
@@ -328,15 +330,22 @@ genType here tref ty = addExtraDecls $ do
     RecordTy fields -> do
         fieldTexts <- forM fields $ \(FieldDef nm ty) -> do
           tyName <- withRecordFieldHint nm (rustTy here ty)
-          return $ "pub " <> safe nm <> ": " <> tyName <> ","
+          let isOption = case ty of MaybeTy _ -> True; _ -> False
+          let fieldLine = "pub " <> safe nm <> ": " <> tyName <> ","
+          return $ if isOption
+                   then [
+                    "#[serde(skip_serializing_if = \"Option::is_none\")]"
+                    , fieldLine
+                    ]
+                   else [fieldLine]
         let
           define | null fields =
-            annotation <> newline <>
+            annotation NoRepr <> newline <>
             "pub struct " <> name <> " {}"
                 | otherwise = myUnlines $ concat
-            [ [ annotation ]
+            [ [ annotation NoRepr ]
             , [ "pub struct " <> name <> " {" ]
-            , indentLines fieldTexts
+            , indentLines (concat fieldTexts)
             , [ "}" ]
             ]
         return [define]
@@ -346,10 +355,10 @@ genType here tref ty = addExtraDecls $ do
           return $ safe nm <> "(" <> safe tyName <> "),"
         let
           define | null fields =
-            annotation <> newline <>
+            annotation NoRepr <> newline <>
             "pub enum " <> name <> " {}"
                  | otherwise = myUnlines $ concat
-            [ [ annotation ]
+            [ [ annotation NoRepr ]
             , [ "pub enum " <> name <> " {" ]
             , indentLines variantTexts
             , [ "}" ]
