@@ -22,7 +22,7 @@ class GlassAccess : public IGlassAccess {
   std::optional<protocol::LocationList> usrToDefinition(
       const std::string& usr) override;
 
- private:
+ protected:
   template <typename T>
   std::optional<T> runGlassMethod(
       const std::string& method,

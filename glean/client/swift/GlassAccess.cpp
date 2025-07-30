@@ -11,23 +11,13 @@
 #include <folly/String.h>
 #include <folly/coro/BlockingWait.h>
 #include <glog/logging.h>
-#include "servicerouter/client/cpp2/ServiceRouter.h"
 
 using namespace facebook;
 using apache::thrift::RpcOptions;
 
 const auto GlassTimeoutMs = 900;
 
-GlassAccess::GlassAccess() {
-  auto params = facebook::servicerouter::ClientParams().setProcessingTimeoutMs(
-      std::chrono::milliseconds(10000));
-
-  std::string connectionTier = "glean.glass";
-  client =
-      servicerouter::cpp2::getClientFactory()
-          .getSRClientUnique<apache::thrift::Client<::glean::GlassService>>(
-              connectionTier, params);
-}
+GlassAccess::GlassAccess() : client(nullptr) {}
 
 std::optional<protocol::LocationList> GlassAccess::usrToDefinition(
     const std::string& usr) {

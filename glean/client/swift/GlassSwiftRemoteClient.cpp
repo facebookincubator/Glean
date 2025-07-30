@@ -10,7 +10,7 @@
 #include <memory>
 #include "folly/Singleton.h"
 #include "folly/init/Init.h"
-#include "glean/client/swift/GlassAccess.h"
+#include "glean/client/swift/GlassAccessRemote.h"
 #include "glean/client/swift/JsonServer.h"
 
 // Folly singleton for JsonServer
@@ -29,8 +29,8 @@ int main(int argc, char** argv) {
 
   std::signal(SIGINT, signalHandler);
 
-  // Create GlassAccess and set it in JsonServer
-  auto glassAccess = std::make_unique<GlassAccess>();
+  // Create GlassAccessRemote and set it in JsonServer
+  auto glassAccess = std::make_unique<GlassAccessRemote>();
   jsonServerSingleton.try_get()->setGlassAccess(std::move(glassAccess));
 
   // Start the server
