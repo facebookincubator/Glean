@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <folly/dynamic.h>
+#include <gtest/gtest_prod.h>
 #include <atomic>
 #include <iostream>
 #include <memory>
@@ -27,6 +29,20 @@ class JsonServer {
   void stop();
 
  private:
+  void processRequest(const std::string& requestStr, std::ostream& output);
+  FRIEND_TEST(JsonServerTest, USRToDefinitionRequest);
+  FRIEND_TEST(JsonServerTest, USRToDefinitionRequestNoResults);
+  FRIEND_TEST(JsonServerTest, UnknownMethodRequest);
+  FRIEND_TEST(JsonServerTest, InvalidJSONRequest);
   std::atomic<bool> running_;
   std::unique_ptr<IGlassAccess> glassAccess_;
+  void handleUSRToDefinitionRequest(
+      const folly::dynamic& id,
+      const std::string& usr,
+      std::ostream& output);
+  void sendErrorResponse(
+      const folly::dynamic& id,
+      int code,
+      const std::string& message,
+      std::ostream& output);
 };

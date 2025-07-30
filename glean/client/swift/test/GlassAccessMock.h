@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <gmock/gmock.h>
 #include "glean/client/swift/IGlassAccess.h"
 
 class GlassAccessMock : public IGlassAccess {
@@ -15,9 +16,9 @@ class GlassAccessMock : public IGlassAccess {
   GlassAccessMock() = default;
   ~GlassAccessMock() override = default;
 
-  std::optional<protocol::LocationList> usrToDefinition(
-      const std::string& usr) override {
-    // Mock implementation - always returns nullopt
-    return std::nullopt;
-  }
+  MOCK_METHOD(
+      std::optional<protocol::LocationList>,
+      usrToDefinition,
+      (const std::string& usr),
+      (override));
 };
