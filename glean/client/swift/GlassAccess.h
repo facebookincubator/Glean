@@ -30,4 +30,8 @@ class GlassAccess : public IGlassAccess {
       folly::Function<folly::coro::Task<T>()> f);
 
   std::unique_ptr<apache::thrift::Client<::glean::GlassService>> client;
+
+ private:
+  std::string getHgRoot();
+  std::string hgRoot_;
 };

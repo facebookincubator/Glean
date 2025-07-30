@@ -11,13 +11,16 @@
 #include <folly/String.h>
 #include <folly/coro/BlockingWait.h>
 #include <glog/logging.h>
+#include <cstdlib>
+#include <memory>
+#include <stdexcept>
 
 using namespace facebook;
 using apache::thrift::RpcOptions;
 
 const auto GlassTimeoutMs = 900;
 
-GlassAccess::GlassAccess() : client(nullptr) {}
+GlassAccess::GlassAccess() : client(nullptr), hgRoot_(getHgRoot()) {}
 
 std::optional<protocol::LocationList> GlassAccess::usrToDefinition(
     const std::string& usr) {
@@ -63,7 +66,7 @@ std::optional<protocol::LocationList> GlassAccess::usrToDefinition(
   protocol::Range protocolRange(start, end);
 
   // Create URI from repository and filepath using URI escaping
-  std::string filepath = gleanLocation.filepath_ref().value();
+  std::string filepath = hgRoot_ + "/" + gleanLocation.filepath_ref().value();
   std::string uri = "file://" + folly::uriEscape<std::string>(filepath);
   protocol::Location location(uri, protocolRange);
 
@@ -88,4 +91,35 @@ std::optional<T> GlassAccess::runGlassMethod(
                << msg << "\n";
   }
   return {};
+}
+
+std::string GlassAccess::getHgRoot() {
+  // Execute 'hg root' command to get the mercurial repository root
+  FILE* pipe = popen("hg root", "r");
+  if (!pipe) {
+    throw std::runtime_error("Failed to execute 'hg root' command");
+  }
+
+  char buffer[1024];
+  std::string result;
+  while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
+    result += buffer;
+  }
+
+  int status = pclose(pipe);
+  if (status != 0) {
+    throw std::runtime_error(
+        "'hg root' command failed with status: " + std::to_string(status));
+  }
+
+  // Remove trailing newline if present
+  if (!result.empty() && result.back() == '\n') {
+    result.pop_back();
+  }
+
+  if (result.empty()) {
+    throw std::runtime_error("'hg root' command returned empty result");
+  }
+
+  return result;
 }
