@@ -8,11 +8,10 @@
 
 #include "glean/client/swift/JsonServer.h"
 
-JsonServer::JsonServer() : running_(false) {}
+JsonServer::JsonServer() : running_(false), glassAccess_(nullptr) {}
 
-JsonServer& JsonServer::getInstance() {
-  static JsonServer instance;
-  return instance;
+void JsonServer::setGlassAccess(std::unique_ptr<IGlassAccess> glassAccess) {
+  glassAccess_ = std::move(glassAccess);
 }
 
 void JsonServer::start(std::istream& input, std::ostream& output) {

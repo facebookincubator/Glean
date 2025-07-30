@@ -10,20 +10,23 @@
 
 #include <atomic>
 #include <iostream>
+#include <memory>
+#include "glean/client/swift/IGlassAccess.h"
 
 class JsonServer {
  public:
-  static JsonServer& getInstance();
-
-  void start(std::istream& input = std::cin, std::ostream& output = std::cout);
-  void stop();
-
- private:
   JsonServer();
   ~JsonServer() = default;
   JsonServer(const JsonServer&) = delete;
   JsonServer& operator=(const JsonServer&) = delete;
   JsonServer(JsonServer&&) = delete;
   JsonServer& operator=(JsonServer&&) = delete;
+
+  void setGlassAccess(std::unique_ptr<IGlassAccess> glassAccess);
+  void start(std::istream& input = std::cin, std::ostream& output = std::cout);
+  void stop();
+
+ private:
   std::atomic<bool> running_;
+  std::unique_ptr<IGlassAccess> glassAccess_;
 };
