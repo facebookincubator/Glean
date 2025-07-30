@@ -20,4 +20,7 @@ GlassAccessRemote::GlassAccessRemote() {
       servicerouter::cpp2::getClientFactory()
           .getSRClientUnique<apache::thrift::Client<::glean::GlassService>>(
               connectionTier, params);
+
+  // Warm up the connection after client is initialized
+  warmUpConnection();
 }

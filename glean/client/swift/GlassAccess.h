@@ -12,7 +12,6 @@
 #include <memory>
 #include "glean/client/swift/IGlassAccess.h"
 #include "glean/glass/if/gen-cpp2/GlassServiceAsyncClient.h"
-#include "glean/glass/if/gen-cpp2/glass_types.h"
 
 class GlassAccess : public IGlassAccess {
  public:
@@ -29,6 +28,7 @@ class GlassAccess : public IGlassAccess {
       std::string& msg,
       folly::Function<folly::coro::Task<T>()> f);
 
+  void warmUpConnection();
   std::unique_ptr<apache::thrift::Client<::glean::GlassService>> client;
 
  private:

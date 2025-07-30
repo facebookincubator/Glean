@@ -16,4 +16,7 @@ GlassAccessLocal::GlassAccessLocal() {
   client = facebook::corp2prod::client::getClientFactory()
                .getClientUnique<apache::thrift::Client<::glean::GlassService>>(
                    connectionTier);
+
+  // Warm up the connection after client is initialized
+  warmUpConnection();
 }

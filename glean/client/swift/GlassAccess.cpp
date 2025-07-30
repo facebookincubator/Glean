@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include <memory>
 #include <stdexcept>
+#include "glean/client/swift/Clock.h"
 
 using namespace facebook;
 using apache::thrift::RpcOptions;
@@ -24,6 +25,7 @@ GlassAccess::GlassAccess() : client(nullptr), hgRoot_(getHgRoot()) {}
 
 std::optional<protocol::LocationList> GlassAccess::usrToDefinition(
     const std::string& usr) {
+  facebook::glean::swift::Clock clock;
   std::string msg;
 
   // Create USRToDefinitionRequest
@@ -41,6 +43,9 @@ std::optional<protocol::LocationList> GlassAccess::usrToDefinition(
         rpcOptions.setTimeout(std::chrono::milliseconds(GlassTimeoutMs));
         co_return co_await client->co_usrToDefinition(rpcOptions, request, ro);
       });
+
+  auto duration = clock.duration();
+  LOG(INFO) << "usrToDefinition request took " << duration << " milliseconds";
 
   if (!result.has_value()) {
     return std::nullopt;
@@ -122,4 +127,33 @@ std::string GlassAccess::getHgRoot() {
   }
 
   return result;
+}
+
+void GlassAccess::warmUpConnection() {
+  facebook::glean::swift::Clock clock;
+
+  LOG(INFO) << "Warming up Glass connection...";
+
+  try {
+    // Use getStatus to establish the connection
+    std::string msg;
+
+    // Call the Glass service getStatus
+    this->runGlassMethod<fb303::cpp2::fb_status>(
+        "getStatus", msg, [&]() -> folly::coro::Task<fb303::cpp2::fb_status> {
+          RpcOptions rpcOptions;
+          rpcOptions.setTimeout(std::chrono::milliseconds(GlassTimeoutMs));
+          co_return co_await client->co_getStatus(rpcOptions);
+        });
+
+    auto duration = clock.duration();
+
+    LOG(INFO) << "Glass connection established successfully in " << duration
+              << " milliseconds";
+  } catch (const std::exception& e) {
+    auto duration = clock.duration();
+
+    LOG(WARNING) << "Glass connection warm-up failed after " << duration
+                 << " milliseconds: " << e.what();
+  }
 }
