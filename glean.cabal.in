@@ -1350,6 +1350,7 @@ library glass-lib
         Glean.Glass.SymbolId
         Glean.Glass.SymbolId.Angle
         Glean.Glass.SymbolId.Buck
+        Glean.Glass.SymbolId.Chef
         Glean.Glass.SymbolId.Class
         Glean.Glass.SymbolId.CSharp
         Glean.Glass.SymbolId.Cxx
