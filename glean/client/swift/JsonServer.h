@@ -9,12 +9,13 @@
 #pragma once
 
 #include <atomic>
+#include <iostream>
 
 class JsonServer {
  public:
   static JsonServer& getInstance();
 
-  void start();
+  void start(std::istream& input = std::cin, std::ostream& output = std::cout);
   void stop();
 
  private:

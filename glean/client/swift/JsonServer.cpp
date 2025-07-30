@@ -7,7 +7,6 @@
  */
 
 #include "glean/client/swift/JsonServer.h"
-#include <iostream>
 
 JsonServer::JsonServer() : running_(false) {}
 
@@ -16,20 +15,18 @@ JsonServer& JsonServer::getInstance() {
   return instance;
 }
 
-void JsonServer::start() {
+void JsonServer::start(std::istream& input, std::ostream& output) {
   running_ = true;
-  std::cout << "Echo Server started. Type messages and press Enter."
-            << std::endl;
+  output << "Echo Server started. Type messages and press Enter." << std::endl;
 
   std::string line;
-  while (running_ && std::getline(std::cin, line)) {
+  while (running_ && std::getline(input, line)) {
     if (!line.empty()) {
-      std::cout << line << std::endl;
+      output << line << std::endl;
     }
   }
 }
 
 void JsonServer::stop() {
   running_ = false;
-  std::cout << "\nServer stopping..." << std::endl;
 }
