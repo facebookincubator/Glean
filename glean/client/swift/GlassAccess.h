@@ -8,13 +8,26 @@
 
 #pragma once
 
+#include <folly/coro/Task.h>
+#include <memory>
 #include "glean/client/swift/IGlassAccess.h"
+#include "glean/glass/if/gen-cpp2/GlassServiceAsyncClient.h"
+#include "glean/glass/if/gen-cpp2/glass_types.h"
 
 class GlassAccess : public IGlassAccess {
  public:
-  GlassAccess() = default;
+  GlassAccess();
   ~GlassAccess() override = default;
 
   std::optional<protocol::LocationList> usrToDefinition(
       const std::string& usr) override;
+
+ private:
+  template <typename T>
+  std::optional<T> runGlassMethod(
+      const std::string& method,
+      std::string& msg,
+      folly::Function<folly::coro::Task<T>()> f);
+
+  std::unique_ptr<apache::thrift::Client<::glean::GlassService>> client;
 };
