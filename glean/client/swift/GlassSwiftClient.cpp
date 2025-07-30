@@ -6,6 +6,22 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-int main() {
+#include <csignal>
+#include "folly/init/Init.h"
+#include "glean/client/swift/JsonServer.h"
+
+void signalHandler(int signal) {
+  if (signal == SIGINT) {
+    JsonServer::getInstance().stop();
+  }
+}
+
+int main(int argc, char** argv) {
+  folly::Init init(&argc, &argv);
+
+  std::signal(SIGINT, signalHandler);
+
+  JsonServer::getInstance().start();
+
   return 0;
 }
