@@ -1,0 +1,81 @@
+#!/usr/bin/env dotslash
+
+// @generated SignedSource<<f4b70dd0532eb1c75159480f999426af>>
+// MSDK schedule URL: https://www.internalfb.com/intern/msdk/bump/?action=view&schedule_fbid=738319662142681
+// Sandcastle build trigger URL: https://www.internalfb.com/intern/sandcastle/job/9007201288706485/
+
+{
+    "name": "swift_glass_client",
+    "oncall": "oncall+swift_lsp@xmail.facebook.com",
+    "build_info": {
+        "config_script": "fbcode/glean/client/swift/msdk/swift_glass_client.dotslash.py",
+        "commit_repo": "fbsource",
+        "commit_hash": "4a2e0014e7cc9090ee394e350d593052ad712f45",
+        "commit_date": "2025-07-30 00:44:36 PDT",
+        "commit_timestamp": 1753861476,
+        "msdk_package_fbid": "1134094918778598"
+    },
+    "signatures": {
+        "msdk": "<<crypto.managed_sdk.mac:AeYEJFgCXbpwq7ZrVrRFl_vUb1w>>"
+    },
+    "platforms": {
+        "linux/aarch64": {
+            "scheme": "cas",
+            "use_case_id": "dotslash_msdk_prod",
+            "digest": "e01ab31132cbc02112ab62d4c121c20b9556e8701cfdf8e893ca08836ad16882:40411673",
+            "extract": {
+                "path": "swift_glass_client",
+                "decompress": "tar.zst"
+            },
+            "metadata": {
+                "build_inputs": {
+                    "swift_glass_client": {
+                        "flags": [
+                            "@fbcode//mode/opt-clang-thinlto",
+                            "-c=fbcode.arch=aarch64"
+                        ],
+                        "target": "fbcode//glean/client/swift:swift_glass_client"
+                    }
+                }
+            }
+        },
+        "linux/x86_64": {
+            "scheme": "cas",
+            "use_case_id": "dotslash_msdk_prod",
+            "digest": "1a92a7cb69973afccbb550692a9bb905146e7ccb9dc870c40616775c92d7a913:41712089",
+            "extract": {
+                "path": "swift_glass_client",
+                "decompress": "tar.zst"
+            },
+            "metadata": {
+                "build_inputs": {
+                    "swift_glass_client": {
+                        "flags": [
+                            "@fbcode//mode/opt-clang-thinlto"
+                        ],
+                        "target": "fbcode//glean/client/swift:swift_glass_client"
+                    }
+                }
+            }
+        },
+        "macos": {
+            "scheme": "cas",
+            "use_case_id": "dotslash_msdk_prod",
+            "digest": "caec164c3512f5b99fb773ca3198d957af057eb49bf527df6caab5a53803e8c4:5150403",
+            "extract": {
+                "path": "swift_glass_client",
+                "decompress": "tar.zst"
+            },
+            "metadata": {
+                "build_inputs": {
+                    "swift_glass_client": {
+                        "flags": [
+                            "@fbcode//mode/opt-mac"
+                        ],
+                        "target": "fbcode//glean/client/swift:swift_glass_client"
+                    }
+                }
+            }
+        }
+    }
+}
