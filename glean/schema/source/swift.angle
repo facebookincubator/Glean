@@ -1,0 +1,13 @@
+# Copyright (c) Meta, Inc. and affiliates.
+
+schema swift.1 {
+
+import scip.1
+import lsif.types.1
+
+predicate SymbolLanguage:
+  {
+    symbol: scip.Symbol,
+    language: lsif.types.LanguageId
+  }
+}
