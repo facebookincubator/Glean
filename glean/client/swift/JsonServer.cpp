@@ -8,8 +8,13 @@
 
 #include "glean/client/swift/JsonServer.h"
 #include <folly/json.h>
+#include "glean/client/swift/Clock.h"
 
-JsonServer::JsonServer() : running_(false), glassAccess_(nullptr) {}
+JsonServer::JsonServer() : running_(false), glassAccess_(nullptr) {
+  // Initialize ScubaLogger and ScubaData
+  scubaLogger_ = std::make_unique<facebook::glean::swift::ScubaLogger>();
+  scubaData_ = std::make_unique<facebook::rfe::ScubaData>("swift_glass_client");
+}
 
 void JsonServer::setGlassAccess(std::unique_ptr<IGlassAccess> glassAccess) {
   glassAccess_ = std::move(glassAccess);
@@ -33,6 +38,8 @@ void JsonServer::stop() {
 void JsonServer::processRequest(
     const std::string& requestStr,
     std::ostream& output) {
+  facebook::glean::swift::Clock clock;
+
   try {
     auto request = folly::parseJson(requestStr);
 
@@ -45,15 +52,29 @@ void JsonServer::processRequest(
       handleUSRToDefinitionRequest(id, value, output);
     } else {
       // Send error response for unknown method
-      sendErrorResponse(id, -32601, "Method not found", output);
+      auto duration = clock.duration();
+      sendErrorResponse(
+          id,
+          -32601,
+          "Method not found",
+          output,
+          method,
+          value,
+          determineUSRType(value),
+          duration);
     }
   } catch (const std::exception& e) {
-    // Send parse error response
+    // Send parse error response - no method/usr available due to parsing error
+    auto duration = clock.duration();
     sendErrorResponse(
         folly::dynamic::object,
         -32700,
         "Parse error: " + std::string(e.what()),
-        output);
+        output,
+        std::nullopt,
+        std::nullopt,
+        std::nullopt,
+        duration);
   }
 }
 
@@ -61,56 +82,119 @@ void JsonServer::handleUSRToDefinitionRequest(
     const folly::dynamic& id,
     const std::string& usr,
     std::ostream& output) {
+  // Start timing for scuba logging
+  facebook::glean::swift::Clock clock;
+
   if (!glassAccess_) {
+    auto duration = clock.duration();
     sendErrorResponse(
-        id, -32603, "Internal error: GlassAccess not initialized", output);
+        id,
+        -32603,
+        "Internal error: GlassAccess not initialized",
+        output,
+        "USRToDefinition",
+        usr,
+        determineUSRType(usr),
+        duration);
     return;
   }
 
-  // Call GlassAccess to get definition locations
-  auto locations = glassAccess_->usrToDefinition(usr);
+  // Determine USR type and method
+  facebook::glean::swift::USRType usrType = determineUSRType(usr);
+  std::string method = (usrType == facebook::glean::swift::USRType::SWIFT)
+      ? "usrToDefinition"
+      : "clangUSRToDefinition";
 
-  // Create response
-  folly::dynamic response = folly::dynamic::object;
-  response["id"] = id;
+  facebook::glean::swift::Status status =
+      facebook::glean::swift::Status::FAILED;
+  std::string error;
 
-  if (locations.has_value()) {
-    // Convert protocol::Location objects to JSON
-    folly::dynamic result = folly::dynamic::array;
-    for (const auto& location : locations.value()) {
-      folly::dynamic locationJson = folly::dynamic::object;
-      locationJson["uri"] = location.uri;
+  try {
+    // Call GlassAccess to get definition locations
+    auto locations = glassAccess_->usrToDefinition(usr);
 
-      folly::dynamic range = folly::dynamic::object;
-      folly::dynamic start = folly::dynamic::object;
-      start["line"] = location.range.start.line;
-      start["character"] = location.range.start.character;
+    // Create response
+    folly::dynamic response = folly::dynamic::object;
+    response["id"] = id;
 
-      folly::dynamic end = folly::dynamic::object;
-      end["line"] = location.range.end.line;
-      end["character"] = location.range.end.character;
+    if (locations.has_value() && !locations->empty()) {
+      // Convert protocol::Location objects to JSON
+      folly::dynamic result = folly::dynamic::array;
+      for (const auto& location : locations.value()) {
+        folly::dynamic locationJson = folly::dynamic::object;
+        locationJson["uri"] = location.uri;
 
-      range["start"] = start;
-      range["end"] = end;
-      locationJson["range"] = range;
+        folly::dynamic range = folly::dynamic::object;
+        folly::dynamic start = folly::dynamic::object;
+        start["line"] = location.range.start.line;
+        start["character"] = location.range.start.character;
 
-      result.push_back(locationJson);
+        folly::dynamic end = folly::dynamic::object;
+        end["line"] = location.range.end.line;
+        end["character"] = location.range.end.character;
+
+        range["start"] = start;
+        range["end"] = end;
+        locationJson["range"] = range;
+
+        result.push_back(locationJson);
+      }
+      response["result"] = result;
+      status = facebook::glean::swift::Status::SUCCESS;
+    } else {
+      // No definitions found, return empty array
+      response["result"] = folly::dynamic::array;
+      status = facebook::glean::swift::Status::NOT_FOUND;
     }
-    response["result"] = result;
-  } else {
-    // No definitions found, return empty array
-    response["result"] = folly::dynamic::array;
-  }
 
-  // Send response
-  output << folly::toJson(response) << "\n";
+    // Calculate duration and log the request
+    auto duration = clock.duration();
+
+    // Use folly::toJson(response) to get the result string for logging
+    std::string resultStr = folly::toJson(response["result"]);
+
+    // Log the request to Scuba
+    scubaLogger_->logRequest(
+        scubaData_.get(),
+        method,
+        usr,
+        usrType,
+        resultStr,
+        status,
+        duration,
+        error,
+        std::nullopt);
+
+    // Send response
+    output << folly::toJson(response) << "\n";
+
+  } catch (const std::exception& e) {
+    error = e.what();
+
+    // Calculate duration and log the failed request
+    auto duration = clock.duration();
+
+    sendErrorResponse(
+        id,
+        -32603,
+        "Internal error: " + error,
+        output,
+        method,
+        usr,
+        usrType,
+        duration);
+  }
 }
 
 void JsonServer::sendErrorResponse(
     const folly::dynamic& id,
     int code,
     const std::string& message,
-    std::ostream& output) {
+    std::ostream& output,
+    const std::optional<std::string>& method,
+    const std::optional<std::string>& usr,
+    const std::optional<facebook::glean::swift::USRType>& usrType,
+    int64_t duration) {
   folly::dynamic response = folly::dynamic::object;
   response["id"] = id;
 
@@ -120,4 +204,29 @@ void JsonServer::sendErrorResponse(
   response["error"] = error;
 
   output << folly::toJson(response) << "\n";
+
+  // Log error to Scuba
+  if (scubaLogger_ && scubaData_) {
+    scubaLogger_->logRequest(
+        scubaData_.get(),
+        method.value_or("unknown"),
+        usr.value_or(""),
+        usrType.value_or(facebook::glean::swift::USRType::UNKNOWN),
+        "[]",
+        facebook::glean::swift::Status::FAILED,
+        duration,
+        message,
+        std::nullopt);
+  }
+}
+
+facebook::glean::swift::USRType JsonServer::determineUSRType(
+    const std::string& usr) {
+  if (usr.length() >= 2 && usr.substr(0, 2) == "s:") {
+    return facebook::glean::swift::USRType::SWIFT;
+  } else if (usr.length() >= 2 && usr.substr(0, 2) == "c:") {
+    return facebook::glean::swift::USRType::CPP;
+  } else {
+    return facebook::glean::swift::USRType::UNKNOWN;
+  }
 }

@@ -14,6 +14,8 @@
 #include <iostream>
 #include <memory>
 #include "glean/client/swift/IGlassAccess.h"
+#include "glean/client/swift/ScubaLogger.h"
+#include "rfe/scubadata/ScubaData.h"
 
 class JsonServer {
  public:
@@ -36,6 +38,9 @@ class JsonServer {
   FRIEND_TEST(JsonServerTest, InvalidJSONRequest);
   std::atomic<bool> running_;
   std::unique_ptr<IGlassAccess> glassAccess_;
+  std::unique_ptr<facebook::glean::swift::ScubaLogger> scubaLogger_;
+  std::unique_ptr<facebook::rfe::ScubaData> scubaData_;
+
   void handleUSRToDefinitionRequest(
       const folly::dynamic& id,
       const std::string& usr,
@@ -44,5 +49,12 @@ class JsonServer {
       const folly::dynamic& id,
       int code,
       const std::string& message,
-      std::ostream& output);
+      std::ostream& output,
+      const std::optional<std::string>& method = std::nullopt,
+      const std::optional<std::string>& usr = std::nullopt,
+      const std::optional<facebook::glean::swift::USRType>& usrType =
+          std::nullopt,
+      int64_t duration = 0);
+
+  facebook::glean::swift::USRType determineUSRType(const std::string& usr);
 };

@@ -26,7 +26,6 @@ GlassAccess::GlassAccess() : client(nullptr), hgRoot_(getHgRoot()) {}
 
 std::optional<protocol::LocationList> GlassAccess::usrToDefinition(
     const std::string& usr) {
-  facebook::glean::swift::Clock clock;
   std::string msg;
 
   // Check if this is a Swift USR (starts with "s:")
@@ -37,9 +36,6 @@ std::optional<protocol::LocationList> GlassAccess::usrToDefinition(
     // Handle non-Swift USR using clangUSRToDefinition with hash
     return handleUSRHash(usr, msg);
   }
-
-  auto duration = clock.duration();
-  LOG(INFO) << "usrToDefinition request took " << duration << " milliseconds";
 }
 
 std::optional<protocol::LocationList> GlassAccess::handleUSR(
