@@ -15,6 +15,7 @@
 #include <memory>
 #include <stdexcept>
 #include "glean/client/swift/Clock.h"
+#include "glean/client/swift/hash.h"
 
 using namespace facebook;
 using apache::thrift::RpcOptions;
@@ -28,6 +29,22 @@ std::optional<protocol::LocationList> GlassAccess::usrToDefinition(
   facebook::glean::swift::Clock clock;
   std::string msg;
 
+  // Check if this is a Swift USR (starts with "s:")
+  if (usr.length() >= 2 && usr.substr(0, 2) == "s:") {
+    // Handle Swift USR using usrToDefinition
+    return handleUSR(usr, msg);
+  } else {
+    // Handle non-Swift USR using clangUSRToDefinition with hash
+    return handleUSRHash(usr, msg);
+  }
+
+  auto duration = clock.duration();
+  LOG(INFO) << "usrToDefinition request took " << duration << " milliseconds";
+}
+
+std::optional<protocol::LocationList> GlassAccess::handleUSR(
+    const std::string& usr,
+    std::string& msg) {
   // Create USRToDefinitionRequest
   ::glean::USRToDefinitionRequest request;
   request.usr_ref() = usr;
@@ -44,16 +61,42 @@ std::optional<protocol::LocationList> GlassAccess::usrToDefinition(
         co_return co_await client->co_usrToDefinition(rpcOptions, request, ro);
       });
 
-  auto duration = clock.duration();
-  LOG(INFO) << "usrToDefinition request took " << duration << " milliseconds";
+  if (!result.has_value()) {
+    return std::nullopt;
+  }
+
+  return convertUSRSymbolDefinitionToLocations(result.value());
+}
+
+std::optional<protocol::LocationList> GlassAccess::handleUSRHash(
+    const std::string& usr,
+    std::string& msg) {
+  // Hash the USR for clang USR lookup
+  std::string hashedUSR = facebook::glean::clangx::hash::hash(usr);
+
+  // Call the Glass service using clangUSRToDefinition
+  const auto result = this->runGlassMethod<::glean::USRSymbolDefinition>(
+      "clangUSRToDefinition",
+      msg,
+      [&]() -> folly::coro::Task<::glean::USRSymbolDefinition> {
+        ::glean::RequestOptions ro;
+        RpcOptions rpcOptions;
+        rpcOptions.setTimeout(std::chrono::milliseconds(GlassTimeoutMs));
+        co_return co_await client->co_clangUSRToDefinition(
+            rpcOptions, hashedUSR, ro);
+      });
 
   if (!result.has_value()) {
     return std::nullopt;
   }
 
+  return convertUSRSymbolDefinitionToLocations(result.value());
+}
+
+protocol::LocationList GlassAccess::convertUSRSymbolDefinitionToLocations(
+    const ::glean::USRSymbolDefinition& definition) const {
   // Convert Glass result to protocol::LocationList
   protocol::LocationList locations;
-  const auto& definition = result.value();
 
   // Extract location from USRSymbolDefinition
   const auto& gleanLocation = definition.location_ref().value();

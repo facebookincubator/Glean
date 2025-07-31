@@ -22,6 +22,14 @@ class GlassAccess : public IGlassAccess {
       const std::string& usr) override;
 
  protected:
+  std::optional<protocol::LocationList> handleUSR(
+      const std::string& usr,
+      std::string& msg);
+  std::optional<protocol::LocationList> handleUSRHash(
+      const std::string& usr,
+      std::string& msg);
+  protocol::LocationList convertUSRSymbolDefinitionToLocations(
+      const ::glean::USRSymbolDefinition& definition) const;
   template <typename T>
   std::optional<T> runGlassMethod(
       const std::string& method,
