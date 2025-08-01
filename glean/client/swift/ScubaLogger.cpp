@@ -25,7 +25,8 @@ void ScubaLogger::logRequest(
     Status status,
     int64_t duration,
     const std::string& error,
-    const std::optional<std::string>& revision) {
+    const std::optional<std::string>& revision,
+    const std::string& mode) {
   if (!scubaLogger) {
     return;
   }
@@ -54,6 +55,9 @@ void ScubaLogger::logRequest(
   if (revision.has_value()) {
     sample.addNormalValue("revision", revision.value());
   }
+
+  // Mode information (production/test)
+  sample.addNormalValue("mode", mode);
 
   // Add sample to scuba
   scubaLogger->addSample("swift_glass_client", sample);

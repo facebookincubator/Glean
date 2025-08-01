@@ -47,9 +47,10 @@ void JsonServer::processRequest(
     auto id = request.getDefault("id", folly::dynamic::object);
     auto method = request.getDefault("method", "").asString();
     auto value = request.getDefault("value", "").asString();
+    auto mode = request.getDefault("mode", "production").asString();
 
     if (method == "USRToDefinition") {
-      handleUSRToDefinitionRequest(id, value, output);
+      handleUSRToDefinitionRequest(id, value, mode, output);
     } else {
       // Send error response for unknown method
       auto duration = clock.duration();
@@ -61,7 +62,8 @@ void JsonServer::processRequest(
           method,
           value,
           determineUSRType(value),
-          duration);
+          duration,
+          mode);
     }
   } catch (const std::exception& e) {
     // Send parse error response - no method/usr available due to parsing error
@@ -74,13 +76,15 @@ void JsonServer::processRequest(
         std::nullopt,
         std::nullopt,
         std::nullopt,
-        duration);
+        duration,
+        "production");
   }
 }
 
 void JsonServer::handleUSRToDefinitionRequest(
     const folly::dynamic& id,
     const std::string& usr,
+    const std::string& mode,
     std::ostream& output) {
   // Start timing for scuba logging
   facebook::glean::swift::Clock clock;
@@ -95,7 +99,8 @@ void JsonServer::handleUSRToDefinitionRequest(
         "USRToDefinition",
         usr,
         determineUSRType(usr),
-        duration);
+        duration,
+        mode);
     return;
   }
 
@@ -163,7 +168,8 @@ void JsonServer::handleUSRToDefinitionRequest(
         status,
         duration,
         error,
-        std::nullopt);
+        std::nullopt,
+        mode);
 
     // Send response
     output << folly::toJson(response) << "\n";
@@ -182,7 +188,8 @@ void JsonServer::handleUSRToDefinitionRequest(
         method,
         usr,
         usrType,
-        duration);
+        duration,
+        mode);
   }
 }
 
@@ -194,7 +201,8 @@ void JsonServer::sendErrorResponse(
     const std::optional<std::string>& method,
     const std::optional<std::string>& usr,
     const std::optional<facebook::glean::swift::USRType>& usrType,
-    int64_t duration) {
+    int64_t duration,
+    const std::string& mode) {
   folly::dynamic response = folly::dynamic::object;
   response["id"] = id;
 
@@ -216,7 +224,8 @@ void JsonServer::sendErrorResponse(
         facebook::glean::swift::Status::FAILED,
         duration,
         message,
-        std::nullopt);
+        std::nullopt,
+        mode);
   }
 }
 

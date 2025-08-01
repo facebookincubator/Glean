@@ -33,7 +33,8 @@ class ScubaLogger {
       Status status,
       int64_t duration,
       const std::string& error = "",
-      const std::optional<std::string>& revision = std::nullopt);
+      const std::optional<std::string>& revision = std::nullopt,
+      const std::string& mode = "production");
 
  private:
   const std::string unixname_;

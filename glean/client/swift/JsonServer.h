@@ -44,6 +44,7 @@ class JsonServer {
   void handleUSRToDefinitionRequest(
       const folly::dynamic& id,
       const std::string& usr,
+      const std::string& mode,
       std::ostream& output);
   void sendErrorResponse(
       const folly::dynamic& id,
@@ -54,7 +55,8 @@ class JsonServer {
       const std::optional<std::string>& usr = std::nullopt,
       const std::optional<facebook::glean::swift::USRType>& usrType =
           std::nullopt,
-      int64_t duration = 0);
+      int64_t duration = 0,
+      const std::string& mode = "production");
 
   facebook::glean::swift::USRType determineUSRType(const std::string& usr);
 };
