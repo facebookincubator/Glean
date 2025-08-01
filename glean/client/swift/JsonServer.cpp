@@ -20,6 +20,11 @@ void JsonServer::setGlassAccess(std::unique_ptr<IGlassAccess> glassAccess) {
   glassAccess_ = std::move(glassAccess);
 }
 
+void JsonServer::setScubaLogger(
+    std::unique_ptr<facebook::glean::swift::ScubaLogger> scubaLogger) {
+  scubaLogger_ = std::move(scubaLogger);
+}
+
 void JsonServer::start(std::istream& input, std::ostream& output) {
   running_ = true;
 

@@ -27,6 +27,8 @@ class JsonServer {
   JsonServer& operator=(JsonServer&&) = delete;
 
   void setGlassAccess(std::unique_ptr<IGlassAccess> glassAccess);
+  void setScubaLogger(
+      std::unique_ptr<facebook::glean::swift::ScubaLogger> scubaLogger);
   void start(std::istream& input = std::cin, std::ostream& output = std::cout);
   void stop();
 

@@ -9,13 +9,10 @@
 #include "glean/client/swift/JsonServer.h"
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <chrono>
 #include <memory>
 #include <sstream>
-#include <thread>
 #include "glean/client/swift/test/GlassAccessMock.h"
-
-using ::testing::Return;
+#include "glean/client/swift/test/ScubaLoggerMock.h"
 
 class JsonServerTest : public ::testing::Test {
  protected:
@@ -23,6 +20,8 @@ class JsonServerTest : public ::testing::Test {
     // Create JsonServer and set mock GlassAccess
     server_ = std::make_unique<JsonServer>();
     mockGlassAccess_ = std::make_unique<GlassAccessMock>();
+    mockScubaLogger_ =
+        std::make_unique<facebook::glean::swift::ScubaLoggerMock>();
 
     // Set up default expectations for the mock
     protocol::LocationList defaultLocations;
@@ -36,12 +35,16 @@ class JsonServerTest : public ::testing::Test {
         *mockGlassAccess_,
         usrToDefinition(
             "s:12IGFriendsMap0aB4ViewC03mapC0So05MKMapC0CvgAFyXEfU_ADL_AFvp"))
-        .WillByDefault(Return(defaultLocations));
+        .WillByDefault(testing::Return(defaultLocations));
 
     ON_CALL(*mockGlassAccess_, usrToDefinition("unknown_usr"))
-        .WillByDefault(Return(std::nullopt));
+        .WillByDefault(testing::Return(std::nullopt));
+
+    // Store raw pointer before moving to server
+    mockScubaLoggerPtr_ = mockScubaLogger_.get();
 
     server_->setGlassAccess(std::move(mockGlassAccess_));
+    server_->setScubaLogger(std::move(mockScubaLogger_));
   }
 
   void TearDown() override {
@@ -53,6 +56,8 @@ class JsonServerTest : public ::testing::Test {
 
   std::unique_ptr<JsonServer> server_;
   std::unique_ptr<GlassAccessMock> mockGlassAccess_;
+  std::unique_ptr<facebook::glean::swift::ScubaLoggerMock> mockScubaLogger_;
+  facebook::glean::swift::ScubaLoggerMock* mockScubaLoggerPtr_{};
 };
 
 TEST_F(JsonServerTest, USRToDefinitionRequest) {
@@ -76,6 +81,15 @@ TEST_F(JsonServerTest, USRToDefinitionRequest) {
   EXPECT_TRUE(result.find("\"line\":25") != std::string::npos);
   EXPECT_TRUE(result.find("\"character\":4") != std::string::npos);
   EXPECT_TRUE(result.find("\"character\":30") != std::string::npos);
+
+  // Verify ScubaLogger was called with correct parameters
+  mockScubaLoggerPtr_->expectLogRequest(
+      "usrToDefinition",
+      "s:12IGFriendsMap0aB4ViewC03mapC0So05MKMapC0CvgAFyXEfU_ADL_AFvp",
+      facebook::glean::swift::USRType::SWIFT,
+      facebook::glean::swift::Status::SUCCESS,
+      "",
+      "production");
 }
 
 TEST_F(JsonServerTest, USRToDefinitionRequestNoResults) {
@@ -93,6 +107,15 @@ TEST_F(JsonServerTest, USRToDefinitionRequestNoResults) {
   // Verify the response contains expected JSON structure with empty result
   EXPECT_TRUE(result.find("\"id\":2") != std::string::npos);
   EXPECT_TRUE(result.find("\"result\":[]") != std::string::npos);
+
+  // Verify ScubaLogger was called with correct parameters
+  mockScubaLoggerPtr_->expectLogRequest(
+      "clangUSRToDefinition",
+      "unknown_usr",
+      facebook::glean::swift::USRType::UNKNOWN,
+      facebook::glean::swift::Status::NOT_FOUND,
+      "",
+      "production");
 }
 
 TEST_F(JsonServerTest, UnknownMethodRequest) {
@@ -113,6 +136,15 @@ TEST_F(JsonServerTest, UnknownMethodRequest) {
   EXPECT_TRUE(result.find("\"code\":-32601") != std::string::npos);
   EXPECT_TRUE(
       result.find("\"message\":\"Method not found\"") != std::string::npos);
+
+  // Verify ScubaLogger was called with correct parameters
+  mockScubaLoggerPtr_->expectLogRequest(
+      "UnknownMethod",
+      "test",
+      facebook::glean::swift::USRType::UNKNOWN,
+      facebook::glean::swift::Status::FAILED,
+      "Method not found",
+      "production");
 }
 
 TEST_F(JsonServerTest, InvalidJSONRequest) {
@@ -130,4 +162,16 @@ TEST_F(JsonServerTest, InvalidJSONRequest) {
   EXPECT_TRUE(result.find("\"error\"") != std::string::npos);
   EXPECT_TRUE(result.find("\"code\":-32700") != std::string::npos);
   EXPECT_TRUE(result.find("\"message\":\"Parse error:") != std::string::npos);
+
+  // Verify ScubaLogger was called with correct parameters
+  EXPECT_EQ(1, mockScubaLoggerPtr_->logRequestCallCount);
+  EXPECT_EQ("unknown", mockScubaLoggerPtr_->lastMethod);
+  EXPECT_EQ("", mockScubaLoggerPtr_->lastUsr);
+  EXPECT_EQ(
+      facebook::glean::swift::USRType::UNKNOWN,
+      mockScubaLoggerPtr_->lastUsrType);
+  EXPECT_EQ(
+      facebook::glean::swift::Status::FAILED, mockScubaLoggerPtr_->lastStatus);
+  EXPECT_TRUE(mockScubaLoggerPtr_->lastError.find("Parse error:") == 0);
+  EXPECT_EQ("production", mockScubaLoggerPtr_->lastMode);
 }
