@@ -10,4 +10,30 @@ predicate SymbolLanguage:
     symbol: scip.Symbol,
     language: lsif.types.LanguageId
   }
+
+predicate ContainerMember:
+  {
+    container: scip.DisplayName,
+    member: scip.DisplayName,
+    kind: lsif.types.SymbolKind
+  }
+
+predicate MemberContainer:
+  {
+    member: scip.DisplayName,
+    container: scip.DisplayName
+  } stored { M, C } where
+  swift.ContainerMember { C, M, _ }
+
+predicate MemberSymbol:
+  {
+    member: ContainerMember,
+    symbol: scip.Symbol
+  }
+
+predicate SymbolContainer:
+  {
+    symbol: scip.Symbol,
+    container: scip.DisplayName
+  }
 }
