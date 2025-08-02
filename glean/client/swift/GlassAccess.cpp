@@ -43,8 +43,8 @@ std::optional<protocol::LocationList> GlassAccess::handleUSR(
     std::string& msg) {
   // Create USRToDefinitionRequest
   ::glean::USRToDefinitionRequest request;
-  request.usr_ref() = usr;
-  request.repo_name_ref() = "fbsource";
+  request.usr() = usr;
+  request.repo_name() = "fbsource";
 
   // Call the Glass service to get symbol definition
   const auto result = this->runGlassMethod<::glean::USRSymbolDefinition>(
@@ -95,22 +95,22 @@ protocol::LocationList GlassAccess::convertUSRSymbolDefinitionToLocations(
   protocol::LocationList locations;
 
   // Extract location from USRSymbolDefinition
-  const auto& gleanLocation = definition.location_ref().value();
+  const auto& gleanLocation = definition.location().value();
 
   // Convert glean::LocationRange to protocol::Location
   // Access the range fields directly
-  const auto& range = gleanLocation.range_ref().value();
+  const auto& range = gleanLocation.range().value();
 
   protocol::Position start(
-      static_cast<int>(range.lineBegin_ref().value()),
-      static_cast<int>(range.columnBegin_ref().value()));
+      static_cast<int>(range.lineBegin().value()),
+      static_cast<int>(range.columnBegin().value()));
   protocol::Position end(
-      static_cast<int>(range.lineEnd_ref().value()),
-      static_cast<int>(range.columnEnd_ref().value()));
+      static_cast<int>(range.lineEnd().value()),
+      static_cast<int>(range.columnEnd().value()));
   protocol::Range protocolRange(start, end);
 
   // Create URI from repository and filepath using URI escaping
-  std::string filepath = hgRoot_ + "/" + gleanLocation.filepath_ref().value();
+  std::string filepath = hgRoot_ + "/" + gleanLocation.filepath().value();
   std::string uri = "file://" + folly::uriEscape<std::string>(filepath);
   protocol::Location location(uri, protocolRange);
 
