@@ -15,7 +15,9 @@ import Glean.Indexer
 import Glean.Indexer.External
 import Glean.Indexer.SCIP ( derive )
 import qualified Glean.SCIP.Driver as SCIP
-import System.FilePath (takeDirectory)
+import System.FilePath ( (</>), takeDirectory)
+import Glean.LocalOrRemote ( serializeInventory )
+import qualified Data.ByteString as BS
 
 data Swift = Swift
   { scipGen :: FilePath
@@ -40,6 +42,9 @@ indexer = Indexer {
   indexerDescription = "Index Swift code",
   indexerOptParser = options,
   indexerRun = \Swift{..} backend repo IndexerParams{..} -> do
+    let tmpDir        = indexerOutput
+        inventoryFile = tmpDir </> "inventory.data"
+    serializeInventory backend repo >>= BS.writeFile inventoryFile
     val <- SCIP.runIndexer SCIP.ScipIndexerParams {
         scipBinary = scipGen,
         scipArgs = \outFile ->
@@ -48,6 +53,7 @@ indexer = Indexer {
             , "--target", target
             , "--swift-only"
             , "--output-type", "scip"
+            , "--inventory", inventoryFile
             , "--build-indexer" ],
         scipRoot = indexerRoot,
         scipWritesLocal = False,
