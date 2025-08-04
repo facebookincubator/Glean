@@ -273,26 +273,37 @@ fetchSymbolsAndAttributesGlean
           match <- fromMaybe False <$> contentMatch revision1 revision2
           if match
             then return res -- revision match, no need to amend
-            else do
-              -- obtain line mapping from source diff
-              diffResult <- backendRunHaxl be env $
-                withRepo (snd (NonEmpty.head (gleanDBs be))) $ do
-                  getFileLineDiff sourceControl repo path revision1 revision2
-              let mapping = parseGitDiff diffResult
-                  -- apply line mapping to references and definitions
-              return res {
-                refs  = applyLineMappingToRefs mapping (refs res),
-                defs = applyLineMappingToDefs mapping (defs res)
-              }
+            else
+              let op = do
+                  -- obtain line mapping from source diff
+                  diffResult <- backendRunHaxl be env $
+                    withRepo (snd (NonEmpty.head (gleanDBs be))) $ do
+                      getFileLineDiff sourceControl repo path revision1 revision2
+                  let mapping = parseGitDiff diffResult
+                      -- apply line mapping to references and definitions
+                  return res {
+                    refs  = applyLineMappingToRefs mapping (refs res),
+                    defs = applyLineMappingToDefs mapping (defs res)
+                  }
+              in do
+                (t, result) <- elapsedTime op
+                let metricName = "glass.amend_lines.latency_ms"
+                Stats.addStatValueType metricName (toDiffMillis t) Stats.Avg
+                return result
 
     contentMatch myrev wantedrev
       | myrev == wantedrev = return (Just True)
-      | otherwise =
-        backendRunHaxl be env $
-          withRepo (snd (NonEmpty.head (gleanDBs be))) $ do
-            wanted <- getFileContentHash sourceControl repo path wantedrev
-            mine <- getFileContentHash sourceControl repo path myrev
-            return $ (==) <$> wanted <*> mine
+      | otherwise = let
+          op = backendRunHaxl be env $
+            withRepo (snd (NonEmpty.head (gleanDBs be))) $ do
+              wanted <- getFileContentHash sourceControl repo path wantedrev
+              mine <- getFileContentHash sourceControl repo path myrev
+              return $ (==) <$> wanted <*> mine
+        in do (t, result) <- elapsedTime op
+              let metricName = "glass.content_match.latency_ms"
+              Stats.addStatValueType metricName (toDiffMillis t) Stats.Avg
+              return result
+
 
 shouldFetchContentHash :: RequestOptions -> Bool
 shouldFetchContentHash opts =
