@@ -88,6 +88,7 @@ import Glean.Glass.Handler.Cxx (hashUSR)
 import ServiceData.GlobalStats as Stats
 import ServiceData.Types as Stats
 import Util.Time (elapsedTime, toDiffMillis)
+import Glean.Glass.Attributes.PerfUtils (parseGitDiff, applyLineMappingToDefs, applyLineMappingToRefs)
 
 -- | Runner for methods that are keyed by a file path.
 -- Select the right Glean DBs and pass them to the function (via a GleanBackend)
@@ -218,7 +219,7 @@ fetchSymbolsAndAttributesGlean
        Maybe ErrorLogger
      )
 fetchSymbolsAndAttributesGlean
-  env@Glass.Env{tracer, gleanBackend}
+  env@Glass.Env{tracer, gleanBackend, sourceControl}
   dbInfo req opts be mOtherBackend mlang = do
   (res1, gLogs, elogs) <- traceSpan tracer "fetchDocumentSymbols" $
     fetchDocumentSymbols env file path mlimit
@@ -226,6 +227,10 @@ fetchSymbolsAndAttributesGlean
       (requestOptions_exact_revision opts)
       withContentHash
       ExtraSymbolOpts{..} be mlang dbInfo (requestOptions_attribute_opts opts)
+
+  res1 <- if oAmendLinesOnRevisionMismatch
+          then amendRefLinesIfMismatch res1
+          else return res1
 
   (res2, attributesLog) <- do
     (t, result) <- elapsedTime $ traceSpan tracer "addDynamicAttributes" $
@@ -254,9 +259,40 @@ fetchSymbolsAndAttributesGlean
       RequestOptions { requestOptions_feature_flags = Just
         FeatureFlags { featureFlags_include_xlang_refs = Just True } } -> True
       _ -> documentSymbolsRequest_include_xlang_refs req
+    oAmendLinesOnRevisionMismatch = maybe False
+      featureFlags_amend_lines_on_revision_mismatch (requestOptions_feature_flags opts)
 
     mlimit = Just (fromIntegral (fromMaybe mAXIMUM_SYMBOLS_QUERY_LIMIT
       (requestOptions_limit opts)))
+
+    amendRefLinesIfMismatch res = do
+      case requestOptions_revision opts of
+        Nothing -> return res -- no requested revision, no need to amend
+        Just revision1 -> do
+          let revision2 = revision res
+          match <- fromMaybe False <$> contentMatch revision1 revision2
+          if match
+            then return res -- revision match, no need to amend
+            else do
+              -- obtain line mapping from source diff
+              diffResult <- backendRunHaxl be env $
+                withRepo (snd (NonEmpty.head (gleanDBs be))) $ do
+                  getFileLineDiff sourceControl repo path revision1 revision2
+              let mapping = parseGitDiff diffResult
+                  -- apply line mapping to references and definitions
+              return res {
+                refs  = applyLineMappingToRefs mapping (refs res),
+                defs = applyLineMappingToDefs mapping (defs res)
+              }
+
+    contentMatch myrev wantedrev
+      | myrev == wantedrev = return (Just True)
+      | otherwise =
+        backendRunHaxl be env $
+          withRepo (snd (NonEmpty.head (gleanDBs be))) $ do
+            wanted <- getFileContentHash sourceControl repo path wantedrev
+            mine <- getFileContentHash sourceControl repo path myrev
+            return $ (==) <$> wanted <*> mine
 
 shouldFetchContentHash :: RequestOptions -> Bool
 shouldFetchContentHash opts =
