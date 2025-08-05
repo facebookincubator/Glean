@@ -35,5 +35,7 @@ predicate SymbolContainer:
   {
     symbol: scip.Symbol,
     container: scip.DisplayName
-  }
+  } stored { S, C } where
+  swift.MemberSymbol { member = swift.ContainerMember { container = C }, symbol = S }
+
 }
