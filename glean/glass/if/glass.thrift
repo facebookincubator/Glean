@@ -212,6 +212,7 @@ union Attribute {
   6: map<i64, double> aMapIntDouble;
   7: map<i64, string> aMapIntString;
   8: map<string, double> aMapStringDouble;
+  9: map<i64, list<string>> aMapIntListString;
 }
 
 // Symbol attributes, keyed by attribute name
