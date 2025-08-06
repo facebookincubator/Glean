@@ -35,6 +35,7 @@ indexer = Indexer {
         val <- SCIP.runIndexer ScipIndexerParams {
             scipBinary = pythonScipBinary,
             scipArgs = const [ "index", "--project-version", "test", "."],
+            scipOutDir = Nothing,
             scipRoot = indexerRoot,
             scipWritesLocal = True,
             scipLanguage = Just SCIP.Python

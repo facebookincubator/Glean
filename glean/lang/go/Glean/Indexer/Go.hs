@@ -51,6 +51,7 @@ indexer = Indexer {
         scipArgs = \outFile ->
            ["--module-version=glean", "--no-animation", "-o", outFile ]
            ++ scipExtraArgs,
+        scipOutDir = Nothing,
         scipRoot = indexerRoot,
         scipWritesLocal = False,
         scipLanguage = Just SCIP.Go

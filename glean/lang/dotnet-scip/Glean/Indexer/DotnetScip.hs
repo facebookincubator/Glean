@@ -35,6 +35,7 @@ indexer = Indexer {
             val <- SCIP.runIndexer ScipIndexerParams {
                 scipBinary = dotnetScipBinary,
                 scipArgs = const [ "index"],
+                scipOutDir = Nothing,
                 scipRoot = indexerRoot,
                 scipWritesLocal = True,
                 scipLanguage = Just SCIP.CSharp

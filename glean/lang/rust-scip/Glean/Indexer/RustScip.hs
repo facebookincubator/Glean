@@ -37,6 +37,7 @@ indexer = Indexer {
     val <- SCIP.runIndexer ScipIndexerParams {
                     scipBinary = rustAnalyzerBinary,
                     scipArgs = const [ "scip", "." ],
+                    scipOutDir = Nothing,
                     scipRoot = indexerRoot,
                     scipWritesLocal = True,
                     scipLanguage = Just SCIP.Rust

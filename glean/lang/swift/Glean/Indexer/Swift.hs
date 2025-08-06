@@ -9,15 +9,22 @@
 {-# LANGUAGE ApplicativeDo #-}
 module Glean.Indexer.Swift ( indexer ) where
 
+import qualified Data.ByteString as BS
+import Data.Proxy ( Proxy(..) )
 import Options.Applicative
 
+import qualified Glean
+import Glean.Backend.Types (Backend(..))
 import Glean.Indexer
 import Glean.Indexer.External
 import Glean.Indexer.SCIP ( derive )
 import qualified Glean.SCIP.Driver as SCIP
 import System.FilePath ( (</>), takeDirectory)
 import Glean.LocalOrRemote ( serializeInventory )
-import qualified Data.ByteString as BS
+import Glean.Types (Repo(..))
+
+import Thrift.Protocol (deserializeGen)
+import Thrift.Protocol.Compact (Compact)
 
 data Swift = Swift
   { scipGen :: FilePath
@@ -41,7 +48,7 @@ indexer = Indexer {
   indexerShortName = "swift",
   indexerDescription = "Index Swift code",
   indexerOptParser = options,
-  indexerRun = \Swift{..} backend repo IndexerParams{..} -> do
+  indexerRun = \Swift{..} backend repo IndexerParams{ indexerOutput, .. } -> do
     let tmpDir        = indexerOutput
         inventoryFile = tmpDir </> "inventory.data"
     serializeInventory backend repo >>= BS.writeFile inventoryFile
@@ -55,10 +62,26 @@ indexer = Indexer {
             , "--output-type", "scip"
             , "--inventory", inventoryFile
             , "--build-indexer" ],
+        scipOutDir = Just tmpDir,
         scipRoot = indexerRoot,
         scipWritesLocal = False,
         scipLanguage = Just SCIP.Swift
       }
     sendJsonBatches backend repo (scipGen <> "/scip") val
+    sendBatch backend repo (tmpDir </> "facts")
     derive backend repo
   }
+
+sendBatch ::
+  forall be. Backend be
+  => be
+  -> Repo
+  -> FilePath
+  -> IO ()
+sendBatch backend repo factFile = do
+    dat <- BS.readFile factFile
+    case deserializeGen (Proxy :: Proxy Compact) dat of
+      Left parseError -> error parseError
+      Right batch     -> do
+        _subst <- Glean.sendBatch backend repo batch
+        return ()

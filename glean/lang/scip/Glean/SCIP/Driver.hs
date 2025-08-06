@@ -39,6 +39,7 @@ import Data.SCIP.Angle ( scipToAngle, LanguageId(..) )
 data ScipIndexerParams = ScipIndexerParams
   { scipBinary :: FilePath
   , scipArgs :: FilePath -> [String]
+  , scipOutDir :: Maybe FilePath
   , scipRoot :: FilePath
   , scipWritesLocal :: Bool
      -- ^ e.g. rust-analyzer always writes index.scip to repoDir
@@ -50,13 +51,17 @@ data ScipIndexerParams = ScipIndexerParams
 runIndexer :: ScipIndexerParams -> IO Aeson.Value
 runIndexer params@ScipIndexerParams{..} = do
   repoDir <- makeAbsolute scipRoot
-  withSystemTempDirectory "glean-scip" $ \scipDir -> do
+  withDirOrTmp scipOutDir $ \scipDir -> do
     let scipFile = scipDir </> "index.scip"
     runSCIPIndexer params { scipRoot = repoDir } scipFile
     when scipWritesLocal $ do
         copyFile (repoDir </> "index.scip") scipFile
         removeFile (repoDir </> "index.scip")
     processSCIP scipLanguage False Nothing Nothing scipFile
+
+withDirOrTmp :: Maybe FilePath -> (FilePath -> IO a) -> IO a
+withDirOrTmp Nothing f = withSystemTempDirectory "glean-scip" f
+withDirOrTmp (Just dir) f = withCurrentDirectory dir $ f dir
 
 -- | Run a SCIP indexer on a repository, put scip dump output into outputFile
 runSCIPIndexer :: ScipIndexerParams -> FilePath -> IO ()
