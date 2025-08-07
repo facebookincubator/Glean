@@ -105,6 +105,7 @@ struct AttributeOptions {
   7: bool fetch_strobelight_frames = false;
   8: bool fetch_default_view = false;
   9: optional PackageName package_name;
+  10: bool use_binary_for_default_view = false;
 }
 
 typedef string ServiceID (hs.newtype)
