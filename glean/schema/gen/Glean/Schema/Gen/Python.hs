@@ -89,15 +89,22 @@ genSchemaPy _version preddefs typedefs oncall =
     namePolicy = mkNamePolicy preddefs typedefs
     declsPerNamespace =
       addNamespaceDependencies $ sortDeclsByNamespace preddefs typedefs
-    genPredicateImports namespaces preds = Text.unlines $
-      ("from glean.schema." <> namespaceToFileName namespaces <> ".types import (") :
-      [ "    " <> return_class_name <> ","
-          | pred <- preds
-          , let ref = predicateDefRef pred
-                predicateName = predicateRef_name ref
-                return_class_name = returnPythonClassName predicateName
-      ] ++
-      [")"]
+    genPredicateImports namespaces preds =
+      let importList = [ "    " <> return_class_name <> ","
+              | pred <- preds
+              , let ref = predicateDefRef pred
+                    predicateName = predicateRef_name ref
+                    return_class_name = returnPythonClassName predicateName
+            ] in
+      Text.unlines
+        (if null importList then
+          []
+        else
+            ("from glean.schema."
+                <> namespaceToFileName namespaces
+                <> ".types import (") :
+            importList ++
+            [")"])
     extraImports = [
       (Text.concat namespaces,
       addBuckImportsForKeys namespaces namePolicy allPreds) |

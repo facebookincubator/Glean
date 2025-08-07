@@ -19,7 +19,8 @@ import code.kotlin
 import code.lsif
 import code.pp
 import code.python
-import code.scip.1
+import code.scip
+import code.swift
 import codemarkup.types
 
 type Entity =
@@ -48,6 +49,7 @@ type SymbolId =
   {
     scip : code.scip.SymbolId |
     cxx : code.cxx.SymbolId |
+    swift : code.swift.SymbolId |
   }
 
 # language enum values for exactly the set of entity tags (including LSIF)

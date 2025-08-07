@@ -78,7 +78,9 @@ genTargets slashVn info oncall =
   genTarget (ns, (deps, nsPredicates, _)) =
     let
       namespace = underscored ns
-      cppSplits = showt $ min 20 (max 1 (length nsPredicates))
+      typesCppSplits =
+        let cppSplits = min 20 (length nsPredicates) in
+        ["\"types_cpp_splits=" <> showt cppSplits <> "\"" | cppSplits /= 0]
     in
     [ "thrift_library("
     , "  name = \"" <> namespace <> "\","
@@ -92,10 +94,9 @@ genTargets slashVn info oncall =
     , "    \"skip_none_serialization\","
     , "    \"deprecated_default_enum_min_i32\","
     , "],"
-    , "  thrift_cpp2_options = [" <> Text.intercalate ", " [
-      "\"json\"",
-      "\"types_cpp_splits=" <> cppSplits <> "\""
-      ] <> "],"
+    , "  thrift_cpp2_options = [" <> Text.intercalate ", " (
+      "\"json\"" : typesCppSplits
+      ) <> "],"
     , "  thrift_py_options = \"utf8strings\","
     , "  thrift_py3_options = [\"inplace_migrate\"],"
     , "  languages = [" <> Text.intercalate ", " langs <> "],"

@@ -1,0 +1,9 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
+schema code.swift.1 {
+
+import scip
+
+type SymbolId = scip.Symbol
+
+}

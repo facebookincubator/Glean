@@ -47,16 +47,6 @@ predicate ScipFileEntityXRefLocations:
     { { Name, TargetFile, { range = TargetRange }, nothing },
       { range = SrcRange } } = XRefLocation;
 
-predicate FileXLangSymbolRefs:
-  {
-    file: src.File,
-    source: codemarkup.types.RangeSpan,
-    symbol: scip.Symbol,
-  }
-  { File, { range = SrcRange }, Symbol } where
-  scip.FileXLangSymbolRef { File, LsifRange, Symbol };
-  lsif.types.ToSrcRange { File, LsifRange, SrcRange };
-
 #
 # Language entity uses (find-references)
 #

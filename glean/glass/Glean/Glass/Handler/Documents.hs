@@ -687,7 +687,7 @@ resolveXlangXrefs
     translateSymbol
         (Just Language_Swift)
         Language_Cpp
-        (Code.SymbolId_scip (Scip.Symbol _ (Just usr))) =
+        (Code.SymbolId_swift (Scip.Symbol _ (Just usr))) =
       Code.SymbolId_cxx $ hashUSR usr
     translateSymbol _ _ symId = symId
 

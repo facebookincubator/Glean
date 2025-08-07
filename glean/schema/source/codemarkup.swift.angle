@@ -1,0 +1,21 @@
+# Copyright (c) Meta, Inc. and affiliates.
+
+schema codemarkup.swift.1 {
+
+import codemarkup.types
+import lsif.types
+import scip
+import src
+import swift
+
+predicate FileXLangSymbolRef:
+  {
+    file: src.File,
+    source: codemarkup.types.RangeSpan,
+    symbol: scip.Symbol,
+  }
+  { File, { range = SrcRange }, Symbol } where
+  swift.FileXLangSymbolRef { File, LsifRange, Symbol };
+  lsif.types.ToSrcRange { File, LsifRange, SrcRange };
+
+}

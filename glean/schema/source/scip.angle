@@ -326,17 +326,6 @@ predicate SearchBySymbol:
     scip.FileLanguage { File, Language };
     scip.TagDefinition { Language, Defn, Entity }
 
-predicate FileXLangSymbolRef:
-  {
-    file: src.File,
-    range: lsif.types.RangeSpan,
-    target: scip.Symbol,
-  }
-  { File, Range, Symbol } where
-  scip.FileLanguage { file = File, language = Swift };
-  scip.ReferenceLocation { File, Range, { symbol = Symbol } };
-  Symbol = "c:objc"..;
-
 predicate SearchByNameKind:
   {
     name : string,
@@ -347,4 +336,5 @@ predicate SearchByNameKind:
     scip.DisplayNameSymbol { DisplayName Name, Symbol };
     Kind = ( if (scip.SymbolKind { Symbol, K }) then { just = K } else nothing );
     scip.SearchBySymbol { Symbol, Entity }
+
 }

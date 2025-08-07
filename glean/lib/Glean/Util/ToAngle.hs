@@ -986,6 +986,7 @@ instance ToAngleFull Code.Entity where
 instance ToAngleFull Code.SymbolId where
   toAngleFull (Code.SymbolId_cxx x) = alt @"cxx" (toAngleFull x)
   toAngleFull (Code.SymbolId_scip x) = alt @"scip" (toAngleFull x)
+  toAngleFull (Code.SymbolId_swift x) = alt @"swift" (toAngleFull x)
   toAngleFull Code.SymbolId_EMPTY = error "unknown Code.SymbolId"
 
 instance ToAngleFull Scip.Symbol where
@@ -995,6 +996,7 @@ instance ToAngleFull Scip.Symbol where
 instance Normalize Code.SymbolId  where
   normalize (Code.SymbolId_cxx x) = Code.SymbolId_cxx (normalize x)
   normalize (Code.SymbolId_scip x) = Code.SymbolId_scip (normalize x)
+  normalize (Code.SymbolId_swift x) = Code.SymbolId_swift (normalize x)
   normalize Code.SymbolId_EMPTY = Code.SymbolId_EMPTY
 
 instance Normalize Scip.Symbol where

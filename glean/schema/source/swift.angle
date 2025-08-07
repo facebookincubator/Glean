@@ -2,8 +2,9 @@
 
 schema swift.1 {
 
-import scip.1
-import lsif.types.1
+import lsif.types
+import scip
+import src
 
 predicate SymbolLanguage:
   {
@@ -37,5 +38,15 @@ predicate SymbolContainer:
     container: scip.DisplayName
   } stored { S, C } where
   swift.MemberSymbol { member = swift.ContainerMember { container = C }, symbol = S }
+
+predicate FileXLangSymbolRef:
+  {
+    file: src.File,
+    range: lsif.types.RangeSpan,
+    target: scip.Symbol,
+  }
+  { File, Range, Symbol } where
+  scip.ReferenceLocation { File, Range, { symbol = Symbol } };
+  swift.SymbolLanguage { symbol = Symbol, language = ObjectiveC };
 
 }

@@ -21,6 +21,7 @@ import codemarkup.lsif
 import codemarkup.pp
 import codemarkup.python
 import codemarkup.scip
+import codemarkup.swift
 import codemarkup.types
 import codemarkup.anglelang
 
@@ -278,8 +279,8 @@ predicate FileXRefsGenericEntities: {
   | ( codemarkup.scip.ScipFileEntityXRefLocations { File, XRef, E }
     ; { plainEntity = { xref = XRef, entity = { scip = E } } } = GenEntity
     )
-  | ( codemarkup.scip.FileXLangSymbolRefs { File, Source, Symbol }
-    ; { xlangSymbol = { source = Source, symbol = { scip = Symbol } } } = GenEntity
+  | ( codemarkup.swift.FileXLangSymbolRef { File, Source, Symbol }
+    ; { xlangSymbol = { source = Source, symbol = { swift = Symbol } } } = GenEntity
     )
   | ( codemarkup.java.JavalFileEntityXRefLocations { File, XRef, E }
     ; { plainEntity = { xref = XRef, entity = { java = E } } } = GenEntity
