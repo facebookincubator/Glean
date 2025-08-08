@@ -1,0 +1,690 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 11, "start": 280 } },
+        "target": {
+          "file": { "key": "lib.py" },
+          "location": { "span": { "length": 642, "start": 266 } },
+          "name": "lib.HelperClass"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 11, "start": 464 } },
+        "target": {
+          "file": { "key": "lib.py" },
+          "location": { "span": { "length": 642, "start": 266 } },
+          "name": "lib.HelperClass"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 11, "start": 829 } },
+        "target": {
+          "file": { "key": "lib.py" },
+          "location": { "span": { "length": 642, "start": 266 } },
+          "name": "lib.HelperClass"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.helper_function" } } }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 15, "start": 263 } },
+        "target": {
+          "file": { "key": "lib.py" },
+          "location": { "span": { "length": 81, "start": 911 } },
+          "name": "lib.helper_function"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.helper_function" } } }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 15, "start": 1068 } },
+        "target": {
+          "file": { "key": "lib.py" },
+          "location": { "span": { "length": 81, "start": 911 } },
+          "name": "lib.helper_function"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.new_helper_function" } } }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 19, "start": 293 } },
+        "target": {
+          "file": { "key": "lib.py" },
+          "location": { "span": { "length": 96, "start": 995 } },
+          "name": "lib.new_helper_function"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.new_helper_function" } } }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 19, "start": 694 } },
+        "target": {
+          "file": { "key": "lib.py" },
+          "location": { "span": { "length": 96, "start": 995 } },
+          "name": "lib.new_helper_function"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.new_helper_function" } } }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 19, "start": 1207 } },
+        "target": {
+          "file": { "key": "lib.py" },
+          "location": { "span": { "length": 96, "start": 995 } },
+          "name": "lib.new_helper_function"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "utils.advanced_calculation" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 20, "start": 331 } },
+        "target": {
+          "file": { "key": "utils.py" },
+          "location": { "span": { "length": 98, "start": 402 } },
+          "name": "utils.advanced_calculation"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "utils.advanced_calculation" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 20, "start": 567 } },
+        "target": {
+          "file": { "key": "utils.py" },
+          "location": { "span": { "length": 98, "start": 402 } },
+          "name": "utils.advanced_calculation"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "utils.calculate_result" } } }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 16, "start": 353 } },
+        "target": {
+          "file": { "key": "utils.py" },
+          "location": { "span": { "length": 107, "start": 269 } },
+          "name": "utils.calculate_result"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "utils.calculate_result" } } }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 16, "start": 527 } },
+        "target": {
+          "file": { "key": "utils.py" },
+          "location": { "span": { "length": 107, "start": 269 } },
+          "name": "utils.calculate_result"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "main.HelperClass" },
+                "from_name": { "key": "lib.HelperClass" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 11, "start": 464 } },
+        "target": {
+          "file": { "key": "main.py" },
+          "location": { "span": { "length": 11, "start": 280 } },
+          "name": "main.HelperClass"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "main.HelperClass" },
+                "from_name": { "key": "lib.HelperClass" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 11, "start": 829 } },
+        "target": {
+          "file": { "key": "main.py" },
+          "location": { "span": { "length": 11, "start": 280 } },
+          "name": "main.HelperClass"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "main.advanced_calculation" },
+                "from_name": { "key": "utils.advanced_calculation" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 20, "start": 567 } },
+        "target": {
+          "file": { "key": "main.py" },
+          "location": { "span": { "length": 20, "start": 331 } },
+          "name": "main.advanced_calculation"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "main.calculate_result" },
+                "from_name": { "key": "utils.calculate_result" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 16, "start": 527 } },
+        "target": {
+          "file": { "key": "main.py" },
+          "location": { "span": { "length": 16, "start": 353 } },
+          "name": "main.calculate_result"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "main.helper_function" },
+                "from_name": { "key": "lib.helper_function" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 15, "start": 1068 } },
+        "target": {
+          "file": { "key": "main.py" },
+          "location": { "span": { "length": 15, "start": 263 } },
+          "name": "main.helper_function"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "main.new_helper_function" },
+                "from_name": { "key": "lib.new_helper_function" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 19, "start": 694 } },
+        "target": {
+          "file": { "key": "main.py" },
+          "location": { "span": { "length": 19, "start": 293 } },
+          "name": "main.new_helper_function"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "main.new_helper_function" },
+                "from_name": { "key": "lib.new_helper_function" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 19, "start": 1207 } },
+        "target": {
+          "file": { "key": "main.py" },
+          "location": { "span": { "length": 19, "start": 293 } },
+          "name": "main.new_helper_function"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 3, "start": 252 } },
+        "target": {
+          "file": { "key": "lib.py" },
+          "location": { "span": { "length": 1092, "start": 0 } },
+          "name": "lib"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "utils" } } } }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 5, "start": 318 } },
+        "target": {
+          "file": { "key": "utils.py" },
+          "location": { "span": { "length": 601, "start": 0 } },
+          "name": "utils"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "main.MainClass.__init__.<locals>.self" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 4, "start": 815 } },
+        "target": {
+          "file": { "key": "main.py" },
+          "location": { "span": { "length": 4, "start": 800 } },
+          "name": "main.MainClass.__init__.<locals>.self"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "main.MainClass.__init__.<locals>.self" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 4, "start": 851 } },
+        "target": {
+          "file": { "key": "main.py" },
+          "location": { "span": { "length": 4, "start": 800 } },
+          "name": "main.MainClass.__init__.<locals>.self"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": "main.MainClass.process.<locals>.enhanced_value"
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 14, "start": 1105 } },
+        "target": {
+          "file": { "key": "main.py" },
+          "location": { "span": { "length": 49, "start": 1003 } },
+          "name": "main.MainClass.process.<locals>.enhanced_value"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "main.MainClass.process.<locals>.self" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 4, "start": 971 } },
+        "target": {
+          "file": { "key": "main.py" },
+          "location": { "span": { "length": 4, "start": 888 } },
+          "name": "main.MainClass.process.<locals>.self"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "main.MainClass.process.<locals>.self" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 4, "start": 1020 } },
+        "target": {
+          "file": { "key": "main.py" },
+          "location": { "span": { "length": 4, "start": 888 } },
+          "name": "main.MainClass.process.<locals>.self"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "main.MainClass.process.<locals>.value" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 5, "start": 1092 } },
+        "target": {
+          "file": { "key": "main.py" },
+          "location": { "span": { "length": 31, "start": 963 } },
+          "name": "main.MainClass.process.<locals>.value"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "main.main_function.<locals>.advanced" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 8, "start": 611 } },
+        "target": {
+          "file": { "key": "main.py" },
+          "location": { "span": { "length": 43, "start": 556 } },
+          "name": "main.main_function.<locals>.advanced"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "main.main_function.<locals>.calculated" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 10, "start": 588 } },
+        "target": {
+          "file": { "key": "main.py" },
+          "location": { "span": { "length": 37, "start": 514 } },
+          "name": "main.main_function.<locals>.calculated"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "main.main_function.<locals>.helper" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 6, "start": 491 } },
+        "target": {
+          "file": { "key": "main.py" },
+          "location": { "span": { "length": 22, "start": 455 } },
+          "name": "main.main_function.<locals>.helper"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "main.main_function.<locals>.result" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" },
+      "xref": {
+        "source": { "span": { "length": 6, "start": 544 } },
+        "target": {
+          "file": { "key": "main.py" },
+          "location": { "span": { "length": 27, "start": 482 } },
+          "name": "main.main_function.<locals>.result"
+        }
+      }
+    }
+  }
+]
