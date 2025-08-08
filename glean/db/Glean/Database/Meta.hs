@@ -12,6 +12,7 @@ module Glean.Database.Meta
   , DBTimestamp(..)
   , newMeta
   , showCompleteness
+  , showCompletenessFull
   , completenessStatus
   , dbAge
   , dbTime
@@ -69,6 +70,11 @@ showCompleteness Incomplete{} = "incomplete"
 showCompleteness Complete{} = "complete"
 showCompleteness Broken{} = "broken"
 showCompleteness Finalizing{} = "finalizing"
+
+showCompletenessFull :: Completeness -> Text
+showCompletenessFull (Broken (DatabaseBroken task reason)) =
+    "broken at task \"" <> task <> "\": " <> reason
+showCompletenessFull x = showCompleteness x
 
 completenessStatus :: Meta -> DatabaseStatus
 completenessStatus meta = case metaCompleteness meta of

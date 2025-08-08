@@ -201,7 +201,7 @@ stackedCreate env@Env{..} base KickOff{..} schemaToUse =
         Complete{} -> return $
           HashMap.lookup "glean.guid" $ metaProperties meta
         c -> throwSTM $ InvalidDependency kickOff_repo base $
-          "database is " <> showCompleteness c
+          "database is " <> showCompletenessFull c
     start <- firstFreeId lookup
 
     index <- Observed.get envSchemaSource

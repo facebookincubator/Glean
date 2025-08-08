@@ -36,6 +36,9 @@ import Glean.Util.Observed as Observed
 finishDatabase :: Env -> Repo -> IO Thrift.FinishDatabaseResponse
 finishDatabase Env{..} repo  = do
   atomically $ do
+    -- Mark the database as finalizing.
+    -- This is read and processed in getTodo in Backup.hs, which then
+    -- calls doFinalize.
     void $ Catalog.modifyMeta envCatalog repo $ \oldmeta ->
       case completenessStatus oldmeta of
         DatabaseStatus_Incomplete ->
