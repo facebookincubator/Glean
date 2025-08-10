@@ -1074,7 +1074,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
               try {
                 auto json = folly::parseJson(json_annotation);
                 genThriftFacts(visitor, decl, result, json);
-              } catch (const folly::json::parse_error& e) {
+              } catch (const folly::json::parse_error&) {
                 LOG(WARNING)
                     << "Couldn't parse Thrift json annotation: " << comment_str;
               } catch (const ThriftDecodingException& e) {
