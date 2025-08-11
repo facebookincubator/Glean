@@ -1,0 +1,43 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/__init__.py"
+      },
+      "language": 7
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/baz.py"
+      },
+      "language": 7
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "language": 7
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "language": 7
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/quux/empty.py"
+      },
+      "language": 7
+    }
+  }
+]

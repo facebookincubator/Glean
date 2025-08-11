@@ -1,0 +1,9 @@
+[
+  "@generated",
+  { "key": { "name": { "key": "bar" } } },
+  { "key": { "name": { "key": "bar.baz" } } },
+  { "key": { "name": { "key": "bar.quux" } } },
+  { "key": { "name": { "key": "foo" } } },
+  { "key": { "name": { "key": "quux" } } },
+  { "key": { "name": { "key": "quux.empty" } } }
+]
