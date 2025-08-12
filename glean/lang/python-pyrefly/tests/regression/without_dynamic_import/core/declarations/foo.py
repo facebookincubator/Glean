@@ -16,24 +16,14 @@ import abc
 from abc import ABC, abstractmethod
 from typing import Annotated, Callable, final, Optional, Union
 
-# pyrefly: ignore  # import-error
 import a.b.c  # noqa
-
-# pyrefly: ignore  # import-error
 import x.y
-
-# pyrefly: ignore  # import-error
 from bar import Bar, µ
-
-# pyrefly: ignore  # import-error
 from glean.lang.python.indexers.core import path_for_pyre
-
-# pyrefly: ignore  # import-error
 from lib import helper_func, nonexistent_func  # noqa
 
 
 try:
-    # pyrefly: ignore  # import-error
     from something import maybe_import
 except ImportError:
 
@@ -49,7 +39,6 @@ class FooClass:
     Class Docstring
     """
 
-    # pyrefly: ignore  # unknown-name
     foo_class_var: ClassVar[bool] = True
     foo_instance_var: int
 
@@ -121,7 +110,6 @@ def param_types_test(
     basic: FooClass,
     defaulted: str = "abc" + "def",
     nested: Optional[FooClass] = None,
-    # pyrefly: ignore  # unknown-name
     union: Union[Optional[FooClass], Bar, Generic[int]] = None,
 ):
     pass
@@ -157,7 +145,6 @@ def none_return():
     return
 
 
-# pyrefly: ignore  # invalid-annotation
 def none_ellipsis() -> ...:
     return
 
@@ -179,26 +166,20 @@ def pipe_union_return() -> Union[FooClass | FooBar]:
 
 
 def callable_return() -> Callable[[str, Optional[bool]], Optional[int]]:
-    # pyrefly: ignore  # bad-return
     return lambda x: None
 
 
-# pyrefly: ignore  # unknown-name
 def pep593_return() -> (
     Annotated[
         int,
-        # pyrefly: ignore  # unknown-name
         ValueRange(3, [10, *star]),
-        # pyrefly: ignore  # unknown-name
         ctype("char"),
-        # pyrefly: ignore  # unknown-name
         dtype(kv={"k1": "v1", "k2": "v2", **star}),
     ]
 ):
     return 3
 
 
-# pyrefly: ignore  # invalid-annotation
 def await_return() -> await Optional[int]:
     return None
 
@@ -209,9 +190,7 @@ def complex_return() -> (
     return None
 
 
-# pyrefly: ignore  # missing-attribute
 def imported_inner_class_return() -> Bar.InnerBar:
-    # pyrefly: ignore  # missing-attribute
     return Bar.InnerBar()
 
 

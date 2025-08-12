@@ -57,7 +57,8 @@ indexer = Indexer {
             , "java.alpha.XRefFile"
             , "java.alpha.FileDeclarations"
             , "javakotlin.alpha.NameLowerCase"
-            ]
+            ],
+            extAllowNonZeroExit = False
       }
     in indexerRun externalIndexer ext backend repo params
 

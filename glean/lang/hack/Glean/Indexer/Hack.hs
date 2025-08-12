@@ -90,7 +90,8 @@ indexer = Indexer {
             , "hack.SearchTypedefByLowerCaseName"
             , "hack.SearchNamespaceByName"
             , "hack.SearchNamespaceByLowerCaseName"
-            ]
+            ],
+            extAllowNonZeroExit = False
         }
 
         hhConfig = concatMap (\x -> ["--config", x]) $

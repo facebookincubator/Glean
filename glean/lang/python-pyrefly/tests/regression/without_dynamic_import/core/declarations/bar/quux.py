@@ -11,7 +11,7 @@ value = 1
 multiline_value = (True,)
 x, y = 1, 2
 foo = pow(1, 2)
-# pyrefly: ignore  # no-matching-overload
+
 comp = [x for x in range(start=1, stop=5)]  # noqa C416
 expr = 1 + 5
 l = lambda a, b, c: a + b + c + 10  # noqa E741
@@ -27,7 +27,6 @@ class Foo:
             pass
 
 
-# pyrefly: ignore  # unknown-name
 with something() as w:  # noqa F841
     pass
 
@@ -38,7 +37,7 @@ for k in range(1, 5):
 print("hello world")
 print("hello" "world")
 print("hello", "world")
-# pyrefly: ignore  # no-matching-overload
+
 print("world", hello="hello")
 print(b"world")
 

@@ -38,14 +38,15 @@ indexer = Indexer {
           extFlavour = Json,
           extArgs =
             [ "check"
-            , "--suppress-errors"
             , "--check-all"
             , "--report-glean=${JSON_BATCH_DIR}/output"
+            , "--output-format=omit-errors"
+            , "--summary=none"
             , pyreflyRoot <> "/**/*.py"
             , "--search-path=" <> pyreflyRoot
-            , "--output=/dev/null"
             ],
-          extDerivePredicates = []
+          extDerivePredicates = [],
+          extAllowNonZeroExit = True
         }
 
     indexerRun externalIndexer ext backend repo params

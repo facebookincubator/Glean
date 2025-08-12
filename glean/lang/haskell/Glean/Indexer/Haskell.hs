@@ -81,7 +81,8 @@ indexer =
                 , extDerivePredicates = [
                     "hs.OccNameLowerCase",
                     "hs.SourceModule"
-                  ]
+                  ],
+                  extAllowNonZeroExit = False
                 }
         indexerRun externalIndexer ext backend repo params
     }

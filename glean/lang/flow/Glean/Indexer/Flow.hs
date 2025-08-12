@@ -71,7 +71,8 @@ indexer = Indexer {
             , "flow.SearchTypeDeclarationByName"
             , "flow.SearchTypeDeclarationByLowerCaseName"
             , "flow.SearchModuleByLowerCaseName"
-            ]
+            ],
+            extAllowNonZeroExit = False
         }
     indexerRun externalIndexer ext
   }

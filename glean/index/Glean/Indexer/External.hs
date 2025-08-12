@@ -80,6 +80,7 @@ data Ext = Ext
   , extArgs :: [String]
   , extFlavour :: Flavour
   , extDerivePredicates :: [Text]
+  , extAllowNonZeroExit :: Bool
   }
 
 extOptions :: O.Parser Ext
@@ -105,6 +106,9 @@ extOptions = do
     O.strOption $
     O.long "derive" <> O.metavar "PREDICATE,PREDICATE,..." <>
     O.help "predicates to derive after writing facts (ordered)"
+  extAllowNonZeroExit <-
+    O.switch $ O.long "allow-non-zero-exit" <>
+    O.help "allow the binary to exit with a non-zero exit code"
   return Ext{..}
 
 -- | Finish decoding parameters from @glean_test@ by
@@ -132,12 +136,13 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
   -- language indexers that build on External.
   maxConcurrency = 20 :: Int
 
+  run = if extAllowNonZeroExit then void . system else callCommand
   index = case extFlavour of
     Json -> do
       jsonBatchDir <- createTempDirectory indexerOutput "glean-json"
       let jsonVars = HashMap.insert "JSON_BATCH_DIR" jsonBatchDir vars
-      callCommand
-        (unwords (extRunScript : map (quoteArg . subst jsonVars) extArgs))
+      let cmdLine = unwords (extRunScript : map (quoteArg . subst jsonVars) extArgs)
+      run cmdLine
       files <- listDirectoryRecursive jsonBatchDir
       stream maxConcurrency (forM_ files) $ \file -> do
         (batches, schema_id) <- fileToBatches (jsonBatchDir </> file)
@@ -149,8 +154,8 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
       let
         go service = do
           let serverVars = HashMap.insert "GLEAN_SERVER" service vars
-          callCommand
-            (unwords (extRunScript : map (quoteArg . subst serverVars) extArgs))
+          let cmdLine = unwords (extRunScript : map (quoteArg . subst serverVars) extArgs)
+          run cmdLine
       case backendKind env of
         BackendEnv env -> do
           fb303 <- newFb303 "gleandriver"
