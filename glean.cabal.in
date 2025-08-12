@@ -1789,16 +1789,19 @@ library bench-lib
 --     include-dirs: .
 --     cxx-sources:
 --         glean/schema/gen-cpp2/glean_test_types.cpp
---         glean/schema/gen-cpp2/glean_test_types_compact.cpp
 --         glean/schema/gen-cpp2/glean_test_types_binary.cpp
+--         glean/schema/gen-cpp2/glean_test_types_compact.cpp
+--         glean/schema/gen-cpp2/glean_test_types_serialization.cpp
 --         glean/schema/gen-cpp2/glean_test_data.cpp
 --         glean/schema/gen-cpp2/builtin_types.cpp
---         glean/schema/gen-cpp2/builtin_types_compact.cpp
 --         glean/schema/gen-cpp2/builtin_types_binary.cpp
+--         glean/schema/gen-cpp2/builtin_types_compact.cpp
+--         glean/schema/gen-cpp2/builtin_types_serialization.cpp
 --         glean/schema/gen-cpp2/builtin_data.cpp
 --         glean/schema/gen-cpp2/sys_types.cpp
---         glean/schema/gen-cpp2/sys_types_compact.cpp
 --         glean/schema/gen-cpp2/sys_types_binary.cpp
+--         glean/schema/gen-cpp2/sys_types_compact.cpp
+--         glean/schema/gen-cpp2/sys_types_serialization.cpp
 --         glean/schema/gen-cpp2/sys_data.cpp
 --         ... etc.
 
