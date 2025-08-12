@@ -14,14 +14,12 @@ import Data.Proxy ( Proxy(..) )
 import Options.Applicative
 
 import qualified Glean
-import Glean.Backend.Types (Backend(..))
 import Glean.Indexer
 import Glean.Indexer.External
 import Glean.Indexer.SCIP ( derive )
 import qualified Glean.SCIP.Driver as SCIP
 import System.FilePath ( (</>), takeDirectory)
 import Glean.LocalOrRemote ( serializeInventory )
-import Glean.Types (Repo(..))
 
 import Thrift.Protocol (deserializeGen)
 import Thrift.Protocol.Compact (Compact)
@@ -73,9 +71,9 @@ indexer = Indexer {
   }
 
 sendBatch ::
-  forall be. Backend be
+  forall be. Glean.Backend be
   => be
-  -> Repo
+  -> Glean.Repo
   -> FilePath
   -> IO ()
 sendBatch backend repo factFile = do

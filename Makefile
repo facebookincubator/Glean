@@ -173,6 +173,7 @@ SCHEMAS= \
 	code_java \
 	code_kotlin \
 	code_lsif \
+	code_swift \
 	codemarkup \
 	codemarkup_anglelang \
 	codemarkup_buck \
