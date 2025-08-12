@@ -173,6 +173,7 @@ SCHEMAS= \
 	code_java \
 	code_kotlin \
 	code_lsif \
+	code_swift \
 	codemarkup \
 	codemarkup_anglelang \
 	codemarkup_buck \
@@ -192,6 +193,7 @@ SCHEMAS= \
 	codemarkup_python \
 	codemarkup_scip \
 	codemarkup_search \
+	codemarkup_swift \
 	codemarkup_types \
 	code_pp \
 	code_python \

@@ -28,6 +28,7 @@ import qualified Glean.Indexer.Hack as Hack
 import qualified Glean.Indexer.Buck as Buck
 import qualified Glean.Indexer.Fbthrift as Fbthrift
 import qualified Glean.Indexer.Python as Python
+import qualified Glean.Indexer.PythonPyrefly as PythonPyrefly
 import qualified Glean.Indexer.Yaml as Yaml
 #endif
 import qualified Glean.Indexer.Go as Go
@@ -39,7 +40,6 @@ import qualified Glean.Indexer.Typescript as Typescript
 import qualified Glean.Indexer.LSIF as LSIF
 import qualified Glean.Indexer.SCIP as SCIP
 import qualified Glean.Indexer.Haskell as Hs
-import qualified Glean.Indexer.PythonPyrefly as PythonPyrefly
 import qualified Glean.Indexer.PythonScip as PythonScip
 import qualified Glean.Indexer.DotnetScip as DotnetScip
 
@@ -55,6 +55,7 @@ indexers =
   , SomeIndexer Buck.indexer
   , SomeIndexer Fbthrift.indexer
   , SomeIndexer Python.indexer
+  , SomeIndexer PythonPyrefly.indexer
   , SomeIndexer Yaml.indexer
 #endif
   , SomeIndexer Hs.indexer
@@ -66,7 +67,6 @@ indexers =
   , SomeIndexer RustScip.indexer
   , SomeIndexer Swift.indexer
   , SomeIndexer Typescript.indexer
-  , SomeIndexer PythonPyrefly.indexer
   , SomeIndexer PythonScip.indexer
   , SomeIndexer DotnetScip.indexer
   ]
