@@ -148,20 +148,19 @@ withRemoteBackendSettings
   -> IO a
 withRemoteBackendSettings evb configAPI configSource schema settings inner = do
   config <- ThriftSource.loadDefault configAPI configSource
-  client <- clientInfo
   let (config', opts) = settings (config, def)
-  inner $ ThriftBackend
-    config
-    evb
-    (thriftServiceWithTimeout config' opts)
-    client
-    schema
+  case thriftServiceWithTimeout config' opts of
+    Nothing -> throwIO $ ErrorCall $
+      "Service not supported: " <> serviceToString (clientConfig_serv config')
+    Just thriftService -> do
+      client <- clientInfo
+      inner $ ThriftBackend config evb thriftService client schema
 
 thriftServiceWithTimeout
   :: IsThriftService t
   => ClientConfig
   -> ThriftServiceOptions
-  -> t s
+  -> Maybe (t s)
 thriftServiceWithTimeout ClientConfig{..} opts =
   mkThriftService clientConfig_serv opts'
   where

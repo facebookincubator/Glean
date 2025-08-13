@@ -54,6 +54,7 @@ module Glean.LocalOrRemote
   , serializeInventory
   ) where
 
+import Control.Exception
 import Control.Monad.Extra
 import qualified Data.ByteString.Char8 as BC
 import Data.Default
@@ -77,6 +78,7 @@ import Glean.Database.Validate
 import Glean.Database.Finish (finalizeWait)
 import qualified Glean.Remote as Remote
 import Glean.Util.ConfigProvider
+import qualified Glean.Util.Service as Service
 import Glean.Util.Some
 import qualified Glean.Util.ThriftSource as ThriftSource
 import Glean.Write.JSON (syncWriteJsonBatch)
@@ -119,22 +121,38 @@ withBackend
   -> (forall b. LocalOrRemote b => b -> IO a)
   -> IO a
 withBackend evb cfgapi service schema settings inner = case service of
-  Local cfg logging ->
-    let cfg' = cfg { cfgSchemaId = schema } in
-    withDatabases evb cfg' cfgapi $
-      case logging of
-        EnableLogging -> inner . LoggingBackend
-        DisableLogging -> inner
-  Remote src -> do
-    config <- ThriftSource.loadDefault cfgapi src
-    let (config', opts) = settings (config, def)
-    client <- Remote.clientInfo
-    inner $ Remote.ThriftBackend
-      config'
-      evb
-      (Remote.thriftServiceWithTimeout config' opts)
-      client
-      schema
+    Local cfg logging ->
+      let cfg' = cfg { cfgSchemaId = schema } in
+      withDatabases evb cfg' cfgapi $
+        case logging of
+          EnableLogging -> inner . LoggingBackend
+          DisableLogging -> inner
+    Remote src -> do
+      config <- ThriftSource.loadDefault cfgapi src
+      let (config', opts) = settings (config, def)
+      case Remote.thriftServiceWithTimeout config' opts of
+        Nothing
+          -- The default service is a tier, which is not supported in
+          -- the open-source build. To avoid a confusing error message
+          -- when someone just forgets to use --db-root or --service,
+          -- let's try to be helpful:
+          | clientConfig_serv config' == clientConfig_serv def ->
+            throwIO $ ErrorCall $
+            "No default Glean service. To use local DBs, " <>
+            "specify --db-root <dir>, or to connect to a server " <>
+            "use --service <host>:<port>"
+          | otherwise ->
+            throwIO $ ErrorCall $
+              "Service not supported: " <>
+                Service.serviceToString (clientConfig_serv config')
+        Just thriftService -> do
+          client <- Remote.clientInfo
+          inner $ Remote.ThriftBackend
+            config'
+            evb
+            thriftService
+            client
+            schema
 
 -- | Command-line options to specify a 'Service' that we can connect to.
 -- The 'Service' is either a remote Glean server (e.g. @--service=<host>:port@)
