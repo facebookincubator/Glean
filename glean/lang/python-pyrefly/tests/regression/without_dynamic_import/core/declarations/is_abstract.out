@@ -1,0 +1,18 @@
+[
+  "@generated",
+  { "key": { "cls": { "key": { "name": { "key": "foo.AbstractFoo" } } } } },
+  {
+    "key": {
+      "func": {
+        "key": { "name": { "key": "foo.AbstractFoo.abc_abstract_method" } }
+      }
+    }
+  },
+  {
+    "key": {
+      "func": {
+        "key": { "name": { "key": "foo.AbstractFoo.abstract_method" } }
+      }
+    }
+  }
+]
