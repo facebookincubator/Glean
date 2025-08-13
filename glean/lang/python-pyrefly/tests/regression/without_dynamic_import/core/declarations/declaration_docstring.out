@@ -1,0 +1,61 @@
+[
+  "@generated",
+  {
+    "key": {
+      "declaration": {
+        "cls": { "key": { "name": { "key": "foo.FooClass" } } }
+      },
+      "location": { "length": 31, "start": 752 },
+      "pretty_text": "\u000aClass Docstring\u000a"
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.FooClass.method" } } }
+      },
+      "location": { "length": 57, "start": 891 },
+      "pretty_text": "\u000aFunction Scope Function Docstring\u000a"
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.maybe_import" } } }
+      },
+      "location": { "length": 55, "start": 661 },
+      "pretty_text": "\u000aGlobal Scope Function Docstring\u000a"
+    }
+  },
+  {
+    "key": {
+      "declaration": { "module": { "key": { "name": { "key": "foo" } } } },
+      "location": { "length": 24, "start": 249 },
+      "pretty_text": "\u000aModule Docstring"
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.FooClass.method.<locals>.method_inner_variable"
+            }
+          }
+        }
+      },
+      "location": { "length": 48, "start": 994 },
+      "pretty_text": "\u000aLocal Variable Docstring\u000a"
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "foo.foo_global" } } }
+      },
+      "location": { "length": 33, "start": 1573 },
+      "pretty_text": "\u000aGlobal Variable Docstring"
+    }
+  }
+]
