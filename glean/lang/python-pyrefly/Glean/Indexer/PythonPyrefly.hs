@@ -45,7 +45,35 @@ indexer = Indexer {
             , pyreflyRoot <> "/**/*.py"
             , "--search-path=" <> pyreflyRoot
             ],
-          extDerivePredicates = [],
+          extDerivePredicates =
+            [ "python.ImportStatementByAsName"
+            , "python.DeclarationsByFile"
+            , "python.SNameToName"
+            , "python.ModuleBySName"
+            , "python.ClassBySName"
+            , "python.FunctionBySName"
+            , "python.VariableBySName"
+            , "python.DeclarationDefinition"
+            , "python.DefinitionsByFile"
+            , "python.ImportStarsByFile"
+            , "python.BaseClassToDerived"
+            , "python.Contains"
+            , "python.ContainedByTopLevelDeclaration"
+            -- improved search support
+            , "python.SearchClassByName"
+            , "python.SearchModuleByName"
+            , "python.SearchFieldByName"
+            , "python.SearchVariableByName"
+            , "python.SearchFunctionByName"
+            , "python.SearchMethodByName"
+            -- case insensitive search
+            , "python.SearchClassByLowerCaseName"
+            , "python.SearchModuleByLowerCaseName"
+            , "python.SearchFieldByLowerCaseName"
+            , "python.SearchVariableByLowerCaseName"
+            , "python.SearchFunctionByLowerCaseName"
+            , "python.SearchMethodByLowerCaseName"
+            ],
           extAllowNonZeroExit = True
         }
 
