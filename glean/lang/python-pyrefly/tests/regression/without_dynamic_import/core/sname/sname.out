@@ -1,0 +1,143 @@
+[
+  "@generated",
+  { "key": { "local_name": { "key": "" } } },
+  {
+    "key": {
+      "local_name": { "key": "<locals>" },
+      "parent": {
+        "key": {
+          "local_name": { "key": "func" },
+          "parent": { "key": { "local_name": { "key": "a" } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "local_name": { "key": "<locals>" },
+      "parent": {
+        "key": {
+          "local_name": { "key": "meth" },
+          "parent": {
+            "key": {
+              "local_name": { "key": "Cls" },
+              "parent": { "key": { "local_name": { "key": "a" } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "local_name": { "key": "Cls" },
+      "parent": { "key": { "local_name": { "key": "a" } } }
+    }
+  },
+  { "key": { "local_name": { "key": "a" } } },
+  {
+    "key": {
+      "local_name": { "key": "b" },
+      "parent": { "key": { "local_name": { "key": "mod" } } }
+    }
+  },
+  {
+    "key": {
+      "local_name": { "key": "bello" },
+      "parent": { "key": { "local_name": { "key": "a" } } }
+    }
+  },
+  {
+    "key": {
+      "local_name": { "key": "bello" },
+      "parent": {
+        "key": {
+          "local_name": { "key": "b" },
+          "parent": { "key": { "local_name": { "key": "mod" } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "local_name": { "key": "func" },
+      "parent": { "key": { "local_name": { "key": "a" } } }
+    }
+  },
+  {
+    "key": {
+      "local_name": { "key": "hello" },
+      "parent": { "key": { "local_name": { "key": "a" } } }
+    }
+  },
+  {
+    "key": {
+      "local_name": { "key": "meth" },
+      "parent": {
+        "key": {
+          "local_name": { "key": "Cls" },
+          "parent": { "key": { "local_name": { "key": "a" } } }
+        }
+      }
+    }
+  },
+  { "key": { "local_name": { "key": "mod" } } },
+  {
+    "key": {
+      "local_name": { "key": "param" },
+      "parent": {
+        "key": {
+          "local_name": { "key": "<locals>" },
+          "parent": {
+            "key": {
+              "local_name": { "key": "func" },
+              "parent": { "key": { "local_name": { "key": "a" } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "local_name": { "key": "param" },
+      "parent": {
+        "key": {
+          "local_name": { "key": "<locals>" },
+          "parent": {
+            "key": {
+              "local_name": { "key": "meth" },
+              "parent": {
+                "key": {
+                  "local_name": { "key": "Cls" },
+                  "parent": { "key": { "local_name": { "key": "a" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "local_name": { "key": "self" },
+      "parent": {
+        "key": {
+          "local_name": { "key": "<locals>" },
+          "parent": {
+            "key": {
+              "local_name": { "key": "meth" },
+              "parent": {
+                "key": {
+                  "local_name": { "key": "Cls" },
+                  "parent": { "key": { "local_name": { "key": "a" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

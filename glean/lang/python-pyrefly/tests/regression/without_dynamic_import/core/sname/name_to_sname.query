@@ -1,0 +1,2 @@
+query: python.NameToSName K -> V; {K, V}
+transform: [normord, []]

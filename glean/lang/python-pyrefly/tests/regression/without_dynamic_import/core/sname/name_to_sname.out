@@ -1,0 +1,218 @@
+[
+  "@generated",
+  {
+    "key": {
+      "tuplefield0": { "key": "" },
+      "tuplefield1": { "key": { "local_name": { "key": "" } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "key": "a" },
+      "tuplefield1": { "key": { "local_name": { "key": "a" } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "key": "a.Cls" },
+      "tuplefield1": {
+        "key": {
+          "local_name": { "key": "Cls" },
+          "parent": { "key": { "local_name": { "key": "a" } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "key": "a.Cls.meth" },
+      "tuplefield1": {
+        "key": {
+          "local_name": { "key": "meth" },
+          "parent": {
+            "key": {
+              "local_name": { "key": "Cls" },
+              "parent": { "key": { "local_name": { "key": "a" } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "key": "a.Cls.meth.<locals>" },
+      "tuplefield1": {
+        "key": {
+          "local_name": { "key": "<locals>" },
+          "parent": {
+            "key": {
+              "local_name": { "key": "meth" },
+              "parent": {
+                "key": {
+                  "local_name": { "key": "Cls" },
+                  "parent": { "key": { "local_name": { "key": "a" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "key": "a.Cls.meth.<locals>.param" },
+      "tuplefield1": {
+        "key": {
+          "local_name": { "key": "param" },
+          "parent": {
+            "key": {
+              "local_name": { "key": "<locals>" },
+              "parent": {
+                "key": {
+                  "local_name": { "key": "meth" },
+                  "parent": {
+                    "key": {
+                      "local_name": { "key": "Cls" },
+                      "parent": { "key": { "local_name": { "key": "a" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "key": "a.Cls.meth.<locals>.self" },
+      "tuplefield1": {
+        "key": {
+          "local_name": { "key": "self" },
+          "parent": {
+            "key": {
+              "local_name": { "key": "<locals>" },
+              "parent": {
+                "key": {
+                  "local_name": { "key": "meth" },
+                  "parent": {
+                    "key": {
+                      "local_name": { "key": "Cls" },
+                      "parent": { "key": { "local_name": { "key": "a" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "key": "a.bello" },
+      "tuplefield1": {
+        "key": {
+          "local_name": { "key": "bello" },
+          "parent": { "key": { "local_name": { "key": "a" } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "key": "a.func" },
+      "tuplefield1": {
+        "key": {
+          "local_name": { "key": "func" },
+          "parent": { "key": { "local_name": { "key": "a" } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "key": "a.func.<locals>" },
+      "tuplefield1": {
+        "key": {
+          "local_name": { "key": "<locals>" },
+          "parent": {
+            "key": {
+              "local_name": { "key": "func" },
+              "parent": { "key": { "local_name": { "key": "a" } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "key": "a.func.<locals>.param" },
+      "tuplefield1": {
+        "key": {
+          "local_name": { "key": "param" },
+          "parent": {
+            "key": {
+              "local_name": { "key": "<locals>" },
+              "parent": {
+                "key": {
+                  "local_name": { "key": "func" },
+                  "parent": { "key": { "local_name": { "key": "a" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "key": "a.hello" },
+      "tuplefield1": {
+        "key": {
+          "local_name": { "key": "hello" },
+          "parent": { "key": { "local_name": { "key": "a" } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "key": "mod" },
+      "tuplefield1": { "key": { "local_name": { "key": "mod" } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "key": "mod.b" },
+      "tuplefield1": {
+        "key": {
+          "local_name": { "key": "b" },
+          "parent": { "key": { "local_name": { "key": "mod" } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "key": "mod.b.bello" },
+      "tuplefield1": {
+        "key": {
+          "local_name": { "key": "bello" },
+          "parent": {
+            "key": {
+              "local_name": { "key": "b" },
+              "parent": { "key": { "local_name": { "key": "mod" } } }
+            }
+          }
+        }
+      }
+    }
+  }
+]
