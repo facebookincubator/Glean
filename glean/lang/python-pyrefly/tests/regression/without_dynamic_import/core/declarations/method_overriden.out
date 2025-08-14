@@ -1,0 +1,27 @@
+[
+  "@generated",
+  {
+    "key": {
+      "base": { "key": { "name": { "key": "foo.Level0A.method1" } } },
+      "derived": { "key": { "name": { "key": "foo.Level1.method1" } } }
+    }
+  },
+  {
+    "key": {
+      "base": { "key": { "name": { "key": "foo.Level0A.method2" } } },
+      "derived": { "key": { "name": { "key": "foo.Level1.method2" } } }
+    }
+  },
+  {
+    "key": {
+      "base": { "key": { "name": { "key": "foo.Level0B.method1" } } },
+      "derived": { "key": { "name": { "key": "foo.Level1.method1" } } }
+    }
+  },
+  {
+    "key": {
+      "base": { "key": { "name": { "key": "foo.Level1.method2" } } },
+      "derived": { "key": { "name": { "key": "foo.Level2.method2" } } }
+    }
+  }
+]
