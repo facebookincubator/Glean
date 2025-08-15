@@ -14,7 +14,7 @@ import com.facebook.glean.schema.kotlin_alpha.VariableDeclarationKey as GleanVar
 class VariableDeclarationPredicate(
     private val name: QNamePredicate,
     private val type: KotlinTypePredicate,
-    private val location: DeclarationLocationPredicate
+    private val location: DeclarationLocationPredicate,
 ) : GleanPredicate<GleanVariableDeclaration> {
   override fun toGleanType(): GleanVariableDeclaration {
     return GleanVariableDeclaration.Builder()

@@ -13,7 +13,7 @@ import com.facebook.glean.schema.src.Loc as GleanSrcLoc
 class LocPredicate(
     private val file: FilePredicate,
     private val line: Long,
-    private val column: Long
+    private val column: Long,
 ) : GleanPredicate<GleanSrcLoc> {
   override fun toGleanType(): GleanSrcLoc {
     return GleanSrcLoc.Builder()

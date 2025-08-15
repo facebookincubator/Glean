@@ -28,13 +28,16 @@ class KotlinIndexerPluginCompilerPluginRegistrar : CompilerPluginRegistrar() {
   override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
     val outputDir = configuration.get(JVMConfigurationKeys.OUTPUT_DIRECTORY)
     checkNotNull(
-        outputDir, { "Kotlin Indexer compiler plugin failed. 'outputDir' option is not provided" })
+        outputDir,
+        { "Kotlin Indexer compiler plugin failed. 'outputDir' option is not provided" },
+    )
 
     val messageCollector =
         configuration.get(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, MessageCollector.NONE)
     messageCollector.report(
         CompilerMessageSeverity.LOGGING,
-        "Loaded Kotlin Indexer Plugin, with outputDir = '$outputDir'.")
+        "Loaded Kotlin Indexer Plugin, with outputDir = '$outputDir'.",
+    )
 
     // Create our plugin
     val extension = KotlinIndexerPluginExtension(outputDir.absolutePath, messageCollector)

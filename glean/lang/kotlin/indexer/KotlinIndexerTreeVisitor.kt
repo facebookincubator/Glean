@@ -20,7 +20,7 @@ class KotlinIndexerTreeVisitor(
     private val file: KtFile,
     private val messageCollector: MessageCollector,
     private val bindingContext: BindingContext,
-    private val indexContext: KotlinIndexContext
+    private val indexContext: KotlinIndexContext,
 ) : KtTreeVisitorVoid() {
 
   /** Do a round of visit for file, then summarize and build index */

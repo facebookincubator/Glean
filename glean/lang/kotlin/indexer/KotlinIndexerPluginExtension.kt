@@ -24,14 +24,14 @@ import org.jetbrains.kotlin.resolve.jvm.extensions.AnalysisHandlerExtension
     "AnalysisHandlerExtension") /* This transformer can be disabled and the code will still build; codemods/indexers can do that. */
 class KotlinIndexerPluginExtension(
     private val outputDir: String,
-    private val messageCollector: MessageCollector
+    private val messageCollector: MessageCollector,
 ) : AnalysisHandlerExtension {
 
   override fun analysisCompleted(
       project: Project,
       module: ModuleDescriptor,
       bindingTrace: BindingTrace,
-      files: Collection<KtFile>
+      files: Collection<KtFile>,
   ): AnalysisResult? {
     // Fail fast: This lets us assume that there is a file farther down
     if (files.isEmpty()) {
@@ -60,7 +60,8 @@ class KotlinIndexerPluginExtension(
     if (messageCollector.hasErrors()) {
       messageCollector.report(
           CompilerMessageSeverity.EXCEPTION,
-          "Kotlin Indexer Plugin finished but failed with one or more error.")
+          "Kotlin Indexer Plugin finished but failed with one or more error.",
+      )
       AnalysisResult.compilationError(bindingTrace.bindingContext).throwIfError()
     }
     val metaInfPath = "$outputDir/META-INF"

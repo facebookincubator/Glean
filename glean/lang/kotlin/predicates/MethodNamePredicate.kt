@@ -13,7 +13,7 @@ import com.facebook.glean.schema.javakotlin_alpha.MethodNameKey as GleanMethodNa
 
 class MethodNamePredicate(
     private val name: QNamePredicate,
-    private val signature: List<JavaKotlinTypePredicate>
+    private val signature: List<JavaKotlinTypePredicate>,
 ) : GleanPredicate<GleanMethodName> {
   override fun toGleanType(): GleanMethodName {
     val key =

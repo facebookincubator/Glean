@@ -15,7 +15,7 @@ class KotlinTypePredicate(
     private val type: JavaKotlinTypePredicate,
     private val location: DeclarationLocationPredicate?,
     private val typeArgs: List<TypeArgPredicate>,
-    private val isNullable: Boolean
+    private val isNullable: Boolean,
 ) : GleanPredicate<GleanKotlinType> {
   override fun toGleanType(): com.facebook.glean.schema.kotlin_alpha.Type {
     val typeKey =

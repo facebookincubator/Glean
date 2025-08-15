@@ -13,7 +13,7 @@ import com.facebook.glean.schema.kotlin_alpha.DeclarationLocationKey
 
 class DeclarationLocationPredicate(
     private val file: FilePredicate,
-    private val span: SpanPredicate
+    private val span: SpanPredicate,
 ) : GleanPredicate<GleanDeclarationLocation> {
   override fun toGleanType(): GleanDeclarationLocation {
     val key =

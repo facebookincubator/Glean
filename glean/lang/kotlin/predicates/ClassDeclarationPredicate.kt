@@ -14,7 +14,7 @@ import com.facebook.glean.schema.kotlin_alpha.ClassDeclarationKey as GleanClassD
 class ClassDeclarationPredicate(
     private val name: QNamePredicate,
     private val implements: List<QNamePredicate>,
-    private val location: DeclarationLocationPredicate
+    private val location: DeclarationLocationPredicate,
 ) : GleanPredicate<GleanClassDeclaration> {
   override fun toGleanType(): GleanClassDeclaration {
     return GleanClassDeclaration.Builder()

@@ -61,7 +61,7 @@ class Predicates {
   private fun serializePredicate(
       out: OutputStream,
       predicates: List<ThriftSerializable>,
-      name: String
+      name: String,
   ) {
     with(out) {
       writeBites("{")
