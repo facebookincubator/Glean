@@ -106,6 +106,7 @@ struct AttributeOptions {
   8: bool fetch_default_view = false;
   9: optional PackageName package_name;
   10: bool use_binary_for_default_view = false;
+  11: bool use_customized_parameters = false;
 }
 
 typedef string ServiceID (hs.newtype)
