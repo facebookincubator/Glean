@@ -15,11 +15,12 @@ import org.jetbrains.kotlin.resolve.BindingContext
 
 fun buildVariableDeclaration(
     parameter: ParameterDescriptor,
-    bindingContext: BindingContext
+    bindingContext: BindingContext,
 ): VariableDeclarationPredicate {
   return VariableDeclarationPredicate(
       parameter.qualifiedName(),
       buildKotlinType(parameter.type, bindingContext),
       parameter.psiElement?.let { buildFileLocation(it) }
-          ?: throw EmptyDeclarationLocation(parameter.name.identifier, "variable"))
+          ?: throw EmptyDeclarationLocation(parameter.name.identifier, "variable"),
+  )
 }

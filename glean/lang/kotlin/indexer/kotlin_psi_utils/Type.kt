@@ -22,7 +22,7 @@ private fun KotlinType.asTypeArg(bindingContext: BindingContext): TypeArgPredica
 
 fun buildKotlinType(
     typeReference: KotlinType,
-    bindingContext: BindingContext
+    bindingContext: BindingContext,
 ): KotlinTypePredicate {
   val typeConstructorElement = typeReference.constructor.declarationDescriptor?.psiElement
   return KotlinTypePredicate(
@@ -32,5 +32,6 @@ fun buildKotlinType(
           .filter { !it.isStarProjection }
           .map { it.type.asTypeArg(bindingContext) }
           .toList(),
-      typeReference.nullability() == TypeNullability.NULLABLE)
+      typeReference.nullability() == TypeNullability.NULLABLE,
+  )
 }

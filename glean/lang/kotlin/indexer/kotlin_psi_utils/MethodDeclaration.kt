@@ -21,19 +21,21 @@ class MethodDeclarationBuilderError(message: String, functionName: String) :
 
 private fun getFunctionDescriptor(
     namedFunction: KtNamedFunction,
-    bindingContext: BindingContext
+    bindingContext: BindingContext,
 ): FunctionDescriptor? {
   return bindingContext[BindingContext.FUNCTION, namedFunction]
 }
 
 fun buildMethodDeclaration(
     function: KtNamedFunction,
-    bindingContext: BindingContext
+    bindingContext: BindingContext,
 ): MethodDeclarationPredicate {
   val funcDescriptor =
       getFunctionDescriptor(function, bindingContext)
           ?: throw MethodDeclarationBuilderError(
-              "Could not get function descriptor", function.name ?: "")
+              "Could not get function descriptor",
+              function.name ?: "",
+          )
   val kotlinType = function.typeReference?.getAbbreviatedTypeOrType(bindingContext)
   val ktClassBody = function.parent
   return MethodDeclarationPredicate(
@@ -46,5 +48,6 @@ fun buildMethodDeclaration(
       (function as? PsiElement)?.let { buildLoc(it) }
           ?: throw MissingRequiredGleanFieldException("MethodDeclaration.loc"),
       (function as? PsiElement)?.let { buildFileLocation(it) }
-          ?: throw MissingRequiredGleanFieldException("MethodDeclaration.location"))
+          ?: throw MissingRequiredGleanFieldException("MethodDeclaration.location"),
+  )
 }

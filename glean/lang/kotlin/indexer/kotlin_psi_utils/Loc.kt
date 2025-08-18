@@ -32,9 +32,12 @@ fun buildLoc(element: PsiElement): LocPredicate? {
   }
   val lineAndColumn =
       PsiDiagnosticUtils.offsetToLineAndColumn(
-          element.containingFile.viewProvider.document, element.startOffset)
+          element.containingFile.viewProvider.document,
+          element.startOffset,
+      )
   return LocPredicate(
       buildFile(element.containingFile),
       line = lineAndColumn.line.toLong(),
-      column = lineAndColumn.column.toLong())
+      column = lineAndColumn.column.toLong(),
+  )
 }

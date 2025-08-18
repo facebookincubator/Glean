@@ -27,5 +27,6 @@ fun buildClassDeclaration(decl: KtClass, context: BindingContext): ClassDeclarat
           getSuperTypesFromClass(decl, context).map { kotlinType -> kotlinType.path().toQName() },
       location =
           buildFileLocation(decl.psiOrParent)
-              ?: throw EmptyDeclarationLocation(decl.name ?: "", "class"))
+              ?: throw EmptyDeclarationLocation(decl.name ?: "", "class"),
+  )
 }

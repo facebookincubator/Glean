@@ -30,7 +30,9 @@ import org.jetbrains.kotlin.types.upperIfFlexible
 
 fun buildMethodName(function: FunctionDescriptor): MethodNamePredicate {
   return MethodNamePredicate(
-      function.qualifiedName(), function.valueParameters.map { it.type.gleanType() }.toList())
+      function.qualifiedName(),
+      function.valueParameters.map { it.type.gleanType() }.toList(),
+  )
 }
 
 fun KotlinType.gleanType(): JavaKotlinTypePredicate {
