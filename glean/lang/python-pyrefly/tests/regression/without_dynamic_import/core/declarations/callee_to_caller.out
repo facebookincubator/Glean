@@ -1,0 +1,33 @@
+[
+  "@generated",
+  {
+    "key": {
+      "callee": { "key": "bar.Bar.InnerBar" },
+      "caller": { "key": "foo.imported_inner_class_return" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "foo.FooBar" },
+      "caller": { "key": "foo.pipe_union_return" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "foo.FooBar" },
+      "caller": { "key": "foo.union_return" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "foo.FooClass" },
+      "caller": { "key": "foo.simple_return" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "foo.FooClass" },
+      "caller": { "key": "foo.string_literal_return" }
+    }
+  }
+]
