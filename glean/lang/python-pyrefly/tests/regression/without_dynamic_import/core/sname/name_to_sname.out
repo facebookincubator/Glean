@@ -41,27 +41,6 @@
   },
   {
     "key": {
-      "tuplefield0": { "key": "a.Cls.meth.<locals>" },
-      "tuplefield1": {
-        "key": {
-          "local_name": { "key": "<locals>" },
-          "parent": {
-            "key": {
-              "local_name": { "key": "meth" },
-              "parent": {
-                "key": {
-                  "local_name": { "key": "Cls" },
-                  "parent": { "key": { "local_name": { "key": "a" } } }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
       "tuplefield0": { "key": "a.Cls.meth.<locals>.param" },
       "tuplefield1": {
         "key": {
@@ -130,22 +109,6 @@
         "key": {
           "local_name": { "key": "func" },
           "parent": { "key": { "local_name": { "key": "a" } } }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "tuplefield0": { "key": "a.func.<locals>" },
-      "tuplefield1": {
-        "key": {
-          "local_name": { "key": "<locals>" },
-          "parent": {
-            "key": {
-              "local_name": { "key": "func" },
-              "parent": { "key": { "local_name": { "key": "a" } } }
-            }
-          }
         }
       }
     }
