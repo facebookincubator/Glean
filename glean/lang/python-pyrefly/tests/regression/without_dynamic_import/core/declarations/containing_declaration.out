@@ -1,0 +1,1279 @@
+[
+  "@generated",
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "bar.quux.Foo" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "bar.quux.Foo.func" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "bar.quux.Foo" } } } },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "bar.quux.Foo.func.<locals>.ex" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "bar.quux.Foo" } } } },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "bar.quux.Foo.func.<locals>.self" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "cls": { "key": { "name": { "key": "foo.AbstractFoo" } } }
+      },
+      "declaration": {
+        "func": {
+          "key": { "name": { "key": "foo.AbstractFoo.abc_abstract_method" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "cls": { "key": { "name": { "key": "foo.AbstractFoo" } } }
+      },
+      "declaration": {
+        "func": {
+          "key": { "name": { "key": "foo.AbstractFoo.abstract_method" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "cls": { "key": { "name": { "key": "foo.AbstractFoo" } } }
+      },
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.AbstractFoo.abc_abstract_method.<locals>.self"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "cls": { "key": { "name": { "key": "foo.AbstractFoo" } } }
+      },
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": { "key": "foo.AbstractFoo.abstract_method.<locals>.self" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "cls": { "key": { "name": { "key": "foo.FinalClass" } } }
+      },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.FinalClass.class_method" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "cls": { "key": { "name": { "key": "foo.FinalClass" } } }
+      },
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": { "key": "foo.FinalClass.class_method.<locals>.cls" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.FooClass" } } } },
+      "declaration": {
+        "cls": { "key": { "name": { "key": "foo.FooClass.FooInnerClass" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.FooClass" } } } },
+      "declaration": {
+        "func": {
+          "key": {
+            "name": { "key": "foo.FooClass.FooInnerClass.inner_method" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.FooClass" } } } },
+      "declaration": {
+        "func": {
+          "key": {
+            "name": {
+              "key": "foo.FooClass.FooInnerClass.inner_method.<locals>.inner_method_inner_function"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.FooClass" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.FooClass.method" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.FooClass" } } } },
+      "declaration": {
+        "func": {
+          "key": {
+            "name": {
+              "key": "foo.FooClass.method.<locals>.method_inner_function"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.FooClass" } } } },
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.FooClass.FooInnerClass.inner_method.<locals>.self"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.FooClass" } } } },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.FooClass.foo_class_var" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.FooClass" } } } },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.FooClass.foo_instance_var" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.FooClass" } } } },
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.FooClass.method.<locals>.method_inner_variable"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.FooClass" } } } },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.FooClass.method.<locals>.self" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.Level0A" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.Level0A.method1" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.Level0A" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.Level0A.method2" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.Level0A" } } } },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.Level0A.method1.<locals>.self" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.Level0A" } } } },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.Level0A.method2.<locals>.self" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.Level0B" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.Level0B.method1" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.Level0B" } } } },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.Level0B.method1.<locals>.self" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.Level1" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.Level1.method1" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.Level1" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.Level1.method2" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.Level1" } } } },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.Level1.method1.<locals>.self" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.Level1" } } } },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.Level1.method2.<locals>.self" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.Level2" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.Level2.method2" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "cls": { "key": { "name": { "key": "foo.Level2" } } } },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.Level2.method2.<locals>.self" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "func": { "key": { "name": { "key": "foo.foo_func" } } } },
+      "declaration": {
+        "cls": {
+          "key": { "name": { "key": "foo.foo_func.<locals>.HiddenClass" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "func": { "key": { "name": { "key": "foo.foo_func" } } } },
+      "declaration": {
+        "func": {
+          "key": {
+            "name": { "key": "foo.foo_func.<locals>.HiddenClass.hidden_method" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "func": { "key": { "name": { "key": "foo.foo_func" } } } },
+      "declaration": {
+        "func": {
+          "key": {
+            "name": {
+              "key": "foo.foo_func.<locals>.HiddenClass.hidden_method.<locals>.hidden_method_inner_function"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "func": { "key": { "name": { "key": "foo.foo_func" } } } },
+      "declaration": {
+        "func": {
+          "key": { "name": { "key": "foo.foo_func.<locals>.inner_foo_func" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "func": { "key": { "name": { "key": "foo.foo_func" } } } },
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.foo_func.<locals>.HiddenClass.hidden_method.<locals>.self"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "func": { "key": { "name": { "key": "foo.foo_func" } } } },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.foo_func.<locals>.param" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "func": { "key": { "name": { "key": "foo.param_keyword_test" } } }
+      },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.param_keyword_test.<locals>.args" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "func": { "key": { "name": { "key": "foo.param_keyword_test" } } }
+      },
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": { "key": "foo.param_keyword_test.<locals>.builtin" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "func": { "key": { "name": { "key": "foo.param_keyword_test" } } }
+      },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.param_keyword_test.<locals>.key" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "func": { "key": { "name": { "key": "foo.param_keyword_test" } } }
+      },
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": { "key": "foo.param_keyword_test.<locals>.keyword_only" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "func": { "key": { "name": { "key": "foo.param_keyword_test" } } }
+      },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.param_keyword_test.<locals>.kwargs" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "func": {
+          "key": { "name": { "key": "foo.param_positional_keyword_only_test" } }
+        }
+      },
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.param_positional_keyword_only_test.<locals>.builtin"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "func": {
+          "key": { "name": { "key": "foo.param_positional_keyword_only_test" } }
+        }
+      },
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.param_positional_keyword_only_test.<locals>.key"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "func": {
+          "key": { "name": { "key": "foo.param_positional_keyword_only_test" } }
+        }
+      },
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.param_positional_keyword_only_test.<locals>.keyword_only"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "func": {
+          "key": { "name": { "key": "foo.param_positional_keyword_only_test" } }
+        }
+      },
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.param_positional_keyword_only_test.<locals>.kwargs"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "func": {
+          "key": { "name": { "key": "foo.param_positional_keyword_only_test" } }
+        }
+      },
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.param_positional_keyword_only_test.<locals>.pos"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "func": { "key": { "name": { "key": "foo.param_types_test" } } }
+      },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.param_types_test.<locals>.basic" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "func": { "key": { "name": { "key": "foo.param_types_test" } } }
+      },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.param_types_test.<locals>.builtin" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "func": { "key": { "name": { "key": "foo.param_types_test" } } }
+      },
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": { "key": "foo.param_types_test.<locals>.defaulted" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "func": { "key": { "name": { "key": "foo.param_types_test" } } }
+      },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.param_types_test.<locals>.nested" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "func": { "key": { "name": { "key": "foo.param_types_test" } } }
+      },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.param_types_test.<locals>.self" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": {
+        "func": { "key": { "name": { "key": "foo.param_types_test" } } }
+      },
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.param_types_test.<locals>.union" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar" } } } },
+      "declaration": { "cls": { "key": { "name": { "key": "bar.Bar" } } } }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "bar.some_function" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "bar.quux_value" },
+            "from_name": { "key": "bar.quux.value" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar" } } } },
+      "declaration": { "module": { "key": { "name": { "key": "bar" } } } }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar" } } } },
+      "declaration": { "variable": { "key": { "name": { "key": "bar.μ" } } } }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar.baz" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "bar.baz.some_function" },
+            "from_name": { "key": "bar.some_function" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar.baz" } } } },
+      "declaration": { "module": { "key": { "name": { "key": "bar.baz" } } } }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar.quux" } } } },
+      "declaration": { "cls": { "key": { "name": { "key": "bar.quux.Foo" } } } }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar.quux" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "bar.quux.dataclass" },
+            "from_name": { "key": "dataclasses.dataclass" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar.quux" } } } },
+      "declaration": { "module": { "key": { "name": { "key": "bar.quux" } } } }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar.quux" } } } },
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.comp" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar.quux" } } } },
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.expr" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar.quux" } } } },
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.foo" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar.quux" } } } },
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.k" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar.quux" } } } },
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.l" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar.quux" } } } },
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.multiline_value" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar.quux" } } } },
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.value" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar.quux" } } } },
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar.quux" } } } },
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.w" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar.quux" } } } },
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.x" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar.quux" } } } },
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.y" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "cls": { "key": { "name": { "key": "foo.AbstractFoo" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "cls": { "key": { "name": { "key": "foo.FinalClass" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": { "cls": { "key": { "name": { "key": "foo.FooBar" } } } }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "cls": { "key": { "name": { "key": "foo.FooChildClass" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": { "cls": { "key": { "name": { "key": "foo.FooClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": { "cls": { "key": { "name": { "key": "foo.Level0A" } } } }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": { "cls": { "key": { "name": { "key": "foo.Level0B" } } } }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": { "cls": { "key": { "name": { "key": "foo.Level1" } } } }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": { "cls": { "key": { "name": { "key": "foo.Level2" } } } }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.await_return" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.callable_return" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.complex_return" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.foo_func" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "func": {
+          "key": { "name": { "key": "foo.imported_inner_class_return" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.maybe_import" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.none_ellipsis" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.none_return" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.optional_return" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.param_keyword_test" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "func": {
+          "key": { "name": { "key": "foo.param_positional_keyword_only_test" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.param_types_test" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.pep593_return" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.pipe_union_return" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": { "func": { "key": { "name": { "key": "foo.pow" } } } }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.simple_return" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.string_literal_return" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.union_return" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.ABC" },
+            "from_name": { "key": "abc.ABC" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.Annotated" },
+            "from_name": { "key": "typing.Annotated" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.Bar" },
+            "from_name": { "key": "bar.Bar" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.Callable" },
+            "from_name": { "key": "typing.Callable" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.Optional" },
+            "from_name": { "key": "typing.Optional" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.Union" },
+            "from_name": { "key": "typing.Union" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": { "as_name": { "key": "foo.a" }, "from_name": { "key": "a" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.a.b" },
+            "from_name": { "key": "a.b" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.a.b.c" },
+            "from_name": { "key": "a.b.c" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.abc" },
+            "from_name": { "key": "abc" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.abstractmethod" },
+            "from_name": { "key": "abc.abstractmethod" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.final" },
+            "from_name": { "key": "typing.final" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.helper_func" },
+            "from_name": { "key": "lib.helper_func" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.maybe_import" },
+            "from_name": { "key": "something.maybe_import" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.nonexistent_func" },
+            "from_name": { "key": "lib.nonexistent_func" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.path_for_pyre" },
+            "from_name": {
+              "key": "glean.lang.python.indexers.core.path_for_pyre"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": { "as_name": { "key": "foo.x" }, "from_name": { "key": "x" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.x.y" },
+            "from_name": { "key": "x.y" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.μ" },
+            "from_name": { "key": "bar.μ" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": { "module": { "key": { "name": { "key": "foo" } } } }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "variable": { "key": { "name": { "key": "foo.foo_global" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "foo" } } } },
+      "declaration": {
+        "variable": { "key": { "name": { "key": "foo.new_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "quux.empty" } } } },
+      "declaration": {
+        "module": { "key": { "name": { "key": "quux.empty" } } }
+      }
+    }
+  }
+]
