@@ -29,6 +29,17 @@ The test suite starts the `swift_glass_client` binary and communicates with it v
 - Sends malformed JSON (missing closing brace)
 - Expects parse error response with code -32700
 
+### 5. USRToDefinition for Swift class (with revision)
+- Tests Swift class USR: `"s:9CIBCanvas0A4ViewC5frameACSo6CGRectV_tcfcADL_AFvp"`
+- Includes revision field from `hg id` command
+- Validates that any returned locations point to `.swift` files
+- USR value is configurable via variable for easy maintenance
+
+### 6. USRToDefinition for Swift class (without revision)
+- Tests the same Swift class USR without the revision field
+- Validates backward compatibility when revision is not provided
+- Ensures the same behavior as the revision variant
+
 ## Running the Tests
 
 ### Using Buck (Recommended)

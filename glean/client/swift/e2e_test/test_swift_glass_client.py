@@ -43,6 +43,8 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
                 f"Make sure fbcode//glean/client/swift:swift_glass_client is properly built."
             )
 
+        # Get current revision dynamically
+        self.revision = subprocess.check_output(["hg", "id"], text=True).strip()
         print(f"Using swift_glass_client binary at: {self._binary_path}")
 
     def _start_process(self):
@@ -304,6 +306,71 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
             self.assertIn("message", error)
             # The error message should contain "Parse error"
             self.assertIn("Parse error", error["message"])
+        finally:
+            if process:
+                process.terminate()
+                process.wait()
+
+    def _test_usr_to_definition_swift_class(
+        self, process, with_revision: bool, test_id: int
+    ):
+        """Helper method to test USRToDefinition request for Swift class."""
+        # USR value for Swift class
+        # https://www.internalfb.com/code/fbsource/fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift
+        swift_usr = "s:9CIBCanvas0A4ViewC5frameACSo6CGRectV_tcfcADL_AFvp"
+
+        request = {
+            "id": test_id,
+            "method": "USRToDefinition",
+            "value": swift_usr,
+            "mode": "test",
+        }
+
+        if with_revision:
+            request["revision"] = self.revision
+
+        response = self.send_request_and_get_response(process, request)
+
+        # Verify response structure
+        self.assertIn("id", response)
+        self.assertEqual(response["id"], test_id)
+
+        # Should have result field
+        self.assertIn("result", response)
+        result = response["result"]
+
+        # Should not have error field for successful case
+        self.assertNotIn("error", response)
+
+        # If definitions are found, verify they point to Swift files
+        if result:
+            for location in result:
+                self.assertIn("uri", location)
+                uri = location["uri"]
+                # Should point to a Swift file
+                self.assertTrue(
+                    uri.endswith(".swift"), f"Expected .swift file, got: {uri}"
+                )
+
+    def test_usr_to_definition_swift_class_with_revision(self):
+        """Test USRToDefinition request for Swift class with revision field."""
+        process = self._start_process()
+        try:
+            self._test_usr_to_definition_swift_class(
+                process, with_revision=True, test_id=1
+            )
+        finally:
+            if process:
+                process.terminate()
+                process.wait()
+
+    def test_usr_to_definition_swift_class_without_revision(self):
+        """Test USRToDefinition request for Swift class without revision field."""
+        process = self._start_process()
+        try:
+            self._test_usr_to_definition_swift_class(
+                process, with_revision=False, test_id=2
+            )
         finally:
             if process:
                 process.terminate()
