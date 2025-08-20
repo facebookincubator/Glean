@@ -1,0 +1,277 @@
+[
+  "@generated",
+  {
+    "key": {
+      "call_args": [ ],
+      "callee_span": { "length": 8, "start": 2711 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [ ],
+      "callee_span": { "length": 8, "start": 2786 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [ ],
+      "callee_span": { "length": 10, "start": 2437 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [ ],
+      "callee_span": { "length": 10, "start": 2577 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [ ],
+      "callee_span": { "length": 11, "start": 605 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [ ],
+      "callee_span": { "length": 14, "start": 3327 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [
+        {
+          "argument": { "lit": { "key": "char" } },
+          "span": { "length": 6, "start": 3001 }
+        }
+      ],
+      "callee_span": { "length": 13, "start": 2995 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [
+        {
+          "argument": { "lit": { "key": "hello" } },
+          "label": { "key": "hello" },
+          "span": { "length": 13, "start": 779 }
+        },
+        {
+          "argument": { "lit": { "key": "world" } },
+          "span": { "length": 7, "start": 770 }
+        }
+      ],
+      "callee_span": { "length": 29, "start": 764 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [
+        {
+          "argument": { "lit": { "key": "hello" } },
+          "span": { "length": 7, "start": 745 }
+        },
+        {
+          "argument": { "lit": { "key": "world" } },
+          "span": { "length": 7, "start": 754 }
+        }
+      ],
+      "callee_span": { "length": 23, "start": 739 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [
+        {
+          "argument": { "lit": { "key": "hello world" } },
+          "span": { "length": 13, "start": 701 }
+        }
+      ],
+      "callee_span": { "length": 20, "start": 695 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [
+        {
+          "argument": { "lit": { "key": "helloworld" } },
+          "span": { "length": 15, "start": 722 }
+        }
+      ],
+      "callee_span": { "length": 22, "start": 716 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [
+        {
+          "argument": { "lit": { "key": "world" } },
+          "span": { "length": 8, "start": 800 }
+        }
+      ],
+      "callee_span": { "length": 15, "start": 794 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [
+        { "label": { "key": "frozen" }, "span": { "length": 11, "start": 440 } }
+      ],
+      "callee_span": { "length": 22, "start": 430 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [
+        { "label": { "key": "key" }, "span": { "length": 20, "start": 1497 } },
+        { "span": { "length": 4, "start": 1491 } }
+      ],
+      "callee_span": { "length": 34, "start": 1484 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [
+        { "label": { "key": "kv" }, "span": { "length": 35, "start": 3024 } }
+      ],
+      "callee_span": { "length": 42, "start": 3018 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [
+        { "label": { "key": "start" }, "span": { "length": 7, "start": 335 } },
+        { "label": { "key": "stop" }, "span": { "length": 6, "start": 344 } }
+      ],
+      "callee_span": { "length": 22, "start": 329 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [
+        { "span": { "length": 1, "start": 303 } },
+        { "span": { "length": 1, "start": 306 } }
+      ],
+      "callee_span": { "length": 9, "start": 299 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [
+        { "span": { "length": 1, "start": 661 } },
+        { "span": { "length": 1, "start": 664 } }
+      ],
+      "callee_span": { "length": 11, "start": 655 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [ { "span": { "length": 1, "start": 678 } } ],
+      "callee_span": { "length": 8, "start": 672 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [ { "span": { "length": 1, "start": 691 } } ],
+      "callee_span": { "length": 8, "start": 685 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [ { "span": { "length": 1, "start": 1515 } } ],
+      "callee_span": { "length": 6, "start": 1511 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [
+        { "span": { "length": 1, "start": 2970 } },
+        { "span": { "length": 11, "start": 2973 } }
+      ],
+      "callee_span": { "length": 26, "start": 2959 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [ { "span": { "length": 2, "start": 828 } } ],
+      "callee_span": { "length": 9, "start": 822 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      }
+    }
+  },
+  {
+    "key": {
+      "call_args": [ { "span": { "length": 3, "start": 843 } } ],
+      "callee_span": { "length": 10, "start": 837 },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      }
+    }
+  }
+]
