@@ -21,7 +21,8 @@ import org.jetbrains.kotlin.resolve.jvm.extensions.AnalysisHandlerExtension
 
 /** Kotlin Indexer compiler plugin. Used to create Kotlin glean index */
 @Suppress(
-    "AnalysisHandlerExtension") /* This transformer can be disabled and the code will still build; codemods/indexers can do that. */
+    "AnalysisHandlerExtension"
+) /* This transformer can be disabled and the code will still build; codemods/indexers can do that. */
 class KotlinIndexerPluginExtension(
     private val outputDir: String,
     private val messageCollector: MessageCollector,
@@ -39,11 +40,13 @@ class KotlinIndexerPluginExtension(
     }
 
     // compiler plugins can be run several times, we need to skip not type checked runs
-    if (files.all { ktFile ->
-      bindingTrace.bindingContext
-          .get(BindingContext.PACKAGE_TO_FILES, ktFile.packageFqName)
-          ?.contains(ktFile) != true
-    }) {
+    if (
+        files.all { ktFile ->
+          bindingTrace.bindingContext
+              .get(BindingContext.PACKAGE_TO_FILES, ktFile.packageFqName)
+              ?.contains(ktFile) != true
+        }
+    ) {
       return null
     }
 

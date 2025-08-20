@@ -19,4 +19,5 @@ fun buildFileLocation(element: PsiElement): DeclarationLocationPredicate? {
 
 class EmptyDeclarationLocation(name: String, elementType: String) :
     Exception(
-        "Declaration location for element $name of type $elementType is required to be non empty")
+        "Declaration location for element $name of type $elementType is required to be non empty"
+    )

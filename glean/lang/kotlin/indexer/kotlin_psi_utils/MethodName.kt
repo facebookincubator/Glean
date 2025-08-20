@@ -44,14 +44,16 @@ fun KotlinType.gleanType(): JavaKotlinTypePredicate {
   if (this.isPrimitiveNumberType() || this.isBoolean() || this.isUnit()) {
     val type = this.toString().lowercase()
     return JavaKotlinTypePredicate.StringValue(
-        primitiveToShortFormat(if (this.isMarkedNullable) type.substringBefore("?") else type))
+        primitiveToShortFormat(if (this.isMarkedNullable) type.substringBefore("?") else type)
+    )
   } else {
     if (this.isTypeParameter() || this.isAnyOrNullableAny()) {
       return JavaKotlinTypePredicate.PathValue(listOf("java", "lang", "Object").joinNonEmptyPath())
     }
     if (this.isArrayOfNothing()) {
       return JavaKotlinTypePredicate.ArrayValue(
-          JavaKotlinTypePredicate.PathValue(listOf("java", "lang", "Object").joinNonEmptyPath()))
+          JavaKotlinTypePredicate.PathValue(listOf("java", "lang", "Object").joinNonEmptyPath())
+      )
     }
     val potentialName = nameIfStandardType
     if (potentialName != null && potentialName.toString() == "Array") {
