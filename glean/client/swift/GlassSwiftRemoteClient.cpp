@@ -12,6 +12,7 @@
 #include "folly/init/Init.h"
 #include "glean/client/swift/GlassAccessRemote.h"
 #include "glean/client/swift/JsonServer.h"
+#include "glean/client/swift/Utils.h"
 
 // Folly singleton for JsonServer
 folly::Singleton<JsonServer> jsonServerSingleton([]() {
@@ -25,6 +26,10 @@ void signalHandler(int signal) {
 }
 
 int main(int argc, char** argv) {
+  if (glean::swift::checkAndPrintHelp(argc, argv, "Remote")) {
+    return 0;
+  }
+
   folly::Init init(&argc, &argv);
 
   std::signal(SIGINT, signalHandler);
