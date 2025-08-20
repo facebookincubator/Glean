@@ -19,14 +19,17 @@ class GlassAccess : public IGlassAccess {
   ~GlassAccess() override = default;
 
   std::optional<protocol::LocationList> usrToDefinition(
-      const std::string& usr) override;
+      const std::string& usr,
+      const std::optional<std::string>& revision = std::nullopt) override;
 
  protected:
   std::optional<protocol::LocationList> handleUSR(
       const std::string& usr,
+      const std::optional<std::string>& revision,
       std::string& msg);
   std::optional<protocol::LocationList> handleUSRHash(
       const std::string& usr,
+      const std::optional<std::string>& revision,
       std::string& msg);
   protocol::LocationList convertUSRSymbolDefinitionToLocations(
       const ::glean::USRSymbolDefinition& definition) const;

@@ -34,10 +34,11 @@ class JsonServerTest : public ::testing::Test {
     ON_CALL(
         *mockGlassAccess_,
         usrToDefinition(
-            "s:12IGFriendsMap0aB4ViewC03mapC0So05MKMapC0CvgAFyXEfU_ADL_AFvp"))
+            "s:12IGFriendsMap0aB4ViewC03mapC0So05MKMapC0CvgAFyXEfU_ADL_AFvp",
+            testing::_))
         .WillByDefault(testing::Return(defaultLocations));
 
-    ON_CALL(*mockGlassAccess_, usrToDefinition("unknown_usr"))
+    ON_CALL(*mockGlassAccess_, usrToDefinition("unknown_usr", testing::_))
         .WillByDefault(testing::Return(std::nullopt));
 
     // Store raw pointer before moving to server

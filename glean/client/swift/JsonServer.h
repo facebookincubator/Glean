@@ -46,6 +46,7 @@ class JsonServer {
   void handleUSRToDefinitionRequest(
       const folly::dynamic& id,
       const std::string& usr,
+      const std::optional<std::string>& revision,
       const std::string& mode,
       std::ostream& output);
   void sendErrorResponse(

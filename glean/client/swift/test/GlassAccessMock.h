@@ -19,6 +19,6 @@ class GlassAccessMock : public IGlassAccess {
   MOCK_METHOD(
       std::optional<protocol::LocationList>,
       usrToDefinition,
-      (const std::string& usr),
+      (const std::string& usr, const std::optional<std::string>& revision),
       (override));
 };

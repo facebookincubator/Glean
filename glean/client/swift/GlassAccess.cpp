@@ -25,21 +25,23 @@ const auto GlassTimeoutMs = 900;
 GlassAccess::GlassAccess() : client(nullptr), hgRoot_(getHgRoot()) {}
 
 std::optional<protocol::LocationList> GlassAccess::usrToDefinition(
-    const std::string& usr) {
+    const std::string& usr,
+    const std::optional<std::string>& revision) {
   std::string msg;
 
   // Check if this is a Swift USR (starts with "s:")
   if (usr.length() >= 2 && usr.substr(0, 2) == "s:") {
     // Handle Swift USR using usrToDefinition
-    return handleUSR(usr, msg);
+    return handleUSR(usr, revision, msg);
   } else {
     // Handle non-Swift USR using clangUSRToDefinition with hash
-    return handleUSRHash(usr, msg);
+    return handleUSRHash(usr, revision, msg);
   }
 }
 
 std::optional<protocol::LocationList> GlassAccess::handleUSR(
     const std::string& usr,
+    const std::optional<std::string>& revision,
     std::string& msg) {
   // Create USRToDefinitionRequest
   ::glean::USRToDefinitionRequest request;
@@ -52,6 +54,10 @@ std::optional<protocol::LocationList> GlassAccess::handleUSR(
       msg,
       [&]() -> folly::coro::Task<::glean::USRSymbolDefinition> {
         ::glean::RequestOptions ro;
+        // Set revision if provided
+        if (revision.has_value()) {
+          ro.revision_ref() = revision.value();
+        }
         RpcOptions rpcOptions;
         rpcOptions.setTimeout(std::chrono::milliseconds(GlassTimeoutMs));
         co_return co_await client->co_usrToDefinition(rpcOptions, request, ro);
@@ -66,6 +72,7 @@ std::optional<protocol::LocationList> GlassAccess::handleUSR(
 
 std::optional<protocol::LocationList> GlassAccess::handleUSRHash(
     const std::string& usr,
+    const std::optional<std::string>& revision,
     std::string& msg) {
   // Hash the USR for clang USR lookup
   std::string hashedUSR = facebook::glean::clangx::hash::hash(usr);
@@ -76,6 +83,10 @@ std::optional<protocol::LocationList> GlassAccess::handleUSRHash(
       msg,
       [&]() -> folly::coro::Task<::glean::USRSymbolDefinition> {
         ::glean::RequestOptions ro;
+        // Set revision if provided
+        if (revision.has_value()) {
+          ro.revision_ref() = revision.value();
+        }
         RpcOptions rpcOptions;
         rpcOptions.setTimeout(std::chrono::milliseconds(GlassTimeoutMs));
         co_return co_await client->co_clangUSRToDefinition(

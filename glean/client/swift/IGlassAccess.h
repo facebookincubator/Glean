@@ -47,5 +47,6 @@ class IGlassAccess {
   virtual ~IGlassAccess() = default;
 
   virtual std::optional<protocol::LocationList> usrToDefinition(
-      const std::string& usr) = 0;
+      const std::string& usr,
+      const std::optional<std::string>& revision = std::nullopt) = 0;
 };

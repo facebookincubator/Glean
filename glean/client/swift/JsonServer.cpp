@@ -54,8 +54,14 @@ void JsonServer::processRequest(
     auto value = request.getDefault("value", "").asString();
     auto mode = request.getDefault("mode", "production").asString();
 
+    // Extract optional revision field
+    std::optional<std::string> revision;
+    if (request.count("revision") && !request["revision"].isNull()) {
+      revision = request["revision"].asString();
+    }
+
     if (method == "USRToDefinition") {
-      handleUSRToDefinitionRequest(id, value, mode, output);
+      handleUSRToDefinitionRequest(id, value, revision, mode, output);
     } else {
       // Send error response for unknown method
       auto duration = clock.duration();
@@ -89,6 +95,7 @@ void JsonServer::processRequest(
 void JsonServer::handleUSRToDefinitionRequest(
     const folly::dynamic& id,
     const std::string& usr,
+    const std::optional<std::string>& revision,
     const std::string& mode,
     std::ostream& output) {
   // Start timing for scuba logging
@@ -121,7 +128,7 @@ void JsonServer::handleUSRToDefinitionRequest(
 
   try {
     // Call GlassAccess to get definition locations
-    auto locations = glassAccess_->usrToDefinition(usr);
+    auto locations = glassAccess_->usrToDefinition(usr, revision);
 
     // Create response
     folly::dynamic response = folly::dynamic::object;
