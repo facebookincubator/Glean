@@ -685,7 +685,7 @@ fileIncludeLocations mlimit fileId = do
       fst <$> searchRecursiveWithLimit mlimit (ppXRefFileLocations traceQ)
   where
     -- arbitrary number of fact traces to be reasonable. More than 1. But
-    -- don't overwhelm things. c.f PPTrace { file = folly/Optional.h }
+    -- don't overwhelm things. c.f. PPTrace { file = folly/Optional.h }
     -- also the query gets quite large
     traceMaxLimit = 10
 

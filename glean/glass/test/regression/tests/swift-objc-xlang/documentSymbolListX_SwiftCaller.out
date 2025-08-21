@@ -64,6 +64,35 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "s:9SwiftObjc0A6CallerC13useCFunctionsyyF"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 28,
+                    "lineBegin": 126,
+                    "lineEnd": 126
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC13useCFunctionsyyF"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC14accessPropertyyyF"
                         },
                         "key": "symbolName"
@@ -84,8 +113,8 @@
                 "range": {
                     "columnBegin": 15,
                     "columnEnd": 29,
-                    "lineBegin": 51,
-                    "lineEnd": 51
+                    "lineBegin": 57,
+                    "lineEnd": 57
                 },
                 "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC14accessPropertyyyF"
             },
@@ -113,8 +142,8 @@
                 "range": {
                     "columnBegin": 15,
                     "columnEnd": 29,
-                    "lineBegin": 80,
-                    "lineEnd": 80
+                    "lineBegin": 86,
+                    "lineEnd": 86
                 },
                 "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC14useClassMethodyyF"
             },
@@ -142,10 +171,39 @@
                 "range": {
                     "columnBegin": 15,
                     "columnEnd": 31,
-                    "lineBegin": 42,
-                    "lineEnd": 42
+                    "lineBegin": 48,
+                    "lineEnd": 48
                 },
                 "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC16callSimpleMethodyyF"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s:9SwiftObjc0A6CallerC18useStructsAndEnumsyyF"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 33,
+                    "lineBegin": 95,
+                    "lineEnd": 95
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC18useStructsAndEnumsyyF"
             },
             {
                 "attributes": [
@@ -171,8 +229,8 @@
                 "range": {
                     "columnBegin": 15,
                     "columnEnd": 38,
-                    "lineBegin": 64,
-                    "lineEnd": 64
+                    "lineBegin": 70,
+                    "lineEnd": 70
                 },
                 "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC23processStringWithBridgeyyF"
             },
@@ -315,6 +373,177 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "ProcessingStatus"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "enum ProcessingStatus : NSInteger"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 12
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 17,
+                    "columnEnd": 33,
+                    "lineBegin": 97,
+                    "lineEnd": 97
+                },
+                "sym": "test-xlang/cpp/fbobjc/ProcessingStatus/.decl",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 2,
+                        "lineBegin": 15,
+                        "lineEnd": 20
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "ProcessingStatus"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "enum ProcessingStatus : NSInteger"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 12
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 24,
+                    "columnEnd": 40,
+                    "lineBegin": 105,
+                    "lineEnd": 105
+                },
+                "sym": "test-xlang/cpp/fbobjc/ProcessingStatus/.decl",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 2,
+                        "lineBegin": 15,
+                        "lineEnd": 20
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "ProcessingStatus"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "enum ProcessingStatus : NSInteger"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 12
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 39,
+                    "lineBegin": 140,
+                    "lineEnd": 140
+                },
+                "sym": "test-xlang/cpp/fbobjc/ProcessingStatus/.decl",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.h",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 2,
+                        "lineBegin": 15,
+                        "lineEnd": 20
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "SwiftObjcBridge"
                         },
                         "key": "symbolName"
@@ -350,8 +579,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 5,
-                        "lineBegin": 15,
-                        "lineEnd": 37
+                        "lineBegin": 57,
+                        "lineEnd": 79
                     },
                     "repository": "test-xlang"
                 }
@@ -386,8 +615,8 @@
                 "range": {
                     "columnBegin": 18,
                     "columnEnd": 33,
-                    "lineBegin": 82,
-                    "lineEnd": 82
+                    "lineBegin": 88,
+                    "lineEnd": 88
                 },
                 "sym": "test-xlang/cpp/fbobjc/SwiftObjcBridge/.decl",
                 "target": {
@@ -395,8 +624,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 5,
-                        "lineBegin": 15,
-                        "lineEnd": 37
+                        "lineBegin": 57,
+                        "lineEnd": 79
                     },
                     "repository": "test-xlang"
                 }
@@ -437,8 +666,8 @@
                 "range": {
                     "columnBegin": 34,
                     "columnEnd": 46,
-                    "lineBegin": 82,
-                    "lineEnd": 82
+                    "lineBegin": 88,
+                    "lineEnd": 88
                 },
                 "sym": "test-xlang/cpp/fbobjc/SwiftObjcBridge/computeValueWithA/andB/.decl",
                 "target": {
@@ -446,8 +675,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 35,
-                        "lineEnd": 38
+                        "lineBegin": 61,
+                        "lineEnd": 64
                     },
                     "repository": "test-xlang"
                 }
@@ -488,8 +717,8 @@
                 "range": {
                     "columnBegin": 30,
                     "columnEnd": 43,
-                    "lineBegin": 69,
-                    "lineEnd": 69
+                    "lineBegin": 75,
+                    "lineEnd": 75
                 },
                 "sym": "test-xlang/cpp/fbobjc/SwiftObjcBridge/processString/withFlag/.decl",
                 "target": {
@@ -497,8 +726,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 26,
-                        "lineEnd": 33
+                        "lineBegin": 52,
+                        "lineEnd": 59
                     },
                     "repository": "test-xlang"
                 }
@@ -539,8 +768,8 @@
                 "range": {
                     "columnBegin": 30,
                     "columnEnd": 43,
-                    "lineBegin": 73,
-                    "lineEnd": 73
+                    "lineBegin": 79,
+                    "lineEnd": 79
                 },
                 "sym": "test-xlang/cpp/fbobjc/SwiftObjcBridge/processString/withFlag/.decl",
                 "target": {
@@ -548,8 +777,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 26,
-                        "lineEnd": 33
+                        "lineBegin": 52,
+                        "lineEnd": 59
                     },
                     "repository": "test-xlang"
                 }
@@ -590,8 +819,8 @@
                 "range": {
                     "columnBegin": 12,
                     "columnEnd": 24,
-                    "lineBegin": 44,
-                    "lineEnd": 44
+                    "lineBegin": 50,
+                    "lineEnd": 50
                 },
                 "sym": "test-xlang/cpp/fbobjc/SwiftObjcBridge/simpleMethod/.decl",
                 "target": {
@@ -599,8 +828,1637 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
+                        "lineBegin": 47,
+                        "lineEnd": 50
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "calculateDistance(Point2D, Point2D)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "CGFloat calculateDistance(Point2D point1, Point2D point2)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 37,
+                    "lineBegin": 132,
+                    "lineEnd": 132
+                },
+                "sym": "test-xlang/cpp/fbobjc/calculateDistance/.f/Point2D,Point2D/.decl",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 14,
+                        "lineEnd": 19
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "createDefaultConfig(NSInteger)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "ConfigData createDefaultConfig(NSInteger identifier)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 18,
+                    "columnEnd": 37,
+                    "lineBegin": 117,
+                    "lineEnd": 117
+                },
+                "sym": "test-xlang/cpp/fbobjc/createDefaultConfig/.f/NSInteger/.decl",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
                         "lineBegin": 21,
-                        "lineEnd": 24
+                        "lineEnd": 29
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "createDefaultConfig(NSInteger)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "ConfigData createDefaultConfig(NSInteger identifier)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 18,
+                    "columnEnd": 37,
+                    "lineBegin": 136,
+                    "lineEnd": 136
+                },
+                "sym": "test-xlang/cpp/fbobjc/createDefaultConfig/.f/NSInteger/.decl",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 21,
+                        "lineEnd": 29
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "isValidStatus(ProcessingStatus)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "BOOL isValidStatus(ProcessingStatus status)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 19,
+                    "columnEnd": 32,
+                    "lineBegin": 101,
+                    "lineEnd": 101
+                },
+                "sym": "test-xlang/cpp/fbobjc/isValidStatus/.f/ProcessingStatus/.decl",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 31,
+                        "lineEnd": 34
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "isValidStatus(ProcessingStatus)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "BOOL isValidStatus(ProcessingStatus status)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 19,
+                    "columnEnd": 32,
+                    "lineBegin": 106,
+                    "lineEnd": 106
+                },
+                "sym": "test-xlang/cpp/fbobjc/isValidStatus/.f/ProcessingStatus/.decl",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 31,
+                        "lineEnd": 34
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "isValidStatus(ProcessingStatus)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "BOOL isValidStatus(ProcessingStatus status)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 19,
+                    "columnEnd": 32,
+                    "lineBegin": 141,
+                    "lineEnd": 141
+                },
+                "sym": "test-xlang/cpp/fbobjc/isValidStatus/.f/ProcessingStatus/.decl",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 31,
+                        "lineEnd": 34
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@E@ProcessingStatus"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 17,
+                    "columnEnd": 33,
+                    "lineBegin": 97,
+                    "lineEnd": 97
+                },
+                "sym": "test-xlang/swift/c:%40E%40ProcessingStatus",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 28,
+                        "columnEnd": 44,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@E@ProcessingStatus"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 24,
+                    "columnEnd": 40,
+                    "lineBegin": 105,
+                    "lineEnd": 105
+                },
+                "sym": "test-xlang/swift/c:%40E%40ProcessingStatus",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 28,
+                        "columnEnd": 44,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@E@ProcessingStatus"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 39,
+                    "lineBegin": 140,
+                    "lineEnd": 140
+                },
+                "sym": "test-xlang/swift/c:%40E%40ProcessingStatus",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 28,
+                        "columnEnd": 44,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@E@ProcessingStatus@ProcessingStatusCompleted"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 58,
+                    "columnEnd": 67,
+                    "lineBegin": 105,
+                    "lineEnd": 105
+                },
+                "sym": "test-xlang/swift/c:%40E%40ProcessingStatus%40ProcessingStatusCompleted",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 28,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@E@ProcessingStatus@ProcessingStatusCompleted"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 40,
+                    "columnEnd": 49,
+                    "lineBegin": 140,
+                    "lineEnd": 140
+                },
+                "sym": "test-xlang/swift/c:%40E%40ProcessingStatus%40ProcessingStatusCompleted",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 28,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@E@ProcessingStatus@ProcessingStatusFailed"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 70,
+                    "columnEnd": 76,
+                    "lineBegin": 105,
+                    "lineEnd": 105
+                },
+                "sym": "test-xlang/swift/c:%40E%40ProcessingStatus%40ProcessingStatusFailed",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 25,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@E@ProcessingStatus@ProcessingStatusIdle"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 41,
+                    "columnEnd": 45,
+                    "lineBegin": 105,
+                    "lineEnd": 105
+                },
+                "sym": "test-xlang/swift/c:%40E%40ProcessingStatus%40ProcessingStatusIdle",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 23,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@E@ProcessingStatus@ProcessingStatusRunning"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 37,
+                    "columnEnd": 44,
+                    "lineBegin": 97,
+                    "lineEnd": 97
+                },
+                "sym": "test-xlang/swift/c:%40E%40ProcessingStatus%40ProcessingStatusRunning",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@E@ProcessingStatus@ProcessingStatusRunning"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 48,
+                    "columnEnd": 55,
+                    "lineBegin": 105,
+                    "lineEnd": 105
+                },
+                "sym": "test-xlang/swift/c:%40E%40ProcessingStatus%40ProcessingStatusRunning",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@ConfigData@FI@identifier"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 32,
+                    "columnEnd": 42,
+                    "lineBegin": 118,
+                    "lineEnd": 118
+                },
+                "sym": "test-xlang/swift/c:%40SA%40ConfigData%40FI%40identifier",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 23,
+                        "lineBegin": 34,
+                        "lineEnd": 34
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@ConfigData@FI@identifier"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 45,
+                    "columnEnd": 55,
+                    "lineBegin": 137,
+                    "lineEnd": 137
+                },
+                "sym": "test-xlang/swift/c:%40SA%40ConfigData%40FI%40identifier",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 23,
+                        "lineBegin": 34,
+                        "lineEnd": 34
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@ConfigData@FI@isEnabled"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 37,
+                    "columnEnd": 46,
+                    "lineBegin": 119,
+                    "lineEnd": 119
+                },
+                "sym": "test-xlang/swift/c:%40SA%40ConfigData%40FI%40isEnabled",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 17,
+                        "lineBegin": 35,
+                        "lineEnd": 35
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@ConfigData@FI@position"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 39,
+                    "columnEnd": 47,
+                    "lineBegin": 120,
+                    "lineEnd": 120
+                },
+                "sym": "test-xlang/swift/c:%40SA%40ConfigData%40FI%40position",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 19,
+                        "lineBegin": 36,
+                        "lineEnd": 36
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@ConfigData@FI@position"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 61,
+                    "columnEnd": 69,
+                    "lineBegin": 120,
+                    "lineEnd": 120
+                },
+                "sym": "test-xlang/swift/c:%40SA%40ConfigData%40FI%40position",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 19,
+                        "lineBegin": 36,
+                        "lineEnd": 36
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 18,
+                    "columnEnd": 25,
+                    "lineBegin": 111,
+                    "lineEnd": 111
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 18,
+                    "columnEnd": 25,
+                    "lineBegin": 112,
+                    "lineEnd": 112
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 18,
+                    "columnEnd": 25,
+                    "lineBegin": 128,
+                    "lineEnd": 128
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 18,
+                    "columnEnd": 25,
+                    "lineBegin": 129,
+                    "lineEnd": 129
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D@FI@x"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 26,
+                    "columnEnd": 27,
+                    "lineBegin": 111,
+                    "lineEnd": 111
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D%40FI%40x",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 26,
+                        "lineEnd": 26
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D@FI@x"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 26,
+                    "columnEnd": 27,
+                    "lineBegin": 112,
+                    "lineEnd": 112
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D%40FI%40x",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 26,
+                        "lineEnd": 26
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D@FI@x"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 31,
+                    "columnEnd": 32,
+                    "lineBegin": 113,
+                    "lineEnd": 113
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D%40FI%40x",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 26,
+                        "lineEnd": 26
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D@FI@x"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 31,
+                    "columnEnd": 32,
+                    "lineBegin": 114,
+                    "lineEnd": 114
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D%40FI%40x",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 26,
+                        "lineEnd": 26
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D@FI@x"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 48,
+                    "columnEnd": 49,
+                    "lineBegin": 120,
+                    "lineEnd": 120
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D%40FI%40x",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 26,
+                        "lineEnd": 26
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D@FI@x"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 26,
+                    "columnEnd": 27,
+                    "lineBegin": 128,
+                    "lineEnd": 128
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D%40FI%40x",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 26,
+                        "lineEnd": 26
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D@FI@x"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 26,
+                    "columnEnd": 27,
+                    "lineBegin": 129,
+                    "lineEnd": 129
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D%40FI%40x",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 26,
+                        "lineEnd": 26
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D@FI@y"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 35,
+                    "columnEnd": 36,
+                    "lineBegin": 111,
+                    "lineEnd": 111
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D%40FI%40y",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D@FI@y"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 35,
+                    "columnEnd": 36,
+                    "lineBegin": 112,
+                    "lineEnd": 112
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D%40FI%40y",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D@FI@y"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 44,
+                    "columnEnd": 45,
+                    "lineBegin": 113,
+                    "lineEnd": 113
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D%40FI%40y",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D@FI@y"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 44,
+                    "columnEnd": 45,
+                    "lineBegin": 114,
+                    "lineEnd": 114
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D%40FI%40y",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D@FI@y"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 70,
+                    "columnEnd": 71,
+                    "lineBegin": 120,
+                    "lineEnd": 120
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D%40FI%40y",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D@FI@y"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 34,
+                    "columnEnd": 35,
+                    "lineBegin": 128,
+                    "lineEnd": 128
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D%40FI%40y",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "c:@SA@Point2D@FI@y"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 34,
+                    "columnEnd": 35,
+                    "lineBegin": 129,
+                    "lineEnd": 129
+                },
+                "sym": "test-xlang/swift/c:%40SA%40Point2D%40FI%40y",
+                "target": {
+                    "filepath": "",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s:9SwiftObjc0A6CallerC13useCFunctionsyyF"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 18,
+                    "lineBegin": 42,
+                    "lineEnd": 42
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC13useCFunctionsyyF",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 28,
+                        "lineBegin": 126,
+                        "lineEnd": 126
                     },
                     "repository": "test-xlang"
                 }
@@ -638,8 +2496,8 @@
                     "range": {
                         "columnBegin": 15,
                         "columnEnd": 29,
-                        "lineBegin": 51,
-                        "lineEnd": 51
+                        "lineBegin": 57,
+                        "lineEnd": 57
                     },
                     "repository": "test-xlang"
                 }
@@ -677,8 +2535,8 @@
                     "range": {
                         "columnBegin": 15,
                         "columnEnd": 29,
-                        "lineBegin": 80,
-                        "lineEnd": 80
+                        "lineBegin": 86,
+                        "lineEnd": 86
                     },
                     "repository": "test-xlang"
                 }
@@ -716,8 +2574,47 @@
                     "range": {
                         "columnBegin": 15,
                         "columnEnd": 31,
-                        "lineBegin": 42,
-                        "lineEnd": 42
+                        "lineBegin": 48,
+                        "lineEnd": 48
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "s:9SwiftObjc0A6CallerC18useStructsAndEnumsyyF"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 20
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 23,
+                    "lineBegin": 39,
+                    "lineEnd": 39
+                },
+                "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC18useStructsAndEnumsyyF",
+                "target": {
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/SwiftObjc/SwiftCaller.swift",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 33,
+                        "lineBegin": 95,
+                        "lineEnd": 95
                     },
                     "repository": "test-xlang"
                 }
@@ -755,8 +2652,8 @@
                     "range": {
                         "columnBegin": 15,
                         "columnEnd": 38,
-                        "lineBegin": 64,
-                        "lineEnd": 64
+                        "lineBegin": 70,
+                        "lineEnd": 70
                     },
                     "repository": "test-xlang"
                 }
@@ -785,8 +2682,8 @@
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 11,
-                    "lineBegin": 44,
-                    "lineEnd": 44
+                    "lineBegin": 50,
+                    "lineEnd": 50
                 },
                 "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg",
                 "target": {
@@ -824,8 +2721,8 @@
                 "range": {
                     "columnBegin": 25,
                     "columnEnd": 31,
-                    "lineBegin": 53,
-                    "lineEnd": 53
+                    "lineBegin": 59,
+                    "lineEnd": 59
                 },
                 "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg",
                 "target": {
@@ -863,8 +2760,8 @@
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 11,
-                    "lineBegin": 57,
-                    "lineEnd": 57
+                    "lineBegin": 63,
+                    "lineEnd": 63
                 },
                 "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg",
                 "target": {
@@ -902,8 +2799,8 @@
                 "range": {
                     "columnBegin": 39,
                     "columnEnd": 45,
-                    "lineBegin": 58,
-                    "lineEnd": 58
+                    "lineBegin": 64,
+                    "lineEnd": 64
                 },
                 "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg",
                 "target": {
@@ -941,8 +2838,8 @@
                 "range": {
                     "columnBegin": 23,
                     "columnEnd": 29,
-                    "lineBegin": 69,
-                    "lineEnd": 69
+                    "lineBegin": 75,
+                    "lineEnd": 75
                 },
                 "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg",
                 "target": {
@@ -980,8 +2877,8 @@
                 "range": {
                     "columnBegin": 23,
                     "columnEnd": 29,
-                    "lineBegin": 73,
-                    "lineEnd": 73
+                    "lineBegin": 79,
+                    "lineEnd": 79
                 },
                 "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg",
                 "target": {
@@ -1019,8 +2916,8 @@
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 11,
-                    "lineBegin": 44,
-                    "lineEnd": 44
+                    "lineBegin": 50,
+                    "lineEnd": 50
                 },
                 "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp",
                 "target": {
@@ -1058,8 +2955,8 @@
                 "range": {
                     "columnBegin": 25,
                     "columnEnd": 31,
-                    "lineBegin": 53,
-                    "lineEnd": 53
+                    "lineBegin": 59,
+                    "lineEnd": 59
                 },
                 "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp",
                 "target": {
@@ -1097,8 +2994,8 @@
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 11,
-                    "lineBegin": 57,
-                    "lineEnd": 57
+                    "lineBegin": 63,
+                    "lineEnd": 63
                 },
                 "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp",
                 "target": {
@@ -1136,8 +3033,8 @@
                 "range": {
                     "columnBegin": 39,
                     "columnEnd": 45,
-                    "lineBegin": 58,
-                    "lineEnd": 58
+                    "lineBegin": 64,
+                    "lineEnd": 64
                 },
                 "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp",
                 "target": {
@@ -1175,8 +3072,8 @@
                 "range": {
                     "columnBegin": 23,
                     "columnEnd": 29,
-                    "lineBegin": 69,
-                    "lineEnd": 69
+                    "lineBegin": 75,
+                    "lineEnd": 75
                 },
                 "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp",
                 "target": {
@@ -1214,8 +3111,8 @@
                 "range": {
                     "columnBegin": 23,
                     "columnEnd": 29,
-                    "lineBegin": 73,
-                    "lineEnd": 73
+                    "lineBegin": 79,
+                    "lineEnd": 79
                 },
                 "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvp",
                 "target": {
@@ -1253,8 +3150,8 @@
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 11,
-                    "lineBegin": 57,
-                    "lineEnd": 57
+                    "lineBegin": 63,
+                    "lineEnd": 63
                 },
                 "sym": "test-xlang/swift/s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvs",
                 "target": {

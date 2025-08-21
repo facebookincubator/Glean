@@ -242,8 +242,126 @@ instance Normalize Cxx.Declaration where
     Cxx.Declaration_objcMethod $ normalize x
   normalize (Cxx.Declaration_objcProperty x) =
     Cxx.Declaration_objcProperty $ normalize x
+  normalize (Cxx.Declaration_record_ x) =
+    Cxx.Declaration_record_ $ normalize x
+  normalize (Cxx.Declaration_enum_ x) =
+    Cxx.Declaration_enum_ $ normalize x
+  normalize (Cxx.Declaration_function_ x) =
+    Cxx.Declaration_function_ $ normalize x
   normalize Cxx.Declaration_EMPTY = error "unknown Declaration"
   normalize _ = error "expected Objc Declaration"
+
+instance Normalize Cxx.RecordDeclaration where
+  normalize (Cxx.RecordDeclaration x y) =
+    Cxx.RecordDeclaration (normalize x) (normalize y)
+
+instance Normalize Cxx.RecordDeclaration_key where
+  normalize (Cxx.RecordDeclaration_key x y z) =
+    Cxx.RecordDeclaration_key (normalize x) (normalize y) (normalize z)
+
+instance Normalize Cxx.EnumDeclaration where
+  normalize (Cxx.EnumDeclaration x y) =
+    Cxx.EnumDeclaration (normalize x) (normalize y)
+
+instance Normalize Cxx.EnumDeclaration_key where
+  normalize (Cxx.EnumDeclaration_key x y z t) =
+    Cxx.EnumDeclaration_key
+      (normalize x)
+      (normalize y)
+      (normalize z)
+      (normalize t)
+
+instance Normalize Cxx.FunctionDeclaration where
+  normalize (Cxx.FunctionDeclaration x y) =
+    Cxx.FunctionDeclaration (normalize x) (normalize y)
+
+instance Normalize Cxx.FunctionDeclaration_key where
+  normalize (Cxx.FunctionDeclaration_key x y z t) =
+    Cxx.FunctionDeclaration_key
+      (normalize x)
+      (normalize y)
+      (normalize z)
+      (normalize t)
+
+instance Normalize Cxx.QName where
+  normalize (Cxx.QName x y) = Cxx.QName (normalize x) (normalize y)
+
+instance Normalize Cxx.QName_key where
+  normalize (Cxx.QName_key x y) =
+    Cxx.QName_key (normalize x) (normalize y)
+
+instance Normalize Cxx.Scope where
+  normalize (Cxx.Scope_namespace_ x) = Cxx.Scope_namespace_ (normalize x)
+  normalize (Cxx.Scope_recordWithAccess x) =
+    Cxx.Scope_recordWithAccess (normalize x)
+  normalize (Cxx.Scope_global_ x) = Cxx.Scope_global_ x
+  normalize (Cxx.Scope_local x) = Cxx.Scope_local (normalize x)
+  normalize Cxx.Scope_EMPTY = error "unknown Scope"
+
+instance Normalize Cxx.Scope_recordWithAccess_ where
+  normalize (Cxx.Scope_recordWithAccess_ x y) =
+    Cxx.Scope_recordWithAccess_ (normalize x) (normalize y)
+
+instance Normalize Cxx.NamespaceQName where
+  normalize (Cxx.NamespaceQName x y) =
+    Cxx.NamespaceQName (normalize x) (normalize y)
+
+instance Normalize Cxx.NamespaceQName_key where
+  normalize (Cxx.NamespaceQName_key x y) =
+    Cxx.NamespaceQName_key (normalize x) (normalize y)
+
+instance Normalize Cxx.FunctionQName where
+  normalize (Cxx.FunctionQName x y) =
+    Cxx.FunctionQName (normalize x) (normalize y)
+
+instance Normalize Cxx.FunctionQName_key where
+  normalize (Cxx.FunctionQName_key x y) =
+    Cxx.FunctionQName_key (normalize x) (normalize y)
+
+instance Normalize Cxx.FunctionName where
+  normalize (Cxx.FunctionName x y) =
+    Cxx.FunctionName (normalize x) (normalize y)
+
+instance Normalize Cxx.FunctionName_key where
+  normalize (Cxx.FunctionName_key_name x) =
+    Cxx.FunctionName_key_name (normalize x)
+  normalize (Cxx.FunctionName_key_operator_ x) =
+    Cxx.FunctionName_key_operator_ (normalize x)
+  normalize (Cxx.FunctionName_key_literalOperator x) =
+    Cxx.FunctionName_key_literalOperator (normalize x)
+  normalize (Cxx.FunctionName_key_constructor x) =
+    Cxx.FunctionName_key_constructor x
+  normalize (Cxx.FunctionName_key_destructor x) =
+    Cxx.FunctionName_key_destructor x
+  normalize (Cxx.FunctionName_key_conversionOperator x) =
+    Cxx.FunctionName_key_conversionOperator (normalize x)
+  normalize Cxx.FunctionName_key_EMPTY = error "unknown FunctionName"
+
+instance Normalize Cxx.RecordKind where
+  normalize (Cxx.RecordKind_struct_ x) = Cxx.RecordKind_struct_ x
+  normalize (Cxx.RecordKind_class_ x) = Cxx.RecordKind_class_ x
+  normalize (Cxx.RecordKind_union_ x) = Cxx.RecordKind_union_ x
+  normalize Cxx.RecordKind_EMPTY = error "unknown RecordKind"
+
+instance Normalize Cxx.MethodSignature where
+  normalize (Cxx.MethodSignature x y z t) =
+    Cxx.MethodSignature
+      (normalize x)
+      (normalize y)
+      (normalize z)
+      (normalize t)
+
+instance Normalize Cxx.RefQualifier where
+  normalize Cxx.RefQualifier_None_ = Cxx.RefQualifier_None_
+  normalize Cxx.RefQualifier_LValue = Cxx.RefQualifier_LValue
+  normalize Cxx.RefQualifier_RValue = Cxx.RefQualifier_RValue
+  normalize (Cxx.RefQualifier__UNKNOWN _) = error "unknown RefQualifier"
+
+instance Normalize Cxx.Access where
+  normalize Cxx.Access_Public = Cxx.Access_Public
+  normalize Cxx.Access_Private = Cxx.Access_Private
+  normalize Cxx.Access_Protected = Cxx.Access_Protected
+  normalize (Cxx.Access__UNKNOWN _) = error "unknown Access"
 
 instance Normalize Cxx.ObjcContainerDeclaration where
   normalize (Cxx.ObjcContainerDeclaration x y) =
@@ -336,6 +454,9 @@ instance ToAngleFull Cxx.Declaration where
   toAngleFull
       (Cxx.Declaration_objcProperty (Cxx.ObjcPropertyDeclaration _ (Just x))) =
     alt @"objcProperty" (toAngleFull x)
+  toAngleFull (Cxx.Declaration_record_ x) = alt @"record_" (mkKey x)
+  toAngleFull (Cxx.Declaration_enum_ x) = alt @"enum_" (mkKey x)
+  toAngleFull (Cxx.Declaration_function_ x) = alt @"function_" (mkKey x)
   toAngleFull Cxx.Declaration_EMPTY = error "unknown Declaration"
   toAngleFull _ = error "toAngleFull not implemented"
 
