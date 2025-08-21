@@ -255,10 +255,7 @@ fetchSymbolsAndAttributesGlean
     oIncludeRefs = documentSymbolsRequest_include_refs req
     oLineRange = documentSymbolsRequest_range req
     withContentHash = shouldFetchContentHash opts
-    oIncludeXlangRefs = case opts of
-      RequestOptions { requestOptions_feature_flags = Just
-        FeatureFlags { featureFlags_include_xlang_refs = Just True } } -> True
-      _ -> documentSymbolsRequest_include_xlang_refs req
+    oIncludeXlangRefs = documentSymbolsRequest_include_xlang_refs req
     oAmendLinesOnRevisionMismatch = maybe False
       featureFlags_amend_lines_on_revision_mismatch (requestOptions_feature_flags opts)
 

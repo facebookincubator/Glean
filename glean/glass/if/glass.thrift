@@ -164,10 +164,6 @@ struct RequestOptions {
 }
 
 struct FeatureFlags {
-  // include xlang? default is false
-  3: optional bool include_xlang_refs;
-
-  // attempt to amend line numbers when the requested and served revisions mismatch
   4: bool amend_lines_on_revision_mismatch = false;
 }
 

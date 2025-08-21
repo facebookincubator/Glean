@@ -75,8 +75,7 @@ instance LogRequest AttributeOptions where
     Logger.setAttributeOptions $ textShow $ Thrift.serializeJSON AttributeOptions{..}
 
 instance LogRequest FeatureFlags where
-  logRequest FeatureFlags{..} =
-    maybe mempty Logger.setIncludeXlangXrefs featureFlags_include_xlang_refs
+  logRequest FeatureFlags{} = mempty
 
 instance LogRequest DocumentSymbolsRequest where
   logRequest = logDocumentSymbolsRequestSG Logger.setFilepath Logger.setRepo
