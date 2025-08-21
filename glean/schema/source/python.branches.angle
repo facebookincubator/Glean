@@ -13,7 +13,7 @@ predicate FileToRoot:
     root: Root,
   }
 
-predicate DirectXRefByFileNonStored:
+predicate DirectXRefsByFile:
   {
     file: src.File,
     target: python.DeclarationLocation,

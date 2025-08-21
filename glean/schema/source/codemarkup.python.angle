@@ -58,7 +58,7 @@ predicate PythonFileEntityXRefLocations:
   }
   {File, {Location , { span = Src } }, { decl = Decl }} where
   if (python.branches.FileToRoot { file = File }) then (
-    python.branches.DirectXRefByFileNonStored { File, {Decl, DeclFile, DeclSpan}, Src };
+    python.branches.DirectXRefsByFile { File, {Decl, DeclFile, DeclSpan}, Src };
     python.DeclarationToName Decl -> (python.Name Name);
     codemarkup.types.Location { Name, DeclFile, { span = DeclSpan }, nothing } = Location;
   ) else (
