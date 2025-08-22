@@ -71,35 +71,79 @@ class JsonServerTest : public ::testing::Test {
 };
 
 TEST_F(JsonServerTest, USRToDefinitionRequest) {
-  // Test the LSP-like protocol with USRToDefinition request
-  std::string request =
-      R"({"id": 1, "revision": "17186b417211", "method": "USRToDefinition", "value": "s:12IGFriendsMap0aB4ViewC03mapC0So05MKMapC0CvgAFyXEfU_ADL_AFvp"})";
+  // First, test the normal path
+  {
+    std::string request =
+        R"({"id": 1, "revision": "17186b417211", "method": "USRToDefinition", "value": "s:12IGFriendsMap0aB4ViewC03mapC0So05MKMapC0CvgAFyXEfU_ADL_AFvp"})";
 
-  std::ostringstream output;
+    std::ostringstream output;
 
-  // Process the request directly without threading
-  folly::coro::blockingWait(server_->processRequest(request, output));
+    // Process the request directly without threading
+    folly::coro::blockingWait(server_->processRequest(request, output));
 
-  std::string result = output.str();
+    std::string result = output.str();
 
-  // Verify the response contains expected JSON structure
-  EXPECT_TRUE(result.find("\"id\":1") != std::string::npos);
-  EXPECT_TRUE(result.find("\"result\"") != std::string::npos);
-  EXPECT_TRUE(
-      result.find("\"uri\":\"file:///path/to/definition/file\"") !=
-      std::string::npos);
-  EXPECT_TRUE(result.find("\"line\":25") != std::string::npos);
-  EXPECT_TRUE(result.find("\"character\":4") != std::string::npos);
-  EXPECT_TRUE(result.find("\"character\":30") != std::string::npos);
+    // Verify the response contains expected JSON structure
+    EXPECT_TRUE(result.find("\"id\":1") != std::string::npos);
+    EXPECT_TRUE(result.find("\"result\"") != std::string::npos);
+    EXPECT_TRUE(
+        result.find("\"uri\":\"file:///path/to/definition/file\"") !=
+        std::string::npos);
+    EXPECT_TRUE(result.find("\"line\":25") != std::string::npos);
+    EXPECT_TRUE(result.find("\"character\":4") != std::string::npos);
+    EXPECT_TRUE(result.find("\"character\":30") != std::string::npos);
 
-  // Verify ScubaLogger was called with correct parameters
-  mockScubaLoggerPtr_->expectLogRequest(
-      "usrToDefinition",
-      "s:12IGFriendsMap0aB4ViewC03mapC0So05MKMapC0CvgAFyXEfU_ADL_AFvp",
-      facebook::glean::swift::USRType::SWIFT,
-      facebook::glean::swift::Status::SUCCESS,
-      "",
-      "production");
+    // Verify ScubaLogger was called with correct parameters
+    mockScubaLoggerPtr_->expectLogRequest(
+        "usrToDefinition",
+        "s:12IGFriendsMap0aB4ViewC03mapC0So05MKMapC0CvgAFyXEfU_ADL_AFvp",
+        facebook::glean::swift::USRType::SWIFT,
+        facebook::glean::swift::Status::SUCCESS,
+        "",
+        "production");
+  }
+
+  // Now test the early co_return path when glassAccess_ is null
+  {
+    // Reset the server's GlassAccess to nullptr
+    server_->setGlassAccess(nullptr);
+
+    std::string request =
+        R"({"id": 5, "method": "USRToDefinition", "value": "s:12IGFriendsMap0aB4ViewC03mapC0So05MKMapC0CvgAFyXEfU_ADL_AFvp"})";
+
+    std::ostringstream output;
+
+    // Process the request - this should trigger the early co_return
+    folly::coro::blockingWait(server_->processRequest(request, output));
+
+    std::string result = output.str();
+
+    // Verify the response contains an error about GlassAccess not being
+    // initialized
+    EXPECT_TRUE(result.find("\"error\"") != std::string::npos)
+        << "Expected error in response, got: " << result;
+    EXPECT_TRUE(result.find("\"code\":-32603") != std::string::npos)
+        << "Expected error code -32603 in response, got: " << result;
+    EXPECT_TRUE(
+        result.find(
+            "\"message\":\"Internal error: GlassAccess not initialized\"") !=
+        std::string::npos)
+        << "Expected GlassAccess not initialized message in response, got: "
+        << result;
+
+    // Verify ScubaLogger was called with correct parameters
+    EXPECT_EQ(2, mockScubaLoggerPtr_->logRequestCallCount);
+    EXPECT_EQ("USRToDefinition", mockScubaLoggerPtr_->lastMethod);
+    EXPECT_EQ(
+        "s:12IGFriendsMap0aB4ViewC03mapC0So05MKMapC0CvgAFyXEfU_ADL_AFvp",
+        mockScubaLoggerPtr_->lastUsr);
+    EXPECT_EQ(
+        facebook::glean::swift::Status::FAILED,
+        mockScubaLoggerPtr_->lastStatus);
+    EXPECT_TRUE(
+        mockScubaLoggerPtr_->lastError.find(
+            "Internal error: GlassAccess not initialized") == 0);
+  }
 }
 
 TEST_F(JsonServerTest, USRToDefinitionRequestNoResults) {
