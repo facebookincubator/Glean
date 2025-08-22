@@ -19,6 +19,7 @@ void printHelp(const char* programName, const char* clientType) {
             << " JSON server for Swift language support\n\n";
   std::cout << "Options:\n";
   std::cout << "  --help, -h    Show this help message and exit\n";
+  std::cout << "  --test-run    Enable test mode with stderr logging\n";
   std::cout << "\nThis program starts a " << clientType
             << " JSON server that provides Swift language\n";
   std::cout << "support through the Glass Access " << clientType
@@ -35,6 +36,23 @@ bool checkAndPrintHelp(int argc, char** argv, const char* clientType) {
     }
   }
   return false;
+}
+
+bool checkAndRemoveTestRun(int& argc, char** argv) {
+  // Check for test-run argument and remove it if found
+  bool found = false;
+  for (int i = 1; i < argc; ++i) {
+    if (std::string(argv[i]) == "--test-run") {
+      found = true;
+      // Shift remaining arguments left to remove --test-run
+      for (int j = i; j < argc - 1; ++j) {
+        argv[j] = argv[j + 1];
+      }
+      argc--; // Decrease argument count
+      i--; // Check the same position again since we shifted
+    }
+  }
+  return found;
 }
 
 } // namespace swift

@@ -20,5 +20,13 @@ namespace swift {
  */
 bool checkAndPrintHelp(int argc, char** argv, const char* clientType);
 
+/**
+ * Check if test-run argument is present and remove it from argv
+ * @param argc Reference to argument count (will be modified)
+ * @param argv Argument vector (will be modified)
+ * @return true if --test-run argument was found, false otherwise
+ */
+bool checkAndRemoveTestRun(int& argc, char** argv);
+
 } // namespace swift
 } // namespace glean

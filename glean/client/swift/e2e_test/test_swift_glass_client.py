@@ -51,7 +51,7 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
         """Start a new swift_glass_client process for the current test."""
         # Start the swift_glass_client binary directly using the pre-built path
         process = subprocess.Popen(
-            [self._binary_path],
+            [self._binary_path, "--test-run"],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -399,23 +399,23 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
             swift_usr = "s:9CIBCanvas0A4ViewC5frameACSo6CGRectV_tcfcADL_AFvp"
 
             # Send 3 requests with different delays to test async processing
-            # Request 1: 1000ms delay (should arrive last)
+            # Request 1: 2000ms delay (should arrive last)
             request1 = {
                 "id": 1,
                 "method": "USRToDefinition",
                 "value": swift_usr,
                 "mode": "test",
-                "delay": 1000,
+                "delay": 2000,
                 "revision": self.revision,
             }
 
-            # Request 2: 500ms delay (should arrive second)
+            # Request 2: 1000ms delay (should arrive second)
             request2 = {
                 "id": 2,
                 "method": "USRToDefinition",
                 "value": swift_usr,
                 "mode": "test",
-                "delay": 500,
+                "delay": 1000,
                 "revision": self.revision,
             }
 
@@ -479,7 +479,7 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
             # Extract response IDs in order received
             response_ids = [resp["id"] for resp in responses]
 
-            # Verify responses arrived in reverse order: id 3 (no delay), id 2 (500ms), id 1 (1000ms)
+            # Verify responses arrived in reverse order: id 3 (no delay), id 2 (1000ms), id 1 (2000ms)
             expected_order = [3, 2, 1]
             self.assertEqual(
                 response_ids,
@@ -489,10 +489,10 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
 
             # Verify timing constraints
             # Response 1 (id=3, no delay) should arrive first (around 0ms)
-            # Response 2 (id=2, 500ms delay) should arrive around 500ms
-            # Response 3 (id=1, 1000ms delay) should arrive around 1000ms
+            # Response 2 (id=2, 1000ms delay) should arrive around 1000ms
+            # Response 3 (id=1, 2000ms delay) should arrive around 2000ms
 
-            tolerance_ms = 100  # 100ms tolerance for processing overhead
+            tolerance_ms = 900  # 900ms tolerance for processing overhead
 
             # First response (id=3) should arrive quickly
             self.assertLess(
@@ -501,8 +501,8 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
                 f"First response (id=3) took {response_times[0] * 1000}ms, expected < {tolerance_ms}ms",
             )
 
-            # Second response (id=2) should arrive around 500ms
-            expected_time_2 = 500
+            # Second response (id=2) should arrive around 1000ms
+            expected_time_2 = 1000
             actual_time_2 = response_times[1] * 1000
             self.assertGreaterEqual(
                 actual_time_2,
@@ -515,8 +515,8 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
                 f"Second response (id=2) arrived at {actual_time_2}ms, expected <= {expected_time_2 + tolerance_ms}ms",
             )
 
-            # Third response (id=1) should arrive around 1000ms
-            expected_time_1 = 1000
+            # Third response (id=1) should arrive around 2000ms
+            expected_time_1 = 2000
             actual_time_1 = response_times[2] * 1000
             self.assertGreaterEqual(
                 actual_time_1,

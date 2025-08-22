@@ -6,6 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+#include <glog/logging.h>
 #include <csignal>
 #include <memory>
 #include "folly/Singleton.h"
@@ -30,7 +31,16 @@ int main(int argc, char** argv) {
     return 0;
   }
 
+  // Check if test-run mode is enabled and remove the argument
+  bool testRun = glean::swift::checkAndRemoveTestRun(argc, argv);
+
   folly::Init init(&argc, &argv);
+
+  // Configure glog to output to stderr only in test mode
+  if (testRun) {
+    FLAGS_logtostderr = true;
+    FLAGS_minloglevel = 0; // INFO level and above
+  }
 
   std::signal(SIGINT, signalHandler);
 
