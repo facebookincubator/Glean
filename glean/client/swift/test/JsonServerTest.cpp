@@ -7,6 +7,8 @@
  */
 
 #include "glean/client/swift/JsonServer.h"
+#include <folly/coro/BlockingWait.h>
+#include <folly/coro/Task.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <memory>
@@ -36,10 +38,17 @@ class JsonServerTest : public ::testing::Test {
         usrToDefinition(
             "s:12IGFriendsMap0aB4ViewC03mapC0So05MKMapC0CvgAFyXEfU_ADL_AFvp",
             testing::_))
-        .WillByDefault(testing::Return(defaultLocations));
+        .WillByDefault(
+            [defaultLocations]()
+                -> folly::coro::Task<std::optional<protocol::LocationList>> {
+              co_return defaultLocations;
+            });
 
     ON_CALL(*mockGlassAccess_, usrToDefinition("unknown_usr", testing::_))
-        .WillByDefault(testing::Return(std::nullopt));
+        .WillByDefault(
+            []() -> folly::coro::Task<std::optional<protocol::LocationList>> {
+              co_return std::nullopt;
+            });
 
     // Store raw pointer before moving to server
     mockScubaLoggerPtr_ = mockScubaLogger_.get();
@@ -69,7 +78,7 @@ TEST_F(JsonServerTest, USRToDefinitionRequest) {
   std::ostringstream output;
 
   // Process the request directly without threading
-  server_->processRequest(request, output);
+  folly::coro::blockingWait(server_->processRequest(request, output));
 
   std::string result = output.str();
 
@@ -101,7 +110,7 @@ TEST_F(JsonServerTest, USRToDefinitionRequestNoResults) {
   std::ostringstream output;
 
   // Process the request directly without threading
-  server_->processRequest(request, output);
+  folly::coro::blockingWait(server_->processRequest(request, output));
 
   std::string result = output.str();
 
@@ -127,7 +136,7 @@ TEST_F(JsonServerTest, UnknownMethodRequest) {
   std::ostringstream output;
 
   // Process the request directly without threading
-  server_->processRequest(request, output);
+  folly::coro::blockingWait(server_->processRequest(request, output));
 
   std::string result = output.str();
 
@@ -155,7 +164,7 @@ TEST_F(JsonServerTest, InvalidJSONRequest) {
   std::ostringstream output;
 
   // Process the request directly without threading
-  server_->processRequest(request, output);
+  folly::coro::blockingWait(server_->processRequest(request, output));
 
   std::string result = output.str();
 

@@ -17,8 +17,8 @@ class GlassAccessMock : public IGlassAccess {
   ~GlassAccessMock() override = default;
 
   MOCK_METHOD(
-      std::optional<protocol::LocationList>,
+      folly::coro::Task<std::optional<protocol::LocationList>>,
       usrToDefinition,
-      (const std::string& usr, const std::optional<std::string>& revision),
+      (const std::string usr, const std::optional<std::string> revision),
       (override));
 };

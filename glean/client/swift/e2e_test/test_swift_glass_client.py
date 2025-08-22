@@ -63,6 +63,21 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
         self._wait_for_glass_initialization(process)
         return process
 
+    def _stop_process(self, process):
+        """Stop the swift_glass_client process by sending an empty line."""
+        if process and process.poll() is None:
+            # Send empty line to signal termination
+            process.stdin.write("\n")
+            process.stdin.flush()
+
+            # Wait for process to terminate gracefully
+            try:
+                process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                # If it doesn't terminate gracefully, force kill
+                process.terminate()
+                process.wait()
+
     def _wait_for_glass_initialization(self, process):
         """
         Wait for Glass connection initialization logs in stderr.
@@ -149,7 +164,15 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
         process.stdin.write(request_str + "\n")
         process.stdin.flush()
 
-        # Read response
+        # Read response with 10 second timeout
+        import select
+
+        ready, _, _ = select.select([process.stdout], [], [], 10.0)  # 10 second timeout
+        if not ready:
+            self.fail(
+                "Timeout: No response received from swift_glass_client within 10 seconds"
+            )
+
         response_line = process.stdout.readline().strip()
         if not response_line:
             self.fail("No response received from swift_glass_client")
@@ -210,9 +233,7 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
             # Should not have error field for successful not_found case
             self.assertNotIn("error", response)
         finally:
-            if process:
-                process.terminate()
-                process.wait()
+            self._stop_process(process)
 
     def test_invalid_request_parse_error(self):
         """Test sending invalid request, expecting parse error response."""
@@ -242,9 +263,7 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
             self.assertIn("Parse error", error["message"])
             self.assertIn("json parse error", error["message"].lower())
         finally:
-            if process:
-                process.terminate()
-                process.wait()
+            self._stop_process(process)
 
     def test_unknown_method_error(self):
         """Test sending request with unknown method, expecting method not found error."""
@@ -276,9 +295,7 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
             self.assertIn("message", error)
             self.assertEqual(error["message"], "Method not found")
         finally:
-            if process:
-                process.terminate()
-                process.wait()
+            self._stop_process(process)
 
     def test_malformed_json_request(self):
         """Test sending malformed JSON request, expecting parse error response."""
@@ -307,9 +324,7 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
             # The error message should contain "Parse error"
             self.assertIn("Parse error", error["message"])
         finally:
-            if process:
-                process.terminate()
-                process.wait()
+            self._stop_process(process)
 
     def _test_usr_to_definition_swift_class(
         self, process, with_revision: bool, test_id: int

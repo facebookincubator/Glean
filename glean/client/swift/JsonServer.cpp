@@ -8,6 +8,8 @@
 
 #include "glean/client/swift/JsonServer.h"
 #include <folly/json.h>
+#include <chrono>
+#include <thread>
 #include "glean/client/swift/Clock.h"
 
 JsonServer::JsonServer() : running_(false), glassAccess_(nullptr) {
@@ -28,11 +30,19 @@ void JsonServer::setScubaLogger(
 void JsonServer::start(std::istream& input, std::ostream& output) {
   running_ = true;
 
-  std::string line;
-  while (running_ && std::getline(input, line)) {
-    if (!line.empty()) {
-      processRequest(line, output);
-    }
+  // Start input processing thread
+  std::thread inputThread([this, &input]() { processInput(input); });
+
+  // Start output request processing thread
+  std::thread outputThread(
+      [this, &output]() { folly::coro::blockingWait(processOutput(output)); });
+
+  // Wait for both threads to complete
+  if (inputThread.joinable()) {
+    inputThread.join();
+  }
+  if (outputThread.joinable()) {
+    outputThread.join();
   }
 }
 
@@ -40,7 +50,31 @@ void JsonServer::stop() {
   running_ = false;
 }
 
-void JsonServer::processRequest(
+void JsonServer::processInput(std::istream& input) {
+  std::string line;
+  while (running_ && std::getline(input, line)) {
+    if (line.empty()) {
+      // Empty line signals termination
+      break;
+    }
+    requestQueue_.push(std::move(line));
+  }
+  // Signal termination to the processing thread
+  running_ = false;
+}
+
+folly::coro::Task<void> JsonServer::processOutput(std::ostream& output) {
+  while (running_) {
+    RequestData request;
+    // Use waitAndPop with timeout to allow checking running_ periodically
+    if (requestQueue_.waitAndPop(request, std::chrono::milliseconds(100))) {
+      co_await processRequest(request, output);
+    }
+    // If no request was available, the loop continues and checks running_ again
+  }
+}
+
+folly::coro::Task<void> JsonServer::processRequest(
     const std::string& requestStr,
     std::ostream& output) {
   facebook::glean::swift::Clock clock;
@@ -61,7 +95,7 @@ void JsonServer::processRequest(
     }
 
     if (method == "USRToDefinition") {
-      handleUSRToDefinitionRequest(id, value, revision, mode, output);
+      co_await handleUSRToDefinitionRequest(id, value, revision, mode, output);
     } else {
       // Send error response for unknown method
       auto duration = clock.duration();
@@ -92,7 +126,7 @@ void JsonServer::processRequest(
   }
 }
 
-void JsonServer::handleUSRToDefinitionRequest(
+folly::coro::Task<void> JsonServer::handleUSRToDefinitionRequest(
     const folly::dynamic& id,
     const std::string& usr,
     const std::optional<std::string>& revision,
@@ -113,7 +147,7 @@ void JsonServer::handleUSRToDefinitionRequest(
         determineUSRType(usr),
         duration,
         mode);
-    return;
+    co_return;
   }
 
   // Determine USR type and method
@@ -128,7 +162,7 @@ void JsonServer::handleUSRToDefinitionRequest(
 
   try {
     // Call GlassAccess to get definition locations
-    auto locations = glassAccess_->usrToDefinition(usr, revision);
+    auto locations = co_await glassAccess_->usrToDefinition(usr, revision);
 
     // Create response
     folly::dynamic response = folly::dynamic::object;
@@ -185,6 +219,7 @@ void JsonServer::handleUSRToDefinitionRequest(
 
     // Send response
     output << folly::toJson(response) << "\n";
+    output.flush(); // Ensure response is immediately sent
 
   } catch (const std::exception& e) {
     error = e.what();
@@ -224,6 +259,7 @@ void JsonServer::sendErrorResponse(
   response["error"] = error;
 
   output << folly::toJson(response) << "\n";
+  output.flush(); // Ensure error response is immediately sent
 
   // Log error to Scuba
   if (scubaLogger_ && scubaData_) {

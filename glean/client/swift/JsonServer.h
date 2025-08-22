@@ -8,14 +8,60 @@
 
 #pragma once
 
+#include <folly/coro/BlockingWait.h>
+#include <folly/coro/Task.h>
 #include <folly/dynamic.h>
 #include <gtest/gtest_prod.h>
 #include <atomic>
+#include <condition_variable>
 #include <iostream>
 #include <memory>
+#include <mutex>
+#include <optional>
+#include <queue>
 #include "glean/client/swift/IGlassAccess.h"
 #include "glean/client/swift/ScubaLogger.h"
 #include "rfe/scubadata/ScubaData.h"
+
+using RequestData = std::string;
+
+// Thread-safe queue implementation
+class ThreadSafeQueue {
+ public:
+  ThreadSafeQueue() = default;
+
+  void push(RequestData&& item) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    queue_.push(std::move(item));
+    condition_.notify_one();
+  }
+
+  bool tryPop(RequestData& item) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (queue_.empty()) {
+      return false;
+    }
+    item = std::move(queue_.front());
+    queue_.pop();
+    return true;
+  }
+
+  bool waitAndPop(RequestData& item, std::chrono::milliseconds timeout) {
+    std::unique_lock<std::mutex> lock(mutex_);
+    if (condition_.wait_for(
+            lock, timeout, [this] { return !queue_.empty(); })) {
+      item = std::move(queue_.front());
+      queue_.pop();
+      return true;
+    }
+    return false;
+  }
+
+ private:
+  std::queue<RequestData> queue_;
+  std::mutex mutex_;
+  std::condition_variable condition_;
+};
 
 class JsonServer {
  public:
@@ -33,7 +79,11 @@ class JsonServer {
   void stop();
 
  private:
-  void processRequest(const std::string& requestStr, std::ostream& output);
+  void processInput(std::istream& input);
+  folly::coro::Task<void> processOutput(std::ostream& output);
+  folly::coro::Task<void> processRequest(
+      const std::string& requestStr,
+      std::ostream& output);
   FRIEND_TEST(JsonServerTest, USRToDefinitionRequest);
   FRIEND_TEST(JsonServerTest, USRToDefinitionRequestNoResults);
   FRIEND_TEST(JsonServerTest, UnknownMethodRequest);
@@ -42,8 +92,9 @@ class JsonServer {
   std::unique_ptr<IGlassAccess> glassAccess_;
   std::unique_ptr<facebook::glean::swift::ScubaLogger> scubaLogger_;
   std::unique_ptr<facebook::rfe::ScubaData> scubaData_;
+  ThreadSafeQueue requestQueue_;
 
-  void handleUSRToDefinitionRequest(
+  folly::coro::Task<void> handleUSRToDefinitionRequest(
       const folly::dynamic& id,
       const std::string& usr,
       const std::optional<std::string>& revision,

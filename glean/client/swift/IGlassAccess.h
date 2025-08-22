@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <folly/coro/Task.h>
 #include <optional>
 #include <string>
 #include <vector>
@@ -46,7 +47,8 @@ class IGlassAccess {
  public:
   virtual ~IGlassAccess() = default;
 
-  virtual std::optional<protocol::LocationList> usrToDefinition(
-      const std::string& usr,
-      const std::optional<std::string>& revision = std::nullopt) = 0;
+  virtual folly::coro::Task<std::optional<protocol::LocationList>>
+  usrToDefinition(
+      const std::string usr,
+      const std::optional<std::string> revision = std::nullopt) = 0;
 };

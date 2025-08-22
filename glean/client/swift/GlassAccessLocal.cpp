@@ -7,6 +7,7 @@
  */
 
 #include "glean/client/swift/GlassAccessLocal.h"
+#include <folly/coro/BlockingWait.h>
 #include "c2p/secure_thrift/cpp/client/SecureThrift.h"
 
 using namespace facebook;
@@ -18,5 +19,5 @@ GlassAccessLocal::GlassAccessLocal() {
                    connectionTier);
 
   // Warm up the connection after client is initialized
-  warmUpConnection();
+  folly::coro::blockingWait(warmUpConnection());
 }

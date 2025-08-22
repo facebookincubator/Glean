@@ -7,6 +7,7 @@
  */
 
 #include "glean/client/swift/GlassAccessRemote.h"
+#include <folly/coro/BlockingWait.h>
 #include "servicerouter/client/cpp2/ServiceRouter.h"
 
 using namespace facebook;
@@ -22,5 +23,5 @@ GlassAccessRemote::GlassAccessRemote() {
               connectionTier, params);
 
   // Warm up the connection after client is initialized
-  warmUpConnection();
+  folly::coro::blockingWait(warmUpConnection());
 }
