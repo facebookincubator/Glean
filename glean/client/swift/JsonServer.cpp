@@ -7,6 +7,9 @@
  */
 
 #include "glean/client/swift/JsonServer.h"
+#include <folly/coro/Sleep.h>
+#include <folly/coro/ViaIfAsync.h>
+#include <folly/executors/GlobalExecutor.h>
 #include <folly/json.h>
 #include <chrono>
 #include <thread>
@@ -16,6 +19,7 @@ JsonServer::JsonServer() : running_(false), glassAccess_(nullptr) {
   // Initialize ScubaLogger and ScubaData
   scubaLogger_ = std::make_unique<facebook::glean::swift::ScubaLogger>();
   scubaData_ = std::make_unique<facebook::rfe::ScubaData>("swift_glass_client");
+  asyncScope_ = std::make_unique<folly::coro::CancellableAsyncScope>();
 }
 
 void JsonServer::setGlassAccess(std::unique_ptr<IGlassAccess> glassAccess) {
@@ -33,17 +37,17 @@ void JsonServer::start(std::istream& input, std::ostream& output) {
   // Start input processing thread
   std::thread inputThread([this, &input]() { processInput(input); });
 
-  // Start output request processing thread
-  std::thread outputThread(
-      [this, &output]() { folly::coro::blockingWait(processOutput(output)); });
+  // Start output request processing using multi-threaded executor
+  asyncScope_->add(folly::coro::co_viaIfAsync(
+      folly::getGlobalCPUExecutor(), processOutput(output)));
 
-  // Wait for both threads to complete
+  // Wait for input thread to complete
   if (inputThread.joinable()) {
     inputThread.join();
   }
-  if (outputThread.joinable()) {
-    outputThread.join();
-  }
+
+  // Wait for all async tasks to complete
+  folly::coro::blockingWait(asyncScope_->cancelAndJoinAsync());
 }
 
 void JsonServer::stop() {
@@ -68,10 +72,13 @@ folly::coro::Task<void> JsonServer::processOutput(std::ostream& output) {
     RequestData request;
     // Use waitAndPop with timeout to allow checking running_ periodically
     if (requestQueue_.waitAndPop(request, std::chrono::milliseconds(100))) {
-      co_await processRequest(request, output);
+      // Process each request concurrently on the executor
+      asyncScope_->add(folly::coro::co_viaIfAsync(
+          folly::getGlobalCPUExecutor(), processRequest(request, output)));
     }
     // If no request was available, the loop continues and checks running_ again
   }
+  co_return;
 }
 
 folly::coro::Task<void> JsonServer::processRequest(
@@ -94,8 +101,16 @@ folly::coro::Task<void> JsonServer::processRequest(
       revision = request["revision"].asString();
     }
 
+    // Extract optional delay field (only for test mode)
+    std::optional<int> delay;
+    if (mode == "test" && request.count("delay") &&
+        !request["delay"].isNull()) {
+      delay = request["delay"].asInt();
+    }
+
     if (method == "USRToDefinition") {
-      co_await handleUSRToDefinitionRequest(id, value, revision, mode, output);
+      co_await handleUSRToDefinitionRequest(
+          id, value, revision, mode, delay, output);
     } else {
       // Send error response for unknown method
       auto duration = clock.duration();
@@ -131,6 +146,7 @@ folly::coro::Task<void> JsonServer::handleUSRToDefinitionRequest(
     const std::string& usr,
     const std::optional<std::string>& revision,
     const std::string& mode,
+    const std::optional<int>& delay,
     std::ostream& output) {
   // Start timing for scuba logging
   facebook::glean::swift::Clock clock;
@@ -148,6 +164,11 @@ folly::coro::Task<void> JsonServer::handleUSRToDefinitionRequest(
         duration,
         mode);
     co_return;
+  }
+
+  // Apply delay if specified in test mode
+  if (mode == "test" && delay.has_value() && delay.value() > 0) {
+    co_await folly::coro::sleep(std::chrono::milliseconds(delay.value()));
   }
 
   // Determine USR type and method

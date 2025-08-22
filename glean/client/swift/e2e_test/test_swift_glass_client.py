@@ -391,6 +391,174 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
                 process.terminate()
                 process.wait()
 
+    def test_usr_to_definition_swift_class_with_delay_async(self):
+        """Test USRToDefinition request with delay to verify async mode functionality."""
+        process = self._start_process()
+        try:
+            # USR value for Swift class (same as in _test_usr_to_definition_swift_class)
+            swift_usr = "s:9CIBCanvas0A4ViewC5frameACSo6CGRectV_tcfcADL_AFvp"
+
+            # Send 3 requests with different delays to test async processing
+            # Request 1: 1000ms delay (should arrive last)
+            request1 = {
+                "id": 1,
+                "method": "USRToDefinition",
+                "value": swift_usr,
+                "mode": "test",
+                "delay": 1000,
+                "revision": self.revision,
+            }
+
+            # Request 2: 500ms delay (should arrive second)
+            request2 = {
+                "id": 2,
+                "method": "USRToDefinition",
+                "value": swift_usr,
+                "mode": "test",
+                "delay": 500,
+                "revision": self.revision,
+            }
+
+            # Request 3: no delay (should arrive first)
+            request3 = {
+                "id": 3,
+                "method": "USRToDefinition",
+                "value": swift_usr,
+                "mode": "test",
+                "revision": self.revision,
+            }
+
+            # Record start time
+            start_time = time.time()
+
+            # Send all requests quickly in sequence
+            request1_str = json.dumps(request1)
+            process.stdin.write(request1_str + "\n")
+            process.stdin.flush()
+
+            request2_str = json.dumps(request2)
+            process.stdin.write(request2_str + "\n")
+            process.stdin.flush()
+
+            request3_str = json.dumps(request3)
+            process.stdin.write(request3_str + "\n")
+            process.stdin.flush()
+
+            # Collect responses in order they arrive
+            responses = []
+            response_times = []
+
+            for i in range(3):
+                # Read response with timeout
+                import select
+
+                ready, _, _ = select.select(
+                    [process.stdout], [], [], 15.0
+                )  # 15 second timeout
+                if not ready:
+                    self.fail(
+                        f"Timeout: No response received for request {i+1} within 15 seconds"
+                    )
+
+                response_line = process.stdout.readline().strip()
+                if not response_line:
+                    self.fail(f"No response received for request {i+1}")
+
+                try:
+                    response = json.loads(response_line)
+                    responses.append(response)
+                    response_times.append(time.time() - start_time)
+                except json.JSONDecodeError as e:
+                    self.fail(
+                        f"Failed to parse response {i+1} as JSON: {response_line}. Error: {e}"
+                    )
+
+            # Verify we got exactly 3 responses
+            self.assertEqual(len(responses), 3, "Expected exactly 3 responses")
+
+            # Extract response IDs in order received
+            response_ids = [resp["id"] for resp in responses]
+
+            # Verify responses arrived in reverse order: id 3 (no delay), id 2 (500ms), id 1 (1000ms)
+            expected_order = [3, 2, 1]
+            self.assertEqual(
+                response_ids,
+                expected_order,
+                f"Expected responses in order {expected_order}, but got {response_ids}",
+            )
+
+            # Verify timing constraints
+            # Response 1 (id=3, no delay) should arrive first (around 0ms)
+            # Response 2 (id=2, 500ms delay) should arrive around 500ms
+            # Response 3 (id=1, 1000ms delay) should arrive around 1000ms
+
+            tolerance_ms = 100  # 100ms tolerance for processing overhead
+
+            # First response (id=3) should arrive quickly
+            self.assertLess(
+                response_times[0] * 1000,
+                tolerance_ms,
+                f"First response (id=3) took {response_times[0] * 1000}ms, expected < {tolerance_ms}ms",
+            )
+
+            # Second response (id=2) should arrive around 500ms
+            expected_time_2 = 500
+            actual_time_2 = response_times[1] * 1000
+            self.assertGreaterEqual(
+                actual_time_2,
+                expected_time_2 - tolerance_ms,
+                f"Second response (id=2) arrived at {actual_time_2}ms, expected >= {expected_time_2 - tolerance_ms}ms",
+            )
+            self.assertLessEqual(
+                actual_time_2,
+                expected_time_2 + tolerance_ms,
+                f"Second response (id=2) arrived at {actual_time_2}ms, expected <= {expected_time_2 + tolerance_ms}ms",
+            )
+
+            # Third response (id=1) should arrive around 1000ms
+            expected_time_1 = 1000
+            actual_time_1 = response_times[2] * 1000
+            self.assertGreaterEqual(
+                actual_time_1,
+                expected_time_1 - tolerance_ms,
+                f"Third response (id=1) arrived at {actual_time_1}ms, expected >= {expected_time_1 - tolerance_ms}ms",
+            )
+            self.assertLessEqual(
+                actual_time_1,
+                expected_time_1 + tolerance_ms,
+                f"Third response (id=1) arrived at {actual_time_1}ms, expected <= {expected_time_1 + tolerance_ms}ms",
+            )
+
+            # Verify all responses have correct structure
+            for i, response in enumerate(responses):
+                self.assertIn("id", response, f"Response {i+1} missing id field")
+                self.assertIn(
+                    "result", response, f"Response {i+1} missing result field"
+                )
+                self.assertNotIn(
+                    "error", response, f"Response {i+1} has unexpected error field"
+                )
+
+                # If definitions are found, verify they point to Swift files
+                result = response["result"]
+                if result:
+                    for location in result:
+                        self.assertIn("uri", location)
+                        uri = location["uri"]
+                        # Should point to a Swift file
+                        self.assertTrue(
+                            uri.endswith(".swift"), f"Expected .swift file, got: {uri}"
+                        )
+
+            print(
+                f"✓ Async test passed: responses received in order {response_ids} at times {[f'{t*1000:.0f}ms' for t in response_times]}"
+            )
+
+        finally:
+            if process:
+                process.terminate()
+                process.wait()
+
 
 if __name__ == "__main__":
     # Run the tests

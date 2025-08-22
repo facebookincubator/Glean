@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <folly/coro/AsyncScope.h>
 #include <folly/coro/BlockingWait.h>
 #include <folly/coro/Task.h>
 #include <folly/dynamic.h>
@@ -93,12 +94,14 @@ class JsonServer {
   std::unique_ptr<facebook::glean::swift::ScubaLogger> scubaLogger_;
   std::unique_ptr<facebook::rfe::ScubaData> scubaData_;
   ThreadSafeQueue requestQueue_;
+  std::unique_ptr<folly::coro::CancellableAsyncScope> asyncScope_;
 
   folly::coro::Task<void> handleUSRToDefinitionRequest(
       const folly::dynamic& id,
       const std::string& usr,
       const std::optional<std::string>& revision,
       const std::string& mode,
+      const std::optional<int>& delay,
       std::ostream& output);
   void sendErrorResponse(
       const folly::dynamic& id,
