@@ -290,6 +290,33 @@ FOLLY_NOINLINE void completeOwnership(
       // TODO: Try adding a fixed-size LRU (or LFU?) cache for set unions?
       std::vector<Uset*> touched;
       for (const auto id : refs) {
+        // Skip ownership propagation to Name facts with empty keys across all
+        // languages to prevent empty root names from appearing to own all files
+        bool shouldSkipOwnership = false;
+        lookup.factById(id, [&](Pid type, Fact::Clause clause) {
+          const auto* namePredicate = inventory.lookupPredicate(type);
+          if (namePredicate) {
+            // Check if this is a Name predicate from any language schema
+            // All Name predicates follow the pattern: <schema>.Name
+            const std::string& predName = namePredicate->name;
+            if (predName.find(".Name") != std::string::npos &&
+                predName.find(".Name") == predName.length() - 5) {
+              // For Name facts, the key is the string content
+              // Check if the key is empty (just contains the empty string)
+              if (clause.key().size() == 1 && clause.key().data()[0] == 0) {
+                shouldSkipOwnership = true;
+              }
+            }
+          }
+          return false; // We only need to check the predicate, not process the
+                        // fact
+        });
+
+        if (shouldSkipOwnership) {
+          continue; // Skip ownership propagation for empty Name facts from all
+                    // languages
+        }
+
         auto& me = owner(id);
         if (me == nullptr) {
           // The fact didn't have ownership info before, assign the set to it.
