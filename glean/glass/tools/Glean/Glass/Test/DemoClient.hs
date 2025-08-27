@@ -14,6 +14,7 @@ import Glean.Init as Glean ( withOptions )
 import Glean.Glass.Types
 import Glean.Glass.GlassService.Client
 
+import Control.Exception
 import Data.Default ( Default(def) )
 import Data.Maybe ( catMaybes )
 import Data.Text (Text)
@@ -158,20 +159,25 @@ defCfg = def { processingTimeout = Just 15000 }
 
 type GlassM p a = forall c . ClientChannel c => ThriftM p c GlassService a
 
-svc :: Service -> ThriftService GlassService
+svc :: Service -> Maybe (ThriftService GlassService)
 svc s =  mkThriftService s defCfg
 
 main :: IO ()
 main = Glean.withOptions options $ \Options{..} ->
-  withEventBaseDataplane $ \evp -> do
-    res <- runThrift evp (svc optHost) $
-      case optCommand of
-        List repo path -> runListSymbols repo path
-        Describe sym -> runDescribe sym
-        FindRefs sym -> runFindRefs sym
-        FindLocation sym -> runLocation sym
-        Search repo str ignoreCase -> runSearch repo str ignoreCase
-    mapM_ Text.putStrLn res
+  withEventBaseDataplane $ \evp ->
+    case svc optHost of
+      Nothing ->
+        throwIO $ ErrorCall $
+          "Service not supported: " <> serviceToString optHost
+      Just thriftService -> do
+        res <- runThrift evp thriftService $
+          case optCommand of
+            List repo path -> runListSymbols repo path
+            Describe sym -> runDescribe sym
+            FindRefs sym -> runFindRefs sym
+            FindLocation sym -> runLocation sym
+            Search repo str ignoreCase -> runSearch repo str ignoreCase
+        mapM_ Text.putStrLn res
 
 runListSymbols :: Protocol p => RepoName -> Path -> GlassM p [Text]
 runListSymbols repo path = do
