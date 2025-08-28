@@ -57,7 +57,10 @@ jobs:
         run: npm install -g flow-bin
 
       - name: Install indexer (typescript)
-        run: npm install -g @sourcegraph/scip-typescript
+        # Pin the version because test output depends on it. If you bump
+        # the version here, you probably need to also do:
+        #   cabal run glean-snapshot-typescript -- --replace-all
+        run: npm install -g @sourcegraph/scip-typescript@0.3.15
 
       - name: Install .NET Framework dependencies
         run: apt-get install -y libicu74
