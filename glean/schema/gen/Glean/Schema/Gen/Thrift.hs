@@ -81,6 +81,9 @@ genTargets slashVn info oncall =
       typesCppSplits =
         let cppSplits = min 20 (length nsPredicates) in
         ["\"types_cpp_splits=" <> showt cppSplits <> "\"" | cppSplits /= 0]
+      typesRustSplits =
+        let rustSplits = min 20 (length nsPredicates) in
+        ["\"types_split_count=" <> showt rustSplits <> "\"" | rustSplits /= 0]
     in
     [ "thrift_library("
     , "  name = \"" <> namespace <> "\","
@@ -89,11 +92,11 @@ genTargets slashVn info oncall =
     , "  py_base_module = \"" <> pyBaseModule <> "\","
     ] ++
     [ "  hs_includes = [\"" <> namespace <> "_include.hs\"]," ] ++
-    [ "  thrift_rust_options = ["
-    , "    \"serde\","
-    , "    \"skip_none_serialization\","
-    , "    \"deprecated_default_enum_min_i32\","
-    , "],"
+    [ "  thrift_rust_options = [" <> Text.intercalate ", " (
+    ["\"serde\""
+    , "\"skip_none_serialization\""
+    , "\"deprecated_default_enum_min_i32\""]
+    ++ typesRustSplits) <> "],"
     , "  thrift_cpp2_options = [" <> Text.intercalate ", " (
       "\"json\"" : typesCppSplits
       ) <> "],"
