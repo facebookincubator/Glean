@@ -33,7 +33,7 @@ newtype ThriftService p = ThriftService
 deriving instance Show (ThriftService p)
 
 instance IsThriftService ThriftService where
-  mkThriftService (HostPort h p) ThriftServiceOptions{..} = ThriftService
+  mkThriftService (HostPort h p) ThriftServiceOptions{..} = Just $ ThriftService
     { headerConfig = headerConfig
     }
     where
@@ -46,7 +46,7 @@ instance IsThriftService ThriftService where
       , headerSendTimeout = timeout
       , headerRecvTimeout = timeout
       }
-  mkThriftService _ _ = error "basic-thriftservice does not support Tier"
+  mkThriftService _ _ = Nothing
 
   thriftServiceWithDbShard t _ = t  -- shards are irrelevant if we have host/port
 
@@ -84,7 +84,7 @@ newtype ThriftService p = ThriftService
 deriving instance Show (ThriftService p)
 
 instance IsThriftService ThriftService where
-  mkThriftService (HostPort h p) ThriftServiceOptions{..} = ThriftService
+  mkThriftService (HostPort h p) ThriftServiceOptions{..} = Just $ ThriftService
     { httpConfig = httpConfig
     }
     where
@@ -95,7 +95,7 @@ instance IsThriftService ThriftService where
       , httpResponseTimeout =
           Just $ round (fromMaybe 30 processingTimeout * 1000000)
       }
-  mkThriftService _ _ = error "basic-thriftservice does not support Tier"
+  mkThriftService _ _ = Nothing
 
   thriftServiceWithDbShard t _ = t
     -- shards are irrelevant if we have host/port
