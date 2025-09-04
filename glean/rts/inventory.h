@@ -35,8 +35,8 @@ struct Predicate {
   struct Rename : SetOps {
     explicit Rename(F&& rename_fun) : rename_fun(rename_fun) {}
 
-    Id rename(Id id, Pid type) const {
-      return rename_fun(id, type);
+    Id rename(Id fact_id, Pid type) const {
+      return rename_fun(fact_id, type);
     }
 
     F rename_fun;
