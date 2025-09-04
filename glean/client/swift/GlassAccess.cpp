@@ -42,7 +42,7 @@ GlassAccess::usrToDefinition(
 folly::coro::Task<std::optional<protocol::LocationList>> GlassAccess::handleUSR(
     const std::string usr,
     const std::optional<std::string> revision,
-    std::string& msg) {
+    std::string msg) {
   // Create USRToDefinitionRequest
   ::glean::USRToDefinitionRequest request;
   request.usr() = usr;
@@ -76,7 +76,7 @@ folly::coro::Task<std::optional<protocol::LocationList>>
 GlassAccess::handleUSRHash(
     const std::string usr,
     const std::optional<std::string> revision,
-    std::string& msg) {
+    std::string msg) {
   // Hash the USR for clang USR lookup
   std::string hashedUSR = facebook::glean::clangx::hash::hash(usr);
 
@@ -137,7 +137,7 @@ protocol::LocationList GlassAccess::convertUSRSymbolDefinitionToLocations(
 template <typename T>
 folly::coro::Task<std::optional<T>> GlassAccess::runGlassMethod(
     const std::string method,
-    std::string& msg,
+    std::string msg,
     folly::Function<folly::coro::Task<T>()> f) {
   try {
     co_return std::make_optional(co_await f());

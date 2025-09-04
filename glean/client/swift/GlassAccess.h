@@ -26,17 +26,17 @@ class GlassAccess : public IGlassAccess {
   folly::coro::Task<std::optional<protocol::LocationList>> handleUSR(
       const std::string usr,
       const std::optional<std::string> revision,
-      std::string& msg);
+      std::string msg);
   folly::coro::Task<std::optional<protocol::LocationList>> handleUSRHash(
       const std::string usr,
       const std::optional<std::string> revision,
-      std::string& msg);
+      std::string msg);
   protocol::LocationList convertUSRSymbolDefinitionToLocations(
       const ::glean::USRSymbolDefinition& definition) const;
   template <typename T>
   folly::coro::Task<std::optional<T>> runGlassMethod(
       const std::string method,
-      std::string& msg,
+      std::string msg,
       folly::Function<folly::coro::Task<T>()> f);
 
   folly::coro::Task<void> warmUpConnection();
