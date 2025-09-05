@@ -12,6 +12,6 @@
 
 class GlassAccessLocal : public GlassAccess {
  public:
-  GlassAccessLocal();
+  explicit GlassAccessLocal(const std::string& root);
   ~GlassAccessLocal() override = default;
 };

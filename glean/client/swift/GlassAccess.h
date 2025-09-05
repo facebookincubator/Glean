@@ -15,7 +15,7 @@
 
 class GlassAccess : public IGlassAccess {
  public:
-  GlassAccess();
+  explicit GlassAccess(const std::string& root);
   ~GlassAccess() override = default;
 
   folly::coro::Task<std::optional<protocol::LocationList>> usrToDefinition(

@@ -9,6 +9,7 @@
 #include <glog/logging.h>
 #include <csignal>
 #include <memory>
+#include <optional>
 #include "folly/Singleton.h"
 #include "folly/init/Init.h"
 #include "glean/client/swift/GlassAccessRemote.h"
@@ -44,8 +45,17 @@ int main(int argc, char** argv) {
 
   std::signal(SIGINT, signalHandler);
 
+  // Get the Mercurial repository root
+  auto hgRoot = glean::swift::getHgRoot();
+  if (!hgRoot) {
+    std::cerr
+        << "Error: Could not find repository root, is your working directory in fbsource?"
+        << std::endl;
+    return 1;
+  }
+
   // Create GlassAccessRemote and set it in JsonServer
-  auto glassAccess = std::make_unique<GlassAccessRemote>();
+  auto glassAccess = std::make_unique<GlassAccessRemote>(*hgRoot);
   jsonServerSingleton.try_get()->setGlassAccess(std::move(glassAccess));
 
   // Start the server

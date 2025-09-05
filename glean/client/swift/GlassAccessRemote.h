@@ -12,6 +12,6 @@
 
 class GlassAccessRemote : public GlassAccess {
  public:
-  GlassAccessRemote();
+  explicit GlassAccessRemote(const std::string& root);
   ~GlassAccessRemote() override = default;
 };

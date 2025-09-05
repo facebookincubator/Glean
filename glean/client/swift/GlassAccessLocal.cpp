@@ -12,7 +12,8 @@
 
 using namespace facebook;
 
-GlassAccessLocal::GlassAccessLocal() {
+GlassAccessLocal::GlassAccessLocal(const std::string& root)
+    : GlassAccess(root) {
   std::string connectionTier = "glean.glass";
   client = facebook::corp2prod::client::getClientFactory()
                .getClientUnique<apache::thrift::Client<::glean::GlassService>>(

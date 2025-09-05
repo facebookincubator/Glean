@@ -8,6 +8,9 @@
 
 #pragma once
 
+#include <optional>
+#include <string>
+
 namespace glean {
 namespace swift {
 
@@ -27,6 +30,8 @@ bool checkAndPrintHelp(int argc, char** argv, const char* clientType);
  * @return true if --test-run argument was found, false otherwise
  */
 bool checkAndRemoveTestRun(int& argc, char** argv);
+
+std::optional<std::string> getHgRoot();
 
 } // namespace swift
 } // namespace glean

@@ -55,5 +55,35 @@ bool checkAndRemoveTestRun(int& argc, char** argv) {
   return found;
 }
 
+std::optional<std::string> getHgRoot() {
+  // Execute 'hg root' command to get the mercurial repository root
+  FILE* pipe = popen("hg root", "r");
+  if (!pipe) {
+    return std::nullopt;
+  }
+
+  char buffer[1024];
+  std::string result;
+  while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
+    result += buffer;
+  }
+
+  int status = pclose(pipe);
+  if (status != 0) {
+    return std::nullopt;
+  }
+
+  // Remove trailing newline if present
+  if (!result.empty() && result.back() == '\n') {
+    result.pop_back();
+  }
+
+  if (result.empty()) {
+    return std::nullopt;
+  }
+
+  return result;
+}
+
 } // namespace swift
 } // namespace glean

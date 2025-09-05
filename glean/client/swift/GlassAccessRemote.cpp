@@ -12,7 +12,8 @@
 
 using namespace facebook;
 
-GlassAccessRemote::GlassAccessRemote() {
+GlassAccessRemote::GlassAccessRemote(const std::string& root)
+    : GlassAccess(root) {
   auto params = facebook::servicerouter::ClientParams().setProcessingTimeoutMs(
       std::chrono::milliseconds(10000));
 

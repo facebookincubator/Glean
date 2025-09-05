@@ -21,7 +21,8 @@ using apache::thrift::RpcOptions;
 
 const auto GlassTimeoutMs = 900;
 
-GlassAccess::GlassAccess() : client(nullptr), hgRoot_(getHgRoot()) {}
+GlassAccess::GlassAccess(const std::string& root)
+    : client(nullptr), hgRoot_(root) {}
 
 folly::coro::Task<std::optional<protocol::LocationList>>
 GlassAccess::usrToDefinition(
@@ -150,37 +151,6 @@ folly::coro::Task<std::optional<T>> GlassAccess::runGlassMethod(
                << msg << "\n";
   }
   co_return {};
-}
-
-std::string GlassAccess::getHgRoot() {
-  // Execute 'hg root' command to get the mercurial repository root
-  FILE* pipe = popen("hg root", "r");
-  if (!pipe) {
-    throw std::runtime_error("Failed to execute 'hg root' command");
-  }
-
-  char buffer[1024];
-  std::string result;
-  while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
-    result += buffer;
-  }
-
-  int status = pclose(pipe);
-  if (status != 0) {
-    throw std::runtime_error(
-        "'hg root' command failed with status: " + std::to_string(status));
-  }
-
-  // Remove trailing newline if present
-  if (!result.empty() && result.back() == '\n') {
-    result.pop_back();
-  }
-
-  if (result.empty()) {
-    throw std::runtime_error("'hg root' command returned empty result");
-  }
-
-  return result;
 }
 
 folly::coro::Task<void> GlassAccess::warmUpConnection() {
