@@ -1,0 +1,63 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "init(coder:)",
+      "language": 48,
+      "entity": {
+        "swift": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)initWithCoder:"
+              },
+              "location": {
+                "key": {
+                  "file": {
+                    "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+                  },
+                  "range": {
+                    "lineBegin": 33,
+                    "columnBegin": 12,
+                    "lineEnd": 33,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "init(coder:)",
+      "language": 48,
+      "entity": {
+        "swift": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)initWithCoder:"
+              },
+              "location": {
+                "key": {
+                  "file": {
+                    "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+                  },
+                  "range": {
+                    "lineBegin": 43,
+                    "columnBegin": 12,
+                    "lineEnd": 43,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

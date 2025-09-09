@@ -1,0 +1,52 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [],
+        "symbols": [
+            {
+                "language": 20,
+                "location": {
+                    "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
+                    "range": {
+                        "columnBegin": 12,
+                        "columnEnd": 16,
+                        "lineBegin": 33,
+                        "lineEnd": 33
+                    },
+                    "repository": "test"
+                },
+                "name": "",
+                "qname": {
+                    "container": "",
+                    "localName": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)initWithCoder:"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28cs%29CIBCanvasBallView%28im%29initWithCoder:"
+            },
+            {
+                "language": 20,
+                "location": {
+                    "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
+                    "range": {
+                        "columnBegin": 12,
+                        "columnEnd": 16,
+                        "lineBegin": 43,
+                        "lineEnd": 43
+                    },
+                    "repository": "test"
+                },
+                "name": "",
+                "qname": {
+                    "container": "",
+                    "localName": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)initWithCoder:"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28cs%29CIBCanvasView%28im%29initWithCoder:"
+            }
+        ]
+    }
+]

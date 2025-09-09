@@ -106,6 +106,9 @@ predicate SearchByNameKindAndLanguage:
     ) | (
       Rust = Language;
       RustSearchByNameAndKind { NameStr, Kinds, Entity }
+    ) | (
+      Swift = Language;
+      SwiftSearchByNameAndKind { NameStr, Kinds, Entity }
     )
 
 # Kind-optimized search, case insensitive.
@@ -291,12 +294,26 @@ predicate RustSearchByNameAndKind:
     entity: code.Entity,
   }
   { NameStr, Kinds, Entity } where
-  scip.SearchByNameKind { NameStr, Ks, { rust = { defn = D } } };
+  scip.SearchByNameKindLanguage { NameStr, Ks, Rust, { rust = { defn = D } } };
   Kinds =
     if (Ks = { just = K }) then
       (codemarkup.lsif.LsifKindToKind { K, Kind }; { just = Kind })
     else nothing;
   { scip = { rust = { defn = D } } } = Entity
+
+predicate SwiftSearchByNameAndKind:
+  {
+    name: string,
+    kind: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity,
+  }
+  { NameStr, Kinds, Entity } where
+  scip.SearchByNameKindLanguage { NameStr, Ks, Swift, { swift = { defn = D } } };
+  Kinds =
+    if (Ks = { just = K }) then
+      (codemarkup.lsif.LsifKindToKind { K, Kind }; { just = Kind })
+    else nothing;
+  { scip = { swift = { defn = D } } } = Entity
 
 predicate HackSearchByNameAndKind:
   {

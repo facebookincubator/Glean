@@ -318,23 +318,25 @@ predicate EntityKind:
 predicate SearchBySymbol:
   {
     symbol : scip.Symbol,
+    language: lsif.types.LanguageId,
     entity : scip.Entity,
   }
-  { Symbol, Entity } where
+  { Symbol, Language, Entity } where
     Defn = scip.Definition { symbol = Symbol };
     { location = { file = File } } = Defn;
     scip.FileLanguage { File, Language };
     scip.TagDefinition { Language, Defn, Entity }
 
-predicate SearchByNameKind:
+predicate SearchByNameKindLanguage:
   {
     name : string,
     kind : maybe lsif.types.SymbolKind,
+    language: lsif.types.LanguageId,
     entity : scip.Entity,
   }
-  { Name, Kind, Entity } where
+  { Name, Kind, Language, Entity } where
     scip.DisplayNameSymbol { DisplayName Name, Symbol };
     Kind = ( if (scip.SymbolKind { Symbol, K }) then { just = K } else nothing );
-    scip.SearchBySymbol { Symbol, Entity }
+    scip.SearchBySymbol { Symbol, Language, Entity }
 
 }

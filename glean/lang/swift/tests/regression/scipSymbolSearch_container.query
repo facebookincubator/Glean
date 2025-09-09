@@ -1,0 +1,4 @@
+query: |
+    scip.SearchByNameKindLanguage { name = "CIBCanvasBallView" }
+perf: True
+transform: [gensort, []]

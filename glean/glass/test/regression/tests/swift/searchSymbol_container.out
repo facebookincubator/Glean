@@ -1,0 +1,30 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [],
+        "symbols": [
+            {
+                "language": 20,
+                "location": {
+                    "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 30,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "",
+                "qname": {
+                    "container": "",
+                    "localName": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28cs%29CIBCanvasBallView"
+            }
+        ]
+    }
+]
