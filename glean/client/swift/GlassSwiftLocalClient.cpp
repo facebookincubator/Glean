@@ -23,7 +23,8 @@ folly::Singleton<JsonServer> jsonServerSingleton([]() {
 
 void signalHandler(int signal) {
   if (signal == SIGINT) {
-    jsonServerSingleton.try_get()->stop();
+    // Immediately terminate the process without cleanup
+    std::_Exit(0);
   }
 }
 
