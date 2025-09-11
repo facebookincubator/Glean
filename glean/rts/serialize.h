@@ -214,10 +214,6 @@ Type typeOf<Nat>() {
   return NatTy;
 }
 template <>
-Type typeOf<Binary>() {
-  return BinaryTy;
-}
-template <>
 Type typeOf<String>() {
   return StringTy;
 }
