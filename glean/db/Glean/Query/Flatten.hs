@@ -125,16 +125,20 @@ mkStmt ty (lhshere, lhsfloat, lgen) (rhshere, rhsfloat, rgen) = do
     addStmt (FlatStatement ty (Ref (MatchBind v)) rgen)
       (lhshere <> rhshere, lhsfloat <> rhsfloat)
 
+alts :: TcPat -> [TcPat]
+alts (Ref (MatchExt (Typed _ (TcOr left right)))) = alts left <> alts right
+alts pat = [pat]
+
 flattenSeqGenerators :: TcPat -> F (Statements, Statements, Generator)
 flattenSeqGenerators (Ref (MatchExt (Typed ty match))) = case match of
   TcOr left right -> do
-    (lhere, lfloat, lgen) <- flattenSeqGenerators left
-    (rhere, rfloat, rgen) <- flattenSeqGenerators right
+    rs <- mapM flattenSeqGenerators $ alts left <> alts right
     v <- Ref . MatchVar <$> fresh ty
     return (
-      oneStmt $ disjunction [
-        mkGroup [lhere] [lfloat `thenStmt` FlatStatement ty v lgen],
-        mkGroup [rhere] [rfloat `thenStmt` FlatStatement ty v rgen] ],
+      oneStmt $ disjunction
+        [ mkGroup [ord] [float `thenStmt` FlatStatement ty v gen]
+        | (ord, float, gen) <- rs
+        ],
       mempty,
       TermGenerator v
       )
@@ -447,7 +451,7 @@ flattenStmts (Statements s) = map Floating (reverse s)
 
 disjunction :: [FlatStatementGroup] -> FlatStatement
 disjunction [FlatStatementGroup [x]] = unOrdered x
-disjunction groups = FlatDisjunction groups
+disjunction groups = flatDisjunction groups
 
 mkGroup :: [Statements] -> [Statements] -> FlatStatementGroup
 mkGroup ords floats =
