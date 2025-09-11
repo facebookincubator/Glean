@@ -52,8 +52,9 @@ predicate QueryToScopeCase :
     # struct/record scope
     ) | (
       QueryToQNameCase { Query, Case, QName };
+      Access = (Public | Protected | Private) : cxx1.Access; # avoid wild card bind error
       { recordWithAccess = { record = QName, # this is tricky as its a subset of all qnames
-          access = Public | Protected | Private } } # avoid wild card bind error
+          access = Access } }
     ) = Scope;
 
 # compile to generic scoped qname _to slot into cxx1.Scope { recordWithAccess _ } only
