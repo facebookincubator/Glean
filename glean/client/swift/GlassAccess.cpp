@@ -12,7 +12,6 @@
 #include <folly/coro/BlockingWait.h>
 #include <glog/logging.h>
 #include <memory>
-#include <stdexcept>
 #include "glean/client/swift/Clock.h"
 #include "glean/client/swift/hash.h"
 
@@ -125,9 +124,9 @@ protocol::LocationList GlassAccess::convertUSRSymbolDefinitionToLocations(
       static_cast<int>(range.columnEnd().value()));
   protocol::Range protocolRange(start, end);
 
-  // Create URI from repository and filepath using URI escaping
+  // Create URI from repository and filepath (returning plain path)
   std::string filepath = hgRoot_ + "/" + gleanLocation.filepath().value();
-  std::string uri = "file://" + folly::uriEscape<std::string>(filepath);
+  std::string uri = "file://" + filepath;
   protocol::Location location(uri, protocolRange);
 
   locations.push_back(location);
