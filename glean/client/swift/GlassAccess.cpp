@@ -116,12 +116,14 @@ protocol::LocationList GlassAccess::convertUSRSymbolDefinitionToLocations(
   // Access the range fields directly
   const auto& range = gleanLocation.range().value();
 
+  // Glass returns 1-based line/column numbers, but LSP requires 0-based
+  // numbering, so we subtract 1 from each value
   protocol::Position start(
-      static_cast<int>(range.lineBegin().value()),
-      static_cast<int>(range.columnBegin().value()));
+      static_cast<int>(range.lineBegin().value()) - 1,
+      static_cast<int>(range.columnBegin().value()) - 1);
   protocol::Position end(
-      static_cast<int>(range.lineEnd().value()),
-      static_cast<int>(range.columnEnd().value()));
+      static_cast<int>(range.lineEnd().value()) - 1,
+      static_cast<int>(range.columnEnd().value()) - 1);
   protocol::Range protocolRange(start, end);
 
   // Create URI from repository and filepath (returning plain path)
