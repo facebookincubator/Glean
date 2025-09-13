@@ -179,8 +179,8 @@ predicate CxxFileEntityXMapFixedXRefLocations:
     { spans = PackedSpans, spellings = PackedSpellings } = From;
     Spans = prim.unpackByteSpans PackedSpans;
     Spellings = prim.unpackByteSpans PackedSpellings;
-    Span = (Spans | Spellings)[..];
-    { Location, { span = Span } } = XRef;
+    AllSpans = Spans | Spellings;
+    { Location, { span = AllSpans[..] } } = XRef;
 
 predicate CxxFileEntitySpellingXRefLocations:
   {

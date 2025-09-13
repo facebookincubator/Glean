@@ -248,7 +248,7 @@ instance Apply FlatStatement where
       [] -> case stmtss' of
         [] -> return (FlatDisjunction [])
         (ss : _) -> return (grouping ss)
-      some -> return (FlatDisjunction some)
+      some -> return (flatDisjunction some)
   apply (FlatConditional cond then_ else_) = do
     -- like disjunctions, assumptions arising from the conditional statements
     -- are not true outside of it. However, those arising from the condition
@@ -731,7 +731,7 @@ filterStmt stmt = case stmt of
   FlatNegation stmts -> FlatNegation <$> filterGroupEnclosed stmts
   FlatDisjunction [stmts] -> grouping <$> filterGroup stmts
   FlatDisjunction stmtss ->
-    FlatDisjunction <$> mapM filterGroupEnclosed stmtss
+    flatDisjunction <$> mapM filterGroupEnclosed stmtss
   FlatConditional cond then_ else_ -> do
     (cond', then') <- encloseSeen $ do
       cond' <- filterGroup cond
