@@ -346,12 +346,6 @@
     "key": { "symbol": { "key": "c:objc(cs)NSCoder" }, "name": { "key": "" } }
   },
   {
-    "key": {
-      "symbol": { "key": "c:objc(cs)NSObject(im)init" },
-      "name": { "key": "" }
-    }
-  },
-  {
     "key": { "symbol": { "key": "c:objc(cs)UIColor" }, "name": { "key": "" } }
   },
   {
@@ -637,6 +631,12 @@
   {
     "key": {
       "symbol": { "key": "c:objc(cs)UIView(im)addSubview:" },
+      "name": { "key": "" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(im)init" },
       "name": { "key": "" }
     }
   },

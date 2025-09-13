@@ -1924,24 +1924,6 @@
   },
   {
     "key": {
-      "symbol": { "key": "c:objc(cs)NSObject(im)init" },
-      "location": {
-        "key": {
-          "file": {
-            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
-          },
-          "range": {
-            "lineBegin": 23,
-            "columnBegin": 15,
-            "lineEnd": 23,
-            "columnEnd": 18
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
       "symbol": { "key": "c:objc(cs)UIColor" },
       "location": {
         "key": {
@@ -4035,6 +4017,24 @@
             "columnBegin": 5,
             "lineEnd": 83,
             "columnEnd": 14
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(im)init" },
+      "location": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 23,
+            "columnBegin": 15,
+            "lineEnd": 23,
+            "columnEnd": 18
           }
         }
       }
