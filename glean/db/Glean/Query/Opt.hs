@@ -162,7 +162,7 @@ optimiseQuery :: FlatQuery -> U FlatQuery
 optimiseQuery query@(FlatQuery key maybeVal stmts) = do
   -- determine variables visible outside of any nested choice:
   modify $ \s -> s { optCurrentScope = queryScope query }
-  stmts' <- optStmts stmts
+  stmts' <- filterGroup =<< optStmts stmts
   FlatQuery
     <$> apply key
     <*> mapM apply maybeVal
@@ -275,11 +275,10 @@ optStmts :: FlatStatementGroup -> U FlatStatementGroup
 optStmts (FlatStatementGroup ord) = do
   notFalse <- and <$> mapM unifyOrdStmt ord
   ord' <- concatMap (mapM expandStmt) <$> mapM (mapM apply) ord
-  ord'' <- filterOrdStmts ord'
   -- unify may fail, but apply may also leave behind a false statement:
-  if notFalse && not (any isFalseOrdStmt ord'')
-    then return (mkStatementGroup ord'')
-    else return (mkStatementGroup (Ordered falseStmt : ord'' ))
+  if notFalse && not (any isFalseOrdStmt ord')
+    then return (mkStatementGroup ord')
+    else return (mkStatementGroup (Ordered falseStmt : ord' ))
 
 -- Look for the sentinel left by optStmts
 isFalseGroups :: FlatStatementGroup -> Bool
