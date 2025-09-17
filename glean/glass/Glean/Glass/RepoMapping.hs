@@ -24,10 +24,13 @@ import Glean.Glass.Base
   ( GleanDBName(..)
   , RepoMapping(..)
   )
-import Glean.Glass.Types ( RepoName(..) )
+import Glean.Glass.Types
+  ( RepoName(..)
+  , RequestOptions(..)
+  )
 
-getRepoMapping :: IO RepoMapping
-getRepoMapping = return AutoRepoMapping
+getRepoMapping :: RequestOptions -> IO RepoMapping
+getRepoMapping _ = return AutoRepoMapping
 
 fixedRepoMapping :: RepoMapping
 fixedRepoMapping = AutoRepoMapping
