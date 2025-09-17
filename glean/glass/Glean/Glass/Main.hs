@@ -16,6 +16,7 @@ module Glean.Glass.Main
 
 import Control.Concurrent (myThreadId)
 import Control.Trace (traceMsg, (>$<))
+import Data.Default (def)
 import Data.Hashable (hash)
 import Data.List (stripPrefix)
 import Facebook.Service ( runFacebookService' )
@@ -57,7 +58,7 @@ import Glean.Glass.GlassService.Service ( GlassServiceCommand(..) )
 
 import Glean.Glass.Types
   ( GlassException (GlassException, glassException_reasons),
-    GlassExceptionReason (..))
+    GlassExceptionReason (..), RequestOptions)
 import Glean.Glass.Env (Env'(tracer), Env)
 import Glean.Glass.Tracer ( isTracingEnabled )
 import Glean.Glass.Handler.Cxx as Cxx
@@ -103,7 +104,7 @@ withEnv Glass.Config{..} gleanDB f =
   withLatestRepos backend scm (Just logger)
     (if isRemote gleanService then listDatabasesRetry else Nothing) refreshFreq
     $ \latestGleanRepos -> do
-      repoMapping <- getRepoMapping
+      repoMapping <- getRepoMapping def
       f Glass.Env
         { gleanBackend = Some backend
         , gleanDB = gleanDB
@@ -146,9 +147,9 @@ assignHeaders _ (Left e) | isRevisionNotAvailableException e =
 assignHeaders _ _ = []
 
 -- | Perform an operation with the latest RepoMapping
-withCurrentRepoMapping :: Glass.Env -> (Glass.Env -> IO a) -> IO a
-withCurrentRepoMapping env0 fn = do
-  current <- getRepoMapping
+withCurrentRepoMapping :: RequestOptions -> Glass.Env -> (Glass.Env -> IO a) -> IO a
+withCurrentRepoMapping opts env0 fn = do
+  current <- getRepoMapping opts
   fn (env0 { Glass.repoMapping = current })
 
 withRequestTracing :: Env' GlassTraceWithId -> (Env -> IO b) -> IO b
@@ -167,6 +168,22 @@ withRequestTracing env k = do
       Just n | [(i, "")] <- reads n -> i
       _ -> hash tid -- should be unreachable
 
+getOptsFromCommand :: GlassServiceCommand r -> RequestOptions
+getOptsFromCommand cmd = case cmd of
+  SuperFacebookService _ -> def
+  DocumentSymbolListX _ opts -> opts
+  DocumentSymbolIndex _ opts -> opts
+  FindReferenceRanges _ opts -> opts
+  DescribeSymbol _ opts -> opts
+  SymbolLocation _ opts -> opts
+  ResolveSymbols _ opts -> opts
+  SearchSymbol _ opts -> opts
+  SearchRelated _ opts _ -> opts
+  SearchRelatedNeighborhood _ opts _ -> opts
+  FileIncludeLocations _ opts -> opts
+  ClangUSRToDefinition _ opts -> opts
+  UsrToDefinition _ opts -> opts
+
 -- Actual glass service handler, types from glass.thrift
 -- TODO: snapshot the env, rather than passing in the mutable fields
 --
@@ -174,7 +191,7 @@ glassHandler :: Glass.Env' GlassTraceWithId -> GlassServiceCommand r -> IO r
 glassHandler env0 cmd =
   Glass.withAllocationLimit env0 $
   withRequestTracing env0 $ \env1 ->
-  withCurrentRepoMapping env1 $ \env ->
+  withCurrentRepoMapping (getOptsFromCommand cmd) env1 $ \env ->
   tracing env $
   withTimeout $ case cmd of
   SuperFacebookService r -> fb303Handler (Glass.fb303 env) r

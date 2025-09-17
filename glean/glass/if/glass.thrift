@@ -165,6 +165,7 @@ struct RequestOptions {
 
 struct FeatureFlags {
   4: bool amend_lines_on_revision_mismatch = false;
+  5: bool use_pyrefly_indexer_for_instagram_server = false;
 }
 
 // List symbols in a file. Symbols are spans of one or more tokens Glean has
