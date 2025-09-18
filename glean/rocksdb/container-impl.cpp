@@ -187,15 +187,14 @@ ContainerImpl::ContainerImpl(
       if (auto family = Family::family(name)) {
         rocksdb::ColumnFamilyOptions opts(options);
         family->options(opts);
-        existing.push_back(rocksdb::ColumnFamilyDescriptor(name, opts));
+        existing.emplace_back(name, opts);
         ptrs.push_back(&families[family->index]);
       } else {
         rts::error("Unknown column family '{}'", name);
       }
     }
   }
-  existing.push_back(rocksdb::ColumnFamilyDescriptor(
-      rocksdb::kDefaultColumnFamilyName, options));
+  existing.emplace_back(rocksdb::kDefaultColumnFamilyName, options);
   ptrs.push_back(nullptr);
 
   std::vector<rocksdb::ColumnFamilyHandle*> hs;
