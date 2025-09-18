@@ -417,7 +417,8 @@ predicate IndexFailureX :
   {
     lit: string |
     sequence: [ArgumentValue] |
-    mapping: [ArgumentMapping]
+    mapping: [ArgumentMapping] |
+    none
   }
 
 predicate CallArgument: {
