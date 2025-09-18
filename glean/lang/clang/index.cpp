@@ -441,7 +441,7 @@ struct SourceIndexer {
         } else if (
             !FLAGS_clang_resource_dir.empty() && args[i] == "-resource-dir") {
           ++i; // replace -resource-dir flag
-          stripped.push_back("-resource-dir");
+          stripped.emplace_back("-resource-dir");
           stripped.push_back(FLAGS_clang_resource_dir);
         } else if (boost::starts_with(args[i], "--cc=")) {
           // skip this flag - llvm complains about it
