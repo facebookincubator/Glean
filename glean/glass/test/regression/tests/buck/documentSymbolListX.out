@@ -47,6 +47,41 @@
                     },
                     {
                         "attribute": {
+                            "aString": "baz"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "."
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 34,
+                    "lineEnd": 40
+                },
+                "sym": "test/buck/t/buck_project/PATH/./baz"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "foo"
                         },
                         "key": "symbolName"
@@ -672,6 +707,51 @@
                     "columnEnd": 30,
                     "lineBegin": 25,
                     "lineEnd": 25
+                },
+                "sym": "test/buck/t/buck_project/PATH/b/bar",
+                "target": {
+                    "filepath": "buck_project/b/TEST_TARGETS",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 11,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "bar"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "b"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 30,
+                    "lineBegin": 38,
+                    "lineEnd": 38
                 },
                 "sym": "test/buck/t/buck_project/PATH/b/bar",
                 "target": {

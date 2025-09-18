@@ -3,7 +3,7 @@
     {
         "referenced_file_digests": {},
         "revision": "testhash",
-        "size": 16,
+        "size": 18,
         "symbols": {
             "13": [
                 {
@@ -417,6 +417,66 @@
                             "columnEnd": 2,
                             "lineBegin": 1,
                             "lineEnd": 1
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "34": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "baz"
+                        },
+                        "symbolParent": {
+                            "aString": "."
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 34,
+                        "lineEnd": 40
+                    },
+                    "sym": "test/buck/t/buck_project/PATH/./baz"
+                }
+            ],
+            "38": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "bar"
+                        },
+                        "symbolParent": {
+                            "aString": "b"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 30,
+                        "lineBegin": 38,
+                        "lineEnd": 38
+                    },
+                    "sym": "test/buck/t/buck_project/PATH/b/bar",
+                    "target": {
+                        "filepath": "buck_project/b/TEST_TARGETS",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 11,
+                            "lineEnd": 13
                         },
                         "repository": "test"
                     }

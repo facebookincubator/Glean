@@ -12,6 +12,16 @@
             "repository": "test"
         },
         {
+            "filepath": "buck_project/TEST_TARGETS",
+            "range": {
+                "columnBegin": 9,
+                "columnEnd": 30,
+                "lineBegin": 38,
+                "lineEnd": 38
+            },
+            "repository": "test"
+        },
+        {
             "filepath": "buck_project/b/TEST_TARGETS",
             "range": {
                 "columnBegin": 9,
