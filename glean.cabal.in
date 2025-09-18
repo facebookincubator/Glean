@@ -973,6 +973,7 @@ executable gen-schema
         Glean.Schema.Gen.Rust,
         Glean.Schema.Gen.Thrift
     build-depends:
+        glean:angle,
         glean:core,
         glean:db,
         glean:config,
