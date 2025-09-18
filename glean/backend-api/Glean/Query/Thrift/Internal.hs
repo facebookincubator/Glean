@@ -16,6 +16,7 @@ module Glean.Query.Thrift.Internal
   ( -- * Types
     Query(..)
     -- * Query combinators
+  , query
   , angle
   , angleData
   , keys
@@ -40,7 +41,6 @@ import Control.Monad
 import Control.Monad.IO.Class
 import Data.Default
 import Data.Dynamic
-import Data.Hashable
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
 import Data.IORef
@@ -55,8 +55,33 @@ import Text.Printf
 
 import Util.Log
 
+import Glean.Query.Angle
 import Glean.Typed as Typed
 import Glean.Types as Thrift
+import Glean.Backend.Types (Query(..))
+
+-- | Build a query. It can returns facts of a predicate:
+--
+-- >    query $ predicate @Pp.Define (field @"macro" "NULL" end)
+--
+-- Or arbitrary values:
+--
+-- >    query $ var $ \n ->
+-- >      n `where_` [
+-- >        stmt $ predicate @Hack.MethodDeclaration $
+-- >          rec $
+-- >            field @"name" "foo" $
+-- >            field @"container"
+-- >              (rec $
+-- >                 field @"class_"
+-- >                    (rec (field @"name" n end))
+-- >                 end)
+-- >      ]
+query :: (Type t) => Angle t -> Query t
+query = angleData . display . sig
+  -- adding a type signature ensures that our type matches the type
+  -- Glean infers. Otherwise these could diverge, leading to
+  -- deserialization errors or just wrong data.
 
 type ResultDecoder a =
      IntMap Thrift.Fact               -- ^ serialized nested facts
@@ -64,20 +89,6 @@ type ResultDecoder a =
   -> IdOf a
   -> Thrift.Fact
   -> IO a
-
--- | A query that can be performed by 'runQuery'. Build using 'query'.
-data Query a = Type a => Query
-  { querySpec :: UserQuery
-  }
-
-instance Show (Query a) where
-  show (Query spec) = show spec
-
-instance Eq (Query a) where
-  Query spec1 == Query spec2 = spec1 == spec2
-
-instance Hashable (Query a) where
-  hashWithSalt salt (Query spec) = hashWithSalt salt spec
 
 decodeResults :: UserQueryEncodedResults -> ResultDecoder a -> IO [a]
 decodeResults results decoder =
