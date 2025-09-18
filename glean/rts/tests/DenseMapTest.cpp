@@ -69,7 +69,7 @@ struct Arbitrary<dense_pid_int> {
           ids.reserve(xs.size());
           int k = 1;
           for (auto x : xs) {
-            ids.push_back({Pid::lowest() + (x % 4096), k});
+            ids.emplace_back(Pid::lowest() + (x % 4096), k);
             ++k;
           }
           return dense_pid_int{std::move(ids)};

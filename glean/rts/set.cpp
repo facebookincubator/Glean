@@ -21,7 +21,7 @@ namespace glean {
 namespace rts {
 
 SetOps::SetToken SetOps::newSet() {
-  sets.emplace_back(BytestringSet());
+  sets.emplace_back();
   set_sizes.emplace_back(0);
   return sets.size() - 1;
 }
@@ -54,7 +54,7 @@ void SetOps::freeSet(SetOps::SetToken token) {
 }
 
 SetOps::SetToken SetOps::newWordSet() {
-  wordsets.emplace_back(WordSet());
+  wordsets.emplace_back();
   return wordsets.size() - 1;
 }
 

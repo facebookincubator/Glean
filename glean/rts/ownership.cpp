@@ -481,7 +481,7 @@ std::unique_ptr<ComputedOwnership> computeOwnership(
   // TODO: use a more suitable representation for the sparse ownership
   std::vector<std::pair<uint64_t, Uset*>> order;
   for (auto& pr : flattened.sparse) {
-    order.push_back(pr);
+    order.emplace_back(pr);
   }
   std::sort(order.begin(), order.end());
   Id prev = Id::lowest() - 1;

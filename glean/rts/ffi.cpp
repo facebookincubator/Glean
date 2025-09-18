@@ -835,8 +835,8 @@ const char* glean_subroutine_new(
     std::vector<std::string> literals;
     literals.reserve(literal_count);
     for (size_t i = 0; i < literal_count; ++i) {
-      literals.push_back(std::string(
-          static_cast<const char*>(literal_ptrs[i]), literal_sizes[i]));
+      literals.emplace_back(
+          static_cast<const char*>(literal_ptrs[i]), literal_sizes[i]);
     }
     *sub = new SharedSubroutine{std::make_shared<Subroutine>(Subroutine{
         std::vector<uint64_t>(code, code + code_size),
