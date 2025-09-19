@@ -21,6 +21,7 @@ module Glean.Query.Flatten.Types
   , Ordered(..)
   , unOrdered
   , grouping
+  , flatDisjunction
   , mkStatementGroup
   , singletonGroup
   , boundVars
@@ -128,6 +129,18 @@ data FlatStatement
 grouping :: FlatStatementGroup -> FlatStatement
 grouping (FlatStatementGroup [one]) = unOrdered one
 grouping group = FlatDisjunction [group]
+
+-- | Flatten nested FlatDisjunction
+flatDisjunction :: [FlatStatementGroup] -> FlatStatement
+flatDisjunction groups =
+  FlatDisjunction
+    [ group
+    | g <- groups
+    , group <- case g of
+        FlatStatementGroup [Ordered (FlatDisjunction gs)] -> gs
+        FlatStatementGroup [Floating (FlatDisjunction gs)] -> gs
+        _ -> [g]
+    ]
 
 -- | Smart constructor for a FlatStatementGroup, as with "grouping"
 -- this flattens unnecessary nesting.
