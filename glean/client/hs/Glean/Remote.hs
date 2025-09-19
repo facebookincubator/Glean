@@ -71,8 +71,6 @@ import Glean.DefaultConfigs
 import Glean.GleanService.Client (GleanService)
 import qualified Glean.GleanService.Client as GleanService
 import qualified Glean.Types as Thrift
-import Glean.Query.Thrift
-import Glean.Query.Thrift.Internal
 import Glean.Util.ConfigProvider
 import Glean.Util.RetryChannelException
 import Glean.Util.Service

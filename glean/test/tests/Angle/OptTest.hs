@@ -145,7 +145,7 @@ optTest = dbTestCase $ \env repo -> do
   -- Test that unification works properly with literal fact IDs
   result : _ <- runQuery_ env repo (allFacts :: Query Glean.Test.StringPair)
   let fid = factId (getId result)
-  results <- runQuery_ env repo $ Angle.query $ fid `where_` [ fid .= fid ]
+  results <- runQuery_ env repo $ query $ fid `where_` [ fid .= fid ]
   assertEqual "unify fact Id" 1 (length results)
 
   -- Test that trivially false negations fail the entire query

@@ -13,6 +13,7 @@ module Glean.Backend.Types
     Backend(..)
   , StackedDbOpts(..)
   , LogDerivationResult
+  , Query(..)
 
     -- * Operations
   , SchemaPredicates
@@ -66,7 +67,6 @@ import System.IO.Unsafe
 import Util.Control.Exception
 import Util.Time (DiffTimePoints)
 
-import Glean.Query.Thrift.Internal
 import Glean.Typed
 import qualified Glean.Types as Thrift
 import Glean.Util.Some
@@ -324,6 +324,24 @@ untilDone io = loop
         threadDelay (truncate (n * 1000000))
         loop
 
+-- -----------------------------------------------------------------------------
+-- Query type
+
+-- This is here because the Haxl types below depend on it.
+
+-- | A query that can be performed by 'runQuery'. Build using 'query'.
+data Query a = Type a => Query
+  { querySpec :: UserQuery
+  }
+
+instance Show (Query a) where
+  show (Query spec) = show spec
+
+instance Eq (Query a) where
+  Query spec1 == Query spec2 = spec1 == spec2
+
+instance Hashable (Query a) where
+  hashWithSalt salt (Query spec) = hashWithSalt salt spec
 
 -- -----------------------------------------------------------------------------
 -- Haxl
@@ -449,3 +467,4 @@ dbShardWord Thrift.Repo{..} =
        -- SR doesn't like shards >= 0x8000000000000000
   where
   repo = Text.encodeUtf8 repo_name <> "/" <> Text.encodeUtf8 repo_hash
+

@@ -33,7 +33,6 @@ import Data.Typeable
 import Haxl.Core hiding (Env)
 
 import Glean.Backend.Types
-import Glean.Query.Thrift
 import Glean.Types
 import Glean.Typed as Typed
 
