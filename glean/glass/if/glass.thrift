@@ -107,6 +107,7 @@ struct AttributeOptions {
   9: optional PackageName package_name;
   10: bool use_binary_for_default_view = false; // deprecated, use use_customized_parameters
   11: bool use_customized_parameters = false;
+  12: bool fetch_memory = false;
 }
 
 typedef string ServiceID (hs.newtype)
