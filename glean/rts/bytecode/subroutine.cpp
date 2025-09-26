@@ -383,8 +383,9 @@ void Subroutine::Activation::put(binary::Output& out) const {
   serialize::put(out, sub.code, serialize::AsBytes{});
   serialize::put(out, (uint64_t)(pc - sub.code.data()));
   serialize::put(out, sub.literals);
-  const folly::Range<const uint64_t*> locals{frame() + sub.inputs, sub.locals};
-  serialize::put(out, locals);
+  const folly::Range<const uint64_t*> localValues{
+      frame() + sub.inputs, sub.locals};
+  serialize::put(out, localValues);
   serialize::put(out, sub.inputs);
   const folly::Range<const binary::Output*> outputs{
       reinterpret_cast<const binary::Output*>(this + 1), sub.outputs};
