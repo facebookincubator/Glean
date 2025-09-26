@@ -18,6 +18,7 @@ module Glean.Query.Thrift
   , runQueryEach
   , runQueryEachBatch
     -- * Query combinators
+  , query
   , angle
   , angleData
   , keys

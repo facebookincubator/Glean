@@ -52,13 +52,13 @@ main = withUnitTest $ withDbTests $ \dbTestCase -> testRunner $ TestList
 
 newOldTest :: (forall a . Query a -> Query a) -> Test
 newOldTest modify = TestCase $ withStackedTestDB [] $ \env repo -> do
-  results <- runQuery_ env repo $ modify $ keys $ Angle.query $
+  results <- runQuery_ env repo $ modify $ keys $ query $
     new $ predicate @Cxx.Name wild
   assertEqual "angle - new facts"
     [ "abcd", "allin", "anywhere", "barbie", "blob" ]
     results
 
-  results <- runQuery_ env repo $ modify $ keys $ Angle.query $
+  results <- runQuery_ env repo $ modify $ keys $ query $
     old $ predicate @Cxx.Name wild
   assertEqual "angle - old facts"
     [ "abba", "anonymous", "azimuth", "blubber", "book", "foo" ]
@@ -66,9 +66,9 @@ newOldTest modify = TestCase $ withStackedTestDB [] $ \env repo -> do
 
 warnDiagTest :: (WithDB () -> Test) -> Test
 warnDiagTest dbTestCase = dbTestCase $ \env repo -> do
-  let (Query q1) = dbgPredHasFacts $ Angle.query $
+  let (Query q1) = dbgPredHasFacts $ query $
         predicate @Glean.Test.EmptyPred wild
-      (Query q2) = Angle.query $ predicate @Cxx.Name wild
+      (Query q2) = query $ predicate @Cxx.Name wild
 
   r <- userQuery env repo q1
   assertEqual "predicate has no facts" 1 $ length $ getWarns r
@@ -137,7 +137,7 @@ scopingTest dbTestCase = dbTestCase $ \env repo -> do
     Left e@BadQuery{} -> "type error" `isInfixOf` show e
     _ -> False
 
-  r <- runQuery_ env repo $ Angle.query $
+  r <- runQuery_ env repo $ query $
       predicate @Glean.Test.NothingTest wild
   print (r :: [Glean.Test.NothingTest])
   assertEqual "angle - nothingTest" 1 (length r)
@@ -424,7 +424,7 @@ angleQueryOptions dbTestCase = dbTestCase $ \env repo -> do
 limitTest :: (WithDB () -> Test) -> Test
 limitTest dbTestCase = dbTestCase $ \env repo -> do
   (results, truncated) <- runQuery env repo $ limitBytes 30 $ recursive $
-    Angle.query $ predicate @Glean.Test.Edge wild
+    query $ predicate @Glean.Test.Edge wild
   -- each Edge will be
   --   about 12 bytes for the Edge (8 byte Id + 2 refs @ 2 bytes each)
   --   about 11 bytes for each Node (8 byte Id + 3 byte string)
@@ -434,12 +434,12 @@ limitTest dbTestCase = dbTestCase $ \env repo -> do
   assertBool "limitBytes" (length results == 1 && truncated)
 
   (results, truncated) <- runQuery env repo $ limitBytes 40 $ recursive $
-    Angle.query $ predicate @Glean.Test.Edge wild
+    query $ predicate @Glean.Test.Edge wild
   assertBool "limitBytes" (length results == 2 && truncated)
 
 justCheckTest :: (WithDB () -> Test) -> Test
 justCheckTest dbTestCase = dbTestCase $ \env repo -> do
-  results <- runQuery_ env repo $ justCheck $ Angle.query $
+  results <- runQuery_ env repo $ justCheck $ query $
     predicate @Cxx.Name wild
   assertEqual "just check" 0 (length results)
 

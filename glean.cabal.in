@@ -319,7 +319,7 @@ library if-index-hs
 
 library if-internal-hs
     import: fb-haskell, fb-cpp, deps
-    visibility: public
+    visibility: private
     hs-source-dirs:
         glean/if/internal/gen-hs2
     exposed-modules:
@@ -445,6 +445,28 @@ library util
         primitive,
         network
 
+-- Angle AST and parser, schema name resolution
+library angle
+    import: fb-haskell, fb-cpp, deps, hsc2hs-cpp
+    visibility: private
+    hs-source-dirs: glean/angle
+    default-extensions: CPP
+    hsc2hs-options: --cflag=-DOSS=1
+    build-tool-depends: alex:alex, happy:happy
+    exposed-modules:
+        Glean.Angle.Hash
+        Glean.Angle.Lexer
+        Glean.Angle.Parser
+        Glean.Angle.Types
+        Glean.Display
+        Glean.Schema.Resolve
+        Glean.Schema.Evolve
+        Glean.Schema.Types
+        Glean.Schema.Util
+    build-depends:
+        glean:if-glean-hs,
+
+-- Haskell interface to glean:rts; storage and bytecode execution
 library core
     import: fb-haskell, fb-cpp, deps, hsc2hs-cpp
     visibility: public
@@ -487,42 +509,14 @@ library core
         Glean.RTS.Bytecode.Gen.Issue
         Glean.RTS.Bytecode.Gen.Version
 
-        Glean.Typed
-        Glean.Typed.Binary
-        Glean.Typed.Build
-        Glean.Typed.BuildFact
-        Glean.Typed.Fact
-        Glean.Typed.Id
-        Glean.Typed.Predicate
-        Glean.Typed.Prim
+        -- shouldn't really be here
+        Glean.Repo.Text
 
-        Glean.Query.Thrift
-        Glean.Query.Thrift.Internal
-
-        Glean.Write.Async
-        Glean.Write.Options
-        Glean.Write.SendBatch
-        Glean.Write.SendQueue
-        Glean.Write.SendAndRebaseQueue
+        -- shared by glean:write and glean:db
         Glean.Write.Stats
 
-        Glean.Angle.Hash
-        Glean.Angle.Lexer
-        Glean.Angle.Parser
-        Glean.Angle.Types
-        Glean.Display
-        Glean.Query.Angle
-        Glean.Repo.Text
-        Glean.Schema.Resolve
-        Glean.Schema.Evolve
-        Glean.Schema.Types
-        Glean.Schema.Util
-
-        Glean.Backend.Types
-        Glean.Backend.Retry
-
-    build-tool-depends: alex:alex, happy:happy
     build-depends:
+        glean:angle,
         glean:bytecode,
         glean:config,
         glean:defaultconfigs,
@@ -531,11 +525,31 @@ library core
         glean:if-internal-hs,
         glean:rts,
         glean:stubs,
-        glean:rocksdb,
 
+-- Fact serialization/deserialization, and the query DSL
+library typed
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    hs-source-dirs: glean/typed
+    exposed-modules:
+        Glean.Query.Angle
+        Glean.Typed
+        Glean.Typed.Binary
+        Glean.Typed.Build
+        Glean.Typed.BuildFact
+        Glean.Typed.Fact
+        Glean.Typed.Id
+        Glean.Typed.Predicate
+        Glean.Typed.Prim
+    build-depends:
+        glean:angle,
+        glean:core,
+        glean:if-glean-hs,
+
+-- Database handling
 library db
     import: fb-haskell, fb-cpp, deps, hsc2hs-cpp
-    visibility: public
+    visibility: private
     hs-source-dirs: glean/db
     default-extensions: CPP
     cpp-options: -DOSS=1
@@ -607,9 +621,6 @@ library db
         Glean.Query.UserQuery
         Glean.Query.Incremental
 
-        Glean.Backend.Local
-        Glean.Backend.Logging
-        Glean.Dump
         Glean.Logger
 
     other-modules:
@@ -619,11 +630,14 @@ library db
 
     build-depends:
         split,
+        -- should NOT depend on glean:typed, glean:write
+        glean:angle,
+        -- only for StackedDbOpts:
+        glean:backend-api,
         glean:bytecode,
         glean:config,
         glean:core,
         glean:defaultconfigs,
-        glean:haxl-datasource,
         glean:util,
         glean:if-glean-hs,
         glean:if-internal-hs,
@@ -631,6 +645,63 @@ library db
         glean:stubs,
         glean:rocksdb,
 
+-- Backend API, and a few things built on top
+library backend-api
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    hs-source-dirs: glean/backend-api
+    exposed-modules:
+        Glean.Backend.Types
+        Glean.Backend.Retry
+        Glean.Write.SendBatch
+        Glean.Query.Thrift
+        Glean.Query.Thrift.Internal
+    build-depends:
+        -- does NOT depend on glean:db
+        -- ideally shouldn't depend on glean:typed or glean:core (TODO)
+        glean:if-glean-hs,
+        glean:typed,
+        glean:util,
+
+-- Client-side fact writing
+library write
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    hs-source-dirs: glean/write
+    exposed-modules:
+        Glean.Write.Async
+        Glean.Write.Options
+        Glean.Write.SendQueue
+        Glean.Write.SendAndRebaseQueue
+    build-depends:
+        -- does NOT depend on glean:db
+        glean:backend-api,
+        glean:core,
+        glean:if-glean-hs,
+        glean:stubs,
+        glean:typed,
+        glean:util,
+
+-- Instance of Backend for local DBs
+library backend-local
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    hs-source-dirs: glean/backend-local
+    exposed-modules:
+        Glean.Backend.Local
+        Glean.Backend.Logging
+        Glean.Dump
+    build-depends:
+        glean:angle,
+        glean:backend-api,
+        glean:core,
+        glean:db,
+        glean:haxl-datasource,
+        glean:if-glean-hs,
+        glean:if-internal-hs,
+        glean:util,
+
+-- Main client API; supports only remote DBs
 library client-hs
     import: fb-haskell, fb-cpp, deps
     visibility: public
@@ -649,17 +720,24 @@ library client-hs
         pretty,
         aeson-pretty,
         mangle,
-        glean:if-glean-hs,
-        glean:util,
-        glean:core,
+        prettyprinter-ansi-terminal,
+        process-extras,
+        thrift-haxl,
+    build-depends:
+        -- does NOT depend on glean:db or glean:backend-local
+        glean:angle,
+        glean:backend-api,
         glean:config,
+        glean:core,
         glean:defaultconfigs,
         glean:haxl-datasource,
+        glean:if-glean-hs,
         glean:stubs,
-        prettyprinter-ansi-terminal,
-        thrift-haxl,
-        process-extras
+        glean:typed,
+        glean:util,
+        glean:write,
 
+-- Client API that supports either local or remote DBs
 library client-hs-local
     import: fb-haskell, fb-cpp, deps
     visibility: public
@@ -668,6 +746,7 @@ library client-hs-local
         Glean.LocalOrRemote
     build-depends:
         glean:if-glean-hs,
+        glean:backend-local,
         glean:core,
         glean:client-hs,
         glean:db,
@@ -693,7 +772,7 @@ library client-cpp
 
 library interprocess
     import: fb-haskell, deps
-    visibility: public
+    visibility: private
     hs-source-dirs: glean/interprocess/hs
     exposed-modules:
         Glean.Interprocess.Counters
@@ -849,9 +928,11 @@ library schema
         Glean.Schema.Sys.Types
         Glean.Schema.Fbthrift.Types
     build-depends:
+        glean:angle,
         glean:if-glean-hs,
         glean:config,
         glean:core,
+        glean:typed,
         glean:thrift-annotation
 
 -- library clang-test-xref
@@ -868,9 +949,11 @@ library haxl-datasource
         Haxl.DataSource.Glean
         Haxl.DataSource.Glean.Common
     build-depends:
+        glean:backend-api,
         glean:config,
         glean:core,
         glean:if-glean-hs,
+        glean:typed,
         glean:util,
         thrift-haxl
 
@@ -890,6 +973,7 @@ executable gen-schema
         Glean.Schema.Gen.Rust,
         Glean.Schema.Gen.Thrift
     build-depends:
+        glean:angle,
         glean:core,
         glean:db,
         glean:config,
@@ -998,6 +1082,7 @@ library handler
     exposed-modules:
         Glean.Handler
     build-depends:
+        glean:backend-local,
         glean:client-hs,
         glean:if-fb303-hs,
         glean:if-glean-hs,
@@ -1017,6 +1102,8 @@ executable glean-server
         Glean.Server.Sharding
     extra-libraries: stdc++
     build-depends:
+        glean:backend-api,
+        glean:backend-local,
         glean:client-hs,
         glean:if-fb303-hs,
         glean:if-glean-hs,
@@ -1041,6 +1128,7 @@ library shell-lib
     default-extensions: CPP
     extra-libraries: stdc++
     build-depends:
+        glean:angle,
         glean:cli-types,
         glean:if-glean-hs,
         glean:stubs,
@@ -1540,6 +1628,9 @@ library test-lib
         Glean.Database.Catalog.Test
         Glean.Database.Test
     build-depends:
+        glean:angle,
+        glean:backend-api,
+        glean:backend-local,
         glean:core,
         glean:db,
         glean:schema,
@@ -1548,6 +1639,7 @@ library test-lib
         glean:if-internal-hs,
         glean:stubs,
         glean:test-unit,
+        glean:typed,
         glean:util
 
 -- snapshot and other regression tests against glean
@@ -1753,11 +1845,13 @@ library bench-lib
     exposed-modules:
         BenchDB
     build-depends:
+        glean:backend-api,
         glean:client-hs,
         glean:core,
         glean:db,
         glean:schema,
         glean:test-lib,
+        glean:typed,
 
 -- Skip this one: it depends on the C++ code for the schema, and we
 -- don't want to generate and compile all that just for this one test.
@@ -1815,11 +1909,14 @@ common test
 
 common angle-test
     build-depends:
+        glean:angle,
+        glean:backend-api,
         glean:stubs,
         glean:core,
         glean:db,
         glean:if-glean-hs,
-        glean:schema
+        glean:schema,
+        glean:typed
 
 test-suite angle-test-angle
     import: test, angle-test
@@ -1894,9 +1991,11 @@ test-suite api
     ghc-options: -main-is ApiTest
     build-depends:
         glean:stubs,
+        glean:backend-api,
         glean:core,
         glean:if-glean-hs,
-        glean:schema
+        glean:schema,
+        glean:typed,
 
 test-suite cppexception
     import: test
@@ -1904,11 +2003,13 @@ test-suite cppexception
     main-is: CppCatchTest.hs
     ghc-options: -main-is CppCatchTest
     build-depends:
+        glean:backend-api,
         glean:stubs,
         glean:core,
         glean:db,
         glean:if-glean-hs,
-        glean:schema
+        glean:schema,
+        glean:typed,
 
 test-suite timeout
     import: test
@@ -1916,6 +2017,7 @@ test-suite timeout
     main-is: TimeoutTest.hs
     ghc-options: -main-is TimeoutTest
     build-depends:
+        glean:backend-api,
         glean:client-hs,
         glean:stubs,
         glean:core,
@@ -1928,12 +2030,15 @@ test-suite jsonwrite
     main-is: JSONWriteTest.hs
     ghc-options: -main-is JSONWriteTest
     build-depends:
+        glean:angle,
+        glean:backend-api,
         glean:client-hs,
         glean:stubs,
         glean:core,
         glean:db,
         glean:if-glean-hs,
         glean:schema,
+        glean:typed,
 
 test-suite BinaryTest
     import: fb-haskell, fb-cpp, exe
@@ -1951,6 +2056,7 @@ test-suite rtstest
     main-is: RTSTest.hs
     ghc-options: -main-is RTSTest
     build-depends:
+        glean:angle,
         glean:client-hs,
         glean:stubs,
         glean:core,
@@ -1994,13 +2100,16 @@ test-suite dbderive
     main-is: DbDeriveTest.hs
     ghc-options: -main-is DbDeriveTest
     build-depends:
+        glean:angle,
+        glean:backend-api,
         glean:client-hs,
         glean:core,
         glean:db,
         glean:if-glean-hs,
         glean:if-internal-hs,
         glean:schema,
-        glean:stubs
+        glean:stubs,
+        glean:typed,
 
 test-suite backup
     import: test
@@ -2008,6 +2117,8 @@ test-suite backup
     main-is: BackupTest.hs
     ghc-options: -main-is BackupTest
     build-depends:
+        glean:backend-api,
+        glean:backend-local,
         glean:config,
         glean:core,
         glean:db,
@@ -2054,6 +2165,7 @@ test-suite shard
     main-is: TestShard.hs
     ghc-options: -main-is TestShard
     build-depends:
+        glean:backend-api,
         glean:stubs,
         glean:core,
         glean:if-glean-hs,
@@ -2069,6 +2181,8 @@ test-suite publish-shards
         Glean.Server.Config
         Glean.Server.Sharding
     build-depends:
+        glean:backend-api,
+        glean:backend-local,
         glean:config,
         glean:core,
         glean:db,
@@ -2084,6 +2198,7 @@ test-suite dbproperties
     main-is: DbPropertiesTest.hs
     ghc-options: -main-is DbPropertiesTest
     build-depends:
+        glean:backend-api,
         glean:client-hs,
         glean:stubs,
         glean:core,
@@ -2095,8 +2210,8 @@ test-suite parser
     main-is: ParserTest.hs
     ghc-options: -main-is ParserTest
     build-depends:
+        glean:angle,
         glean:stubs,
-        glean:core,
 
 test-suite schematest
     import: test
@@ -2105,6 +2220,8 @@ test-suite schematest
     other-modules: Schema.Lib
     ghc-options: -main-is Schema.Basic
     build-depends:
+        glean:angle,
+        glean:backend-api,
         glean:stubs,
         glean:core,
         glean:db,
@@ -2121,6 +2238,8 @@ test-suite schemaevolves
     other-modules: Schema.Lib
     ghc-options: -main-is Schema.Evolves
     build-depends:
+        glean:angle,
+        glean:backend-api,
         glean:stubs,
         glean:client-hs,
         glean:core,
@@ -2136,6 +2255,8 @@ test-suite schemamulti
     other-modules: Schema.Lib
     ghc-options: -main-is Schema.Multi
     build-depends:
+        glean:angle,
+        glean:backend-api,
         glean:stubs,
         glean:core,
         glean:db,
@@ -2161,6 +2282,7 @@ test-suite continuation
     main-is: ContinuationTest.hs
     ghc-options: -main-is ContinuationTest
     build-depends:
+        glean:backend-api,
         glean:stubs,
         glean:core,
         glean:if-glean-hs,
@@ -2184,13 +2306,16 @@ test-suite incremental
     main-is: IncrementalTest.hs
     ghc-options: -main-is IncrementalTest
     build-depends:
+        glean:angle,
+        glean:backend-api,
         glean:stubs,
         glean:client-hs,
         glean:core,
         glean:db,
         glean:if-glean-hs,
         glean:lib-derive,
-        glean:schema
+        glean:schema,
+        glean:typed
     if arch(x86_64)
         buildable: True
     else

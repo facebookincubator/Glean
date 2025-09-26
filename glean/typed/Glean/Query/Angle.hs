@@ -26,7 +26,6 @@ module Glean.Query.Angle
   , (.|)
   , or_
   , (.->)
-  , query
   , nat
   , byte
   , enum
@@ -90,7 +89,6 @@ import Glean.Angle.Types hiding
   (SourcePat, SourceStatement, SourceQuery, Field, Type)
 import qualified Glean.Angle.Types as Angle
 import qualified Glean.Display as Display
-import Glean.Query.Thrift.Internal as Thrift
 import Glean.Typed hiding (end)
 import Glean.Types (Nat, Byte)
 
@@ -127,29 +125,6 @@ build (Angle m) =
   case evalState m 0 of
     NestedQuery _ q -> q
     t -> Angle.SourceQuery (Just t) [] Unordered
-
--- | Build a query. It can returns facts of a predicate:
---
--- >    query $ predicate @Pp.Define (field @"macro" "NULL" end)
---
--- Or arbitrary values:
---
--- >    query $ var $ \n ->
--- >      n `where_` [
--- >        stmt $ predicate @Hack.MethodDeclaration $
--- >          rec $
--- >            field @"name" "foo" $
--- >            field @"container"
--- >              (rec $
--- >                 field @"class_"
--- >                    (rec (field @"name" n end))
--- >                 end)
--- >      ]
-query :: (Type t) => Angle t -> Query t
-query = Thrift.angleData . display . sig
-  -- adding a type signature ensures that our type matches the type
-  -- Glean infers. Otherwise these could diverge, leading to
-  -- deserialization errors or just wrong data.
 
 class AngleVars f r where
   -- | Use `vars` to batch up a series of nested `var` calls:
