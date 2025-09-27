@@ -317,7 +317,14 @@ type FetchDocumentSymbols =
 -- use based on the requested revision, the revision of the result and
 -- RequestOptions.
 chooseGleanOrSnapshot
-  :: RequestOptions
+  :: Glean.Backend b
+  => Glass.Env
+  -> GleanDBInfo
+  -> RepoName
+  -> RequestOptions
+  -> FileReference
+  -> Maybe Int
+  -> GleanBackend b
   -> Revision
   -> (
        (DocumentSymbolListXResult, QueryEachRepoLog, GleanGlassLogger),
@@ -329,26 +336,34 @@ chooseGleanOrSnapshot
        (Revision, DocumentSymbolListXResult, Maybe Bool)
      -- ^ Snapshot result (with deferred fetch)
   -> IO FetchDocumentSymbols
-chooseGleanOrSnapshot RequestOptions{..} revision glean esnapshot
-  | isRevisionHit revision glean =
-    returnGlean
-  | Right (rev, res, _) <- esnapshot, rev == revision =
-    return $ returnSnapshot res Snapshot.ExactMatch
-  | requestOptions_matching_revision && not requestOptions_exact_revision =
-    doMatching
-  | otherwise =
-    returnGlean
+chooseGleanOrSnapshot env dbInfo repo RequestOptions{..} repofile mlimit be
+    revision glean esnapshot =
+  if isRevisionHit revision glean
+    then returnGlean
+    else case esnapshot of
+      Right (rev, res, _) | rev == revision ->
+        returnSnapshotConditionally env dbInfo repo (RequestOptions{..})
+          repofile mlimit be res Snapshot.ExactMatch
+      _ | requestOptions_matching_revision &&
+          not requestOptions_exact_revision ->
+        doMatching
+      _ ->
+        returnGlean
   where
     returnGlean = return $
       addStatus (fromLeft Snapshot.Ignored esnapshot) glean
 
-    doMatching
-      | Just True <- resultContentMatch glean = returnGlean
-      | Right (_, res, match) <- esnapshot =
-          return $ if match == Just True
-            then returnSnapshot res Snapshot.CompatibleMatch
-            else empty Snapshot.Ignored
-      | Left s <- esnapshot = return $ empty s
+    doMatching = do
+      let gleanContentMatch = resultContentMatch glean
+      case gleanContentMatch of
+        Just True -> returnGlean
+        _ -> case esnapshot of
+          Right (_, res, match) ->
+            if match == Just True
+              then returnSnapshotConditionally env dbInfo repo (RequestOptions{..})
+                     repofile mlimit be res Snapshot.CompatibleMatch
+              else return $ empty Snapshot.Ignored
+          Left s -> return $ empty s
       where
       empty status =
         ((toDocumentSymbolResult(emptyDocumentSymbols revision)
@@ -368,21 +383,100 @@ chooseGleanOrSnapshot RequestOptions{..} revision glean esnapshot
     resultContentMatch ((r, _, _), _) =
       documentSymbolListXResult_content_match r
 
+-- | Set content_match field based on snapshot status
+setContentMatchForSnapshot
+  :: SnapshotStatus
+  -> DocumentSymbolListXResult
+  -> DocumentSymbolListXResult
+setContentMatchForSnapshot match res = case match of
+  Snapshot.ExactMatch -> matchYes
+  Snapshot.CompatibleMatch -> matchYes
+  _ -> res
+  where
+    matchYes = res { documentSymbolListXResult_content_match = Just True }
+
 returnSnapshot
   :: DocumentSymbolListXResult
   -> SnapshotStatus
   -> FetchDocumentSymbols
 returnSnapshot queryResult match =
-  ((setContentMatch queryResult, match,
+  ((setContentMatchForSnapshot match queryResult, match,
     QueryEachRepoUnrequested, mempty), Nothing)
+
+-- | Helper function to conditionally return snapshot with or without attributes
+-- based on RequestOptions attribute settings
+returnSnapshotConditionally
+  :: Glean.Backend b
+  => Glass.Env
+  -> GleanDBInfo
+  -> RepoName
+  -> RequestOptions
+  -> FileReference
+  -> Maybe Int
+  -> GleanBackend b
+  -> DocumentSymbolListXResult
+  -> SnapshotStatus
+  -> IO FetchDocumentSymbols
+returnSnapshotConditionally env dbInfo repo opts repofile mlimit be res match =
+  if attributeOptions_fetch_per_line_data (requestOptions_attribute_opts opts) ||
+     attributeOptions_fetch_default_view (requestOptions_attribute_opts opts)
+  then returnSnapshotWithAttributes env dbInfo repo opts repofile mlimit be res match
+  else return $ returnSnapshot res match
+
+-- | Process snapshot result through addDynamicAttributes pipeline
+returnSnapshotWithAttributes
+  :: Glean.Backend b
+  => Glass.Env
+  -> GleanDBInfo
+  -> RepoName
+  -> RequestOptions
+  -> FileReference
+  -> Maybe Int
+  -> GleanBackend b
+  -> DocumentSymbolListXResult
+  -> SnapshotStatus
+  -> IO FetchDocumentSymbols
+returnSnapshotWithAttributes env dbInfo repo opts repofile mlimit be
+    queryResult match = do
+  -- Convert DocumentSymbolListXResult back to DocumentSymbols for processing
+  let docSymbols = fromDocumentSymbolResult queryResult
+
+  (res2, attributesLog) <- addDynamicAttributes env dbInfo repo opts
+    repofile mlimit be docSymbols
+  let finalResult = toDocumentSymbolResult res2
+
+  return ((setContentMatchForSnapshot match finalResult, match, QueryEachRepoUnrequested,
+    attributesLog), Nothing)
+
+-- | Convert DocumentSymbolListXResult back to DocumentSymbols for
+-- attribute processing.
+-- Note: This creates dummy Code.Entity values since snapshot results
+-- don't have full entity data
+fromDocumentSymbolResult :: DocumentSymbolListXResult -> DocumentSymbols
+fromDocumentSymbolResult DocumentSymbolListXResult{..} = DocumentSymbols
+  { refs = map createDummyRefEntity documentSymbolListXResult_references
+  , defs = map createDummyDefEntity documentSymbolListXResult_definitions
+  , revision = documentSymbolListXResult_revision
+  , contentMatch = documentSymbolListXResult_content_match
+  , truncated = documentSymbolListXResult_truncated
+  , digest = documentSymbolListXResult_digest
+  , xref_digests = documentSymbolListXResult_referenced_file_digests
+  , unresolvedXrefsXlang = []
+  , srcFile = Nothing
+  , offsets = Nothing
+  , attributes = documentSymbolListXResult_attributes
+  }
   where
-    -- set the content_match field appropriately if we used a snapshot
-    setContentMatch res = case match of
-      Snapshot.ExactMatch -> matchYes
-      Snapshot.CompatibleMatch -> matchYes
-      _ -> res
-      where
-      matchYes = res { documentSymbolListXResult_content_match = Just True }
+    createDummyRefEntity :: ReferenceRangeSymbolX ->
+      (Code.Entity, ReferenceRangeSymbolX)
+    createDummyRefEntity ref = (createDummyEntity, ref)
+
+    createDummyDefEntity :: DefinitionSymbolX ->
+      (Code.Entity, DefinitionSymbolX)
+    createDummyDefEntity def = (createDummyEntity, def)
+
+    createDummyEntity :: Code.Entity
+    createDummyEntity = Code.Entity_EMPTY
 
 -- | Fall back to the best snapshot available for new files (not yet in repo)
 fallbackForNewFiles
@@ -436,7 +530,8 @@ fetchSymbolsAndAttributes env@Glass.Env{..} dbInfo req
       (esnapshot, glean) <- Async.concurrently
         (traceSpan tracer "getSnapshot" $ getFromSnapshot revision)
         (traceSpan tracer "getFromGlean" getFromGlean)
-      chooseGleanOrSnapshot opts revision glean esnapshot
+      chooseGleanOrSnapshot env dbInfo repo opts (toFileReference repo file)
+        Nothing be revision glean esnapshot
 
   fallbackForNewFiles env opts snapshotbe repo file res
   where
