@@ -16,7 +16,6 @@ module Glean.Glass.Regression.Snapshot (
     mainGlassSnapshot,
     mainGlassSnapshotGeneric,
     mainGlassSnapshotXLang,
-    Cfg(..),
     Output, Getter
   ) where
 
@@ -24,15 +23,15 @@ import Data.Aeson
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson ( parse )
 import Data.Default
+import Data.Foldable ( foldl' )
 import Data.List ( sort )
 import Data.Text ( Text )
 import System.Directory ( copyFile, listDirectory )
-import System.Environment ( getArgs )
 import System.Exit ( ExitCode(ExitFailure, ExitSuccess) )
 import System.FilePath
 import System.IO.Temp (withSystemTempDirectory)
 import System.Process ( readProcessWithExitCode )
-import Options.Applicative (Parser)
+import Options.Applicative hiding ( Success )
 import Test.HUnit ( Test(..), assertFailure )
 import qualified Data.Aeson.Encode.Pretty as J
 import qualified Data.ByteString as S
@@ -62,11 +61,6 @@ import qualified Glean.Regression.Snapshot.Driver as Glean
 import qualified Glean.Glass.SymbolId as Glass
 import qualified Glean.Glass.SymbolId.Cxx.Parse as Cxx
 
-newtype Cfg =
-  Cfg {
-    cfgReplace :: Bool
-  }
-
 -- queries are just thrift method names, and the toJSON string of the
 -- args you want to pass
 data Query
@@ -85,6 +79,21 @@ instance FromJSON Query where
 type Output = FilePath
 
 type Getter = IO (Some LocalOrRemote, Repo)
+
+data Config = Config
+  { cfgReplace :: Bool
+  , cfgIgnoreMatchingLines :: Maybe String
+  }
+
+configParser :: Parser Config
+configParser = Config
+  <$> switch
+       ( long "replace"
+      <> help "Replace the output file" )
+  <*> optional (strOption
+       ( long "ignore-matching-lines"
+      <> metavar "REGEX"
+      <> help "Ignore changes where all lines match the regex" ))
 
 findQueries :: FilePath -> IO (Map.Map String FilePath)
 findQueries root = do
@@ -112,7 +121,7 @@ mainGlassSnapshot
   -> IO ()
 mainGlassSnapshot testName testRoot indexer extras =
   mainGlassSnapshot_ testName testRoot
-    (Glean.driverFromIndexer indexer) (pure ()) extras
+    (Glean.driverFromIndexer indexer) extras
 
 mainGlassSnapshotGeneric
   :: String
@@ -121,23 +130,19 @@ mainGlassSnapshotGeneric
   -> (Getter -> [Test])
   -> IO ()
 mainGlassSnapshotGeneric testName testRoot driver extras =
-  mainGlassSnapshot_ testName testRoot driver (pure ()) extras
+  mainGlassSnapshot_ testName testRoot driver extras
 
 mainGlassSnapshot_
   :: String
   -> FilePath
   -> Glean.Driver opts
-  -> Parser extraOpts
   -> (Getter -> [Test])
   -> IO ()
-mainGlassSnapshot_ testName testRoot driver extraOpts extras = do
-  -- just check for --replace. Everything else is passed through
-  -- really want to compose these with the underlying testsuite's options
-  cfgReplace <- any (`elem` ["--replace", "--replace-all"]) <$> getArgs
+mainGlassSnapshot_ testName testRoot driver extras = do
   qs <- findQueries testRoot
   withOutput cfgOutput $ \temp ->
-    mainTestIndexGeneric driver extraOpts testName $ \_ _ _ _ get ->
-      TestList $ testAll cfgReplace temp qs get : extras get
+    mainTestIndexGeneric driver configParser testName $ \config _ _ _ get ->
+      TestList $ testAll config temp qs get : extras get
   where
     cfgOutput = Nothing
 
@@ -151,25 +156,24 @@ mainGlassSnapshotXLang
   -> (Indexer opts, Text)
   -> IO ()
 mainGlassSnapshotXLang testName testRoot driver indexer = do
-  cfgReplace <- any (`elem` ["--replace", "--replace-all"]) <$> getArgs
   qs <- findQueries testRoot
   withOutput cfgOutput $ \temp ->
-    mainTestIndexXlang driver indexer testName $
-      \get -> TestList [testAll cfgReplace temp qs get]
+    mainTestIndexXlang driver indexer testName configParser $
+      \config get -> TestList [testAll config temp qs get]
   where
     cfgOutput = Nothing
 
     withOutput (Just out) f = f out
     withOutput Nothing f = withSystemTempDirectory testName f
 
-testAll :: Bool -> FilePath -> Map.Map String FilePath -> Getter -> Test
-testAll cfgReplace outDir queries getter = TestList
-  [ mkTest cfgReplace getter name qfile outDir
+testAll :: Config -> FilePath -> Map.Map String FilePath -> Getter -> Test
+testAll config outDir queries getter = TestList
+  [ mkTest config getter name qfile outDir
   | (name, qfile) <- Map.toList queries
   ]
 
-mkTest :: Bool -> Getter -> String -> FilePath -> FilePath -> Test
-mkTest cfgReplace get name qfile tempDir = TestLabel name $ TestCase $ do
+mkTest :: Config -> Getter -> String -> FilePath -> FilePath -> Test
+mkTest Config{..} get name qfile tempDir = TestLabel name $ TestCase $ do
   query <- parseQuery qfile
   let actual = tempDir </> replaceExtension (takeFileName qfile) "out"
       expected = replaceExtension qfile "out"
@@ -178,7 +182,7 @@ mkTest cfgReplace get name qfile tempDir = TestLabel name $ TestCase $ do
     evalQuery env qfile query actual
     if cfgReplace
       then copyFile actual expected
-      else diff actual expected
+      else diff actual expected cfgIgnoreMatchingLines
 
 
 evalQuery :: Glass.Env -> FilePath -> Query -> FilePath -> IO ()
@@ -431,12 +435,13 @@ instance DeterministicResponse USRSymbolDefinition where
   det (USRSymbolDefinition location sym revision) =
     USRSymbolDefinition (det location) (det sym) (det revision)
 
-diff :: FilePath -> FilePath -> IO ()
-diff outGenerated outSpec = do
-  (e, sout, serr) <- readProcessWithExitCode
-    "diff"
-    [outGenerated, outSpec]
-    ""
+diff :: FilePath -> FilePath -> Maybe String -> IO ()
+diff outGenerated outSpec ignoreMatchingLines = do
+  let args =
+        let outargs = [outGenerated, outSpec] in
+        foldl' (\args l -> ("--ignore-matching-lines=" <> l) : args)
+          outargs ignoreMatchingLines
+  (e, sout, serr) <- readProcessWithExitCode "diff" args ""
   case e of
     ExitSuccess -> return ()
     ExitFailure n -> assertFailure $

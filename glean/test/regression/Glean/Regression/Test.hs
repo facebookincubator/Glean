@@ -126,15 +126,19 @@ mainTestIndexXlang
   :: (Driver driverOpts, Text.Text) -- ^ Driver and name of db to be created
   -> (Indexer opts, Text.Text) -- ^ Indexer and name of db to be created
   -> String -- ^ just a string to identify this test
-  -> TestIndex
+  -> Parser extraOpts -- ^ parser for extra options to recognise
+  -> (extraOpts -> TestIndex)
   -> IO ()
 mainTestIndexXlang
-  (driver, repoName) (indexer', repoName') dir testIndex = do
+  (driver, repoName) (indexer', repoName') dir extraOptParser testIndex = do
   let
     indexer = driverIndexer driver
-    parse = (,) <$> indexerOptParser indexer <*> indexerOptParser indexer'
+    parse = (,,)
+      <$> indexerOptParser indexer
+      <*> indexerOptParser indexer'
+      <*> extraOptParser
   withUnitTestOptions (optionsWith parse) $
-          \ action (mkcfg, (driverOpts, driverOpts')) -> do
+          \ action (mkcfg, (driverOpts, driverOpts', extraOpts)) -> do
     -- TODO: we're using the options for snapshot tests which have a
     -- couple of flags that don't make sense here: --replace for
     -- example.
@@ -163,7 +167,7 @@ mainTestIndexXlang
                   f (backend, testRepo testConfig')
 
           withLazy withSetup $ \get ->
-            fn $ TestLabel (mkLabel platform) $ testIndex get
+            fn $ TestLabel (mkLabel platform) $ testIndex extraOpts get
 
       withMany withPlatformTest platforms $ \tests ->
         testRunnerAction action (TestList tests)
