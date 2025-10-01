@@ -128,10 +128,27 @@ folly::coro::Task<void> JsonServer::processRequest(
   } catch (const std::exception& e) {
     // Send parse error response - no method/usr available due to parsing error
     auto duration = clock.duration();
+
+    // Escape and truncate the input string for safe logging
+    std::string safeInput = requestStr;
+
+    // Replace single quotes with escaped version to prevent quote injection
+    size_t pos = 0;
+    while ((pos = safeInput.find("'", pos)) != std::string::npos) {
+      safeInput.replace(pos, 1, "\\'");
+      pos += 2; // Move past the escaped quote
+    }
+
+    // Truncate very long inputs to prevent log spam
+    constexpr size_t MAX_INPUT_LENGTH = 500;
+    if (safeInput.length() > MAX_INPUT_LENGTH) {
+      safeInput = safeInput.substr(0, MAX_INPUT_LENGTH) + "...[truncated]";
+    }
+
     sendErrorResponse(
         folly::dynamic::object,
         -32700,
-        "Parse error: " + std::string(e.what()) + " on input: '" + requestStr +
+        "Parse error: " + std::string(e.what()) + " on input: '" + safeInput +
             "'",
         output,
         std::nullopt,
