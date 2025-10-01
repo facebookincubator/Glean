@@ -1,0 +1,1612 @@
+[
+  "@generated",
+  {
+    "key": {
+      "declaration": { "cls": { "key": { "name": { "key": "bar.Bar" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/__init__.py"
+      },
+      "span": { "length": 19, "start": 332 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "cls": { "key": { "name": { "key": "bar.quux.Foo" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "span": { "length": 144, "start": 453 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "cls": { "key": { "name": { "key": "foo.AbstractFoo" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 142, "start": 3344 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "cls": { "key": { "name": { "key": "foo.FinalClass" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 82, "start": 1643 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "cls": { "key": { "name": { "key": "foo.FooBar" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 27, "start": 1770 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "cls": { "key": { "name": { "key": "foo.FooChildClass" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 39, "start": 1728 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "cls": { "key": { "name": { "key": "foo.FooClass" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 515, "start": 732 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "cls": { "key": { "name": { "key": "foo.FooClass.FooInnerClass" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 136, "start": 1111 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "cls": { "key": { "name": { "key": "foo.Level0A" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 103, "start": 3489 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "cls": { "key": { "name": { "key": "foo.Level0B" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 58, "start": 3595 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "cls": { "key": { "name": { "key": "foo.Level1" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 120, "start": 3656 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "cls": { "key": { "name": { "key": "foo.Level2" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 65, "start": 3779 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "cls": {
+          "key": { "name": { "key": "foo.foo_func.<locals>.HiddenClass" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 128, "start": 1336 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "bar.quux.Foo.func" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "span": { "length": 119, "start": 478 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "bar.some_function" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/__init__.py"
+      },
+      "span": { "length": 29, "start": 288 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": {
+          "key": { "name": { "key": "foo.AbstractFoo.abc_abstract_method" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 38, "start": 3448 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": {
+          "key": { "name": { "key": "foo.AbstractFoo.abstract_method" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 34, "start": 3388 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.FinalClass.class_method" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 47, "start": 1678 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": {
+          "key": {
+            "name": { "key": "foo.FooClass.FooInnerClass.inner_method" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 107, "start": 1140 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": {
+          "key": {
+            "name": {
+              "key": "foo.FooClass.FooInnerClass.inner_method.<locals>.inner_method_inner_function"
+            }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 63, "start": 1184 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.FooClass.method" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 248, "start": 857 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": {
+          "key": {
+            "name": {
+              "key": "foo.FooClass.method.<locals>.method_inner_function"
+            }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 53, "start": 1052 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.Level0A.method1" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 39, "start": 3508 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.Level0A.method2" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 39, "start": 3553 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.Level0B.method1" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 39, "start": 3614 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.Level1.method1" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 39, "start": 3692 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.Level1.method2" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 39, "start": 3737 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.Level2.method2" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 39, "start": 3805 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.await_return" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 58, "start": 3086 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.callable_return" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 98, "start": 2797 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.complex_return" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 115, "start": 3147 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.foo_func" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 231, "start": 1250 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": {
+          "key": {
+            "name": { "key": "foo.foo_func.<locals>.HiddenClass.hidden_method" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 101, "start": 1363 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": {
+          "key": {
+            "name": {
+              "key": "foo.foo_func.<locals>.HiddenClass.hidden_method.<locals>.hidden_method_inner_function"
+            }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 64, "start": 1400 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": {
+          "key": { "name": { "key": "foo.foo_func.<locals>.inner_foo_func" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 42, "start": 1288 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": {
+          "key": { "name": { "key": "foo.imported_inner_class_return" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 76, "start": 3265 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.maybe_import" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 104, "start": 625 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.none_ellipsis" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 38, "start": 2482 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.none_return" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 29, "start": 2450 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.optional_return" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 60, "start": 2590 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.param_keyword_test" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 152, "start": 2050 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": {
+          "key": { "name": { "key": "foo.param_positional_keyword_only_test" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 185, "start": 2205 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.param_types_test" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 221, "start": 1826 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.pep593_return" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 185, "start": 2898 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.pipe_union_return" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 72, "start": 2722 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "func": { "key": { "name": { "key": "foo.pow" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 30, "start": 1521 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.simple_return" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 54, "start": 2393 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.string_literal_return" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 64, "start": 2523 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.union_return" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 66, "start": 2653 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "bar.baz.some_function" },
+            "from_name": { "key": "bar.some_function" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/baz.py"
+      },
+      "span": { "length": 13, "start": 262 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "bar.quux.dataclass" },
+            "from_name": { "key": "dataclasses.dataclass" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "span": { "length": 9, "start": 234 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "bar.quux_value" },
+            "from_name": { "key": "bar.quux.value" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/__init__.py"
+      },
+      "span": { "length": 5, "start": 266 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.ABC" },
+            "from_name": { "key": "abc.ABC" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 3, "start": 302 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.Annotated" },
+            "from_name": { "key": "typing.Annotated" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 9, "start": 341 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.Bar" },
+            "from_name": { "key": "bar.Bar" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 3, "start": 434 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.Callable" },
+            "from_name": { "key": "typing.Callable" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 8, "start": 352 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.Optional" },
+            "from_name": { "key": "typing.Optional" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 8, "start": 369 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.Union" },
+            "from_name": { "key": "typing.Union" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 5, "start": 379 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": { "as_name": { "key": "foo.a" }, "from_name": { "key": "a" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 1, "start": 393 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.a.b" },
+            "from_name": { "key": "a.b" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 3, "start": 393 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.a.b.c" },
+            "from_name": { "key": "a.b.c" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 5, "start": 393 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.abc" },
+            "from_name": { "key": "abc" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 3, "start": 282 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.abstractmethod" },
+            "from_name": { "key": "abc.abstractmethod" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 14, "start": 307 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.final" },
+            "from_name": { "key": "typing.final" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 5, "start": 362 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.helper_func" },
+            "from_name": { "key": "lib.helper_func" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 11, "start": 516 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.maybe_import" },
+            "from_name": { "key": "something.maybe_import" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 12, "start": 587 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.nonexistent_func" },
+            "from_name": { "key": "lib.nonexistent_func" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 16, "start": 529 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.path_for_pyre" },
+            "from_name": {
+              "key": "glean.lang.python.indexers.core.path_for_pyre"
+            }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 13, "start": 486 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": { "as_name": { "key": "foo.x" }, "from_name": { "key": "x" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 1, "start": 414 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.x.y" },
+            "from_name": { "key": "x.y" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 3, "start": 414 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "foo.μ" },
+            "from_name": { "key": "bar.μ" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 2, "start": 439 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "module": { "key": { "name": { "key": "bar" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/__init__.py"
+      },
+      "span": { "length": 352, "start": 0 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "module": { "key": { "name": { "key": "bar.baz" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/baz.py"
+      },
+      "span": { "length": 276, "start": 0 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "module": { "key": { "name": { "key": "bar.quux" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "span": { "length": 848, "start": 0 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "module": { "key": { "name": { "key": "foo" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 3845, "start": 0 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "module": { "key": { "name": { "key": "quux.empty" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/quux/empty.py"
+      },
+      "span": { "length": 0, "start": 0 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "bar.quux.Foo.func.<locals>.ex" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "span": { "length": 2, "start": 564 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "bar.quux.Foo.func.<locals>.self" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "span": { "length": 4, "start": 491 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.comp" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "span": { "length": 42, "start": 310 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.expr" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "span": { "length": 12, "start": 366 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.foo" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "span": { "length": 15, "start": 293 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.k" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "span": { "length": 1, "start": 650 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.l" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "span": { "length": 34, "start": 379 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.multiline_value" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "span": { "length": 25, "start": 255 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.value" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "span": { "length": 9, "start": 245 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.var" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "span": { "length": 3, "start": 815 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.w" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "span": { "length": 1, "start": 620 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.x" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "span": { "length": 11, "start": 281 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.quux.y" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
+      },
+      "span": { "length": 11, "start": 281 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "variable": { "key": { "name": { "key": "bar.μ" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/__init__.py"
+      },
+      "span": { "length": 9, "start": 320 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.AbstractFoo.abc_abstract_method.<locals>.self"
+            }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 4, "start": 3476 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": { "key": "foo.AbstractFoo.abstract_method.<locals>.self" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 4, "start": 3412 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": { "key": "foo.FinalClass.class_method.<locals>.cls" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 3, "start": 1699 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.FooClass.FooInnerClass.inner_method.<locals>.self"
+            }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 4, "start": 1157 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.FooClass.foo_class_var" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 36, "start": 789 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.FooClass.foo_instance_var" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 21, "start": 830 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.FooClass.method.<locals>.method_inner_variable"
+            }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 28, "start": 957 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.FooClass.method.<locals>.self" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 4, "start": 868 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.Level0A.method1.<locals>.self" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 4, "start": 3520 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.Level0A.method2.<locals>.self" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 4, "start": 3565 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.Level0B.method1.<locals>.self" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 4, "start": 3626 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.Level1.method1.<locals>.self" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 4, "start": 3704 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.Level1.method2.<locals>.self" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 4, "start": 3749 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.Level2.method2.<locals>.self" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 4, "start": 3817 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.foo_func.<locals>.HiddenClass.hidden_method.<locals>.self"
+            }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 4, "start": 1381 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.foo_func.<locals>.param" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 5, "start": 1263 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "foo.foo_global" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 18, "start": 1554 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "foo.new_var" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 12, "start": 1608 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "foo.new_var" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 12, "start": 1621 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.param_keyword_test.<locals>.args" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 4, "start": 2133 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": { "key": "foo.param_keyword_test.<locals>.builtin" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 7, "start": 2078 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.param_keyword_test.<locals>.key" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 3, "start": 2096 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": { "key": "foo.param_keyword_test.<locals>.keyword_only" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 12, "start": 2143 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.param_keyword_test.<locals>.kwargs" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 6, "start": 2183 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.param_positional_keyword_only_test.<locals>.builtin"
+            }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 7, "start": 2249 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.param_positional_keyword_only_test.<locals>.key"
+            }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 3, "start": 2288 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.param_positional_keyword_only_test.<locals>.keyword_only"
+            }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 12, "start": 2331 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.param_positional_keyword_only_test.<locals>.kwargs"
+            }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 6, "start": 2371 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "foo.param_positional_keyword_only_test.<locals>.pos"
+            }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 3, "start": 2274 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.param_types_test.<locals>.basic" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 5, "start": 1880 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.param_types_test.<locals>.builtin" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 7, "start": 1862 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": { "key": "foo.param_types_test.<locals>.defaulted" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 9, "start": 1901 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.param_types_test.<locals>.nested" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 6, "start": 1937 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.param_types_test.<locals>.self" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 4, "start": 1852 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.param_types_test.<locals>.union" } }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
+      },
+      "span": { "length": 5, "start": 1976 }
+    }
+  }
+]
