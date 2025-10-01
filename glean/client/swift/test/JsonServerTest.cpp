@@ -216,6 +216,8 @@ TEST_F(JsonServerTest, InvalidJSONRequest) {
   EXPECT_TRUE(result.find("\"error\"") != std::string::npos);
   EXPECT_TRUE(result.find("\"code\":-32700") != std::string::npos);
   EXPECT_TRUE(result.find("\"message\":\"Parse error:") != std::string::npos);
+  // Verify the error message includes the original input for better debugging
+  EXPECT_TRUE(result.find("on input: 'invalid json {'") != std::string::npos);
 
   // Verify ScubaLogger was called with correct parameters
   EXPECT_EQ(1, mockScubaLoggerPtr_->logRequestCallCount);
@@ -227,5 +229,9 @@ TEST_F(JsonServerTest, InvalidJSONRequest) {
   EXPECT_EQ(
       facebook::glean::swift::Status::FAILED, mockScubaLoggerPtr_->lastStatus);
   EXPECT_TRUE(mockScubaLoggerPtr_->lastError.find("Parse error:") == 0);
+  // Verify the error includes the original input for better debugging
+  EXPECT_TRUE(
+      mockScubaLoggerPtr_->lastError.find("on input: 'invalid json {'") !=
+      std::string::npos);
   EXPECT_EQ("production", mockScubaLoggerPtr_->lastMode);
 }

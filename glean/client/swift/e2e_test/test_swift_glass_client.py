@@ -323,6 +323,9 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
             self.assertIn("message", error)
             # The error message should contain "Parse error"
             self.assertIn("Parse error", error["message"])
+            # Verify the enhanced error message includes the original input for better debugging
+            self.assertIn("on input:", error["message"])
+            self.assertIn(malformed_json, error["message"])
         finally:
             self._stop_process(process)
 

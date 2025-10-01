@@ -131,7 +131,8 @@ folly::coro::Task<void> JsonServer::processRequest(
     sendErrorResponse(
         folly::dynamic::object,
         -32700,
-        "Parse error: " + std::string(e.what()),
+        "Parse error: " + std::string(e.what()) + " on input: '" + requestStr +
+            "'",
         output,
         std::nullopt,
         std::nullopt,
