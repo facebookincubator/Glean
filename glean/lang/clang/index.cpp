@@ -286,15 +286,15 @@ struct Config {
       }
 
       for (const auto& item : folly::parseJson(contents)) {
-        folly::Optional<std::string> platform;
+        folly::Optional<std::string> sourcePlatform;
         if (!FLAGS_platform.empty()) {
-          platform = FLAGS_platform;
+          sourcePlatform = FLAGS_platform;
         } else if (auto* p = item.get_ptr("platform")) {
-          platform = p->getString();
+          sourcePlatform = p->getString();
         }
         sources.push_back(SourceFile{
             item["target"].getString(),
-            std::move(platform),
+            std::move(sourcePlatform),
             item["dir"].getString(),
             item["file"].getString()});
       }
@@ -309,14 +309,14 @@ struct Config {
         fail("missing --cdb-dir");
       }
       auto cdb = loadCompilationDatabase(FLAGS_cdb_dir);
-      folly::Optional<std::string> platform;
+      folly::Optional<std::string> sourcePlatform;
       if (!FLAGS_platform.empty()) {
-        platform = FLAGS_platform;
+        sourcePlatform = FLAGS_platform;
       }
       for (const auto& file : cdb->getAllFiles()) {
         sources.push_back(SourceFile{
             FLAGS_cdb_target.c_str(),
-            platform,
+            sourcePlatform,
             FLAGS_cdb_dir.c_str(),
             file,
         });
