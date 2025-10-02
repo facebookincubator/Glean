@@ -35,7 +35,7 @@ import TestRunner
 import Mangle.TH
 
 $(mangle
-  "void folly::init(int*, char***, bool)"
+  "void folly::unsafe_unscoped_init(int*, char***, bool)"
   [d|
     foreign import ccall unsafe
       c_follyInit
