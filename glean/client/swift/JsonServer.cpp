@@ -134,7 +134,7 @@ folly::coro::Task<void> JsonServer::processRequest(
 
     // Replace single quotes with escaped version to prevent quote injection
     size_t pos = 0;
-    while ((pos = safeInput.find("'", pos)) != std::string::npos) {
+    while ((pos = safeInput.find('\'', pos)) != std::string::npos) {
       safeInput.replace(pos, 1, "\\'");
       pos += 2; // Move past the escaped quote
     }
