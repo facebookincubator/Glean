@@ -265,6 +265,72 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
         finally:
             self._stop_process(process)
 
+    def test_parse_error_with_escaped_symbols(self):
+        """Test that parse error messages properly escape backslashes and single quotes."""
+        process = self._start_process()
+        try:
+            # Test cases for different escaping scenarios
+            test_cases = [
+                {
+                    "name": "single_quotes",
+                    "input": "{'invalid': 'json' with single quotes}",
+                    "expected_escaped": "{\\'invalid\\': \\'json\\' with single quotes}",
+                },
+                {
+                    "name": "backslashes",
+                    "input": '{"path": "C:\\temp\\file"}invalid',
+                    "expected_escaped": '{"path": "C:\\\\temp\\\\file"}invalid',
+                },
+                {
+                    "name": "backslash_and_quotes",
+                    "input": "{'path': 'C:\\temp\\'file'}",
+                    "expected_escaped": "{\\'path\\': \\'C:\\\\temp\\\\\\'file\\'}",
+                },
+                {
+                    "name": "long_input_truncation",
+                    "input": "'" + "x" * 600 + "'",  # Over 500 chars to test truncation
+                    "expected_contains": "...[truncated]",
+                },
+            ]
+
+            for test_case in test_cases:
+                with self.subTest(test_case=test_case["name"]):
+                    response = self.send_invalid_request_and_get_response(
+                        process, test_case["input"]
+                    )
+
+                    # Verify response structure for parse error
+                    self.assertIn("id", response)
+                    self.assertEqual(response["id"], {})
+
+                    # Should have error field
+                    self.assertIn("error", response)
+                    error = response["error"]
+
+                    # Verify error structure
+                    self.assertIn("code", error)
+                    self.assertEqual(error["code"], -32700)  # JSON-RPC parse error code
+
+                    self.assertIn("message", error)
+                    error_message = error["message"]
+
+                    # The error message should contain "Parse error" and mention the input
+                    self.assertIn("Parse error", error_message)
+                    self.assertIn("on input:", error_message)
+
+                    if "expected_escaped" in test_case:
+                        # Verify the input is properly escaped in the error message
+                        self.assertIn(test_case["expected_escaped"], error_message)
+
+                    if "expected_contains" in test_case:
+                        # Verify truncation for long inputs
+                        self.assertIn(test_case["expected_contains"], error_message)
+                        # Verify message length is reasonable (not the full 600+ chars)
+                        self.assertLess(len(error_message), 800)
+
+        finally:
+            self._stop_process(process)
+
     def test_unknown_method_error(self):
         """Test sending request with unknown method, expecting method not found error."""
         process = self._start_process()

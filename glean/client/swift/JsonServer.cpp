@@ -132,8 +132,16 @@ folly::coro::Task<void> JsonServer::processRequest(
     // Escape and truncate the input string for safe logging
     std::string safeInput = requestStr;
 
-    // Replace single quotes with escaped version to prevent quote injection
+    // First escape backslashes to prevent issues with existing escaped
+    // characters
     size_t pos = 0;
+    while ((pos = safeInput.find("\\", pos)) != std::string::npos) {
+      safeInput.replace(pos, 1, "\\\\");
+      pos += 2; // Move past the escaped backslash
+    }
+
+    // Then escape single quotes to prevent quote injection
+    pos = 0;
     while ((pos = safeInput.find('\'', pos)) != std::string::npos) {
       safeInput.replace(pos, 1, "\\'");
       pos += 2; // Move past the escaped quote
