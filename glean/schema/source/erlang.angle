@@ -28,6 +28,17 @@ predicate DeclarationComment:
     text : maybe string,
   }
 
+predicate Module :
+  {
+    file : src.File,
+    name : string,
+    oncall : maybe string,
+    exports : maybe [string],
+    behaviours : maybe [string],
+    module_doc : maybe string,
+    exdoc_link: maybe string,
+  }
+
 ## types
 
 type Declaration =
