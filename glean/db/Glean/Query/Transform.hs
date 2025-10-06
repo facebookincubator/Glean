@@ -329,8 +329,7 @@ transformExpression :: Type -> Type -> Maybe (Value -> Value)
 transformExpression from to =
   case transformTerm inner defaultValue from to of
     Nothing -> Nothing
-    Just f -> Just $ \ta ->
-      f (error "QueryRegs are never used in transformExpression") discard ta id
+    Just f -> Just $ \ta -> f () discard ta id
   where
     inner _ _ _ _ _ a f = f a
     discard _ _ = return ()
@@ -415,8 +414,8 @@ transformMatch syscalls discard from to overTerm match = case match of
     run :: forall x. Cont (Code x) () -> Code ()
     run m = void $ runCont m (\() -> return undefined)
 
-type TransformTerm m a b
-  = QueryRegs
+type TransformTerm m qr a b
+  = qr
   -> (Type -> Term a -> m ())   -- ^ discard term
   -> Term a                    -- ^ source term
   -> m (Term b)
@@ -427,8 +426,8 @@ type TransformTerm m a b
 -- these two cases we will handle default values and discarded records fields
 -- differently so we take those handling functions as input.
 transformTerm
-  :: forall a b m. (Coercible a b, Show a, Show b, Monad m)
-  => ( QueryRegs
+  :: forall a b qr m. (Coercible a b, Show a, Show b, Monad m)
+  => ( qr
     -> (Type -> a -> m ())       --  discard inner value
     -> Type                      --  from type
     -> Type                      --  to type
@@ -438,7 +437,7 @@ transformTerm
   -> (Type -> Term b)            -- ^ default value for type
   -> Type                        -- ^ from type
   -> Type                        -- ^ to type
-  -> Maybe (TransformTerm m a b)
+  -> Maybe (TransformTerm m qr a b)
 transformTerm inner defaultForType src dst = go src dst
   where
     -- Types are the same. No transformation is required
@@ -451,13 +450,13 @@ transformTerm inner defaultForType src dst = go src dst
     transformationsFor
       :: [RTS.FieldDef]
       -> [RTS.FieldDef]
-      -> Map Text (Maybe (Word64, TransformTerm m a b))
+      -> Map Text (Maybe (Word64, TransformTerm m qr a b))
     transformationsFor from to =
       Map.intersectionWith trans fromFields toFields
       where
         trans :: (Word64, Type)
               -> (Word64, Type)
-              -> Maybe (Word64, TransformTerm m a b)
+              -> Maybe (Word64, TransformTerm m qr a b)
         trans (ixFrom, defFrom) (ixTo, defTo) =
           case go defFrom defTo of
             -- fields are identical
@@ -475,7 +474,7 @@ transformTerm inner defaultForType src dst = go src dst
         toFields = Map.fromList $ flip map (zip to [0..])
           $ \(FieldDef name def, ix) -> (name, (ix, def))
 
-    go :: Type -> Type -> Maybe (TransformTerm m a b)
+    go :: Type -> Type -> Maybe (TransformTerm m qr a b)
     go from@(NamedTy _ _) to = go (derefType from) to
     go from to@(NamedTy _ _) = go from (derefType to)
     go ByteTy ByteTy = Nothing
