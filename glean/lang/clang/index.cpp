@@ -228,7 +228,6 @@ struct Config {
   // subdir of root for interpreting relative clang paths
   folly::Optional<std::string> target_subdir;
   folly::Optional<std::string> path_prefix;
-  folly::Optional<std::string> platform;
   std::string log_pfx;
 
   std::unique_ptr<Sender> sender;
