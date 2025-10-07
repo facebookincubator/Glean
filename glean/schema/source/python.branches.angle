@@ -13,6 +13,8 @@ predicate FileToRoot:
     root: Root,
   }
 
+predicate CommonDependency: Root
+
 predicate DirectXRefsByFile:
   {
     file: src.File,
@@ -25,5 +27,5 @@ predicate DirectXRefsByFile:
   python.DeclarationWithName { TargetName, Decl };
   Target = python.DeclarationLocation { declaration = Decl, file = SourceFile };
   FileToRoot { file = SourceFile, root = Root };
-  FileToRoot { file = File, root = Root };
+  (FileToRoot { file = File, root = Root } | CommonDependency Root);
 }
