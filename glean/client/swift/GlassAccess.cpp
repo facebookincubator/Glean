@@ -29,14 +29,14 @@ GlassAccess::usrToDefinition(
     const std::optional<std::string> revision) {
   std::string msg;
 
-  // Check if this is a Swift USR (starts with "s:")
-  if (usr.length() >= 2 && usr.substr(0, 2) == "s:") {
-    // Handle Swift USR using usrToDefinition
-    co_return co_await handleUSR(usr, revision, msg);
-  } else {
-    // Handle non-Swift USR using clangUSRToDefinition with hash
-    co_return co_await handleUSRHash(usr, revision, msg);
+  // Always try Swift first
+  auto swiftResult = co_await handleUSR(usr, revision, msg);
+  if (swiftResult.has_value() && !swiftResult->empty()) {
+    co_return swiftResult;
   }
+
+  // If Swift failed or returned empty, try non-Swift as fallback
+  co_return co_await handleUSRHash(usr, revision, msg);
 }
 
 folly::coro::Task<std::optional<protocol::LocationList>> GlassAccess::handleUSR(
