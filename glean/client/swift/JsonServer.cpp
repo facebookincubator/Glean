@@ -12,6 +12,7 @@
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/json.h>
 #include <chrono>
+#include <cstdlib>
 #include <thread>
 #include "glean/client/swift/Clock.h"
 
@@ -20,6 +21,10 @@ JsonServer::JsonServer() : running_(false), glassAccess_(nullptr) {
   scubaLogger_ = std::make_unique<facebook::glean::swift::ScubaLogger>();
   scubaData_ = std::make_unique<facebook::rfe::ScubaData>("swift_glass_client");
   asyncScope_ = std::make_unique<folly::coro::CancellableAsyncScope>();
+
+  // Determine server mode once at startup from environment variable
+  const char* envMode = std::getenv("SWIFT_GLASS_CLIENT_MODE");
+  serverMode_ = envMode ? std::string(envMode) : "production";
 }
 
 void JsonServer::setGlassAccess(std::unique_ptr<IGlassAccess> glassAccess) {
@@ -163,7 +168,7 @@ folly::coro::Task<void> JsonServer::processRequest(
         std::nullopt,
         std::nullopt,
         duration,
-        "production");
+        serverMode_);
   }
 }
 

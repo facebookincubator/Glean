@@ -95,6 +95,7 @@ class JsonServer {
   std::unique_ptr<facebook::rfe::ScubaData> scubaData_;
   ThreadSafeQueue requestQueue_;
   std::unique_ptr<folly::coro::CancellableAsyncScope> asyncScope_;
+  std::string serverMode_; // Mode determined at startup (production/test)
 
   folly::coro::Task<void> handleUSRToDefinitionRequest(
       const folly::dynamic& id,

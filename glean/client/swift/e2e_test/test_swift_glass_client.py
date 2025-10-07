@@ -49,6 +49,11 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
 
     def _start_process(self):
         """Start a new swift_glass_client process for the current test."""
+        # Set environment variable to ensure test mode is used for all requests,
+        # including parse error responses
+        env = os.environ.copy()
+        env["SWIFT_GLASS_CLIENT_MODE"] = "test"
+
         # Start the swift_glass_client binary directly using the pre-built path
         process = subprocess.Popen(
             [self._binary_path, "--test-run"],
@@ -57,6 +62,7 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
             stderr=subprocess.PIPE,
             text=True,
             bufsize=0,  # Unbuffered for immediate communication
+            env=env,  # Pass the environment with test mode
         )
 
         # Wait for Glass connection initialization
