@@ -369,6 +369,84 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
         finally:
             self._stop_process(process)
 
+    def test_not_implemented_method_error(self):
+        """Test sending request with valid structure but unimplemented method."""
+        process = self._start_process()
+        try:
+            # Test a reasonable API extension that's not implemented yet
+            request = {
+                "id": 5,
+                "method": "USRToReferences",  # Not implemented yet
+                "value": "s:9CIBCanvas0A4ViewC",
+                "mode": "test",
+                "revision": self.revision,
+            }
+
+            response = self.send_request_and_get_response(process, request)
+
+            # Verify response structure
+            self.assertIn("id", response)
+            self.assertEqual(response["id"], 5)
+
+            # Should have error field for not implemented method
+            self.assertIn("error", response)
+            error = response["error"]
+
+            # Verify error structure
+            self.assertIn("code", error)
+            self.assertEqual(
+                error["code"], -32601
+            )  # JSON-RPC method not found error code (represents "not implemented")
+
+            self.assertIn("message", error)
+            self.assertEqual(error["message"], "Method not found")
+
+            # Should not have result field for error case
+            self.assertNotIn("result", response)
+        finally:
+            self._stop_process(process)
+
+    def test_request_with_extra_fields(self):
+        """Test sending request with extra/unexpected fields that should be ignored."""
+        process = self._start_process()
+        try:
+            # Test a valid request structure with unimplemented method and extra fields
+            request = {
+                "id": 6,
+                "method": "USRToReferences",  # Not implemented yet
+                "value": "s:9CIBCanvas0A4ViewC",
+                "mode": "test",
+                "unexpected": "foo",  # Extra field that should be ignored
+                "another_extra": 123,  # Another extra field
+                "revision": self.revision,
+                "extra_array": [1, 2, 3],  # Additional extra field
+                "nested_object": {"key": "value"},  # Nested extra field
+            }
+
+            response = self.send_request_and_get_response(process, request)
+
+            # Verify response structure - should handle extra fields gracefully
+            self.assertIn("id", response)
+            self.assertEqual(response["id"], 6)
+
+            # Should have error field for unimplemented method
+            self.assertIn("error", response)
+            error = response["error"]
+
+            # Verify error structure - extra fields should not affect error handling
+            self.assertIn("code", error)
+            self.assertEqual(
+                error["code"], -32601
+            )  # JSON-RPC method not found error code
+
+            self.assertIn("message", error)
+            self.assertEqual(error["message"], "Method not found")
+
+            # Should not have result field for error case
+            self.assertNotIn("result", response)
+        finally:
+            self._stop_process(process)
+
     def test_malformed_json_request(self):
         """Test sending malformed JSON request, expecting parse error response."""
         process = self._start_process()
