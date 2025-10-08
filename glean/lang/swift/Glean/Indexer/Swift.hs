@@ -59,6 +59,7 @@ indexer = Indexer {
             , "--swift-only"
             , "--output-type", "scip"
             , "--inventory", inventoryFile
+            , "--isolation-dir", "index_store"
             , "--build-indexer" ],
         scipOutDir = Just tmpDir,
         scipRoot = indexerRoot,
