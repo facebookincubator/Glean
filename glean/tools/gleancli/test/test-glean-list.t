@@ -1,15 +1,18 @@
 Setup
   $ source "$TESTDIR/setup.sh"
 
-  $ glean create --finish --db abc/0
+  $ glean create --finish --db abc/0 2>/dev/null
   Creating DB.* (re)
-  $ glean create --finish --db abc/1
+  $ glean create --finish --db abc/1 2>/dev/null
   Creating DB.* (re)
-  $ glean create --finish --db xyz/0
+  $ glean create --finish --db xyz/0 2>/dev/null
   Creating DB.* (re)
 
   $ glean list ab
   
+
+
+
 
   $ glean list abc
   abc/0 (complete)
@@ -20,6 +23,12 @@ Setup
     Created:.* (re)
     Completed:.* (re)
       
+
+
+
+
+
+
 
 
 
@@ -36,6 +45,12 @@ Setup
 
 
 
+
+
+
+
+
+
   $ glean list *b*/*
   abc/0 (complete)
     Created:.* (re)
@@ -45,6 +60,12 @@ Setup
     Created:.* (re)
     Completed:.* (re)
       
+
+
+
+
+
+
 
 
 
