@@ -7,6 +7,8 @@
  */
 
 use std::fmt;
+use std::path::Component;
+use std::path::Path;
 
 // Use ahash instead of std hashmap for a slight performance gain.
 use ahash::AHashMap as HashMap;
@@ -49,6 +51,34 @@ pub struct Env {
     fact_id: HashMap<StringPredicate, HashMap<Box<str>, ScipId>>,
     out: GleanJSONOutput,
 }
+
+/// Normalize a filepath by removing .. and . components
+/// Returns None if the path cannot be properly normalized (e.g., too many .. components)
+fn normalize_filepath(path: &str) -> Option<String> {
+    let path = Path::new(path);
+    let max_len = path.as_os_str().len();
+    let mut ret = std::path::PathBuf::with_capacity(max_len);
+
+    for component in path.components() {
+        match component {
+            Component::Normal(_) | Component::RootDir => ret.push(component),
+            Component::ParentDir => {
+                // Go up a directory by popping the last component
+                if let Some(Component::Normal(_)) = ret.components().next_back() {
+                    ret.pop();
+                } else {
+                    // Cannot resolve .. properly, return None
+                    return None;
+                }
+            }
+            Component::CurDir => {} // Skip "."
+            Component::Prefix(prefix) => ret.push(prefix.as_os_str()),
+        }
+    }
+
+    Some(ret.to_string_lossy().to_string())
+}
+
 impl Env {
     pub fn new() -> Self {
         Self {
@@ -110,11 +140,41 @@ impl Env {
         path_prefix: Option<&str>,
         doc: Document,
     ) -> Result<()> {
-        // todo - adjust filepath with prefix and suffix
         let mut filepath = doc.relative_path.to_owned();
         if let Some(path_prefix) = path_prefix {
             filepath = format!("{}{}", path_prefix, filepath);
         }
+
+        // Determine language early to conditionally normalize TypeScript paths
+        let lang = LanguageId::new(&doc.language)
+            .known()
+            .or_else(|| {
+                if infer_language {
+                    self.file_language_of(&filepath)
+                } else {
+                    None
+                }
+            })
+            .or(default_lang)
+            .unwrap_or_default();
+
+        // Normalize paths for TypeScript files only
+        // TODO T240234639: Remove once SCIP stops returning paths with ../
+        if matches!(lang, LanguageId::TypeScript | LanguageId::TypeScriptReact) {
+            match normalize_filepath(&filepath) {
+                Some(normalized) => filepath = normalized,
+                None => {
+                    // Cannot normalize path properly (e.g., too many .. components)
+                    // Log error and skip this document
+                    tracing::warn!(
+                        "Cannot normalize filepath '{}', will most likely break browser clients",
+                        filepath
+                    );
+                    return Ok(());
+                }
+            }
+        }
+
         let filepath = filepath.into_boxed_str();
 
         // Skip files if the same file has already been seen.
@@ -128,17 +188,6 @@ impl Env {
         self.out.src_file(src_file_id, filepath.clone());
         let lang_file_id = self.next_id();
 
-        let lang = LanguageId::new(&doc.language)
-            .known()
-            .or_else(|| {
-                if infer_language {
-                    self.file_language_of(&filepath)
-                } else {
-                    None
-                }
-            })
-            .or(default_lang)
-            .unwrap_or_default();
         self.out.file_lang(lang_file_id, src_file_id, lang);
 
         for occ in doc.occurrences {
