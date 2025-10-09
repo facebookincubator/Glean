@@ -278,6 +278,19 @@ predicate DeclarationComment :
 
 type ModuleMembership = { declaration: ModuleDeclaration, internal: bool}
 
+# Package information for a given file.
+predicate Package_ : string
+
+predicate FilePackage :
+  {
+    file : src.File,
+    package_ : Package_,
+    hasPackageOverride : bool,
+  }
+
+predicate FileHasPackageOverride : src.File
+stored F where FilePackage { F, _, true }
+
 # Infos related to a hack module
 predicate ModuleDefinition :
   {
