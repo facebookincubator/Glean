@@ -140,7 +140,7 @@ folly::coro::Task<void> JsonServer::processRequest(
     // First escape backslashes to prevent issues with existing escaped
     // characters
     size_t pos = 0;
-    while ((pos = safeInput.find("\\", pos)) != std::string::npos) {
+    while ((pos = safeInput.find('\\', pos)) != std::string::npos) {
       safeInput.replace(pos, 1, "\\\\");
       pos += 2; // Move past the escaped backslash
     }
