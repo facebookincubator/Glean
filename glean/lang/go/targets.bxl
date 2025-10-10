@@ -14,7 +14,15 @@ def _report_errors(errors: list[bxl.Error]):
 def _impl_discover(ctx: bxl.Context):
     uquery = ctx.uquery()
 
-    requested_targets = ctx.unconfigured_targets(ctx.cli_args.target_exprs or [])
+    target_exprs = ctx.cli_args.target_exprs or []
+    requested_targets = bxl.utarget_set([])
+    requested_targets_errors = {}
+    for target_expr in target_exprs:
+        success_targets, error_map = ctx.lazy.unconfigured_target_nodes_keep_going(target_expr).resolve()
+        requested_targets += success_targets
+        requested_targets_errors |= error_map
+
+    print("Faled to load BUCK files (total):", len(requested_targets_errors))  # buildifier: disable=print
 
     if ctx.cli_args.files:
         requested_targets += ctx.uquery().owner(ctx.cli_args.files)
