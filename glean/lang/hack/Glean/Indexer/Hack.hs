@@ -61,6 +61,7 @@ indexer = Indexer {
             , "hack.TargetUses"
             , "hack.AttributeToDeclaration"
             , "hack.ThriftToHack"
+            , "hack.FileHasPackageOverride"
             -- new search predicates replacing hack.NameLowerCase
             , "hack.SearchClassConstByName"
             , "hack.SearchClassConstByLowerCaseName"
