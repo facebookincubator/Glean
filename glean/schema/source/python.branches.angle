@@ -15,6 +15,18 @@ predicate FileToRoot:
 
 predicate CommonDependency: Root
 
+predicate TargetLocation:
+  {
+    file: src.File,
+    target: python.Name,
+    decl_location: python.DeclarationLocation
+  }
+  { File, TargetName, Target } where
+  python.DeclarationWithName { TargetName, Decl };
+  Target = python.DeclarationLocation { declaration = Decl, file = SourceFile };
+  FileToRoot { file = SourceFile, root = Root };
+  (FileToRoot { file = File, root = Root } | CommonDependency Root);
+
 predicate DirectXRefsByFile:
   {
     file: src.File,
@@ -24,8 +36,6 @@ predicate DirectXRefsByFile:
   { File, Target, Span } where
   python.XRefsViaNameByFile { File, XRefs };
   { target = TargetName, source = Span } = XRefs[..];
-  python.DeclarationWithName { TargetName, Decl };
-  Target = python.DeclarationLocation { declaration = Decl, file = SourceFile };
-  FileToRoot { file = SourceFile, root = Root };
-  (FileToRoot { file = File, root = Root } | CommonDependency Root);
+  TargetLocation {File, TargetName, Target};
+
 }
