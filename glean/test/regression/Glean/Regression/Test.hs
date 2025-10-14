@@ -127,7 +127,7 @@ mainTestIndexXlang
   -> (Indexer opts, Text.Text) -- ^ Indexer and name of db to be created
   -> String -- ^ just a string to identify this test
   -> Parser extraOpts -- ^ parser for extra options to recognise
-  -> (extraOpts -> TestIndex)
+  -> (extraOpts -> Config -> TestIndex)
   -> IO ()
 mainTestIndexXlang
   (driver, repoName) (indexer', repoName') dir extraOptParser testIndex = do
@@ -167,7 +167,7 @@ mainTestIndexXlang
                   f (backend, testRepo testConfig')
 
           withLazy withSetup $ \get ->
-            fn $ TestLabel (mkLabel platform) $ testIndex extraOpts get
+            fn $ TestLabel (mkLabel platform) $ testIndex extraOpts cfg get
 
       withMany withPlatformTest platforms $ \tests ->
         testRunnerAction action (TestList tests)

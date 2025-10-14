@@ -50,6 +50,7 @@ import Glean.LocalOrRemote ( LocalOrRemote )
 import Glean.Util.Some ( Some(..) )
 import Glean.Regression.Test
 import qualified Glean.Indexer as Glean
+import Glean.Regression.Snapshot.Options ( Config(..) )
 
 import qualified Glean.Glass.Handler.Documents as Glass
 import qualified Glean.Glass.Handler.Symbols as Glass
@@ -80,17 +81,13 @@ type Output = FilePath
 
 type Getter = IO (Some LocalOrRemote, Repo)
 
-data Config = Config
-  { cfgReplace :: Bool
-  , cfgIgnoreMatchingLines :: Maybe String
+data SnapshotConfig = SnapshotConfig
+  { cfgIgnoreMatchingLines :: Maybe String
   }
 
-configParser :: Parser Config
-configParser = Config
-  <$> switch
-       ( long "replace"
-      <> help "Replace the output file" )
-  <*> optional (strOption
+configParser :: Parser SnapshotConfig
+configParser = SnapshotConfig
+  <$> optional (strOption
        ( long "ignore-matching-lines"
       <> metavar "REGEX"
       <> help "Ignore changes where all lines match the regex" ))
@@ -141,8 +138,8 @@ mainGlassSnapshot_
 mainGlassSnapshot_ testName testRoot driver extras = do
   qs <- findQueries testRoot
   withOutput cfgOutput $ \temp ->
-    mainTestIndexGeneric driver configParser testName $ \config _ _ _ get ->
-      TestList $ testAll config temp qs get : extras get
+    mainTestIndexGeneric driver configParser testName $ \snapConfig _ config _ get ->
+      TestList $ testAll snapConfig config temp qs get : extras get
   where
     cfgOutput = Nothing
 
@@ -159,30 +156,30 @@ mainGlassSnapshotXLang testName testRoot driver indexer = do
   qs <- findQueries testRoot
   withOutput cfgOutput $ \temp ->
     mainTestIndexXlang driver indexer testName configParser $
-      \config get -> TestList [testAll config temp qs get]
+      \snapConfig config get -> TestList [testAll snapConfig config temp qs get]
   where
     cfgOutput = Nothing
 
     withOutput (Just out) f = f out
     withOutput Nothing f = withSystemTempDirectory testName f
 
-testAll :: Config -> FilePath -> Map.Map String FilePath -> Getter -> Test
-testAll config outDir queries getter = TestList
-  [ mkTest config getter name qfile outDir
+testAll :: SnapshotConfig -> Config -> FilePath -> Map.Map String FilePath -> Getter -> Test
+testAll snapConfig config outDir queries getter = TestList
+  [ mkTest snapConfig config getter name qfile outDir
   | (name, qfile) <- Map.toList queries
   ]
 
-mkTest :: Config -> Getter -> String -> FilePath -> FilePath -> Test
-mkTest Config{..} get name qfile tempDir = TestLabel name $ TestCase $ do
+mkTest :: SnapshotConfig -> Config -> Getter -> String -> FilePath -> FilePath -> Test
+mkTest SnapshotConfig{..} Config{..} get name qfile tempDir = TestLabel name $ TestCase $ do
   query <- parseQuery qfile
   let actual = tempDir </> replaceExtension (takeFileName qfile) "out"
       expected = replaceExtension qfile "out"
   (backend, _repo) <- get
   Glass.withTestEnv backend $ \env -> do
     evalQuery env qfile query actual
-    if cfgReplace
-      then copyFile actual expected
-      else diff actual expected cfgIgnoreMatchingLines
+    case cfgReplace of
+      Just _ -> copyFile actual expected
+      Nothing -> diff actual expected cfgIgnoreMatchingLines
 
 
 evalQuery :: Glass.Env -> FilePath -> Query -> FilePath -> IO ()
