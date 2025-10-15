@@ -38,4 +38,52 @@ predicate DirectXRefsByFile:
   { target = TargetName, source = Span } = XRefs[..];
   TargetLocation {File, TargetName, Target};
 
+
+predicate ImportedDeclaration:
+  {
+    import_decl: python.DeclarationLocation,
+    imported_declaration: python.DeclarationLocation,
+  } {ImportDecl, ImportedDeclaration} where
+  python.DeclarationLocation { declaration = {imp = { from_name = FromName} }, file = ImportFile} = ImportDecl;
+  TargetLocation {ImportFile, FromName, ImportedDeclaration};
+
+
+predicate ResolveOriginalDeclaration:
+  {
+    decl_location: python.DeclarationLocation,
+    original_decl_location: python.DeclarationLocation,
+  }
+  {DeclLocation, OriginalDeclaration} where
+  OriginalDeclaration = if (
+      ImportedDeclaration { DeclLocation, DeclLocation1};
+    ) then (
+      if (
+        ImportedDeclaration { DeclLocation1, DeclLocation2 };
+      ) then (
+        if (
+          ImportedDeclaration { DeclLocation2, DeclLocation3 };
+        ) then (
+          if (
+            ImportedDeclaration { DeclLocation3, DeclLocation4 };
+          ) then (
+            if (
+              ImportedDeclaration { DeclLocation4, DeclLocation5 };
+            ) then (
+              DeclLocation5 # returns declaration location 5 even if there are other imports
+            ) else ( DeclLocation4 )
+          ) else ( DeclLocation3 )
+        ) else ( DeclLocation2 )
+      ) else ( DeclLocation1 )
+    ) else ( DeclLocation );
+
+
+predicate ResolvedXRefsByFile:
+  {
+      file: src.File,
+      target: python.DeclarationLocation,
+      source: src.ByteSpan,
+  }
+  { File, OriginalDeclLocation, Span } where
+  DirectXRefsByFile { File, DeclLocation, Span};
+  ResolveOriginalDeclaration { DeclLocation, OriginalDeclLocation};
 }
