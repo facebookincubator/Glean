@@ -26,28 +26,23 @@ curl -fLo coursier https://git.io/coursier-cli && chmod +x coursier
 
 ## Run the indexer
 
-The indexer can be run via the main `glean` CLI tool.
+Ensure that you have [built and installed Glean](../building.md) and
+the `glean` executable is on your `PATH`.
 
+Index your Java repository with:
 ```
-> cabal build exe:glean
-```
-
-And index your Java repository with:
-```
-glean index java-lsif DIR --db NAME/INSTANCE
+glean index java-lsif DIR --db-root DB --db NAME/INSTANCE
 ```
 
 where
 
+* `DB` is the directory where you want to store your Glean DBs
 * `DIR` is the root directory containing the Rust project
-* `name/hash` is the name of the repository to create
-
-Provide the usual `--db-root` and `--schema` or `--service` arguments
-to `glean`
+* `NAME/INSTANCE` is the name of the repository to create
 
 ## In the shell
 
-Java source can also be indexed directly from the Glean shell:
+Java source can also be indexed directly from the [Glean shell](../shell.md):
 
 ```
 :index java-lsif DIR

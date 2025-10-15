@@ -13,24 +13,19 @@ in the [Glean demo Docker image](../trying.md) to try out.
 
 ## Run the indexer
 
-The indexer is run via the main `glean` CLI tool.
+Ensure that you have [built and installed Glean](../building.md) and
+the `glean` executable is on your `PATH`.
 
+You can index your Flow repository with:
 ```
-> cabal build exe:glean
-```
-
-And index your Flow repository with:
-```
-glean index flow DIR --db NAME/INSTANCE
+glean index flow DIR --db-root DB --db NAME/INSTANCE
 ```
 
 where
 
+* `DB` is the directory you want to store your Glean DBs
 * `DIR` is the root directory containing the Flow project (with `.flowconfig`)
-* `name/hash` is the name of the repository to create
-
-Provide the usual `--db-root` and `--schema` or `--service` arguments
-to `glean`
+* `NAME/INSTANCE` is the name of the repository to create
 
 ## Run the indexer (manually)
 
@@ -53,7 +48,7 @@ Several predicates should be derived after indexing. For each `stored` predicate
 
 ## In the shell
 
-Flow source can also be indexed directly from the Glean shell:
+Flow source can also be indexed directly from the [Glean shell](../shell.md):
 
 ```
 :index flow DIR

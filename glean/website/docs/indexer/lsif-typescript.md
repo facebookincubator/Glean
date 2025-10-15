@@ -11,30 +11,25 @@ To index [TypeScript](https://www.typescriptlang.org/) we use SourceGraph's [LSI
 
 ## Run the indexer
 
-The indexer is run via the main `glean` CLI tool.
+Ensure that you have [built and installed Glean](../building.md) and
+the `glean` executable is on your `PATH`.
 
+Index your TypeScript repository with:
 ```
-> cabal build exe:glean
-```
-
-And index your TypeScript repository with:
-```
-glean index typescript DIR --db NAME/INSTANCE
+glean index typescript DIR --db-root DB --db NAME/INSTANCE
 ```
 
 where
 
+* `DB` is the directory where you want to store your Glean DBs
 * `DIR` is the root directory containing the TypeScript project
-* `name/hash` is the name of the repository to create
-
-Provide the usual `--db-root` and `--schema` or `--service` arguments
-to `glean`
+* `NAME/INSTANCE` is the name of the repository to create
 
 To index very large TypeScript repositories, it may be necessary to use more heap memory in node.js (or break up the targets into subdirectories). Setting `export NODE_OPTIONS="--max-old-space-size=8192"` in the environment in which the indexer runs may help.
 
 ## In the shell
 
-TypeScript source can also be indexed directly from the Glean shell:
+TypeScript source can also be indexed directly from the [Glean shell](../shell.md):
 
 ```
 :index typescript DIR

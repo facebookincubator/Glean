@@ -11,28 +11,24 @@ To index [Go](https://go.dev/) we use SourceGraph's [LSIF indexer for Go](https:
 
 ## Run the indexer
 
-The indexer is run via the main `glean` CLI tool.
+Ensure that you have [built and installed Glean](../building.md) and
+the `glean` executable is on your `PATH`.
+
+Index your Go repository with:
 
 ```
-> cabal build exe:glean
-```
-
-And index your Go repository with:
-```
-glean index go DIR --db NAME/INSTANCE
+glean index go DIR --db-root DB --db NAME/INSTANCE
 ```
 
 where
 
+* `DB` is the directory where you want to store your Glean DBs
 * `DIR` is the root directory containing the Go project
-* `name/hash` is the name of the repository to create
-
-Provide the usual `--db-root` and `--schema` or `--service` arguments
-to `glean`
+* `NAME/INSTANCE` is the name of the repository to create
 
 ## In the shell
 
-Go source can also be indexed directly from the Glean shell:
+Go source can also be indexed directly from the [Glean shell](../shell.md):
 
 ```
 :index go DIR
