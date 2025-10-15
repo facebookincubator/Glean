@@ -1146,9 +1146,11 @@ getSymbolAttributes
   -> IO ([Augment], [Maybe AttributeList])
 getSymbolAttributes env dbInfo repo opts repofile mlimit
     be@GleanBackend{..} revision = do
+  let mlanguage = fileLanguage $
+        symbolPath $ fromGleanPath repo (theGleanPath repofile)
   mAttrDBs <-
     getLatestAttrDBs tracer (sourceControl env) (Glass.repoMapping env)
-      dbInfo repo
+      dbInfo repo mlanguage
   backendRunHaxl be env $ do
     attrsTuples <- forM mAttrDBs $
       \(attrDB, GleanDBAttrName _ attrKey{- existential key -}) ->

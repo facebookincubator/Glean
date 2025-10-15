@@ -103,9 +103,10 @@ data RepoMapping
       --
       -- If you add/remove a db, consider if it needs to be present in
       -- gleanRequiredIndices as well
-  
-    , gleanAttrIndices :: Map.Map Glass.RepoName [GleanDBAttrName]
-      -- ^ Map of source db to attr db names & attribute key types
+
+    , gleanAttrIndices ::
+        Map.Map (Glass.RepoName, Glass.Language) [GleanDBAttrName]
+      -- ^ Map of (repo, language) to attr db names & attribute key types
       --
       -- This pairs attribute Glean dbs with a key type to index the ToAttribute
       -- class, that in turns knowns how to query and marshal the attributes

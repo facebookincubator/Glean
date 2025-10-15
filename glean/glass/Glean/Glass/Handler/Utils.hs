@@ -340,9 +340,10 @@ getLatestAttrDBs
   -> RepoMapping
   -> GleanDBInfo
   -> RepoName
+  -> Maybe Language
   -> IO [(Glean.Repo, GleanDBAttrName)]
-getLatestAttrDBs tracer scm repoMapping dbInfo repo =
-  fmap catMaybes $ forM (attrDBsForRepo repoMapping repo) $
+getLatestAttrDBs tracer scm repoMapping dbInfo repo mlanguage =
+  fmap catMaybes $ forM (attrDBsForRepo repoMapping repo mlanguage) $
     \attrDBName -> do
       dbs <- chooseGleanDBs tracer scm dbInfo ChooseLatest
         [gleanAttrDBName attrDBName]

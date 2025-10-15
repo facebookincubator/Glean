@@ -113,10 +113,15 @@ toRepoName RepoMapping{..} repo =
     repoName = RepoName repo
 
 -- | Additional metadata about files and methods in attribute dbs
-attrDBsForRepo :: RepoMapping -> RepoName -> [GleanDBAttrName]
-attrDBsForRepo AutoRepoMapping _ = []
-attrDBsForRepo RepoMapping{..} repo =
-  Map.findWithDefault [] repo gleanAttrIndices
+attrDBsForRepo ::
+  RepoMapping -> RepoName -> Maybe Language -> [GleanDBAttrName]
+attrDBsForRepo AutoRepoMapping _ _ = []
+attrDBsForRepo RepoMapping{..} repo mlanguage =
+  case mlanguage of
+    Just language ->
+      Map.findWithDefault [] (repo, language) gleanAttrIndices
+    Nothing ->
+      []
 
 -- | Expand generic string search request parameters into a set of candidate
 -- GleanDBs, grouped by logical SCM repo or corpus.
