@@ -135,6 +135,9 @@ predicate SearchByLowerCaseNameKindAndLanguage:
       Hack = Language;
       HackSearchByLowerCaseNameAndKind { NameStr, Kinds, Entity }
     ) | (
+      Rust = Language;
+      RustSearchByLowerCaseNameAndKind { NameStr, Kinds, Entity }
+    ) | (
       Swift = Language;
       SwiftSearchByLowerCaseNameAndKind { NameStr, Kinds, Entity }
     )
@@ -298,6 +301,20 @@ predicate RustSearchByNameAndKind:
   }
   { NameStr, Kinds, Entity } where
   scip.SearchByNameKindLanguage { NameStr, Ks, Rust, { rust = { defn = D } } };
+  Kinds =
+    if (Ks = { just = K }) then
+      (codemarkup.lsif.LsifKindToKind { K, Kind }; { just = Kind })
+    else nothing;
+  { scip = { rust = { defn = D } } } = Entity
+
+predicate RustSearchByLowerCaseNameAndKind:
+ {
+    name: string,
+    kind: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity,
+ }
+ { NameStr, Kinds, Entity } where
+  scip.SearchByLowerCaseNameKindLanguage { NameStr, Ks, Rust, { rust = { defn = D } } };
   Kinds =
     if (Ks = { just = K }) then
       (codemarkup.lsif.LsifKindToKind { K, Kind }; { just = Kind })
