@@ -38,6 +38,11 @@ struct FileRange {
     range: GleanRange,
 }
 #[derive(Serialize, Clone, Eq, PartialEq, Hash)]
+struct EnclosingRange {
+    range: ScipId,
+    enclosing_range: ScipId,
+}
+#[derive(Serialize, Clone, Eq, PartialEq, Hash)]
 struct SymbolLocation {
     location: ScipId,
     symbol: ScipId,
@@ -87,6 +92,7 @@ enum Node {
     SymbolDocumentation(IdKey<SymbolDocs>),
     File(IdKey<Box<str>>),
     FileRange(IdKey<FileRange>),
+    EnclosingRange(IdKey<EnclosingRange>),
     LocalName(IdKey<Box<str>>),
     Symbol(IdKey<Box<str>>),
     Documentation(IdKey<Box<str>>),
@@ -99,6 +105,7 @@ pub struct GleanJSONOutput {
     documentation: Vec<IdKey<Box<str>>>,
     symbol_documentation: Vec<IdKey<SymbolDocs>>,
     file_ranges: Vec<IdKey<FileRange>>,
+    enclosing_ranges: Vec<IdKey<EnclosingRange>>,
     symbols: Vec<IdKey<Box<str>>>,
     definitions: Vec<Key<SymbolLocation>>,
     references: Vec<Key<SymbolLocation>>,
@@ -124,6 +131,7 @@ where
                 Node::FileLanguage(node) => output.file_langs.push(node),
                 Node::File(node) => output.src_files.push(node),
                 Node::FileRange(node) => output.file_ranges.push(node),
+                Node::EnclosingRange(node) => output.enclosing_ranges.push(node),
                 Node::SymbolKind(node) => output.symbol_kinds.push(node),
                 Node::Definition(node) => output.definitions.push(node),
                 Node::Reference(node) => output.references.push(node),
@@ -178,6 +186,16 @@ impl GleanJSONOutput {
                 range,
             },
         })
+    }
+
+    pub fn enclosing_range(&mut self, id: ScipId, range: ScipId, enclosing_range: ScipId) {
+        self.enclosing_ranges.push(IdKey {
+            id,
+            key: EnclosingRange {
+                range,
+                enclosing_range,
+            },
+        });
     }
     pub fn symbol(&mut self, symbol_id: ScipId, symbol: Box<str>) {
         self.symbols.push(IdKey {
@@ -358,6 +376,16 @@ impl GleanJSONOutput {
                         Node::FileRange(file_range) => {
                             let file = *files.get(&file_range.key.file).unwrap();
                             to_visit.push(Node::File(file.clone()));
+                        }
+                        Node::EnclosingRange(enclosing_range) => {
+                            let EnclosingRange {
+                                range,
+                                enclosing_range,
+                            } = &enclosing_range.key;
+                            let range_idkey = *file_ranges.get(range).unwrap();
+                            let enclosing_range_idkey = *file_ranges.get(enclosing_range).unwrap();
+                            to_visit.push(Node::FileRange(range_idkey.clone()));
+                            to_visit.push(Node::FileRange(enclosing_range_idkey.clone()));
                         }
                         Node::SymbolKind(symbol_kind) => {
                             let symbol = *symbols.get(&symbol_kind.key.symbol).unwrap();

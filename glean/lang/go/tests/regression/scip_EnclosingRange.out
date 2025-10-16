@@ -1,0 +1,107 @@
+[
+  "@generated",
+  {
+    "key": {
+      "range": {
+        "key": {
+          "file": { "key": "lib1/lib1.go" },
+          "range": {
+            "lineBegin": 3,
+            "columnBegin": 6,
+            "lineEnd": 3,
+            "columnEnd": 9
+          }
+        }
+      },
+      "enclosingRange": {
+        "key": {
+          "file": { "key": "lib1/lib1.go" },
+          "range": {
+            "lineBegin": 3,
+            "columnBegin": 1,
+            "lineEnd": 5,
+            "columnEnd": 1
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "range": {
+        "key": {
+          "file": { "key": "lib1/lib1_test.go" },
+          "range": {
+            "lineBegin": 7,
+            "columnBegin": 6,
+            "lineEnd": 7,
+            "columnEnd": 13
+          }
+        }
+      },
+      "enclosingRange": {
+        "key": {
+          "file": { "key": "lib1/lib1_test.go" },
+          "range": {
+            "lineBegin": 7,
+            "columnBegin": 1,
+            "lineEnd": 11,
+            "columnEnd": 1
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "range": {
+        "key": {
+          "file": { "key": "lib2/lib2.go" },
+          "range": {
+            "lineBegin": 3,
+            "columnBegin": 6,
+            "lineEnd": 3,
+            "columnEnd": 9
+          }
+        }
+      },
+      "enclosingRange": {
+        "key": {
+          "file": { "key": "lib2/lib2.go" },
+          "range": {
+            "lineBegin": 3,
+            "columnBegin": 1,
+            "lineEnd": 5,
+            "columnEnd": 1
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "range": {
+        "key": {
+          "file": { "key": "lib2/lib2_test.go" },
+          "range": {
+            "lineBegin": 7,
+            "columnBegin": 6,
+            "lineEnd": 7,
+            "columnEnd": 13
+          }
+        }
+      },
+      "enclosingRange": {
+        "key": {
+          "file": { "key": "lib2/lib2_test.go" },
+          "range": {
+            "lineBegin": 7,
+            "columnBegin": 1,
+            "lineEnd": 11,
+            "columnEnd": 1
+          }
+        }
+      }
+    }
+  }
+]

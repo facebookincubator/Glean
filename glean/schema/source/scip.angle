@@ -93,6 +93,12 @@ predicate Reference:
     location: FileRange
   }
 
+predicate EnclosingRange:
+  {
+    range: scip.FileRange,
+    enclosingRange: scip.FileRange,
+  }
+
 predicate ReferenceLocation:
   {
     file : src.File,

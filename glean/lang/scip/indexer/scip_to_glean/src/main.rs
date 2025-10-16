@@ -175,27 +175,30 @@ struct GleanRange {
     line_end: u64,
 }
 
-fn decode_scip_range(range: &[i32]) -> Result<GleanRange> {
+fn decode_scip_range(range: &[i32]) -> Result<Option<GleanRange>> {
     // Some scip files have invalid ranges, the best we can do is to fix them up to 0 or 1
     // If we don't this will cause integer overflow when we convert to glean facts
     let mut range = match range {
-        [line_begin, column_begin, column_end] => GleanRange {
+        [] => None,
+        [line_begin, column_begin, column_end] => Some(GleanRange {
             line_begin: std::cmp::max(*line_begin + 1, 1) as u64,
             column_begin: std::cmp::max(*column_begin + 1, 1) as u64,
             line_end: std::cmp::max(*line_begin + 1, 1) as u64,
             column_end: std::cmp::max(*column_end, 0) as u64,
-        },
-        [line_begin, column_begin, line_end, column_end] => GleanRange {
+        }),
+        [line_begin, column_begin, line_end, column_end] => Some(GleanRange {
             line_begin: std::cmp::max(*line_begin + 1, 1) as u64,
             column_begin: std::cmp::max(*column_begin + 1, 1) as u64,
             line_end: std::cmp::max(*line_end + 1, 1) as u64,
             column_end: std::cmp::max(*column_end, 0) as u64,
-        },
+        }),
         _ => {
             return Err(anyhow!("bad range: {:#?}", range));
         }
     };
-    range.column_end = std::cmp::max(range.column_begin, range.column_end);
+    if let Some(ref mut r) = range {
+        r.column_end = std::cmp::max(r.column_begin, r.column_end);
+    }
     Ok(range)
 }
 

@@ -1,0 +1,3 @@
+query: scip.EnclosingRange _
+perf: True
+transform: [gensort, []]

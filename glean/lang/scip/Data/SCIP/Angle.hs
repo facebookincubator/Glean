@@ -294,8 +294,23 @@ decodeScipOccurence fileId filepath occ = do
     fileRangeId <- nextId
     fileRange <- SCIP.predicateId "scip.FileRange" fileRangeId
       [ "file" .= fileId
-      , "range" .= decodeScipRange scipRange
+      , "range" .= fromMaybe
+          (error "decodeScipRange: got Nothing") (decodeScipRange scipRange)
       ]
+    enclosingRangePredicates <- case decodeScipRange scipEnclosingRangeRaw of
+      Nothing -> return []
+      Just scipEnclosingRange -> do
+        enclosingFileRangeId <- nextId
+        enclosingFileRange <- SCIP.predicateId "scip.FileRange" enclosingFileRangeId
+          [ "file" .= fileId
+          , "range" .= scipEnclosingRange
+          ]
+        enclosingRangeId <- nextId
+        enclosingRange <- SCIP.predicateId "scip.EnclosingRange" enclosingRangeId
+          [ "range" .= fileRangeId
+          , "enclosingRange" .= enclosingFileRangeId
+          ]
+        return (enclosingFileRange <> enclosingRange)
     let eSym = symbolFromString scipSymbol
     symbolFacts <- case eSym of
           Left err -> error (show err) -- Can't handle this symbol format
@@ -303,10 +318,11 @@ decodeScipOccurence fileId filepath occ = do
               fileRangeId
           Right Global{..} -> decodeGlobalOccurence scipSymbol symRoles
               fileRangeId descriptor
-    return (fileRange <> symbolFacts)
+    return (fileRange <> enclosingRangePredicates <> symbolFacts)
   where
     scipRange = occ ^. Scip.range
     scipSymbol = occ ^. Scip.symbol
+    scipEnclosingRangeRaw = occ ^. Scip.enclosingRange
     symRoles = toSymbolRole (occ ^. Scip.symbolRoles)
 
 decodeGlobalOccurence
@@ -420,14 +436,15 @@ toNat = fromIntegral
 
 -- [startLine, startCharacter, endCharacter]`. The end line
 --  is inferred to have the same value as the start line.
-decodeScipRange :: [Int32] -> Aeson.Value
+decodeScipRange :: [Int32] -> Maybe Aeson.Value
+decodeScipRange [] = Nothing
 decodeScipRange [lineBegin,colBegin,colEnd] =
-  SCIP.toRange (SCIP.Range
+  Just $ SCIP.toRange (SCIP.Range
     (SCIP.Position (toNat lineBegin) (toNat colBegin))
     (SCIP.Position (toNat lineBegin) (toNat colEnd))) -- n.b
 -- : `[startLine, startCharacter, endLine, endCharacter]`
 decodeScipRange [lineBegin,colBegin,lineEnd,colEnd] =
-  SCIP.toRange (SCIP.Range
+  Just $ SCIP.toRange (SCIP.Range
     (SCIP.Position (toNat lineBegin) (toNat colBegin))
     (SCIP.Position (toNat lineEnd) (toNat colEnd)))
 decodeScipRange range = error $

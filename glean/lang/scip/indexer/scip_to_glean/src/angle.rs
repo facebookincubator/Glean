@@ -268,8 +268,22 @@ impl Env {
         occ: Occurrence,
     ) -> Result<()> {
         let file_range_id = self.next_id();
-        self.out
-            .file_range(file_range_id, file_id, decode_scip_range(&occ.range)?);
+        self.out.file_range(
+            file_range_id,
+            file_id,
+            decode_scip_range(&occ.range)?.unwrap(),
+        );
+        match decode_scip_range(&occ.enclosing_range)? {
+            None => {}
+            Some(enclosing_range) => {
+                let enclosing_file_range_id = self.next_id();
+                self.out
+                    .file_range(enclosing_file_range_id, file_id, enclosing_range);
+                let enclosing_range_id = self.next_id();
+                self.out
+                    .enclosing_range(enclosing_range_id, file_range_id, enclosing_range_id);
+            }
+        }
 
         let symbol = occ.symbol.replace("  ", "_");
         let symbol = symbol_from_string(&symbol);
