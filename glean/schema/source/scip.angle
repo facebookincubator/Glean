@@ -248,8 +248,8 @@ predicate ResolveLocation:
     entity: scip.Entity,
   }
   { Location, Entity } where
-    scip.FileLanguage { File, Language };
     { File, SrcRange, Name } = Location;
+    scip.FileLanguage { File, Language };
     lsif.types.FromSrcRange { SrcRange, File, RangeSpan };
     scip.DefinitionLocation { File, RangeSpan, Defn };
     scip.TagDefinition { Language, Defn, Entity };
