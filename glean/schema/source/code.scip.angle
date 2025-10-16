@@ -12,6 +12,7 @@ type Entity =
     java : scip.SomeEntity |
     kotlin : scip.SomeEntity |
     swift: scip.SomeEntity |
+    python: scip.SomeEntity |
   }
 
 type SymbolId = scip.Symbol

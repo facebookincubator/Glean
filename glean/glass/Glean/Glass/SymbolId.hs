@@ -352,6 +352,7 @@ instance Symbol Code.Entity where
       Scip.Entity_java se -> toSymbolWithPath se p
       Scip.Entity_kotlin se -> toSymbolWithPath se p
       Scip.Entity_swift se -> toSymbolWithPath se p
+      Scip.Entity_python se -> toSymbolWithPath se p
       Scip.Entity_EMPTY -> throwM $ SymbolError "Unknown SCIP language"
 
     _ -> throwM $ SymbolError "Language not supported"
@@ -411,6 +412,7 @@ entityToAngle e = case e of
       Scip.Entity_java x -> Right $ alt @"java" (toAngle x)
       Scip.Entity_kotlin x -> Right $ alt @"kotlin" (toAngle x)
       Scip.Entity_swift x -> Right $ alt @"swift" (toAngle x)
+      Scip.Entity_python x -> Right $ alt @"python" (toAngle x)
       Scip.Entity_EMPTY -> Left "toAngle: Unknown SCIP language"
 
   _ -> Left $
@@ -454,6 +456,7 @@ instance ToQName Code.Entity where
       Scip.Entity_java x -> toQName x
       Scip.Entity_kotlin x -> toQName x
       Scip.Entity_swift x -> toQName x
+      Scip.Entity_python x -> toQName x
       Scip.Entity_EMPTY -> pure $ Left "SCIP: language unsupported"
     _ -> pure $ Left ("Language unsupported: " <> textShow (entityLanguage e))
 

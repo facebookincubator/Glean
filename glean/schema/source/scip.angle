@@ -194,6 +194,7 @@ type Entity =
     java: SomeEntity |
     kotlin: SomeEntity |
     swift: SomeEntity |
+    python: SomeEntity |
   }
 
 # entities are scip.Definitions
@@ -216,6 +217,7 @@ predicate TagDefinition:
     ( TypeScript = Language; { typescript = SomeEntity }) |
     ( Swift = Language; { swift = SomeEntity }) |
     ( Java = Language; { java = SomeEntity }) |
+    ( Python = Language; { python = SomeEntity }) |
     ( Kotlin = Language; { kotlin = SomeEntity }) = Entity;
 
 # eliminate entity language tags. inverse of TagDefinition
