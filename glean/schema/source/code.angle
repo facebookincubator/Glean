@@ -115,7 +115,12 @@ predicate EntityLanguageSCIP:
     language: Language
   }
   { SCIP, Language } where
-    { rust = _ } = SCIP; Rust : Language = Language;
+    ({ rust = _ } = SCIP; Rust : Language = Language)
+    | ({ go = _ } = SCIP; Go : Language = Language)
+    | ({ java = _ } = SCIP; Java : Language = Language)
+    | ({ kotlin = _ } = SCIP; Kotlin : Language = Language)
+    | ({ typescript = _ } = SCIP; TypeScript : Language = Language)
+    | ({ swift = _ } = SCIP; Swift : Language = Language)
 
 type Annotations =
   {
