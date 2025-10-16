@@ -311,6 +311,7 @@ data Typed x = Typed Type x
 
 instance Display x => Display (Typed x) where
   display opts (Typed _ x) = display opts x
+  displayAtom opts (Typed _ x) = displayAtom opts x
 
 -- -----------------------------------------------------------------------------
 -- Pretty-printing

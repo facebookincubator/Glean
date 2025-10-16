@@ -506,7 +506,7 @@ flattenStmts (Statements s) = map Floating (reverse s)
 
 disjunction :: [FlatStatementGroup] -> FlatStatement
 disjunction [FlatStatementGroup [x]] = unOrdered x
-disjunction groups = FlatDisjunction groups
+disjunction groups = flatDisjunction groups
 
 mkGroup :: [Statements] -> [Statements] -> FlatStatementGroup
 mkGroup ords floats =

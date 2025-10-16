@@ -162,7 +162,7 @@ optimiseQuery :: FlatQuery -> U FlatQuery
 optimiseQuery query@(FlatQuery key maybeVal stmts) = do
   -- determine variables visible outside of any nested choice:
   modify $ \s -> s { optCurrentScope = queryScope query }
-  stmts' <- optStmts stmts
+  stmts' <- filterGroup =<< optStmts stmts
   FlatQuery
     <$> apply key
     <*> mapM apply maybeVal
@@ -248,7 +248,7 @@ instance Apply FlatStatement where
       [] -> case stmtss' of
         [] -> return (FlatDisjunction [])
         (ss : _) -> return (grouping ss)
-      some -> return (FlatDisjunction some)
+      some -> return (flatDisjunction some)
   apply (FlatConditional cond then_ else_) = do
     -- like disjunctions, assumptions arising from the conditional statements
     -- are not true outside of it. However, those arising from the condition
@@ -275,11 +275,10 @@ optStmts :: FlatStatementGroup -> U FlatStatementGroup
 optStmts (FlatStatementGroup ord) = do
   notFalse <- and <$> mapM unifyOrdStmt ord
   ord' <- concatMap (mapM expandStmt) <$> mapM (mapM apply) ord
-  ord'' <- filterOrdStmts ord'
   -- unify may fail, but apply may also leave behind a false statement:
-  if notFalse && not (any isFalseOrdStmt ord'')
-    then return (mkStatementGroup ord'')
-    else return (mkStatementGroup (Ordered falseStmt : ord'' ))
+  if notFalse && not (any isFalseOrdStmt ord')
+    then return (mkStatementGroup ord')
+    else return (mkStatementGroup (Ordered falseStmt : ord' ))
 
 -- Look for the sentinel left by optStmts
 isFalseGroups :: FlatStatementGroup -> Bool
@@ -731,7 +730,7 @@ filterStmt stmt = case stmt of
   FlatNegation stmts -> FlatNegation <$> filterGroupEnclosed stmts
   FlatDisjunction [stmts] -> grouping <$> filterGroup stmts
   FlatDisjunction stmtss ->
-    FlatDisjunction <$> mapM filterGroupEnclosed stmtss
+    flatDisjunction <$> mapM filterGroupEnclosed stmtss
   FlatConditional cond then_ else_ -> do
     (cond', then') <- encloseSeen $ do
       cond' <- filterGroup cond
