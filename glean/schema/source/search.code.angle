@@ -38,7 +38,7 @@ import scip
 # public API
 #
 
-# global symbol search with language constraint
+# DEPRECATED: global symbol search with language constraint
 # migrate these to kind-based search so that the union of them covers each
 # language once
 predicate SearchByNameAndLanguage:
@@ -60,7 +60,7 @@ predicate SearchByNameAndLanguage:
     ( Angle = Language; AngleSearchByName { Name, Entity } );
     code.EntityLanguage { Entity, Language }; # double check the entity lang
 
-# global symbol search normalized to lower case
+# DEPRECATED: global symbol search normalized to lower case
 predicate SearchByLowerCaseNameAndLanguage:
   {
     name: string,
@@ -134,6 +134,9 @@ predicate SearchByLowerCaseNameKindAndLanguage:
     ) | (
       Hack = Language;
       HackSearchByLowerCaseNameAndKind { NameStr, Kinds, Entity }
+    ) | (
+      Swift = Language;
+      SwiftSearchByLowerCaseNameAndKind { NameStr, Kinds, Entity }
     )
 
 # scoped search
@@ -309,6 +312,19 @@ predicate SwiftSearchByNameAndKind:
   }
   { NameStr, Kinds, Entity } where
   scip.SearchByNameKindLanguage { NameStr, Ks, Swift, { swift = { defn = D } } };
+  Kinds =
+    if (Ks = { just = K }) then
+      (codemarkup.lsif.LsifKindToKind { K, Kind }; { just = Kind })
+    else nothing;
+  { scip = { swift = { defn = D } } } = Entity
+
+predicate SwiftSearchByLowerCaseNameAndKind:
+  {
+    name: string,
+    kind: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity,
+  } { NameStr, Kinds, Entity } where
+  scip.SearchByLowerCaseNameKindLanguage { NameStr, Ks, Swift, { swift = { defn = D } } };
   Kinds =
     if (Ks = { just = K }) then
       (codemarkup.lsif.LsifKindToKind { K, Kind }; { just = Kind })

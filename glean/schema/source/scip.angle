@@ -62,6 +62,13 @@ predicate SymbolDisplayName:
   } stored { Symbol, DisplayName } where
     scip.DisplayNameSymbol { DisplayName, Symbol }
 
+predicate LowerCaseDisplayNameSymbol: {
+  displayName: string,
+  symbol: Symbol
+}
+stored { prim.toLower N, S } where
+scip.DisplayNameSymbol { scip.DisplayName N, S }
+
 # These correspond to SCIP occurrences with symbol_role = `Definition`
 predicate Definition:
   {
@@ -339,4 +346,15 @@ predicate SearchByNameKindLanguage:
     Kind = ( if (scip.SymbolKind { Symbol, K }) then { just = K } else nothing );
     scip.SearchBySymbol { Symbol, Language, Entity }
 
+predicate SearchByLowerCaseNameKindLanguage:
+  {
+    name : string,
+    kind : maybe lsif.types.SymbolKind,
+    language: lsif.types.LanguageId,
+    entity : scip.Entity,
+  }
+  { Name, Kind, Language, Entity } where
+    scip.LowerCaseDisplayNameSymbol { Name, Symbol };
+    Kind = ( if (scip.SymbolKind { Symbol, K }) then { just = K } else nothing );
+    scip.SearchBySymbol { Symbol, Language, Entity }
 }

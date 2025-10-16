@@ -69,7 +69,8 @@ derive backend repo = forM_ scipDerivedPredicates $ \pred_ ->
 -- Should correspond to stored predicates in scip.angle
 scipDerivedPredicates :: [Text]
 scipDerivedPredicates =
-  [ "scip.DefinitionLocation"
+  [ "scip.LowerCaseDisplayNameSymbol"
+  , "scip.DefinitionLocation"
   , "scip.ReferenceLocation"
   , "scip.SymbolDisplayName"
   , "scip.IsImplemented"
