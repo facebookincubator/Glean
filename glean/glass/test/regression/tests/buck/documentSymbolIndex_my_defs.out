@@ -3,7 +3,7 @@
     {
         "referenced_file_digests": {},
         "revision": "testhash",
-        "size": 7,
+        "size": 8,
         "symbols": {
             "1": [
                 {
@@ -113,6 +113,31 @@
                         "lineEnd": 18
                     },
                     "sym": "test/buck/d/buck_project/my_defs.bzl/MY_CONST"
+                }
+            ],
+            "20": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 3
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "MY_LIST"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project/my_defs.bzl"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 56,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "sym": "test/buck/d/buck_project/my_defs.bzl/MY_LIST"
                 }
             ],
             "3": [
