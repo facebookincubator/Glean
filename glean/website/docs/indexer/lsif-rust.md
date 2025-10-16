@@ -11,28 +11,23 @@ To index [Rust](https://www.rust-lang.org/) we use [rust-analyzer](https://rust-
 
 ## Run the indexer
 
-The indexer is run via the main `glean` CLI tool.
+Ensure that you have [built and installed Glean](../building.md) and
+the `glean` executable is on your `PATH`.
 
+Index your Rust repository with:
 ```
-> cabal build exe:glean
-```
-
-And index your Rust repository with:
-```
-glean index rust-lsif DIR --db NAME/INSTANCE
+glean index rust-lsif DIR --db-root DB --db NAME/INSTANCE
 ```
 
 where
 
+* `DB` is the directory where you want to store your Glean DBs
 * `DIR` is the root directory containing the Rust project
-* `name/hash` is the name of the repository to create
-
-Provide the usual `--db-root` and `--schema` or `--service` arguments
-to `glean`
+* `NAME/INSTANCE` is the name of the repository to create
 
 ## In the shell
 
-Rust source can also be indexed directly from the Glean shell:
+Rust source can also be indexed directly from the [Glean shell](../shell.md):
 
 ```
 :index rust-lsif DIR

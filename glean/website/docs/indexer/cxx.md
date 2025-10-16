@@ -38,29 +38,31 @@ which computes derived facts on the result (e.g. find-references tables).
 
 ## To build the indexer:
 
-> make glean-clang
+The Clang indexer is currently not on Hackage, so you have to [build from the repository](../building.md#building-from-the-repository).
+
+```
+make glean-clang
+```
 
 ## Run the indexer
 
-A simple cmake-based indexer can run via the main `glean` CLI tool.
+Ensure that you have [built and installed Glean](../building.md) and
+the `glean` executable is on your `PATH`.
 
 ```
-> cabal build exe:glean
-```
-
-And index your c++ repository with:
-```
-glean index cpp-cmake DIR --indexer clang-index --deriver clang-derive --db NAME/INSTANCE
+glean index cpp-cmake DIR --indexer clang-index --deriver clang-derive --db-root DB --db NAME/INSTANCE
 ```
 
 where
 
+* `DB` is the directory you want to store your Glean DBs
 * `DIR` is the root directory containing the CMake manifest.
 * and indexer and deriver are the paths to the clang-index and clang-derive binaries
 
 ## In the shell
 
-C++ source in cmake projects can also be indexed directly from the Glean shell:
+C++ source in cmake projects can also be indexed directly from the
+[Glean shell](../shell.md):
 
 ```
 :index cpp-cmake DIR
