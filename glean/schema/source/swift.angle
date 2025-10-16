@@ -6,6 +6,21 @@ import lsif.types
 import scip
 import src
 
+# Unique Symbol Reference, a symbol ID used in the compiler for swift, ObjC and Clang
+predicate USR: string
+
+predicate SymbolUSR:
+  {
+    symbol: scip.Symbol,
+    usr: USR,
+  }
+
+predicate USRSymbol:
+  {
+    usr: USR,
+    symbol: scip.Symbol,
+  }
+
 predicate SymbolLanguage:
   {
     symbol: scip.Symbol,
