@@ -22,12 +22,32 @@
             "repository": "test"
         },
         {
+            "filepath": "buck_project/my_defs.bzl",
+            "range": {
+                "columnBegin": 20,
+                "columnEnd": 32,
+                "lineBegin": 15,
+                "lineEnd": 15
+            },
+            "repository": "test"
+        },
+        {
             "filepath": "buck_project/my_defs_2.bzl",
             "range": {
                 "columnBegin": 46,
                 "columnEnd": 60,
                 "lineBegin": 1,
                 "lineEnd": 1
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "buck_project/my_defs_2.bzl",
+            "range": {
+                "columnBegin": 20,
+                "columnEnd": 32,
+                "lineBegin": 8,
+                "lineEnd": 8
             },
             "repository": "test"
         }
