@@ -11,28 +11,24 @@ To index [Python](https://www.python.org) we use SourceGraph's [SCIP indexer for
 
 ## Run the indexer
 
-The indexer is run via the main `glean` CLI tool.
+Ensure that you have [built and installed Glean](../building.md) and
+the `glean` executable is on your `PATH`.
+
+You can index a Python repository with:
 
 ```
-> cabal build exe:glean
-```
-
-And index your Python repository with:
-```
-glean index python-scip DIR --db NAME/INSTANCE
+glean index python-scip DIR --db-root DB --db NAME/INSTANCE
 ```
 
 where
 
+* `DB` is the directory where you want to store your Glean DBs
 * `DIR` is the root directory containing the Python project
-* `name/hash` is the name of the repository to create
-
-Provide the usual `--db-root` and `--schema` or `--service` arguments
-to `glean`
+* `NAME/INSTANCE` is the name of the repository to create
 
 ## In the shell
 
-Python source can also be indexed directly from the Glean shell:
+Python source can also be indexed directly from the [Glean shell](../shell.md):
 
 ```
 :index python-scip DIR

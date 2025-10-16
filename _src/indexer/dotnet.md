@@ -11,28 +11,24 @@ To index [Dotnet](https://dotnet.microsoft.com/) we use SourceGraph's [SCIP inde
 
 ## Run the indexer
 
-The indexer is run via the main `glean` CLI tool.
+Ensure that you have [built and installed Glean](../building.md) and
+the `glean` executable is on your `PATH`.
+
+You can index a Dotnet repository with:
 
 ```
-> cabal build exe:glean
-```
-
-And index your Dotnet repository with:
-```
-glean index dotnet-scip DIR --db NAME/INSTANCE
+glean index dotnet-scip DIR --db-root DB --db NAME/INSTANCE
 ```
 
 where
 
+* `DB` is the directory you want to store your Glean DBs
 * `DIR` is the root directory containing the Dotnet project
-* `name/hash` is the name of the repository to create
-
-Provide the usual `--db-root` and `--schema` or `--service` arguments
-to `glean`
+* `NAME/INSTANCE` is the name of the repository to create
 
 ## In the shell
 
-Dotnet source can also be indexed directly from the Glean shell:
+Dotnet source can also be indexed directly from the [Glean shell](../shell.md):
 
 ```
 :index dotnet-scip DIR

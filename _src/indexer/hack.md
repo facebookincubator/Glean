@@ -11,28 +11,24 @@ The [Hack](https://hacklang.org/) indexer is built into the [Hack typechecker](h
 
 ## Run the indexer
 
-The indexer is run via the main `glean` CLI tool.
+Ensure that you have [built and installed Glean](../building.md) and
+the `glean` executable is on your `PATH`.
+
+Index your Hack repository with:
 
 ```
-> cabal build exe:glean
-```
-
-And index your Hack repository with:
-```
-glean index hack DIR --db NAME/INSTANCE
+glean index hack DIR --db-root DB --db NAME/INSTANCE
 ```
 
 where
 
+* `DB` is the directory where you want to store your Glean DBs
 * `DIR` is the root directory containing the Hack project (with `.hhconfig`)
-* `name/hash` is the name of the repository to create
-
-Provide the usual `--db-root` and `--schema` or `--service` arguments
-to `glean`
+* `NAME/INSTANCE` is the name of the repository to create
 
 ## In the shell
 
-Hack source can also be indexed directly from the Glean shell:
+Hack source can also be indexed directly from the [Glean shell](../shell.md):
 
 ```
 :index hack DIR
