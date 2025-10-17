@@ -16,6 +16,17 @@
       "file": { "key": "example.ts" },
       "range": {
         "lineBegin": 9,
+        "columnBegin": 1,
+        "lineEnd": 53,
+        "columnEnd": 1
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.ts" },
+      "range": {
+        "lineBegin": 9,
         "columnBegin": 8,
         "lineEnd": 9,
         "columnEnd": 9
@@ -60,6 +71,17 @@
       "file": { "key": "example.ts" },
       "range": {
         "lineBegin": 14,
+        "columnBegin": 1,
+        "lineEnd": 42,
+        "columnEnd": 3
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.ts" },
+      "range": {
+        "lineBegin": 14,
         "columnBegin": 7,
         "lineEnd": 14,
         "columnEnd": 9
@@ -74,6 +96,17 @@
         "columnBegin": 3,
         "lineEnd": 15,
         "columnEnd": 13
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.ts" },
+      "range": {
+        "lineBegin": 15,
+        "columnBegin": 3,
+        "lineEnd": 33,
+        "columnEnd": 3
       }
     }
   },
@@ -346,6 +379,17 @@
       "file": { "key": "example.ts" },
       "range": {
         "lineBegin": 34,
+        "columnBegin": 3,
+        "lineEnd": 41,
+        "columnEnd": 5
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.ts" },
+      "range": {
+        "lineBegin": 34,
         "columnBegin": 10,
         "lineEnd": 34,
         "columnEnd": 12
@@ -481,6 +525,17 @@
         "columnBegin": 11,
         "lineEnd": 39,
         "columnEnd": 16
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.ts" },
+      "range": {
+        "lineBegin": 46,
+        "columnBegin": 1,
+        "lineEnd": 52,
+        "columnEnd": 1
       }
     }
   },
