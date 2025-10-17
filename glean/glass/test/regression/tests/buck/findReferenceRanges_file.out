@@ -20,6 +20,16 @@
                 "lineEnd": 31
             },
             "repository": "test"
+        },
+        {
+            "filepath": "buck_project/my_defs.bzl",
+            "range": {
+                "columnBegin": 35,
+                "columnEnd": 43,
+                "lineBegin": 20,
+                "lineEnd": 20
+            },
+            "repository": "test"
         }
     ]
 ]
