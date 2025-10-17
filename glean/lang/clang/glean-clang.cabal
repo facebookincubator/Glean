@@ -147,8 +147,6 @@ executable clang-derive
         ghc-compact,
         glean:client-hs,
         glean:client-hs-local,
-        glean:core,
-        glean:db,
         glean:lib,
         glean:lib-derive,
         glean:schema,

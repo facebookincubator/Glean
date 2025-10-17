@@ -62,8 +62,6 @@ import qualified Glean.Database.Writes as Database
 import Glean.Internal.Types
 import qualified Glean.Query.UserQuery as UserQuery
 import qualified Glean.Query.Derive as Derive
-import Glean.Query.Thrift
-import Glean.Query.Thrift.Internal
 import Glean.RTS (Fid(..))
 import qualified Glean.RTS.Foreign.Inventory as Inventory
 import qualified Glean.RTS.Foreign.Lookup as Lookup
