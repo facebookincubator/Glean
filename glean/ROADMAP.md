@@ -74,26 +74,32 @@ Roughly in dependency order, from low to high:
    * Bytecode definitions and code generation
  * **if**
    * Thrift files
+ * **angle**
+   * The Angle parser and schema name resolution, depends on nothing
  * **hs**
    * Low-level Haskell layer
-     * Angle Types and Parser (`Glean.Angle.*`)
-     * Schema handling (`Glean.Schema.*`)
      * Haskell API to **rts** functionality (`Glean.RTS.*`)
      * Bytecode generation (`Glean.Bytecode.*`)
-     * Serialising/deserialising Glean data to Haskell types (`Glean.Typed.*`)
-     * Remote Client API (`Glean.Backend.Remote`)
      * API for writing data from clients (`Glean.Write.*`)
+ * **typed**
+   * Serialising/deserialising Glean data to Haskell types (`Glean.Typed.*`)
+ * **write**
+   * Client-side API for writing facts (`Glean.Write.*`)
+ * **backend-api**
+   * The abstract `Backend` class (`Glean.Backend.Types`)
+ * **rocksdb**
+    * C++ layer providing RocksDB storage for Glean data
  * **db**
     * Database management (`Glean.Database.*`)
     * Query engine (`Glean.Query.*`)
-    * Write processing (`Glean.Write.*`)
     * Generic Glean backend (`Glean.Backend`)
- * **rocksdb**
-    * C++ layer providing RocksDB storage for Glean data
+ * **backend-local**
+   * Instance of `Backend` for local DBs.
  * **haxl**
     * Haxl data source for Glean, used in the Haskell query API
  * **client**
     * Client APIs for various languages
+    * Remote Client API (`Glean.Backend.Remote`)
  * **server**
     * The server. (Note, does not depend on the schema)
  * **index**
@@ -132,7 +138,7 @@ Roughly in dependency order, from low to high:
     * Misc ad-hoc scripts
  * **glass**
    * The Glass service, provides language-independent symbol services
-     (go-to-definition, find-references, symbol search etc.)  on top
+     (go-to-definition, find-references, symbol search etc.) on top
      of Glean.
  * **vscode**
    * Extension for editing `.angle` files in VS Code
