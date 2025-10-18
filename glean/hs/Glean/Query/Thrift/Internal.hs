@@ -47,7 +47,7 @@ import Data.IORef
 import qualified Data.Map as Map
 import Data.Maybe
 import Data.Proxy
-import Data.Text as Text
+import Data.Text as Text hiding (show)
 import qualified Data.Text.Encoding as Text
 import Compat.Prettyprinter hiding ((<>))
 import qualified Data.Vector as Vector
