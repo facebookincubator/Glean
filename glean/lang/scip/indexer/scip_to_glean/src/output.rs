@@ -279,6 +279,7 @@ impl GleanJSONOutput {
             + self.documentation.len()
             + self.symbol_documentation.len()
             + self.file_ranges.len()
+            + self.enclosing_ranges.len()
             + self.symbols.len()
             + self.definitions.len()
             + self.references.len()
@@ -333,6 +334,7 @@ impl GleanJSONOutput {
         source_nodes.extend(self.symbol_kinds.into_iter().map(Node::SymbolKind));
         source_nodes.extend(self.definitions.into_iter().map(Node::Definition));
         source_nodes.extend(self.references.into_iter().map(Node::Reference));
+        source_nodes.extend(self.enclosing_ranges.into_iter().map(Node::EnclosingRange));
         source_nodes.extend(
             self.symbol_documentation
                 .into_iter()
@@ -463,6 +465,7 @@ impl GleanJSONOutput {
         sub(&mut w, "scip.Documentation", self.documentation, ifl)?;
         sub(&mut w, "scip.FileLanguage", self.file_langs, ifl)?;
         sub(&mut w, "scip.FileRange", self.file_ranges, ifl)?;
+        sub(&mut w, "scip.EnclosingRange", self.enclosing_ranges, ifl)?;
         sub(&mut w, "scip.Definition", self.definitions, ifl)?;
         sub(&mut w, "scip.Reference", self.references, ifl)?;
         sub(
