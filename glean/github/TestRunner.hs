@@ -8,10 +8,13 @@
 
 module TestRunner (module TestRunner) where
 
+import Control.Exception
 import System.Environment (withArgs)
 import Test.HUnit
 import qualified Test.Tasty as Tasty
-import qualified Test.Tasty.HUnit.Adapter as Tasty
+import qualified Test.HUnit.Base  as HUB
+import qualified Test.Tasty.HUnit as TFH
+import Test.HUnit.Lang as HUnitInternals (HUnitFailure(..), formatFailureReason)
 
 -- | Wraps the HUnit test using tasty, so we get parallel test runs,
 -- test listing, and test selection.
@@ -19,7 +22,7 @@ testRunner :: Test -> IO ()
 testRunner t =
   Tasty.defaultMain $
   Tasty.testGroup "test" $
-  Tasty.hUnitTestToTestTree t
+  hUnitTestToTestTree t
 
 data TestAction = TestAction
 
@@ -40,4 +43,28 @@ testRunnerAction _ t =
   withArgs [] $
   Tasty.defaultMain $
   Tasty.testGroup "test" $
-  Tasty.hUnitTestToTestTree t
+  hUnitTestToTestTree t
+
+-- | Convert existing HUnit test to a TestTree list that can be used
+-- with tasty.  This is modified from the tasty-hunit-adapter package,
+-- adding conversion of the original HUnitFailure exception into
+-- Tasty's version, so that we get better diagnostics.
+hUnitTestToTestTree :: HUB.Test -> [Tasty.TestTree]
+hUnitTestToTestTree = go ""
+  where
+    go desc (HUB.TestCase a)    = [TFH.testCase desc (rethrow a)]
+    go desc (HUB.TestLabel s t)
+      | null desc = go s t
+      | otherwise = go (desc ++ ":" ++ s) t
+    go desc (HUB.TestList ts)
+        -- If the list occurs at the top level (with no description above it),
+        -- just return that list straightforwardly
+      | null desc = concatMap (go "") ts
+        -- If the list occurs with a description, turn that into a honest-to-god
+        -- test group. This is heuristic, but likely to give good results
+      | otherwise = [Tasty.testGroup desc (concatMap (go "") ts)]
+
+    rethrow t = --recomp
+      t `catch` \(HUnitInternals.HUnitFailure loc reason) ->
+        throwIO $
+          TFH.HUnitFailure loc (HUnitInternals.formatFailureReason reason)

@@ -228,7 +228,7 @@ library stubs
         mangle,
         template-haskell,
         tasty,
-        tasty-hunit-adapter
+        tasty-hunit
 
 library logger
     import: fb-haskell, fb-cpp, deps
