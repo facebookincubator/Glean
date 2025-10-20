@@ -47,11 +47,12 @@ import Data.IORef
 import qualified Data.Map as Map
 import Data.Maybe
 import Data.Proxy
-import Data.Text as Text
+import qualified Data.Text as Text
+import Data.Text (Text)
 import qualified Data.Text.Encoding as Text
-import Compat.Prettyprinter hiding ((<>))
+import Compat.Prettyprinter (Pretty(..))
 import qualified Data.Vector as Vector
-import Text.Printf
+import Text.Printf (printf)
 
 import Util.Log
 
