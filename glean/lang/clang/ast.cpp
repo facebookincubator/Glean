@@ -385,8 +385,8 @@ class DeclarationTargets {
       if (!refsInContext.empty()) {
         std::vector<Cxx::Declaration> decls;
         decls.reserve(refsInContext.size());
-        for (const auto& [decl, _] : refsInContext) {
-          decls.push_back(decl);
+        for (const auto& [declRef, _] : refsInContext) {
+          decls.push_back(declRef);
         }
         db.fact<Cxx::DeclarationTargets>(decl, std::move(decls));
       }
@@ -584,16 +584,16 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     while (ctx) {
       if (clang::isa<clang::TranslationUnitDecl>(ctx)) {
         return GlobalScope{};
-      } else if (auto x = clang::dyn_cast<clang::NamespaceDecl>(ctx)) {
-        if (auto r = namespaces(x)) {
+      } else if (auto nsDecl = clang::dyn_cast<clang::NamespaceDecl>(ctx)) {
+        if (auto r = namespaces(nsDecl)) {
           return NamespaceScope{r->key, r->qname};
         }
-      } else if (auto x = clang::dyn_cast<clang::CXXRecordDecl>(ctx)) {
-        if (auto r = classDecls(x)) {
+      } else if (auto recordDecl = clang::dyn_cast<clang::CXXRecordDecl>(ctx)) {
+        if (auto r = classDecls(recordDecl)) {
           return ClassScope{r->key, r->qname};
         }
-      } else if (auto x = clang::dyn_cast<clang::FunctionDecl>(ctx)) {
-        if (auto r = funDecls(x)) {
+      } else if (auto funcDecl = clang::dyn_cast<clang::FunctionDecl>(ctx)) {
+        if (auto r = funDecls(funcDecl)) {
           return LocalScope{r->key, r->qname};
         }
       }
@@ -1147,8 +1147,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         add(visitor.typeAliasDecls, tatd->getTemplatedDecl());
       } else if (auto ns = clang::dyn_cast<clang::NamespaceDecl>(mem)) {
         add(visitor.namespaces, ns);
-      } else if (auto ns = clang::dyn_cast<clang::NamespaceAliasDecl>(mem)) {
-        add(visitor.namespaceAliasDecls, ns);
+      } else if (
+          auto nsAlias = clang::dyn_cast<clang::NamespaceAliasDecl>(mem)) {
+        add(visitor.namespaceAliasDecls, nsAlias);
       }
     }
     return members;
@@ -1322,8 +1323,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     struct GetTemplatableDecl {
       const clang::EnumDecl* FOLLY_NULLABLE
-      operator()(const clang::EnumDecl* decl) const {
-        return decl->getTemplateInstantiationPattern();
+      operator()(const clang::EnumDecl* enumDecl) const {
+        return enumDecl->getTemplateInstantiationPattern();
       }
     };
   };
@@ -1388,11 +1389,12 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     struct GetTemplatableDecl {
       const clang::TypedefNameDecl* FOLLY_NULLABLE
-      operator()(const clang::TypedefNameDecl* decl) const {
-        if (auto td = DeclTraits::getTemplateInstantiationPattern(decl)) {
+      operator()(const clang::TypedefNameDecl* typedefDecl) const {
+        if (auto td =
+                DeclTraits::getTemplateInstantiationPattern(typedefDecl)) {
           return td;
         }
-        if (auto ta = clang::dyn_cast<clang::TypeAliasDecl>(decl)) {
+        if (auto ta = clang::dyn_cast<clang::TypeAliasDecl>(typedefDecl)) {
           // If this is the pattern of a type alias template, find where it was
           // instantiated from.
           if (auto ct = ta->getDescribedAliasTemplate()) {
@@ -1433,12 +1435,14 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
           maybe(visitor.parentNamespace(decl)));
       std::optional<Cxx::NamespaceTarget> target;
       const auto* alias = CHECK_NOTNULL(decl->getAliasedNamespace());
-      if (auto x = clang::dyn_cast<clang::NamespaceDecl>(alias)) {
-        if (auto r = visitor.namespaces(x)) {
+      if (auto nsDecl = clang::dyn_cast<clang::NamespaceDecl>(alias)) {
+        if (auto r = visitor.namespaces(nsDecl)) {
           target = Cxx::NamespaceTarget::namespace_(r->decl);
         }
-      } else if (auto x = clang::dyn_cast<clang::NamespaceAliasDecl>(alias)) {
-        if (auto r = visitor.namespaceAliasDecls(x)) {
+      } else if (
+          auto nsAliasDecl =
+              clang::dyn_cast<clang::NamespaceAliasDecl>(alias)) {
+        if (auto r = visitor.namespaceAliasDecls(nsAliasDecl)) {
           target = Cxx::NamespaceTarget::namespaceAlias(r->decl);
         }
       }
@@ -1587,13 +1591,13 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     struct GetTemplatableDecl {
       const clang::CXXRecordDecl* FOLLY_NULLABLE
-      operator()(const clang::CXXRecordDecl* decl) const {
-        if (auto cd = decl->getTemplateInstantiationPattern()) {
+      operator()(const clang::CXXRecordDecl* recordDecl) const {
+        if (auto cd = recordDecl->getTemplateInstantiationPattern()) {
           return cd;
         }
         // If this is the pattern of a class template, find where it was
         // instantiated from.
-        if (auto ct = decl->getDescribedClassTemplate()) {
+        if (auto ct = recordDecl->getDescribedClassTemplate()) {
           // If we hit a point where the user provided a specialization of this
           // template, we're done looking.
           while (!ct->isMemberSpecialization()) {
@@ -1603,7 +1607,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
             }
             ct = next;
           }
-          if (auto cd = ct->getTemplatedDecl(); cd && cd != decl) {
+          if (auto cd = ct->getTemplatedDecl(); cd && cd != recordDecl) {
             auto def = cd->getDefinition();
             return def ? def : cd;
           }
@@ -1733,13 +1737,13 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     struct GetTemplatableDecl {
       const clang::FunctionDecl* FOLLY_NULLABLE
-      operator()(const clang::FunctionDecl* decl) const {
-        if (auto fd = decl->getTemplateInstantiationPattern()) {
+      operator()(const clang::FunctionDecl* funcDecl) const {
+        if (auto fd = funcDecl->getTemplateInstantiationPattern()) {
           return fd;
         }
         // If this is the pattern of a function template, find where it was
         // instantiated from.
-        if (auto ft = decl->getDescribedFunctionTemplate()) {
+        if (auto ft = funcDecl->getDescribedFunctionTemplate()) {
           // If we hit a point where the user provided a specialization of this
           // template, we're done looking.
           while (!ft->isMemberSpecialization()) {
@@ -1749,7 +1753,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
             }
             ft = next;
           }
-          if (auto fd = ft->getTemplatedDecl(); fd && fd != decl) {
+          if (auto fd = ft->getTemplatedDecl(); fd && fd != funcDecl) {
             auto def = fd->getDefinition();
             return def ? def : fd;
           }
@@ -1928,16 +1932,16 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     struct GetTemplatableDecl {
       const clang::VarDecl* FOLLY_NULLABLE
-      operator()(const clang::VarDecl* decl) const {
+      operator()(const clang::VarDecl* varDecl) const {
         // The logic for `VarDecl` is a bit simpler here due to LLVM handling
         // the cases we handle manually for `CXXRecordDecl` and `FunctionDecl`.
         // https://github.com/llvm/llvm-project/blob/a3a2239aaaf6860eaee591c70a016b7c5984edde/clang/lib/AST/Decl.cpp#L2608-L2619
-        return decl->getTemplateInstantiationPattern();
+        return varDecl->getTemplateInstantiationPattern();
       }
 
       const clang::FieldDecl* FOLLY_NULLABLE
-      operator()(const clang::FieldDecl* decl) const {
-        return DeclTraits::getTemplateInstantiationPattern(decl);
+      operator()(const clang::FieldDecl* fieldDecl) const {
+        return DeclTraits::getTemplateInstantiationPattern(fieldDecl);
       }
     };
 
@@ -2924,8 +2928,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       if (spec) {
         if (auto ns = spec->getAsNamespace()) {
           xrefDecl(loc.getLocalBeginLoc(), ns->getCanonicalDecl());
-        } else if (auto ns = spec->getAsNamespaceAlias()) {
-          xrefDecl(loc.getLocalBeginLoc(), ns->getCanonicalDecl());
+        } else if (auto nsAlias = spec->getAsNamespaceAlias()) {
+          xrefDecl(loc.getLocalBeginLoc(), nsAlias->getCanonicalDecl());
         }
       }
       return Base::TraverseNestedNameSpecifierLoc(loc);
