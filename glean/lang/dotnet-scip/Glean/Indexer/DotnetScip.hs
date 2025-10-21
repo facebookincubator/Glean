@@ -38,7 +38,8 @@ indexer = Indexer {
                 scipOutDir = Nothing,
                 scipRoot = indexerRoot,
                 scipWritesLocal = True,
-                scipLanguage = Just SCIP.CSharp
+                scipLanguage = Just SCIP.CSharp,
+                scipRustIndexer = Nothing
             }
             sendJsonBatches backend repo (dotnetScipBinary <> "/scip") val
             derive backend repo

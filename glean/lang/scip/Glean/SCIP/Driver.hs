@@ -24,6 +24,7 @@ module Glean.SCIP.Driver (
 
   ) where
 
+import Data.Maybe ( fromMaybe )
 import Control.Monad
 import System.Directory
 import System.FilePath ( (</>), takeBaseName )
@@ -44,6 +45,7 @@ data ScipIndexerParams = ScipIndexerParams
   , scipWritesLocal :: Bool
      -- ^ e.g. rust-analyzer always writes index.scip to repoDir
   , scipLanguage :: Maybe LanguageId -- ^ a default language if known
+  , scipRustIndexer :: Maybe FilePath
   }
 
 -- | Run a generic SCIP-producing indexer, and convert to a Glean's scip.angle
@@ -57,7 +59,14 @@ runIndexer params@ScipIndexerParams{..} = do
     when scipWritesLocal $ do
         copyFile (repoDir </> "index.scip") scipFile
         removeFile (repoDir </> "index.scip")
-    processSCIP scipLanguage False Nothing Nothing scipFile
+    case scipRustIndexer of
+      Nothing -> processSCIP scipLanguage False Nothing Nothing scipFile
+      Just rustIndexer -> do
+        let jsonPath = scipDir </> "index.json"
+        callProcess rustIndexer
+          ["--input", scipFile, "--infer-language", "--output", jsonPath]
+        mJson <- Aeson.decodeFileStrict jsonPath
+        return $ fromMaybe (error "rust indexer did not produce JSON") mJson
 
 withDirOrTmp :: Maybe FilePath -> (FilePath -> IO a) -> IO a
 withDirOrTmp Nothing f = withSystemTempDirectory "glean-scip" f

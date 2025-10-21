@@ -27,6 +27,7 @@ import Thrift.Protocol.Compact (Compact)
 data Swift = Swift
   { scipGen :: FilePath
   , target :: String
+  , scipRustIndexer :: Maybe FilePath
   }
 
 options :: Parser Swift
@@ -39,6 +40,9 @@ options = do
     long "target" <>
     value "target" <>
     help "target to build and index"
+  scipRustIndexer <- optional (strOption $
+    long "rust-indexer" <>
+    help "Path to the rust indexer binary. If not provided, uses the haskell indexer instead")
   return Swift{..}
 
 indexer :: Indexer Swift
@@ -64,7 +68,8 @@ indexer = Indexer {
         scipOutDir = Just tmpDir,
         scipRoot = indexerRoot,
         scipWritesLocal = False,
-        scipLanguage = Just SCIP.Swift
+        scipLanguage = Just SCIP.Swift,
+        scipRustIndexer = scipRustIndexer
       }
     sendJsonBatches backend repo (scipGen <> "/scip") val
     sendBatch backend repo (tmpDir </> "facts")

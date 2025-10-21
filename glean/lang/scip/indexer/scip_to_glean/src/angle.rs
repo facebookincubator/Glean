@@ -280,8 +280,11 @@ impl Env {
                 self.out
                     .file_range(enclosing_file_range_id, file_id, enclosing_range);
                 let enclosing_range_id = self.next_id();
-                self.out
-                    .enclosing_range(enclosing_range_id, file_range_id, enclosing_range_id);
+                self.out.enclosing_range(
+                    enclosing_range_id,
+                    file_range_id,
+                    enclosing_file_range_id,
+                );
             }
         }
 

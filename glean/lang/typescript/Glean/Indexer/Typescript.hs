@@ -44,7 +44,8 @@ indexer = Indexer {
         scipOutDir = Nothing,
         scipWritesLocal = False,
         scipRoot = indexerRoot,
-        scipLanguage = Just SCIP.TypeScript
+        scipLanguage = Just SCIP.TypeScript,
+        scipRustIndexer = Nothing
       }
     val <- SCIP.runIndexer params
     sendJsonBatches backend repo (scipTypescriptBinary <> "/scip") val

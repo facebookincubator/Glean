@@ -38,7 +38,8 @@ indexer = Indexer {
             scipOutDir = Nothing,
             scipRoot = indexerRoot,
             scipWritesLocal = True,
-            scipLanguage = Just SCIP.Python
+            scipLanguage = Just SCIP.Python,
+            scipRustIndexer = Nothing
         }
         sendJsonBatches backend repo (pythonScipBinary <> "/scip") val
         derive backend repo
