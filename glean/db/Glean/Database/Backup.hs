@@ -254,10 +254,12 @@ doBackup env@Env{..} repo prefix site =
       Storage.backup odbHandle scratch $ \path Data{dataSize} -> do
         say logInfo "uploading"
         let policy = ServerConfig.databaseBackupPolicy_repos config_backup
-            ttl = case ServerConfig.backup_delete_after_seconds <$>
-              Map.lookup (repo_name repo) policy of
-                Just 0 -> Nothing
-                ttl -> fromIntegral <$> ttl
+            ttl = case Map.lookup (repo_name repo) policy of
+              Just backupPolicy ->
+                case ServerConfig.backup_delete_after_seconds backupPolicy of
+                  0 -> Nothing
+                  seconds -> Just (fromIntegral seconds)
+              Nothing -> Just (30 * 24 * 60 * 60)  -- Default: 30 days
             metaWithBytes = meta {
               metaCompleteness = case metaCompleteness meta of
                 Complete DatabaseComplete{..} ->
