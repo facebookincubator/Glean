@@ -1565,7 +1565,12 @@
             "posonly_params": [ ],
             "returnsInfo": {
               "displayType": { "key": "\"FooClass\"" },
-              "xrefs": [ ]
+              "xrefs": [
+                {
+                  "source": { "length": 8, "start": 1 },
+                  "target": { "key": "foo.FooClass" }
+                }
+              ]
             }
           }
         }
