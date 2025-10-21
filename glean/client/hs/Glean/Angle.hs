@@ -10,6 +10,7 @@
 -- Small domain-specific language for building Angle queries
 -- programmatically.
 --
-module Glean.Angle (module Glean.Query.Angle) where
+module Glean.Angle (query, module Glean.Query.Angle) where
 
 import Glean.Query.Angle
+import Glean.Query.Thrift.Internal (query)

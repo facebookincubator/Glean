@@ -109,9 +109,9 @@ genTargets slashVn info oncall =
       ", \"//thrift/annotation:rust\"" <>
       ", \"//thrift/annotation:thrift\"],"
     , "  hs2_deps = ["
-    , "    \"//glean/hs:angle\","
-    , "    \"//glean/hs:typed\","
-    , "    \"//glean/hs:query-angle\","
+    , "    \"//glean/angle:angle\","
+    , "    \"//glean/typed:typed\","
+    , "    \"//glean/typed:query-angle\","
     , "    \"//glean/if:glean-hs2\","
     ] ++
     [ "  ],"

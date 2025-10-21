@@ -72,7 +72,6 @@ import Glean.RTS.Foreign.Query
 import Glean.RTS.Traverse
 import Glean.RTS.Types
 import Glean.RTS.Term
-import Glean.Typed.Binary (buildRtsValue)
 import Glean.Types hiding (Nat, Byte)
 import Glean.Bytecode.SysCalls (userQuerySysCalls)
 
@@ -1586,12 +1585,12 @@ matchPat syscalls (Bytes input inputend) fail chunks = match True chunks
 -- | Compile a query for some facts, possibly with recursive expansion.
 compileQueryFacts :: [FactQuery] -> IO CompiledQuery
 compileQueryFacts facts = do
-  input <- withBuilder $ \builder -> do
-    buildRtsValue builder
-      [ (fromIntegral factQuery_id :: Word64,
-          if factQuery_recursive then 1 else 0 :: Word64)
-      | FactQuery{..} <- facts ]
-    finishBuilder builder
+  let input = fromValue $ Array $
+        [ Tuple [
+            Nat (fromIntegral factQuery_id),
+            Nat (if factQuery_recursive then 1 else 0)
+          ]
+        | FactQuery{..} <- facts ]
   (Meta{..}, sub) <- generateQueryCode $ \ QueryRegs{..} ->
     outputUninitialized $ \kout vout -> local $ \fid pid rec_ ptr end -> do
       loadLiteral input ptr end

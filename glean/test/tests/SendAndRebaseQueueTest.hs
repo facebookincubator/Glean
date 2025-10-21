@@ -36,6 +36,7 @@ import Glean.Init
 import Glean.Query.Angle
 import qualified Glean.Schema.GleanTest as Glean.Test
 import qualified Glean.Schema.GleanTest.Types as Glean.Test
+import Glean.Query.Thrift.Internal (query)
 import Glean.Typed (buildBatch)
 import qualified Glean.Types as Thrift
 import Glean.Write.JSON ( buildJsonBatch )
