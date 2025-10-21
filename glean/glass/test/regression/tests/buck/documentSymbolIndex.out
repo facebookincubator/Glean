@@ -3,7 +3,7 @@
     {
         "referenced_file_digests": {},
         "revision": "testhash",
-        "size": 23,
+        "size": 25,
         "symbols": {
             "13": [
                 {
@@ -662,6 +662,76 @@
                         "columnEnd": 71,
                         "lineBegin": 50,
                         "lineEnd": 50
+                    },
+                    "sym": "test/buck/f/buck_project/toto.c",
+                    "target": {
+                        "filepath": "buck_project/toto.c",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 1,
+                            "lineEnd": 1
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "55": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 4
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "toto.c"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 25,
+                        "lineBegin": 55,
+                        "lineEnd": 55
+                    },
+                    "sym": "test/buck/f/buck_project/toto.c",
+                    "target": {
+                        "filepath": "buck_project/toto.c",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 1,
+                            "lineEnd": 1
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "62": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 4
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "toto.c"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 25,
+                        "lineBegin": 62,
+                        "lineEnd": 62
                     },
                     "sym": "test/buck/f/buck_project/toto.c",
                     "target": {
