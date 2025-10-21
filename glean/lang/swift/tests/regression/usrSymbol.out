@@ -1,0 +1,1356 @@
+[
+  "@generated",
+  {
+    "key": {
+      "usr": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)bounds" },
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)bounds" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)frame" },
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)frame" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)setAlpha:" },
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)setAlpha:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)setBackgroundColor:" },
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)setBackgroundColor:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)setCenter:" },
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)setCenter:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)setFrame:" },
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)setFrame:" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@CM@UIKit@@objc(cs)UIView(im)setMultipleTouchEnabled:"
+      },
+      "symbol": {
+        "key": "c:@CM@UIKit@@objc(cs)UIView(im)setMultipleTouchEnabled:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@E@UIGestureRecognizerState@UIGestureRecognizerStateBegan"
+      },
+      "symbol": {
+        "key": "c:@E@UIGestureRecognizerState@UIGestureRecognizerStateBegan"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@E@UIGestureRecognizerState@UIGestureRecognizerStateCancelled"
+      },
+      "symbol": {
+        "key": "c:@E@UIGestureRecognizerState@UIGestureRecognizerStateCancelled"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@E@UIGestureRecognizerState@UIGestureRecognizerStateChanged"
+      },
+      "symbol": {
+        "key": "c:@E@UIGestureRecognizerState@UIGestureRecognizerStateChanged"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@E@UIGestureRecognizerState@UIGestureRecognizerStateEnded"
+      },
+      "symbol": {
+        "key": "c:@E@UIGestureRecognizerState@UIGestureRecognizerStateEnded"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@E@UIGestureRecognizerState@UIGestureRecognizerStateFailed"
+      },
+      "symbol": {
+        "key": "c:@E@UIGestureRecognizerState@UIGestureRecognizerStateFailed"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@E@UIViewKeyframeAnimationOptions@UIViewKeyframeAnimationOptionAllowUserInteraction"
+      },
+      "symbol": {
+        "key": "c:@E@UIViewKeyframeAnimationOptions@UIViewKeyframeAnimationOptionAllowUserInteraction"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@E@UIViewKeyframeAnimationOptions@UIViewKeyframeAnimationOptionCalculationModeLinear"
+      },
+      "symbol": {
+        "key": "c:@E@UIViewKeyframeAnimationOptions@UIViewKeyframeAnimationOptionCalculationModeLinear"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView" },
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)initWithCoder:"
+      },
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)initWithCoder:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)initWithFrame:"
+      },
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)initWithFrame:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)layoutSubviews"
+      },
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)layoutSubviews"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView" },
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)addOrUpdateBallWithId:position:altitude:color:supportsUpdate:"
+      },
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)addOrUpdateBallWithId:position:altitude:color:supportsUpdate:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)delegate" },
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)delegate" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)initWithCoder:"
+      },
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)initWithCoder:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)initWithFrame:"
+      },
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)initWithFrame:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)performRainbowAnimationWithId:completion:"
+      },
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)performRainbowAnimationWithId:completion:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)removeAll" },
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)removeAll" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)removeBallWithId:"
+      },
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)removeBallWithId:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)setDelegate:" },
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)setDelegate:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(py)delegate" },
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(py)delegate" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate" },
+      "symbol": { "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didDoubleTapBallId:"
+      },
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didDoubleTapBallId:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didDoubleTapPosition:"
+      },
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didDoubleTapPosition:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didLongPressBallId:"
+      },
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didLongPressBallId:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didPanBallId:position:"
+      },
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didPanBallId:position:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTapBallId:"
+      },
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTapBallId:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTapPosition:"
+      },
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTapPosition:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTripleTapBallId:"
+      },
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTripleTapBallId:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTripleTapPosition:"
+      },
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTripleTapPosition:"
+      }
+    }
+  },
+  {
+    "key": { "usr": { "key": "c:@M@UIKit" }, "symbol": { "key": "c:@M@UIKit" } }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@S@CGPoint" },
+      "symbol": { "key": "c:@S@CGPoint" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@S@CGRect" },
+      "symbol": { "key": "c:@S@CGRect" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@S@CGRect@FI@origin" },
+      "symbol": { "key": "c:@S@CGRect@FI@origin" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@S@CGRect@FI@size" },
+      "symbol": { "key": "c:@S@CGRect@FI@size" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@S@CGSize" },
+      "symbol": { "key": "c:@S@CGSize" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@S@CGSize@FI@width" },
+      "symbol": { "key": "c:@S@CGSize@FI@width" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:@T@NSTimeInterval" },
+      "symbol": { "key": "c:@T@NSTimeInterval" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)CALayer(im)setBorderColor:" },
+      "symbol": { "key": "c:objc(cs)CALayer(im)setBorderColor:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)CALayer(im)setBorderWidth:" },
+      "symbol": { "key": "c:objc(cs)CALayer(im)setBorderWidth:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)CALayer(im)setCornerRadius:" },
+      "symbol": { "key": "c:objc(cs)CALayer(im)setCornerRadius:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)CALayer(im)setMasksToBounds:" },
+      "symbol": { "key": "c:objc(cs)CALayer(im)setMasksToBounds:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)CALayer(py)borderColor" },
+      "symbol": { "key": "c:objc(cs)CALayer(py)borderColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)CALayer(py)borderWidth" },
+      "symbol": { "key": "c:objc(cs)CALayer(py)borderWidth" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)CALayer(py)cornerRadius" },
+      "symbol": { "key": "c:objc(cs)CALayer(py)cornerRadius" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)CALayer(py)masksToBounds" },
+      "symbol": { "key": "c:objc(cs)CALayer(py)masksToBounds" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)NSCoder" },
+      "symbol": { "key": "c:objc(cs)NSCoder" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor" },
+      "symbol": { "key": "c:objc(cs)UIColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cm)blackColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cm)blackColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cm)blueColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cm)blueColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cm)clearColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cm)clearColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cm)grayColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cm)grayColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cm)greenColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cm)greenColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cm)lightGrayColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cm)lightGrayColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cm)orangeColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cm)orangeColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cm)purpleColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cm)purpleColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cm)redColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cm)redColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cm)whiteColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cm)whiteColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cm)yellowColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cm)yellowColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cpy)blackColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)blackColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cpy)blueColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)blueColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cpy)clearColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)clearColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cpy)grayColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)grayColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cpy)greenColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)greenColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cpy)lightGrayColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)lightGrayColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cpy)orangeColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)orangeColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cpy)purpleColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)purpleColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cpy)redColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)redColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cpy)whiteColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)whiteColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(cpy)yellowColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(cpy)yellowColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(im)CGColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(im)CGColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(im)initWithWhite:alpha:" },
+      "symbol": { "key": "c:objc(cs)UIColor(im)initWithWhite:alpha:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIColor(py)CGColor" },
+      "symbol": { "key": "c:objc(cs)UIColor(py)CGColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(cs)UIGestureRecognizer(im)initWithTarget:action:"
+      },
+      "symbol": {
+        "key": "c:objc(cs)UIGestureRecognizer(im)initWithTarget:action:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIGestureRecognizer(im)locationInView:" },
+      "symbol": { "key": "c:objc(cs)UIGestureRecognizer(im)locationInView:" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(cs)UIGestureRecognizer(im)requireGestureRecognizerToFail:"
+      },
+      "symbol": {
+        "key": "c:objc(cs)UIGestureRecognizer(im)requireGestureRecognizerToFail:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIGestureRecognizer(im)state" },
+      "symbol": { "key": "c:objc(cs)UIGestureRecognizer(im)state" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIGestureRecognizer(im)view" },
+      "symbol": { "key": "c:objc(cs)UIGestureRecognizer(im)view" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIGestureRecognizer(py)state" },
+      "symbol": { "key": "c:objc(cs)UIGestureRecognizer(py)state" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIGestureRecognizer(py)view" },
+      "symbol": { "key": "c:objc(cs)UIGestureRecognizer(py)view" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UILabel" },
+      "symbol": { "key": "c:objc(cs)UILabel" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UILabel(im)setText:" },
+      "symbol": { "key": "c:objc(cs)UILabel(im)setText:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UILabel(im)setTextColor:" },
+      "symbol": { "key": "c:objc(cs)UILabel(im)setTextColor:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UILabel(py)text" },
+      "symbol": { "key": "c:objc(cs)UILabel(py)text" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UILabel(py)textColor" },
+      "symbol": { "key": "c:objc(cs)UILabel(py)textColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UILongPressGestureRecognizer" },
+      "symbol": { "key": "c:objc(cs)UILongPressGestureRecognizer" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIPanGestureRecognizer" },
+      "symbol": { "key": "c:objc(cs)UIPanGestureRecognizer" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UITapGestureRecognizer" },
+      "symbol": { "key": "c:objc(cs)UITapGestureRecognizer" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(cs)UITapGestureRecognizer(im)setNumberOfTapsRequired:"
+      },
+      "symbol": {
+        "key": "c:objc(cs)UITapGestureRecognizer(im)setNumberOfTapsRequired:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(cs)UITapGestureRecognizer(py)numberOfTapsRequired"
+      },
+      "symbol": {
+        "key": "c:objc(cs)UITapGestureRecognizer(py)numberOfTapsRequired"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView" },
+      "symbol": { "key": "c:objc(cs)UIView" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(cs)UIView(cm)addKeyframeWithRelativeStartTime:relativeDuration:animations:"
+      },
+      "symbol": {
+        "key": "c:objc(cs)UIView(cm)addKeyframeWithRelativeStartTime:relativeDuration:animations:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(cs)UIView(cm)animateKeyframesWithDuration:delay:options:animations:completion:"
+      },
+      "symbol": {
+        "key": "c:objc(cs)UIView(cm)animateKeyframesWithDuration:delay:options:animations:completion:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView(im)addGestureRecognizer:" },
+      "symbol": { "key": "c:objc(cs)UIView(im)addGestureRecognizer:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView(im)addSubview:" },
+      "symbol": { "key": "c:objc(cs)UIView(im)addSubview:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView(im)init" },
+      "symbol": { "key": "c:objc(cs)UIView(im)init" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView(im)initWithFrame:" },
+      "symbol": { "key": "c:objc(cs)UIView(im)initWithFrame:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView(im)layer" },
+      "symbol": { "key": "c:objc(cs)UIView(im)layer" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView(im)layoutSubviews" },
+      "symbol": { "key": "c:objc(cs)UIView(im)layoutSubviews" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView(im)removeFromSuperview" },
+      "symbol": { "key": "c:objc(cs)UIView(im)removeFromSuperview" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView(im)setLayer:" },
+      "symbol": { "key": "c:objc(cs)UIView(im)setLayer:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView(im)setNeedsLayout" },
+      "symbol": { "key": "c:objc(cs)UIView(im)setNeedsLayout" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView(im)sizeToFit" },
+      "symbol": { "key": "c:objc(cs)UIView(im)sizeToFit" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView(py)alpha" },
+      "symbol": { "key": "c:objc(cs)UIView(py)alpha" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView(py)backgroundColor" },
+      "symbol": { "key": "c:objc(cs)UIView(py)backgroundColor" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView(py)bounds" },
+      "symbol": { "key": "c:objc(cs)UIView(py)bounds" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView(py)center" },
+      "symbol": { "key": "c:objc(cs)UIView(py)center" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView(py)frame" },
+      "symbol": { "key": "c:objc(cs)UIView(py)frame" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView(py)layer" },
+      "symbol": { "key": "c:objc(cs)UIView(py)layer" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(cs)UIView(py)multipleTouchEnabled" },
+      "symbol": { "key": "c:objc(cs)UIView(py)multipleTouchEnabled" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSCoding(im)encodeWithCoder:" },
+      "symbol": { "key": "c:objc(pl)NSCoding(im)encodeWithCoder:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSCoding(im)initWithCoder:" },
+      "symbol": { "key": "c:objc(pl)NSCoding(im)initWithCoder:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject" },
+      "symbol": { "key": "c:objc(pl)NSObject" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(im)autorelease" },
+      "symbol": { "key": "c:objc(pl)NSObject(im)autorelease" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(im)class" },
+      "symbol": { "key": "c:objc(pl)NSObject(im)class" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(im)conformsToProtocol:" },
+      "symbol": { "key": "c:objc(pl)NSObject(im)conformsToProtocol:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(im)isEqual:" },
+      "symbol": { "key": "c:objc(pl)NSObject(im)isEqual:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(im)isKindOfClass:" },
+      "symbol": { "key": "c:objc(pl)NSObject(im)isKindOfClass:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(im)isMemberOfClass:" },
+      "symbol": { "key": "c:objc(pl)NSObject(im)isMemberOfClass:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(im)isProxy" },
+      "symbol": { "key": "c:objc(pl)NSObject(im)isProxy" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(im)performSelector:" },
+      "symbol": { "key": "c:objc(pl)NSObject(im)performSelector:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(im)performSelector:withObject:" },
+      "symbol": { "key": "c:objc(pl)NSObject(im)performSelector:withObject:" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)NSObject(im)performSelector:withObject:withObject:"
+      },
+      "symbol": {
+        "key": "c:objc(pl)NSObject(im)performSelector:withObject:withObject:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(im)release" },
+      "symbol": { "key": "c:objc(pl)NSObject(im)release" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(im)respondsToSelector:" },
+      "symbol": { "key": "c:objc(pl)NSObject(im)respondsToSelector:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(im)retain" },
+      "symbol": { "key": "c:objc(pl)NSObject(im)retain" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(im)retainCount" },
+      "symbol": { "key": "c:objc(pl)NSObject(im)retainCount" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(im)self" },
+      "symbol": { "key": "c:objc(pl)NSObject(im)self" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(im)zone" },
+      "symbol": { "key": "c:objc(pl)NSObject(im)zone" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(py)debugDescription" },
+      "symbol": { "key": "c:objc(pl)NSObject(py)debugDescription" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(py)description" },
+      "symbol": { "key": "c:objc(pl)NSObject(py)description" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(py)hash" },
+      "symbol": { "key": "c:objc(pl)NSObject(py)hash" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)NSObject(py)superclass" },
+      "symbol": { "key": "c:objc(pl)NSObject(py)superclass" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UIAccessibilityIdentification(py)accessibilityIdentifier"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UIAccessibilityIdentification(py)accessibilityIdentifier"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UIActivityItemsConfigurationProviding(py)activityItemsConfiguration"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UIActivityItemsConfigurationProviding(py)activityItemsConfiguration"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIAppearance(cm)appearance" },
+      "symbol": { "key": "c:objc(pl)UIAppearance(cm)appearance" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UIAppearance(cm)appearanceForTraitCollection:"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UIAppearance(cm)appearanceForTraitCollection:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UIAppearance(cm)appearanceForTraitCollection:whenContainedInInstancesOfClasses:"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UIAppearance(cm)appearanceForTraitCollection:whenContainedInInstancesOfClasses:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UIAppearance(cm)appearanceWhenContainedInInstancesOfClasses:"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UIAppearance(cm)appearanceWhenContainedInInstancesOfClasses:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UICoordinateSpace(im)convertPoint:fromCoordinateSpace:"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UICoordinateSpace(im)convertPoint:fromCoordinateSpace:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UICoordinateSpace(im)convertPoint:toCoordinateSpace:"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UICoordinateSpace(im)convertPoint:toCoordinateSpace:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UICoordinateSpace(im)convertRect:fromCoordinateSpace:"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UICoordinateSpace(im)convertRect:fromCoordinateSpace:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UICoordinateSpace(im)convertRect:toCoordinateSpace:"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UICoordinateSpace(im)convertRect:toCoordinateSpace:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UICoordinateSpace(py)bounds" },
+      "symbol": { "key": "c:objc(pl)UICoordinateSpace(py)bounds" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIDynamicItem(py)bounds" },
+      "symbol": { "key": "c:objc(pl)UIDynamicItem(py)bounds" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIDynamicItem(py)center" },
+      "symbol": { "key": "c:objc(pl)UIDynamicItem(py)center" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIDynamicItem(py)collisionBoundingPath" },
+      "symbol": { "key": "c:objc(pl)UIDynamicItem(py)collisionBoundingPath" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIDynamicItem(py)collisionBoundsType" },
+      "symbol": { "key": "c:objc(pl)UIDynamicItem(py)collisionBoundsType" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIDynamicItem(py)transform" },
+      "symbol": { "key": "c:objc(pl)UIDynamicItem(py)transform" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UIFocusEnvironment(im)didUpdateFocusInContext:withAnimationCoordinator:"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(im)didUpdateFocusInContext:withAnimationCoordinator:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIFocusEnvironment(im)setNeedsFocusUpdate" },
+      "symbol": { "key": "c:objc(pl)UIFocusEnvironment(im)setNeedsFocusUpdate" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UIFocusEnvironment(im)shouldUpdateFocusInContext:"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(im)shouldUpdateFocusInContext:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIFocusEnvironment(im)updateFocusIfNeeded" },
+      "symbol": { "key": "c:objc(pl)UIFocusEnvironment(im)updateFocusIfNeeded" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIFocusEnvironment(py)focusGroupIdentifier" },
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(py)focusGroupIdentifier"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIFocusEnvironment(py)focusItemContainer" },
+      "symbol": { "key": "c:objc(pl)UIFocusEnvironment(py)focusItemContainer" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UIFocusEnvironment(py)parentFocusEnvironment"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(py)parentFocusEnvironment"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UIFocusEnvironment(py)preferredFocusEnvironments"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(py)preferredFocusEnvironments"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIFocusEnvironment(py)preferredFocusedView" },
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(py)preferredFocusedView"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIFocusItem(py)canBecomeFocused" },
+      "symbol": { "key": "c:objc(pl)UIFocusItem(py)canBecomeFocused" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIFocusItem(py)focusEffect" },
+      "symbol": { "key": "c:objc(pl)UIFocusItem(py)focusEffect" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIFocusItem(py)focusGroupPriority" },
+      "symbol": { "key": "c:objc(pl)UIFocusItem(py)focusGroupPriority" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIFocusItem(py)focusItemDeferralMode" },
+      "symbol": { "key": "c:objc(pl)UIFocusItem(py)focusItemDeferralMode" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIFocusItem(py)frame" },
+      "symbol": { "key": "c:objc(pl)UIFocusItem(py)frame" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIFocusItem(py)isTransparentFocusItem" },
+      "symbol": { "key": "c:objc(pl)UIFocusItem(py)isTransparentFocusItem" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIFocusItemContainer(im)focusItemsInRect:" },
+      "symbol": { "key": "c:objc(pl)UIFocusItemContainer(im)focusItemsInRect:" }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UIFocusItemContainer(py)coordinateSpace" },
+      "symbol": { "key": "c:objc(pl)UIFocusItemContainer(py)coordinateSpace" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UILargeContentViewerItem(py)largeContentImage"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UILargeContentViewerItem(py)largeContentImage"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UILargeContentViewerItem(py)largeContentImageInsets"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UILargeContentViewerItem(py)largeContentImageInsets"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UILargeContentViewerItem(py)largeContentTitle"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UILargeContentViewerItem(py)largeContentTitle"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UILargeContentViewerItem(py)scalesLargeContentImage"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UILargeContentViewerItem(py)scalesLargeContentImage"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UILargeContentViewerItem(py)showsLargeContentViewer"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UILargeContentViewerItem(py)showsLargeContentViewer"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UIPasteConfigurationSupporting(py)pasteConfiguration"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UIPasteConfigurationSupporting(py)pasteConfiguration"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UIPopoverPresentationControllerSourceItem(im)frameInView:"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UIPopoverPresentationControllerSourceItem(im)frameInView:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UITraitChangeObservable(im)registerForTraitChanges:withAction:"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UITraitChangeObservable(im)registerForTraitChanges:withAction:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UITraitChangeObservable(im)registerForTraitChanges:withHandler:"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UITraitChangeObservable(im)registerForTraitChanges:withHandler:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UITraitChangeObservable(im)registerForTraitChanges:withTarget:action:"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UITraitChangeObservable(im)registerForTraitChanges:withTarget:action:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UITraitChangeObservable(im)unregisterForTraitChanges:"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UITraitChangeObservable(im)unregisterForTraitChanges:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UITraitEnvironment(im)traitCollectionDidChange:"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UITraitEnvironment(im)traitCollectionDidChange:"
+      }
+    }
+  },
+  {
+    "key": {
+      "usr": { "key": "c:objc(pl)UITraitEnvironment(py)traitCollection" },
+      "symbol": { "key": "c:objc(pl)UITraitEnvironment(py)traitCollection" }
+    }
+  },
+  {
+    "key": {
+      "usr": {
+        "key": "c:objc(pl)UIUserActivityRestoring(im)restoreUserActivityState:"
+      },
+      "symbol": {
+        "key": "c:objc(pl)UIUserActivityRestoring(im)restoreUserActivityState:"
+      }
+    }
+  }
+]
