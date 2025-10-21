@@ -3,7 +3,7 @@
     {
         "referenced_file_digests": {},
         "revision": "testhash",
-        "size": 10,
+        "size": 18,
         "symbols": {
             "1": [
                 {
@@ -30,7 +30,7 @@
                     "sym": "test/buck/f/buck_project/my_defs.bzl"
                 }
             ],
-            "14": [
+            "15": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -49,13 +49,13 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 14,
-                        "lineEnd": 16
+                        "lineBegin": 15,
+                        "lineEnd": 17
                     },
                     "sym": "test/buck/d/buck_project/my_defs.bzl/h"
                 }
             ],
-            "15": [
+            "16": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -74,8 +74,8 @@
                     "range": {
                         "columnBegin": 20,
                         "columnEnd": 32,
-                        "lineBegin": 15,
-                        "lineEnd": 15
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "sym": "test/buck/d/buck_project/my_defs.bzl/some_library",
                     "target": {
@@ -84,13 +84,13 @@
                             "columnBegin": 1,
                             "columnEnd": 6,
                             "lineBegin": 9,
-                            "lineEnd": 12
+                            "lineEnd": 13
                         },
                         "repository": "test"
                     }
                 }
             ],
-            "18": [
+            "19": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -109,13 +109,13 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 14,
-                        "lineBegin": 18,
-                        "lineEnd": 18
+                        "lineBegin": 19,
+                        "lineEnd": 19
                     },
                     "sym": "test/buck/d/buck_project/my_defs.bzl/MY_CONST"
                 }
             ],
-            "20": [
+            "21": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -134,8 +134,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 56,
-                        "lineBegin": 20,
-                        "lineEnd": 20
+                        "lineBegin": 21,
+                        "lineEnd": 21
                     },
                     "sym": "test/buck/d/buck_project/my_defs.bzl/MY_LIST"
                 },
@@ -157,8 +157,8 @@
                     "range": {
                         "columnBegin": 35,
                         "columnEnd": 43,
-                        "lineBegin": 20,
-                        "lineEnd": 20
+                        "lineBegin": 21,
+                        "lineEnd": 21
                     },
                     "sym": "test/buck/f/buck_project/toto.c",
                     "target": {
@@ -190,8 +190,8 @@
                     "range": {
                         "columnBegin": 12,
                         "columnEnd": 33,
-                        "lineBegin": 20,
-                        "lineEnd": 20
+                        "lineBegin": 21,
+                        "lineEnd": 21
                     },
                     "sym": "test/buck/t/buck_project/PATH/b/bar",
                     "target": {
@@ -201,6 +201,248 @@
                             "columnEnd": 2,
                             "lineBegin": 11,
                             "lineEnd": 13
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "23": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 3
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "KEY_XREFS"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project/my_defs.bzl"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 76,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "sym": "test/buck/d/buck_project/my_defs.bzl/KEY_XREFS"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 4
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "toto.c"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 61,
+                        "columnEnd": 69,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "sym": "test/buck/f/buck_project/toto.c",
+                    "target": {
+                        "filepath": "buck_project/toto.c",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 1,
+                            "lineEnd": 1
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "bar"
+                        },
+                        "symbolParent": {
+                            "aString": "b"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 32,
+                        "columnEnd": 53,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "sym": "test/buck/t/buck_project/PATH/b/bar",
+                    "target": {
+                        "filepath": "buck_project/b/TEST_TARGETS",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 11,
+                            "lineEnd": 13
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "25": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 3
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "VALUE_XREFS"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project/my_defs.bzl"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 75,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "sym": "test/buck/d/buck_project/my_defs.bzl/VALUE_XREFS"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 4
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "toto.c"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 29,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "sym": "test/buck/f/buck_project/toto.c",
+                    "target": {
+                        "filepath": "buck_project/toto.c",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 1,
+                            "lineEnd": 1
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "bar"
+                        },
+                        "symbolParent": {
+                            "aString": "b"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 36,
+                        "columnEnd": 57,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "sym": "test/buck/t/buck_project/PATH/b/bar",
+                    "target": {
+                        "filepath": "buck_project/b/TEST_TARGETS",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 11,
+                            "lineEnd": 13
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "27": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 3
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "hh"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project/my_defs.bzl"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 27,
+                        "lineEnd": 29
+                    },
+                    "sym": "test/buck/d/buck_project/my_defs.bzl/hh"
+                }
+            ],
+            "28": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 3
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "h"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project/my_defs.bzl"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 21,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "sym": "test/buck/d/buck_project/my_defs.bzl/h",
+                    "target": {
+                        "filepath": "buck_project/my_defs.bzl",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 15,
+                            "lineEnd": 17
                         },
                         "repository": "test"
                     }
@@ -276,7 +518,7 @@
                         "columnBegin": 1,
                         "columnEnd": 6,
                         "lineBegin": 9,
-                        "lineEnd": 12
+                        "lineEnd": 13
                     },
                     "sym": "test/buck/d/buck_project/my_defs.bzl/some_library"
                 }

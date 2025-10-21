@@ -309,8 +309,98 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 14,
-                        "lineEnd": 16
+                        "lineBegin": 15,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "h"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "buck_project/my_defs.bzl"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 48,
+                    "lineEnd": 48
+                },
+                "sym": "test/buck/d/buck_project/my_defs.bzl/h",
+                "target": {
+                    "filepath": "buck_project/my_defs.bzl",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 15,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "hh"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "buck_project/my_defs.bzl"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 37,
+                    "columnEnd": 41,
+                    "lineBegin": 3,
+                    "lineEnd": 3
+                },
+                "sym": "test/buck/d/buck_project/my_defs.bzl/hh",
+                "target": {
+                    "filepath": "buck_project/my_defs.bzl",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 27,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 }
