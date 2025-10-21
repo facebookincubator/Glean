@@ -22,6 +22,26 @@
             "repository": "test"
         },
         {
+            "filepath": "buck_project/TEST_TARGETS",
+            "range": {
+                "columnBegin": 50,
+                "columnEnd": 58,
+                "lineBegin": 48,
+                "lineEnd": 48
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "buck_project/TEST_TARGETS",
+            "range": {
+                "columnBegin": 63,
+                "columnEnd": 71,
+                "lineBegin": 50,
+                "lineEnd": 50
+            },
+            "repository": "test"
+        },
+        {
             "filepath": "buck_project/my_defs.bzl",
             "range": {
                 "columnBegin": 35,

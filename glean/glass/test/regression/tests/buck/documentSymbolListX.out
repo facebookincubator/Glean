@@ -409,6 +409,51 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "hh"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "buck_project/my_defs.bzl"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 3,
+                    "lineBegin": 50,
+                    "lineEnd": 50
+                },
+                "sym": "test/buck/d/buck_project/my_defs.bzl/hh",
+                "target": {
+                    "filepath": "buck_project/my_defs.bzl",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 27,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolKind"
@@ -527,6 +572,96 @@
                     "columnEnd": 26,
                     "lineBegin": 32,
                     "lineEnd": 32
+                },
+                "sym": "test/buck/f/buck_project/toto.c",
+                "target": {
+                    "filepath": "buck_project/toto.c",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 4
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "toto.c"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "buck_project"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 50,
+                    "columnEnd": 58,
+                    "lineBegin": 48,
+                    "lineEnd": 48
+                },
+                "sym": "test/buck/f/buck_project/toto.c",
+                "target": {
+                    "filepath": "buck_project/toto.c",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 4
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "toto.c"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "buck_project"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 63,
+                    "columnEnd": 71,
+                    "lineBegin": 50,
+                    "lineEnd": 50
                 },
                 "sym": "test/buck/f/buck_project/toto.c",
                 "target": {
