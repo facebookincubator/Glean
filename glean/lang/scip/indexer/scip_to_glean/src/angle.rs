@@ -138,9 +138,16 @@ impl Env {
         default_lang: Option<LanguageId>,
         infer_language: bool,
         path_prefix: Option<&str>,
+        strip_prefix: Option<&str>,
         doc: Document,
     ) -> Result<()> {
         let mut filepath = doc.relative_path.to_owned();
+        if let Some(strip_prefix) = strip_prefix {
+            filepath = filepath
+                .strip_prefix(strip_prefix)
+                .unwrap_or(&filepath)
+                .to_owned();
+        }
         if let Some(path_prefix) = path_prefix {
             filepath = format!("{}{}", path_prefix, filepath);
         }

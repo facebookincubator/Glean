@@ -57,6 +57,9 @@ struct BuildJsonArgs {
     #[arg(long, help = "Prefix to prepend to filepaths.")]
     root_prefix: Option<String>,
 
+    #[arg(long, help = "Strip this prefix from the filepaths")]
+    strip_prefix: Option<String>,
+
     #[arg(
         long,
         help = "Shards the JSON graph into subgraphs. Subgraphs will be approximately the size specified. Uses the --output argument as a directory, and writes one file per shard"
@@ -76,6 +79,7 @@ fn decode_scip_data(
     default_language: Option<LanguageId>,
     infer_language: bool,
     path_prefix: Option<&str>,
+    strip_prefix: Option<&str>,
 ) -> Result<()> {
     info!("Loading documents from {}", path.display());
     let scip_index = read_scip_file(path)
@@ -86,7 +90,13 @@ fn decode_scip_data(
         env.decode_scip_metadata(metadata);
     }
     for doc in scip_index.documents {
-        env.decode_scip_doc(default_language, infer_language, path_prefix, doc)?;
+        env.decode_scip_doc(
+            default_language,
+            infer_language,
+            path_prefix,
+            strip_prefix,
+            doc,
+        )?;
     }
     Ok(())
 }
@@ -106,6 +116,7 @@ fn build_json(args: BuildJsonArgs) -> Result<()> {
             default_language,
             args.infer_language,
             args.root_prefix.as_deref(),
+            args.strip_prefix.as_deref(),
         )?;
     }
 
@@ -225,6 +236,7 @@ mod tests {
             infer_language: true,
             language: None,
             root_prefix: None,
+            strip_prefix: None,
             shard: None,
         };
 
@@ -247,6 +259,7 @@ mod tests {
             infer_language: true,
             language: None,
             root_prefix: None,
+            strip_prefix: None,
             shard: Some(100),
         };
 
