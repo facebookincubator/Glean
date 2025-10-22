@@ -258,8 +258,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 19,
-                        "lineEnd": 20
+                        "lineBegin": 20,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -377,9 +377,9 @@
                     "filepath": "shadow.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 26,
+                        "columnEnd": 32,
                         "lineBegin": 16,
-                        "lineEnd": 19
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },

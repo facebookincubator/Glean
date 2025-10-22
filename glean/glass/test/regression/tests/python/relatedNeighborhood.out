@@ -2,6 +2,7 @@
     "@generated",
     {
         "childrenContained": [
+            "test/py/lib.py/lib.HelperClass.THelperClass",
             "test/py/lib.py/lib.HelperClass.another_method",
             "test/py/lib.py/lib.HelperClass.method",
             "test/py/lib.py/lib.HelperClass.value"
@@ -41,7 +42,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 21
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -60,7 +61,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 21
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -97,7 +98,7 @@
                         "columnBegin": 1,
                         "columnEnd": 13,
                         "lineBegin": 9,
-                        "lineEnd": 16
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 },
@@ -116,7 +117,7 @@
                         "columnBegin": 1,
                         "columnEnd": 13,
                         "lineBegin": 9,
-                        "lineEnd": 16
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 },
@@ -128,6 +129,62 @@
                             "start": 6
                         },
                         "type": "test/py/lib.py/lib.HelperClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            "test/py/lib.py/lib.HelperClass.THelperClass": {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 64,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "THelperClass"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "THelperClass",
+                "sym": "test/py/lib.py/lib.HelperClass.THelperClass",
+                "sym_location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 64,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 12,
+                            "start": 0
+                        },
+                        "type": "test/py/lib.py/lib.HelperClass.THelperClass"
                     }
                 ],
                 "visibility": 20
@@ -152,8 +209,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 15,
-                        "lineEnd": 16
+                        "lineBegin": 16,
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 },
@@ -171,8 +228,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 15,
-                        "lineEnd": 16
+                        "lineBegin": 16,
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 },
@@ -208,8 +265,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 12,
-                        "lineEnd": 13
+                        "lineBegin": 13,
+                        "lineEnd": 14
                     },
                     "repository": "test"
                 },
@@ -227,8 +284,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 12,
-                        "lineEnd": 13
+                        "lineBegin": 13,
+                        "lineEnd": 14
                     },
                     "repository": "test"
                 },
@@ -263,9 +320,9 @@
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 56,
-                        "lineBegin": 10,
-                        "lineEnd": 10
+                        "columnEnd": 24,
+                        "lineBegin": 11,
+                        "lineEnd": 11
                     },
                     "repository": "test"
                 },
@@ -276,15 +333,15 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "value: TypeVar(\"THelperClass\", bound=\"HelperClass\")",
+                "signature": "value: THelperClass",
                 "sym": "test/py/lib.py/lib.HelperClass.value",
                 "sym_location": {
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 56,
-                        "lineBegin": 10,
-                        "lineEnd": 10
+                        "columnEnd": 24,
+                        "lineBegin": 11,
+                        "lineEnd": 11
                     },
                     "repository": "test"
                 },
@@ -296,6 +353,13 @@
                             "start": 0
                         },
                         "type": "test/py/lib.py/lib.HelperClass.value"
+                    },
+                    {
+                        "span": {
+                            "length": 12,
+                            "start": 7
+                        },
+                        "type": "test/py/lib.py/lib.HelperClass.THelperClass"
                     }
                 ],
                 "visibility": 20

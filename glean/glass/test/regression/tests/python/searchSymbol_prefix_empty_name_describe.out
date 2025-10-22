@@ -1246,7 +1246,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 21
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -1265,7 +1265,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 21
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -1302,7 +1302,7 @@
                         "columnBegin": 1,
                         "columnEnd": 13,
                         "lineBegin": 9,
-                        "lineEnd": 16
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 },
@@ -1321,7 +1321,7 @@
                         "columnBegin": 1,
                         "columnEnd": 13,
                         "lineBegin": 9,
-                        "lineEnd": 16
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 },
@@ -1350,6 +1350,62 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 64,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "THelperClass"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "THelperClass",
+                "sym": "test/py/lib.py/lib.HelperClass.THelperClass",
+                "sym_location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 64,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 12,
+                            "start": 0
+                        },
+                        "type": "test/py/lib.py/lib.HelperClass.THelperClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 8,
                 "language": 7,
                 "location": {
@@ -1357,8 +1413,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 15,
-                        "lineEnd": 16
+                        "lineBegin": 16,
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 },
@@ -1376,8 +1432,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 15,
-                        "lineEnd": 16
+                        "lineBegin": 16,
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 },
@@ -1413,8 +1469,8 @@
                     "range": {
                         "columnBegin": 30,
                         "columnEnd": 35,
-                        "lineBegin": 15,
-                        "lineEnd": 15
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -1432,8 +1488,8 @@
                     "range": {
                         "columnBegin": 30,
                         "columnEnd": 35,
-                        "lineBegin": 15,
-                        "lineEnd": 15
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -1469,8 +1525,8 @@
                     "range": {
                         "columnBegin": 24,
                         "columnEnd": 28,
-                        "lineBegin": 15,
-                        "lineEnd": 15
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -1488,8 +1544,8 @@
                     "range": {
                         "columnBegin": 24,
                         "columnEnd": 28,
-                        "lineBegin": 15,
-                        "lineEnd": 15
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -1525,8 +1581,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 12,
-                        "lineEnd": 13
+                        "lineBegin": 13,
+                        "lineEnd": 14
                     },
                     "repository": "test"
                 },
@@ -1544,8 +1600,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 12,
-                        "lineEnd": 13
+                        "lineBegin": 13,
+                        "lineEnd": 14
                     },
                     "repository": "test"
                 },
@@ -1581,8 +1637,8 @@
                     "range": {
                         "columnBegin": 16,
                         "columnEnd": 20,
-                        "lineBegin": 12,
-                        "lineEnd": 12
+                        "lineBegin": 13,
+                        "lineEnd": 13
                     },
                     "repository": "test"
                 },
@@ -1600,8 +1656,8 @@
                     "range": {
                         "columnBegin": 16,
                         "columnEnd": 20,
-                        "lineBegin": 12,
-                        "lineEnd": 12
+                        "lineBegin": 13,
+                        "lineEnd": 13
                     },
                     "repository": "test"
                 },
@@ -1636,9 +1692,9 @@
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 56,
-                        "lineBegin": 10,
-                        "lineEnd": 10
+                        "columnEnd": 24,
+                        "lineBegin": 11,
+                        "lineEnd": 11
                     },
                     "repository": "test"
                 },
@@ -1649,15 +1705,15 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "value: TypeVar(\"THelperClass\", bound=\"HelperClass\")",
+                "signature": "value: THelperClass",
                 "sym": "test/py/lib.py/lib.HelperClass.value",
                 "sym_location": {
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 56,
-                        "lineBegin": 10,
-                        "lineEnd": 10
+                        "columnEnd": 24,
+                        "lineBegin": 11,
+                        "lineEnd": 11
                     },
                     "repository": "test"
                 },
@@ -1669,6 +1725,13 @@
                             "start": 0
                         },
                         "type": "test/py/lib.py/lib.HelperClass.value"
+                    },
+                    {
+                        "span": {
+                            "length": 12,
+                            "start": 7
+                        },
+                        "type": "test/py/lib.py/lib.HelperClass.THelperClass"
                     }
                 ],
                 "visibility": 20
@@ -1693,8 +1756,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 19,
-                        "lineEnd": 20
+                        "lineBegin": 20,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -1712,8 +1775,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 19,
-                        "lineEnd": 20
+                        "lineBegin": 20,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -1981,7 +2044,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 25
+                        "lineEnd": 28
                     },
                     "repository": "test"
                 },
@@ -2000,7 +2063,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 25
+                        "lineEnd": 28
                     },
                     "repository": "test"
                 },
@@ -2260,8 +2323,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 20,
-                        "lineBegin": 22,
-                        "lineEnd": 22
+                        "lineBegin": 25,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 },
@@ -2279,8 +2342,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 20,
-                        "lineBegin": 22,
-                        "lineEnd": 22
+                        "lineBegin": 25,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 },
@@ -2372,8 +2435,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 22,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "repository": "test"
                 },
@@ -2391,8 +2454,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 22,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "repository": "test"
                 },
@@ -2428,8 +2491,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 20,
-                        "lineBegin": 23,
-                        "lineEnd": 23
+                        "lineBegin": 26,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -2447,8 +2510,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 20,
-                        "lineBegin": 23,
-                        "lineEnd": 23
+                        "lineBegin": 26,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -2483,9 +2546,9 @@
                     "filepath": "shadow.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 26,
+                        "columnEnd": 32,
                         "lineBegin": 16,
-                        "lineEnd": 19
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -2502,9 +2565,9 @@
                     "filepath": "shadow.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 26,
+                        "columnEnd": 32,
                         "lineBegin": 16,
-                        "lineEnd": 19
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -3112,7 +3175,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 21
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -3135,7 +3198,7 @@
                         "columnBegin": 1,
                         "columnEnd": 13,
                         "lineBegin": 9,
-                        "lineEnd": 16
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 },
@@ -3157,6 +3220,36 @@
                     },
                     "symbol": "test/py/lib.py/lib.HelperClass"
                 },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 64,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.THelperClass",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "THelperClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/lib.py/lib.HelperClass.THelperClass"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "lib",
+                        "localName": "HelperClass"
+                    },
+                    "symbol": "test/py/lib.py/lib.HelperClass"
+                },
                 "kind": 8,
                 "language": 7,
                 "location": {
@@ -3164,8 +3257,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 15,
-                        "lineEnd": 16
+                        "lineBegin": 16,
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 },
@@ -3187,8 +3280,8 @@
                     "range": {
                         "columnBegin": 30,
                         "columnEnd": 35,
-                        "lineBegin": 15,
-                        "lineEnd": 15
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -3210,8 +3303,8 @@
                     "range": {
                         "columnBegin": 24,
                         "columnEnd": 28,
-                        "lineBegin": 15,
-                        "lineEnd": 15
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -3240,8 +3333,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 12,
-                        "lineEnd": 13
+                        "lineBegin": 13,
+                        "lineEnd": 14
                     },
                     "repository": "test"
                 },
@@ -3263,8 +3356,8 @@
                     "range": {
                         "columnBegin": 16,
                         "columnEnd": 20,
-                        "lineBegin": 12,
-                        "lineEnd": 12
+                        "lineBegin": 13,
+                        "lineEnd": 13
                     },
                     "repository": "test"
                 },
@@ -3292,9 +3385,9 @@
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 56,
-                        "lineBegin": 10,
-                        "lineEnd": 10
+                        "columnEnd": 24,
+                        "lineBegin": 11,
+                        "lineEnd": 11
                     },
                     "repository": "test"
                 },
@@ -3323,8 +3416,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 19,
-                        "lineEnd": 20
+                        "lineBegin": 20,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -3460,7 +3553,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 25
+                        "lineEnd": 28
                     },
                     "repository": "test"
                 },
@@ -3602,8 +3695,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 20,
-                        "lineBegin": 22,
-                        "lineEnd": 22
+                        "lineBegin": 25,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 },
@@ -3662,8 +3755,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 22,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "repository": "test"
                 },
@@ -3692,8 +3785,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 20,
-                        "lineBegin": 23,
-                        "lineEnd": 23
+                        "lineBegin": 26,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -3721,9 +3814,9 @@
                     "filepath": "shadow.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 26,
+                        "columnEnd": 32,
                         "lineBegin": 16,
-                        "lineEnd": 19
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },

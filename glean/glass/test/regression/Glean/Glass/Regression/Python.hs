@@ -71,12 +71,12 @@ testPythonFindReferences get = TestLabel "findReferences" $ TestList [
     ("big_lib/relative.py",2),
     ("lib.py",1),
     ("main.py",2),
-    ("shadow.py",4) ],
+    ("shadow.py",3) ],
   "test/py/big_lib.big_var" --> [
     ("all.py",3),
     ("as.py",1),
     ("big_lib/__init__.py",1),
-    ("shadow.py",4) ],
+    ("shadow.py",3) ],
   "test/py/lib.HelperClass" --> [
     ("all.py",5),
     ("as.py",1),
@@ -91,8 +91,8 @@ testPythonFindReferences get = TestLabel "findReferences" $ TestList [
   "test/py/shadow.ShadowClass" --> [],
   "test/py/shadow.ShadowClass.big_func" --> [("shadow.py",1)],
   "test/py/shadow.ShadowClass.other_var" --> [],
-  "test/py/shadow.local_var" --> [("shadow.py",3)],
-  "test/py/shadow.big_func" --> [("shadow.py",3)],
+  "test/py/shadow.local_var" --> [("shadow.py",2)],
+  "test/py/shadow.big_func" --> [("shadow.py",2)],
   "test/py/shadow.other_var" --> [],
   "test/py/all.LocalClass" --> [("all.py",1)]
   ]
