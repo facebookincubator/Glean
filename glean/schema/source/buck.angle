@@ -418,7 +418,9 @@ predicate IndexFailureX :
     lit: string |
     sequence: [ArgumentValue] |
     mapping: [ArgumentMapping] |
-    none
+    none |
+    def_ : Definition |
+    other : src.ByteSpan |
   }
 
 predicate CallArgument: {
