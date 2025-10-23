@@ -18,7 +18,7 @@ import Glean.SCIP.Driver as SCIP
 
 data RustScip = RustScip
   { rustAnalyzerBinary :: FilePath
-  , scipRustIndexer :: Maybe FilePath
+  , scipToGlean :: FilePath
   }
 
 options :: Parser RustScip
@@ -27,9 +27,9 @@ options = do
     long "rust-analyzer" <>
     value "rust-analyzer" <>
     help "path to the rust-analyzer binary"
-  scipRustIndexer <- optional (strOption $
-    long "rust-indexer" <>
-    help "Path to the rust indexer binary. If not provided, uses the haskell indexer instead")
+  scipToGlean <- strOption $
+    long "scip-to-glean" <>
+    help "Path to the scip-to-glean indexer binary"
   return RustScip{..}
 
 indexer :: Indexer RustScip
@@ -44,8 +44,8 @@ indexer = Indexer {
                     scipOutDir = Nothing,
                     scipRoot = indexerRoot,
                     scipWritesLocal = True,
-                    scipLanguage = Just SCIP.Rust,
-                    scipRustIndexer = scipRustIndexer
+                    scipLanguage = Just "rust",
+                    scipToGlean = scipToGlean
                  }
     sendJsonBatches backend repo (rustAnalyzerBinary <> "/scip") val
     derive backend repo

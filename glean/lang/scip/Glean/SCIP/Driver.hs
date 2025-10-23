@@ -20,8 +20,6 @@ module Glean.SCIP.Driver (
     ScipIndexerParams(..),
     runIndexer,
     processSCIP,
-    LanguageId(..),
-
   ) where
 
 import Data.Maybe ( fromMaybe )
@@ -33,9 +31,6 @@ import System.Process ( callProcess )
 import Text.Printf ( printf )
 import Util.Log ( logInfo )
 import qualified Data.Aeson as Aeson
-import qualified Data.ByteString as B
-
-import Data.SCIP.Angle ( scipToAngle, LanguageId(..) )
 
 data ScipIndexerParams = ScipIndexerParams
   { scipBinary :: FilePath
@@ -44,8 +39,8 @@ data ScipIndexerParams = ScipIndexerParams
   , scipRoot :: FilePath
   , scipWritesLocal :: Bool
      -- ^ e.g. rust-analyzer always writes index.scip to repoDir
-  , scipLanguage :: Maybe LanguageId -- ^ a default language if known
-  , scipRustIndexer :: Maybe FilePath
+  , scipLanguage :: Maybe String -- ^ a default language if known
+  , scipToGlean :: FilePath
   }
 
 -- | Run a generic SCIP-producing indexer, and convert to a Glean's scip.angle
@@ -59,14 +54,8 @@ runIndexer params@ScipIndexerParams{..} = do
     when scipWritesLocal $ do
         copyFile (repoDir </> "index.scip") scipFile
         removeFile (repoDir </> "index.scip")
-    case scipRustIndexer of
-      Nothing -> processSCIP scipLanguage False Nothing Nothing scipFile
-      Just rustIndexer -> do
-        let jsonPath = scipDir </> "index.json"
-        callProcess rustIndexer
-          ["--input", scipFile, "--infer-language", "--output", jsonPath]
-        mJson <- Aeson.decodeFileStrict jsonPath
-        return $ fromMaybe (error "rust indexer did not produce JSON") mJson
+    processSCIP
+      scipLanguage scipToGlean False Nothing Nothing scipFile scipDir
 
 withDirOrTmp :: Maybe FilePath -> (FilePath -> IO a) -> IO a
 withDirOrTmp Nothing f = withSystemTempDirectory "glean-scip" f
@@ -83,12 +72,39 @@ runSCIPIndexer ScipIndexerParams{..} outputFile =
 
 -- | Convert an scip protobufs encoded file into Glean lsif.angle JSON object
 processSCIP
-  :: Maybe LanguageId
+  :: Maybe String
+  -> FilePath
   -> Bool
   -> Maybe FilePath
   -> Maybe FilePath
   -> FilePath
+  -> FilePath
   -> IO Aeson.Value
-processSCIP mlang inferLanguage mPathPrefix mStripPrefix scipFile = do
+processSCIP
+    mlang
+    scipToGlean
+    inferLanguage
+    mPathPrefix
+    mStripPrefix
+    scipFile
+    outDir = do
+  let jsonFile = outDir </> "index.json"
   logInfo $ "Using SCIP from " <> scipFile
-  scipToAngle mlang inferLanguage mPathPrefix mStripPrefix <$> B.readFile scipFile
+  let langArgs = case mlang of
+        Nothing -> []
+        Just lang -> ["--language", lang]
+  let inferLanguageArgs = (["--infer-language" | inferLanguage])
+  let rootPrefixArgs = case mPathPrefix of
+        Nothing -> []
+        Just path -> ["--root-prefix", path]
+  let stripPrefixArgs = case mStripPrefix of
+        Nothing -> []
+        Just path -> ["--strip-prefix", path]
+  callProcess scipToGlean
+    (["--input", scipFile, "--output", jsonFile]
+      <> langArgs
+      <> inferLanguageArgs
+      <> rootPrefixArgs
+      <> stripPrefixArgs)
+  mJson <- Aeson.decodeFileStrict jsonFile
+  return $ fromMaybe (error "scip-to-glean indexer did not produce JSON") mJson

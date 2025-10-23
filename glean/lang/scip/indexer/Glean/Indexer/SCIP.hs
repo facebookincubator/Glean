@@ -23,19 +23,26 @@ import Glean.Write
 
 import qualified Glean
 import System.Directory (doesFileExist)
+import System.IO.Temp ( withSystemTempDirectory )
 import Util.OptParse (maybeStrOption)
 
 -- | A generic SCIP indexer, for existing scip files
-newtype SCIP = SCIP
+data SCIP = SCIP
   { scipIndexFile :: Maybe FilePath
+  , scipToGlean :: FilePath
   }
   -- no options currently
 
 options :: Parser SCIP
 options =
-  SCIP <$> maybeStrOption (
-    long "input" <>
-    help "Optional path to a specific scip index file")
+  SCIP
+    <$> maybeStrOption (
+      long "input" <>
+      help "Optional path to a specific scip index file")
+    <*> strOption (
+      long "scip-to-glean" <>
+      metavar "PATH" <>
+      help "Path to scip-to-glean indexer binary")
 
 -- | An indexer that just slurps an existing SCIP file. Usage:
 --
@@ -55,7 +62,8 @@ indexer = Indexer {
         if mFile
           then pure indexerRoot
           else error "Neither --input nor --root are scip files"
-    val <- SCIP.processSCIP Nothing False Nothing Nothing scipFile
+    val <- withSystemTempDirectory "glean-scip"
+      (SCIP.processSCIP Nothing scipToGlean False Nothing Nothing scipFile)
     sendJsonBatches backend repo "scip" val
     derive backend repo
   }

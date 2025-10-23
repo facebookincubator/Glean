@@ -18,7 +18,7 @@ import Glean.SCIP.Driver as SCIP
 
 data PythonScip = PythonScip
     { pythonScipBinary :: FilePath
-    , scipRustIndexer :: Maybe FilePath
+    , scipToGlean :: FilePath
     }
 
 options :: Parser PythonScip
@@ -27,9 +27,9 @@ options = do
         long "scip-python" <>
         value "scip-python" <>
         help "path to scip-python binary"
-    scipRustIndexer <- optional (strOption $
-        long "rust-indexer" <>
-        help "Path to the rust indexer binary. If not provided, uses the haskell indexer instead")
+    scipToGlean <- strOption $
+        long "scip-to-glean" <>
+        help "Path to the scip-to-glean indexer binary"
     return PythonScip{..}
 
 indexer :: Indexer PythonScip
@@ -44,8 +44,8 @@ indexer = Indexer {
             scipOutDir = Nothing,
             scipRoot = indexerRoot,
             scipWritesLocal = True,
-            scipLanguage = Just SCIP.Python,
-            scipRustIndexer = scipRustIndexer
+            scipLanguage = Just "python",
+            scipToGlean = scipToGlean
         }
         sendJsonBatches backend repo (pythonScipBinary <> "/scip") val
         derive backend repo
