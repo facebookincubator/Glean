@@ -325,6 +325,10 @@ glean-clang:: gen-schema glean glean.cabal cxx-libraries glean/schema/cpp/schema
 glean-hie:: glean.cabal cxx-libraries
 	$(CABAL) build hie-indexer
 
+.PHONY: glean-lsp
+glean-lsp:: glean.cabal
+	$(CABAL) build glean-lsp
+
 define bash_macros
 call_cabal() {
 	$(CABAL) "$$@"

@@ -1,0 +1,92 @@
+cabal-version:       3.6
+name:                glean-lsp
+version:             0.1.0.0
+synopsis:            Generic Glean-based LSP Server
+homepage:            https://github.com/facebookincubator/Glean
+bug-reports:         https://github.com/facebookincubator/Glean/issues
+license:             BSD-3-Clause
+license-file:        LICENSE
+author:              Facebook, Inc.
+maintainer:          Glean-team@fb.com
+copyright:           (c) Facebook, All Rights Reserved
+build-type:          Simple
+extra-doc-files:     CHANGELOG.md, README.md
+
+common fb-haskell
+    default-language: Haskell2010
+    default-extensions:
+        BangPatterns
+        BinaryLiterals
+        DataKinds
+        DeriveDataTypeable
+        DeriveGeneric
+        EmptyCase
+        ExistentialQuantification
+        FlexibleContexts
+        FlexibleInstances
+        GADTs
+        GeneralizedNewtypeDeriving
+        LambdaCase
+        MultiParamTypeClasses
+        MultiWayIf
+        NamedFieldPuns
+        NoMonomorphismRestriction
+        OverloadedStrings
+        PatternSynonyms
+        RankNTypes
+        ScopedTypeVariables
+        StandaloneDeriving
+        TupleSections
+        TypeFamilies
+        TypeSynonymInstances
+        NondecreasingIndentation
+        TypeOperators
+        -- these are new relative to regular fb-haskell:
+        DisambiguateRecordFields
+        OverloadedRecordDot
+        NoFieldSelectors
+        DuplicateRecordFields
+        ImportQualifiedPost
+
+    ghc-options:
+        -Wall
+        -Wno-orphans
+        -Wno-name-shadowing
+        -Wno-unticked-promoted-constructors
+    if flag(opt)
+       ghc-options: -O2
+
+flag opt
+     default: False
+
+common exe
+  ghc-options: -threaded -rtsopts
+
+executable glean-lsp
+    import: fb-haskell, exe
+    main-is: Glean/LSP.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Glean.LSP
+    other-modules:
+        Data.Path
+    build-depends:
+        aeson >= 2.0.3 && < 2.3,
+        base >=4.11.1 && <4.19,
+        containers >= 0.6 && < 0.7,
+        data-default >= 0.7.1 && < 0.9,
+        directory ^>=1.3.1.5,
+        exceptions ^>=0.10.0,
+        filepath >= 1.4.2 && < 1.5,
+        hashable >=1.2.7.0 && <1.5,
+        lsp >=2.7.0.0 && <2.8.0.0,
+        text >=1.2.3.0 && < 2.2,
+        transformers >= 0.5.6 && < 0.7,
+        unliftio ^>=0.2,
+        unliftio-core ^>=0.2,
+        unordered-containers >= 0.2.9.0 && < 0.3,
+        optparse-applicative >= 0.17 && < 0.19,
+        glean:glass-lib,
+        glean:if-glass-hs,
+        glean:util,
+        fb-util,
+        thrift-lib
