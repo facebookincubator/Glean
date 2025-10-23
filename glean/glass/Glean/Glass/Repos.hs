@@ -283,6 +283,7 @@ fileLanguage (Path file)
   | is "TARGETS"  = Just Language_Buck
   | is "BUCK"  = Just Language_Buck
   | is ".bzl"  = Just Language_Buck
+  | is ".sky"  = Just Language_Buck
 
   | is ".cs"  = Just Language_CSharp
   | is ".graphql"  = Just Language_GraphQL
