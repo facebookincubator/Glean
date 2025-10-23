@@ -17,9 +17,11 @@ use proto_rust::scip::Document;
 use proto_rust::scip::Metadata;
 use proto_rust::scip::Occurrence;
 use proto_rust::scip::SymbolInformation;
+use scip_symbol::Descriptor;
+use scip_symbol::ScipSymbol;
+use scip_symbol::parse_scip_symbol;
 use serde::Serialize;
 
-use crate::Suffix;
 use crate::ToolInfo;
 use crate::decode_scip_range;
 use crate::lsif::LanguageId;
@@ -247,8 +249,7 @@ impl Env {
     }
 
     fn get_symbol_id(&mut self, symbol: &String, filepath: &str) -> Option<ScipId> {
-        let symbol_no_spaces = symbol.replace("  ", "_");
-        let scip_symbol = symbol_from_string(&symbol_no_spaces);
+        let scip_symbol = parse_scip_symbol(symbol);
         let qualified_symbol = match scip_symbol {
             ScipSymbol::Local { .. } => format!("{}/{}", filepath, symbol),
             ScipSymbol::Global { .. } => symbol.clone(),
@@ -295,8 +296,7 @@ impl Env {
             }
         }
 
-        let symbol = occ.symbol.replace("  ", "_");
-        let symbol = symbol_from_string(&symbol);
+        let symbol = parse_scip_symbol(&occ.symbol);
 
         match symbol {
             ScipSymbol::Local { id } => {
@@ -307,12 +307,12 @@ impl Env {
                     filepath,
                 );
             }
-            ScipSymbol::Global { descriptor, .. } => {
+            ScipSymbol::Global { descriptors, .. } => {
                 self.decode_global_occurrence(
                     occ.symbol,
                     SymbolRoleSet(occ.symbol_roles),
                     file_range_id,
-                    descriptor,
+                    descriptors,
                 );
             }
         }
@@ -357,7 +357,7 @@ impl Env {
         scip_symbol: String,
         sym_roles: SymbolRoleSet,
         file_range_id: ScipId,
-        descriptor: Descriptor,
+        descriptors: Vec<Descriptor>,
     ) {
         let scip_symbol = scip_symbol.into_boxed_str();
         let (symbol_id, seen_symbol) =
@@ -371,7 +371,12 @@ impl Env {
             self.out.reference(symbol_id, file_range_id);
         }
 
-        let local_name = descriptor.text.to_owned().into_boxed_str();
+        // Use the last descriptor's name for the local name
+        let local_name = descriptors
+            .last()
+            .map(|d| d.name.to_owned().into_boxed_str())
+            .unwrap_or_else(|| "".to_owned().into_boxed_str());
+
         let (name_id, seen_name) =
             self.get_or_set_fact(StringPredicate::LocalName, local_name.clone());
         if !seen_name {
@@ -381,109 +386,19 @@ impl Env {
             self.out.symbol_name(symbol_id, name_id);
         }
 
-        let kind = SymbolKind::new(descriptor.suffix);
-        if kind != SymbolKind::SkUnknown {
-            self.out.symbol_kind(symbol_id, kind);
-        }
-    }
-}
-
-enum ScipSymbol<'a> {
-    Local {
-        id: &'a str,
-    },
-    Global {
-        // scheme: &'a str,
-        // manager: &'a str,
-        // pkgname: &'a str,
-        // version: &'a str,
-        descriptor: Descriptor<'a>,
-    },
-}
-struct Descriptor<'a> {
-    text: &'a str,
-    suffix: Suffix,
-}
-
-fn symbol_from_string<'a>(symbol: &'a str) -> ScipSymbol<'a> {
-    if let Some(("local", rest)) = symbol.split_once(' ') {
-        return ScipSymbol::Local { id: rest };
-    }
-
-    let (_scheme, rest) = symbol.split_once(' ').unwrap_or((symbol, ""));
-    let (_manager, rest) = rest.split_once(' ').unwrap_or((rest, ""));
-    let (_pkgname, rest) = rest.split_once(' ').unwrap_or((rest, ""));
-    let (_version, sym_str) = rest.split_once(' ').unwrap_or((rest, ""));
-    let descriptor = parse_suffix(sym_str);
-    ScipSymbol::Global { descriptor }
-}
-
-fn parse_suffix<'a>(sym_str: &'a str) -> Descriptor<'a> {
-    if sym_str.is_empty() {
-        return Descriptor {
-            text: "",
-            suffix: Suffix::SymUnspecifiedSuffix,
-        };
-    }
-
-    let (text, _) = sym_str.split_at(sym_str.len() - 1);
-    let last = sym_str.as_bytes().last().unwrap();
-    let suffix = match last {
-        b'/' => Suffix::SymPackage,
-        b'#' => Suffix::SymType,
-        b'.' => {
-            let last2 = text.as_bytes().last().copied();
-            if last2 == Some(b')') {
-                Suffix::SymMethod
-            } else {
-                Suffix::SymTerm
+        // Use the last descriptor's kind for the symbol kind
+        if let Some(last_descriptor) = descriptors.last() {
+            let kind = SymbolKind::new(last_descriptor.kind.clone());
+            if kind != SymbolKind::SkUnknown {
+                self.out.symbol_kind(symbol_id, kind);
             }
         }
-        b':' => Suffix::SymMeta,
-        b']' => Suffix::SymTypeParameter,
-        b')' => Suffix::SymParameter,
-        _ => {
-            return Descriptor {
-                text: sym_str,
-                suffix: Suffix::SymUnspecifiedSuffix,
-            };
-        }
-    };
-
-    Descriptor { text, suffix }
+    }
 }
 
 struct SymbolRoleSet(i32);
 impl SymbolRoleSet {
     fn has_def(&self) -> bool {
         self.0 & (1 << 0) != 0
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_symbol_from_string_global_type() {
-        let symbol = "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std io/stdio/IsTerminal#";
-        let symbol = symbol_from_string(symbol);
-        let ScipSymbol::Global { descriptor } = symbol else {
-            panic!("expected global symbol");
-        };
-        assert_eq!(descriptor.text, "io/stdio/IsTerminal");
-        assert_eq!(descriptor.suffix, Suffix::SymType);
-    }
-
-    #[test]
-    fn test_symbol_from_string_global_unspecified() {
-        let symbol =
-            "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std macros/println!";
-        let symbol = symbol_from_string(symbol);
-        let ScipSymbol::Global { descriptor } = symbol else {
-            panic!("expected global symbol");
-        };
-        assert_eq!(descriptor.text, "macros/println!");
-        assert_eq!(descriptor.suffix, Suffix::SymUnspecifiedSuffix);
     }
 }

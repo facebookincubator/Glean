@@ -3559,7 +3559,7 @@
       "symbol": {
         "key": "rust-analyzer cargo arena_deserializer 0.0.0 impls/impl_deserialize_in_arena!"
       },
-      "name": { "key": "impls/impl_deserialize_in_arena!" }
+      "name": { "key": "impl_deserialize_in_arena!" }
     }
   },
   {
@@ -3585,7 +3585,7 @@
       "symbol": {
         "key": "rust-analyzer cargo bstr 1.10.0 ext_slice/ByteSlice#"
       },
-      "name": { "key": "ext_slice/ByteSlice" }
+      "name": { "key": "ByteSlice" }
     }
   },
   {
@@ -3599,7 +3599,7 @@
       "symbol": {
         "key": "rust-analyzer cargo dashmap 5.5.3 impl#[`DashMap<K, V, S>`]entry()."
       },
-      "name": { "key": "impl#[`DashMap<K, V, S>`]entry()" }
+      "name": { "key": "entry" }
     }
   },
   {
@@ -3607,13 +3607,13 @@
       "symbol": {
         "key": "rust-analyzer cargo dashmap 5.5.3 impl#[`DashMap<K, V, S>`]iter()."
       },
-      "name": { "key": "impl#[`DashMap<K, V, S>`]iter()" }
+      "name": { "key": "iter" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo dashmap 5.5.3 iter/Iter#map." },
-      "name": { "key": "iter/Iter#map" }
+      "name": { "key": "map" }
     }
   },
   {
@@ -3621,7 +3621,7 @@
       "symbol": {
         "key": "rust-analyzer cargo dashmap 5.5.3 mapref/entry/impl#[`Entry<'a, K, V, S>`]or_default()."
       },
-      "name": { "key": "mapref/entry/impl#[`Entry<'a, K, V, S>`]or_default()" }
+      "name": { "key": "or_default" }
     }
   },
   {
@@ -3647,7 +3647,7 @@
       "symbol": {
         "key": "rust-analyzer cargo delta_log 0.0.0 init_delta_logger()."
       },
-      "name": { "key": "init_delta_logger()" }
+      "name": { "key": "init_delta_logger" }
     }
   },
   {
@@ -3655,13 +3655,13 @@
       "symbol": {
         "key": "rust-analyzer cargo delta_log 0.0.0 log_durations()."
       },
-      "name": { "key": "log_durations()" }
+      "name": { "key": "log_durations" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo digest 0.10.7 digest/Digest#" },
-      "name": { "key": "digest/Digest" }
+      "name": { "key": "Digest" }
     }
   },
   {
@@ -3675,7 +3675,7 @@
       "symbol": {
         "key": "rust-analyzer cargo env_logger 0.10.2 logger/Builder#"
       },
-      "name": { "key": "logger/Builder" }
+      "name": { "key": "Builder" }
     }
   },
   {
@@ -3683,7 +3683,7 @@
       "symbol": {
         "key": "rust-analyzer cargo env_logger 0.10.2 logger/impl#[Builder]format()."
       },
-      "name": { "key": "logger/impl#[Builder]format()" }
+      "name": { "key": "format" }
     }
   },
   {
@@ -3691,7 +3691,7 @@
       "symbol": {
         "key": "rust-analyzer cargo env_logger 0.10.2 logger/impl#[Builder]from_default_env()."
       },
-      "name": { "key": "logger/impl#[Builder]from_default_env()" }
+      "name": { "key": "from_default_env" }
     }
   },
   {
@@ -3699,7 +3699,7 @@
       "symbol": {
         "key": "rust-analyzer cargo env_logger 0.10.2 logger/impl#[Builder]try_init()."
       },
-      "name": { "key": "logger/impl#[Builder]try_init()" }
+      "name": { "key": "try_init" }
     }
   },
   {
@@ -3737,7 +3737,7 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo hex 0.4.3 encode()." },
-      "name": { "key": "encode()" }
+      "name": { "key": "encode" }
     }
   },
   {
@@ -3745,7 +3745,7 @@
       "symbol": {
         "key": "rust-analyzer cargo lock_api 0.4.12 rwlock/impl#[`RwLock<R, T>`]new()."
       },
-      "name": { "key": "rwlock/impl#[`RwLock<R, T>`]new()" }
+      "name": { "key": "new" }
     }
   },
   {
@@ -3775,7 +3775,7 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 Record#entries." },
-      "name": { "key": "Record#entries" }
+      "name": { "key": "entries" }
     }
   },
   {
@@ -3789,7 +3789,7 @@
       "symbol": {
         "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#count."
       },
-      "name": { "key": "RecordEntry#count" }
+      "name": { "key": "count" }
     }
   },
   {
@@ -3797,13 +3797,13 @@
       "symbol": {
         "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#distribution."
       },
-      "name": { "key": "RecordEntry#distribution" }
+      "name": { "key": "distribution" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#max." },
-      "name": { "key": "RecordEntry#max" }
+      "name": { "key": "max" }
     }
   },
   {
@@ -3811,13 +3811,13 @@
       "symbol": {
         "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#mean."
       },
-      "name": { "key": "RecordEntry#mean" }
+      "name": { "key": "mean" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#min." },
-      "name": { "key": "RecordEntry#min" }
+      "name": { "key": "min" }
     }
   },
   {
@@ -3825,7 +3825,7 @@
       "symbol": {
         "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#variance_sum."
       },
-      "name": { "key": "RecordEntry#variance_sum" }
+      "name": { "key": "variance_sum" }
     }
   },
   {
@@ -3837,13 +3837,13 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordName#0." },
-      "name": { "key": "RecordName#0" }
+      "name": { "key": "0" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordName#1." },
-      "name": { "key": "RecordName#1" }
+      "name": { "key": "1" }
     }
   },
   {
@@ -3857,7 +3857,7 @@
       "symbol": {
         "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordEntry]"
       },
-      "name": { "key": "impl#[RecordEntry" }
+      "name": { "key": "RecordEntry" }
     }
   },
   {
@@ -3865,7 +3865,7 @@
       "symbol": {
         "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordEntry]default()."
       },
-      "name": { "key": "impl#[RecordEntry]default()" }
+      "name": { "key": "default" }
     }
   },
   {
@@ -3873,7 +3873,7 @@
       "symbol": {
         "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordName]"
       },
-      "name": { "key": "impl#[RecordName" }
+      "name": { "key": "RecordName" }
     }
   },
   {
@@ -3881,7 +3881,7 @@
       "symbol": {
         "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordName][ToOcamlRep]to_ocamlrep()."
       },
-      "name": { "key": "impl#[RecordName][ToOcamlRep]to_ocamlrep()" }
+      "name": { "key": "to_ocamlrep" }
     }
   },
   {
@@ -3889,7 +3889,7 @@
       "symbol": {
         "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordName]fmt()."
       },
-      "name": { "key": "impl#[RecordName]fmt()" }
+      "name": { "key": "fmt" }
     }
   },
   {
@@ -3897,13 +3897,13 @@
       "symbol": {
         "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordName]from()."
       },
-      "name": { "key": "impl#[RecordName]from()" }
+      "name": { "key": "from" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]" },
-      "name": { "key": "impl#[Record" }
+      "name": { "key": "Record" }
     }
   },
   {
@@ -3911,7 +3911,7 @@
       "symbol": {
         "key": "rust-analyzer cargo measure 0.0.0 impl#[Record][ToOcamlRep]to_ocamlrep()."
       },
-      "name": { "key": "impl#[Record][ToOcamlRep]to_ocamlrep()" }
+      "name": { "key": "to_ocamlrep" }
     }
   },
   {
@@ -3919,7 +3919,7 @@
       "symbol": {
         "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]new()."
       },
-      "name": { "key": "impl#[Record]new()" }
+      "name": { "key": "new" }
     }
   },
   {
@@ -3927,7 +3927,7 @@
       "symbol": {
         "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]print_stats()."
       },
-      "name": { "key": "impl#[Record]print_stats()" }
+      "name": { "key": "print_stats" }
     }
   },
   {
@@ -3935,7 +3935,7 @@
       "symbol": {
         "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]sample()."
       },
-      "name": { "key": "impl#[Record]sample()" }
+      "name": { "key": "sample" }
     }
   },
   {
@@ -3943,43 +3943,43 @@
       "symbol": {
         "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]sample_impl()."
       },
-      "name": { "key": "impl#[Record]sample_impl()" }
+      "name": { "key": "sample_impl" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 pop_global()." },
-      "name": { "key": "pop_global()" }
+      "name": { "key": "pop_global" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 pretty_num()." },
-      "name": { "key": "pretty_num()" }
+      "name": { "key": "pretty_num" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 print_stats()." },
-      "name": { "key": "print_stats()" }
+      "name": { "key": "print_stats" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 push_global()." },
-      "name": { "key": "push_global()" }
+      "name": { "key": "push_global" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 sample()." },
-      "name": { "key": "sample()" }
+      "name": { "key": "sample" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 sample_impl()." },
-      "name": { "key": "sample_impl()" }
+      "name": { "key": "sample_impl" }
     }
   },
   {
@@ -3993,7 +3993,7 @@
       "symbol": {
         "key": "rust-analyzer cargo measure_ffi 0.0.0 hh_measure_pop_global()."
       },
-      "name": { "key": "hh_measure_pop_global()" }
+      "name": { "key": "hh_measure_pop_global" }
     }
   },
   {
@@ -4001,7 +4001,7 @@
       "symbol": {
         "key": "rust-analyzer cargo measure_ffi 0.0.0 hh_measure_push_global()."
       },
-      "name": { "key": "hh_measure_push_global()" }
+      "name": { "key": "hh_measure_push_global" }
     }
   },
   {
@@ -4027,7 +4027,7 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#add()."
       },
-      "name": { "key": "Allocator#add()" }
+      "name": { "key": "add" }
     }
   },
   {
@@ -4035,7 +4035,7 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#add_copy()."
       },
-      "name": { "key": "Allocator#add_copy()" }
+      "name": { "key": "add_copy" }
     }
   },
   {
@@ -4043,7 +4043,7 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#block_with_size()."
       },
-      "name": { "key": "Allocator#block_with_size()" }
+      "name": { "key": "block_with_size" }
     }
   },
   {
@@ -4051,7 +4051,7 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#block_with_size_and_tag()."
       },
-      "name": { "key": "Allocator#block_with_size_and_tag()" }
+      "name": { "key": "block_with_size_and_tag" }
     }
   },
   {
@@ -4059,7 +4059,7 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#byte_string_with_len()."
       },
-      "name": { "key": "Allocator#byte_string_with_len()" }
+      "name": { "key": "byte_string_with_len" }
     }
   },
   {
@@ -4067,7 +4067,7 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#set_field()."
       },
-      "name": { "key": "Allocator#set_field()" }
+      "name": { "key": "set_field" }
     }
   },
   {
@@ -4091,7 +4091,7 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo ocamlrep 0.1.0 arena/Arena#" },
-      "name": { "key": "arena/Arena" }
+      "name": { "key": "Arena" }
     }
   },
   {
@@ -4099,7 +4099,7 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 arena/impl#[Arena]new()."
       },
-      "name": { "key": "arena/impl#[Arena]new()" }
+      "name": { "key": "new" }
     }
   },
   {
@@ -4107,7 +4107,7 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 block/impl#[`BlockBuilder<'a>`]build()."
       },
-      "name": { "key": "block/impl#[`BlockBuilder<'a>`]build()" }
+      "name": { "key": "build" }
     }
   },
   {
@@ -4115,7 +4115,7 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 block/impl#[`BlockBytes<'a>`]build()."
       },
-      "name": { "key": "block/impl#[`BlockBytes<'a>`]build()" }
+      "name": { "key": "build" }
     }
   },
   {
@@ -4129,7 +4129,7 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 error/FromError#"
       },
-      "name": { "key": "error/FromError" }
+      "name": { "key": "FromError" }
     }
   },
   {
@@ -4137,7 +4137,7 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 error/FromError#BlockTagOutOfRange#"
       },
-      "name": { "key": "error/FromError#BlockTagOutOfRange" }
+      "name": { "key": "BlockTagOutOfRange" }
     }
   },
   {
@@ -4145,7 +4145,7 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 error/FromError#BlockTagOutOfRange#actual."
       },
-      "name": { "key": "error/FromError#BlockTagOutOfRange#actual" }
+      "name": { "key": "actual" }
     }
   },
   {
@@ -4153,7 +4153,7 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 error/FromError#BlockTagOutOfRange#max."
       },
-      "name": { "key": "error/FromError#BlockTagOutOfRange#max" }
+      "name": { "key": "max" }
     }
   },
   {
@@ -4167,7 +4167,7 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 from/expect_block()."
       },
-      "name": { "key": "from/expect_block()" }
+      "name": { "key": "expect_block" }
     }
   },
   {
@@ -4175,7 +4175,7 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 from/expect_block_size()."
       },
-      "name": { "key": "from/expect_block_size()" }
+      "name": { "key": "expect_block_size" }
     }
   },
   {
@@ -4183,7 +4183,7 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 from/expect_int()."
       },
-      "name": { "key": "from/expect_int()" }
+      "name": { "key": "expect_int" }
     }
   },
   {
@@ -4191,13 +4191,13 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 from/expect_tuple()."
       },
-      "name": { "key": "from/expect_tuple()" }
+      "name": { "key": "expect_tuple" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo ocamlrep 0.1.0 from/field()." },
-      "name": { "key": "from/field()" }
+      "name": { "key": "field" }
     }
   },
   {
@@ -4205,13 +4205,13 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 impls/sorted_iter_to_ocaml_map()."
       },
-      "name": { "key": "impls/sorted_iter_to_ocaml_map()" }
+      "name": { "key": "sorted_iter_to_ocaml_map" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo ocamlrep 0.1.0 value/Value#" },
-      "name": { "key": "value/Value" }
+      "name": { "key": "Value" }
     }
   },
   {
@@ -4219,7 +4219,7 @@
       "symbol": {
         "key": "rust-analyzer cargo ocamlrep 0.1.0 value/impl#[`Value<'a>`]int()."
       },
-      "name": { "key": "value/impl#[`Value<'a>`]int()" }
+      "name": { "key": "int" }
     }
   },
   {
@@ -4253,7 +4253,7 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo once_cell 1.20.2 sync/Lazy#" },
-      "name": { "key": "sync/Lazy" }
+      "name": { "key": "Lazy" }
     }
   },
   {
@@ -4261,7 +4261,7 @@
       "symbol": {
         "key": "rust-analyzer cargo once_cell 1.20.2 sync/impl#[`Lazy<T, F>`]new()."
       },
-      "name": { "key": "sync/impl#[`Lazy<T, F>`]new()" }
+      "name": { "key": "new" }
     }
   },
   {
@@ -4275,7 +4275,7 @@
       "symbol": {
         "key": "rust-analyzer cargo parking_lot 0.12.3 rwlock/RwLock#"
       },
-      "name": { "key": "rwlock/RwLock" }
+      "name": { "key": "RwLock" }
     }
   },
   {
@@ -4297,7 +4297,7 @@
       "symbol": {
         "key": "rust-analyzer cargo parser_core_types 0.0.0 indexed_source_text/Pos#"
       },
-      "name": { "key": "indexed_source_text/Pos" }
+      "name": { "key": "Pos" }
     }
   },
   {
@@ -4305,7 +4305,7 @@
       "symbol": {
         "key": "rust-analyzer cargo parser_core_types 0.0.0 indexed_source_text/Pos#end."
       },
-      "name": { "key": "indexed_source_text/Pos#end" }
+      "name": { "key": "end" }
     }
   },
   {
@@ -4313,7 +4313,7 @@
       "symbol": {
         "key": "rust-analyzer cargo parser_core_types 0.0.0 indexed_source_text/Pos#path."
       },
-      "name": { "key": "indexed_source_text/Pos#path" }
+      "name": { "key": "path" }
     }
   },
   {
@@ -4321,7 +4321,7 @@
       "symbol": {
         "key": "rust-analyzer cargo parser_core_types 0.0.0 indexed_source_text/Pos#start."
       },
-      "name": { "key": "indexed_source_text/Pos#start" }
+      "name": { "key": "start" }
     }
   },
   {
@@ -4353,7 +4353,7 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos/FilePos#" },
-      "name": { "key": "file_pos/FilePos" }
+      "name": { "key": "FilePos" }
     }
   },
   {
@@ -4361,7 +4361,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos/FilePos#line_column_beg()."
       },
-      "name": { "key": "file_pos/FilePos#line_column_beg()" }
+      "name": { "key": "line_column_beg" }
     }
   },
   {
@@ -4369,7 +4369,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos/FilePos#offset()."
       },
-      "name": { "key": "file_pos/FilePos#offset()" }
+      "name": { "key": "offset" }
     }
   },
   {
@@ -4383,7 +4383,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/DUMMY."
       },
-      "name": { "key": "file_pos_large/DUMMY" }
+      "name": { "key": "DUMMY" }
     }
   },
   {
@@ -4391,7 +4391,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#"
       },
-      "name": { "key": "file_pos_large/FilePosLarge" }
+      "name": { "key": "FilePosLarge" }
     }
   },
   {
@@ -4399,7 +4399,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#bol."
       },
-      "name": { "key": "file_pos_large/FilePosLarge#bol" }
+      "name": { "key": "bol" }
     }
   },
   {
@@ -4407,7 +4407,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#lnum."
       },
-      "name": { "key": "file_pos_large/FilePosLarge#lnum" }
+      "name": { "key": "lnum" }
     }
   },
   {
@@ -4415,7 +4415,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#offset."
       },
-      "name": { "key": "file_pos_large/FilePosLarge#offset" }
+      "name": { "key": "offset" }
     }
   },
   {
@@ -4423,7 +4423,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]"
       },
-      "name": { "key": "file_pos_large/impl#[FilePosLarge" }
+      "name": { "key": "FilePosLarge" }
     }
   },
   {
@@ -4431,9 +4431,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][FilePos]line_column_beg()."
       },
-      "name": {
-        "key": "file_pos_large/impl#[FilePosLarge][FilePos]line_column_beg()"
-      }
+      "name": { "key": "line_column_beg" }
     }
   },
   {
@@ -4441,7 +4439,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][FilePos]offset()."
       },
-      "name": { "key": "file_pos_large/impl#[FilePosLarge][FilePos]offset()" }
+      "name": { "key": "offset" }
     }
   },
   {
@@ -4449,7 +4447,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][FromOcamlRep]"
       },
-      "name": { "key": "file_pos_large/impl#[FilePosLarge][FromOcamlRep" }
+      "name": { "key": "FromOcamlRep" }
     }
   },
   {
@@ -4457,9 +4455,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][FromOcamlRep]from_ocamlrep()."
       },
-      "name": {
-        "key": "file_pos_large/impl#[FilePosLarge][FromOcamlRep]from_ocamlrep()"
-      }
+      "name": { "key": "from_ocamlrep" }
     }
   },
   {
@@ -4467,9 +4463,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][ToOcamlRep]to_ocamlrep()."
       },
-      "name": {
-        "key": "file_pos_large/impl#[FilePosLarge][ToOcamlRep]to_ocamlrep()"
-      }
+      "name": { "key": "to_ocamlrep" }
     }
   },
   {
@@ -4477,9 +4471,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][`FromOcamlRepIn<'a>`]"
       },
-      "name": {
-        "key": "file_pos_large/impl#[FilePosLarge][`FromOcamlRepIn<'a>`"
-      }
+      "name": { "key": "FromOcamlRepIn<'a>" }
     }
   },
   {
@@ -4487,9 +4479,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][`FromOcamlRepIn<'a>`]from_ocamlrep_in()."
       },
-      "name": {
-        "key": "file_pos_large/impl#[FilePosLarge][`FromOcamlRepIn<'a>`]from_ocamlrep_in()"
-      }
+      "name": { "key": "from_ocamlrep_in" }
     }
   },
   {
@@ -4497,7 +4487,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]beg_of_file()."
       },
-      "name": { "key": "file_pos_large/impl#[FilePosLarge]beg_of_file()" }
+      "name": { "key": "beg_of_file" }
     }
   },
   {
@@ -4505,7 +4495,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]beg_of_line()."
       },
-      "name": { "key": "file_pos_large/impl#[FilePosLarge]beg_of_line()" }
+      "name": { "key": "beg_of_line" }
     }
   },
   {
@@ -4513,7 +4503,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]cmp()."
       },
-      "name": { "key": "file_pos_large/impl#[FilePosLarge]cmp()" }
+      "name": { "key": "cmp" }
     }
   },
   {
@@ -4521,7 +4511,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]column()."
       },
-      "name": { "key": "file_pos_large/impl#[FilePosLarge]column()" }
+      "name": { "key": "column" }
     }
   },
   {
@@ -4529,7 +4519,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]from()."
       },
-      "name": { "key": "file_pos_large/impl#[FilePosLarge]from()" }
+      "name": { "key": "from" }
     }
   },
   {
@@ -4537,9 +4527,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]from_line_column_offset()."
       },
-      "name": {
-        "key": "file_pos_large/impl#[FilePosLarge]from_line_column_offset()"
-      }
+      "name": { "key": "from_line_column_offset" }
     }
   },
   {
@@ -4547,9 +4535,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]from_lnum_bol_offset()."
       },
-      "name": {
-        "key": "file_pos_large/impl#[FilePosLarge]from_lnum_bol_offset()"
-      }
+      "name": { "key": "from_lnum_bol_offset" }
     }
   },
   {
@@ -4557,7 +4543,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]is_dummy()."
       },
-      "name": { "key": "file_pos_large/impl#[FilePosLarge]is_dummy()" }
+      "name": { "key": "is_dummy" }
     }
   },
   {
@@ -4565,7 +4551,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line()."
       },
-      "name": { "key": "file_pos_large/impl#[FilePosLarge]line()" }
+      "name": { "key": "line" }
     }
   },
   {
@@ -4573,7 +4559,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line_beg()."
       },
-      "name": { "key": "file_pos_large/impl#[FilePosLarge]line_beg()" }
+      "name": { "key": "line_beg" }
     }
   },
   {
@@ -4581,7 +4567,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line_beg_offset()."
       },
-      "name": { "key": "file_pos_large/impl#[FilePosLarge]line_beg_offset()" }
+      "name": { "key": "line_beg_offset" }
     }
   },
   {
@@ -4589,7 +4575,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line_column()."
       },
-      "name": { "key": "file_pos_large/impl#[FilePosLarge]line_column()" }
+      "name": { "key": "line_column" }
     }
   },
   {
@@ -4597,9 +4583,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line_column_offset()."
       },
-      "name": {
-        "key": "file_pos_large/impl#[FilePosLarge]line_column_offset()"
-      }
+      "name": { "key": "line_column_offset" }
     }
   },
   {
@@ -4607,7 +4591,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]make_dummy()."
       },
-      "name": { "key": "file_pos_large/impl#[FilePosLarge]make_dummy()" }
+      "name": { "key": "make_dummy" }
     }
   },
   {
@@ -4615,7 +4599,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]partial_cmp()."
       },
-      "name": { "key": "file_pos_large/impl#[FilePosLarge]partial_cmp()" }
+      "name": { "key": "partial_cmp" }
     }
   },
   {
@@ -4623,7 +4607,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]with_column()."
       },
-      "name": { "key": "file_pos_large/impl#[FilePosLarge]with_column()" }
+      "name": { "key": "with_column" }
     }
   },
   {
@@ -4631,9 +4615,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[`(FilePosLarge, FilePosLarge)`][WithErasedLines]"
       },
-      "name": {
-        "key": "file_pos_large/impl#[`(FilePosLarge, FilePosLarge)`][WithErasedLines"
-      }
+      "name": { "key": "WithErasedLines" }
     }
   },
   {
@@ -4641,9 +4623,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[`(FilePosLarge, FilePosLarge)`][WithErasedLines]with_erased_lines()."
       },
-      "name": {
-        "key": "file_pos_large/impl#[`(FilePosLarge, FilePosLarge)`][WithErasedLines]with_erased_lines()"
-      }
+      "name": { "key": "with_erased_lines" }
     }
   },
   {
@@ -4657,7 +4637,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/BOL_BITS."
       },
-      "name": { "key": "file_pos_small/BOL_BITS" }
+      "name": { "key": "BOL_BITS" }
     }
   },
   {
@@ -4665,7 +4645,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/COLUMN_BITS."
       },
-      "name": { "key": "file_pos_small/COLUMN_BITS" }
+      "name": { "key": "COLUMN_BITS" }
     }
   },
   {
@@ -4673,7 +4653,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/DUMMY."
       },
-      "name": { "key": "file_pos_small/DUMMY" }
+      "name": { "key": "DUMMY" }
     }
   },
   {
@@ -4681,7 +4661,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/FilePosSmall#"
       },
-      "name": { "key": "file_pos_small/FilePosSmall" }
+      "name": { "key": "FilePosSmall" }
     }
   },
   {
@@ -4689,7 +4669,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/FilePosSmall#0."
       },
-      "name": { "key": "file_pos_small/FilePosSmall#0" }
+      "name": { "key": "0" }
     }
   },
   {
@@ -4697,7 +4677,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/LINE_BITS."
       },
-      "name": { "key": "file_pos_small/LINE_BITS" }
+      "name": { "key": "LINE_BITS" }
     }
   },
   {
@@ -4705,7 +4685,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/MAX_BOL."
       },
-      "name": { "key": "file_pos_small/MAX_BOL" }
+      "name": { "key": "MAX_BOL" }
     }
   },
   {
@@ -4713,7 +4693,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/MAX_COLUMN."
       },
-      "name": { "key": "file_pos_small/MAX_COLUMN" }
+      "name": { "key": "MAX_COLUMN" }
     }
   },
   {
@@ -4721,7 +4701,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/MAX_LINE."
       },
-      "name": { "key": "file_pos_small/MAX_LINE" }
+      "name": { "key": "MAX_LINE" }
     }
   },
   {
@@ -4729,7 +4709,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/PosTooLarge#"
       },
-      "name": { "key": "file_pos_small/PosTooLarge" }
+      "name": { "key": "PosTooLarge" }
     }
   },
   {
@@ -4737,7 +4717,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]"
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall" }
+      "name": { "key": "FilePosSmall" }
     }
   },
   {
@@ -4745,7 +4725,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]Error#"
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall]Error" }
+      "name": { "key": "Error" }
     }
   },
   {
@@ -4753,9 +4733,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][FilePos]line_column_beg()."
       },
-      "name": {
-        "key": "file_pos_small/impl#[FilePosSmall][FilePos]line_column_beg()"
-      }
+      "name": { "key": "line_column_beg" }
     }
   },
   {
@@ -4763,7 +4741,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][FilePos]offset()."
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall][FilePos]offset()" }
+      "name": { "key": "offset" }
     }
   },
   {
@@ -4771,7 +4749,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][FromOcamlRep]"
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall][FromOcamlRep" }
+      "name": { "key": "FromOcamlRep" }
     }
   },
   {
@@ -4779,9 +4757,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][FromOcamlRep]from_ocamlrep()."
       },
-      "name": {
-        "key": "file_pos_small/impl#[FilePosSmall][FromOcamlRep]from_ocamlrep()"
-      }
+      "name": { "key": "from_ocamlrep" }
     }
   },
   {
@@ -4789,9 +4765,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][ToOcamlRep]to_ocamlrep()."
       },
-      "name": {
-        "key": "file_pos_small/impl#[FilePosSmall][ToOcamlRep]to_ocamlrep()"
-      }
+      "name": { "key": "to_ocamlrep" }
     }
   },
   {
@@ -4799,9 +4773,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][`FromOcamlRepIn<'a>`]"
       },
-      "name": {
-        "key": "file_pos_small/impl#[FilePosSmall][`FromOcamlRepIn<'a>`"
-      }
+      "name": { "key": "FromOcamlRepIn<'a>" }
     }
   },
   {
@@ -4809,9 +4781,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][`FromOcamlRepIn<'a>`]from_ocamlrep_in()."
       },
-      "name": {
-        "key": "file_pos_small/impl#[FilePosSmall][`FromOcamlRepIn<'a>`]from_ocamlrep_in()"
-      }
+      "name": { "key": "from_ocamlrep_in" }
     }
   },
   {
@@ -4819,7 +4789,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]beg_of_file()."
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall]beg_of_file()" }
+      "name": { "key": "beg_of_file" }
     }
   },
   {
@@ -4827,7 +4797,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]beg_of_line()."
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall]beg_of_line()" }
+      "name": { "key": "beg_of_line" }
     }
   },
   {
@@ -4835,7 +4805,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]bol_line_col()."
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall]bol_line_col()" }
+      "name": { "key": "bol_line_col" }
     }
   },
   {
@@ -4843,9 +4813,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]bol_line_col_unchecked()."
       },
-      "name": {
-        "key": "file_pos_small/impl#[FilePosSmall]bol_line_col_unchecked()"
-      }
+      "name": { "key": "bol_line_col_unchecked" }
     }
   },
   {
@@ -4853,7 +4821,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]cmp()."
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall]cmp()" }
+      "name": { "key": "cmp" }
     }
   },
   {
@@ -4861,7 +4829,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]column()."
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall]column()" }
+      "name": { "key": "column" }
     }
   },
   {
@@ -4869,7 +4837,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]fmt()."
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall]fmt()" }
+      "name": { "key": "fmt" }
     }
   },
   {
@@ -4877,9 +4845,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]from_line_column_offset()."
       },
-      "name": {
-        "key": "file_pos_small/impl#[FilePosSmall]from_line_column_offset()"
-      }
+      "name": { "key": "from_line_column_offset" }
     }
   },
   {
@@ -4887,9 +4853,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]from_lnum_bol_offset()."
       },
-      "name": {
-        "key": "file_pos_small/impl#[FilePosSmall]from_lnum_bol_offset()"
-      }
+      "name": { "key": "from_lnum_bol_offset" }
     }
   },
   {
@@ -4897,7 +4861,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]is_dummy()."
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall]is_dummy()" }
+      "name": { "key": "is_dummy" }
     }
   },
   {
@@ -4905,7 +4869,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line()."
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall]line()" }
+      "name": { "key": "line" }
     }
   },
   {
@@ -4913,7 +4877,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line_beg()."
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall]line_beg()" }
+      "name": { "key": "line_beg" }
     }
   },
   {
@@ -4921,7 +4885,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line_beg_offset()."
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall]line_beg_offset()" }
+      "name": { "key": "line_beg_offset" }
     }
   },
   {
@@ -4929,7 +4893,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line_column()."
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall]line_column()" }
+      "name": { "key": "line_column" }
     }
   },
   {
@@ -4937,9 +4901,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line_column_offset()."
       },
-      "name": {
-        "key": "file_pos_small/impl#[FilePosSmall]line_column_offset()"
-      }
+      "name": { "key": "line_column_offset" }
     }
   },
   {
@@ -4947,7 +4909,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]make_dummy()."
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall]make_dummy()" }
+      "name": { "key": "make_dummy" }
     }
   },
   {
@@ -4955,7 +4917,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]partial_cmp()."
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall]partial_cmp()" }
+      "name": { "key": "partial_cmp" }
     }
   },
   {
@@ -4963,7 +4925,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]try_from()."
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall]try_from()" }
+      "name": { "key": "try_from" }
     }
   },
   {
@@ -4971,7 +4933,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]with_column()."
       },
-      "name": { "key": "file_pos_small/impl#[FilePosSmall]with_column()" }
+      "name": { "key": "with_column" }
     }
   },
   {
@@ -4979,7 +4941,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/mask()."
       },
-      "name": { "key": "file_pos_small/mask()" }
+      "name": { "key": "mask" }
     }
   },
   {
@@ -4987,7 +4949,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/mask_by()."
       },
-      "name": { "key": "file_pos_small/mask_by()" }
+      "name": { "key": "mask_by" }
     }
   },
   {
@@ -4999,19 +4961,19 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/Pos#" },
-      "name": { "key": "pos_impl/Pos" }
+      "name": { "key": "Pos" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/Pos#0." },
-      "name": { "key": "pos_impl/Pos#0" }
+      "name": { "key": "0" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#" },
-      "name": { "key": "pos_impl/PosImpl" }
+      "name": { "key": "PosImpl" }
     }
   },
   {
@@ -5019,7 +4981,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#FromReason#"
       },
-      "name": { "key": "pos_impl/PosImpl#FromReason" }
+      "name": { "key": "FromReason" }
     }
   },
   {
@@ -5027,7 +4989,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Large#"
       },
-      "name": { "key": "pos_impl/PosImpl#Large" }
+      "name": { "key": "Large" }
     }
   },
   {
@@ -5035,7 +4997,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Large#end."
       },
-      "name": { "key": "pos_impl/PosImpl#Large#end" }
+      "name": { "key": "end" }
     }
   },
   {
@@ -5043,7 +5005,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Large#file."
       },
-      "name": { "key": "pos_impl/PosImpl#Large#file" }
+      "name": { "key": "file" }
     }
   },
   {
@@ -5051,7 +5013,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Large#start."
       },
-      "name": { "key": "pos_impl/PosImpl#Large#start" }
+      "name": { "key": "start" }
     }
   },
   {
@@ -5059,7 +5021,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Small#"
       },
-      "name": { "key": "pos_impl/PosImpl#Small" }
+      "name": { "key": "Small" }
     }
   },
   {
@@ -5067,7 +5029,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Small#end."
       },
-      "name": { "key": "pos_impl/PosImpl#Small#end" }
+      "name": { "key": "end" }
     }
   },
   {
@@ -5075,7 +5037,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Small#file."
       },
-      "name": { "key": "pos_impl/PosImpl#Small#file" }
+      "name": { "key": "file" }
     }
   },
   {
@@ -5083,7 +5045,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Small#start."
       },
-      "name": { "key": "pos_impl/PosImpl#Small#start" }
+      "name": { "key": "start" }
     }
   },
   {
@@ -5091,7 +5053,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Tiny#"
       },
-      "name": { "key": "pos_impl/PosImpl#Tiny" }
+      "name": { "key": "Tiny" }
     }
   },
   {
@@ -5099,7 +5061,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Tiny#file."
       },
-      "name": { "key": "pos_impl/PosImpl#Tiny#file" }
+      "name": { "key": "file" }
     }
   },
   {
@@ -5107,13 +5069,13 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Tiny#span."
       },
-      "name": { "key": "pos_impl/PosImpl#Tiny#span" }
+      "name": { "key": "span" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosR#" },
-      "name": { "key": "pos_impl/PosR" }
+      "name": { "key": "PosR" }
     }
   },
   {
@@ -5121,7 +5083,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosString#"
       },
-      "name": { "key": "pos_impl/PosString" }
+      "name": { "key": "PosString" }
     }
   },
   {
@@ -5129,7 +5091,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/compute()."
       },
-      "name": { "key": "pos_impl/compute()" }
+      "name": { "key": "compute" }
     }
   },
   {
@@ -5137,7 +5099,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/do_fmt()."
       },
-      "name": { "key": "pos_impl/do_fmt()" }
+      "name": { "key": "do_fmt" }
     }
   },
   {
@@ -5145,7 +5107,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[PosImpl][FromOcamlRep]"
       },
-      "name": { "key": "pos_impl/impl#[PosImpl][FromOcamlRep" }
+      "name": { "key": "FromOcamlRep" }
     }
   },
   {
@@ -5153,7 +5115,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[PosImpl][FromOcamlRep]from_ocamlrep()."
       },
-      "name": { "key": "pos_impl/impl#[PosImpl][FromOcamlRep]from_ocamlrep()" }
+      "name": { "key": "from_ocamlrep" }
     }
   },
   {
@@ -5161,7 +5123,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[PosImpl][ToOcamlRep]to_ocamlrep()."
       },
-      "name": { "key": "pos_impl/impl#[PosImpl][ToOcamlRep]to_ocamlrep()" }
+      "name": { "key": "to_ocamlrep" }
     }
   },
   {
@@ -5169,7 +5131,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]"
       },
-      "name": { "key": "pos_impl/impl#[Pos" }
+      "name": { "key": "Pos" }
     }
   },
   {
@@ -5177,7 +5139,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]NONE."
       },
-      "name": { "key": "pos_impl/impl#[Pos]NONE" }
+      "name": { "key": "NONE" }
     }
   },
   {
@@ -5185,7 +5147,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][EqModuloPos]"
       },
-      "name": { "key": "pos_impl/impl#[Pos][EqModuloPos" }
+      "name": { "key": "EqModuloPos" }
     }
   },
   {
@@ -5193,7 +5155,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][EqModuloPos]eq_modulo_pos()."
       },
-      "name": { "key": "pos_impl/impl#[Pos][EqModuloPos]eq_modulo_pos()" }
+      "name": { "key": "eq_modulo_pos" }
     }
   },
   {
@@ -5201,9 +5163,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][EqModuloPos]eq_modulo_pos_and_reason()."
       },
-      "name": {
-        "key": "pos_impl/impl#[Pos][EqModuloPos]eq_modulo_pos_and_reason()"
-      }
+      "name": { "key": "eq_modulo_pos_and_reason" }
     }
   },
   {
@@ -5211,7 +5171,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][NoPosHash]hash()."
       },
-      "name": { "key": "pos_impl/impl#[Pos][NoPosHash]hash()" }
+      "name": { "key": "hash" }
     }
   },
   {
@@ -5219,7 +5179,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][WithErasedLines]"
       },
-      "name": { "key": "pos_impl/impl#[Pos][WithErasedLines" }
+      "name": { "key": "WithErasedLines" }
     }
   },
   {
@@ -5227,9 +5187,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][WithErasedLines]with_erased_lines()."
       },
-      "name": {
-        "key": "pos_impl/impl#[Pos][WithErasedLines]with_erased_lines()"
-      }
+      "name": { "key": "with_erased_lines" }
     }
   },
   {
@@ -5237,7 +5195,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]absolute()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]absolute()" }
+      "name": { "key": "absolute" }
     }
   },
   {
@@ -5245,7 +5203,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]btw()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]btw()" }
+      "name": { "key": "btw" }
     }
   },
   {
@@ -5253,7 +5211,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]btw_nocheck()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]btw_nocheck()" }
+      "name": { "key": "btw_nocheck" }
     }
   },
   {
@@ -5261,7 +5219,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]cmp()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]cmp()" }
+      "name": { "key": "cmp" }
     }
   },
   {
@@ -5269,7 +5227,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]default()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]default()" }
+      "name": { "key": "default" }
     }
   },
   {
@@ -5277,7 +5235,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]end_offset()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]end_offset()" }
+      "name": { "key": "end_offset" }
     }
   },
   {
@@ -5285,7 +5243,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]eq()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]eq()" }
+      "name": { "key": "eq" }
     }
   },
   {
@@ -5293,7 +5251,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]filename()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]filename()" }
+      "name": { "key": "filename" }
     }
   },
   {
@@ -5301,7 +5259,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]filename_rc()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]filename_rc()" }
+      "name": { "key": "filename_rc" }
     }
   },
   {
@@ -5309,7 +5267,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]first_char_of_line()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]first_char_of_line()" }
+      "name": { "key": "first_char_of_line" }
     }
   },
   {
@@ -5317,7 +5275,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]fmt()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]fmt()" }
+      "name": { "key": "fmt" }
     }
   },
   {
@@ -5325,7 +5283,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]from()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]from()" }
+      "name": { "key": "from" }
     }
   },
   {
@@ -5333,7 +5291,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]from_line_cols_offset()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]from_line_cols_offset()" }
+      "name": { "key": "from_line_cols_offset" }
     }
   },
   {
@@ -5341,7 +5299,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]from_lnum_bol_offset()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]from_lnum_bol_offset()" }
+      "name": { "key": "from_lnum_bol_offset" }
     }
   },
   {
@@ -5349,7 +5307,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]from_raw_span()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]from_raw_span()" }
+      "name": { "key": "from_raw_span" }
     }
   },
   {
@@ -5357,7 +5315,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]hash()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]hash()" }
+      "name": { "key": "hash" }
     }
   },
   {
@@ -5365,7 +5323,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]info_pos()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]info_pos()" }
+      "name": { "key": "info_pos" }
     }
   },
   {
@@ -5373,7 +5331,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]info_pos_extended()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]info_pos_extended()" }
+      "name": { "key": "info_pos_extended" }
     }
   },
   {
@@ -5381,7 +5339,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]info_raw()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]info_raw()" }
+      "name": { "key": "info_raw" }
     }
   },
   {
@@ -5389,7 +5347,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]into_filename()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]into_filename()" }
+      "name": { "key": "into_filename" }
     }
   },
   {
@@ -5397,7 +5355,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]is_none()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]is_none()" }
+      "name": { "key": "is_none" }
     }
   },
   {
@@ -5405,7 +5363,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]is_valid()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]is_valid()" }
+      "name": { "key": "is_valid" }
     }
   },
   {
@@ -5413,7 +5371,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]last_char()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]last_char()" }
+      "name": { "key": "last_char" }
     }
   },
   {
@@ -5421,7 +5379,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]line()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]line()" }
+      "name": { "key": "line" }
     }
   },
   {
@@ -5429,7 +5387,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]merge()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]merge()" }
+      "name": { "key": "merge" }
     }
   },
   {
@@ -5437,7 +5395,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]merge_without_checking_filename()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]merge_without_checking_filename()" }
+      "name": { "key": "merge_without_checking_filename" }
     }
   },
   {
@@ -5445,7 +5403,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]partial_cmp()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]partial_cmp()" }
+      "name": { "key": "partial_cmp" }
     }
   },
   {
@@ -5453,7 +5411,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]start_offset()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]start_offset()" }
+      "name": { "key": "start_offset" }
     }
   },
   {
@@ -5461,7 +5419,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]string()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]string()" }
+      "name": { "key": "string" }
     }
   },
   {
@@ -5469,7 +5427,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]to_raw_span()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]to_raw_span()" }
+      "name": { "key": "to_raw_span" }
     }
   },
   {
@@ -5477,7 +5435,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]to_start_and_end_lnum_bol_offset()."
       },
-      "name": { "key": "pos_impl/impl#[Pos]to_start_and_end_lnum_bol_offset()" }
+      "name": { "key": "to_start_and_end_lnum_bol_offset" }
     }
   },
   {
@@ -5485,7 +5443,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[`PosString<'_>`]"
       },
-      "name": { "key": "pos_impl/impl#[`PosString<'_>`" }
+      "name": { "key": "PosString<'_>" }
     }
   },
   {
@@ -5493,25 +5451,25 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[`PosString<'_>`]fmt()."
       },
-      "name": { "key": "pos_impl/impl#[`PosString<'_>`]fmt()" }
+      "name": { "key": "fmt" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/map/" },
-      "name": { "key": "pos_impl/map" }
+      "name": { "key": "map" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/map/Map#" },
-      "name": { "key": "pos_impl/map/Map" }
+      "name": { "key": "Map" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/" },
-      "name": { "key": "pos_impl/tests" }
+      "name": { "key": "tests" }
     }
   },
   {
@@ -5519,7 +5477,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/make_pos()."
       },
-      "name": { "key": "pos_impl/tests/make_pos()" }
+      "name": { "key": "make_pos" }
     }
   },
   {
@@ -5527,7 +5485,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos()."
       },
-      "name": { "key": "pos_impl/tests/test_pos()" }
+      "name": { "key": "test_pos" }
     }
   },
   {
@@ -5535,7 +5493,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos_absolute()."
       },
-      "name": { "key": "pos_impl/tests/test_pos_absolute()" }
+      "name": { "key": "test_pos_absolute" }
     }
   },
   {
@@ -5543,7 +5501,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos_merge()."
       },
-      "name": { "key": "pos_impl/tests/test_pos_merge()" }
+      "name": { "key": "test_pos_merge" }
     }
   },
   {
@@ -5551,7 +5509,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos_string()."
       },
-      "name": { "key": "pos_impl/tests/test_pos_string()" }
+      "name": { "key": "test_pos_string" }
     }
   },
   {
@@ -5565,7 +5523,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/DUMMY."
       },
-      "name": { "key": "pos_span_raw/DUMMY" }
+      "name": { "key": "DUMMY" }
     }
   },
   {
@@ -5573,7 +5531,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/PosSpanRaw#"
       },
-      "name": { "key": "pos_span_raw/PosSpanRaw" }
+      "name": { "key": "PosSpanRaw" }
     }
   },
   {
@@ -5581,7 +5539,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/PosSpanRaw#end."
       },
-      "name": { "key": "pos_span_raw/PosSpanRaw#end" }
+      "name": { "key": "end" }
     }
   },
   {
@@ -5589,7 +5547,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/PosSpanRaw#start."
       },
-      "name": { "key": "pos_span_raw/PosSpanRaw#start" }
+      "name": { "key": "start" }
     }
   },
   {
@@ -5597,7 +5555,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw]"
       },
-      "name": { "key": "pos_span_raw/impl#[PosSpanRaw" }
+      "name": { "key": "PosSpanRaw" }
     }
   },
   {
@@ -5605,7 +5563,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw][WithErasedLines]"
       },
-      "name": { "key": "pos_span_raw/impl#[PosSpanRaw][WithErasedLines" }
+      "name": { "key": "WithErasedLines" }
     }
   },
   {
@@ -5613,9 +5571,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw][WithErasedLines]with_erased_lines()."
       },
-      "name": {
-        "key": "pos_span_raw/impl#[PosSpanRaw][WithErasedLines]with_erased_lines()"
-      }
+      "name": { "key": "with_erased_lines" }
     }
   },
   {
@@ -5623,7 +5579,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw]is_dummy()."
       },
-      "name": { "key": "pos_span_raw/impl#[PosSpanRaw]is_dummy()" }
+      "name": { "key": "is_dummy" }
     }
   },
   {
@@ -5631,7 +5587,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw]make_dummy()."
       },
-      "name": { "key": "pos_span_raw/impl#[PosSpanRaw]make_dummy()" }
+      "name": { "key": "make_dummy" }
     }
   },
   {
@@ -5645,7 +5601,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/BEGINNING_OF_LINE_INCREMENT_BITS."
       },
-      "name": { "key": "pos_span_tiny/BEGINNING_OF_LINE_INCREMENT_BITS" }
+      "name": { "key": "BEGINNING_OF_LINE_INCREMENT_BITS" }
     }
   },
   {
@@ -5653,7 +5609,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/BEGINNING_OF_LINE_INCREMENT_OFFSET."
       },
-      "name": { "key": "pos_span_tiny/BEGINNING_OF_LINE_INCREMENT_OFFSET" }
+      "name": { "key": "BEGINNING_OF_LINE_INCREMENT_OFFSET" }
     }
   },
   {
@@ -5661,7 +5617,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/DUMMY."
       },
-      "name": { "key": "pos_span_tiny/DUMMY" }
+      "name": { "key": "DUMMY" }
     }
   },
   {
@@ -5669,7 +5625,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/LINE_NUMBER_INCREMENT_BITS."
       },
-      "name": { "key": "pos_span_tiny/LINE_NUMBER_INCREMENT_BITS" }
+      "name": { "key": "LINE_NUMBER_INCREMENT_BITS" }
     }
   },
   {
@@ -5677,7 +5633,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/LINE_NUMBER_INCREMENT_OFFSET."
       },
-      "name": { "key": "pos_span_tiny/LINE_NUMBER_INCREMENT_OFFSET" }
+      "name": { "key": "LINE_NUMBER_INCREMENT_OFFSET" }
     }
   },
   {
@@ -5685,7 +5641,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MASK."
       },
-      "name": { "key": "pos_span_tiny/MASK" }
+      "name": { "key": "MASK" }
     }
   },
   {
@@ -5693,7 +5649,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_BEGINNING_OF_LINE_INCREMENT."
       },
-      "name": { "key": "pos_span_tiny/MAX_BEGINNING_OF_LINE_INCREMENT" }
+      "name": { "key": "MAX_BEGINNING_OF_LINE_INCREMENT" }
     }
   },
   {
@@ -5701,7 +5657,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_LINE_NUMBER_INCREMENT."
       },
-      "name": { "key": "pos_span_tiny/MAX_LINE_NUMBER_INCREMENT" }
+      "name": { "key": "MAX_LINE_NUMBER_INCREMENT" }
     }
   },
   {
@@ -5709,7 +5665,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_START_BEGINNING_OF_LINE."
       },
-      "name": { "key": "pos_span_tiny/MAX_START_BEGINNING_OF_LINE" }
+      "name": { "key": "MAX_START_BEGINNING_OF_LINE" }
     }
   },
   {
@@ -5717,7 +5673,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_START_COLUMN_NUMBER."
       },
-      "name": { "key": "pos_span_tiny/MAX_START_COLUMN_NUMBER" }
+      "name": { "key": "MAX_START_COLUMN_NUMBER" }
     }
   },
   {
@@ -5725,7 +5681,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_START_LINE_NUMBER."
       },
-      "name": { "key": "pos_span_tiny/MAX_START_LINE_NUMBER" }
+      "name": { "key": "MAX_START_LINE_NUMBER" }
     }
   },
   {
@@ -5733,7 +5689,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_WIDTH."
       },
-      "name": { "key": "pos_span_tiny/MAX_WIDTH" }
+      "name": { "key": "MAX_WIDTH" }
     }
   },
   {
@@ -5741,7 +5697,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/PosSpanTiny#"
       },
-      "name": { "key": "pos_span_tiny/PosSpanTiny" }
+      "name": { "key": "PosSpanTiny" }
     }
   },
   {
@@ -5749,7 +5705,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/PosSpanTiny#0."
       },
-      "name": { "key": "pos_span_tiny/PosSpanTiny#0" }
+      "name": { "key": "0" }
     }
   },
   {
@@ -5757,7 +5713,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/PosSpanTooLarge#"
       },
-      "name": { "key": "pos_span_tiny/PosSpanTooLarge" }
+      "name": { "key": "PosSpanTooLarge" }
     }
   },
   {
@@ -5765,7 +5721,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_BEGINNING_OF_LINE_BITS."
       },
-      "name": { "key": "pos_span_tiny/START_BEGINNING_OF_LINE_BITS" }
+      "name": { "key": "START_BEGINNING_OF_LINE_BITS" }
     }
   },
   {
@@ -5773,7 +5729,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_BEGINNING_OF_LINE_OFFSET."
       },
-      "name": { "key": "pos_span_tiny/START_BEGINNING_OF_LINE_OFFSET" }
+      "name": { "key": "START_BEGINNING_OF_LINE_OFFSET" }
     }
   },
   {
@@ -5781,7 +5737,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_COLUMN_NUMBER_BITS."
       },
-      "name": { "key": "pos_span_tiny/START_COLUMN_NUMBER_BITS" }
+      "name": { "key": "START_COLUMN_NUMBER_BITS" }
     }
   },
   {
@@ -5789,7 +5745,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_COLUMN_NUMBER_OFFSET."
       },
-      "name": { "key": "pos_span_tiny/START_COLUMN_NUMBER_OFFSET" }
+      "name": { "key": "START_COLUMN_NUMBER_OFFSET" }
     }
   },
   {
@@ -5797,7 +5753,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_LINE_NUMBER_BITS."
       },
-      "name": { "key": "pos_span_tiny/START_LINE_NUMBER_BITS" }
+      "name": { "key": "START_LINE_NUMBER_BITS" }
     }
   },
   {
@@ -5805,7 +5761,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_LINE_NUMBER_OFFSET."
       },
-      "name": { "key": "pos_span_tiny/START_LINE_NUMBER_OFFSET" }
+      "name": { "key": "START_LINE_NUMBER_OFFSET" }
     }
   },
   {
@@ -5813,7 +5769,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/WIDTH_BITS."
       },
-      "name": { "key": "pos_span_tiny/WIDTH_BITS" }
+      "name": { "key": "WIDTH_BITS" }
     }
   },
   {
@@ -5821,7 +5777,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/WIDTH_OFFSET."
       },
-      "name": { "key": "pos_span_tiny/WIDTH_OFFSET" }
+      "name": { "key": "WIDTH_OFFSET" }
     }
   },
   {
@@ -5829,7 +5785,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanRaw]"
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanRaw" }
+      "name": { "key": "PosSpanRaw" }
     }
   },
   {
@@ -5837,7 +5793,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanRaw]from()."
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanRaw]from()" }
+      "name": { "key": "from" }
     }
   },
   {
@@ -5845,7 +5801,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]"
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny" }
+      "name": { "key": "PosSpanTiny" }
     }
   },
   {
@@ -5853,7 +5809,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]Error#"
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny]Error" }
+      "name": { "key": "Error" }
     }
   },
   {
@@ -5861,7 +5817,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][FromOcamlRep]"
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny][FromOcamlRep" }
+      "name": { "key": "FromOcamlRep" }
     }
   },
   {
@@ -5869,9 +5825,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][FromOcamlRep]from_ocamlrep()."
       },
-      "name": {
-        "key": "pos_span_tiny/impl#[PosSpanTiny][FromOcamlRep]from_ocamlrep()"
-      }
+      "name": { "key": "from_ocamlrep" }
     }
   },
   {
@@ -5879,9 +5833,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][ToOcamlRep]to_ocamlrep()."
       },
-      "name": {
-        "key": "pos_span_tiny/impl#[PosSpanTiny][ToOcamlRep]to_ocamlrep()"
-      }
+      "name": { "key": "to_ocamlrep" }
     }
   },
   {
@@ -5889,7 +5841,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][`FromOcamlRepIn<'a>`]"
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny][`FromOcamlRepIn<'a>`" }
+      "name": { "key": "FromOcamlRepIn<'a>" }
     }
   },
   {
@@ -5897,9 +5849,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][`FromOcamlRepIn<'a>`]from_ocamlrep_in()."
       },
-      "name": {
-        "key": "pos_span_tiny/impl#[PosSpanTiny][`FromOcamlRepIn<'a>`]from_ocamlrep_in()"
-      }
+      "name": { "key": "from_ocamlrep_in" }
     }
   },
   {
@@ -5907,9 +5857,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]beginning_of_line_increment()."
       },
-      "name": {
-        "key": "pos_span_tiny/impl#[PosSpanTiny]beginning_of_line_increment()"
-      }
+      "name": { "key": "beginning_of_line_increment" }
     }
   },
   {
@@ -5917,7 +5865,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]cmp()."
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny]cmp()" }
+      "name": { "key": "cmp" }
     }
   },
   {
@@ -5925,9 +5873,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]end_beginning_of_line()."
       },
-      "name": {
-        "key": "pos_span_tiny/impl#[PosSpanTiny]end_beginning_of_line()"
-      }
+      "name": { "key": "end_beginning_of_line" }
     }
   },
   {
@@ -5935,7 +5881,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]end_column()."
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny]end_column()" }
+      "name": { "key": "end_column" }
     }
   },
   {
@@ -5943,7 +5889,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]end_line_number()."
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny]end_line_number()" }
+      "name": { "key": "end_line_number" }
     }
   },
   {
@@ -5951,7 +5897,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]end_offset()."
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny]end_offset()" }
+      "name": { "key": "end_offset" }
     }
   },
   {
@@ -5959,7 +5905,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]fmt()."
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny]fmt()" }
+      "name": { "key": "fmt" }
     }
   },
   {
@@ -5967,7 +5913,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]is_dummy()."
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny]is_dummy()" }
+      "name": { "key": "is_dummy" }
     }
   },
   {
@@ -5975,9 +5921,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]line_number_increment()."
       },
-      "name": {
-        "key": "pos_span_tiny/impl#[PosSpanTiny]line_number_increment()"
-      }
+      "name": { "key": "line_number_increment" }
     }
   },
   {
@@ -5985,7 +5929,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]make()."
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny]make()" }
+      "name": { "key": "make" }
     }
   },
   {
@@ -5993,7 +5937,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]make_dummy()."
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny]make_dummy()" }
+      "name": { "key": "make_dummy" }
     }
   },
   {
@@ -6001,7 +5945,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]partial_cmp()."
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny]partial_cmp()" }
+      "name": { "key": "partial_cmp" }
     }
   },
   {
@@ -6009,9 +5953,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]start_beginning_of_line()."
       },
-      "name": {
-        "key": "pos_span_tiny/impl#[PosSpanTiny]start_beginning_of_line()"
-      }
+      "name": { "key": "start_beginning_of_line" }
     }
   },
   {
@@ -6019,7 +5961,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]start_column()."
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny]start_column()" }
+      "name": { "key": "start_column" }
     }
   },
   {
@@ -6027,7 +5969,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]start_line_number()."
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny]start_line_number()" }
+      "name": { "key": "start_line_number" }
     }
   },
   {
@@ -6035,7 +5977,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]start_offset()."
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny]start_offset()" }
+      "name": { "key": "start_offset" }
     }
   },
   {
@@ -6043,7 +5985,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]to_raw_span()."
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny]to_raw_span()" }
+      "name": { "key": "to_raw_span" }
     }
   },
   {
@@ -6051,7 +5993,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]try_from()."
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny]try_from()" }
+      "name": { "key": "try_from" }
     }
   },
   {
@@ -6059,7 +6001,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]width()."
       },
-      "name": { "key": "pos_span_tiny/impl#[PosSpanTiny]width()" }
+      "name": { "key": "width" }
     }
   },
   {
@@ -6067,7 +6009,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/mask()."
       },
-      "name": { "key": "pos_span_tiny/mask()" }
+      "name": { "key": "mask" }
     }
   },
   {
@@ -6075,7 +6017,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/mask_by()."
       },
-      "name": { "key": "pos_span_tiny/mask_by()" }
+      "name": { "key": "mask_by" }
     }
   },
   {
@@ -6083,7 +6025,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/"
       },
-      "name": { "key": "pos_span_tiny/test" }
+      "name": { "key": "test" }
     }
   },
   {
@@ -6091,9 +6033,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_round_trip_through_ocaml_value_large_tiny_span()."
       },
-      "name": {
-        "key": "pos_span_tiny/test/test_round_trip_through_ocaml_value_large_tiny_span()"
-      }
+      "name": { "key": "test_round_trip_through_ocaml_value_large_tiny_span" }
     }
   },
   {
@@ -6101,7 +6041,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_dummy()."
       },
-      "name": { "key": "pos_span_tiny/test/test_tiny_dummy()" }
+      "name": { "key": "test_tiny_dummy" }
     }
   },
   {
@@ -6109,7 +6049,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_large()."
       },
-      "name": { "key": "pos_span_tiny/test/test_tiny_large()" }
+      "name": { "key": "test_tiny_large" }
     }
   },
   {
@@ -6117,7 +6057,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_multiline_span()."
       },
-      "name": { "key": "pos_span_tiny/test/test_tiny_multiline_span()" }
+      "name": { "key": "test_tiny_multiline_span" }
     }
   },
   {
@@ -6125,7 +6065,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_negative_span()."
       },
-      "name": { "key": "pos_span_tiny/test/test_tiny_negative_span()" }
+      "name": { "key": "test_tiny_negative_span" }
     }
   },
   {
@@ -6133,7 +6073,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_small()."
       },
-      "name": { "key": "pos_span_tiny/test/test_tiny_small()" }
+      "name": { "key": "test_tiny_small" }
     }
   },
   {
@@ -6149,7 +6089,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 with_erased_lines/WithErasedLines#"
       },
-      "name": { "key": "with_erased_lines/WithErasedLines" }
+      "name": { "key": "WithErasedLines" }
     }
   },
   {
@@ -6157,7 +6097,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 with_erased_lines/WithErasedLines#with_erased_lines()."
       },
-      "name": { "key": "with_erased_lines/WithErasedLines#with_erased_lines()" }
+      "name": { "key": "with_erased_lines" }
     }
   },
   {
@@ -6175,7 +6115,7 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo regex 1.11.1 escape()." },
-      "name": { "key": "escape()" }
+      "name": { "key": "escape" }
     }
   },
   {
@@ -6183,7 +6123,7 @@
       "symbol": {
         "key": "rust-analyzer cargo regex 1.11.1 regex/bytes/Regex#"
       },
-      "name": { "key": "regex/bytes/Regex" }
+      "name": { "key": "Regex" }
     }
   },
   {
@@ -6191,7 +6131,7 @@
       "symbol": {
         "key": "rust-analyzer cargo regex 1.11.1 regex/bytes/impl#[Regex]new()."
       },
-      "name": { "key": "regex/bytes/impl#[Regex]new()" }
+      "name": { "key": "new" }
     }
   },
   {
@@ -6211,7 +6151,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#Dummy#"
       },
-      "name": { "key": "Prefix#Dummy" }
+      "name": { "key": "Dummy" }
     }
   },
   {
@@ -6219,7 +6159,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#Hhi#"
       },
-      "name": { "key": "Prefix#Hhi" }
+      "name": { "key": "Hhi" }
     }
   },
   {
@@ -6227,7 +6167,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#Root#"
       },
-      "name": { "key": "Prefix#Root" }
+      "name": { "key": "Root" }
     }
   },
   {
@@ -6235,7 +6175,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#Tmp#"
       },
-      "name": { "key": "Prefix#Tmp" }
+      "name": { "key": "Tmp" }
     }
   },
   {
@@ -6251,7 +6191,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 RelativePath#path."
       },
-      "name": { "key": "RelativePath#path" }
+      "name": { "key": "path" }
     }
   },
   {
@@ -6259,7 +6199,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 RelativePath#prefix."
       },
-      "name": { "key": "RelativePath#prefix" }
+      "name": { "key": "prefix" }
     }
   },
   {
@@ -6275,7 +6215,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#dummy."
       },
-      "name": { "key": "RelativePathCtx#dummy" }
+      "name": { "key": "dummy" }
     }
   },
   {
@@ -6283,7 +6223,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#hhi."
       },
-      "name": { "key": "RelativePathCtx#hhi" }
+      "name": { "key": "hhi" }
     }
   },
   {
@@ -6291,7 +6231,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#root."
       },
-      "name": { "key": "RelativePathCtx#root" }
+      "name": { "key": "root" }
     }
   },
   {
@@ -6299,7 +6239,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#tmp."
       },
-      "name": { "key": "RelativePathCtx#tmp" }
+      "name": { "key": "tmp" }
     }
   },
   {
@@ -6319,7 +6259,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]"
       },
-      "name": { "key": "impl#[Prefix" }
+      "name": { "key": "Prefix" }
     }
   },
   {
@@ -6327,7 +6267,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]Error#"
       },
-      "name": { "key": "impl#[Prefix]Error" }
+      "name": { "key": "Error" }
     }
   },
   {
@@ -6335,7 +6275,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]fmt()."
       },
-      "name": { "key": "impl#[Prefix]fmt()" }
+      "name": { "key": "fmt" }
     }
   },
   {
@@ -6343,7 +6283,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]is_hhi()."
       },
-      "name": { "key": "impl#[Prefix]is_hhi()" }
+      "name": { "key": "is_hhi" }
     }
   },
   {
@@ -6351,7 +6291,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]try_from()."
       },
-      "name": { "key": "impl#[Prefix]try_from()" }
+      "name": { "key": "try_from" }
     }
   },
   {
@@ -6359,7 +6299,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePathCtx]prefix_path()."
       },
-      "name": { "key": "impl#[RelativePathCtx]prefix_path()" }
+      "name": { "key": "prefix_path" }
     }
   },
   {
@@ -6367,7 +6307,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]"
       },
-      "name": { "key": "impl#[RelativePath" }
+      "name": { "key": "RelativePath" }
     }
   },
   {
@@ -6375,7 +6315,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]EMPTY."
       },
-      "name": { "key": "impl#[RelativePath]EMPTY" }
+      "name": { "key": "EMPTY" }
     }
   },
   {
@@ -6383,7 +6323,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][FromOcamlRep]"
       },
-      "name": { "key": "impl#[RelativePath][FromOcamlRep" }
+      "name": { "key": "FromOcamlRep" }
     }
   },
   {
@@ -6391,7 +6331,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][FromOcamlRep]from_ocamlrep()."
       },
-      "name": { "key": "impl#[RelativePath][FromOcamlRep]from_ocamlrep()" }
+      "name": { "key": "from_ocamlrep" }
     }
   },
   {
@@ -6399,7 +6339,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][Serialize]serialize()."
       },
-      "name": { "key": "impl#[RelativePath][Serialize]serialize()" }
+      "name": { "key": "serialize" }
     }
   },
   {
@@ -6407,7 +6347,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][ToOcamlRep]to_ocamlrep()."
       },
-      "name": { "key": "impl#[RelativePath][ToOcamlRep]to_ocamlrep()" }
+      "name": { "key": "to_ocamlrep" }
     }
   },
   {
@@ -6415,7 +6355,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][`Deserialize<'de>`]"
       },
-      "name": { "key": "impl#[RelativePath][`Deserialize<'de>`" }
+      "name": { "key": "Deserialize<'de>" }
     }
   },
   {
@@ -6423,7 +6363,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][`Deserialize<'de>`]deserialize()."
       },
-      "name": { "key": "impl#[RelativePath][`Deserialize<'de>`]deserialize()" }
+      "name": { "key": "deserialize" }
     }
   },
   {
@@ -6431,7 +6371,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]cmp()."
       },
-      "name": { "key": "impl#[RelativePath]cmp()" }
+      "name": { "key": "cmp" }
     }
   },
   {
@@ -6439,7 +6379,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]fmt()."
       },
-      "name": { "key": "impl#[RelativePath]fmt()" }
+      "name": { "key": "fmt" }
     }
   },
   {
@@ -6447,7 +6387,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]has_extension()."
       },
-      "name": { "key": "impl#[RelativePath]has_extension()" }
+      "name": { "key": "has_extension" }
     }
   },
   {
@@ -6455,7 +6395,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]is_empty()."
       },
-      "name": { "key": "impl#[RelativePath]is_empty()" }
+      "name": { "key": "is_empty" }
     }
   },
   {
@@ -6463,7 +6403,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]is_hhi()."
       },
-      "name": { "key": "impl#[RelativePath]is_hhi()" }
+      "name": { "key": "is_hhi" }
     }
   },
   {
@@ -6471,7 +6411,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]make()."
       },
-      "name": { "key": "impl#[RelativePath]make()" }
+      "name": { "key": "make" }
     }
   },
   {
@@ -6479,7 +6419,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]partial_cmp()."
       },
-      "name": { "key": "impl#[RelativePath]partial_cmp()" }
+      "name": { "key": "partial_cmp" }
     }
   },
   {
@@ -6487,7 +6427,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]path()."
       },
-      "name": { "key": "impl#[RelativePath]path()" }
+      "name": { "key": "path" }
     }
   },
   {
@@ -6495,7 +6435,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]path_str()."
       },
-      "name": { "key": "impl#[RelativePath]path_str()" }
+      "name": { "key": "path_str" }
     }
   },
   {
@@ -6503,7 +6443,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]prefix()."
       },
-      "name": { "key": "impl#[RelativePath]prefix()" }
+      "name": { "key": "prefix" }
     }
   },
   {
@@ -6511,7 +6451,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]to_absolute()."
       },
-      "name": { "key": "impl#[RelativePath]to_absolute()" }
+      "name": { "key": "to_absolute" }
     }
   },
   {
@@ -6519,7 +6459,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Visitor][`Visitor<'de>`]Value#"
       },
-      "name": { "key": "impl#[Visitor][`Visitor<'de>`]Value" }
+      "name": { "key": "Value" }
     }
   },
   {
@@ -6527,7 +6467,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Visitor][`Visitor<'de>`]expecting()."
       },
-      "name": { "key": "impl#[Visitor][`Visitor<'de>`]expecting()" }
+      "name": { "key": "expecting" }
     }
   },
   {
@@ -6535,7 +6475,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Visitor][`Visitor<'de>`]visit_str()."
       },
-      "name": { "key": "impl#[Visitor][`Visitor<'de>`]visit_str()" }
+      "name": { "key": "visit_str" }
     }
   },
   {
@@ -6555,7 +6495,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 tests/test_invalid_usize_prefix()."
       },
-      "name": { "key": "tests/test_invalid_usize_prefix()" }
+      "name": { "key": "test_invalid_usize_prefix" }
     }
   },
   {
@@ -6563,7 +6503,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 tests/test_valid_usize_prefix()."
       },
-      "name": { "key": "tests/test_valid_usize_prefix()" }
+      "name": { "key": "test_valid_usize_prefix" }
     }
   },
   {
@@ -6581,13 +6521,13 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo serde 1.0.217 de/Deserialize#" },
-      "name": { "key": "de/Deserialize" }
+      "name": { "key": "Deserialize" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo serde 1.0.217 de/Deserializer#" },
-      "name": { "key": "de/Deserializer" }
+      "name": { "key": "Deserializer" }
     }
   },
   {
@@ -6595,7 +6535,7 @@
       "symbol": {
         "key": "rust-analyzer cargo serde 1.0.217 de/Deserializer#Error#"
       },
-      "name": { "key": "de/Deserializer#Error" }
+      "name": { "key": "Error" }
     }
   },
   {
@@ -6603,13 +6543,13 @@
       "symbol": {
         "key": "rust-analyzer cargo serde 1.0.217 de/Deserializer#deserialize_str()."
       },
-      "name": { "key": "de/Deserializer#deserialize_str()" }
+      "name": { "key": "deserialize_str" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo serde 1.0.217 de/Error#" },
-      "name": { "key": "de/Error" }
+      "name": { "key": "Error" }
     }
   },
   {
@@ -6617,13 +6557,13 @@
       "symbol": {
         "key": "rust-analyzer cargo serde 1.0.217 de/Error#invalid_value()."
       },
-      "name": { "key": "de/Error#invalid_value()" }
+      "name": { "key": "invalid_value" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo serde 1.0.217 de/Unexpected#" },
-      "name": { "key": "de/Unexpected" }
+      "name": { "key": "Unexpected" }
     }
   },
   {
@@ -6631,13 +6571,13 @@
       "symbol": {
         "key": "rust-analyzer cargo serde 1.0.217 de/Unexpected#Other#"
       },
-      "name": { "key": "de/Unexpected#Other" }
+      "name": { "key": "Other" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo serde 1.0.217 de/Visitor#" },
-      "name": { "key": "de/Visitor" }
+      "name": { "key": "Visitor" }
     }
   },
   {
@@ -6649,19 +6589,19 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo serde 1.0.217 ser/Error#" },
-      "name": { "key": "ser/Error" }
+      "name": { "key": "Error" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo serde 1.0.217 ser/Serialize#" },
-      "name": { "key": "ser/Serialize" }
+      "name": { "key": "Serialize" }
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo serde 1.0.217 ser/Serializer#" },
-      "name": { "key": "ser/Serializer" }
+      "name": { "key": "Serializer" }
     }
   },
   {
@@ -6669,7 +6609,7 @@
       "symbol": {
         "key": "rust-analyzer cargo serde 1.0.217 ser/Serializer#Error#"
       },
-      "name": { "key": "ser/Serializer#Error" }
+      "name": { "key": "Error" }
     }
   },
   {
@@ -6677,7 +6617,7 @@
       "symbol": {
         "key": "rust-analyzer cargo serde 1.0.217 ser/Serializer#Ok#"
       },
-      "name": { "key": "ser/Serializer#Ok" }
+      "name": { "key": "Ok" }
     }
   },
   {
@@ -6685,7 +6625,7 @@
       "symbol": {
         "key": "rust-analyzer cargo serde 1.0.217 ser/Serializer#serialize_str()."
       },
-      "name": { "key": "ser/Serializer#serialize_str()" }
+      "name": { "key": "serialize_str" }
     }
   },
   {
@@ -6739,7 +6679,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 SignCheckResponse#Invalid#"
       },
-      "name": { "key": "SignCheckResponse#Invalid" }
+      "name": { "key": "Invalid" }
     }
   },
   {
@@ -6747,7 +6687,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 SignCheckResponse#Ok#"
       },
-      "name": { "key": "SignCheckResponse#Ok" }
+      "name": { "key": "Ok" }
     }
   },
   {
@@ -6755,7 +6695,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 SignCheckResponse#Unsigned#"
       },
-      "name": { "key": "SignCheckResponse#Unsigned" }
+      "name": { "key": "Unsigned" }
     }
   },
   {
@@ -6789,7 +6729,7 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo signed_source 0.0.0 hash()." },
-      "name": { "key": "hash()" }
+      "name": { "key": "hash" }
     }
   },
   {
@@ -6797,7 +6737,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 is_signed()."
       },
-      "name": { "key": "is_signed()" }
+      "name": { "key": "is_signed" }
     }
   },
   {
@@ -6805,7 +6745,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 make_signing_token()."
       },
-      "name": { "key": "make_signing_token()" }
+      "name": { "key": "make_signing_token" }
     }
   },
   {
@@ -6813,7 +6753,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 sign_file()."
       },
-      "name": { "key": "sign_file()" }
+      "name": { "key": "sign_file" }
     }
   },
   {
@@ -6821,7 +6761,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 sign_utf8_file()."
       },
-      "name": { "key": "sign_utf8_file()" }
+      "name": { "key": "sign_utf8_file" }
     }
   },
   {
@@ -6835,7 +6775,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 test/INVALID."
       },
-      "name": { "key": "test/INVALID" }
+      "name": { "key": "INVALID" }
     }
   },
   {
@@ -6843,7 +6783,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 test/NO_TOKEN."
       },
-      "name": { "key": "test/NO_TOKEN" }
+      "name": { "key": "NO_TOKEN" }
     }
   },
   {
@@ -6851,7 +6791,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 test/SIGNED."
       },
-      "name": { "key": "test/SIGNED" }
+      "name": { "key": "SIGNED" }
     }
   },
   {
@@ -6859,7 +6799,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 test/UNSIGNED."
       },
-      "name": { "key": "test/UNSIGNED" }
+      "name": { "key": "UNSIGNED" }
     }
   },
   {
@@ -6867,7 +6807,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 test/test_is_signed()."
       },
-      "name": { "key": "test/test_is_signed()" }
+      "name": { "key": "test_is_signed" }
     }
   },
   {
@@ -6875,7 +6815,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 test/test_sign_utf8_file()."
       },
-      "name": { "key": "test/test_sign_utf8_file()" }
+      "name": { "key": "test_sign_utf8_file" }
     }
   },
   {
@@ -6883,7 +6823,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 test/test_signing_token()."
       },
-      "name": { "key": "test/test_signing_token()" }
+      "name": { "key": "test_signing_token" }
     }
   },
   {
@@ -6891,7 +6831,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 test/test_verify_signature()."
       },
-      "name": { "key": "test/test_verify_signature()" }
+      "name": { "key": "test_verify_signature" }
     }
   },
   {
@@ -6899,7 +6839,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 verify_signature()."
       },
-      "name": { "key": "verify_signature()" }
+      "name": { "key": "verify_signature" }
     }
   },
   {
@@ -6907,7 +6847,7 @@
       "symbol": {
         "key": "rust-analyzer cargo static_assertions 1.1.0 const_assert/const_assert_eq!"
       },
-      "name": { "key": "const_assert/const_assert_eq!" }
+      "name": { "key": "const_assert_eq!" }
     }
   },
   {

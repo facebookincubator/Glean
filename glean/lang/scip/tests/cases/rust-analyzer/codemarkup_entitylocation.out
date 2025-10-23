@@ -21970,7 +21970,7 @@
         }
       },
       "location": {
-        "name": "init_delta_logger()",
+        "name": "init_delta_logger",
         "file": { "key": "delta_log.rs" },
         "location": {
           "range": {
@@ -22009,7 +22009,7 @@
         }
       },
       "location": {
-        "name": "log_durations()",
+        "name": "log_durations",
         "file": { "key": "delta_log.rs" },
         "location": {
           "range": {
@@ -22122,7 +22122,7 @@
         }
       },
       "location": {
-        "name": "Record#entries",
+        "name": "entries",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22200,7 +22200,7 @@
         }
       },
       "location": {
-        "name": "RecordEntry#count",
+        "name": "count",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22239,7 +22239,7 @@
         }
       },
       "location": {
-        "name": "RecordEntry#distribution",
+        "name": "distribution",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22278,7 +22278,7 @@
         }
       },
       "location": {
-        "name": "RecordEntry#max",
+        "name": "max",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22317,7 +22317,7 @@
         }
       },
       "location": {
-        "name": "RecordEntry#mean",
+        "name": "mean",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22356,7 +22356,7 @@
         }
       },
       "location": {
-        "name": "RecordEntry#min",
+        "name": "min",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22395,7 +22395,7 @@
         }
       },
       "location": {
-        "name": "RecordEntry#variance_sum",
+        "name": "variance_sum",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22510,7 +22510,7 @@
         }
       },
       "location": {
-        "name": "impl#[RecordEntry]default()",
+        "name": "default",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22549,7 +22549,7 @@
         }
       },
       "location": {
-        "name": "impl#[RecordName][ToOcamlRep]to_ocamlrep()",
+        "name": "to_ocamlrep",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22588,7 +22588,7 @@
         }
       },
       "location": {
-        "name": "impl#[RecordName]fmt()",
+        "name": "fmt",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22627,7 +22627,7 @@
         }
       },
       "location": {
-        "name": "impl#[RecordName]fmt()",
+        "name": "fmt",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22666,7 +22666,7 @@
         }
       },
       "location": {
-        "name": "impl#[RecordName]from()",
+        "name": "from",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22705,7 +22705,7 @@
         }
       },
       "location": {
-        "name": "impl#[RecordName]from()",
+        "name": "from",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22744,7 +22744,7 @@
         }
       },
       "location": {
-        "name": "impl#[Record][ToOcamlRep]to_ocamlrep()",
+        "name": "to_ocamlrep",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22783,7 +22783,7 @@
         }
       },
       "location": {
-        "name": "impl#[Record]new()",
+        "name": "new",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22822,7 +22822,7 @@
         }
       },
       "location": {
-        "name": "impl#[Record]print_stats()",
+        "name": "print_stats",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22861,7 +22861,7 @@
         }
       },
       "location": {
-        "name": "impl#[Record]sample()",
+        "name": "sample",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22900,7 +22900,7 @@
         }
       },
       "location": {
-        "name": "impl#[Record]sample_impl()",
+        "name": "sample_impl",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22939,7 +22939,7 @@
         }
       },
       "location": {
-        "name": "pop_global()",
+        "name": "pop_global",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -22978,7 +22978,7 @@
         }
       },
       "location": {
-        "name": "pretty_num()",
+        "name": "pretty_num",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -23017,7 +23017,7 @@
         }
       },
       "location": {
-        "name": "print_stats()",
+        "name": "print_stats",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -23056,7 +23056,7 @@
         }
       },
       "location": {
-        "name": "push_global()",
+        "name": "push_global",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -23095,7 +23095,7 @@
         }
       },
       "location": {
-        "name": "sample()",
+        "name": "sample",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -23134,7 +23134,7 @@
         }
       },
       "location": {
-        "name": "sample_impl()",
+        "name": "sample_impl",
         "file": { "key": "measure/measure.rs" },
         "location": {
           "range": {
@@ -23212,7 +23212,7 @@
         }
       },
       "location": {
-        "name": "hh_measure_pop_global()",
+        "name": "hh_measure_pop_global",
         "file": { "key": "measure/measure_ffi.rs" },
         "location": {
           "range": {
@@ -23251,7 +23251,7 @@
         }
       },
       "location": {
-        "name": "hh_measure_push_global()",
+        "name": "hh_measure_push_global",
         "file": { "key": "measure/measure_ffi.rs" },
         "location": {
           "range": {
@@ -23364,7 +23364,7 @@
         }
       },
       "location": {
-        "name": "file_pos/FilePos",
+        "name": "FilePos",
         "file": { "key": "pos/file_pos.rs" },
         "location": {
           "range": {
@@ -23403,7 +23403,7 @@
         }
       },
       "location": {
-        "name": "file_pos/FilePos#line_column_beg()",
+        "name": "line_column_beg",
         "file": { "key": "pos/file_pos.rs" },
         "location": {
           "range": {
@@ -23442,7 +23442,7 @@
         }
       },
       "location": {
-        "name": "file_pos/FilePos#offset()",
+        "name": "offset",
         "file": { "key": "pos/file_pos.rs" },
         "location": {
           "range": {
@@ -23520,7 +23520,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/DUMMY",
+        "name": "DUMMY",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -23559,7 +23559,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/FilePosLarge",
+        "name": "FilePosLarge",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -23598,7 +23598,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/FilePosLarge#bol",
+        "name": "bol",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -23637,7 +23637,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/FilePosLarge#lnum",
+        "name": "lnum",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -23676,7 +23676,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/FilePosLarge#offset",
+        "name": "offset",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -23715,7 +23715,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge][FilePos]line_column_beg()",
+        "name": "line_column_beg",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -23754,7 +23754,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge][FilePos]offset()",
+        "name": "offset",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -23793,7 +23793,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge][FromOcamlRep]from_ocamlrep()",
+        "name": "from_ocamlrep",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -23832,7 +23832,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge][ToOcamlRep]to_ocamlrep()",
+        "name": "to_ocamlrep",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -23871,7 +23871,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge][`FromOcamlRepIn<'a>`]from_ocamlrep_in()",
+        "name": "from_ocamlrep_in",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -23910,7 +23910,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge]beg_of_file()",
+        "name": "beg_of_file",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -23949,7 +23949,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge]beg_of_line()",
+        "name": "beg_of_line",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -23988,7 +23988,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge]cmp()",
+        "name": "cmp",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -24027,7 +24027,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge]column()",
+        "name": "column",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -24066,7 +24066,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge]from()",
+        "name": "from",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -24105,7 +24105,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge]from_line_column_offset()",
+        "name": "from_line_column_offset",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -24144,7 +24144,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge]from_lnum_bol_offset()",
+        "name": "from_lnum_bol_offset",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -24183,7 +24183,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge]is_dummy()",
+        "name": "is_dummy",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -24222,7 +24222,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge]line()",
+        "name": "line",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -24261,7 +24261,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge]line_beg()",
+        "name": "line_beg",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -24300,7 +24300,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge]line_beg_offset()",
+        "name": "line_beg_offset",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -24339,7 +24339,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge]line_column()",
+        "name": "line_column",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -24378,7 +24378,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge]line_column_offset()",
+        "name": "line_column_offset",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -24417,7 +24417,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge]make_dummy()",
+        "name": "make_dummy",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -24456,7 +24456,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge]partial_cmp()",
+        "name": "partial_cmp",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -24495,7 +24495,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[FilePosLarge]with_column()",
+        "name": "with_column",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -24534,7 +24534,7 @@
         }
       },
       "location": {
-        "name": "file_pos_large/impl#[`(FilePosLarge, FilePosLarge)`][WithErasedLines]with_erased_lines()",
+        "name": "with_erased_lines",
         "file": { "key": "pos/file_pos_large.rs" },
         "location": {
           "range": {
@@ -24612,7 +24612,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/BOL_BITS",
+        "name": "BOL_BITS",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -24651,7 +24651,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/COLUMN_BITS",
+        "name": "COLUMN_BITS",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -24690,7 +24690,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/DUMMY",
+        "name": "DUMMY",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -24729,7 +24729,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/FilePosSmall",
+        "name": "FilePosSmall",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -24768,7 +24768,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/LINE_BITS",
+        "name": "LINE_BITS",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -24807,7 +24807,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/MAX_BOL",
+        "name": "MAX_BOL",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -24846,7 +24846,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/MAX_COLUMN",
+        "name": "MAX_COLUMN",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -24885,7 +24885,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/MAX_LINE",
+        "name": "MAX_LINE",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -24924,7 +24924,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/PosTooLarge",
+        "name": "PosTooLarge",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -24963,7 +24963,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]Error",
+        "name": "Error",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25002,7 +25002,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall][FilePos]line_column_beg()",
+        "name": "line_column_beg",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25041,7 +25041,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall][FilePos]offset()",
+        "name": "offset",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25080,7 +25080,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall][FromOcamlRep]from_ocamlrep()",
+        "name": "from_ocamlrep",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25119,7 +25119,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall][ToOcamlRep]to_ocamlrep()",
+        "name": "to_ocamlrep",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25158,7 +25158,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall][`FromOcamlRepIn<'a>`]from_ocamlrep_in()",
+        "name": "from_ocamlrep_in",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25197,7 +25197,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]beg_of_file()",
+        "name": "beg_of_file",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25236,7 +25236,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]beg_of_line()",
+        "name": "beg_of_line",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25275,7 +25275,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]bol_line_col()",
+        "name": "bol_line_col",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25314,7 +25314,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]bol_line_col_unchecked()",
+        "name": "bol_line_col_unchecked",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25353,7 +25353,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]cmp()",
+        "name": "cmp",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25392,7 +25392,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]column()",
+        "name": "column",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25431,7 +25431,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]fmt()",
+        "name": "fmt",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25470,7 +25470,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]from_line_column_offset()",
+        "name": "from_line_column_offset",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25509,7 +25509,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]from_lnum_bol_offset()",
+        "name": "from_lnum_bol_offset",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25548,7 +25548,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]is_dummy()",
+        "name": "is_dummy",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25587,7 +25587,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]line()",
+        "name": "line",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25626,7 +25626,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]line_beg()",
+        "name": "line_beg",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25665,7 +25665,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]line_beg_offset()",
+        "name": "line_beg_offset",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25704,7 +25704,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]line_column()",
+        "name": "line_column",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25743,7 +25743,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]line_column_offset()",
+        "name": "line_column_offset",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25782,7 +25782,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]make_dummy()",
+        "name": "make_dummy",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25821,7 +25821,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]partial_cmp()",
+        "name": "partial_cmp",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25860,7 +25860,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]try_from()",
+        "name": "try_from",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25899,7 +25899,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/impl#[FilePosSmall]with_column()",
+        "name": "with_column",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25938,7 +25938,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/mask()",
+        "name": "mask",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -25977,7 +25977,7 @@
         }
       },
       "location": {
-        "name": "file_pos_small/mask_by()",
+        "name": "mask_by",
         "file": { "key": "pos/file_pos_small.rs" },
         "location": {
           "range": {
@@ -26053,7 +26053,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/Pos",
+        "name": "Pos",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26092,7 +26092,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/PosImpl",
+        "name": "PosImpl",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26131,7 +26131,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/PosImpl#FromReason",
+        "name": "FromReason",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26170,7 +26170,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/PosImpl#Large",
+        "name": "Large",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26209,7 +26209,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/PosImpl#Large#end",
+        "name": "end",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26248,7 +26248,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/PosImpl#Large#file",
+        "name": "file",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26287,7 +26287,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/PosImpl#Large#start",
+        "name": "start",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26326,7 +26326,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/PosImpl#Small",
+        "name": "Small",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26365,7 +26365,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/PosImpl#Small#end",
+        "name": "end",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26404,7 +26404,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/PosImpl#Small#file",
+        "name": "file",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26443,7 +26443,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/PosImpl#Small#start",
+        "name": "start",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26482,7 +26482,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/PosImpl#Tiny",
+        "name": "Tiny",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26521,7 +26521,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/PosImpl#Tiny#file",
+        "name": "file",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26560,7 +26560,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/PosImpl#Tiny#span",
+        "name": "span",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26599,7 +26599,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/PosR",
+        "name": "PosR",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26638,7 +26638,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/PosString",
+        "name": "PosString",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26677,7 +26677,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/compute()",
+        "name": "compute",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26716,7 +26716,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/do_fmt()",
+        "name": "do_fmt",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26755,7 +26755,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/do_fmt()",
+        "name": "do_fmt",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26794,7 +26794,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[PosImpl][FromOcamlRep]from_ocamlrep()",
+        "name": "from_ocamlrep",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26833,7 +26833,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[PosImpl][ToOcamlRep]to_ocamlrep()",
+        "name": "to_ocamlrep",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26872,7 +26872,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]NONE",
+        "name": "NONE",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26911,7 +26911,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos][EqModuloPos]eq_modulo_pos()",
+        "name": "eq_modulo_pos",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26950,7 +26950,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos][EqModuloPos]eq_modulo_pos_and_reason()",
+        "name": "eq_modulo_pos_and_reason",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -26989,7 +26989,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos][NoPosHash]hash()",
+        "name": "hash",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27028,7 +27028,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos][WithErasedLines]with_erased_lines()",
+        "name": "with_erased_lines",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27067,7 +27067,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]absolute()",
+        "name": "absolute",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27106,7 +27106,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]btw()",
+        "name": "btw",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27145,7 +27145,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]btw_nocheck()",
+        "name": "btw_nocheck",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27184,7 +27184,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]cmp()",
+        "name": "cmp",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27223,7 +27223,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]default()",
+        "name": "default",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27262,7 +27262,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]end_offset()",
+        "name": "end_offset",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27301,7 +27301,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]eq()",
+        "name": "eq",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27340,7 +27340,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]filename()",
+        "name": "filename",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27379,7 +27379,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]filename_rc()",
+        "name": "filename_rc",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27418,7 +27418,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]first_char_of_line()",
+        "name": "first_char_of_line",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27457,7 +27457,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]fmt()",
+        "name": "fmt",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27496,7 +27496,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]fmt()",
+        "name": "fmt",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27535,7 +27535,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]from()",
+        "name": "from",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27574,7 +27574,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]from_line_cols_offset()",
+        "name": "from_line_cols_offset",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27613,7 +27613,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]from_lnum_bol_offset()",
+        "name": "from_lnum_bol_offset",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27652,7 +27652,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]from_raw_span()",
+        "name": "from_raw_span",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27691,7 +27691,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]hash()",
+        "name": "hash",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27730,7 +27730,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]info_pos()",
+        "name": "info_pos",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27769,7 +27769,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]info_pos_extended()",
+        "name": "info_pos_extended",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27808,7 +27808,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]info_raw()",
+        "name": "info_raw",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27847,7 +27847,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]into_filename()",
+        "name": "into_filename",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27886,7 +27886,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]is_none()",
+        "name": "is_none",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27925,7 +27925,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]is_valid()",
+        "name": "is_valid",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -27964,7 +27964,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]last_char()",
+        "name": "last_char",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28003,7 +28003,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]line()",
+        "name": "line",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28042,7 +28042,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]merge()",
+        "name": "merge",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28081,7 +28081,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]merge_without_checking_filename()",
+        "name": "merge_without_checking_filename",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28120,7 +28120,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]partial_cmp()",
+        "name": "partial_cmp",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28159,7 +28159,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]start_offset()",
+        "name": "start_offset",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28198,7 +28198,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]string()",
+        "name": "string",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28237,7 +28237,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]to_raw_span()",
+        "name": "to_raw_span",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28276,7 +28276,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[Pos]to_start_and_end_lnum_bol_offset()",
+        "name": "to_start_and_end_lnum_bol_offset",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28315,7 +28315,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/impl#[`PosString<'_>`]fmt()",
+        "name": "fmt",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28354,7 +28354,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/map",
+        "name": "map",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28393,7 +28393,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/map/Map",
+        "name": "Map",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28432,7 +28432,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/tests",
+        "name": "tests",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28471,7 +28471,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/tests/make_pos()",
+        "name": "make_pos",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28510,7 +28510,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/tests/test_pos()",
+        "name": "test_pos",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28549,7 +28549,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/tests/test_pos_absolute()",
+        "name": "test_pos_absolute",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28588,7 +28588,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/tests/test_pos_merge()",
+        "name": "test_pos_merge",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28627,7 +28627,7 @@
         }
       },
       "location": {
-        "name": "pos_impl/tests/test_pos_string()",
+        "name": "test_pos_string",
         "file": { "key": "pos/pos_impl.rs" },
         "location": {
           "range": {
@@ -28705,7 +28705,7 @@
         }
       },
       "location": {
-        "name": "pos_span_raw/DUMMY",
+        "name": "DUMMY",
         "file": { "key": "pos/pos_span_raw.rs" },
         "location": {
           "range": {
@@ -28744,7 +28744,7 @@
         }
       },
       "location": {
-        "name": "pos_span_raw/PosSpanRaw",
+        "name": "PosSpanRaw",
         "file": { "key": "pos/pos_span_raw.rs" },
         "location": {
           "range": {
@@ -28783,7 +28783,7 @@
         }
       },
       "location": {
-        "name": "pos_span_raw/PosSpanRaw#end",
+        "name": "end",
         "file": { "key": "pos/pos_span_raw.rs" },
         "location": {
           "range": {
@@ -28822,7 +28822,7 @@
         }
       },
       "location": {
-        "name": "pos_span_raw/PosSpanRaw#start",
+        "name": "start",
         "file": { "key": "pos/pos_span_raw.rs" },
         "location": {
           "range": {
@@ -28861,7 +28861,7 @@
         }
       },
       "location": {
-        "name": "pos_span_raw/impl#[PosSpanRaw][WithErasedLines]with_erased_lines()",
+        "name": "with_erased_lines",
         "file": { "key": "pos/pos_span_raw.rs" },
         "location": {
           "range": {
@@ -28900,7 +28900,7 @@
         }
       },
       "location": {
-        "name": "pos_span_raw/impl#[PosSpanRaw]is_dummy()",
+        "name": "is_dummy",
         "file": { "key": "pos/pos_span_raw.rs" },
         "location": {
           "range": {
@@ -28939,7 +28939,7 @@
         }
       },
       "location": {
-        "name": "pos_span_raw/impl#[PosSpanRaw]make_dummy()",
+        "name": "make_dummy",
         "file": { "key": "pos/pos_span_raw.rs" },
         "location": {
           "range": {
@@ -29017,7 +29017,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/BEGINNING_OF_LINE_INCREMENT_BITS",
+        "name": "BEGINNING_OF_LINE_INCREMENT_BITS",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29056,7 +29056,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/BEGINNING_OF_LINE_INCREMENT_OFFSET",
+        "name": "BEGINNING_OF_LINE_INCREMENT_OFFSET",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29095,7 +29095,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/DUMMY",
+        "name": "DUMMY",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29134,7 +29134,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/LINE_NUMBER_INCREMENT_BITS",
+        "name": "LINE_NUMBER_INCREMENT_BITS",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29173,7 +29173,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/LINE_NUMBER_INCREMENT_OFFSET",
+        "name": "LINE_NUMBER_INCREMENT_OFFSET",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29212,7 +29212,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/MASK",
+        "name": "MASK",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29251,7 +29251,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/MAX_BEGINNING_OF_LINE_INCREMENT",
+        "name": "MAX_BEGINNING_OF_LINE_INCREMENT",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29290,7 +29290,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/MAX_LINE_NUMBER_INCREMENT",
+        "name": "MAX_LINE_NUMBER_INCREMENT",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29329,7 +29329,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/MAX_START_BEGINNING_OF_LINE",
+        "name": "MAX_START_BEGINNING_OF_LINE",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29368,7 +29368,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/MAX_START_COLUMN_NUMBER",
+        "name": "MAX_START_COLUMN_NUMBER",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29407,7 +29407,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/MAX_START_LINE_NUMBER",
+        "name": "MAX_START_LINE_NUMBER",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29446,7 +29446,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/MAX_WIDTH",
+        "name": "MAX_WIDTH",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29485,7 +29485,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/PosSpanTiny",
+        "name": "PosSpanTiny",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29524,7 +29524,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/PosSpanTooLarge",
+        "name": "PosSpanTooLarge",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29563,7 +29563,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/START_BEGINNING_OF_LINE_BITS",
+        "name": "START_BEGINNING_OF_LINE_BITS",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29602,7 +29602,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/START_BEGINNING_OF_LINE_OFFSET",
+        "name": "START_BEGINNING_OF_LINE_OFFSET",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29641,7 +29641,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/START_COLUMN_NUMBER_BITS",
+        "name": "START_COLUMN_NUMBER_BITS",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29680,7 +29680,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/START_COLUMN_NUMBER_OFFSET",
+        "name": "START_COLUMN_NUMBER_OFFSET",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29719,7 +29719,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/START_LINE_NUMBER_BITS",
+        "name": "START_LINE_NUMBER_BITS",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29758,7 +29758,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/START_LINE_NUMBER_OFFSET",
+        "name": "START_LINE_NUMBER_OFFSET",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29797,7 +29797,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/WIDTH_BITS",
+        "name": "WIDTH_BITS",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29836,7 +29836,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/WIDTH_OFFSET",
+        "name": "WIDTH_OFFSET",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29875,7 +29875,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanRaw]from()",
+        "name": "from",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29914,7 +29914,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]Error",
+        "name": "Error",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29953,7 +29953,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny][FromOcamlRep]from_ocamlrep()",
+        "name": "from_ocamlrep",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -29992,7 +29992,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny][ToOcamlRep]to_ocamlrep()",
+        "name": "to_ocamlrep",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30031,7 +30031,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny][`FromOcamlRepIn<'a>`]from_ocamlrep_in()",
+        "name": "from_ocamlrep_in",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30070,7 +30070,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]beginning_of_line_increment()",
+        "name": "beginning_of_line_increment",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30109,7 +30109,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]cmp()",
+        "name": "cmp",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30148,7 +30148,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]end_beginning_of_line()",
+        "name": "end_beginning_of_line",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30187,7 +30187,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]end_column()",
+        "name": "end_column",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30226,7 +30226,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]end_line_number()",
+        "name": "end_line_number",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30265,7 +30265,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]end_offset()",
+        "name": "end_offset",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30304,7 +30304,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]fmt()",
+        "name": "fmt",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30343,7 +30343,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]is_dummy()",
+        "name": "is_dummy",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30382,7 +30382,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]line_number_increment()",
+        "name": "line_number_increment",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30421,7 +30421,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]make()",
+        "name": "make",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30460,7 +30460,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]make_dummy()",
+        "name": "make_dummy",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30499,7 +30499,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]partial_cmp()",
+        "name": "partial_cmp",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30538,7 +30538,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]start_beginning_of_line()",
+        "name": "start_beginning_of_line",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30577,7 +30577,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]start_column()",
+        "name": "start_column",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30616,7 +30616,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]start_line_number()",
+        "name": "start_line_number",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30655,7 +30655,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]start_offset()",
+        "name": "start_offset",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30694,7 +30694,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]to_raw_span()",
+        "name": "to_raw_span",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30733,7 +30733,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]try_from()",
+        "name": "try_from",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30772,7 +30772,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/impl#[PosSpanTiny]width()",
+        "name": "width",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30811,7 +30811,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/mask()",
+        "name": "mask",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30850,7 +30850,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/mask_by()",
+        "name": "mask_by",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30889,7 +30889,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/test",
+        "name": "test",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30928,7 +30928,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/test/test_round_trip_through_ocaml_value_large_tiny_span()",
+        "name": "test_round_trip_through_ocaml_value_large_tiny_span",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -30967,7 +30967,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/test/test_tiny_dummy()",
+        "name": "test_tiny_dummy",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -31006,7 +31006,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/test/test_tiny_large()",
+        "name": "test_tiny_large",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -31045,7 +31045,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/test/test_tiny_multiline_span()",
+        "name": "test_tiny_multiline_span",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -31084,7 +31084,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/test/test_tiny_negative_span()",
+        "name": "test_tiny_negative_span",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -31123,7 +31123,7 @@
         }
       },
       "location": {
-        "name": "pos_span_tiny/test/test_tiny_small()",
+        "name": "test_tiny_small",
         "file": { "key": "pos/pos_span_tiny.rs" },
         "location": {
           "range": {
@@ -31201,7 +31201,7 @@
         }
       },
       "location": {
-        "name": "with_erased_lines/WithErasedLines",
+        "name": "WithErasedLines",
         "file": { "key": "pos/with_erased_lines.rs" },
         "location": {
           "range": {
@@ -31240,7 +31240,7 @@
         }
       },
       "location": {
-        "name": "with_erased_lines/WithErasedLines#with_erased_lines()",
+        "name": "with_erased_lines",
         "file": { "key": "pos/with_erased_lines.rs" },
         "location": {
           "range": {
@@ -31357,7 +31357,7 @@
         }
       },
       "location": {
-        "name": "Prefix#Dummy",
+        "name": "Dummy",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -31396,7 +31396,7 @@
         }
       },
       "location": {
-        "name": "Prefix#Hhi",
+        "name": "Hhi",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -31435,7 +31435,7 @@
         }
       },
       "location": {
-        "name": "Prefix#Root",
+        "name": "Root",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -31474,7 +31474,7 @@
         }
       },
       "location": {
-        "name": "Prefix#Tmp",
+        "name": "Tmp",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -31552,7 +31552,7 @@
         }
       },
       "location": {
-        "name": "RelativePath#path",
+        "name": "path",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -31591,7 +31591,7 @@
         }
       },
       "location": {
-        "name": "RelativePath#prefix",
+        "name": "prefix",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -31669,7 +31669,7 @@
         }
       },
       "location": {
-        "name": "RelativePathCtx#dummy",
+        "name": "dummy",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -31708,7 +31708,7 @@
         }
       },
       "location": {
-        "name": "RelativePathCtx#hhi",
+        "name": "hhi",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -31747,7 +31747,7 @@
         }
       },
       "location": {
-        "name": "RelativePathCtx#root",
+        "name": "root",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -31786,7 +31786,7 @@
         }
       },
       "location": {
-        "name": "RelativePathCtx#tmp",
+        "name": "tmp",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -31903,7 +31903,7 @@
         }
       },
       "location": {
-        "name": "impl#[Prefix]Error",
+        "name": "Error",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -31942,7 +31942,7 @@
         }
       },
       "location": {
-        "name": "impl#[Prefix]fmt()",
+        "name": "fmt",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -31981,7 +31981,7 @@
         }
       },
       "location": {
-        "name": "impl#[Prefix]is_hhi()",
+        "name": "is_hhi",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32020,7 +32020,7 @@
         }
       },
       "location": {
-        "name": "impl#[Prefix]try_from()",
+        "name": "try_from",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32059,7 +32059,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePathCtx]prefix_path()",
+        "name": "prefix_path",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32098,7 +32098,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePath]EMPTY",
+        "name": "EMPTY",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32137,7 +32137,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePath][FromOcamlRep]from_ocamlrep()",
+        "name": "from_ocamlrep",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32176,7 +32176,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePath][Serialize]serialize()",
+        "name": "serialize",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32215,7 +32215,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePath][ToOcamlRep]to_ocamlrep()",
+        "name": "to_ocamlrep",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32254,7 +32254,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePath][`Deserialize<'de>`]deserialize()",
+        "name": "deserialize",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32293,7 +32293,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePath]cmp()",
+        "name": "cmp",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32332,7 +32332,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePath]fmt()",
+        "name": "fmt",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32371,7 +32371,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePath]fmt()",
+        "name": "fmt",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32410,7 +32410,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePath]has_extension()",
+        "name": "has_extension",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32449,7 +32449,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePath]is_empty()",
+        "name": "is_empty",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32488,7 +32488,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePath]is_hhi()",
+        "name": "is_hhi",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32527,7 +32527,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePath]make()",
+        "name": "make",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32566,7 +32566,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePath]partial_cmp()",
+        "name": "partial_cmp",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32605,7 +32605,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePath]path()",
+        "name": "path",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32644,7 +32644,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePath]path_str()",
+        "name": "path_str",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32683,7 +32683,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePath]prefix()",
+        "name": "prefix",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32722,7 +32722,7 @@
         }
       },
       "location": {
-        "name": "impl#[RelativePath]to_absolute()",
+        "name": "to_absolute",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32761,7 +32761,7 @@
         }
       },
       "location": {
-        "name": "impl#[Visitor][`Visitor<'de>`]Value",
+        "name": "Value",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32800,7 +32800,7 @@
         }
       },
       "location": {
-        "name": "impl#[Visitor][`Visitor<'de>`]expecting()",
+        "name": "expecting",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32839,7 +32839,7 @@
         }
       },
       "location": {
-        "name": "impl#[Visitor][`Visitor<'de>`]visit_str()",
+        "name": "visit_str",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32956,7 +32956,7 @@
         }
       },
       "location": {
-        "name": "tests/test_invalid_usize_prefix()",
+        "name": "test_invalid_usize_prefix",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -32995,7 +32995,7 @@
         }
       },
       "location": {
-        "name": "tests/test_valid_usize_prefix()",
+        "name": "test_valid_usize_prefix",
         "file": { "key": "relative_path.rs" },
         "location": {
           "range": {
@@ -33268,7 +33268,7 @@
         }
       },
       "location": {
-        "name": "SignCheckResponse#Invalid",
+        "name": "Invalid",
         "file": { "key": "signed_source.rs" },
         "location": {
           "range": {
@@ -33307,7 +33307,7 @@
         }
       },
       "location": {
-        "name": "SignCheckResponse#Ok",
+        "name": "Ok",
         "file": { "key": "signed_source.rs" },
         "location": {
           "range": {
@@ -33346,7 +33346,7 @@
         }
       },
       "location": {
-        "name": "SignCheckResponse#Unsigned",
+        "name": "Unsigned",
         "file": { "key": "signed_source.rs" },
         "location": {
           "range": {
@@ -33541,7 +33541,7 @@
         }
       },
       "location": {
-        "name": "hash()",
+        "name": "hash",
         "file": { "key": "signed_source.rs" },
         "location": {
           "range": {
@@ -33580,7 +33580,7 @@
         }
       },
       "location": {
-        "name": "is_signed()",
+        "name": "is_signed",
         "file": { "key": "signed_source.rs" },
         "location": {
           "range": {
@@ -33619,7 +33619,7 @@
         }
       },
       "location": {
-        "name": "make_signing_token()",
+        "name": "make_signing_token",
         "file": { "key": "signed_source.rs" },
         "location": {
           "range": {
@@ -33658,7 +33658,7 @@
         }
       },
       "location": {
-        "name": "sign_file()",
+        "name": "sign_file",
         "file": { "key": "signed_source.rs" },
         "location": {
           "range": {
@@ -33697,7 +33697,7 @@
         }
       },
       "location": {
-        "name": "sign_utf8_file()",
+        "name": "sign_utf8_file",
         "file": { "key": "signed_source.rs" },
         "location": {
           "range": {
@@ -33775,7 +33775,7 @@
         }
       },
       "location": {
-        "name": "test/INVALID",
+        "name": "INVALID",
         "file": { "key": "signed_source.rs" },
         "location": {
           "range": {
@@ -33814,7 +33814,7 @@
         }
       },
       "location": {
-        "name": "test/NO_TOKEN",
+        "name": "NO_TOKEN",
         "file": { "key": "signed_source.rs" },
         "location": {
           "range": {
@@ -33853,7 +33853,7 @@
         }
       },
       "location": {
-        "name": "test/SIGNED",
+        "name": "SIGNED",
         "file": { "key": "signed_source.rs" },
         "location": {
           "range": {
@@ -33892,7 +33892,7 @@
         }
       },
       "location": {
-        "name": "test/UNSIGNED",
+        "name": "UNSIGNED",
         "file": { "key": "signed_source.rs" },
         "location": {
           "range": {
@@ -33931,7 +33931,7 @@
         }
       },
       "location": {
-        "name": "test/test_is_signed()",
+        "name": "test_is_signed",
         "file": { "key": "signed_source.rs" },
         "location": {
           "range": {
@@ -33970,7 +33970,7 @@
         }
       },
       "location": {
-        "name": "test/test_sign_utf8_file()",
+        "name": "test_sign_utf8_file",
         "file": { "key": "signed_source.rs" },
         "location": {
           "range": {
@@ -34009,7 +34009,7 @@
         }
       },
       "location": {
-        "name": "test/test_signing_token()",
+        "name": "test_signing_token",
         "file": { "key": "signed_source.rs" },
         "location": {
           "range": {
@@ -34048,7 +34048,7 @@
         }
       },
       "location": {
-        "name": "test/test_verify_signature()",
+        "name": "test_verify_signature",
         "file": { "key": "signed_source.rs" },
         "location": {
           "range": {
@@ -34087,7 +34087,7 @@
         }
       },
       "location": {
-        "name": "verify_signature()",
+        "name": "verify_signature",
         "file": { "key": "signed_source.rs" },
         "location": {
           "range": {

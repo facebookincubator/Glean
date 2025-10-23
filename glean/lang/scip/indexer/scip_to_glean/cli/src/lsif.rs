@@ -8,7 +8,7 @@
 
 #![allow(clippy::upper_case_acronyms)]
 
-use crate::Suffix;
+use scip_symbol::DescriptorKind;
 
 #[allow(unused)]
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
@@ -42,18 +42,18 @@ pub enum SymbolKind {
     SkUnknown,
 }
 impl SymbolKind {
-    pub fn new(value: Suffix) -> Self {
-        use Suffix::*;
+    pub fn new(value: DescriptorKind) -> Self {
+        use DescriptorKind::*;
         use SymbolKind::*;
         match value {
-            SymUnspecifiedSuffix => SkUnknown,
-            SymPackage => SkPackage,
-            SymType => SkClass,
-            SymTerm => SkVariable,
-            SymMethod => SkMethod,
-            SymTypeParameter => SkTypeParameter,
-            SymParameter => SkField,
-            SymMeta => SkUnknown,
+            Namespace => SkPackage,
+            Type => SkClass,
+            Term => SkVariable,
+            Method(_) => SkMethod,
+            TypeParameter => SkTypeParameter,
+            Parameter => SkField,
+            Meta => SkUnknown,
+            Macro => SkUnknown,
         }
     }
 }

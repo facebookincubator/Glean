@@ -157,18 +157,6 @@ fn build_json(args: BuildJsonArgs) -> Result<()> {
     Ok(())
 }
 
-#[derive(PartialEq, Debug)]
-enum Suffix {
-    SymUnspecifiedSuffix,
-    SymPackage,
-    SymType,
-    SymTerm,
-    SymMethod,
-    SymTypeParameter,
-    SymParameter,
-    SymMeta,
-}
-
 #[derive(Serialize, Deserialize, Clone, Eq, PartialEq, Hash)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 struct ToolInfo {
