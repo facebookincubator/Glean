@@ -60,7 +60,6 @@ indexer = Indexer {
            let outDir = takeDirectory outFile in
            [ "--output-dir", outDir
             , "--target", target
-            , "--swift-only"
             , "--output-type", "scip"
             , "--inventory", inventoryFile
             , "--isolation-dir", "index_store"
