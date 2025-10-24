@@ -460,6 +460,16 @@ predicate TargetCallByCallExpr :
     target : TargetCall,
   } stored { CE, T } where T = buck.TargetCall { callExpr = { just = CE } }
 
+# A call to a function, not restricted to build rules
+predicate FileCall:
+  {
+    file: src.File,
+    callee_span: src.ByteSpan,
+    callExpr : maybe CallExpr,
+    arguments: [CallArgument],
+    locator: maybe Locator,  # we store the target only if the call is a build_rule
+  }
+
 # A translation unit (source file and target)
 predicate TranslationUnit :
   {
