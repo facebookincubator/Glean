@@ -1,0 +1,9 @@
+{application, basic,
+ [{description, "Basic test application for Glean indexer"},
+  {vsn, "1.0.0"},
+  {registered, []},
+  {applications, [kernel, stdlib]},
+  {env, []},
+  {modules, []},
+  {licenses, []},
+  {links, []}]}.

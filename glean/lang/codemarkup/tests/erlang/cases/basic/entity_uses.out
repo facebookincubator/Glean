@@ -1,0 +1,311 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 1, "start": 287 },
+      "target": {
+        "decl": {
+          "func": {
+            "key": {
+              "file": {
+                "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+              },
+              "fqn": { "arity": 287, "module": "example", "name": "X" },
+              "span": { "length": 1, "start": 287 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 1, "start": 290 },
+      "target": {
+        "decl": {
+          "func": {
+            "key": {
+              "file": {
+                "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+              },
+              "fqn": { "arity": 290, "module": "example", "name": "Y" },
+              "span": { "length": 1, "start": 290 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 1, "start": 300 },
+      "target": {
+        "decl": {
+          "func": {
+            "key": {
+              "file": {
+                "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+              },
+              "fqn": { "arity": 300, "module": "example", "name": "X" },
+              "span": { "length": 1, "start": 300 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 1, "start": 304 },
+      "target": {
+        "decl": {
+          "func": {
+            "key": {
+              "file": {
+                "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+              },
+              "fqn": { "arity": 304, "module": "example", "name": "Y" },
+              "span": { "length": 1, "start": 304 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 1, "start": 411 },
+      "target": {
+        "decl": {
+          "func": {
+            "key": {
+              "file": {
+                "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+              },
+              "fqn": { "arity": 411, "module": "example", "name": "N" },
+              "span": { "length": 1, "start": 411 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 1, "start": 419 },
+      "target": {
+        "decl": {
+          "func": {
+            "key": {
+              "file": {
+                "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+              },
+              "fqn": { "arity": 419, "module": "example", "name": "N" },
+              "span": { "length": 1, "start": 419 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 1, "start": 432 },
+      "target": {
+        "decl": {
+          "func": {
+            "key": {
+              "file": {
+                "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+              },
+              "fqn": { "arity": 432, "module": "example", "name": "N" },
+              "span": { "length": 1, "start": 432 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 1, "start": 446 },
+      "target": {
+        "decl": {
+          "func": {
+            "key": {
+              "file": {
+                "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+              },
+              "fqn": { "arity": 446, "module": "example", "name": "N" },
+              "span": { "length": 1, "start": 446 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 4, "start": 155 },
+      "target": {
+        "decl": {
+          "func": {
+            "key": {
+              "file": {
+                "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+              },
+              "fqn": { "arity": 155, "module": "example", "name": "Name" },
+              "span": { "length": 4, "start": 155 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 4, "start": 200 },
+      "target": {
+        "decl": {
+          "func": {
+            "key": {
+              "file": {
+                "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+              },
+              "fqn": { "arity": 200, "module": "example", "name": "Name" },
+              "span": { "length": 4, "start": 200 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 5, "start": 36 },
+      "target": {
+        "decl": {
+          "func": {
+            "key": {
+              "file": {
+                "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+              },
+              "fqn": { "arity": 2, "module": "example", "name": "add" },
+              "span": { "length": 23, "start": 283 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 5, "start": 193 },
+      "target": {
+        "decl": {
+          "func": {
+            "key": {
+              "file": {
+                "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+              },
+              "fqn": { "arity": 193, "module": "example", "name": "HELLO" },
+              "span": { "length": 5, "start": 193 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 7, "start": 27 },
+      "target": {
+        "decl": {
+          "func": {
+            "key": {
+              "file": {
+                "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+              },
+              "fqn": { "arity": 1, "module": "example", "name": "hello" },
+              "span": { "length": 58, "start": 149 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 9, "start": 436 },
+      "target": {
+        "decl": {
+          "func": {
+            "key": {
+              "file": {
+                "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+              },
+              "fqn": { "arity": 1, "module": "example", "name": "factorial" },
+              "span": { "length": 71, "start": 382 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 11, "start": 43 },
+      "target": {
+        "decl": {
+          "func": {
+            "key": {
+              "file": {
+                "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+              },
+              "fqn": { "arity": 1, "module": "example", "name": "factorial" },
+              "span": { "length": 71, "start": 382 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 24, "start": 59 },
+      "target": {
+        "decl": {
+          "func": {
+            "key": {
+              "file": {
+                "key": "glean/lang/erlang/tests/cases/basic/include/example.hrl"
+              },
+              "fqn": {
+                "arity": 100,
+                "module": "example.hrl",
+                "name": "example.hrl"
+              },
+              "span": { "length": 1, "start": 0 }
+            }
+          }
+        }
+      }
+    }
+  }
+]
