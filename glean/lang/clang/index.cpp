@@ -291,11 +291,12 @@ struct Config {
         } else if (auto* p = item.get_ptr("platform")) {
           sourcePlatform = p->getString();
         }
-        sources.push_back(SourceFile{
-            item["target"].getString(),
-            std::move(sourcePlatform),
-            item["dir"].getString(),
-            item["file"].getString()});
+        sources.push_back(
+            SourceFile{
+                item["target"].getString(),
+                std::move(sourcePlatform),
+                item["dir"].getString(),
+                item["file"].getString()});
       }
     }
 
@@ -313,12 +314,13 @@ struct Config {
         sourcePlatform = FLAGS_platform;
       }
       for (const auto& file : cdb->getAllFiles()) {
-        sources.push_back(SourceFile{
-            FLAGS_cdb_target.c_str(),
-            sourcePlatform,
-            FLAGS_cdb_dir.c_str(),
-            file,
-        });
+        sources.push_back(
+            SourceFile{
+                FLAGS_cdb_target.c_str(),
+                sourcePlatform,
+                FLAGS_cdb_dir.c_str(),
+                file,
+            });
       }
     }
   }
@@ -394,9 +396,10 @@ struct SourceIndexer {
     if (FLAGS_ownership) {
       // source file paths will be absolute (see loadCompilationDatabase()) but
       // we need the unit path to be relative.
-      batch.beginUnit(std::filesystem::path(source.file)
-                          .lexically_relative(config.root)
-                          .string());
+      batch.beginUnit(
+          std::filesystem::path(source.file)
+              .lexically_relative(config.root)
+              .string());
     }
     auto pcdb = cdb.load(source);
     auto cellLocator = locatorOf(source);
@@ -417,8 +420,9 @@ struct SourceIndexer {
       clang::tooling::CommandLineArguments args;
       folly::split(' ', FLAGS_clang_arguments, args, true);
       if (!args.empty()) {
-        tool.appendArgumentsAdjuster(clang::tooling::getInsertArgumentAdjuster(
-            args, clang::tooling::ArgumentInsertPosition::END));
+        tool.appendArgumentsAdjuster(
+            clang::tooling::getInsertArgumentAdjuster(
+                args, clang::tooling::ArgumentInsertPosition::END));
       }
     }
     tool.appendArgumentsAdjuster([](const auto& args, auto) {

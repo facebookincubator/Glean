@@ -373,10 +373,10 @@ struct EnumerateIterator final : rts::FactIterator {
   Fact::Ref get(Demand /*unused*/) override {
     return iter_->Valid()
         ? decomposeFact(
-              Id::fromWord(
-                  loadTrustedNat(reinterpret_cast<const unsigned char*>(
-                                     iter_->key().data()))
-                      .first),
+              Id::fromWord(loadTrustedNat(
+                               reinterpret_cast<const unsigned char*>(
+                                   iter_->key().data()))
+                               .first),
               iter_->value())
         : Fact::Ref::invalid();
   }

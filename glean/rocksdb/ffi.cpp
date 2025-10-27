@@ -168,8 +168,9 @@ const char* glean_rocksdb_get_unit_id(
     size_t unit_size,
     uint64_t* unit_id) {
   return ffi::wrap([=] {
-    auto res = db->getUnitId(folly::ByteRange(
-        reinterpret_cast<const unsigned char*>(unit), unit_size));
+    auto res = db->getUnitId(
+        folly::ByteRange(
+            reinterpret_cast<const unsigned char*>(unit), unit_size));
     if (res.hasValue()) {
       *unit_id = *res;
     } else {

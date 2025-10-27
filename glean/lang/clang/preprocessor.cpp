@@ -184,22 +184,23 @@ struct PPCallbacks final : public clang::PPCallbacks {
 
         // Manually convert this to a CharSourceRange and call the more
         // efficient immediateSourceRange rather than srcRange.
-        : db.immediateSrcRange(clang::CharSourceRange::getCharRange(
-              {// getBegin points at the start of the first token
-               range.getBegin(),
+        : db.immediateSrcRange(
+              clang::CharSourceRange::getCharRange(
+                  {// getBegin points at the start of the first token
+                   range.getBegin(),
 
-               // getEnd points at the start of the last token.
-               range.getEnd().getLocWithOffset(
-                   // Skip over the last token to make this an proper
-                   // (exclusive) char range.
-                   range.getBegin() == range.getEnd()
-                       // The macro expansion range is only one token which must
-                       // be the macro name.
-                       ? name.getLength()
+                   // getEnd points at the start of the last token.
+                   range.getEnd().getLocWithOffset(
+                       // Skip over the last token to make this an proper
+                       // (exclusive) char range.
+                       range.getBegin() == range.getEnd()
+                           // The macro expansion range is only one token which
+                           // must be the macro name.
+                           ? name.getLength()
 
-                       // Multiple tokens which means the last token must be the
-                       // closing parenthesis.
-                       : 1)}));
+                           // Multiple tokens which means the last token must be
+                           // the closing parenthesis.
+                           : 1)}));
 
     if (range.getBegin().isMacroID() && !expansion.has_value()) {
       // This really shouldn't happen.
@@ -243,8 +244,9 @@ struct PPCallbacks final : public clang::PPCallbacks {
     // top-level expansion (it should be spelling file + range).
     const auto name_r = name.getLocation().isMacroID()
         ? src
-        : db.immediateSrcRange(clang::CharSourceRange::getCharRange(
-              {name.getLocation(), name.getEndLoc()}));
+        : db.immediateSrcRange(
+              clang::CharSourceRange::getCharRange(
+                  {name.getLocation(), name.getEndLoc()}));
 
     auto use = db.fact<Pp::Use>(
         macro(name),

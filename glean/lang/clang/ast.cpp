@@ -109,8 +109,8 @@ class UsingTracker {
       const clang::UsingDirectiveDecl* decl,
       Fact<Cxx::UsingDirective> fact) {
     if (auto context = getCanonicalDeclContext(decl->getDeclContext())) {
-      if (auto dir_context =
-              getCanonicalDeclContext(clang::dyn_cast<clang::DeclContext>(
+      if (auto dir_context = getCanonicalDeclContext(
+              clang::dyn_cast<clang::DeclContext>(
                   decl->getNominatedNamespace()))) {
         forwards[context].push_back(
             Forward{decl->getUsingLoc(), dir_context, fact});
@@ -1572,10 +1572,11 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       for (const auto& base : d->bases()) {
         if (const auto* record = getAsCXXRecordDecl(base.getType())) {
           if (auto other = visitor.classDecls(record)) {
-            bases.push_back(Cxx::RecordBase{
-                other->decl, // should this be base.representative?
-                visitor.access(base.getAccessSpecifier()),
-                base.isVirtual()});
+            bases.push_back(
+                Cxx::RecordBase{
+                    other->decl, // should this be base.representative?
+                    visitor.access(base.getAccessSpecifier()),
+                    base.isVirtual()});
           }
         }
       }
@@ -1855,11 +1856,12 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
                 visitor.db.fact<Cxx::VariableDeclaration>(
                     qname,
                     visitor.type(decl->getType()),
-                    Cxx::VariableKind::global_(Cxx::GlobalVariable{
-                        kind,
-                        globalAttribute(decl),
-                        decl->isThisDeclarationADefinition() ==
-                            clang::VarDecl::Definition}),
+                    Cxx::VariableKind::global_(
+                        Cxx::GlobalVariable{
+                            kind,
+                            globalAttribute(decl),
+                            decl->isThisDeclarationADefinition() ==
+                                clang::VarDecl::Definition}),
                     range)};
           },
           [&](Cxx::LocalVariableKind kind) {
@@ -1872,10 +1874,11 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
                 visitor.db.fact<Cxx::VariableDeclaration>(
                     qname,
                     visitor.type(decl->getType()),
-                    Cxx::VariableKind::local(Cxx::LocalVariable{
-                        kind,
-                        localAttribute(decl),
-                    }),
+                    Cxx::VariableKind::local(
+                        Cxx::LocalVariable{
+                            kind,
+                            localAttribute(decl),
+                        }),
                     range)};
           });
     }

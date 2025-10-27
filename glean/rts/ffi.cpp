@@ -80,12 +80,14 @@ const char* glean_inventory_new(
     std::vector<rts::Predicate> predicates;
     predicates.reserve(count);
     for (size_t i = 0; i < count; ++i) {
-      predicates.push_back(rts::Predicate{
-          Pid::fromThrift(ids[i]),
-          std::string(static_cast<const char*>(name_ptrs[i]), name_sizes[i]),
-          versions[i],
-          typecheckers[i]->value,
-          traversals[i]->value});
+      predicates.push_back(
+          rts::Predicate{
+              Pid::fromThrift(ids[i]),
+              std::string(
+                  static_cast<const char*>(name_ptrs[i]), name_sizes[i]),
+              versions[i],
+              typecheckers[i]->value,
+              traversals[i]->value});
     }
     *inventory = new Inventory(std::move(predicates));
   });
@@ -120,8 +122,9 @@ const char* glean_inventory_deserialize(
     size_t size,
     Inventory** inventory) {
   return ffi::wrap([=] {
-    *inventory = new Inventory(Inventory::deserialize(
-        {reinterpret_cast<const unsigned char*>(data), size}));
+    *inventory = new Inventory(
+        Inventory::deserialize(
+            {reinterpret_cast<const unsigned char*>(data), size}));
   });
 }
 

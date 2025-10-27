@@ -137,7 +137,7 @@ inline const unsigned char* skipTrustedNat(const unsigned char* p) {
 /// Check and decode an encoded nat and return the decoded number and a pointer
 /// to the first byte after the nat. The pointer will be NULL is the number is
 /// invalid of the buffer is too short.
-std::pair<uint64_t, const unsigned char * FOLLY_NULLABLE> loadUntrustedNat(
+std::pair<uint64_t, const unsigned char* FOLLY_NULLABLE> loadUntrustedNat(
     const unsigned char* p, // pointer to first byte
     const unsigned char* e // pointer to end of buffer
 );

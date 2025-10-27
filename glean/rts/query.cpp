@@ -266,12 +266,13 @@ uint64_t QueryExecutor::seek(
   const folly::ByteRange key(key_begin, key_end);
   auto token = iters.size();
   DVLOG(5) << "seek(" << type.toWord() << ") = " << token;
-  iters.emplace_back(Iter{
-      facts.seek(type, key, key.size()),
-      type,
-      Id::invalid(),
-      key.size(),
-      true});
+  iters.emplace_back(
+      Iter{
+          facts.seek(type, key, key.size()),
+          type,
+          Id::invalid(),
+          key.size(),
+          true});
   return static_cast<uint64_t>(token);
 };
 
@@ -284,12 +285,13 @@ uint64_t QueryExecutor::seekWithinSection(
   const folly::ByteRange key(key_begin, key_end);
   auto token = iters.size();
   DVLOG(5) << "seekWithinSection(" << type.toWord() << ") = " << token;
-  iters.emplace_back(Iter{
-      facts.seekWithinSection(type, key, key.size(), from, upto),
-      type,
-      Id::invalid(),
-      key.size(),
-      true});
+  iters.emplace_back(
+      Iter{
+          facts.seekWithinSection(type, key, key.size(), from, upto),
+          type,
+          Id::invalid(),
+          key.size(),
+          true});
   return static_cast<uint64_t>(token);
 };
 

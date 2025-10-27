@@ -80,8 +80,9 @@ struct Substitution {
     return !(*this == other);
   }
 
-  void with(const std::function<void(Id base, const std::vector<Id>& items)>&
-                fun) const {
+  void with(
+      const std::function<void(Id base, const std::vector<Id>& items)>& fun)
+      const {
     fun(base, items);
   }
 

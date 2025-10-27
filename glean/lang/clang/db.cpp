@@ -172,7 +172,7 @@ void ClangDB::skipFile(
 
 void ClangDB::FileData::xref(
     Src::ByteSpan span,
-    CrossRef::Spans CrossRef::*get_spans,
+    CrossRef::Spans CrossRef::* get_spans,
     const Cxx::XRefTarget& target,
     CrossRef::SortID sort_id,
     bool local) {
@@ -192,7 +192,7 @@ void ClangDB::xref(
     CrossRef::SortID sort_id,
     bool local) {
   auto file_xref = [&](SourceRange range,
-                       CrossRef::Spans CrossRef::*get_spans) {
+                       CrossRef::Spans CrossRef::* get_spans) {
     if (range.file) {
       auto* target_range = std::get_if<SourceRange>(&sort_id);
       range.file->xref(

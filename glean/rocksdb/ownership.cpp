@@ -889,9 +889,10 @@ void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
   batch.Put(
       container.family(Family::factOwnerPages),
       INDEX_KEY,
-      slice(folly::ByteRange(
-          reinterpret_cast<const uint8_t*>(index.data()),
-          index.size() * sizeof(UsetId))));
+      slice(
+          folly::ByteRange(
+              reinterpret_cast<const uint8_t*>(index.data()),
+              index.size() * sizeof(UsetId))));
 
   t.logFormat(
       "{} index entries, {} populated, {} orphans",

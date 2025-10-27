@@ -197,7 +197,7 @@ decode9:
   return decode<9>(b0, p);
 }
 
-std::pair<uint64_t, const unsigned char * FOLLY_NULLABLE> loadUntrustedNat(
+std::pair<uint64_t, const unsigned char* FOLLY_NULLABLE> loadUntrustedNat(
     const unsigned char* p,
     const unsigned char* e) {
   DECODER_LABELS(decoder);

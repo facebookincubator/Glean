@@ -43,8 +43,9 @@ void JsonServer::start(std::istream& input, std::ostream& output) {
   std::thread inputThread([this, &input]() { processInput(input); });
 
   // Start output request processing using multi-threaded executor
-  asyncScope_->add(folly::coro::co_viaIfAsync(
-      folly::getGlobalCPUExecutor(), processOutput(output)));
+  asyncScope_->add(
+      folly::coro::co_viaIfAsync(
+          folly::getGlobalCPUExecutor(), processOutput(output)));
 
   // Wait for input thread to complete
   if (inputThread.joinable()) {
@@ -78,8 +79,9 @@ folly::coro::Task<void> JsonServer::processOutput(std::ostream& output) {
     // Use waitAndPop with timeout to allow checking running_ periodically
     if (requestQueue_.waitAndPop(request, std::chrono::milliseconds(100))) {
       // Process each request concurrently on the executor
-      asyncScope_->add(folly::coro::co_viaIfAsync(
-          folly::getGlobalCPUExecutor(), processRequest(request, output)));
+      asyncScope_->add(
+          folly::coro::co_viaIfAsync(
+              folly::getGlobalCPUExecutor(), processRequest(request, output)));
     }
     // If no request was available, the loop continues and checks running_ again
   }

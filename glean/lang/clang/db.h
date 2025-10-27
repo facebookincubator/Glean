@@ -190,7 +190,7 @@ class ClangDB {
   struct FileData {
     void xref(
         Src::ByteSpan span,
-        CrossRef::Spans CrossRef::*get_spans,
+        CrossRef::Spans CrossRef::* get_spans,
         const Cxx::XRefTarget& target,
         CrossRef::SortID sort_id,
         bool local);
