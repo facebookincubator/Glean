@@ -117,26 +117,26 @@ pub fn parse_scip_symbol(symbol: &str) -> ScipSymbol {
 ///
 /// Returns (field, remaining_string)
 fn parse_space_escaped_field(s: &str) -> (String, &str) {
-    let bytes = s.as_bytes();
-    let mut i = 0;
+    let mut chars = s.char_indices().peekable();
 
-    while i < bytes.len() {
-        if bytes[i] == b' ' {
+    while let Some((i, ch)) = chars.next() {
+        if ch == ' ' {
             // Check if this is a double space (escaped space)
-            if i + 1 < bytes.len() && bytes[i + 1] == b' ' {
-                // Skip both spaces (this is an escaped space within the field)
-                i += 2;
-            } else {
-                // Single space - this is the field delimiter
-                return (unescape_spaces(&s[..i]), &s[i + 1..]);
+            if let Some(&(_, next_ch)) = chars.peek() {
+                if next_ch == ' ' {
+                    // Skip the second space (this is an escaped space within the field)
+                    chars.next();
+                    continue;
+                }
             }
-        } else {
-            i += 1;
+            // Single space - this is the field delimiter
+            let rest_start = i + 1;
+            return (unescape_spaces(&s[..i]), &s[rest_start..]);
         }
     }
 
     // No delimiter found, return entire string
-    (s.to_string(), "")
+    (unescape_spaces(s), "")
 }
 
 /// Unescapes double spaces in a string field.
@@ -150,54 +150,72 @@ fn unescape_spaces(s: &str) -> String {
 /// Parses an identifier, handling both simple and escaped identifiers.
 ///
 /// According to SCIP spec:
-/// - Simple identifiers: contain only '_', '+', '-', '$', or alphanumeric chars
-/// - Escaped identifiers: surrounded by backticks, backticks escaped as ``
+/// - Simple identifiers: contain only '_', '+', '-', '$', or ASCII alphanumeric chars
+/// - Escaped identifiers: surrounded by backticks, backticks escaped as ``, can contain any UTF-8
 ///
 /// Returns (unescaped_name, bytes_consumed)
 fn parse_identifier(s: &str, start: usize) -> (String, usize) {
-    let bytes = s.as_bytes();
+    let substr = &s[start..];
+    let mut chars = substr.char_indices().peekable();
 
-    if start < bytes.len() && bytes[start] == b'`' {
+    if let Some(&(_, '`')) = chars.peek() {
         // Escaped identifier: parse until closing backtick
-        let mut i = start + 1;
         let mut result = String::new();
+        chars.next(); // consume the opening backtick
 
-        while i < bytes.len() {
-            if bytes[i] == b'`' {
+        while let Some((byte_offset, ch)) = chars.next() {
+            if ch == '`' {
                 // Check if this is a double backtick (escaped backtick)
-                if i + 1 < bytes.len() && bytes[i + 1] == b'`' {
-                    // Escaped backtick - add single backtick to result
-                    result.push('`');
-                    i += 2;
-                } else {
-                    // End of escaped identifier
-                    return (result, i + 1 - start);
+                if let Some(&(_, next_ch)) = chars.peek() {
+                    if next_ch == '`' {
+                        // Escaped backtick - add single backtick to result
+                        result.push('`');
+                        chars.next(); // consume the second backtick
+                        continue;
+                    }
                 }
+                // Single backtick - this closes the identifier
+                // byte_offset is relative to start of substr, pointing to closing backtick
+                // Return: byte_offset + 1 (to include the closing backtick)
+                return (result, byte_offset + 1);
             } else {
-                // Regular character
-                result.push(bytes[i] as char);
-                i += 1;
+                result.push(ch);
             }
         }
 
         // If we get here, no closing backtick was found
         // Return what we have and consume to end
-        (result, i - start)
+        (result, s.len() - start)
     } else {
         // Simple identifier: parse until we hit a non-identifier character
-        let mut i = start;
-        while i < bytes.len() {
-            let c = bytes[i];
-            match c {
-                b'_' | b'+' | b'-' | b'$' | b'a'..=b'z' | b'A'..=b'Z' | b'0'..=b'9' => {
-                    i += 1;
+        // According to spec, identifier-character is ASCII only: '_' | '+' | '-' | '$' | ASCII letter or digit
+        let mut last_valid_byte_offset = 0;
+
+        for (byte_offset, ch) in chars {
+            if ch.is_ascii() {
+                let byte = ch as u8;
+                match byte {
+                    b'_' | b'+' | b'-' | b'$' | b'a'..=b'z' | b'A'..=b'Z' | b'0'..=b'9' => {
+                        last_valid_byte_offset = byte_offset + 1;
+                    }
+                    _ => break,
                 }
-                _ => break,
+            } else {
+                // Non-ASCII character - stop parsing here (this violates spec but we handle gracefully)
+                log::warn!(
+                    "Non-ASCII character {} found in identifier in SCIP symbol {}",
+                    ch,
+                    s
+                );
+                break;
             }
         }
 
         // Return the slice directly (no unescaping needed for simple identifiers)
-        (s[start..i].to_string(), i - start)
+        (
+            s[start..start + last_valid_byte_offset].to_string(),
+            last_valid_byte_offset,
+        )
     }
 }
 
@@ -357,8 +375,14 @@ fn parse_descriptors(descriptors_str: &str) -> Vec<Descriptor> {
                         i = new_pos;
                     }
                     _ => {
-                        // No recognized suffix, skip
-                        i += 1;
+                        // No recognized suffix, skip this character
+                        // We need to skip by the full UTF-8 character length to avoid
+                        // landing in the middle of a multi-byte character
+                        if let Some(ch) = descriptors_str[i..].chars().next() {
+                            i += ch.len_utf8();
+                        } else {
+                            i += 1;
+                        }
                     }
                 }
             }
@@ -705,5 +729,78 @@ mod tests {
             panic!("expected global symbol");
         };
         assert_eq!(scheme, symbol_str);
+    }
+
+    #[test]
+    fn test_utf8_escaped_identifier_mixed() {
+        // Test escaped identifier with mixed UTF-8 characters and backtick escaping
+        let symbol = "scip . . . `hello``世界``🌍`#";
+        let symbol = parse_scip_symbol(symbol);
+        let ScipSymbol::Global { descriptors, .. } = symbol else {
+            panic!("expected global symbol");
+        };
+
+        assert_eq!(descriptors.len(), 1);
+        assert_eq!(descriptors[0].name, "hello`世界`🌍");
+        assert_eq!(descriptors[0].kind, DescriptorKind::Type);
+    }
+
+    #[test]
+    fn test_utf8_in_manager() {
+        // Test UTF-8 characters in manager field
+        let symbol = "scip cargo🌍 pkg v1.0 MyClass#";
+        let symbol = parse_scip_symbol(symbol);
+        let ScipSymbol::Global { package, .. } = symbol else {
+            panic!("expected global symbol");
+        };
+
+        assert_eq!(package.manager, Some("cargo🌍".to_string()));
+    }
+
+    #[test]
+    fn test_production_case_non_ascii_in_simple_identifier() {
+        // Test the real production case that was causing panics
+        // Symbol contains 'Å' (U+00C5, 2-byte UTF-8: 0xC3 0x85) in ROTÅTION
+        // Even though this violates the spec (simple identifiers should be ASCII only),
+        // we should handle it gracefully without panicking
+        let symbol = "com/instagram/feed/opencarousel/consumption/OpenCarouselConstantsUtil#Companion#MEDIA_CARD_STACK_ROTÅTION.";
+        let symbol = parse_scip_symbol(symbol);
+        let ScipSymbol::Global {
+            scheme,
+            descriptors,
+            ..
+        } = symbol
+        else {
+            panic!("expected global symbol");
+        };
+
+        // This entire string is treated as the scheme since there's no space to delimit it
+        assert_eq!(
+            scheme,
+            "com/instagram/feed/opencarousel/consumption/OpenCarouselConstantsUtil#Companion#MEDIA_CARD_STACK_ROTÅTION."
+        );
+
+        // No descriptors will be parsed since the entire string is consumed as the scheme
+        assert_eq!(descriptors.len(), 0);
+    }
+
+    #[test]
+    fn test_non_ascii_in_simple_identifier_with_proper_delimiter() {
+        // Test that we handle non-ASCII gracefully when it appears in a simple identifier
+        // with proper space delimiters. Uses Å (2-byte UTF-8) to test character boundary handling.
+        // This violates the SCIP spec (simple identifiers should be ASCII only), but we handle
+        // it gracefully to avoid panics in production.
+        let symbol = "scip . . . ROTÅTION.";
+        let symbol = parse_scip_symbol(symbol);
+        let ScipSymbol::Global { descriptors, .. } = symbol else {
+            panic!("expected global symbol");
+        };
+
+        // The parser stops at non-ASCII 'Å', skips it, and continues parsing.
+        // It parses "TION" as a separate term after skipping the invalid UTF-8 in the simple identifier.
+        // While not ideal, this behavior avoids panics on malformed input.
+        assert_eq!(descriptors.len(), 1);
+        assert_eq!(descriptors[0].name, "TION");
+        assert_eq!(descriptors[0].kind, DescriptorKind::Term);
     }
 }
