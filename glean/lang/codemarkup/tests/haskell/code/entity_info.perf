@@ -1,0 +1,18 @@
+{
+  "@generated": null,
+  "facts_searched": {
+    "hs.ClassDecl.3": 1,
+    "hs.ConstrDecl.3": 4,
+    "hs.DataDecl.3": 2,
+    "hs.DeclarationLocation.3": 24,
+    "hs.MethDecl.3": 1,
+    "hs.ModuleDeclarations.3": 2,
+    "hs.PatBind.3": 3,
+    "hs.RecordFieldDecl.3": 2,
+    "hs.SourceModule.3": 2,
+    "hs.TyVarBind.3": 4,
+    "hs.TypeSynDecl.3": 1,
+    "hs.ValBind.3": 8
+  },
+  "full_scans": [ "hs.SourceModule.3" ]
+}
