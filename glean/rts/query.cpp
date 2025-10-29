@@ -157,9 +157,9 @@ struct QueryExecutor : SetOps {
       Id id,
       binary::Output* key,
       binary::Output* val,
-      Pid pid,
+      Pid factPid,
       bool rec) {
-    recordResult(id, key, val, pid, rec);
+    recordResult(id, key, val, factPid, rec);
   }
 
   //
@@ -356,9 +356,9 @@ Pid QueryExecutor::lookupKeyValue(
     binary::Output* kout,
     binary::Output* vout) {
   DVLOG(5) << "lookupKeyValue(" << fid.toWord() << ")";
-  Pid pid;
+  Pid factPid;
   facts.factById(fid, [&](Pid pid_, auto clause) {
-    pid = pid_;
+    factPid = pid_;
     if (kout) {
       *kout = binary::Output();
       kout->put(clause.key());
@@ -368,7 +368,7 @@ Pid QueryExecutor::lookupKeyValue(
       vout->put(clause.value());
     }
   });
-  return pid;
+  return factPid;
 };
 
 Id QueryExecutor::newDerivedFact(
@@ -440,10 +440,10 @@ SerializedCont QueryExecutor::queryCont(Subroutine::Activation& act) const {
   return out;
 };
 
-void QueryExecutor::nestedFact(Id id, Pid pid) {
+void QueryExecutor::nestedFact(Id id, Pid factPid) {
   DVLOG(5) << "nestedFact: " << id.toWord();
   if (depth == Depth::ExpandPartial &&
-      expandPids.find(pid) == expandPids.end()) {
+      expandPids.find(factPid) == expandPids.end()) {
     return;
   }
   auto added = nested_results_added.insert(id.toWord());
@@ -456,11 +456,11 @@ size_t QueryExecutor::recordResult(
     Id id,
     binary::Output* key,
     binary::Output* val,
-    Pid pid,
+    Pid factPid,
     bool rec) {
   assert(id != Id::invalid());
   result_ids.emplace_back(id.toWord());
-  result_pids.emplace_back(pid.toWord());
+  result_pids.emplace_back(factPid.toWord());
   result_keys.emplace_back(key ? key->string() : "");
   result_values.emplace_back(val ? val->string() : "");
   DVLOG(5) << "result added (" << id.toWord() << ")";
@@ -483,9 +483,9 @@ size_t QueryExecutor::recordResult(
             *traverse, syscalls<&QueryExecutor::nestedFact>(*this), clause);
         ;
       } else {
-        auto predicate = inventory.lookupPredicate(pid);
+        auto predicate = inventory.lookupPredicate(factPid);
         if (!predicate) {
-          error("unknown pid: {}", pid.toWord());
+          error("unknown pid: {}", factPid.toWord());
         }
         predicate->traverse(
             syscalls<&QueryExecutor::nestedFact>(*this), clause);
