@@ -263,6 +263,15 @@ predicate TargetSourcesBaseModule:
 # The span goes from `c` to `)`
 #
 
+type Kind = enum {
+  Function | Variable
+}
+
+predicate DefinitionKind : {
+  definition : Definition,
+  kind: Kind,
+}
+
 predicate Definition : {
   module : src.File,
   name : string,
