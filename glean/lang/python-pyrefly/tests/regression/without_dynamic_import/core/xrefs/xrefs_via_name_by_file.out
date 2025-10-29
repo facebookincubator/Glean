@@ -1,0 +1,541 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py"
+      },
+      "xrefs": [
+        {
+          "source": { "length": 2, "start": 598 },
+          "target": { "key": "all.fn" }
+        },
+        { "source": { "length": 3, "start": 287 }, "target": { "key": "lib" } },
+        { "source": { "length": 3, "start": 334 }, "target": { "key": "lib" } },
+        { "source": { "length": 3, "start": 390 }, "target": { "key": "int" } },
+        { "source": { "length": 3, "start": 419 }, "target": { "key": "int" } },
+        { "source": { "length": 3, "start": 478 }, "target": { "key": "lib" } },
+        {
+          "source": { "length": 4, "start": 274 },
+          "target": { "key": "typing.List" }
+        },
+        {
+          "source": { "length": 4, "start": 385 },
+          "target": { "key": "typing.List" }
+        },
+        {
+          "source": { "length": 4, "start": 414 },
+          "target": { "key": "typing.List" }
+        },
+        {
+          "source": { "length": 4, "start": 426 },
+          "target": { "key": "all.var1" }
+        },
+        {
+          "source": { "length": 4, "start": 652 },
+          "target": { "key": "all.fn" }
+        },
+        {
+          "source": { "length": 5, "start": 658 },
+          "target": { "key": "all.var" }
+        },
+        {
+          "source": { "length": 6, "start": 216 },
+          "target": { "key": "timeit" }
+        },
+        {
+          "source": { "length": 6, "start": 260 },
+          "target": { "key": "typing" }
+        },
+        {
+          "source": { "length": 6, "start": 434 },
+          "target": { "key": "timeit" }
+        },
+        {
+          "source": { "length": 6, "start": 574 },
+          "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 7, "start": 296 },
+          "target": { "key": "big_lib" }
+        },
+        {
+          "source": { "length": 7, "start": 321 },
+          "target": { "key": "big_lib.big_var" }
+        },
+        {
+          "source": { "length": 7, "start": 494 },
+          "target": { "key": "big_lib.big_var" }
+        },
+        {
+          "source": { "length": 8, "start": 311 },
+          "target": { "key": "big_lib.big_func" }
+        },
+        {
+          "source": { "length": 8, "start": 616 },
+          "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 8, "start": 665 },
+          "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 9, "start": 228 },
+          "target": { "key": "functools" }
+        },
+        {
+          "source": { "length": 9, "start": 245 },
+          "target": { "key": "functools.lru_cache" }
+        },
+        {
+          "source": { "length": 9, "start": 442 },
+          "target": { "key": "functools.lru_cache" }
+        },
+        {
+          "source": { "length": 9, "start": 514 },
+          "target": { "key": "all.fn.<locals>.local_var" }
+        },
+        {
+          "source": { "length": 9, "start": 675 },
+          "target": { "key": "big_lib.big_var" }
+        },
+        {
+          "source": { "length": 10, "start": 626 },
+          "target": { "key": "big_lib.big_func" }
+        },
+        {
+          "source": { "length": 11, "start": 345 },
+          "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 11, "start": 482 },
+          "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 12, "start": 638 },
+          "target": { "key": "all.LocalClass" }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py"
+      },
+      "xrefs": [
+        { "source": { "length": 3, "start": 258 }, "target": { "key": "all" } },
+        { "source": { "length": 3, "start": 299 }, "target": { "key": "lib" } },
+        { "source": { "length": 3, "start": 411 }, "target": { "key": "lib" } },
+        {
+          "source": { "length": 3, "start": 427 },
+          "target": { "key": "big_lib" }
+        },
+        { "source": { "length": 3, "start": 575 }, "target": { "key": "str" } },
+        { "source": { "length": 3, "start": 628 }, "target": { "key": "str" } },
+        { "source": { "length": 3, "start": 668 }, "target": { "key": "str" } },
+        { "source": { "length": 3, "start": 678 }, "target": { "key": "str" } },
+        { "source": { "length": 3, "start": 739 }, "target": { "key": "str" } },
+        { "source": { "length": 3, "start": 778 }, "target": { "key": "str" } },
+        { "source": { "length": 3, "start": 879 }, "target": { "key": "str" } },
+        { "source": { "length": 3, "start": 906 }, "target": { "key": "str" } },
+        { "source": { "length": 3, "start": 960 }, "target": { "key": "str" } },
+        {
+          "source": { "length": 3, "start": 1020 },
+          "target": { "key": "str" }
+        },
+        {
+          "source": { "length": 3, "start": 1056 },
+          "target": { "key": "int" }
+        },
+        {
+          "source": { "length": 3, "start": 1061 },
+          "target": { "key": "str" }
+        },
+        {
+          "source": { "length": 3, "start": 1193 },
+          "target": { "key": "int" }
+        },
+        {
+          "source": { "length": 4, "start": 228 },
+          "target": { "key": "typing.Dict" }
+        },
+        {
+          "source": { "length": 4, "start": 310 },
+          "target": { "key": "main" }
+        },
+        {
+          "source": { "length": 4, "start": 570 },
+          "target": { "key": "typing.Dict" }
+        },
+        {
+          "source": { "length": 4, "start": 594 },
+          "target": { "key": "None" }
+        },
+        {
+          "source": { "length": 4, "start": 663 },
+          "target": { "key": "typing.Dict" }
+        },
+        {
+          "source": { "length": 4, "start": 673 },
+          "target": { "key": "typing.Dict" }
+        },
+        {
+          "source": { "length": 4, "start": 900 },
+          "target": { "key": "bool" }
+        },
+        {
+          "source": { "length": 4, "start": 1072 },
+          "target": { "key": "bool" }
+        },
+        {
+          "source": { "length": 4, "start": 1226 },
+          "target": { "key": "None" }
+        },
+        {
+          "source": { "length": 4, "start": 1256 },
+          "target": { "key": "bool" }
+        },
+        {
+          "source": { "length": 4, "start": 1273 },
+          "target": { "key": "True" }
+        },
+        {
+          "source": { "length": 5, "start": 244 },
+          "target": { "key": "typing.Union" }
+        },
+        {
+          "source": { "length": 5, "start": 683 },
+          "target": { "key": "bytes" }
+        },
+        {
+          "source": { "length": 5, "start": 798 },
+          "target": { "key": "bytes" }
+        },
+        {
+          "source": { "length": 5, "start": 862 },
+          "target": { "key": "typing.Union" }
+        },
+        {
+          "source": { "length": 5, "start": 894 },
+          "target": { "key": "typing.Union" }
+        },
+        {
+          "source": { "length": 5, "start": 947 },
+          "target": { "key": "typing.Union" }
+        },
+        {
+          "source": { "length": 5, "start": 953 },
+          "target": { "key": "bytes" }
+        },
+        {
+          "source": { "length": 5, "start": 1007 },
+          "target": { "key": "typing.Union" }
+        },
+        {
+          "source": { "length": 5, "start": 1013 },
+          "target": { "key": "float" }
+        },
+        {
+          "source": { "length": 5, "start": 1050 },
+          "target": { "key": "typing.Union" }
+        },
+        {
+          "source": { "length": 5, "start": 1157 },
+          "target": { "key": "False" }
+        },
+        {
+          "source": { "length": 6, "start": 214 },
+          "target": { "key": "typing" }
+        },
+        {
+          "source": { "length": 7, "start": 277 },
+          "target": { "key": "big_lib" }
+        },
+        {
+          "source": { "length": 7, "start": 431 },
+          "target": { "key": "big_lib.big_var" }
+        },
+        {
+          "source": { "length": 8, "start": 234 },
+          "target": { "key": "typing.Optional" }
+        },
+        {
+          "source": { "length": 8, "start": 561 },
+          "target": { "key": "typing.Optional" }
+        },
+        {
+          "source": { "length": 8, "start": 619 },
+          "target": { "key": "typing.Optional" }
+        },
+        {
+          "source": { "length": 8, "start": 769 },
+          "target": { "key": "typing.Optional" }
+        },
+        {
+          "source": { "length": 8, "start": 789 },
+          "target": { "key": "typing.Optional" }
+        },
+        {
+          "source": { "length": 9, "start": 451 },
+          "target": { "key": "as.fn.<locals>.local_var" }
+        },
+        {
+          "source": { "length": 9, "start": 868 },
+          "target": { "key": "bytearray" }
+        },
+        {
+          "source": { "length": 11, "start": 415 },
+          "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 12, "start": 464 },
+          "target": { "key": "staticmethod" }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py"
+      },
+      "xrefs": [
+        {
+          "source": { "length": 7, "start": 266 },
+          "target": { "key": "big_lib.big_var" }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/relative.py"
+      },
+      "xrefs": [
+        {
+          "source": { "length": 1, "start": 230 },
+          "target": { "key": "big_lib" }
+        },
+        {
+          "source": { "length": 8, "start": 239 },
+          "target": { "key": "big_lib.big_func" }
+        },
+        {
+          "source": { "length": 8, "start": 249 },
+          "target": { "key": "big_lib.big_func" }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py"
+      },
+      "xrefs": [
+        {
+          "source": { "length": 4, "start": 542 },
+          "target": { "key": "None" }
+        },
+        {
+          "source": { "length": 5, "start": 253 },
+          "target": { "key": "typing.Union" }
+        },
+        {
+          "source": { "length": 5, "start": 523 },
+          "target": { "key": "typing.Union" }
+        },
+        {
+          "source": { "length": 6, "start": 230 },
+          "target": { "key": "typing" }
+        },
+        {
+          "source": { "length": 7, "start": 244 },
+          "target": { "key": "typing.TypeVar" }
+        },
+        {
+          "source": { "length": 7, "start": 265 },
+          "target": { "key": "big_lib" }
+        },
+        {
+          "source": { "length": 7, "start": 345 },
+          "target": { "key": "typing.TypeVar" }
+        },
+        {
+          "source": { "length": 8, "start": 280 },
+          "target": { "key": "big_lib.big_func" }
+        },
+        {
+          "source": { "length": 11, "start": 376 },
+          "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 11, "start": 440 },
+          "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 11, "start": 505 },
+          "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 11, "start": 529 },
+          "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 11, "start": 595 },
+          "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 12, "start": 401 },
+          "target": { "key": "lib.HelperClass.THelperClass" }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py"
+      },
+      "xrefs": [
+        {
+          "source": { "length": 1, "start": 405 },
+          "target": { "key": "main.f.<locals>.c" }
+        },
+        {
+          "source": { "length": 1, "start": 427 },
+          "target": { "key": "main.f.<locals>.c" }
+        },
+        {
+          "source": { "length": 1, "start": 577 },
+          "target": { "key": "main.f" }
+        },
+        { "source": { "length": 3, "start": 267 }, "target": { "key": "lib" } },
+        { "source": { "length": 3, "start": 457 }, "target": { "key": "lib" } },
+        {
+          "source": { "length": 4, "start": 278 },
+          "target": { "key": "big_lib.big_func" }
+        },
+        {
+          "source": { "length": 4, "start": 333 },
+          "target": { "key": "None" }
+        },
+        {
+          "source": { "length": 4, "start": 377 },
+          "target": { "key": "big_lib.big_func" }
+        },
+        {
+          "source": { "length": 4, "start": 442 },
+          "target": { "key": "None" }
+        },
+        {
+          "source": { "length": 4, "start": 525 },
+          "target": { "key": "None" }
+        },
+        {
+          "source": { "length": 6, "start": 392 },
+          "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 6, "start": 407 },
+          "target": { "key": "lib.HelperClass.method" }
+        },
+        {
+          "source": { "length": 7, "start": 230 },
+          "target": { "key": "big_lib" }
+        },
+        {
+          "source": { "length": 8, "start": 245 },
+          "target": { "key": "big_lib.big_func" }
+        },
+        {
+          "source": { "length": 8, "start": 362 },
+          "target": { "key": "big_lib.big_func" }
+        },
+        {
+          "source": { "length": 11, "start": 284 },
+          "target": { "key": "lib.helper_func" }
+        },
+        {
+          "source": { "length": 11, "start": 297 },
+          "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 11, "start": 344 },
+          "target": { "key": "lib.helper_func" }
+        },
+        {
+          "source": { "length": 11, "start": 468 },
+          "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 11, "start": 509 },
+          "target": { "key": "lib.HelperClass" }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py"
+      },
+      "xrefs": [
+        {
+          "source": { "length": 7, "start": 230 },
+          "target": { "key": "big_lib" }
+        },
+        {
+          "source": { "length": 7, "start": 255 },
+          "target": { "key": "big_lib.big_var" }
+        },
+        {
+          "source": { "length": 7, "start": 341 },
+          "target": { "key": "big_lib.big_var" }
+        },
+        {
+          "source": { "length": 7, "start": 499 },
+          "target": { "key": "shadow.shadow_func.<locals>.big_var" }
+        },
+        {
+          "source": { "length": 7, "start": 573 },
+          "target": { "key": "big_lib.big_var" }
+        },
+        {
+          "source": { "length": 8, "start": 245 },
+          "target": { "key": "big_lib.big_func" }
+        },
+        {
+          "source": { "length": 8, "start": 316 },
+          "target": { "key": "big_lib.big_func" }
+        },
+        {
+          "source": { "length": 8, "start": 474 },
+          "target": { "key": "shadow.shadow_func.<locals>.big_func" }
+        },
+        {
+          "source": { "length": 8, "start": 552 },
+          "target": { "key": "big_lib.big_func" }
+        },
+        {
+          "source": { "length": 9, "start": 365 },
+          "target": { "key": "shadow.local_var" }
+        },
+        {
+          "source": { "length": 9, "start": 529 },
+          "target": { "key": "shadow.shadow_func.<locals>.local_var" }
+        },
+        {
+          "source": { "length": 9, "start": 593 },
+          "target": { "key": "shadow.local_var" }
+        },
+        {
+          "source": { "length": 11, "start": 411 },
+          "target": { "key": "shadow.shadow_func" }
+        }
+      ]
+    }
+  }
+]

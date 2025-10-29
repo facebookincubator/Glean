@@ -1,0 +1,1038 @@
+[
+  "@generated",
+  {
+    "key": {
+      "source": { "cls": { "key": { "name": { "key": "all.LocalClass" } } } },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "cls": { "key": { "name": { "key": "all.LocalClass" } } } },
+      "target": { "func": { "key": { "name": { "key": "all.fn" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } },
+      "target": {
+        "variable": {
+          "key": { "name": { "key": "lib.HelperClass.THelperClass" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "cls": { "key": { "name": { "key": "shadow.ShadowClass" } } }
+      },
+      "target": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "cls": { "key": { "name": { "key": "shadow.ShadowClass" } } }
+      },
+      "target": {
+        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "cls": { "key": { "name": { "key": "shadow.ShadowClass" } } }
+      },
+      "target": {
+        "variable": { "key": { "name": { "key": "shadow.local_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "func": { "key": { "name": { "key": "all.LocalClass.meth" } } }
+      },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "func": { "key": { "name": { "key": "all.LocalClass.meth" } } }
+      },
+      "target": { "func": { "key": { "name": { "key": "all.fn" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "all.fn" } } } },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "all.fn" } } } },
+      "target": { "module": { "key": { "name": { "key": "lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "all.fn" } } } },
+      "target": {
+        "variable": {
+          "key": { "name": { "key": "all.fn.<locals>.local_var" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "all.fn" } } } },
+      "target": {
+        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "as.fn" } } } },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "as.fn" } } } },
+      "target": { "module": { "key": { "name": { "key": "big_lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "as.fn" } } } },
+      "target": { "module": { "key": { "name": { "key": "lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "as.fn" } } } },
+      "target": {
+        "variable": { "key": { "name": { "key": "as.fn.<locals>.local_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "as.fn" } } } },
+      "target": {
+        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "func": { "key": { "name": { "key": "big_lib.big_func" } } }
+      },
+      "target": {
+        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "func": {
+          "key": { "name": { "key": "lib.HelperClass.another_method" } }
+        }
+      },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "func": { "key": { "name": { "key": "lib.HelperClass.method" } } }
+      },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "lib.helper_func" } } } },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "main.f" } } } },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "main.f" } } } },
+      "target": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "main.f" } } } },
+      "target": {
+        "func": { "key": { "name": { "key": "lib.HelperClass.method" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "main.f" } } } },
+      "target": { "func": { "key": { "name": { "key": "lib.helper_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "main.f" } } } },
+      "target": {
+        "variable": { "key": { "name": { "key": "main.f.<locals>.c" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "main.g" } } } },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "main.g" } } } },
+      "target": { "module": { "key": { "name": { "key": "lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "func": { "key": { "name": { "key": "main.g.<locals>.h" } } }
+      },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "func": { "key": { "name": { "key": "shadow.shadow_func" } } }
+      },
+      "target": {
+        "func": { "key": { "name": { "key": "shadow.shadow_func" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "func": { "key": { "name": { "key": "shadow.shadow_func" } } }
+      },
+      "target": {
+        "variable": {
+          "key": { "name": { "key": "shadow.shadow_func.<locals>.big_func" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "func": { "key": { "name": { "key": "shadow.shadow_func" } } }
+      },
+      "target": {
+        "variable": {
+          "key": { "name": { "key": "shadow.shadow_func.<locals>.big_var" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "func": { "key": { "name": { "key": "shadow.shadow_func" } } }
+      },
+      "target": {
+        "variable": {
+          "key": { "name": { "key": "shadow.shadow_func.<locals>.local_var" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "all.Helper" },
+            "from_name": { "key": "lib.HelperClass" }
+          }
+        }
+      },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "all.big_func" },
+            "from_name": { "key": "big_lib.big_func" }
+          }
+        }
+      },
+      "target": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "all.big_var" },
+            "from_name": { "key": "big_lib.big_var" }
+          }
+        }
+      },
+      "target": {
+        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "all.lib" },
+            "from_name": { "key": "lib" }
+          }
+        }
+      },
+      "target": { "module": { "key": { "name": { "key": "lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "as.all" },
+            "from_name": { "key": "all" }
+          }
+        }
+      },
+      "target": { "module": { "key": { "name": { "key": "all" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "as.big" },
+            "from_name": { "key": "big_lib" }
+          }
+        }
+      },
+      "target": { "module": { "key": { "name": { "key": "big_lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "as.lib" },
+            "from_name": { "key": "lib" }
+          }
+        }
+      },
+      "target": { "module": { "key": { "name": { "key": "lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "as.unused" },
+            "from_name": { "key": "main" }
+          }
+        }
+      },
+      "target": { "module": { "key": { "name": { "key": "main" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "big_lib.relative.big_func" },
+            "from_name": { "key": "big_lib.big_func" }
+          }
+        }
+      },
+      "target": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "lib.func" },
+            "from_name": { "key": "big_lib.big_func" }
+          }
+        }
+      },
+      "target": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "main.Helper" },
+            "from_name": { "key": "lib.HelperClass" }
+          }
+        }
+      },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "main.OtherHelper" },
+            "from_name": { "key": "lib.HelperClass" }
+          }
+        }
+      },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "main.big_func" },
+            "from_name": { "key": "big_lib.big_func" }
+          }
+        }
+      },
+      "target": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "main.func" },
+            "from_name": { "key": "lib.func" }
+          }
+        }
+      },
+      "target": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "main.helper_func" },
+            "from_name": { "key": "lib.helper_func" }
+          }
+        }
+      },
+      "target": { "func": { "key": { "name": { "key": "lib.helper_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "shadow.big_func" },
+            "from_name": { "key": "big_lib.big_func" }
+          }
+        }
+      },
+      "target": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "shadow.big_var" },
+            "from_name": { "key": "big_lib.big_var" }
+          }
+        }
+      },
+      "target": {
+        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "all" } } } },
+      "target": { "cls": { "key": { "name": { "key": "all.LocalClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "all" } } } },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "all" } } } },
+      "target": { "func": { "key": { "name": { "key": "all.fn" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "all" } } } },
+      "target": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "all" } } } },
+      "target": { "module": { "key": { "name": { "key": "big_lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "all" } } } },
+      "target": { "module": { "key": { "name": { "key": "lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "all" } } } },
+      "target": {
+        "variable": {
+          "key": { "name": { "key": "all.fn.<locals>.local_var" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "all" } } } },
+      "target": { "variable": { "key": { "name": { "key": "all.var" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "all" } } } },
+      "target": { "variable": { "key": { "name": { "key": "all.var1" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "all" } } } },
+      "target": {
+        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "as" } } } },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "as" } } } },
+      "target": { "module": { "key": { "name": { "key": "all" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "as" } } } },
+      "target": { "module": { "key": { "name": { "key": "big_lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "as" } } } },
+      "target": { "module": { "key": { "name": { "key": "lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "as" } } } },
+      "target": { "module": { "key": { "name": { "key": "main" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "as" } } } },
+      "target": {
+        "variable": { "key": { "name": { "key": "as.fn.<locals>.local_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "as" } } } },
+      "target": {
+        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "big_lib" } } } },
+      "target": {
+        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "module": { "key": { "name": { "key": "big_lib.relative" } } }
+      },
+      "target": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "module": { "key": { "name": { "key": "big_lib.relative" } } }
+      },
+      "target": { "module": { "key": { "name": { "key": "big_lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "lib" } } } },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "lib" } } } },
+      "target": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "lib" } } } },
+      "target": { "module": { "key": { "name": { "key": "big_lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "lib" } } } },
+      "target": {
+        "variable": {
+          "key": { "name": { "key": "lib.HelperClass.THelperClass" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "main" } } } },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "main" } } } },
+      "target": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "main" } } } },
+      "target": {
+        "func": { "key": { "name": { "key": "lib.HelperClass.method" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "main" } } } },
+      "target": { "func": { "key": { "name": { "key": "lib.helper_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "main" } } } },
+      "target": { "func": { "key": { "name": { "key": "main.f" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "main" } } } },
+      "target": { "module": { "key": { "name": { "key": "big_lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "main" } } } },
+      "target": { "module": { "key": { "name": { "key": "lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "main" } } } },
+      "target": {
+        "variable": { "key": { "name": { "key": "main.f.<locals>.c" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "shadow" } } } },
+      "target": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "shadow" } } } },
+      "target": {
+        "func": { "key": { "name": { "key": "shadow.shadow_func" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "shadow" } } } },
+      "target": { "module": { "key": { "name": { "key": "big_lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "shadow" } } } },
+      "target": {
+        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "shadow" } } } },
+      "target": {
+        "variable": { "key": { "name": { "key": "shadow.local_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "shadow" } } } },
+      "target": {
+        "variable": {
+          "key": { "name": { "key": "shadow.shadow_func.<locals>.big_func" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "shadow" } } } },
+      "target": {
+        "variable": {
+          "key": { "name": { "key": "shadow.shadow_func.<locals>.big_var" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "shadow" } } } },
+      "target": {
+        "variable": {
+          "key": { "name": { "key": "shadow.shadow_func.<locals>.local_var" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "variable": { "key": { "name": { "key": "all.__all__" } } } },
+      "target": { "cls": { "key": { "name": { "key": "all.LocalClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "variable": { "key": { "name": { "key": "all.__all__" } } } },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "variable": { "key": { "name": { "key": "all.__all__" } } } },
+      "target": { "func": { "key": { "name": { "key": "all.fn" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "variable": { "key": { "name": { "key": "all.__all__" } } } },
+      "target": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "variable": { "key": { "name": { "key": "all.__all__" } } } },
+      "target": { "variable": { "key": { "name": { "key": "all.var" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "variable": { "key": { "name": { "key": "all.__all__" } } } },
+      "target": {
+        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": {
+          "key": { "name": { "key": "all.fn.<locals>.local_var" } }
+        }
+      },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": {
+          "key": { "name": { "key": "all.fn.<locals>.local_var" } }
+        }
+      },
+      "target": { "module": { "key": { "name": { "key": "lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": {
+          "key": { "name": { "key": "all.fn.<locals>.local_var" } }
+        }
+      },
+      "target": {
+        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "variable": { "key": { "name": { "key": "all.var2" } } } },
+      "target": { "variable": { "key": { "name": { "key": "all.var1" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": { "key": { "name": { "key": "as.fn.<locals>.local_var" } } }
+      },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": { "key": { "name": { "key": "as.fn.<locals>.local_var" } } }
+      },
+      "target": { "module": { "key": { "name": { "key": "big_lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": { "key": { "name": { "key": "as.fn.<locals>.local_var" } } }
+      },
+      "target": { "module": { "key": { "name": { "key": "lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": { "key": { "name": { "key": "as.fn.<locals>.local_var" } } }
+      },
+      "target": {
+        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": {
+          "key": { "name": { "key": "lib.HelperClass.THelperClass" } }
+        }
+      },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": { "key": { "name": { "key": "lib.HelperClass.value" } } }
+      },
+      "target": {
+        "variable": {
+          "key": { "name": { "key": "lib.HelperClass.THelperClass" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": { "key": { "name": { "key": "main.f.<locals>.c" } } }
+      },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": {
+          "key": { "name": { "key": "shadow.ShadowClass.big_func" } }
+        }
+      },
+      "target": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": {
+          "key": { "name": { "key": "shadow.ShadowClass.local_var" } }
+        }
+      },
+      "target": {
+        "variable": { "key": { "name": { "key": "shadow.local_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": {
+          "key": { "name": { "key": "shadow.ShadowClass.other_var" } }
+        }
+      },
+      "target": {
+        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": { "key": { "name": { "key": "shadow.big_func" } } }
+      },
+      "target": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": { "key": { "name": { "key": "shadow.local_var" } } }
+      },
+      "target": {
+        "variable": { "key": { "name": { "key": "shadow.local_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": { "key": { "name": { "key": "shadow.other_var" } } }
+      },
+      "target": {
+        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": {
+          "key": { "name": { "key": "shadow.shadow_func.<locals>.big_func" } }
+        }
+      },
+      "target": {
+        "func": { "key": { "name": { "key": "shadow.shadow_func" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": {
+          "key": { "name": { "key": "shadow.shadow_func.<locals>.other_func" } }
+        }
+      },
+      "target": {
+        "variable": {
+          "key": { "name": { "key": "shadow.shadow_func.<locals>.big_func" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": {
+          "key": {
+            "name": { "key": "shadow.shadow_func.<locals>.other_local_var" }
+          }
+        }
+      },
+      "target": {
+        "variable": {
+          "key": { "name": { "key": "shadow.shadow_func.<locals>.local_var" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "variable": {
+          "key": { "name": { "key": "shadow.shadow_func.<locals>.other_var" } }
+        }
+      },
+      "target": {
+        "variable": {
+          "key": { "name": { "key": "shadow.shadow_func.<locals>.big_var" } }
+        }
+      }
+    }
+  }
+]
