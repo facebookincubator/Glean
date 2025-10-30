@@ -3,7 +3,7 @@
     {
         "referenced_file_digests": {},
         "revision": "testhash",
-        "size": 26,
+        "size": 27,
         "symbols": {
             "10": [
                 {
@@ -95,6 +95,41 @@
                             "columnEnd": 2,
                             "lineBegin": 20,
                             "lineEnd": 26
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "17": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 4
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "toto.c"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 34,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "sym": "test/buck/f/buck_project/toto.c",
+                    "target": {
+                        "filepath": "buck_project/toto.c",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 1,
+                            "lineEnd": 1
                         },
                         "repository": "test"
                     }
