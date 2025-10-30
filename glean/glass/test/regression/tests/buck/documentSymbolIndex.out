@@ -3,7 +3,7 @@
     {
         "referenced_file_digests": {},
         "revision": "testhash",
-        "size": 27,
+        "size": 29,
         "symbols": {
             "10": [
                 {
@@ -381,6 +381,74 @@
                         "lineEnd": 41
                     },
                     "sym": "test/buck/t/buck_project/PATH/./rust_binary"
+                }
+            ],
+            "39": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 4
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "toto.c"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 12,
+                        "columnEnd": 17,
+                        "lineBegin": 39,
+                        "lineEnd": 39
+                    },
+                    "sym": "test/buck/f/buck_project/toto.c",
+                    "target": {
+                        "filepath": "buck_project/toto.c",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 1,
+                            "lineEnd": 1
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 4
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "tutu.c"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 12,
+                        "columnEnd": 17,
+                        "lineBegin": 39,
+                        "lineEnd": 39
+                    },
+                    "sym": "test/buck/f/buck_project/tutu.c",
+                    "target": {
+                        "filepath": "buck_project/tutu.c",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 1,
+                            "lineEnd": 1
+                        },
+                        "repository": "test"
+                    }
                 }
             ],
             "4": [
