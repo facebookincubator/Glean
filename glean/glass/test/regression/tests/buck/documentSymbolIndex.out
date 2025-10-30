@@ -3,9 +3,9 @@
     {
         "referenced_file_digests": {},
         "revision": "testhash",
-        "size": 25,
+        "size": 26,
         "symbols": {
-            "13": [
+            "10": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -15,7 +15,7 @@
                             "aInteger": 11
                         },
                         "symbolName": {
-                            "aString": "foo"
+                            "aString": "foobar"
                         },
                         "symbolParent": {
                             "aString": "."
@@ -24,48 +24,13 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 13,
-                        "lineEnd": 19
+                        "lineBegin": 10,
+                        "lineEnd": 18
                     },
-                    "sym": "test/buck/t/buck_project/PATH/./foo"
+                    "sym": "test/buck/t/buck_project/PATH/./foobar"
                 }
             ],
-            "16": [
-                {
-                    "attributes": {
-                        "symbolKind": {
-                            "aInteger": 30
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 11
-                        },
-                        "symbolName": {
-                            "aString": "foo"
-                        },
-                        "symbolParent": {
-                            "aString": "a"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 9,
-                        "columnEnd": 30,
-                        "lineBegin": 16,
-                        "lineEnd": 16
-                    },
-                    "sym": "test/buck/t/buck_project/PATH/a/foo",
-                    "target": {
-                        "filepath": "buck_project/a/TEST_TARGETS",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
-                            "lineBegin": 12,
-                            "lineEnd": 14
-                        },
-                        "repository": "test"
-                    }
-                }
-            ],
-            "17": [
+            "13": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -84,8 +49,8 @@
                     "range": {
                         "columnBegin": 9,
                         "columnEnd": 15,
-                        "lineBegin": 17,
-                        "lineEnd": 17
+                        "lineBegin": 13,
+                        "lineEnd": 13
                     },
                     "sym": "test/buck/t/buck_project/PATH/./bar",
                     "target": {
@@ -93,14 +58,144 @@
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 2,
-                            "lineBegin": 21,
-                            "lineEnd": 28
+                            "lineBegin": 28,
+                            "lineEnd": 35
                         },
                         "repository": "test"
                     }
                 }
             ],
-            "21": [
+            "14": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": "."
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 15,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "sym": "test/buck/t/buck_project/PATH/./foo",
+                    "target": {
+                        "filepath": "buck_project/TEST_TARGETS",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 20,
+                            "lineEnd": 26
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "20": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": "."
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 20,
+                        "lineEnd": 26
+                    },
+                    "sym": "test/buck/t/buck_project/PATH/./foo"
+                }
+            ],
+            "23": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": "a"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 30,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "sym": "test/buck/t/buck_project/PATH/a/foo",
+                    "target": {
+                        "filepath": "buck_project/a/TEST_TARGETS",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 12,
+                            "lineEnd": 14
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "24": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "bar"
+                        },
+                        "symbolParent": {
+                            "aString": "."
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 15,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "sym": "test/buck/t/buck_project/PATH/./bar",
+                    "target": {
+                        "filepath": "buck_project/TEST_TARGETS",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 28,
+                            "lineEnd": 35
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "28": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -119,13 +214,13 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 21,
-                        "lineEnd": 28
+                        "lineBegin": 28,
+                        "lineEnd": 35
                     },
                     "sym": "test/buck/t/buck_project/PATH/./bar"
                 }
             ],
-            "23": [
+            "30": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -144,8 +239,8 @@
                     "range": {
                         "columnBegin": 13,
                         "columnEnd": 21,
-                        "lineBegin": 23,
-                        "lineEnd": 23
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "sym": "test/buck/f/buck_project/toto.c",
                     "target": {
@@ -177,8 +272,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 31,
-                        "lineBegin": 23,
-                        "lineEnd": 23
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "sym": "test/buck/f/buck_project/tutu.c",
                     "target": {
@@ -193,7 +288,7 @@
                     }
                 }
             ],
-            "26": [
+            "33": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -212,8 +307,8 @@
                     "range": {
                         "columnBegin": 9,
                         "columnEnd": 30,
-                        "lineBegin": 26,
-                        "lineEnd": 26
+                        "lineBegin": 33,
+                        "lineEnd": 33
                     },
                     "sym": "test/buck/t/buck_project/PATH/b/bar",
                     "target": {
@@ -228,7 +323,32 @@
                     }
                 }
             ],
-            "3": [
+            "37": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "rust_binary"
+                        },
+                        "symbolParent": {
+                            "aString": "."
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 37,
+                        "lineEnd": 41
+                    },
+                    "sym": "test/buck/t/buck_project/PATH/./rust_binary"
+                }
+            ],
+            "4": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -247,8 +367,8 @@
                     "range": {
                         "columnBegin": 22,
                         "columnEnd": 25,
-                        "lineBegin": 3,
-                        "lineEnd": 3
+                        "lineBegin": 4,
+                        "lineEnd": 4
                     },
                     "sym": "test/buck/d/buck_project/my_defs.bzl/f",
                     "target": {
@@ -257,7 +377,7 @@
                             "columnBegin": 1,
                             "columnEnd": 17,
                             "lineBegin": 3,
-                            "lineEnd": 4
+                            "lineEnd": 5
                         },
                         "repository": "test"
                     }
@@ -280,8 +400,8 @@
                     "range": {
                         "columnBegin": 27,
                         "columnEnd": 30,
-                        "lineBegin": 3,
-                        "lineEnd": 3
+                        "lineBegin": 4,
+                        "lineEnd": 4
                     },
                     "sym": "test/buck/d/buck_project/my_defs.bzl/g",
                     "target": {
@@ -289,8 +409,8 @@
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 16,
-                            "lineBegin": 6,
-                            "lineEnd": 7
+                            "lineBegin": 7,
+                            "lineEnd": 8
                         },
                         "repository": "test"
                     }
@@ -313,8 +433,8 @@
                     "range": {
                         "columnBegin": 32,
                         "columnEnd": 35,
-                        "lineBegin": 3,
-                        "lineEnd": 3
+                        "lineBegin": 4,
+                        "lineEnd": 4
                     },
                     "sym": "test/buck/d/buck_project/my_defs.bzl/h",
                     "target": {
@@ -322,8 +442,8 @@
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 2,
-                            "lineBegin": 15,
-                            "lineEnd": 17
+                            "lineBegin": 16,
+                            "lineEnd": 18
                         },
                         "repository": "test"
                     }
@@ -346,8 +466,8 @@
                     "range": {
                         "columnBegin": 37,
                         "columnEnd": 41,
-                        "lineBegin": 3,
-                        "lineEnd": 3
+                        "lineBegin": 4,
+                        "lineEnd": 4
                     },
                     "sym": "test/buck/d/buck_project/my_defs.bzl/hh",
                     "target": {
@@ -355,8 +475,8 @@
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 2,
-                            "lineBegin": 27,
-                            "lineEnd": 29
+                            "lineBegin": 28,
+                            "lineEnd": 30
                         },
                         "repository": "test"
                     }
@@ -379,8 +499,8 @@
                     "range": {
                         "columnBegin": 6,
                         "columnEnd": 20,
-                        "lineBegin": 3,
-                        "lineEnd": 3
+                        "lineBegin": 4,
+                        "lineEnd": 4
                     },
                     "sym": "test/buck/f/buck_project/my_defs.bzl",
                     "target": {
@@ -395,32 +515,7 @@
                     }
                 }
             ],
-            "30": [
-                {
-                    "attributes": {
-                        "symbolKind": {
-                            "aInteger": 30
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 11
-                        },
-                        "symbolName": {
-                            "aString": "rust_binary"
-                        },
-                        "symbolParent": {
-                            "aString": "."
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 30,
-                        "lineEnd": 33
-                    },
-                    "sym": "test/buck/t/buck_project/PATH/./rust_binary"
-                }
-            ],
-            "32": [
+            "40": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -439,8 +534,8 @@
                     "range": {
                         "columnBegin": 18,
                         "columnEnd": 26,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "lineBegin": 40,
+                        "lineEnd": 40
                     },
                     "sym": "test/buck/f/buck_project/toto.c",
                     "target": {
@@ -455,7 +550,7 @@
                     }
                 }
             ],
-            "35": [
+            "43": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -474,13 +569,13 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 35,
-                        "lineEnd": 46
+                        "lineBegin": 43,
+                        "lineEnd": 54
                     },
                     "sym": "test/buck/t/buck_project/PATH/./baz"
                 }
             ],
-            "39": [
+            "47": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -499,8 +594,8 @@
                     "range": {
                         "columnBegin": 9,
                         "columnEnd": 30,
-                        "lineBegin": 39,
-                        "lineEnd": 39
+                        "lineBegin": 47,
+                        "lineEnd": 47
                     },
                     "sym": "test/buck/t/buck_project/PATH/b/bar",
                     "target": {
@@ -515,7 +610,7 @@
                     }
                 }
             ],
-            "48": [
+            "56": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -534,8 +629,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 48,
-                        "lineEnd": 48
+                        "lineBegin": 56,
+                        "lineEnd": 56
                     },
                     "sym": "test/buck/d/buck_project/my_defs.bzl/h",
                     "target": {
@@ -543,8 +638,8 @@
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 2,
-                            "lineBegin": 15,
-                            "lineEnd": 17
+                            "lineBegin": 16,
+                            "lineEnd": 18
                         },
                         "repository": "test"
                     }
@@ -567,8 +662,8 @@
                     "range": {
                         "columnBegin": 50,
                         "columnEnd": 58,
-                        "lineBegin": 48,
-                        "lineEnd": 48
+                        "lineBegin": 56,
+                        "lineEnd": 56
                     },
                     "sym": "test/buck/f/buck_project/toto.c",
                     "target": {
@@ -583,32 +678,7 @@
                     }
                 }
             ],
-            "5": [
-                {
-                    "attributes": {
-                        "symbolKind": {
-                            "aInteger": 30
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 11
-                        },
-                        "symbolName": {
-                            "aString": "foobar"
-                        },
-                        "symbolParent": {
-                            "aString": "."
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 5,
-                        "lineEnd": 11
-                    },
-                    "sym": "test/buck/t/buck_project/PATH/./foobar"
-                }
-            ],
-            "50": [
+            "58": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -627,8 +697,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 3,
-                        "lineBegin": 50,
-                        "lineEnd": 50
+                        "lineBegin": 58,
+                        "lineEnd": 58
                     },
                     "sym": "test/buck/d/buck_project/my_defs.bzl/hh",
                     "target": {
@@ -636,8 +706,8 @@
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 2,
-                            "lineBegin": 27,
-                            "lineEnd": 29
+                            "lineBegin": 28,
+                            "lineEnd": 30
                         },
                         "repository": "test"
                     }
@@ -660,8 +730,8 @@
                     "range": {
                         "columnBegin": 63,
                         "columnEnd": 71,
-                        "lineBegin": 50,
-                        "lineEnd": 50
+                        "lineBegin": 58,
+                        "lineEnd": 58
                     },
                     "sym": "test/buck/f/buck_project/toto.c",
                     "target": {
@@ -676,77 +746,7 @@
                     }
                 }
             ],
-            "55": [
-                {
-                    "attributes": {
-                        "symbolKind": {
-                            "aInteger": 4
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 11
-                        },
-                        "symbolName": {
-                            "aString": "toto.c"
-                        },
-                        "symbolParent": {
-                            "aString": "buck_project"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 17,
-                        "columnEnd": 25,
-                        "lineBegin": 55,
-                        "lineEnd": 55
-                    },
-                    "sym": "test/buck/f/buck_project/toto.c",
-                    "target": {
-                        "filepath": "buck_project/toto.c",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
-                            "lineBegin": 1,
-                            "lineEnd": 1
-                        },
-                        "repository": "test"
-                    }
-                }
-            ],
-            "62": [
-                {
-                    "attributes": {
-                        "symbolKind": {
-                            "aInteger": 4
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 11
-                        },
-                        "symbolName": {
-                            "aString": "toto.c"
-                        },
-                        "symbolParent": {
-                            "aString": "buck_project"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 17,
-                        "columnEnd": 25,
-                        "lineBegin": 62,
-                        "lineEnd": 62
-                    },
-                    "sym": "test/buck/f/buck_project/toto.c",
-                    "target": {
-                        "filepath": "buck_project/toto.c",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
-                            "lineBegin": 1,
-                            "lineEnd": 1
-                        },
-                        "repository": "test"
-                    }
-                }
-            ],
-            "8": [
+            "6": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -756,61 +756,86 @@
                             "aInteger": 11
                         },
                         "symbolName": {
-                            "aString": "bar"
+                            "aString": "my_thrift_lib"
                         },
                         "symbolParent": {
                             "aString": "."
                         }
                     },
                     "range": {
-                        "columnBegin": 9,
-                        "columnEnd": 15,
-                        "lineBegin": 8,
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 6,
                         "lineEnd": 8
                     },
-                    "sym": "test/buck/t/buck_project/PATH/./bar",
-                    "target": {
-                        "filepath": "buck_project/TEST_TARGETS",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
-                            "lineBegin": 21,
-                            "lineEnd": 28
-                        },
-                        "repository": "test"
-                    }
+                    "sym": "test/buck/t/buck_project/PATH/./my_thrift_lib"
                 }
             ],
-            "9": [
+            "63": [
                 {
                     "attributes": {
                         "symbolKind": {
-                            "aInteger": 30
+                            "aInteger": 4
                         },
                         "symbolLanguage": {
                             "aInteger": 11
                         },
                         "symbolName": {
-                            "aString": "foo"
+                            "aString": "toto.c"
                         },
                         "symbolParent": {
-                            "aString": "."
+                            "aString": "buck_project"
                         }
                     },
                     "range": {
-                        "columnBegin": 9,
-                        "columnEnd": 15,
-                        "lineBegin": 9,
-                        "lineEnd": 9
+                        "columnBegin": 17,
+                        "columnEnd": 25,
+                        "lineBegin": 63,
+                        "lineEnd": 63
                     },
-                    "sym": "test/buck/t/buck_project/PATH/./foo",
+                    "sym": "test/buck/f/buck_project/toto.c",
                     "target": {
-                        "filepath": "buck_project/TEST_TARGETS",
+                        "filepath": "buck_project/toto.c",
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 2,
-                            "lineBegin": 13,
-                            "lineEnd": 19
+                            "lineBegin": 1,
+                            "lineEnd": 1
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "70": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 4
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "toto.c"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 25,
+                        "lineBegin": 70,
+                        "lineEnd": 70
+                    },
+                    "sym": "test/buck/f/buck_project/toto.c",
+                    "target": {
+                        "filepath": "buck_project/toto.c",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 1,
+                            "lineEnd": 1
                         },
                         "repository": "test"
                     }
