@@ -1,0 +1,39 @@
+[
+  "@generated",
+  {
+    "key": {
+      "class_": { "key": "BarCodeGen" },
+      "command": { "key": "scripts/foo/bar" },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/gencode/generated.py"
+      },
+      "signature": { "key": "abcde123456" },
+      "source": { "key": "this/is/the/Way.php" },
+      "variant": 0
+    }
+  },
+  {
+    "key": {
+      "class_": { "key": "BarCodeGen" },
+      "command": { "key": "scripts/foo/bar" },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/gencode/partially-generated.py"
+      },
+      "signature": { "key": "abcde123456" },
+      "source": { "key": "this/is/the/Way.php" },
+      "variant": 1
+    }
+  },
+  {
+    "key": {
+      "class_": { "key": "BarCodeGen" },
+      "command": { "key": "scripts/foo/bar" },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/gencode/source-without-name.py"
+      },
+      "signature": { "key": "abcde123456" },
+      "source": { "key": "this/is/the/Way.php" },
+      "variant": 1
+    }
+  }
+]
