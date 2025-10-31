@@ -1,0 +1,4 @@
+query: |
+  codemarkup.FileEntityInfos _
+perf: true
+transform: [gensort, []]
