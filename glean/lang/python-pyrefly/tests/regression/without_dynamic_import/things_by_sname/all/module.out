@@ -1,0 +1,26 @@
+[
+  "@generated",
+  {
+    "key": {
+      "tuplefield0": { "key": { "local_name": { "key": "a" } } },
+      "tuplefield1": { "key": { "name": { "key": "a" } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "key": {
+          "local_name": { "key": "b" },
+          "parent": { "key": { "local_name": { "key": "mod" } } }
+        }
+      },
+      "tuplefield1": { "key": { "name": { "key": "mod.b" } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "key": { "local_name": { "key": "mod" } } },
+      "tuplefield1": { "key": { "name": { "key": "mod" } } }
+    }
+  }
+]

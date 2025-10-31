@@ -1,0 +1,2 @@
+query: python.ClassBySName K -> V; {K, V}
+transform: [normord, []]

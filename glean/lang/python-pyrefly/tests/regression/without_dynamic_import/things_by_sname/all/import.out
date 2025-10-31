@@ -1,0 +1,19 @@
+[
+  "@generated",
+  {
+    "key": {
+      "import_": {
+        "key": {
+          "as_name": { "key": "a.bello" },
+          "from_name": { "key": "mod.b.bello" }
+        }
+      },
+      "sname": {
+        "key": {
+          "local_name": { "key": "bello" },
+          "parent": { "key": { "local_name": { "key": "a" } } }
+        }
+      }
+    }
+  }
+]

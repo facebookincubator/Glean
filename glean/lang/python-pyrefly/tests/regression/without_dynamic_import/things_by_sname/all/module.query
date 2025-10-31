@@ -1,0 +1,2 @@
+query: python.ModuleBySName K -> V; {K, V}
+transform: [normord, []]

@@ -1,0 +1,91 @@
+[
+  "@generated",
+  {
+    "key": {
+      "tuplefield0": {
+        "key": {
+          "local_name": { "key": "hello" },
+          "parent": { "key": { "local_name": { "key": "a" } } }
+        }
+      },
+      "tuplefield1": { "key": { "name": { "key": "a.hello" } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "key": {
+          "local_name": { "key": "param" },
+          "parent": {
+            "key": {
+              "local_name": { "key": "<locals>" },
+              "parent": {
+                "key": {
+                  "local_name": { "key": "func" },
+                  "parent": { "key": { "local_name": { "key": "a" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "tuplefield1": { "key": { "name": { "key": "a.func.<locals>.param" } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "key": {
+          "local_name": { "key": "param" },
+          "parent": {
+            "key": {
+              "local_name": { "key": "<locals>" },
+              "parent": {
+                "key": {
+                  "local_name": { "key": "meth" },
+                  "parent": {
+                    "key": {
+                      "local_name": { "key": "Cls" },
+                      "parent": { "key": { "local_name": { "key": "a" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "key": { "name": { "key": "a.Cls.meth.<locals>.param" } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "key": {
+          "local_name": { "key": "self" },
+          "parent": {
+            "key": {
+              "local_name": { "key": "<locals>" },
+              "parent": {
+                "key": {
+                  "local_name": { "key": "meth" },
+                  "parent": {
+                    "key": {
+                      "local_name": { "key": "Cls" },
+                      "parent": { "key": { "local_name": { "key": "a" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "key": { "name": { "key": "a.Cls.meth.<locals>.self" } }
+      }
+    }
+  }
+]

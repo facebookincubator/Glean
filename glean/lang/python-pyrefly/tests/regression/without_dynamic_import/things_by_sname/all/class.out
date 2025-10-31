@@ -1,0 +1,14 @@
+[
+  "@generated",
+  {
+    "key": {
+      "tuplefield0": {
+        "key": {
+          "local_name": { "key": "Cls" },
+          "parent": { "key": { "local_name": { "key": "a" } } }
+        }
+      },
+      "tuplefield1": { "key": { "name": { "key": "a.Cls" } } }
+    }
+  }
+]
