@@ -284,6 +284,16 @@ predicate DefinitionLocation:
   span: src.ByteSpan,
 }
 
+predicate DefinitionMetadata:
+{
+  definition : Definition,
+  kind: Kind,
+  span: src.ByteSpan,
+}
+{ DEFN, KIND, SPAN } where
+    DefinitionLocation { definition = DEFN, file = _, span = SPAN };
+    DefinitionKind { definition = DEFN, kind = KIND };
+
 predicate TargetLocation:
 {
   locator : Locator,
