@@ -132,4 +132,27 @@ predicate HaskellContainsChildEntity:
     (ParentDecl.con?.fields[..]).name = ChildName
   )
 
+#
+# Entity kinds
+#
+
+predicate HaskellEntityKind:
+  {
+    entity: code.hs.Entity,
+    kind: codemarkup.types.SymbolKind,
+  }
+  { {name = Name}, Kind } where
+     hs.DeclarationOfName { name = Name, decl = Decl };
+     ( Decl = { val = _ }; Function = Kind ) |
+     ( Decl = { typeFamily = _ }; Type = Kind ) |
+     ( Decl = { type_ = _ }; Type = Kind ) |
+     ( Decl = { data = _ }; Type = Kind ) |
+     ( Decl = { con = _ }; Constant = Kind ) |
+     ( Decl = { patSyn = _ }; Constant = Kind ) |
+     ( Decl = { class_ = _ }; Class_ = Kind ) |
+     ( Decl = { method = _ }; Method = Kind ) |
+     ( Decl = { patBind = _ }; Variable = Kind ) |
+     ( Decl = { tyVarBind = _ }; TypeParameter = Kind ) |
+     ( Decl = { field = _ }; Field = Kind )
+
 }
