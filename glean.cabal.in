@@ -1217,6 +1217,7 @@ executable glean
         GleanCLI.Backup
         GleanCLI.Common
         GleanCLI.Complete
+        GleanCLI.Create
         GleanCLI.Derive
         GleanCLI.Finish
         GleanCLI.Merge
