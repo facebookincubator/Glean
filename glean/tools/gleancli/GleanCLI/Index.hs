@@ -9,10 +9,13 @@
 {-# LANGUAGE ApplicativeDo #-}
 module GleanCLI.Index (IndexCommand) where
 
+import Control.Monad
+import Data.Either
 import Options.Applicative
 import System.Directory
 import System.IO.Temp
 
+import Util.Control.Exception
 import Util.IO
 import Util.OptParse
 
@@ -22,12 +25,14 @@ import Glean.Indexer.List
 import Glean.Util.Some
 
 import GleanCLI.Common
+import GleanCLI.Create
 import GleanCLI.Types
 
 data IndexCommand
   = Index
       { indexCmdRepo :: Repo
       , indexCmdRoot :: FilePath
+      , indexCmdCreate :: CreateOpts
       , indexCmdRun :: RunIndexer
       }
 
@@ -35,6 +40,7 @@ instance Plugin IndexCommand where
   parseCommand =
     commandParser "index" (progDesc "Index some source code") $ do
       indexCmdRepo <- dbOpts
+      indexCmdCreate <- parseCreateOpts
       indexCmdRun <- cmdLineParser
       indexCmdRoot <- strArgument (metavar "ROOT")
       return Index{..}
@@ -42,8 +48,13 @@ instance Plugin IndexCommand where
   runCommand _evb _cfg backend Index{..} = do
     projectRoot <- getCurrentDirectory
     withSystemTempDirectory "glean-index" $ \tmpdir -> do
-    fillDatabase backend indexCmdRepo Nothing (die 1 "DB already exists") $
-      indexCmdRun (Some backend) indexCmdRepo
+    tryBracket
+      (do
+        exists <- createDb backend indexCmdRepo indexCmdCreate
+        when exists $ die 1 "DB already exists"
+      )
+      (\_ ex -> when (isRight ex) $ finish backend indexCmdRepo) $
+      \_ -> indexCmdRun (Some backend) indexCmdRepo
         IndexerParams {
           indexerRoot = indexCmdRoot,
           indexerProjectRoot = projectRoot,
