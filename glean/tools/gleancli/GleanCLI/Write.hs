@@ -11,13 +11,9 @@ module GleanCLI.Write (WriteCommand, FinishCommand) where
 
 import Control.Monad
 import qualified Data.ByteString as B
-import Data.Default
 import Data.Proxy
-import qualified Data.HashMap.Strict as HashMap
 import Data.Text (Text)
 import qualified Data.Text as Text
-import qualified Data.Text.IO as Text
-import qualified Data.Text.Encoding as Encode
 import Options.Applicative
 
 import Control.Concurrent.Stream (stream)
@@ -34,44 +30,21 @@ import qualified Glean.LocalOrRemote as LocalOrRemote
 import Glean.Database.Schema
 import Glean.Database.Write.Batch (syncWriteDatabase)
 import Glean.Types as Thrift
-import Util.Time
+import Glean.Util.ThriftService (queueTimeout)
 import Glean.Write
 import Glean.Write.JSON ( buildJsonBatch, syncWriteJsonBatch )
 
 import GleanCLI.Common
+import GleanCLI.Create
 import GleanCLI.Finish
 import GleanCLI.Types
-import Data.Time.Clock (UTCTime)
-import Glean.Database.Meta (utcTimeToPosixEpochTime)
-import Data.ByteString (ByteString)
-import Glean.Util.ThriftService (queueTimeout)
 
 data WriteCommand
   = Write
-      { createOpts :: Maybe CreateOpts
+      { maybeCreate :: Maybe CreateOpts
       , writeRepo :: Repo
       , writeOpts :: WriteOpts
       }
-
-data CreateOpts = CreateOpts
-  { dependencies :: Maybe DependencyOpts
-  , writeRepoTime :: Maybe UTCTime
-  , properties :: [(Text,Text)]
-  , updateSchemaForStacked :: Bool
-  }
-
-parseCreateOpts :: Parser CreateOpts
-parseCreateOpts = do
-  writeRepoTime <- optional repoTimeOpt
-  dependencies <- optional dependencyOpts
-  properties <- dbPropertiesOpt
-  updateSchemaForStacked <- updateSchemaForStackedOpt
-  return CreateOpts {
-    writeRepoTime,
-    dependencies,
-    properties,
-    updateSchemaForStacked
-  }
 
 data WriteOpts = WriteOpts
   { finish :: Bool
@@ -99,98 +72,6 @@ parseWriteOpts = do
     factsSource
   }
 
-data DependencyOpts = DependencyOpts Repo (Maybe PruneOpts)
-
-data PruneOpts = PruneOpts ExcludeOpt UnitsOpt
-
-data ExcludeOpt = Exclude | Include
-  deriving Eq
-
-data UnitsOpt
-  = Units [ByteString]
-  | UnitsFromFile FilePath
-
-readUnits :: UnitsOpt -> IO [ByteString]
-readUnits (Units these) = return these
-readUnits (UnitsFromFile file) = extractLines file
-
-getDependencies :: DependencyOpts -> IO Dependencies
-getDependencies (DependencyOpts Repo{..} Nothing) =
-  return $ Thrift.Dependencies_stacked $
-    Thrift.Stacked repo_name repo_hash Nothing
-getDependencies (DependencyOpts repo (Just (PruneOpts exclude unitsOpt))) = do
-  units <- readUnits unitsOpt
-  return $ Thrift.Dependencies_pruned $
-    Thrift.Pruned repo units (exclude == Exclude) Nothing
-
-dependencyOpts :: Parser DependencyOpts
-dependencyOpts = stackedOpt <|> updateOptions
-
-updateOptions :: Parser DependencyOpts
-updateOptions = do
-  repo <- incrementalOpt
-  prune <- includeOpt <|> excludeOpt
-  return $ DependencyOpts repo (Just prune)
-
-stackedOpt :: Parser DependencyOpts
-stackedOpt =
-  (\repo -> DependencyOpts repo Nothing) <$>
-     option (maybeReader Glean.parseRepo)
-  (  long "stacked"
-  <> metavar "DB"
-  <> help ("Created DB will be stacked on top of this DB. "
-  <> "For more details about its schema, see --update-schema-for-stacked.")
-  )
-
-incrementalOpt :: Parser Repo
-incrementalOpt = option (maybeReader Glean.parseRepo)
-  (  long "incremental"
-  <> metavar "DB"
-  <> help "Create an incremental DB on top of this DB."
-  )
-
-splitUnits :: Text -> [ByteString]
-splitUnits = map Encode.encodeUtf8 . Text.splitOn ","
-
-extractLines :: FilePath -> IO [ByteString]
-extractLines file = map Encode.encodeUtf8 . Text.lines <$> Text.readFile file
-
-includeOptString :: Parser UnitsOpt
-includeOptString = Units . splitUnits <$> strOption
-  (  long "include"
-  <> metavar "unit,unit,.."
-  <> help "For incremental DBs only. Include these units."
-  )
-
-includeOptFile :: Parser UnitsOpt
-includeOptFile = UnitsFromFile <$> strOption
-  (  long "include-file"
-  <> metavar "FILE"
-  <> help ("For incremental DBs only. Include units in FILE "
-  <> "(one per line).")
-  )
-
-includeOpt :: Parser PruneOpts
-includeOpt = PruneOpts Include <$> (includeOptFile <|> includeOptString)
-
-excludeOptString :: Parser UnitsOpt
-excludeOptString =  Units . splitUnits <$> strOption
-  (  long "exclude"
-  <> metavar "unit,unit,.."
-  <> help "For incremental DBs only. Exclude these units."
-  )
-
-excludeOptFile :: Parser UnitsOpt
-excludeOptFile =  UnitsFromFile <$> strOption
-  (  long "exclude-file"
-  <> metavar "FILE"
-  <> help ("For incremental DBs only. Exclude units in FILE "
-  <> "(one per line).")
-  )
-
-excludeOpt :: Parser PruneOpts
-excludeOpt = PruneOpts Exclude <$> (excludeOptFile <|> excludeOptString)
-
 data FactsSource = Locations [Text] | Files [FilePath]
 
 factsSourceOpts :: Parser FactsSource
@@ -210,33 +91,6 @@ locationOpt = many $ strOption
   <> help "Location(s) of facts to be downloaded and written to the db"
   )
 
-repoTimeOpt :: Parser UTCTime
-repoTimeOpt = option readTime
-  (  long "repo-hash-time"
-  <> metavar "yyyy-mm-ddThh:mm:ssZ"
-  <> help "Timestamp of the source data to be indexed."
-  )
-  where
-    readTime :: ReadM UTCTime
-    readTime = eitherReader $ \str ->
-      case readUTC $ Text.pack str of
-        Just value -> Right value
-        Nothing ->
-          Left "expecting UTC time e.g. 2021-01-01T12:30:00Z"
-
-dbPropertiesOpt :: Parser [(Text, Text)]
-dbPropertiesOpt = many $ option readProperty
-  (  long "property"
-  <> metavar "NAME=VALUE"
-  <> help "Set DB's properties when creating a DB."
-  )
-  where
-    readProperty :: ReadM (Text,Text)
-    readProperty = eitherReader $ \str ->
-      case break (=='=') str of
-        (name, '=':value) -> Right (Text.pack name, Text.pack value)
-        _other -> Left "--property: expecting NAME=VALUE"
-
 finishOpt :: Parser Bool
 finishOpt = switch
   (  long "finish"
@@ -251,14 +105,6 @@ useLocalSwitchOpt = switch
   <> "write performance.")
   )
 
-updateSchemaForStackedOpt :: Parser Bool
-updateSchemaForStackedOpt = switch
-  (  long "update-schema-for-stacked"
-  <> help (
-    "When creating a stacked DB, use the current schema instead " <>
-    "of the schema from the base DB.")
-  )
-
 instance Plugin WriteCommand where
   parseCommand = createCmd <|> writeCmd
     where
@@ -270,7 +116,7 @@ instance Plugin WriteCommand where
         createOpts <- parseCreateOpts
         writeOpts <- parseWriteOpts
         writeRepo <- dbOpts
-        return Write { writeRepo, createOpts = Just createOpts, writeOpts }
+        return Write { writeRepo, maybeCreate = Just createOpts, writeOpts }
 
     writeCmd =
       commandParser "write" (progDesc (
@@ -279,25 +125,14 @@ instance Plugin WriteCommand where
           <> "options are related to each other.")) $ do
         writeRepo <- dbOpts
         writeOpts <- parseWriteOpts
-        return Write { writeRepo, createOpts = Nothing, writeOpts }
+        return Write { writeRepo, maybeCreate = Nothing, writeOpts }
 
   runCommand _ _ backend Write{..} =
     tryBracket
-       (case createOpts of
-         Nothing -> return ()
-         Just CreateOpts{..} -> do
-            putStrLn $ "Creating DB " <> showRepo writeRepo
-            deps <- mapM getDependencies dependencies
-            Thrift.KickOffResponse alreadyExists <-
-              Glean.kickOffDatabase backend def
-                { kickOff_repo = writeRepo
-                , kickOff_properties = HashMap.fromList properties
-                , kickOff_dependencies = deps
-                , kickOff_repo_hash_time =
-                    utcTimeToPosixEpochTime <$> writeRepoTime
-                , kickOff_update_schema_for_stacked = updateSchemaForStacked
-                }
-            when alreadyExists $ die 3 "DB create failure: already exists"
+       (forM maybeCreate $ \createOpts -> do
+          putStrLn $ "Creating DB " <> showRepo writeRepo
+          alreadyExists <- createDb backend writeRepo createOpts
+          when alreadyExists $ die 3 "DB create failure: already exists"
        )
        (\_ result -> case resultToFailure result of
           Just err -> die 3 $ "DB create failure: " ++ err
