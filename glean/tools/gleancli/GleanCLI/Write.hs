@@ -54,7 +54,7 @@ data WriteCommand
       }
 
 data CreateOpts = CreateOpts
-  { dependencies :: Maybe (IO Thrift.Dependencies)
+  { dependencies :: Maybe DependencyOpts
   , writeRepoTime :: Maybe UTCTime
   , properties :: [(Text,Text)]
   , updateSchemaForStacked :: Bool
@@ -63,7 +63,7 @@ data CreateOpts = CreateOpts
 parseCreateOpts :: Parser CreateOpts
 parseCreateOpts = do
   writeRepoTime <- optional repoTimeOpt
-  dependencies <- optional (stackedOptions <|> updateOptions)
+  dependencies <- optional dependencyOpts
   properties <- dbPropertiesOpt
   updateSchemaForStacked <- updateSchemaForStackedOpt
   return CreateOpts {
@@ -99,25 +99,97 @@ parseWriteOpts = do
     factsSource
   }
 
-stackedOptions :: Parser (IO Dependencies)
-stackedOptions = f <$> stackedOpt
-  where
-    f Repo{..} =
-      return $ Thrift.Dependencies_stacked $
-        Thrift.Stacked repo_name repo_hash Nothing
+data DependencyOpts = DependencyOpts Repo (Maybe PruneOpts)
 
-updateOptions :: Parser (IO Dependencies)
+data PruneOpts = PruneOpts ExcludeOpt UnitsOpt
+
+data ExcludeOpt = Exclude | Include
+  deriving Eq
+
+data UnitsOpt
+  = Units [ByteString]
+  | UnitsFromFile FilePath
+
+readUnits :: UnitsOpt -> IO [ByteString]
+readUnits (Units these) = return these
+readUnits (UnitsFromFile file) = extractLines file
+
+getDependencies :: DependencyOpts -> IO Dependencies
+getDependencies (DependencyOpts Repo{..} Nothing) =
+  return $ Thrift.Dependencies_stacked $
+    Thrift.Stacked repo_name repo_hash Nothing
+getDependencies (DependencyOpts repo (Just (PruneOpts exclude unitsOpt))) = do
+  units <- readUnits unitsOpt
+  return $ Thrift.Dependencies_pruned $
+    Thrift.Pruned repo units (exclude == Exclude) Nothing
+
+dependencyOpts :: Parser DependencyOpts
+dependencyOpts = stackedOpt <|> updateOptions
+
+updateOptions :: Parser DependencyOpts
 updateOptions = do
   repo <- incrementalOpt
-  let
-    include = (,False) <$> includeOpt
-    exclude = (,True) <$> excludeOpt
-  ~(units, exclude) <- include <|> exclude
-  return $ fmap (prune repo exclude) units
-  where
-    prune :: Repo -> Bool -> [ByteString] -> Dependencies
-    prune repo exclude units = Thrift.Dependencies_pruned $
-      Thrift.Pruned repo units exclude Nothing
+  prune <- includeOpt <|> excludeOpt
+  return $ DependencyOpts repo (Just prune)
+
+stackedOpt :: Parser DependencyOpts
+stackedOpt =
+  (\repo -> DependencyOpts repo Nothing) <$>
+     option (maybeReader Glean.parseRepo)
+  (  long "stacked"
+  <> metavar "DB"
+  <> help ("Created DB will be stacked on top of this DB. "
+  <> "For more details about its schema, see --update-schema-for-stacked.")
+  )
+
+incrementalOpt :: Parser Repo
+incrementalOpt = option (maybeReader Glean.parseRepo)
+  (  long "incremental"
+  <> metavar "DB"
+  <> help "Create an incremental DB on top of this DB."
+  )
+
+splitUnits :: Text -> [ByteString]
+splitUnits = map Encode.encodeUtf8 . Text.splitOn ","
+
+extractLines :: FilePath -> IO [ByteString]
+extractLines file = map Encode.encodeUtf8 . Text.lines <$> Text.readFile file
+
+includeOptString :: Parser UnitsOpt
+includeOptString = Units . splitUnits <$> strOption
+  (  long "include"
+  <> metavar "unit,unit,.."
+  <> help "For incremental DBs only. Include these units."
+  )
+
+includeOptFile :: Parser UnitsOpt
+includeOptFile = UnitsFromFile <$> strOption
+  (  long "include-file"
+  <> metavar "FILE"
+  <> help ("For incremental DBs only. Include units in FILE "
+  <> "(one per line).")
+  )
+
+includeOpt :: Parser PruneOpts
+includeOpt = PruneOpts Include <$> (includeOptFile <|> includeOptString)
+
+excludeOptString :: Parser UnitsOpt
+excludeOptString =  Units . splitUnits <$> strOption
+  (  long "exclude"
+  <> metavar "unit,unit,.."
+  <> help "For incremental DBs only. Exclude these units."
+  )
+
+excludeOptFile :: Parser UnitsOpt
+excludeOptFile =  UnitsFromFile <$> strOption
+  (  long "exclude-file"
+  <> metavar "FILE"
+  <> help ("For incremental DBs only. Exclude units in FILE "
+  <> "(one per line).")
+  )
+
+excludeOpt :: Parser PruneOpts
+excludeOpt = PruneOpts Exclude <$> (excludeOptFile <|> excludeOptString)
 
 data FactsSource = Locations [Text] | Files [FilePath]
 
@@ -172,69 +244,12 @@ finishOpt = switch
   <> "it is not possible to add any more facts to it.")
   )
 
-stackedOpt :: Parser Repo
-stackedOpt = option (maybeReader Glean.parseRepo)
-  (  long "stacked"
-  <> metavar "DB"
-  <> help ("Created DB will be stacked on top of this DB. "
-  <> "For more details about its schema, see --update-schema-for-stacked.")
-  )
-
 useLocalSwitchOpt :: Parser Bool
 useLocalSwitchOpt = switch
   (  long "use-local-cache"
   <> help ("Use a local cache to avoid resending duplicate facts. May improve "
   <> "write performance.")
   )
-
-incrementalOpt :: Parser Repo
-incrementalOpt = option (maybeReader Glean.parseRepo)
-  (  long "incremental"
-  <> metavar "DB"
-  <> help "Create an incremental DB on top of this DB."
-  )
-
-splitUnits :: Text -> [ByteString]
-splitUnits = map Encode.encodeUtf8 . Text.splitOn ","
-
-extractLines :: FilePath -> IO [ByteString]
-extractLines file = map Encode.encodeUtf8 . Text.lines <$> Text.readFile file
-
-includeOptString :: Parser (IO [ByteString])
-includeOptString = return . splitUnits <$> strOption
-  (  long "include"
-  <> metavar "unit,unit,.."
-  <> help "For incremental DBs only. Include these units."
-  )
-
-includeOptFile :: Parser (IO [ByteString])
-includeOptFile = extractLines <$> strOption
-  (  long "include-file"
-  <> metavar "FILE"
-  <> help ("For incremental DBs only. Include units in FILE "
-  <> "(one per line).")
-  )
-
-includeOpt :: Parser (IO [ByteString])
-includeOpt = includeOptFile <|> includeOptString
-
-excludeOptString :: Parser (IO [ByteString])
-excludeOptString =  return . splitUnits <$> strOption
-  (  long "exclude"
-  <> metavar "unit,unit,.."
-  <> help "For incremental DBs only. Exclude these units."
-  )
-
-excludeOptFile :: Parser (IO [ByteString])
-excludeOptFile =  extractLines <$> strOption
-  (  long "exclude-file"
-  <> metavar "FILE"
-  <> help ("For incremental DBs only. Exclude units in FILE "
-  <> "(one per line).")
-  )
-
-excludeOpt :: Parser (IO [ByteString])
-excludeOpt = excludeOptFile <|> excludeOptString
 
 updateSchemaForStackedOpt :: Parser Bool
 updateSchemaForStackedOpt = switch
@@ -272,7 +287,7 @@ instance Plugin WriteCommand where
          Nothing -> return ()
          Just CreateOpts{..} -> do
             putStrLn $ "Creating DB " <> showRepo writeRepo
-            deps <- maybe (return Nothing) (fmap Just) dependencies
+            deps <- mapM getDependencies dependencies
             Thrift.KickOffResponse alreadyExists <-
               Glean.kickOffDatabase backend def
                 { kickOff_repo = writeRepo
