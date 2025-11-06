@@ -23,26 +23,26 @@ import Glean.LocalOrRemote ( serializeInventory )
 
 import Thrift.Protocol (deserializeGen)
 import Thrift.Protocol.Compact (Compact)
-
 data Swift = Swift
   { scipGen :: FilePath
   , target :: String
-  , scipToGlean :: FilePath
+  , scipRustIndexer :: Maybe FilePath
   }
 
 options :: Parser Swift
 options = do
   scipGen <- strOption $
     long "scip-gen" <>
+    metavar "PATH" <>
     value "scip-gen" <>
-    help "path to an executable generating index.scip from swift code"
+    help "path to scip-gen binary"
   target <- strOption $
     long "target" <>
     value "target" <>
     help "target to build and index"
-  scipToGlean <- strOption $
-    long "scip-to-glean" <>
-    help "Path to the scip-to-glean indexer binary"
+  scipRustIndexer <- optional (strOption $
+    long "rust-indexer" <>
+    help "Path to the rust indexer binary. If not provided, uses the haskell indexer instead")
   return Swift{..}
 
 indexer :: Indexer Swift
@@ -67,8 +67,8 @@ indexer = Indexer {
         scipOutDir = Just tmpDir,
         scipRoot = indexerRoot,
         scipWritesLocal = False,
-        scipLanguage = Just "swift",
-        scipToGlean = scipToGlean
+        scipLanguage = Just SCIP.Swift,
+        scipRustIndexer = scipRustIndexer
       }
     sendJsonBatches backend repo (scipGen <> "/scip") val
     sendBatch backend repo (tmpDir </> "facts")

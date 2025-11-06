@@ -22,25 +22,25 @@ data Go = Go
   { scipGoBinary :: FilePath
   , goPackagesDriverBinary :: Maybe FilePath
   , scipExtraArgs :: [String]
-  , scipToGlean :: FilePath
+  , scipRustIndexer :: Maybe FilePath
   }
 
 options :: Parser Go
 options = do
   scipGoBinary <- strOption $
     long "scip-go" <>
+    metavar "PATH" <>
     value "scip-go" <>
-    help "path to the scip-go binary"
+    help "path to scip-go binary"
   goPackagesDriverBinary <- optional (strOption $
     long "gopackagesdriver" <>
-    value "gopackagesdriver" <>
-    help "path to the gopackagesdriver binary")
+    help "path to to the gopackagesdriver binary")
   scipExtraArgs <- many $ strOption $
     long "extra-arg" <>
     help "extra arguments to pass to the indexer"
-  scipToGlean <- strOption $
-    long "scip-to-glean" <>
-    help "Path to the scip-to-glean indexer binary"
+  scipRustIndexer <- optional (strOption $
+    long "rust-indexer" <>
+    help "Path to the rust indexer binary. If not provided, uses the haskell indexer instead")
   return Go{..}
 
 indexer :: Indexer Go
@@ -58,8 +58,8 @@ indexer = Indexer {
         scipOutDir = Nothing,
         scipRoot = indexerRoot,
         scipWritesLocal = False,
-        scipLanguage = Just "go",
-        scipToGlean = scipToGlean
+        scipLanguage = Just SCIP.Go,
+        scipRustIndexer = scipRustIndexer
       }
     sendJsonBatches backend repo (scipGoBinary <> "/scip") val
     derive backend repo

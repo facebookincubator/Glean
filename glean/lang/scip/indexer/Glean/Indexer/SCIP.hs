@@ -14,6 +14,10 @@ module Glean.Indexer.SCIP (
 import Options.Applicative
 import Data.Text ( Text )
 import Control.Monad ( forM_ )
+import Data.Maybe ( fromMaybe )
+import System.FilePath ( (</>) )
+import System.Process ( callProcess )
+import qualified Data.Aeson as Aeson
 
 import Glean.Derive
 import Glean.Indexer
@@ -23,13 +27,13 @@ import Glean.Write
 
 import qualified Glean
 import System.Directory (doesFileExist)
-import System.IO.Temp ( withSystemTempDirectory )
+import System.IO.Temp (withSystemTempDirectory)
 import Util.OptParse (maybeStrOption)
 
 -- | A generic SCIP indexer, for existing scip files
 data SCIP = SCIP
   { scipIndexFile :: Maybe FilePath
-  , scipToGlean :: FilePath
+  , scipToGlean :: Maybe FilePath
   }
   -- no options currently
 
@@ -39,10 +43,10 @@ options =
     <$> maybeStrOption (
       long "input" <>
       help "Optional path to a specific scip index file")
-    <*> strOption (
+    <*> maybeStrOption (
       long "scip-to-glean" <>
-      metavar "PATH" <>
-      help "Path to scip-to-glean indexer binary")
+      help "Path to scip-to-glean indexer binary. If not provided, uses \
+           \the haskell indexer instead")
 
 -- | An indexer that just slurps an existing SCIP file. Usage:
 --
@@ -62,8 +66,14 @@ indexer = Indexer {
         if mFile
           then pure indexerRoot
           else error "Neither --input nor --root are scip files"
-    val <- withSystemTempDirectory "glean-scip"
-      (SCIP.processSCIP Nothing scipToGlean False Nothing Nothing scipFile)
+    val <- case scipToGlean of
+      Nothing -> SCIP.processSCIP Nothing False Nothing Nothing scipFile
+      Just rustIndexer -> withSystemTempDirectory "glean-scip" $ \tmpDir -> do
+        let jsonPath = tmpDir </> "index.json"
+        callProcess rustIndexer
+          ["--input", scipFile, "--infer-language", "--output", jsonPath]
+        mJson <- Aeson.decodeFileStrict jsonPath
+        return $ fromMaybe (error "rust indexer did not produce JSON") mJson
     sendJsonBatches backend repo "scip" val
     derive backend repo
   }
