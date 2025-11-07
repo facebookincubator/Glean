@@ -11,6 +11,7 @@
 module HieIndexer.Options (
     HieIndexerOptions(..),
     Mode(..),
+    UnitName(..),
     options,
   ) where
 
@@ -31,8 +32,23 @@ data HieIndexerOptions = HieIndexerOptions
       -- ^ Paths to look for source files. May include the string
       -- @$PACKAGE@ which will be replaced by the package name
       -- (@<pkg>-<version>@).
+  , srcPrefix :: Maybe Text
+      -- ^ Prefix to add to source paths
+  , unitName :: UnitName
+      -- ^ How to handle unit names
   , verbosity :: Int
   }
+
+data UnitName = UnitKey | UnitId
+
+parseUnit :: String -> Maybe UnitName
+parseUnit "key" = Just UnitKey
+parseUnit "id" = Just UnitId
+parseUnit _ = Nothing
+
+showUnit :: UnitName -> String
+showUnit UnitKey = "key"
+showUnit UnitId = "id"
 
 data Mode
   = WriteMode {
@@ -60,6 +76,18 @@ options = info (helper <*> parser) fullDesc
           help (
             "Path to search for source files. The string \"$PACKAGE\" is " <>
             "replaced by the package name, e.g. text-2.0.2")))
+
+      srcPrefix <- optional (textOption (
+        long "prefix" <>
+        metavar "PATH" <>
+        help "Prefix to add to source paths in the DB"))
+
+      unitName <- option (maybeReader parseUnit) (
+        long "unit" <>
+        metavar "key|id" <>
+        value UnitKey <>
+        showDefaultWith showUnit <>
+        help "Whether to store the full unit key (key) or just name-version (id)")
 
       verbosity <-
         option
