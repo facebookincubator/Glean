@@ -1150,6 +1150,7 @@ library indexers
     import: fb-haskell, fb-cpp, deps, thrift-server
     hs-source-dirs:
         glean/lang/clang
+        glean/lang/erlang
         glean/lang/flow
         glean/lang/go
         glean/lang/hack
@@ -1169,6 +1170,7 @@ library indexers
         Glean.Indexer
         Glean.Indexer.Cpp
         Glean.Indexer.External
+        Glean.Indexer.Erlang
         Glean.Indexer.Flow
         Glean.Indexer.Go
         Glean.Indexer.Hack
