@@ -37,7 +37,7 @@ glean index java-lsif DIR --db-root DB --db NAME/INSTANCE
 where
 
 * `DB` is the directory where you want to store your Glean DBs
-* `DIR` is the root directory containing the Rust project
+* `DIR` is the root directory containing the Java project
 * `NAME/INSTANCE` is the name of the repository to create
 
 ## In the shell
