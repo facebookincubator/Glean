@@ -11,13 +11,26 @@ import lsif.types
 # Resolving locations to entities
 #
 
+# only defined for function, package, class or namespace
+# todo: make indexer output predicates in this format
+predicate EnclosingSrcRange:
+  {
+    range : src.Range,
+    enclosingRange : src.Range
+  }
+  { Range, EnclosingR } where
+    lsif.types.FromSrcRange { Range, File, RangeS };
+    scip.EnclosingRange { { File, RangeS }, { File, EnclosingRS } };
+    lsif.types.ToSrcRange { File, EnclosingRS, EnclosingR }
+
 predicate ScipResolveLocation:
   {
     location: codemarkup.types.Location,
     entity: code.scip.Entity,
   }
-  { { Name, File, { range = Range }, nothing }, Entity } where
+  { { Name, File, { range = FullRange }, nothing }, Entity } where
     scip.ResolveLocation { { File, Range, Name }, Entity };
+    FullRange = if EnclosingSrcRange { Range, EncRange } then EncRange else Range;
 
 #
 # Finding entities' locations
@@ -28,9 +41,9 @@ predicate ScipEntityLocation:
     entity: code.scip.Entity,
     location: codemarkup.types.Location,
   }
-  { Entity, { Name, File, { range = Range }, nothing } } where
+  { Entity, { Name, File, { range = FullRange }, nothing } } where
     scip.EntityLocation { Entity, { File, Range, Name } };
-
+    FullRange = if EnclosingSrcRange { Range, EncRange } then EncRange else Range;
 #
 # Finding references in a file
 #
