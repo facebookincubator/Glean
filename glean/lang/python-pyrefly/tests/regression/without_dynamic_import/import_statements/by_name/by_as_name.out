@@ -1,0 +1,71 @@
+[
+  "@generated",
+  {
+    "key": {
+      "import_": {
+        "key": { "as_name": { "key": "mod.a" }, "from_name": { "key": "m.a" } }
+      },
+      "name": { "key": "mod.a" }
+    }
+  },
+  {
+    "key": {
+      "import_": {
+        "key": {
+          "as_name": { "key": "mod.not_b_but_something_else" },
+          "from_name": { "key": "m.b" }
+        }
+      },
+      "name": { "key": "mod.not_b_but_something_else" }
+    }
+  },
+  {
+    "key": {
+      "import_": {
+        "key": { "as_name": { "key": "mod.os" }, "from_name": { "key": "os" } }
+      },
+      "name": { "key": "mod.os" }
+    }
+  },
+  {
+    "key": {
+      "import_": {
+        "key": {
+          "as_name": { "key": "mod.os.path" },
+          "from_name": { "key": "os.path" }
+        }
+      },
+      "name": { "key": "mod.os.path" }
+    }
+  },
+  {
+    "key": {
+      "import_": {
+        "key": {
+          "as_name": { "key": "mod.os.path.join" },
+          "from_name": { "key": "os.path.join" }
+        }
+      },
+      "name": { "key": "mod.os.path.join" }
+    }
+  },
+  {
+    "key": {
+      "import_": {
+        "key": { "as_name": { "key": "mod.p" }, "from_name": { "key": "os" } }
+      },
+      "name": { "key": "mod.p" }
+    }
+  },
+  {
+    "key": {
+      "import_": {
+        "key": {
+          "as_name": { "key": "mod.p" },
+          "from_name": { "key": "string" }
+        }
+      },
+      "name": { "key": "mod.p" }
+    }
+  }
+]

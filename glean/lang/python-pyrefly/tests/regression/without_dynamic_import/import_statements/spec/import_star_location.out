@@ -1,0 +1,17 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/star.py"
+      },
+      "import_star": {
+        "key": {
+          "from_name": { "key": "u" },
+          "into_module": { "key": { "name": { "key": "star" } } }
+        }
+      },
+      "span": { "length": 15, "start": 209 }
+    }
+  }
+]

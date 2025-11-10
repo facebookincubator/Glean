@@ -1,0 +1,213 @@
+[
+  "@generated",
+  {
+    "key": {
+      "declaration": { "func": { "key": { "name": { "key": "a.b" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/a.py"
+      },
+      "span": { "length": 18, "start": 210 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "func": { "key": { "name": { "key": "u.f" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/u/__init__.py"
+      },
+      "span": { "length": 17, "start": 210 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "func": { "key": { "name": { "key": "u.v.f" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/u/v.py"
+      },
+      "span": { "length": 17, "start": 210 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "func": { "key": { "name": { "key": "x.f" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/x/__init__.py"
+      },
+      "span": { "length": 17, "start": 210 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "func": { "key": { "name": { "key": "x.y.y" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/x/y.py"
+      },
+      "span": { "length": 17, "start": 210 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "current_module.b" },
+            "from_name": { "key": "a.b" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/current_module.py"
+      },
+      "span": { "length": 1, "start": 288 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "current_module.d" },
+            "from_name": { "key": "a.c" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/current_module.py"
+      },
+      "span": { "length": 1, "start": 291 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "current_module.w" },
+            "from_name": { "key": "u.v" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/current_module.py"
+      },
+      "span": { "length": 3, "start": 241 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "current_module.x" },
+            "from_name": { "key": "x" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/current_module.py"
+      },
+      "span": { "length": 1, "start": 270 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "current_module.x.y" },
+            "from_name": { "key": "x.y" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/current_module.py"
+      },
+      "span": { "length": 3, "start": 270 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "module": { "key": { "name": { "key": "a" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/a.py"
+      },
+      "span": { "length": 239, "start": 0 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "module": { "key": { "name": { "key": "current_module" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/current_module.py"
+      },
+      "span": { "length": 310, "start": 0 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "module": { "key": { "name": { "key": "star" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/star.py"
+      },
+      "span": { "length": 256, "start": 0 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "module": { "key": { "name": { "key": "u" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/u/__init__.py"
+      },
+      "span": { "length": 228, "start": 0 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "module": { "key": { "name": { "key": "u.v" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/u/v.py"
+      },
+      "span": { "length": 228, "start": 0 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "module": { "key": { "name": { "key": "x" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/x/__init__.py"
+      },
+      "span": { "length": 228, "start": 0 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "module": { "key": { "name": { "key": "x.y" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/x/y.py"
+      },
+      "span": { "length": 228, "start": 0 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "a.b.<locals>.x" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/a.py"
+      },
+      "span": { "length": 1, "start": 216 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "variable": { "key": { "name": { "key": "a.c" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/a.py"
+      },
+      "span": { "length": 7, "start": 231 }
+    }
+  }
+]
