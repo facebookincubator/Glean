@@ -1,0 +1,213 @@
+[
+  "@generated",
+  {
+    "key": {
+      "declaration": {
+        "cls": { "key": { "name": { "key": "mod_b.util.Cls" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
+      },
+      "span": { "length": 3, "start": 314 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "cls": { "key": { "name": { "key": "mod_b.util.Cls" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
+      },
+      "span": { "length": 3, "start": 400 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "cls": { "key": { "name": { "key": "mod_b.util.Cls" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_b/helper.py"
+      },
+      "span": { "length": 3, "start": 291 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "cls": { "key": { "name": { "key": "mod_b.util.Cls" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_b/helper.py"
+      },
+      "span": { "length": 3, "start": 327 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "func": { "key": { "name": { "key": "mod_a.main" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
+      },
+      "span": { "length": 4, "start": 415 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "mod_b.util.calc" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_b/util.py"
+      },
+      "span": { "length": 4, "start": 298 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "mod_b.util.calc" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_b/util.py"
+      },
+      "span": { "length": 4, "start": 379 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "mod_b.util.only_indirectly" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
+      },
+      "span": { "length": 15, "start": 275 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "mod_b.util.only_indirectly" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
+      },
+      "span": { "length": 15, "start": 363 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "mod_b.util.only_indirectly" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_b/helper.py"
+      },
+      "span": { "length": 15, "start": 248 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "mod_b.helper.Cls" },
+            "from_name": { "key": "mod_b.util.Cls" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
+      },
+      "span": { "length": 3, "start": 392 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "module": { "key": { "name": { "key": "mod_b" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
+      },
+      "span": { "length": 5, "start": 230 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "module": { "key": { "name": { "key": "mod_b.helper" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
+      },
+      "span": { "length": 6, "start": 243 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "module": { "key": { "name": { "key": "mod_b.helper" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
+      },
+      "span": { "length": 6, "start": 385 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "module": { "key": { "name": { "key": "mod_b.helper" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
+      },
+      "span": { "length": 12, "start": 255 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "module": { "key": { "name": { "key": "mod_b.util" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
+      },
+      "span": { "length": 10, "start": 296 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "module": { "key": { "name": { "key": "mod_b.util" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_b/helper.py"
+      },
+      "span": { "length": 5, "start": 278 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "module": { "key": { "name": { "key": "mod_b.util" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_b/helper.py"
+      },
+      "span": { "length": 10, "start": 230 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "mod_b.util.Cls.some_var" } } }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
+      },
+      "span": { "length": 8, "start": 404 }
+    }
+  }
+]
