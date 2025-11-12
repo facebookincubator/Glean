@@ -1,0 +1,541 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bar.py"
+      },
+      "xrefs": [
+        { "source": { "length": 3, "start": 240 }, "target": { "key": "int" } }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/another_submodule.py"
+      },
+      "xrefs": [ ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/submodule.py"
+      },
+      "xrefs": [ ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+      },
+      "xrefs": [
+        { "source": { "length": 3, "start": 301 }, "target": { "key": "bar" } },
+        {
+          "source": { "length": 3, "start": 312 },
+          "target": { "key": "bar.Bar" }
+        },
+        { "source": { "length": 3, "start": 490 }, "target": { "key": "str" } },
+        { "source": { "length": 3, "start": 504 }, "target": { "key": "int" } },
+        {
+          "source": { "length": 3, "start": 520 },
+          "target": { "key": "bar.Bar" }
+        },
+        {
+          "source": { "length": 3, "start": 551 },
+          "target": { "key": "bar.Bar" }
+        },
+        { "source": { "length": 3, "start": 616 }, "target": { "key": "int" } },
+        { "source": { "length": 3, "start": 650 }, "target": { "key": "int" } },
+        {
+          "source": { "length": 3, "start": 672 },
+          "target": { "key": "foo.Foo" }
+        },
+        {
+          "source": { "length": 3, "start": 815 },
+          "target": { "key": "foo.baz.<locals>.foo" }
+        },
+        {
+          "source": { "length": 3, "start": 1275 },
+          "target": { "key": "foo.baz.<locals>.foo" }
+        },
+        {
+          "source": { "length": 3, "start": 1378 },
+          "target": { "key": "foo.baz.<locals>.foo" }
+        },
+        {
+          "source": { "length": 3, "start": 1503 },
+          "target": { "key": "int" }
+        },
+        {
+          "source": { "length": 3, "start": 1518 },
+          "target": { "key": "int" }
+        },
+        {
+          "source": { "length": 3, "start": 1673 },
+          "target": { "key": "int" }
+        },
+        {
+          "source": { "length": 3, "start": 1888 },
+          "target": { "key": "bar.Bar" }
+        },
+        {
+          "source": { "length": 3, "start": 1904 },
+          "target": { "key": "bar.Bar" }
+        },
+        {
+          "source": { "length": 3, "start": 2038 },
+          "target": { "key": "int" }
+        },
+        {
+          "source": { "length": 3, "start": 2063 },
+          "target": { "key": "int" }
+        },
+        {
+          "source": { "length": 3, "start": 2124 },
+          "target": { "key": "int" }
+        },
+        {
+          "source": { "length": 3, "start": 2158 },
+          "target": { "key": "int" }
+        },
+        {
+          "source": { "length": 3, "start": 2201 },
+          "target": { "key": "bar.Bar" }
+        },
+        {
+          "source": { "length": 3, "start": 2227 },
+          "target": { "key": "bar.Bar" }
+        },
+        {
+          "source": { "length": 3, "start": 2613 },
+          "target": { "key": "int" }
+        },
+        {
+          "source": { "length": 3, "start": 2627 },
+          "target": { "key": "foo.Foo" }
+        },
+        {
+          "source": { "length": 3, "start": 2823 },
+          "target": { "key": "foo.Foo" }
+        },
+        {
+          "source": { "length": 3, "start": 2947 },
+          "target": { "key": "foo.foo" }
+        },
+        {
+          "source": { "length": 3, "start": 3509 },
+          "target": { "key": "foo.Foo" }
+        },
+        {
+          "source": { "length": 4, "start": 680 },
+          "target": { "key": "None" }
+        },
+        {
+          "source": { "length": 4, "start": 819 },
+          "target": { "key": "foo.Foo.name" }
+        },
+        {
+          "source": { "length": 4, "start": 1837 },
+          "target": { "key": "None" }
+        },
+        {
+          "source": { "length": 4, "start": 1854 },
+          "target": { "key": "None" }
+        },
+        {
+          "source": { "length": 4, "start": 2646 },
+          "target": { "key": "None" }
+        },
+        {
+          "source": { "length": 4, "start": 2951 },
+          "target": { "key": "foo.Foo.name" }
+        },
+        {
+          "source": { "length": 4, "start": 3515 },
+          "target": { "key": "foo.Foo.name" }
+        },
+        {
+          "source": { "length": 5, "start": 238 },
+          "target": { "key": "typing.Union" }
+        },
+        {
+          "source": { "length": 5, "start": 2195 },
+          "target": { "key": "typing.Union" }
+        },
+        {
+          "source": { "length": 5, "start": 2599 },
+          "target": { "key": "typing.Union" }
+        },
+        {
+          "source": { "length": 5, "start": 3533 },
+          "target": { "key": "str.lower" }
+        },
+        {
+          "source": { "length": 6, "start": 214 },
+          "target": { "key": "typing" }
+        },
+        {
+          "source": { "length": 6, "start": 1279 },
+          "target": { "key": "foo.Foo.my_bar" }
+        },
+        {
+          "source": { "length": 7, "start": 380 },
+          "target": { "key": "generic" }
+        },
+        {
+          "source": { "length": 7, "start": 395 },
+          "target": { "key": "generic.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 1495 },
+          "target": { "key": "generic.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 1510 },
+          "target": { "key": "generic.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2030 },
+          "target": { "key": "generic.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2055 },
+          "target": { "key": "generic.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2108 },
+          "target": { "key": "generic.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2116 },
+          "target": { "key": "generic.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2142 },
+          "target": { "key": "generic.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2150 },
+          "target": { "key": "generic.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2206 },
+          "target": { "key": "generic.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2605 },
+          "target": { "key": "generic.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2619 },
+          "target": { "key": "generic.Generic" }
+        },
+        {
+          "source": { "length": 8, "start": 228 },
+          "target": { "key": "typing.Optional" }
+        },
+        {
+          "source": { "length": 8, "start": 542 },
+          "target": { "key": "typing.Optional" }
+        },
+        {
+          "source": { "length": 8, "start": 591 },
+          "target": { "key": "typing.Optional" }
+        },
+        {
+          "source": { "length": 8, "start": 1648 },
+          "target": { "key": "typing.Optional" }
+        },
+        {
+          "source": { "length": 8, "start": 2590 },
+          "target": { "key": "typing.Optional" }
+        },
+        {
+          "source": { "length": 9, "start": 948 },
+          "target": { "key": "foo.baz.<locals>.local_str" }
+        },
+        {
+          "source": { "length": 9, "start": 1200 },
+          "target": { "key": "foo.baz.<locals>.local_str" }
+        },
+        {
+          "source": { "length": 9, "start": 2285 },
+          "target": { "key": "some_module.SomeClass" }
+        },
+        {
+          "source": { "length": 9, "start": 2319 },
+          "target": { "key": "some_module.SomeClass" }
+        },
+        {
+          "source": { "length": 9, "start": 2481 },
+          "target": { "key": "bigger_module.submodule" }
+        },
+        {
+          "source": { "length": 9, "start": 2491 },
+          "target": { "key": "bigger_module.submodule.SomeClass" }
+        },
+        {
+          "source": { "length": 9, "start": 2527 },
+          "target": { "key": "bigger_module.submodule" }
+        },
+        {
+          "source": { "length": 9, "start": 2537 },
+          "target": { "key": "bigger_module.submodule.SomeClass" }
+        },
+        {
+          "source": { "length": 10, "start": 824 },
+          "target": { "key": "str.capitalize" }
+        },
+        {
+          "source": { "length": 10, "start": 1098 },
+          "target": { "key": "str.capitalize" }
+        },
+        {
+          "source": { "length": 10, "start": 1210 },
+          "target": { "key": "str.capitalize" }
+        },
+        {
+          "source": { "length": 10, "start": 1395 },
+          "target": { "key": "bar.Bar.bar_method" }
+        },
+        {
+          "source": { "length": 10, "start": 2382 },
+          "target": {
+            "key": "bigger_module.another_submodule.SubmoduleClass.InnerClass"
+          }
+        },
+        {
+          "source": { "length": 10, "start": 2420 },
+          "target": {
+            "key": "bigger_module.another_submodule.SubmoduleClass.InnerClass"
+          }
+        },
+        {
+          "source": { "length": 10, "start": 2956 },
+          "target": { "key": "str.capitalize" }
+        },
+        {
+          "source": { "length": 10, "start": 3067 },
+          "target": { "key": "foo.global_str" }
+        },
+        {
+          "source": { "length": 10, "start": 3214 },
+          "target": { "key": "str.capitalize" }
+        },
+        {
+          "source": { "length": 10, "start": 3308 },
+          "target": { "key": "foo.global_str" }
+        },
+        {
+          "source": { "length": 10, "start": 3319 },
+          "target": { "key": "str.capitalize" }
+        },
+        {
+          "source": { "length": 10, "start": 3520 },
+          "target": { "key": "str.capitalize" }
+        },
+        {
+          "source": { "length": 11, "start": 283 },
+          "target": { "key": "some_module" }
+        },
+        {
+          "source": { "length": 11, "start": 1542 },
+          "target": { "key": "generic.Generic.test_method" }
+        },
+        {
+          "source": { "length": 11, "start": 1728 },
+          "target": { "key": "optional_generic.OptionalGeneric.test_method" }
+        },
+        {
+          "source": { "length": 11, "start": 2273 },
+          "target": { "key": "some_module" }
+        },
+        {
+          "source": { "length": 11, "start": 2307 },
+          "target": { "key": "some_module" }
+        },
+        {
+          "source": { "length": 12, "start": 1382 },
+          "target": { "key": "foo.Foo.optional_bar" }
+        },
+        {
+          "source": { "length": 12, "start": 1529 },
+          "target": { "key": "foo.baz.<locals>.test_generic" }
+        },
+        {
+          "source": { "length": 13, "start": 252 },
+          "target": { "key": "bigger_module" }
+        },
+        {
+          "source": { "length": 13, "start": 1286 },
+          "target": { "key": "bar.Bar.bar_attribute" }
+        },
+        {
+          "source": { "length": 13, "start": 2467 },
+          "target": { "key": "bigger_module.submodule" }
+        },
+        {
+          "source": { "length": 13, "start": 2513 },
+          "target": { "key": "bigger_module.submodule" }
+        },
+        {
+          "source": { "length": 14, "start": 360 },
+          "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+        },
+        {
+          "source": { "length": 14, "start": 1949 },
+          "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+        },
+        {
+          "source": { "length": 14, "start": 1976 },
+          "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+        },
+        {
+          "source": { "length": 14, "start": 2367 },
+          "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+        },
+        {
+          "source": { "length": 14, "start": 2405 },
+          "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+        },
+        {
+          "source": { "length": 14, "start": 2694 },
+          "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+        },
+        {
+          "source": { "length": 14, "start": 2738 },
+          "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+        },
+        {
+          "source": { "length": 14, "start": 2769 },
+          "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+        },
+        {
+          "source": { "length": 14, "start": 2798 },
+          "target": { "key": "foo.function.<locals>.inner_function" }
+        },
+        {
+          "source": { "length": 15, "start": 432 },
+          "target": { "key": "optional_generic.OptionalGeneric" }
+        },
+        {
+          "source": { "length": 15, "start": 600 },
+          "target": { "key": "optional_generic.OptionalGeneric" }
+        },
+        {
+          "source": { "length": 15, "start": 634 },
+          "target": { "key": "optional_generic.OptionalGeneric" }
+        },
+        {
+          "source": { "length": 15, "start": 1657 },
+          "target": { "key": "optional_generic.OptionalGeneric" }
+        },
+        {
+          "source": { "length": 16, "start": 408 },
+          "target": { "key": "optional_generic" }
+        },
+        {
+          "source": { "length": 16, "start": 1711 },
+          "target": { "key": "foo.baz.<locals>.optional_generic" }
+        },
+        {
+          "source": { "length": 21, "start": 1076 },
+          "target": { "key": "foo.baz.<locals>.placeholder_local_str" }
+        },
+        {
+          "source": { "length": 22, "start": 3191 },
+          "target": { "key": "foo.placeholder_glocal_str" }
+        },
+        {
+          "source": { "length": 23, "start": 252 },
+          "target": { "key": "bigger_module.submodule" }
+        },
+        {
+          "source": { "length": 23, "start": 1681 },
+          "target": { "key": "foo.return_optional_generic" }
+        },
+        {
+          "source": { "length": 31, "start": 321 },
+          "target": { "key": "bigger_module.another_submodule" }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+      },
+      "xrefs": [
+        {
+          "source": { "length": 1, "start": 285 },
+          "target": { "key": "typing.Generic" }
+        },
+        {
+          "source": { "length": 1, "start": 287 },
+          "target": { "key": "generic.T" }
+        },
+        {
+          "source": { "length": 6, "start": 214 },
+          "target": { "key": "typing" }
+        },
+        {
+          "source": { "length": 7, "start": 228 },
+          "target": { "key": "typing.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 242 },
+          "target": { "key": "typing.TypeVar" }
+        },
+        {
+          "source": { "length": 7, "start": 256 },
+          "target": { "key": "typing.TypeVar" }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/optional_generic.py"
+      },
+      "xrefs": [
+        {
+          "source": { "length": 1, "start": 293 },
+          "target": { "key": "typing.Generic" }
+        },
+        {
+          "source": { "length": 1, "start": 295 },
+          "target": { "key": "optional_generic.T" }
+        },
+        {
+          "source": { "length": 6, "start": 214 },
+          "target": { "key": "typing" }
+        },
+        {
+          "source": { "length": 7, "start": 228 },
+          "target": { "key": "typing.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 242 },
+          "target": { "key": "typing.TypeVar" }
+        },
+        {
+          "source": { "length": 7, "start": 256 },
+          "target": { "key": "typing.TypeVar" }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/some_module.py"
+      },
+      "xrefs": [ ]
+    }
+  }
+]

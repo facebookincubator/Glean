@@ -1,0 +1,107 @@
+[
+  "@generated",
+  {
+    "key": {
+      "callee": { "key": "bar.Bar" },
+      "caller": { "key": "foo.return_type_class" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "bar.Bar" },
+      "caller": { "key": "foo.return_union_type" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "bar.Bar.bar_method" },
+      "caller": { "key": "foo.baz" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "bigger_module.another_submodule.SubmoduleClass" },
+      "caller": { "key": "foo.function.<locals>.inner_function" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "bigger_module.another_submodule.SubmoduleClass" },
+      "caller": { "key": "foo.return_type_submodule_class" }
+    }
+  },
+  {
+    "key": {
+      "callee": {
+        "key": "bigger_module.another_submodule.SubmoduleClass.InnerClass"
+      },
+      "caller": { "key": "foo.return_pyre_infered_type" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "bigger_module.submodule.SomeClass" },
+      "caller": { "key": "foo.return_submodule_types" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "foo.function.<locals>.inner_function" },
+      "caller": { "key": "foo.function" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "foo.return_optional_generic" },
+      "caller": { "key": "foo.baz" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "generic.Generic" },
+      "caller": { "key": "foo.baz" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "generic.Generic" },
+      "caller": { "key": "foo.return_type_class_generic" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "generic.Generic" },
+      "caller": { "key": "foo.return_type_nested_generic" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "generic.Generic.test_method" },
+      "caller": { "key": "foo.baz" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "optional_generic.OptionalGeneric" },
+      "caller": { "key": "foo.return_optional_generic" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "optional_generic.OptionalGeneric.test_method" },
+      "caller": { "key": "foo.baz" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "some_module.SomeClass" },
+      "caller": { "key": "foo.return_fully_qualified_types" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "str.capitalize" },
+      "caller": { "key": "foo.baz" }
+    }
+  }
+]

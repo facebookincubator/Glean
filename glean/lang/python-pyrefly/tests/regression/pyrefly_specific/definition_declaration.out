@@ -1,0 +1,1278 @@
+[
+  "@generated",
+  {
+    "key": {
+      "declaration": { "cls": { "key": { "name": { "key": "bar.Bar" } } } },
+      "definition": {
+        "cls": {
+          "key": {
+            "bases": [ ],
+            "container": { "module": { "key": { "name": { "key": "bar" } } } },
+            "declaration": { "key": { "name": { "key": "bar.Bar" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "cls": {
+          "key": {
+            "name": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+          }
+        }
+      },
+      "definition": {
+        "cls": {
+          "key": {
+            "bases": [ ],
+            "container": {
+              "module": {
+                "key": { "name": { "key": "bigger_module.another_submodule" } }
+              }
+            },
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": "bigger_module.another_submodule.SubmoduleClass"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "cls": {
+          "key": {
+            "name": {
+              "key": "bigger_module.another_submodule.SubmoduleClass.InnerClass"
+            }
+          }
+        }
+      },
+      "definition": {
+        "cls": {
+          "key": {
+            "bases": [ ],
+            "container": {
+              "cls": {
+                "key": {
+                  "name": {
+                    "key": "bigger_module.another_submodule.SubmoduleClass"
+                  }
+                }
+              }
+            },
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": "bigger_module.another_submodule.SubmoduleClass.InnerClass"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "cls": {
+          "key": { "name": { "key": "bigger_module.submodule.SomeClass" } }
+        }
+      },
+      "definition": {
+        "cls": {
+          "key": {
+            "bases": [ ],
+            "container": {
+              "module": {
+                "key": { "name": { "key": "bigger_module.submodule" } }
+              }
+            },
+            "declaration": {
+              "key": { "name": { "key": "bigger_module.submodule.SomeClass" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "cls": { "key": { "name": { "key": "foo.Foo" } } } },
+      "definition": {
+        "cls": {
+          "key": {
+            "bases": [ ],
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": { "key": { "name": { "key": "foo.Foo" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "cls": { "key": { "name": { "key": "generic.Generic" } } }
+      },
+      "definition": {
+        "cls": {
+          "key": {
+            "bases": [ { "key": { "name": { "key": "typing.Generic" } } } ],
+            "container": {
+              "module": { "key": { "name": { "key": "generic" } } }
+            },
+            "declaration": { "key": { "name": { "key": "generic.Generic" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "cls": {
+          "key": { "name": { "key": "optional_generic.OptionalGeneric" } }
+        }
+      },
+      "definition": {
+        "cls": {
+          "key": {
+            "bases": [ { "key": { "name": { "key": "typing.Generic" } } } ],
+            "container": {
+              "module": { "key": { "name": { "key": "optional_generic" } } }
+            },
+            "declaration": {
+              "key": { "name": { "key": "optional_generic.OptionalGeneric" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "cls": { "key": { "name": { "key": "some_module.SomeClass" } } }
+      },
+      "definition": {
+        "cls": {
+          "key": {
+            "bases": [ ],
+            "container": {
+              "module": { "key": { "name": { "key": "some_module" } } }
+            },
+            "declaration": {
+              "key": { "name": { "key": "some_module.SomeClass" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "bar.Bar.bar_method" } } }
+      },
+      "definition": {
+        "func": {
+          "key": {
+            "container": { "cls": { "key": { "name": { "key": "bar.Bar" } } } },
+            "declaration": {
+              "key": { "name": { "key": "bar.Bar.bar_method" } }
+            },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [ { "name": { "key": "self" } } ],
+            "posonly_params": [ ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "func": { "key": { "name": { "key": "foo.baz" } } } },
+      "definition": {
+        "func": {
+          "key": {
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": { "key": { "name": { "key": "foo.baz" } } },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [
+              {
+                "name": { "key": "foo" },
+                "typeInfo": {
+                  "displayType": { "key": "Foo" },
+                  "xrefs": [
+                    {
+                      "source": { "length": 3, "start": 0 },
+                      "target": { "key": "foo.Foo" }
+                    }
+                  ]
+                }
+              }
+            ],
+            "posonly_params": [ ],
+            "returnsInfo": {
+              "displayType": { "key": "None" },
+              "xrefs": [
+                {
+                  "source": { "length": 4, "start": 0 },
+                  "target": { "key": "None" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.function" } } }
+      },
+      "definition": {
+        "func": {
+          "key": {
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": { "key": { "name": { "key": "foo.function" } } },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [ ],
+            "posonly_params": [ ],
+            "returnsInfo": {
+              "displayType": { "key": "SubmoduleClass" },
+              "xrefs": [
+                {
+                  "source": { "length": 14, "start": 0 },
+                  "target": {
+                    "key": "bigger_module.another_submodule.SubmoduleClass"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": {
+          "key": { "name": { "key": "foo.function.<locals>.inner_function" } }
+        }
+      },
+      "definition": {
+        "func": {
+          "key": {
+            "container": {
+              "func": { "key": { "name": { "key": "foo.function" } } }
+            },
+            "declaration": {
+              "key": {
+                "name": { "key": "foo.function.<locals>.inner_function" }
+              }
+            },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [ ],
+            "posonly_params": [ ],
+            "returnsInfo": {
+              "displayType": { "key": "SubmoduleClass" },
+              "xrefs": [
+                {
+                  "source": { "length": 14, "start": 0 },
+                  "target": {
+                    "key": "bigger_module.another_submodule.SubmoduleClass"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": {
+          "key": { "name": { "key": "foo.return_fully_qualified_types" } }
+        }
+      },
+      "definition": {
+        "func": {
+          "key": {
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": {
+              "key": { "name": { "key": "foo.return_fully_qualified_types" } }
+            },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [ ],
+            "posonly_params": [ ],
+            "returnsInfo": {
+              "displayType": { "key": "some_module.SomeClass" },
+              "xrefs": [
+                {
+                  "source": { "length": 9, "start": 12 },
+                  "target": { "key": "some_module.SomeClass" }
+                },
+                {
+                  "source": { "length": 11, "start": 0 },
+                  "target": { "key": "some_module" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.return_optional_generic" } } }
+      },
+      "definition": {
+        "func": {
+          "key": {
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": {
+              "key": { "name": { "key": "foo.return_optional_generic" } }
+            },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [ ],
+            "posonly_params": [ ],
+            "returnsInfo": {
+              "displayType": { "key": "Optional[OptionalGeneric[int]]" },
+              "xrefs": [
+                {
+                  "source": { "length": 3, "start": 25 },
+                  "target": { "key": "int" }
+                },
+                {
+                  "source": { "length": 8, "start": 0 },
+                  "target": { "key": "typing.Optional" }
+                },
+                {
+                  "source": { "length": 15, "start": 9 },
+                  "target": { "key": "optional_generic.OptionalGeneric" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": {
+          "key": { "name": { "key": "foo.return_optional_union_generic" } }
+        }
+      },
+      "definition": {
+        "func": {
+          "key": {
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": {
+              "key": { "name": { "key": "foo.return_optional_union_generic" } }
+            },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [ ],
+            "posonly_params": [ ],
+            "returnsInfo": {
+              "displayType": {
+                "key": "Optional[Union[Generic[int], Generic[Foo]]]"
+              },
+              "xrefs": [
+                {
+                  "source": { "length": 3, "start": 23 },
+                  "target": { "key": "int" }
+                },
+                {
+                  "source": { "length": 3, "start": 37 },
+                  "target": { "key": "foo.Foo" }
+                },
+                {
+                  "source": { "length": 5, "start": 9 },
+                  "target": { "key": "typing.Union" }
+                },
+                {
+                  "source": { "length": 7, "start": 15 },
+                  "target": { "key": "generic.Generic" }
+                },
+                {
+                  "source": { "length": 7, "start": 29 },
+                  "target": { "key": "generic.Generic" }
+                },
+                {
+                  "source": { "length": 8, "start": 0 },
+                  "target": { "key": "typing.Optional" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.return_pyre_infered_type" } } }
+      },
+      "definition": {
+        "func": {
+          "key": {
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": {
+              "key": { "name": { "key": "foo.return_pyre_infered_type" } }
+            },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [ ],
+            "posonly_params": [ ],
+            "returnsInfo": {
+              "displayType": { "key": "SubmoduleClass.InnerClass" },
+              "xrefs": [
+                {
+                  "source": { "length": 10, "start": 15 },
+                  "target": {
+                    "key": "bigger_module.another_submodule.SubmoduleClass.InnerClass"
+                  }
+                },
+                {
+                  "source": { "length": 14, "start": 0 },
+                  "target": {
+                    "key": "bigger_module.another_submodule.SubmoduleClass"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.return_submodule_types" } } }
+      },
+      "definition": {
+        "func": {
+          "key": {
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": {
+              "key": { "name": { "key": "foo.return_submodule_types" } }
+            },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [ ],
+            "posonly_params": [ ],
+            "returnsInfo": {
+              "displayType": { "key": "bigger_module.submodule.SomeClass" },
+              "xrefs": [
+                {
+                  "source": { "length": 9, "start": 14 },
+                  "target": { "key": "bigger_module.submodule" }
+                },
+                {
+                  "source": { "length": 9, "start": 24 },
+                  "target": { "key": "bigger_module.submodule.SomeClass" }
+                },
+                {
+                  "source": { "length": 13, "start": 0 },
+                  "target": { "key": "bigger_module.submodule" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.return_type_class" } } }
+      },
+      "definition": {
+        "func": {
+          "key": {
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": {
+              "key": { "name": { "key": "foo.return_type_class" } }
+            },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [ ],
+            "posonly_params": [ ],
+            "returnsInfo": {
+              "displayType": { "key": "Bar" },
+              "xrefs": [
+                {
+                  "source": { "length": 3, "start": 0 },
+                  "target": { "key": "bar.Bar" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": {
+          "key": { "name": { "key": "foo.return_type_class_generic" } }
+        }
+      },
+      "definition": {
+        "func": {
+          "key": {
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": {
+              "key": { "name": { "key": "foo.return_type_class_generic" } }
+            },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [ ],
+            "posonly_params": [ ],
+            "returnsInfo": {
+              "displayType": { "key": "Generic[int]" },
+              "xrefs": [
+                {
+                  "source": { "length": 3, "start": 8 },
+                  "target": { "key": "int" }
+                },
+                {
+                  "source": { "length": 7, "start": 0 },
+                  "target": { "key": "generic.Generic" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": {
+          "key": { "name": { "key": "foo.return_type_nested_generic" } }
+        }
+      },
+      "definition": {
+        "func": {
+          "key": {
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": {
+              "key": { "name": { "key": "foo.return_type_nested_generic" } }
+            },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [ ],
+            "posonly_params": [ ],
+            "returnsInfo": {
+              "displayType": { "key": "Generic[Generic[int]]" },
+              "xrefs": [
+                {
+                  "source": { "length": 3, "start": 16 },
+                  "target": { "key": "int" }
+                },
+                {
+                  "source": { "length": 7, "start": 0 },
+                  "target": { "key": "generic.Generic" }
+                },
+                {
+                  "source": { "length": 7, "start": 8 },
+                  "target": { "key": "generic.Generic" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.return_type_none" } } }
+      },
+      "definition": {
+        "func": {
+          "key": {
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": {
+              "key": { "name": { "key": "foo.return_type_none" } }
+            },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [ ],
+            "posonly_params": [ ],
+            "returnsInfo": {
+              "displayType": { "key": "None" },
+              "xrefs": [
+                {
+                  "source": { "length": 4, "start": 0 },
+                  "target": { "key": "None" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.return_type_not_set" } } }
+      },
+      "definition": {
+        "func": {
+          "key": {
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": {
+              "key": { "name": { "key": "foo.return_type_not_set" } }
+            },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [ ],
+            "posonly_params": [ ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": {
+          "key": { "name": { "key": "foo.return_type_submodule_class" } }
+        }
+      },
+      "definition": {
+        "func": {
+          "key": {
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": {
+              "key": { "name": { "key": "foo.return_type_submodule_class" } }
+            },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [ ],
+            "posonly_params": [ ],
+            "returnsInfo": {
+              "displayType": { "key": "SubmoduleClass" },
+              "xrefs": [
+                {
+                  "source": { "length": 14, "start": 0 },
+                  "target": {
+                    "key": "bigger_module.another_submodule.SubmoduleClass"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": { "key": { "name": { "key": "foo.return_union_type" } } }
+      },
+      "definition": {
+        "func": {
+          "key": {
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": {
+              "key": { "name": { "key": "foo.return_union_type" } }
+            },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [ ],
+            "posonly_params": [ ],
+            "returnsInfo": {
+              "displayType": { "key": "Union[Bar, Generic]" },
+              "xrefs": [
+                {
+                  "source": { "length": 3, "start": 6 },
+                  "target": { "key": "bar.Bar" }
+                },
+                {
+                  "source": { "length": 5, "start": 0 },
+                  "target": { "key": "typing.Union" }
+                },
+                {
+                  "source": { "length": 7, "start": 11 },
+                  "target": { "key": "generic.Generic" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "func": {
+          "key": {
+            "name": { "key": "optional_generic.OptionalGeneric.test_method" }
+          }
+        }
+      },
+      "definition": {
+        "func": {
+          "key": {
+            "container": {
+              "cls": {
+                "key": { "name": { "key": "optional_generic.OptionalGeneric" } }
+              }
+            },
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": "optional_generic.OptionalGeneric.test_method"
+                }
+              }
+            },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [ { "name": { "key": "self" } } ],
+            "posonly_params": [ ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "module": { "key": { "name": { "key": "bar" } } } },
+      "definition": {
+        "module": {
+          "key": { "module": { "key": { "name": { "key": "bar" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "module": {
+          "key": { "name": { "key": "bigger_module.another_submodule" } }
+        }
+      },
+      "definition": {
+        "module": {
+          "key": {
+            "module": {
+              "key": { "name": { "key": "bigger_module.another_submodule" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "module": { "key": { "name": { "key": "bigger_module.submodule" } } }
+      },
+      "definition": {
+        "module": {
+          "key": {
+            "module": {
+              "key": { "name": { "key": "bigger_module.submodule" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "module": { "key": { "name": { "key": "foo" } } } },
+      "definition": {
+        "module": {
+          "key": { "module": { "key": { "name": { "key": "foo" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "module": { "key": { "name": { "key": "generic" } } } },
+      "definition": {
+        "module": {
+          "key": { "module": { "key": { "name": { "key": "generic" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "module": { "key": { "name": { "key": "optional_generic" } } }
+      },
+      "definition": {
+        "module": {
+          "key": {
+            "module": { "key": { "name": { "key": "optional_generic" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "module": { "key": { "name": { "key": "some_module" } } }
+      },
+      "definition": {
+        "module": {
+          "key": { "module": { "key": { "name": { "key": "some_module" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "bar.Bar.bar_attribute" } } }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": { "cls": { "key": { "name": { "key": "bar.Bar" } } } },
+            "declaration": {
+              "key": { "name": { "key": "bar.Bar.bar_attribute" } }
+            },
+            "typeInfo": {
+              "displayType": { "key": "int" },
+              "xrefs": [
+                {
+                  "source": { "length": 3, "start": 0 },
+                  "target": { "key": "int" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "bar.Bar.bar_method.<locals>.self" } }
+        }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": {
+              "func": { "key": { "name": { "key": "bar.Bar.bar_method" } } }
+            },
+            "declaration": {
+              "key": { "name": { "key": "bar.Bar.bar_method.<locals>.self" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "foo.Foo.my_bar" } } }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": { "cls": { "key": { "name": { "key": "foo.Foo" } } } },
+            "declaration": { "key": { "name": { "key": "foo.Foo.my_bar" } } },
+            "typeInfo": {
+              "displayType": { "key": "Bar" },
+              "xrefs": [
+                {
+                  "source": { "length": 3, "start": 0 },
+                  "target": { "key": "bar.Bar" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "foo.Foo.name" } } }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": { "cls": { "key": { "name": { "key": "foo.Foo" } } } },
+            "declaration": { "key": { "name": { "key": "foo.Foo.name" } } },
+            "typeInfo": {
+              "displayType": { "key": "str" },
+              "xrefs": [
+                {
+                  "source": { "length": 3, "start": 0 },
+                  "target": { "key": "str" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "foo.Foo.optional_bar" } } }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": { "cls": { "key": { "name": { "key": "foo.Foo" } } } },
+            "declaration": {
+              "key": { "name": { "key": "foo.Foo.optional_bar" } }
+            },
+            "typeInfo": {
+              "displayType": { "key": "Optional[Bar]" },
+              "xrefs": [
+                {
+                  "source": { "length": 3, "start": 9 },
+                  "target": { "key": "bar.Bar" }
+                },
+                {
+                  "source": { "length": 8, "start": 0 },
+                  "target": { "key": "typing.Optional" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "foo.Foo.year" } } }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": { "cls": { "key": { "name": { "key": "foo.Foo" } } } },
+            "declaration": { "key": { "name": { "key": "foo.Foo.year" } } },
+            "typeInfo": {
+              "displayType": { "key": "int" },
+              "xrefs": [
+                {
+                  "source": { "length": 3, "start": 0 },
+                  "target": { "key": "int" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "foo.baz.<locals>.foo" } } }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": {
+              "func": { "key": { "name": { "key": "foo.baz" } } }
+            },
+            "declaration": {
+              "key": { "name": { "key": "foo.baz.<locals>.foo" } }
+            },
+            "typeInfo": {
+              "displayType": { "key": "Foo" },
+              "xrefs": [
+                {
+                  "source": { "length": 3, "start": 0 },
+                  "target": { "key": "foo.Foo" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.baz.<locals>.local_str" } }
+        }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": {
+              "func": { "key": { "name": { "key": "foo.baz" } } }
+            },
+            "declaration": {
+              "key": { "name": { "key": "foo.baz.<locals>.local_str" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.baz.<locals>.optional_generic" } }
+        }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": {
+              "func": { "key": { "name": { "key": "foo.baz" } } }
+            },
+            "declaration": {
+              "key": { "name": { "key": "foo.baz.<locals>.optional_generic" } }
+            },
+            "typeInfo": {
+              "displayType": { "key": "Optional[OptionalGeneric[int]]" },
+              "xrefs": [
+                {
+                  "source": { "length": 3, "start": 25 },
+                  "target": { "key": "int" }
+                },
+                {
+                  "source": { "length": 8, "start": 0 },
+                  "target": { "key": "typing.Optional" }
+                },
+                {
+                  "source": { "length": 15, "start": 9 },
+                  "target": { "key": "optional_generic.OptionalGeneric" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.baz.<locals>.placeholder_local_str" } }
+        }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": {
+              "func": { "key": { "name": { "key": "foo.baz" } } }
+            },
+            "declaration": {
+              "key": {
+                "name": { "key": "foo.baz.<locals>.placeholder_local_str" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.baz.<locals>.test_generic" } }
+        }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": {
+              "func": { "key": { "name": { "key": "foo.baz" } } }
+            },
+            "declaration": {
+              "key": { "name": { "key": "foo.baz.<locals>.test_generic" } }
+            },
+            "typeInfo": {
+              "displayType": { "key": "Generic[int]" },
+              "xrefs": [
+                {
+                  "source": { "length": 3, "start": 8 },
+                  "target": { "key": "int" }
+                },
+                {
+                  "source": { "length": 7, "start": 0 },
+                  "target": { "key": "generic.Generic" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "foo.foo" } } }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": { "key": { "name": { "key": "foo.foo" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "foo.global_str" } } }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": { "key": { "name": { "key": "foo.global_str" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": { "name": { "key": "foo.placeholder_glocal_str" } }
+        }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": { "module": { "key": { "name": { "key": "foo" } } } },
+            "declaration": {
+              "key": { "name": { "key": "foo.placeholder_glocal_str" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "generic.T" } } }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": {
+              "module": { "key": { "name": { "key": "generic" } } }
+            },
+            "declaration": { "key": { "name": { "key": "generic.T" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": "optional_generic.OptionalGeneric.test_method.<locals>.self"
+            }
+          }
+        }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": {
+              "func": {
+                "key": {
+                  "name": {
+                    "key": "optional_generic.OptionalGeneric.test_method"
+                  }
+                }
+              }
+            },
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": "optional_generic.OptionalGeneric.test_method.<locals>.self"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": { "key": { "name": { "key": "optional_generic.T" } } }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": {
+              "module": { "key": { "name": { "key": "optional_generic" } } }
+            },
+            "declaration": {
+              "key": { "name": { "key": "optional_generic.T" } }
+            }
+          }
+        }
+      }
+    }
+  }
+]
