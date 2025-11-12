@@ -8,7 +8,6 @@
 
 #include "glean/client/swift/GlassAccess.h"
 #include <folly/ExceptionString.h>
-#include <folly/String.h>
 #include <folly/coro/BlockingWait.h>
 #include <glog/logging.h>
 #include <memory>
