@@ -769,31 +769,33 @@ int main(int argc, char** argv) {
 
   indexer.batch.logEnd();
 
-  // Write ownership data to JSON file if ownership flag is set and dump path is
-  // specified
-  // if (FLAGS_ownership && !FLAGS_ownership_dump.empty()) {
-  LOG_CFG(INFO, config) << "Writing ownership data to " << FLAGS_ownership_dump;
-  auto ownership_data = indexer.batch.base().serializeOwnership();
+  // Write ownership data to JSON file if dump path is specified
+  // This honors the output_ownership_files flag which controls whether
+  // the --ownership_dump parameter is passed to the indexer
+  if (!FLAGS_ownership_dump.empty()) {
+    LOG_CFG(INFO, config) << "Writing ownership data to "
+                          << FLAGS_ownership_dump;
+    auto ownership_data = indexer.batch.base().serializeOwnership();
 
-  folly::dynamic ownership_json = folly::dynamic::object;
-  for (const auto& [unit_name, fact_id_ranges] : ownership_data) {
-    folly::dynamic ranges_array = folly::dynamic::array;
-    for (size_t i = 0; i < fact_id_ranges.size(); i += 2) {
-      ranges_array.push_back(
-          folly::dynamic::array(fact_id_ranges[i], fact_id_ranges[i + 1]));
+    folly::dynamic ownership_json = folly::dynamic::object;
+    for (const auto& [unit_name, fact_id_ranges] : ownership_data) {
+      folly::dynamic ranges_array = folly::dynamic::array;
+      for (size_t i = 0; i < fact_id_ranges.size(); i += 2) {
+        ranges_array.push_back(
+            folly::dynamic::array(fact_id_ranges[i], fact_id_ranges[i + 1]));
+      }
+      ownership_json[unit_name] = ranges_array;
     }
-    ownership_json[unit_name] = ranges_array;
-  }
 
-  std::string json_str = folly::toJson(ownership_json);
-  if (!folly::writeFile(json_str, FLAGS_ownership_dump.c_str())) {
-    LOG_CFG(ERROR, config) << "Failed to write ownership data to "
-                           << FLAGS_ownership_dump;
-  } else {
-    LOG_CFG(INFO, config) << "Successfully wrote ownership data for "
-                          << ownership_data.size() << " units";
+    std::string json_str = folly::toJson(ownership_json);
+    if (!folly::writeFile(json_str, FLAGS_ownership_dump.c_str())) {
+      LOG_CFG(ERROR, config)
+          << "Failed to write ownership data to " << FLAGS_ownership_dump;
+    } else {
+      LOG_CFG(INFO, config) << "Successfully wrote ownership data for "
+                            << ownership_data.size() << " units";
+    }
   }
-  //}
 
   config.counters.fact_buffer_size->store(0);
   config.counters.fact_cache_size->store(0);
