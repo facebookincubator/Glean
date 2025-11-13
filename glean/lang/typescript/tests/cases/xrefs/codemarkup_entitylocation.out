@@ -176,9 +176,9 @@
         "location": {
           "range": {
             "file": { "key": "example.ts" },
-            "lineBegin": 1,
+            "lineBegin": 9,
             "columnBegin": 1,
-            "lineEnd": 1,
+            "lineEnd": 53,
             "columnEnd": 1
           }
         }
@@ -214,9 +214,9 @@
           "range": {
             "file": { "key": "example.ts" },
             "lineBegin": 14,
-            "columnBegin": 7,
-            "lineEnd": 14,
-            "columnEnd": 9
+            "columnBegin": 1,
+            "lineEnd": 42,
+            "columnEnd": 3
           }
         }
       }
@@ -254,8 +254,8 @@
             "file": { "key": "example.ts" },
             "lineBegin": 15,
             "columnBegin": 3,
-            "lineEnd": 15,
-            "columnEnd": 13
+            "lineEnd": 33,
+            "columnEnd": 3
           }
         }
       }
@@ -332,8 +332,8 @@
             "file": { "key": "example.ts" },
             "lineBegin": 34,
             "columnBegin": 3,
-            "lineEnd": 34,
-            "columnEnd": 8
+            "lineEnd": 41,
+            "columnEnd": 5
           }
         }
       }
@@ -487,9 +487,9 @@
           "range": {
             "file": { "key": "example.ts" },
             "lineBegin": 46,
-            "columnBegin": 17,
-            "lineEnd": 46,
-            "columnEnd": 30
+            "columnBegin": 1,
+            "lineEnd": 52,
+            "columnEnd": 1
           }
         }
       }
