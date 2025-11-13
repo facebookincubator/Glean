@@ -69,6 +69,7 @@ executable glean-lsp
     ghc-options: -main-is Glean.LSP
     other-modules:
         Data.Path
+        Data.ConcurrentCache
     build-depends:
         aeson >= 2.0.3 && < 2.3,
         base >=4.11.1 && <4.19,
