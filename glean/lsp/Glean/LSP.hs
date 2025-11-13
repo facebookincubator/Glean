@@ -1,8 +1,9 @@
-{-# LANGUAGE ApplicativeDo #-}
+{-# LANGUAGE ApplicativeDo, RecursiveDo #-}
 module Glean.LSP (main) where
 
 import Control.Monad
 import Control.Monad.Catch
+import Control.Monad.Fix
 import Control.Monad.IO.Class
 import Control.Monad.IO.Unlift
 import Control.Monad.Trans.Class
@@ -23,6 +24,7 @@ import qualified Language.LSP.Protocol.Message as LSP
 import qualified Language.LSP.Protocol.Types as LSP
 import Options.Applicative
 import Thrift.Protocol
+import UnliftIO.Async
 import UnliftIO.Exception
 import UnliftIO.IORef
 import Util.Log.Text
@@ -37,10 +39,10 @@ import qualified Glean.Glass.Types as Glass
 import qualified Glean.Glass.Handler.Documents as Glass.Handler
 import qualified Glean.Glass.Handler.Symbols as Glass.Handler
 
+import Data.ConcurrentCache as ConcurrentCache
 import Data.Path as Path
 
 {- TODO / ideas
-  - concurrent requests and cancellation
   - go to decl / go to impl / go to type def?
   - documentSymbols:
     - make hierarchical
@@ -103,14 +105,13 @@ data LspEnv = LspEnv {
     options :: LspOptions,
     wsRoot :: AbsPath,
     glass :: Glass.Env,
-    -- TODO: use a better symbol cache so that if two threads simultaneously
-    -- try to fetch symbols for a file we should only make a single Glass request.
-    symbolCache :: IORef (HashMap RelPath Glass.DocumentSymbolIndex)
+    symbolCache :: ConcurrentCache RelPath Glass.DocumentSymbolIndex,
+    requests :: IORef (HashMap LSP.SomeLspId (Async ()))
   }
 
 newtype GleanLspM a =
   GleanLspM { unGleanLspM :: ReaderT (IORef (Maybe LspEnv)) (LspM LspConfig) a }
-  deriving (Monad, Applicative, Functor, MonadIO, MonadThrow, MonadUnliftIO)
+  deriving (Monad, Applicative, Functor, MonadIO, MonadThrow, MonadUnliftIO, MonadFix)
 
 deriving instance LSP.MonadLsp LspConfig GleanLspM
 
@@ -131,6 +132,77 @@ getGleanLspEnv = GleanLspM $ do
     Just env -> return env
 
 -- -----------------------------------------------------------------------------
+-- Executing requests
+
+-- | Perform a request asynchronously. It can subsequently be
+-- cancelled by 'cancelRequest', which will send the appropriate
+-- @RequestCancelled@ response back to the client if the request was
+-- still in progress at the time of cancellation.
+asyncRequest ::
+  forall (m :: LSP.Method LSP.ClientToServer LSP.Request) .
+  (LSP.TRequestMessage m ->
+    GleanLspM (Either (LSP.TResponseError m) (LSP.MessageResult m))) ->
+  LSP.Handler GleanLspM m
+asyncRequest act = \msg respond -> mdo
+  env <- getGleanLspEnv
+  m <- readIORef env.requests
+  liftIO $ logInfo $ "asyncRequest: " <>
+    Text.pack (show (HashMap.size m)) <> " in progress"
+  let
+    register =
+      atomicModifyIORef env.requests $ -- not strict due to mdo
+        \m -> (HashMap.insert (LSP.SomeLspId msg._id) async m, ())
+    unregister =
+      atomicModifyIORef' env.requests $
+        \m -> (HashMap.delete (LSP.SomeLspId msg._id) m, ())
+  register
+  async <- UnliftIO.Exception.mask_ $ asyncWithUnmask $ \unmask -> do
+    r <- UnliftIO.Exception.trySyncOrAsync $ unmask $ act msg
+      -- we want to catch everything, including async cancellation
+    unregister
+    case r of
+      Left (ex :: SomeException)
+        | Just AsyncCancelled <- fromException ex ->
+          respond $ Left $ responseCancelled "cancelled by client"
+        | otherwise -> respond $ Left $ responseException ex
+      Right result -> respond result
+  return ()
+
+-- | Cancel a request by LspId
+cancelRequest ::
+  forall (m :: LSP.Method LSP.ClientToServer LSP.Request) .
+  LSP.LspId m ->
+  GleanLspM ()
+cancelRequest id = do
+  env <- getGleanLspEnv
+  m <- readIORef env.requests
+  case HashMap.lookup (LSP.SomeLspId id) m of
+    Nothing -> logWarning $ "cancelRequest: not found"
+    Just async -> cancel async
+
+responseCancelled ::
+  forall (m :: LSP.Method LSP.ClientToServer LSP.Request) .
+  Text ->
+  LSP.TResponseError m
+responseCancelled msg =
+  LSP.TResponseError {
+    _code = LSP.InL LSP.LSPErrorCodes_RequestCancelled,
+    _message = msg,
+    _xdata = Nothing
+  }
+
+responseException ::
+  forall (m :: LSP.Method LSP.ClientToServer LSP.Request) .
+  SomeException ->
+  LSP.TResponseError m
+responseException ex =
+  LSP.TResponseError {
+    _code = LSP.InL LSP.LSPErrorCodes_RequestFailed,
+    _message = Text.pack (show ex),
+    _xdata = Nothing
+  }
+
+-- -----------------------------------------------------------------------------
 -- Setup & initialisation
 
 initServer ::
@@ -144,8 +216,9 @@ initServer glass options envRef serverConfig _msg = do
   runExceptT $ do
     wsRoot <- ExceptT $ LSP.runLspT serverConfig getWsRoot
     wsRoot <- filePathToAbs wsRoot
-    symbolCache <- newIORef HashMap.empty
-    writeIORef envRef (Just LspEnv { options, glass, wsRoot, symbolCache })
+    symbolCache <- ConcurrentCache.new
+    requests <- newIORef HashMap.empty
+    writeIORef envRef (Just LspEnv { options, glass, wsRoot, symbolCache, requests })
     liftIO $ logInfo $ "wsRoot: " <> Text.pack (Path.toFilePath wsRoot)
     pure serverConfig
   where
@@ -201,7 +274,7 @@ serverDef glass options = do
                 , handleReferencesRequest
                 -- , handleRenameRequest
                 -- , handlePrepareRenameRequest
-                -- , handleCancelNotification
+                , handleCancelNotification
                 , handleDidOpen
                 -- , handleDidChange
                 -- , handleDidSave
@@ -259,6 +332,15 @@ handleInitialized =
   LSP.notificationHandler LSP.SMethod_Initialized $
     pure $ pure ()
 
+handleCancelNotification :: LSP.Handlers GleanLspM
+handleCancelNotification =
+  LSP.notificationHandler LSP.SMethod_CancelRequest $ \req -> do
+    let id = case req._params._id of
+               LSP.InL i -> LSP.IdInt i
+               LSP.InR t -> LSP.IdString t
+    liftIO $ logInfo $ "cancel: " <> Text.pack (show id)
+    cancelRequest id
+
 handleDidOpen :: LSP.Handlers GleanLspM
 handleDidOpen =
   LSP.notificationHandler LSP.SMethod_TextDocumentDidOpen $ \message -> do
@@ -274,52 +356,53 @@ handleDidClose =
 
 handleDocumentSymbols :: LSP.Handlers GleanLspM
 handleDocumentSymbols =
-  LSP.requestHandler LSP.SMethod_TextDocumentDocumentSymbol $ \req res ->
+  LSP.requestHandler LSP.SMethod_TextDocumentDocumentSymbol $ asyncRequest $ \req ->
     logTimed ("documentSymbols: " <> req._params._textDocument._uri.getUri) $ do
       let params = req._params
       path <- uriToAbsPath params._textDocument._uri
       syms <- getDocumentSymbols path
       liftIO $ logInfo $ "symbols: " <> Text.pack (show (length syms))
-      res $ Right $ LSP.InR $ LSP.InL syms
+      return $ Right $ LSP.InR $ LSP.InL syms
 
 handleDefinitionRequest :: LSP.Handlers GleanLspM
 handleDefinitionRequest =
-  LSP.requestHandler LSP.SMethod_TextDocumentDefinition $ \req resp -> do
+  LSP.requestHandler LSP.SMethod_TextDocumentDefinition $ asyncRequest $ \req -> do
     let params = req._params
     logTimed ("definition: " <> params._textDocument._uri.getUri <>
       Text.pack (show req._params._position)) $ do
       path <- uriToAbsPath params._textDocument._uri
       defs <- getDefinition path params._position
-      resp $ Right . LSP.InR $ LSP.InL defs
+      return $ Right . LSP.InR $ LSP.InL defs
 
 handleSetTrace :: LSP.Handlers GleanLspM
 handleSetTrace = LSP.notificationHandler LSP.SMethod_SetTrace $ \_ -> pure ()
 
 handleTextDocumentHoverRequest :: LSP.Handlers GleanLspM
 handleTextDocumentHoverRequest =
-  LSP.requestHandler LSP.SMethod_TextDocumentHover $ \req resp -> do
+  LSP.requestHandler LSP.SMethod_TextDocumentHover $ asyncRequest $ \req -> do
     let hoverParams = req._params
     logTimed ("hover: " <> hoverParams._textDocument._uri.getUri <>
       Text.pack (show hoverParams._position)) $ do
       path <- uriToAbsPath hoverParams._textDocument._uri
       hover <- retrieveHover path hoverParams._position
-      resp $ Right $ LSP.maybeToNull hover
+      return $ Right $ LSP.maybeToNull hover
 
 handleReferencesRequest :: LSP.Handlers GleanLspM
 handleReferencesRequest =
-  LSP.requestHandler LSP.SMethod_TextDocumentReferences $ \req res -> do
+  LSP.requestHandler LSP.SMethod_TextDocumentReferences $ asyncRequest $ \req -> do
     let params = req._params
     logTimed ("references: " <> params._textDocument._uri.getUri <>
       Text.pack (show params._position)) $ do
       path <- uriToAbsPath params._textDocument._uri
       refs <- findRefs path params._position
-      res $ Right $ LSP.InL refs
+      return $ Right $ LSP.InL refs
 
 handleWorkspaceSymbol :: LSP.Handlers GleanLspM
-handleWorkspaceSymbol = LSP.requestHandler LSP.SMethod_WorkspaceSymbol $ \req res -> do
-  -- https://hackage.haskell.org/package/lsp-types-1.6.0.0/docs/Language-LSP-Types.html#t:WorkspaceSymbolParams
-  symbols <- symbolSearch req._params._query
-  res $ Right . LSP.InL $ symbols
+handleWorkspaceSymbol =
+  LSP.requestHandler LSP.SMethod_WorkspaceSymbol $ asyncRequest $ \req ->
+    logTimed ("search: " <> req._params._query) $ do
+      symbols <- symbolSearch req._params._query
+      return $ Right . LSP.InL $ symbols
 
 -- -----------------------------------------------------------------------------
 -- Glean / Glass stuff
@@ -354,27 +437,20 @@ getSymbols path includeRefs = do
 getSymbolsCached :: AbsPath -> GleanLspM Glass.DocumentSymbolIndex
 getSymbolsCached path = do
   env <- getGleanLspEnv
-  cache <- readIORef env.symbolCache
   let relPath = Path.makeRelative env.wsRoot path
-  case HashMap.lookup relPath cache of
-    Just symbols -> return symbols
-    Nothing -> do
-      symbols <- getSymbols relPath True {- includeRefs -}
-      atomicModifyIORef' env.symbolCache $ \old ->
-        (HashMap.insert relPath symbols old, ())
-      return symbols
+  ConcurrentCache.insert relPath env.symbolCache $
+    getSymbols relPath True {- includeRefs -}
 
 flushSymbolCache :: GleanLspM ()
 flushSymbolCache = do
   env <- getGleanLspEnv
-  writeIORef env.symbolCache HashMap.empty
+  ConcurrentCache.flush env.symbolCache
 
 removeCachedSymbols :: AbsPath -> GleanLspM ()
 removeCachedSymbols path = do
   env <- getGleanLspEnv
   let relPath = Path.makeRelative env.wsRoot path
-  atomicModifyIORef' env.symbolCache $ \cache ->
-    (HashMap.delete relPath cache, ())
+  ConcurrentCache.remove relPath env.symbolCache
 
 findSymbol ::
   LSP.Position ->
@@ -588,3 +664,4 @@ logTimed msg io = do
   liftIO $ logInfo $ msg <> ": " <>
     Text.pack (showTime t) <> ", " <> Text.pack (showAllocs b)
   return a
+
