@@ -13,6 +13,7 @@ Glass, and currently provides the following LSP features:
 * Go to References
 * Type on Hover
 * Outline
+* Symbol Search
 
 More features may be added in the future.
 

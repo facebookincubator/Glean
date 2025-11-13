@@ -20,6 +20,9 @@ If you found yourself here by mistake, go back to the
 
 </FbInternalOnly>
 
+Just want to get started and read the docs later? Jump to [Building
+Glean](building.md).
+
 ## Overview
 
 Glean is a system for working with facts about source code. It is
@@ -89,6 +92,21 @@ Glean consists of the following:
   language. Language-neutral abstractions can be built by <SrcFileLink
   file="glean/schema/source/codemarkup.angle">deriving facts using Angle</SrcFileLink>.
 
+* **<SrcFileLink file="glean/glass">Glass</SrcFileLink>**,
+  a language-agnostic symbol server. Glass is a server layer on top of
+  Glean that exposes an API for performing common language-independent
+  queries over Glean data, such as listing the symbols in a source
+  file. Glass can be used as the basis for language tools; in fact
+  Glass is used to power our Glean-based LSP server.
+
+* A **<SrcFileLink file="glean/lsp">generic LSP
+  server</SrcFileLink>**, built using Glean and Glass. This can be
+  used to browse a large codebase in [VS
+  Code](https://code.visualstudio.com/)[^3]: index the code using
+  Glean, and connect VS Code to the LSP server to provide common
+  code-navigation features such as go-to-definition, find-references,
+  and symbol search.
+
 [^1]: while we could in principle store the full AST, for efficiency
 reasons we typically store only the parts we need for the clients we
 want to support. Usually that means things like the locations of
@@ -96,3 +114,5 @@ definitions and cross-references, but not expressions.
 
 [^2]: If you're familiar with Datalog, it's worth noting that
 currently Angle is limited to non-recursive queries only.
+
+[^3]: Or any IDE that supports LSP.
