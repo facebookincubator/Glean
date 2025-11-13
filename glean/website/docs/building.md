@@ -5,24 +5,31 @@ sidebar_label: Building Glean
 ---
 
 import {OssOnly, FbInternalOnly} from 'internaldocs-fb-helpers';
+import {SrcFile,SrcFileLink} from '@site/utils';
 
 ## Introduction
 
-Glean is written mainly in [Haskell](http://www.haskell.org/), and
-makes heavy use of
-[Thrift](https://github.com/facebookincubator/hsthrift) for data
-communication and serialization, so these are the main dependencies
-that are needed for building Glean.
+First we'll need to install some dependencies, and then we can build
+Glean. You can either build the latest stable release (easiest), or
+build the current code from the repository (harder), both methods are
+explained below.
 
 ## You will need
 
 * Linux. The build is only tested on Linux so far; we hope to add
   support for other OSs in the future. We build on x86\_64 and arm64v8.
 
-* [GHC](https://www.haskell.org/ghc/). To see which versions Glean is tested with, check the current [ci.yml](https://github.com/facebookincubator/Glean/blob/master/.github/workflows/ci.yml) script. We recommend installing GHC using [ghcup](https://www.haskell.org/ghcup/).
+* A working Haskell build environment including
+  [GHC](https://www.haskell.org/ghc/) and Cabal. To see which versions
+  Glean is tested with, check the current
+  [ci.yml](https://github.com/facebookincubator/Glean/blob/master/.github/workflows/ci.yml)
+  script.
 
-* Cabal/cabal-install version 3.6 or later (older versions won't
-  work). As for GHC, install these using ghcup.
+We recommend installing GHC and Cabal using [ghcup](https://www.haskell.org/ghcup/):
+
+1. [Install ghcup](https://www.haskell.org/ghcup/)
+2. `ghcup install ghc 9.6.7`
+3. `ghcup install cabal`
 
 Additional per-distribution setup follows.
 
@@ -127,7 +134,7 @@ sudo dnf install \
 
 ## Build using Cabal
 
-Glean can be built and installed entirely using `cabal`, with:
+To build and install the latest stable version of Glean:
 
 ```
 cabal install glean
@@ -143,7 +150,7 @@ The schema source files will be installed somewhere under
 
 Installing with `cabal install` is sufficient if you want to:
 
-* Just try it out
+* Just try it out, e.g. with the generic LSP server.
 * Index some source code in a supported language
 * Run queries against a DB, perhaps produced by someone else
 * Run a server (including Glass)
@@ -152,6 +159,13 @@ Installing with `cabal install` is sufficient if you want to:
 If you want to make changes to the schema or work on Glean itself then
 you will likely need to build from source: continue to the next
 section.
+
+If you want to use the <SrcFileLink file="glean/lsp">generic LSP
+server</SrcFileLink>, build and install it with:
+
+```
+cabal install glean-lsp
+```
 
 ## Building from the repository
 
