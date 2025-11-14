@@ -5,34 +5,6 @@
         "revision": "testhash",
         "size": 43,
         "symbols": {
-            "1": [
-                {
-                    "attributes": {
-                        "symbolKind": {
-                            "aInteger": 1
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 13
-                        },
-                        "symbolName": {
-                            "aString": "`example.ts`/"
-                        },
-                        "symbolParent": {
-                            "aString": ""
-                        },
-                        "symbolSignature": {
-                            "aString": "```ts\nmodule \"example.ts\"\n```"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 1,
-                        "lineEnd": 1
-                    },
-                    "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2F"
-                }
-            ],
             "14": [
                 {
                     "attributes": {
@@ -53,10 +25,10 @@
                         }
                     },
                     "range": {
-                        "columnBegin": 7,
-                        "columnEnd": 10,
+                        "columnBegin": 1,
+                        "columnEnd": 4,
                         "lineBegin": 14,
-                        "lineEnd": 14
+                        "lineEnd": 42
                     },
                     "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FGit%23"
                 }
@@ -82,9 +54,9 @@
                     },
                     "range": {
                         "columnBegin": 3,
-                        "columnEnd": 14,
+                        "columnEnd": 4,
                         "lineBegin": 15,
-                        "lineEnd": 15
+                        "lineEnd": 33
                     },
                     "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FGit%23%60%3Cconstructor%3E%60%28%29."
                 },
@@ -654,9 +626,9 @@
                     },
                     "range": {
                         "columnBegin": 3,
-                        "columnEnd": 9,
+                        "columnEnd": 6,
                         "lineBegin": 34,
-                        "lineEnd": 34
+                        "lineEnd": 41
                     },
                     "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FGit%23commit%28%29."
                 },
@@ -1057,10 +1029,10 @@
                         }
                     },
                     "range": {
-                        "columnBegin": 17,
-                        "columnEnd": 31,
+                        "columnBegin": 1,
+                        "columnEnd": 2,
                         "lineBegin": 46,
-                        "lineEnd": 46
+                        "lineEnd": 52
                     },
                     "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FcreateTempRepo%28%29."
                 },
@@ -1317,6 +1289,34 @@
                         },
                         "repository": "test"
                     }
+                }
+            ],
+            "9": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 1
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "`example.ts`/"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "```ts\nmodule \"example.ts\"\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 9,
+                        "lineEnd": 53
+                    },
+                    "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2F"
                 }
             ]
         },
