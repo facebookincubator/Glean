@@ -190,6 +190,9 @@ jobs:
       - name: Run tests
         run: make test
 
+      - name: Build glean-lsp
+        run: make glean-lsp
+
   # check the vscode extension builds
   vscode:
     runs-on: ubuntu-latest
