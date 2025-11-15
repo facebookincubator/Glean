@@ -1169,6 +1169,7 @@ library indexers
     exposed-modules:
         Glean.Indexer
         Glean.Indexer.Cpp
+        Glean.Indexer.Erlang
         Glean.Indexer.External
         Glean.Indexer.Erlang
         Glean.Indexer.Flow
@@ -1338,7 +1339,6 @@ library scip
     import: fb-haskell, fb-cpp, deps
     hs-source-dirs: glean/lang/scip
     exposed-modules:
-        Data.SCIP.Angle
         Glean.SCIP.Driver
     build-depends:
         glean:if-proto-scip-hs,
