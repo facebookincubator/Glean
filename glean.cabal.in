@@ -93,6 +93,10 @@ flag opt
 flag benchmarks
      default: False
 
+-- Support for backups to Amazon S3
+flag s3-support
+     default: True
+
 -- run tests that require clang
 flag clang-tests
      default: True
@@ -666,6 +670,30 @@ library db
         glean:stubs,
         glean:rocksdb,
 
+library db-backup-s3
+    import: fb-haskell, deps
+    visibility: private
+    hs-source-dirs: glean/db/backup/s3
+
+    exposed-modules: Glean.Database.Backup.S3
+    build-depends:
+        glean:util,
+        glean:if-internal-hs,
+        glean:if-glean-hs,
+        glean:db,
+        amazonka,
+        amazonka-s3,
+        conduit,
+        unliftio,
+        microlens,
+        http-client,
+
+    if flag(s3-support)
+        buildable: True
+    else
+        buildable: False
+
+
 -- Backend API, and a few things built on top
 library backend-api
     import: fb-haskell, fb-cpp, deps
@@ -712,6 +740,7 @@ library backend-local
         Glean.Backend.Local
         Glean.Backend.Logging
         Glean.Dump
+
     build-depends:
         glean:angle,
         glean:backend-api,
@@ -1138,6 +1167,10 @@ executable glean-server
         haskeline >=0.7.3 && <0.9,
         json
 
+    if flag(s3-support)
+        cpp-options: -DENABLE_S3=1
+        build-depends: glean:db-backup-s3
+
 library shell-lib
     import: fb-haskell, fb-cpp, deps
     hs-source-dirs: glean/shell
@@ -1265,6 +1298,10 @@ executable glean
         json,
         split,
         Glob,
+
+    if flag(s3-support)
+        cpp-options: -DENABLE_S3=1
+        build-depends: glean:db-backup-s3
 
 executable glean-hyperlink
     import: fb-haskell, fb-cpp, deps, exe
@@ -2159,6 +2196,27 @@ test-suite backup
         glean:schema,
         glean:stubs,
         glean:util
+
+test-suite backup-s3
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: BackupTestS3.hs
+    ghc-options: -main-is BackupTestS3
+    build-depends:
+        glean:config,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:if-internal-hs,
+        glean:schema,
+        glean:stubs,
+        glean:util,
+        glean:db-backup-s3
+
+    if flag(s3-support)
+        buildable: True
+    else
+        buildable: False
 
 test-suite catalog
     import: test
