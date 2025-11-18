@@ -21,7 +21,7 @@
         { "source": { "length": 1, "start": 291 }, "target": { "key": "a.c" } },
         { "source": { "length": 1, "start": 299 }, "target": { "key": "a.b" } },
         { "source": { "length": 1, "start": 301 }, "target": { "key": "a.c" } },
-        { "source": { "length": 1, "start": 304 }, "target": { "key": "x.y" } },
+        { "source": { "length": 1, "start": 304 }, "target": { "key": "x" } },
         { "source": { "length": 1, "start": 306 }, "target": { "key": "x.f" } },
         { "source": { "length": 3, "start": 241 }, "target": { "key": "u.v" } },
         { "source": { "length": 3, "start": 270 }, "target": { "key": "x.y" } }
