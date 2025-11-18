@@ -470,6 +470,24 @@ type Definition =
     module : ModuleDefinition |
   }
 
+predicate DefinitionToDeclaration :
+  {
+    definition : Definition,
+    declaration : Declaration,
+  }
+  { { class_ = { declaration = Decl }}, { container = { class_ = Decl }}} |
+  { { classConst = { declaration = Decl }}, { classConst = Decl }} |
+  { { enum_ = { declaration = Decl }}, { container = { enum_ = Decl }}} |
+  { { function_ = { declaration = Decl }}, { function_ = Decl }} |
+  { { globalConst = { declaration = Decl }}, { globalConst = Decl }} |
+  { { interface_ = { declaration = Decl }}, { container = { interface_ = Decl }}} |
+  { { trait = { declaration = Decl }}, { container = { trait = Decl }}} |
+  { { method = { declaration = Decl }}, { method = Decl }} |
+  { { property_ = { declaration = Decl }}, { property_ = Decl }} |
+  { { typeConst = { declaration = Decl }}, { typeConst = Decl }} |
+  { { typedef_ = { declaration = Decl }}, { typedef_ = Decl }} |
+  { { module = { declaration = Decl }}, { module = Decl }}
+
 # Occurrences are symbols referenced where the class definition could not
 # be found. Expect the class name to be a special name like
 # HH_FIXME\MISSING_TYPE_IN_HIERARCHY
@@ -605,8 +623,8 @@ predicate AttributeToDefinition :
   { AS[..], { method = { attributes = AS }}} |
   { AS[..], { property_ = { attributes = AS }}} |
   { AS[..], { typeConst = { attributes = AS }}} |
-  { AS[..], { module = { attributes = AS }}} |
-  { AS[..], { typedef_ = { attributes = AS }}}
+  { AS[..], { typedef_ = { attributes = AS }}} |
+  { AS[..], { module = { attributes = AS }}}
 
 predicate AttributeHasParameter :
   {
