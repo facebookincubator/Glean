@@ -1,7 +1,7 @@
 ---
-id: trying
-title: Trying Glean
-sidebar_label: Trying Glean
+id: docker
+title: Using the Docker image
+sidebar_label: Using the Docker image
 ---
 
 import {OssOnly, FbInternalOnly} from 'internaldocs-fb-helpers';
@@ -12,7 +12,8 @@ import {SrcFile,SrcFileLink} from '@site/utils';
 
 The Docker image is currently not working; however building Glean from
 scratch is now significantly easier than it was in the past, so we
-recommend just skipping ahead to [Building Glean from Source](building.md)
+recommend just heading over to [Building Glean from
+Source](building.md).
 
 :::
 
