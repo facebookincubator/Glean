@@ -1,0 +1,59 @@
+[
+    "@generated",
+    {
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": true,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 5,
+        "language": 7,
+        "location": {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "lineBegin": 1,
+                "lineEnd": 35
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "",
+            "localName": "all"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "module all",
+        "sym": "test/py/glean/all",
+        "sym_location": {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "lineBegin": 1,
+                "lineEnd": 35
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": [
+            {
+                "span": {
+                    "length": 3,
+                    "start": 7
+                },
+                "type": "test/py/glean/all"
+            }
+        ],
+        "visibility": 20
+    }
+]

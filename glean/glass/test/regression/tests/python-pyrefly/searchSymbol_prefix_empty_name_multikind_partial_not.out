@@ -1,0 +1,398 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [],
+        "symbols": [
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "all"
+                    },
+                    "symbol": "test/py/glean/all"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 24,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "name": "all.fn",
+                "qname": {
+                    "container": "all",
+                    "localName": "fn"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/all.fn"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/glean/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 15,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "name": "as.fn",
+                "qname": {
+                    "container": "as",
+                    "localName": "fn"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/as.fn"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/glean/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 25,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "name": "as.func_sleep",
+                "qname": {
+                    "container": "as",
+                    "localName": "func_sleep"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/as.func_sleep"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/glean/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 16,
+                        "lineBegin": 62,
+                        "lineEnd": 65
+                    },
+                    "repository": "test"
+                },
+                "name": "as.more_fun_things",
+                "qname": {
+                    "container": "as",
+                    "localName": "more_fun_things"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/as.more_fun_things"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/glean/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 17,
+                        "lineBegin": 48,
+                        "lineEnd": 59
+                    },
+                    "repository": "test"
+                },
+                "name": "as.pep570_posonly_test_kwonly",
+                "qname": {
+                    "container": "as",
+                    "localName": "pep570_posonly_test_kwonly"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/as.pep570_posonly_test_kwonly"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/glean/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 14,
+                        "lineBegin": 29,
+                        "lineEnd": 38
+                    },
+                    "repository": "test"
+                },
+                "name": "as.test_fun",
+                "qname": {
+                    "container": "as",
+                    "localName": "test_fun"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/as.test_fun"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/glean/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 14,
+                        "lineBegin": 41,
+                        "lineEnd": 45
+                    },
+                    "repository": "test"
+                },
+                "name": "as.test_more_fun",
+                "qname": {
+                    "container": "as",
+                    "localName": "test_more_fun"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/as.test_more_fun"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "big_lib"
+                    },
+                    "symbol": "test/py/glean/big_lib"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 19,
+                        "lineBegin": 12,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": "big_lib.big_func",
+                "qname": {
+                    "container": "big_lib",
+                    "localName": "big_func"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/big_lib.big_func"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "lib"
+                    },
+                    "symbol": "test/py/glean/lib"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 25,
+                        "lineBegin": 25,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.helper_func",
+                "qname": {
+                    "container": "lib",
+                    "localName": "helper_func"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/lib.helper_func"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "main"
+                    },
+                    "symbol": "test/py/glean/main"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 13,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": "main.f",
+                "qname": {
+                    "container": "main",
+                    "localName": "f"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/main.f"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "main"
+                    },
+                    "symbol": "test/py/glean/main"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 22,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "name": "main.g",
+                "qname": {
+                    "container": "main",
+                    "localName": "g"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/main.g"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "main",
+                        "localName": "g"
+                    },
+                    "symbol": "test/py/glean/main.g"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 25,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "name": "main.g.<locals>.h",
+                "qname": {
+                    "container": "main.g.<locals>",
+                    "localName": "h"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/main.g.%3Clocals%3E.h"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "shadow"
+                    },
+                    "symbol": "test/py/glean/shadow"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 32,
+                        "lineBegin": 20,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "name": "shadow.shadow_func",
+                "qname": {
+                    "container": "shadow",
+                    "localName": "shadow_func"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/shadow.shadow_func"
+            }
+        ]
+    }
+]

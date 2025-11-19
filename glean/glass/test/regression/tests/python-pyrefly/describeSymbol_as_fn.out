@@ -1,0 +1,73 @@
+[
+    "@generated",
+    {
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 14,
+        "language": 7,
+        "location": {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 21,
+                "lineBegin": 15,
+                "lineEnd": 21
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "as",
+            "localName": "fn"
+        },
+        "pretty_comments": [
+            {
+                "comment": "Test title  \n  \nextra comment body",
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 8,
+                        "lineBegin": 16,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "repo_hash": "testhash",
+        "signature": "def fn()",
+        "sym": "test/py/glean/as.fn",
+        "sym_location": {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 21,
+                "lineBegin": 15,
+                "lineEnd": 21
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": [
+            {
+                "span": {
+                    "length": 2,
+                    "start": 4
+                },
+                "type": "test/py/glean/as.fn"
+            }
+        ],
+        "visibility": 20
+    }
+]

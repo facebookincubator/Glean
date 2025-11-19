@@ -1,0 +1,38 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [],
+        "symbols": [
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "all"
+                    },
+                    "symbol": "test/py/glean/all"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 24,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "name": "all.fn",
+                "qname": {
+                    "container": "all",
+                    "localName": "fn"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/all.fn"
+            }
+        ]
+    }
+]

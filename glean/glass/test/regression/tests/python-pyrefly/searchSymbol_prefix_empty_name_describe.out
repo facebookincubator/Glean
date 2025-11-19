@@ -1,0 +1,3905 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "all"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "module all",
+                "sym": "test/py/glean/all",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 3,
+                            "start": 7
+                        },
+                        "type": "test/py/glean/all"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 29,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "all",
+                    "localName": "LocalClass"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "class LocalClass",
+                "sym": "test/py/glean/all.LocalClass",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 29,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 10,
+                            "start": 6
+                        },
+                        "type": "test/py/glean/all.LocalClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 20,
+                        "lineBegin": 30,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "all.LocalClass",
+                    "localName": "meth"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def meth(\n    self,\n    param\n) -> \"Helper\"",
+                "sym": "test/py/glean/all.LocalClass.meth",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 20,
+                        "lineBegin": 30,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/all.LocalClass.meth"
+                    },
+                    {
+                        "span": {
+                            "length": 6,
+                            "start": 36
+                        },
+                        "type": "test/py/glean/lib.HelperClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 25,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "all.LocalClass.meth.<locals>",
+                    "localName": "param"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "param",
+                "sym": "test/py/glean/all.LocalClass.meth.%3Clocals%3E.param",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 25,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/all.LocalClass.meth.%3Clocals%3E.param"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 18,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "all.LocalClass.meth.<locals>",
+                    "localName": "self"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "self",
+                "sym": "test/py/glean/all.LocalClass.meth.%3Clocals%3E.self",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 18,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/all.LocalClass.meth.%3Clocals%3E.self"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 81,
+                        "lineBegin": 34,
+                        "lineEnd": 34
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "all",
+                    "localName": "__all__"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "__all__",
+                "sym": "test/py/glean/all.__all__",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 81,
+                        "lineBegin": 34,
+                        "lineEnd": 34
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 7,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/all.__all__"
+                    }
+                ],
+                "visibility": 40
+            },
+            {
+                "annotations": [
+                    {
+                        "name": "@timeit",
+                        "source": "@timeit"
+                    },
+                    {
+                        "name": "@lru_cache",
+                        "source": "@lru_cache"
+                    }
+                ],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 24,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "all",
+                    "localName": "fn"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def fn()",
+                "sym": "test/py/glean/all.fn",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 24,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 2,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/all.fn"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 10,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "all",
+                    "localName": "var"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "var",
+                "sym": "test/py/glean/all.var",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 10,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 3,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/all.var"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 28,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "all",
+                    "localName": "var1"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "var1: List[int]",
+                "sym": "test/py/glean/all.var1",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 28,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/all.var1"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 23,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "all",
+                    "localName": "var2"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "var2: List[int]",
+                "sym": "test/py/glean/all.var2",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 23,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/all.var2"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 66
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "as"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "module as",
+                "sym": "test/py/glean/as",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 66
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 2,
+                            "start": 7
+                        },
+                        "type": "test/py/glean/as"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 15,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "as",
+                    "localName": "fn"
+                },
+                "pretty_comments": [
+                    {
+                        "comment": "Test title  \n  \nextra comment body",
+                        "location": {
+                            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                            "range": {
+                                "columnBegin": 5,
+                                "columnEnd": 8,
+                                "lineBegin": 16,
+                                "lineEnd": 19
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
+                "repo_hash": "testhash",
+                "signature": "def fn()",
+                "sym": "test/py/glean/as.fn",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 15,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 2,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/as.fn"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "annotations": [
+                    {
+                        "name": "@staticmethod",
+                        "source": "@staticmethod"
+                    }
+                ],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 25,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [
+                    3,
+                    4
+                ],
+                "name": {
+                    "container": "as",
+                    "localName": "func_sleep"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "async def func_sleep()",
+                "sym": "test/py/glean/as.func_sleep",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 25,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 10,
+                            "start": 10
+                        },
+                        "type": "test/py/glean/as.func_sleep"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 16,
+                        "lineBegin": 62,
+                        "lineEnd": 65
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "as",
+                    "localName": "more_fun_things"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def more_fun_things(\n    a: int,\n    /,\n    *list_of_fish,\n    something = None,\n    **extra_bag_of_fun\n) -> bool",
+                "sym": "test/py/glean/as.more_fun_things",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 16,
+                        "lineBegin": 62,
+                        "lineEnd": 65
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 15,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/as.more_fun_things"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 17,
+                        "lineBegin": 48,
+                        "lineEnd": 59
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "as",
+                    "localName": "pep570_posonly_test_kwonly"
+                },
+                "pretty_comments": [
+                    {
+                        "comment": "Horrible test for type signature pretty printer",
+                        "location": {
+                            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                            "range": {
+                                "columnBegin": 5,
+                                "columnEnd": 8,
+                                "lineBegin": 56,
+                                "lineEnd": 58
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
+                "repo_hash": "testhash",
+                "signature": "def pep570_posonly_test_kwonly(\n    ok: Union[bytearray, str],\n    hmm: Union[bool, str] = \"interesting\",\n    /,\n    what: Union[bytes, str] = \"umm getting scary\",\n    *is_this_ok: Union[float, str],\n    get_me_out_of_here: Union[int, str]\n) -> bool",
+                "sym": "test/py/glean/as.pep570_posonly_test_kwonly",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 17,
+                        "lineBegin": 48,
+                        "lineEnd": 59
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 26,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/as.pep570_posonly_test_kwonly"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 14,
+                        "lineBegin": 29,
+                        "lineEnd": 38
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "as",
+                    "localName": "test_fun"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def test_fun(\n    param0,\n    /,\n    param1: Optional[Dict[str]],\n    param2: None,\n    *,\n    param3: Optional[str] = \"value\",\n    **kwargs\n) -> Dict[str, Dict[str, bytes]]",
+                "sym": "test/py/glean/as.test_fun",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 14,
+                        "lineBegin": 29,
+                        "lineEnd": 38
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/as.test_fun"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 14,
+                        "lineBegin": 41,
+                        "lineEnd": 45
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "as",
+                    "localName": "test_more_fun"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def test_more_fun(\n    param0: str = \"value\",\n    *extrargs: Optional[str]\n) -> Optional[bytes]",
+                "sym": "test/py/glean/as.test_more_fun",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 14,
+                        "lineBegin": 41,
+                        "lineEnd": 45
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 13,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/as.test_more_fun"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "big_lib"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "module big_lib",
+                "sym": "test/py/glean/big_lib",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 7,
+                            "start": 7
+                        },
+                        "type": "test/py/glean/big_lib"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 19,
+                        "lineBegin": 12,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "big_lib",
+                    "localName": "big_func"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def big_func()",
+                "sym": "test/py/glean/big_lib.big_func",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 19,
+                        "lineBegin": 12,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/big_lib.big_func"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 12,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "big_lib",
+                    "localName": "big_var"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "big_var",
+                "sym": "test/py/glean/big_lib.big_var",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 12,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 7,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/big_lib.big_var"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/relative.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "big_lib",
+                    "localName": "relative"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "module big_lib.relative",
+                "sym": "test/py/glean/big_lib.relative",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/relative.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 16,
+                            "start": 7
+                        },
+                        "type": "test/py/glean/big_lib.relative"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "lib"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "module lib",
+                "sym": "test/py/glean/lib",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 3,
+                            "start": 7
+                        },
+                        "type": "test/py/glean/lib"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 14,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib",
+                    "localName": "HelperClass"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "class HelperClass",
+                "sym": "test/py/glean/lib.HelperClass",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 14,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 6
+                        },
+                        "type": "test/py/glean/lib.HelperClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 64,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "THelperClass"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "THelperClass",
+                "sym": "test/py/glean/lib.HelperClass.THelperClass",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 64,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 12,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/lib.HelperClass.THelperClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 21,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "another_method"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def another_method(\n    self,\n    param: \"HelperClass\"\n) -> \"Union[HelperClass, None]\"",
+                "sym": "test/py/glean/lib.HelperClass.another_method",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 21,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 14,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/lib.HelperClass.another_method"
+                    },
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 42
+                        },
+                        "type": "test/py/glean/lib.HelperClass"
+                    },
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 67
+                        },
+                        "type": "test/py/glean/lib.HelperClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 30,
+                        "columnEnd": 35,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass.another_method.<locals>",
+                    "localName": "param"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "param: \"HelperClass\"",
+                "sym": "test/py/glean/lib.HelperClass.another_method.%3Clocals%3E.param",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 30,
+                        "columnEnd": 35,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/lib.HelperClass.another_method.%3Clocals%3E.param"
+                    },
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 8
+                        },
+                        "type": "test/py/glean/lib.HelperClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 24,
+                        "columnEnd": 28,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass.another_method.<locals>",
+                    "localName": "self"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "self",
+                "sym": "test/py/glean/lib.HelperClass.another_method.%3Clocals%3E.self",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 24,
+                        "columnEnd": 28,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/lib.HelperClass.another_method.%3Clocals%3E.self"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 18,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "method"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def method(\n    self\n) -> \"HelperClass\"",
+                "sym": "test/py/glean/lib.HelperClass.method",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 18,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 6,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/lib.HelperClass.method"
+                    },
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 27
+                        },
+                        "type": "test/py/glean/lib.HelperClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 20,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass.method.<locals>",
+                    "localName": "self"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "self",
+                "sym": "test/py/glean/lib.HelperClass.method.%3Clocals%3E.self",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 20,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/lib.HelperClass.method.%3Clocals%3E.self"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "value"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "value: THelperClass",
+                "sym": "test/py/glean/lib.HelperClass.value",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/lib.HelperClass.value"
+                    },
+                    {
+                        "span": {
+                            "length": 12,
+                            "start": 7
+                        },
+                        "type": "test/py/glean/lib.HelperClass.THelperClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 25,
+                        "lineBegin": 25,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib",
+                    "localName": "helper_func"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def helper_func()",
+                "sym": "test/py/glean/lib.helper_func",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 25,
+                        "lineBegin": 25,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/lib.helper_func"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "main"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "module main",
+                "sym": "test/py/glean/main",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 7
+                        },
+                        "type": "test/py/glean/main"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 13,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "main",
+                    "localName": "f"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def f() -> \"None\"",
+                "sym": "test/py/glean/main.f",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 13,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 1,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/main.f"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 22,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "main",
+                    "localName": "g"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def g() -> None",
+                "sym": "test/py/glean/main.g",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 22,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 1,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/main.g"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 25,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "main.g.<locals>",
+                    "localName": "h"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def h(\n    _: OtherHelper\n) -> None",
+                "sym": "test/py/glean/main.g.%3Clocals%3E.h",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 25,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 1,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/main.g.%3Clocals%3E.h"
+                    },
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 14
+                        },
+                        "type": "test/py/glean/lib.HelperClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "shadow"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "module shadow",
+                "sym": "test/py/glean/shadow",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 6,
+                            "start": 7
+                        },
+                        "type": "test/py/glean/shadow"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 26,
+                        "lineBegin": 14,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "shadow",
+                    "localName": "ShadowClass"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "class ShadowClass",
+                "sym": "test/py/glean/shadow.ShadowClass",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 26,
+                        "lineBegin": 14,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 6
+                        },
+                        "type": "test/py/glean/shadow.ShadowClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "shadow.ShadowClass",
+                    "localName": "big_func"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "big_func",
+                "sym": "test/py/glean/shadow.ShadowClass.big_func",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/shadow.ShadowClass.big_func"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 26,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "shadow.ShadowClass",
+                    "localName": "local_var"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "local_var",
+                "sym": "test/py/glean/shadow.ShadowClass.local_var",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 26,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/shadow.ShadowClass.local_var"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "shadow.ShadowClass",
+                    "localName": "other_var"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "other_var",
+                "sym": "test/py/glean/shadow.ShadowClass.other_var",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/shadow.ShadowClass.other_var"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "shadow",
+                    "localName": "big_func"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "big_func",
+                "sym": "test/py/glean/shadow.big_func",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/shadow.big_func"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": true
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 16,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "shadow",
+                    "localName": "local_var"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "local_var",
+                "sym": "test/py/glean/shadow.local_var",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 16,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/shadow.local_var"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": true
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 22,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "shadow",
+                    "localName": "local_var"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "local_var",
+                "sym": "test/py/glean/shadow.local_var",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 22,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/shadow.local_var"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "shadow",
+                    "localName": "other_var"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "other_var",
+                "sym": "test/py/glean/shadow.other_var",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/shadow.other_var"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 32,
+                        "lineBegin": 20,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "shadow",
+                    "localName": "shadow_func"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def shadow_func()",
+                "sym": "test/py/glean/shadow.shadow_func",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 32,
+                        "lineBegin": 20,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/shadow.shadow_func"
+                    }
+                ],
+                "visibility": 20
+            }
+        ],
+        "symbols": [
+            {
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                },
+                "name": "all",
+                "qname": {
+                    "container": "",
+                    "localName": "all"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/all"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 29,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "name": "all.LocalClass",
+                "qname": {
+                    "container": "all",
+                    "localName": "LocalClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/all.LocalClass"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "all",
+                        "localName": "LocalClass"
+                    },
+                    "symbol": "test/py/glean/all.LocalClass"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 20,
+                        "lineBegin": 30,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "name": "all.LocalClass.meth",
+                "qname": {
+                    "container": "all.LocalClass",
+                    "localName": "meth"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/all.LocalClass.meth"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "all.LocalClass",
+                        "localName": "meth"
+                    },
+                    "symbol": "test/py/glean/all.LocalClass.meth"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 25,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "name": "all.LocalClass.meth.<locals>.param",
+                "qname": {
+                    "container": "all.LocalClass.meth.<locals>",
+                    "localName": "param"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/all.LocalClass.meth.%3Clocals%3E.param"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "all.LocalClass",
+                        "localName": "meth"
+                    },
+                    "symbol": "test/py/glean/all.LocalClass.meth"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 18,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "name": "all.LocalClass.meth.<locals>.self",
+                "qname": {
+                    "container": "all.LocalClass.meth.<locals>",
+                    "localName": "self"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/all.LocalClass.meth.%3Clocals%3E.self"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "all"
+                    },
+                    "symbol": "test/py/glean/all"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 81,
+                        "lineBegin": 34,
+                        "lineEnd": 34
+                    },
+                    "repository": "test"
+                },
+                "name": "all.__all__",
+                "qname": {
+                    "container": "all",
+                    "localName": "__all__"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/all.__all__"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "all"
+                    },
+                    "symbol": "test/py/glean/all"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 24,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "name": "all.fn",
+                "qname": {
+                    "container": "all",
+                    "localName": "fn"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/all.fn"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "all"
+                    },
+                    "symbol": "test/py/glean/all"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 10,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": "all.var",
+                "qname": {
+                    "container": "all",
+                    "localName": "var"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/all.var"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "all"
+                    },
+                    "symbol": "test/py/glean/all"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 28,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": "all.var1",
+                "qname": {
+                    "container": "all",
+                    "localName": "var1"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/all.var1"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "all"
+                    },
+                    "symbol": "test/py/glean/all"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 23,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": "all.var2",
+                "qname": {
+                    "container": "all",
+                    "localName": "var2"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/all.var2"
+            },
+            {
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 66
+                    },
+                    "repository": "test"
+                },
+                "name": "as",
+                "qname": {
+                    "container": "",
+                    "localName": "as"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/as"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/glean/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 15,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "name": "as.fn",
+                "qname": {
+                    "container": "as",
+                    "localName": "fn"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/as.fn"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/glean/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 25,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "name": "as.func_sleep",
+                "qname": {
+                    "container": "as",
+                    "localName": "func_sleep"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/as.func_sleep"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/glean/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 16,
+                        "lineBegin": 62,
+                        "lineEnd": 65
+                    },
+                    "repository": "test"
+                },
+                "name": "as.more_fun_things",
+                "qname": {
+                    "container": "as",
+                    "localName": "more_fun_things"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/as.more_fun_things"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/glean/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 17,
+                        "lineBegin": 48,
+                        "lineEnd": 59
+                    },
+                    "repository": "test"
+                },
+                "name": "as.pep570_posonly_test_kwonly",
+                "qname": {
+                    "container": "as",
+                    "localName": "pep570_posonly_test_kwonly"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/as.pep570_posonly_test_kwonly"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/glean/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 14,
+                        "lineBegin": 29,
+                        "lineEnd": 38
+                    },
+                    "repository": "test"
+                },
+                "name": "as.test_fun",
+                "qname": {
+                    "container": "as",
+                    "localName": "test_fun"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/as.test_fun"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "as"
+                    },
+                    "symbol": "test/py/glean/as"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 14,
+                        "lineBegin": 41,
+                        "lineEnd": 45
+                    },
+                    "repository": "test"
+                },
+                "name": "as.test_more_fun",
+                "qname": {
+                    "container": "as",
+                    "localName": "test_more_fun"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/as.test_more_fun"
+            },
+            {
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "big_lib",
+                "qname": {
+                    "container": "",
+                    "localName": "big_lib"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/big_lib"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "big_lib"
+                    },
+                    "symbol": "test/py/glean/big_lib"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 19,
+                        "lineBegin": 12,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": "big_lib.big_func",
+                "qname": {
+                    "container": "big_lib",
+                    "localName": "big_func"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/big_lib.big_func"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "big_lib"
+                    },
+                    "symbol": "test/py/glean/big_lib"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 12,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "name": "big_lib.big_var",
+                "qname": {
+                    "container": "big_lib",
+                    "localName": "big_var"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/big_lib.big_var"
+            },
+            {
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/relative.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "name": "big_lib.relative",
+                "qname": {
+                    "container": "big_lib",
+                    "localName": "relative"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/big_lib.relative"
+            },
+            {
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": "lib",
+                "qname": {
+                    "container": "",
+                    "localName": "lib"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/lib"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 14,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass",
+                "qname": {
+                    "container": "lib",
+                    "localName": "HelperClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/lib.HelperClass"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "lib",
+                        "localName": "HelperClass"
+                    },
+                    "symbol": "test/py/glean/lib.HelperClass"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 64,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.THelperClass",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "THelperClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/lib.HelperClass.THelperClass"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "lib",
+                        "localName": "HelperClass"
+                    },
+                    "symbol": "test/py/glean/lib.HelperClass"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 21,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.another_method",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "another_method"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/lib.HelperClass.another_method"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "lib.HelperClass",
+                        "localName": "another_method"
+                    },
+                    "symbol": "test/py/glean/lib.HelperClass.another_method"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 30,
+                        "columnEnd": 35,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.another_method.<locals>.param",
+                "qname": {
+                    "container": "lib.HelperClass.another_method.<locals>",
+                    "localName": "param"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/lib.HelperClass.another_method.%3Clocals%3E.param"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "lib.HelperClass",
+                        "localName": "another_method"
+                    },
+                    "symbol": "test/py/glean/lib.HelperClass.another_method"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 24,
+                        "columnEnd": 28,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.another_method.<locals>.self",
+                "qname": {
+                    "container": "lib.HelperClass.another_method.<locals>",
+                    "localName": "self"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/lib.HelperClass.another_method.%3Clocals%3E.self"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "lib",
+                        "localName": "HelperClass"
+                    },
+                    "symbol": "test/py/glean/lib.HelperClass"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 18,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.method",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "method"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/lib.HelperClass.method"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "lib.HelperClass",
+                        "localName": "method"
+                    },
+                    "symbol": "test/py/glean/lib.HelperClass.method"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 20,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.method.<locals>.self",
+                "qname": {
+                    "container": "lib.HelperClass.method.<locals>",
+                    "localName": "self"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/lib.HelperClass.method.%3Clocals%3E.self"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "lib",
+                        "localName": "HelperClass"
+                    },
+                    "symbol": "test/py/glean/lib.HelperClass"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.value",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "value"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/lib.HelperClass.value"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "lib"
+                    },
+                    "symbol": "test/py/glean/lib"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 25,
+                        "lineBegin": 25,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.helper_func",
+                "qname": {
+                    "container": "lib",
+                    "localName": "helper_func"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/lib.helper_func"
+            },
+            {
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "name": "main",
+                "qname": {
+                    "container": "",
+                    "localName": "main"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/main"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "main"
+                    },
+                    "symbol": "test/py/glean/main"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 13,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": "main.f",
+                "qname": {
+                    "container": "main",
+                    "localName": "f"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/main.f"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "main"
+                    },
+                    "symbol": "test/py/glean/main"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 22,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "name": "main.g",
+                "qname": {
+                    "container": "main",
+                    "localName": "g"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/main.g"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "main",
+                        "localName": "g"
+                    },
+                    "symbol": "test/py/glean/main.g"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 25,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "name": "main.g.<locals>.h",
+                "qname": {
+                    "container": "main.g.<locals>",
+                    "localName": "h"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/main.g.%3Clocals%3E.h"
+            },
+            {
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "name": "shadow",
+                "qname": {
+                    "container": "",
+                    "localName": "shadow"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/shadow"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 26,
+                        "lineBegin": 14,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": "shadow.ShadowClass",
+                "qname": {
+                    "container": "shadow",
+                    "localName": "ShadowClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/shadow.ShadowClass"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "shadow",
+                        "localName": "ShadowClass"
+                    },
+                    "symbol": "test/py/glean/shadow.ShadowClass"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": "shadow.ShadowClass.big_func",
+                "qname": {
+                    "container": "shadow.ShadowClass",
+                    "localName": "big_func"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/shadow.ShadowClass.big_func"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "shadow",
+                        "localName": "ShadowClass"
+                    },
+                    "symbol": "test/py/glean/shadow.ShadowClass"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 26,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": "shadow.ShadowClass.local_var",
+                "qname": {
+                    "container": "shadow.ShadowClass",
+                    "localName": "local_var"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/shadow.ShadowClass.local_var"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "shadow",
+                        "localName": "ShadowClass"
+                    },
+                    "symbol": "test/py/glean/shadow.ShadowClass"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "shadow.ShadowClass.other_var",
+                "qname": {
+                    "container": "shadow.ShadowClass",
+                    "localName": "other_var"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/shadow.ShadowClass.other_var"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "shadow"
+                    },
+                    "symbol": "test/py/glean/shadow"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "name": "shadow.big_func",
+                "qname": {
+                    "container": "shadow",
+                    "localName": "big_func"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/shadow.big_func"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "shadow"
+                    },
+                    "symbol": "test/py/glean/shadow"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 16,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": "shadow.local_var",
+                "qname": {
+                    "container": "shadow",
+                    "localName": "local_var"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/shadow.local_var"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "shadow"
+                    },
+                    "symbol": "test/py/glean/shadow"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 22,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "name": "shadow.local_var",
+                "qname": {
+                    "container": "shadow",
+                    "localName": "local_var"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/shadow.local_var"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "shadow"
+                    },
+                    "symbol": "test/py/glean/shadow"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "name": "shadow.other_var",
+                "qname": {
+                    "container": "shadow",
+                    "localName": "other_var"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/shadow.other_var"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "shadow"
+                    },
+                    "symbol": "test/py/glean/shadow"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 32,
+                        "lineBegin": 20,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "name": "shadow.shadow_func",
+                "qname": {
+                    "container": "shadow",
+                    "localName": "shadow_func"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/shadow.shadow_func"
+            }
+        ]
+    }
+]

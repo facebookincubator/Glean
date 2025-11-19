@@ -1,0 +1,390 @@
+[
+    "@generated",
+    {
+        "childrenContained": [
+            "test/py/glean/lib.HelperClass.THelperClass",
+            "test/py/glean/lib.HelperClass.another_method",
+            "test/py/glean/lib.HelperClass.method",
+            "test/py/glean/lib.HelperClass.value"
+        ],
+        "childrenExtended": [],
+        "containsParents": [
+            {
+                "child": "test/py/glean/lib.HelperClass",
+                "parent": "test/py/glean/lib"
+            }
+        ],
+        "inheritedSymbols": [],
+        "parentsExtended": [],
+        "requireClass": [],
+        "requireExtends": [],
+        "requireImplements": [],
+        "symbolBasicDetails": {},
+        "symbolDetails": {
+            "test/py/glean/lib": {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "lib"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "module lib",
+                "sym": "test/py/glean/lib",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 3,
+                            "start": 7
+                        },
+                        "type": "test/py/glean/lib"
+                    }
+                ],
+                "visibility": 20
+            },
+            "test/py/glean/lib.HelperClass": {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 14,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib",
+                    "localName": "HelperClass"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "class HelperClass",
+                "sym": "test/py/glean/lib.HelperClass",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 14,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 6
+                        },
+                        "type": "test/py/glean/lib.HelperClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            "test/py/glean/lib.HelperClass.THelperClass": {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 64,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "THelperClass"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "THelperClass",
+                "sym": "test/py/glean/lib.HelperClass.THelperClass",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 64,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 12,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/lib.HelperClass.THelperClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            "test/py/glean/lib.HelperClass.another_method": {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 21,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "another_method"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def another_method(\n    self,\n    param: \"HelperClass\"\n) -> \"Union[HelperClass, None]\"",
+                "sym": "test/py/glean/lib.HelperClass.another_method",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 21,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 14,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/lib.HelperClass.another_method"
+                    },
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 42
+                        },
+                        "type": "test/py/glean/lib.HelperClass"
+                    },
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 67
+                        },
+                        "type": "test/py/glean/lib.HelperClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            "test/py/glean/lib.HelperClass.method": {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 18,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "method"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def method(\n    self\n) -> \"HelperClass\"",
+                "sym": "test/py/glean/lib.HelperClass.method",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 18,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 6,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/lib.HelperClass.method"
+                    },
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 27
+                        },
+                        "type": "test/py/glean/lib.HelperClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            "test/py/glean/lib.HelperClass.value": {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "value"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "value: THelperClass",
+                "sym": "test/py/glean/lib.HelperClass.value",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 0
+                        },
+                        "type": "test/py/glean/lib.HelperClass.value"
+                    },
+                    {
+                        "span": {
+                            "length": 12,
+                            "start": 7
+                        },
+                        "type": "test/py/glean/lib.HelperClass.THelperClass"
+                    }
+                ],
+                "visibility": 20
+            }
+        }
+    }
+]

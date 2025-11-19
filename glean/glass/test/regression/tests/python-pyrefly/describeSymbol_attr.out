@@ -1,0 +1,68 @@
+[
+    "@generated",
+    {
+        "annotations": [
+            {
+                "name": "@staticmethod",
+                "source": "@staticmethod"
+            }
+        ],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 14,
+        "language": 7,
+        "location": {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 13,
+                "lineBegin": 25,
+                "lineEnd": 26
+            },
+            "repository": "test"
+        },
+        "modifiers": [
+            3,
+            4
+        ],
+        "name": {
+            "container": "as",
+            "localName": "func_sleep"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "async def func_sleep()",
+        "sym": "test/py/glean/as.func_sleep",
+        "sym_location": {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 13,
+                "lineBegin": 25,
+                "lineEnd": 26
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": [
+            {
+                "span": {
+                    "length": 10,
+                    "start": 10
+                },
+                "type": "test/py/glean/as.func_sleep"
+            }
+        ],
+        "visibility": 20
+    }
+]

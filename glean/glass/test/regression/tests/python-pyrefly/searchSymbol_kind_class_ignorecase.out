@@ -1,0 +1,77 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [],
+        "symbols": [
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 29,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "name": "all.LocalClass",
+                "qname": {
+                    "container": "all",
+                    "localName": "LocalClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/all.LocalClass"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 14,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass",
+                "qname": {
+                    "container": "lib",
+                    "localName": "HelperClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/lib.HelperClass"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 26,
+                        "lineBegin": 14,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": "shadow.ShadowClass",
+                "qname": {
+                    "container": "shadow",
+                    "localName": "ShadowClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/shadow.ShadowClass"
+            }
+        ]
+    }
+]

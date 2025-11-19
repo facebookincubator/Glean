@@ -1,0 +1,2 @@
+action: documentSymbolListX
+args: {"include_refs":true,"filepath":"glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py","repository":"test"}

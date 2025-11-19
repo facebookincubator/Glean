@@ -1,0 +1,69 @@
+[
+    "@generated",
+    {
+        "annotations": [
+            {
+                "name": "@timeit",
+                "source": "@timeit"
+            },
+            {
+                "name": "@lru_cache",
+                "source": "@lru_cache"
+            }
+        ],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 14,
+        "language": 7,
+        "location": {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 21,
+                "lineBegin": 24,
+                "lineEnd": 26
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "all",
+            "localName": "fn"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "def fn()",
+        "sym": "test/py/glean/all.fn",
+        "sym_location": {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 21,
+                "lineBegin": 24,
+                "lineEnd": 26
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": [
+            {
+                "span": {
+                    "length": 2,
+                    "start": 4
+                },
+                "type": "test/py/glean/all.fn"
+            }
+        ],
+        "visibility": 20
+    }
+]

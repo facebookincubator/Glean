@@ -1,0 +1,1222 @@
+[
+    "@generated",
+    {
+        "digest": {
+            "hash": "06ba6aca2e4e33b2c510a1afc4102889b885f7738440bcfadd4d8e4c79aef2e9",
+            "size": 686
+        },
+        "referenced_file_digests": {
+            "test": {
+                "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py": {
+                    "hash": "06ba6aca2e4e33b2c510a1afc4102889b885f7738440bcfadd4d8e4c79aef2e9",
+                    "size": 686
+                },
+                "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py": {
+                    "hash": "e54e0246c3ddaa847419110fb0b98dafdfceab17c0372dd51e39761127175ed9",
+                    "size": 274
+                },
+                "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py": {
+                    "hash": "c3909637b9614fa7367226a2e331401df68850f0b536bfe986f6a0ab84e2bbc1",
+                    "size": 609
+                }
+            }
+        },
+        "revision": "testhash",
+        "size": 38,
+        "symbols": {
+            "1": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 5
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "all"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "module all"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 35
+                    },
+                    "sym": "test/py/glean/all"
+                }
+            ],
+            "11": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 5
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "lib"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 11,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "sym": "test/py/glean/all.lib"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 5
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "lib"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "module lib"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 11,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "sym": "test/py/glean/lib",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 1,
+                            "lineBegin": 1,
+                            "lineEnd": 27
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "12": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_func"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 29,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "sym": "test/py/glean/all.big_func"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_var"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 31,
+                        "columnEnd": 38,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "sym": "test/py/glean/all.big_var"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 5
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_lib"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "module big_lib"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 13,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "sym": "test/py/glean/big_lib",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 1,
+                            "lineBegin": 1,
+                            "lineEnd": 14
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_func"
+                        },
+                        "symbolParent": {
+                            "aString": "big_lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "def big_func()"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 29,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "sym": "test/py/glean/big_lib.big_func",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 19,
+                            "lineBegin": 12,
+                            "lineEnd": 13
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_var"
+                        },
+                        "symbolParent": {
+                            "aString": "big_lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "big_var"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 31,
+                        "columnEnd": 38,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "sym": "test/py/glean/big_lib.big_var",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 12,
+                            "lineBegin": 9,
+                            "lineEnd": 9
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "13": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "Helper"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 28,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "sym": "test/py/glean/all.Helper"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 5
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "lib"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "module lib"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 9,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "sym": "test/py/glean/lib",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 1,
+                            "lineBegin": 1,
+                            "lineEnd": 27
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "HelperClass"
+                        },
+                        "symbolParent": {
+                            "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "class HelperClass"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 28,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "sym": "test/py/glean/lib.HelperClass",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 13,
+                            "lineBegin": 14,
+                            "lineEnd": 22
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "15": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "var"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        },
+                        "symbolSignature": {
+                            "aString": "var"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 10,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "sym": "test/py/glean/all.var"
+                }
+            ],
+            "17": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "var1"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        },
+                        "symbolSignature": {
+                            "aString": "var1: List[int]"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 28,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "sym": "test/py/glean/all.var1"
+                }
+            ],
+            "19": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "var1"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        },
+                        "symbolSignature": {
+                            "aString": "var1: List[int]"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 23,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "sym": "test/py/glean/all.var1",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 28,
+                            "lineBegin": 17,
+                            "lineEnd": 17
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "var2"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        },
+                        "symbolSignature": {
+                            "aString": "var2: List[int]"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 23,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "sym": "test/py/glean/all.var2"
+                }
+            ],
+            "24": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "fn"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        },
+                        "symbolSignature": {
+                            "aString": "def fn()"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 24,
+                        "lineEnd": 26
+                    },
+                    "sym": "test/py/glean/all.fn"
+                }
+            ],
+            "25": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "local_var"
+                        },
+                        "symbolParent": {
+                            "aString": "all.fn.<locals>"
+                        },
+                        "symbolSignature": {
+                            "aString": "local_var"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 41,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "sym": "test/py/glean/all.fn.%3Clocals%3E.local_var"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_var"
+                        },
+                        "symbolParent": {
+                            "aString": "big_lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "big_var"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 33,
+                        "columnEnd": 40,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "sym": "test/py/glean/big_lib.big_var",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 12,
+                            "lineBegin": 9,
+                            "lineEnd": 9
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 5
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "lib"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "module lib"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 20,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "sym": "test/py/glean/lib",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 1,
+                            "lineBegin": 1,
+                            "lineEnd": 27
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "HelperClass"
+                        },
+                        "symbolParent": {
+                            "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "class HelperClass"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 32,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "sym": "test/py/glean/lib.HelperClass",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 13,
+                            "lineBegin": 14,
+                            "lineEnd": 22
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "26": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "local_var"
+                        },
+                        "symbolParent": {
+                            "aString": "all.fn.<locals>"
+                        },
+                        "symbolSignature": {
+                            "aString": "local_var"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 12,
+                        "columnEnd": 21,
+                        "lineBegin": 26,
+                        "lineEnd": 26
+                    },
+                    "sym": "test/py/glean/all.fn.%3Clocals%3E.local_var",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                        "range": {
+                            "columnBegin": 5,
+                            "columnEnd": 41,
+                            "lineBegin": 25,
+                            "lineEnd": 25
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "29": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "LocalClass"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        },
+                        "symbolSignature": {
+                            "aString": "class LocalClass"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 29,
+                        "lineEnd": 31
+                    },
+                    "sym": "test/py/glean/all.LocalClass"
+                }
+            ],
+            "30": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "meth"
+                        },
+                        "symbolParent": {
+                            "aString": "all.LocalClass"
+                        },
+                        "symbolSignature": {
+                            "aString": "def meth(\n    self,\n    param\n) -> \"Helper\""
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 20,
+                        "lineBegin": 30,
+                        "lineEnd": 31
+                    },
+                    "sym": "test/py/glean/all.LocalClass.meth"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 10
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "param"
+                        },
+                        "symbolParent": {
+                            "aString": "all.LocalClass.meth.<locals>"
+                        },
+                        "symbolSignature": {
+                            "aString": "param"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 25,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "sym": "test/py/glean/all.LocalClass.meth.%3Clocals%3E.param"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 10
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "self"
+                        },
+                        "symbolParent": {
+                            "aString": "all.LocalClass.meth.<locals>"
+                        },
+                        "symbolSignature": {
+                            "aString": "self"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 18,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "sym": "test/py/glean/all.LocalClass.meth.%3Clocals%3E.self"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "HelperClass"
+                        },
+                        "symbolParent": {
+                            "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "class HelperClass"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 31,
+                        "columnEnd": 37,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "sym": "test/py/glean/lib.HelperClass",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 13,
+                            "lineBegin": 14,
+                            "lineEnd": 22
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "31": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "fn"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        },
+                        "symbolSignature": {
+                            "aString": "def fn()"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 18,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "sym": "test/py/glean/all.fn",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 21,
+                            "lineBegin": 24,
+                            "lineEnd": 26
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "34": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "LocalClass"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        },
+                        "symbolSignature": {
+                            "aString": "class LocalClass"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 34,
+                        "columnEnd": 46,
+                        "lineBegin": 34,
+                        "lineEnd": 34
+                    },
+                    "sym": "test/py/glean/all.LocalClass",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 20,
+                            "lineBegin": 29,
+                            "lineEnd": 31
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "__all__"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        },
+                        "symbolSignature": {
+                            "aString": "__all__"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 81,
+                        "lineBegin": 34,
+                        "lineEnd": 34
+                    },
+                    "sym": "test/py/glean/all.__all__"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "fn"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        },
+                        "symbolSignature": {
+                            "aString": "def fn()"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 48,
+                        "columnEnd": 52,
+                        "lineBegin": 34,
+                        "lineEnd": 34
+                    },
+                    "sym": "test/py/glean/all.fn",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 21,
+                            "lineBegin": 24,
+                            "lineEnd": 26
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "var"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        },
+                        "symbolSignature": {
+                            "aString": "var"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 54,
+                        "columnEnd": 59,
+                        "lineBegin": 34,
+                        "lineEnd": 34
+                    },
+                    "sym": "test/py/glean/all.var",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 10,
+                            "lineBegin": 15,
+                            "lineEnd": 15
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_func"
+                        },
+                        "symbolParent": {
+                            "aString": "big_lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "def big_func()"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 22,
+                        "columnEnd": 32,
+                        "lineBegin": 34,
+                        "lineEnd": 34
+                    },
+                    "sym": "test/py/glean/big_lib.big_func",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 19,
+                            "lineBegin": 12,
+                            "lineEnd": 13
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "big_var"
+                        },
+                        "symbolParent": {
+                            "aString": "big_lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "big_var"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 71,
+                        "columnEnd": 80,
+                        "lineBegin": 34,
+                        "lineEnd": 34
+                    },
+                    "sym": "test/py/glean/big_lib.big_var",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 12,
+                            "lineBegin": 9,
+                            "lineEnd": 9
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "HelperClass"
+                        },
+                        "symbolParent": {
+                            "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "class HelperClass"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 12,
+                        "columnEnd": 20,
+                        "lineBegin": 34,
+                        "lineEnd": 34
+                    },
+                    "sym": "test/py/glean/lib.HelperClass",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 13,
+                            "lineBegin": 14,
+                            "lineEnd": 22
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "HelperClass"
+                        },
+                        "symbolParent": {
+                            "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "class HelperClass"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 61,
+                        "columnEnd": 69,
+                        "lineBegin": 34,
+                        "lineEnd": 34
+                    },
+                    "sym": "test/py/glean/lib.HelperClass",
+                    "target": {
+                        "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 13,
+                            "lineBegin": 14,
+                            "lineEnd": 22
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "7": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "timeit"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 14,
+                        "lineBegin": 7,
+                        "lineEnd": 7
+                    },
+                    "sym": "test/py/glean/all.timeit"
+                }
+            ],
+            "8": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "lru_cache"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 32,
+                        "lineBegin": 8,
+                        "lineEnd": 8
+                    },
+                    "sym": "test/py/glean/all.lru_cache"
+                }
+            ],
+            "9": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "List"
+                        },
+                        "symbolParent": {
+                            "aString": "all"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 24,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "sym": "test/py/glean/all.List"
+                }
+            ]
+        },
+        "truncated": false
+    }
+]

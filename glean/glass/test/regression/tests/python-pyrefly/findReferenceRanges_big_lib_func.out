@@ -1,0 +1,125 @@
+[
+    "@generated",
+    [
+        {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+            "range": {
+                "columnBegin": 21,
+                "columnEnd": 29,
+                "lineBegin": 12,
+                "lineEnd": 12
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",
+            "range": {
+                "columnBegin": 22,
+                "columnEnd": 32,
+                "lineBegin": 34,
+                "lineEnd": 34
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/relative.py",
+            "range": {
+                "columnBegin": 15,
+                "columnEnd": 23,
+                "lineBegin": 9,
+                "lineEnd": 9
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/relative.py",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 9,
+                "lineBegin": 11,
+                "lineEnd": 11
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+            "range": {
+                "columnBegin": 21,
+                "columnEnd": 29,
+                "lineBegin": 11,
+                "lineEnd": 11
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+            "range": {
+                "columnBegin": 21,
+                "columnEnd": 29,
+                "lineBegin": 9,
+                "lineEnd": 9
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+            "range": {
+                "columnBegin": 17,
+                "columnEnd": 21,
+                "lineBegin": 10,
+                "lineEnd": 10
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+            "range": {
+                "columnBegin": 5,
+                "columnEnd": 13,
+                "lineBegin": 15,
+                "lineEnd": 15
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",
+            "range": {
+                "columnBegin": 5,
+                "columnEnd": 9,
+                "lineBegin": 16,
+                "lineEnd": 16
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+            "range": {
+                "columnBegin": 21,
+                "columnEnd": 29,
+                "lineBegin": 9,
+                "lineEnd": 9
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+            "range": {
+                "columnBegin": 16,
+                "columnEnd": 24,
+                "lineBegin": 15,
+                "lineEnd": 15
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",
+            "range": {
+                "columnBegin": 12,
+                "columnEnd": 20,
+                "lineBegin": 29,
+                "lineEnd": 29
+            },
+            "repository": "test"
+        }
+    ]
+]
