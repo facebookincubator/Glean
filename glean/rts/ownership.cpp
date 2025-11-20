@@ -359,15 +359,20 @@ FOLLY_NOINLINE void completeOwnership(
   auto executor = folly::getGlobalCPUExecutor();
 
   folly::Future<folly::Unit> fetcher = folly::via(executor, [&]() {
-    auto pageOf = [](Id id) {
-      return Id::fromWord((id.toWord() / pageSize) * pageSize);
+    auto pageOf = [](Id id) -> uint64_t {
+      return (id.toWord() / pageSize) * pageSize;
     };
-    Id last = pageOf(lookup.firstFreeId() - 1);
-    Id first = pageOf(lookup.startingId());
-    for (Id id = last;; id -= pageSize) {
-      VLOG(1) << folly::sformat("fetching page: {}", id.toWord());
-      queue.blockingWrite(fetchPage(id, id + pageSize));
-      if (id == first) {
+    Id start = lookup.startingId();
+    Id last = lookup.firstFreeId() - 1;
+    uint64_t first = pageOf(start);
+    for (uint64_t page = pageOf(last);; page -= pageSize) {
+      VLOG(1) << folly::sformat("fetching page: {}", page);
+      queue.blockingWrite(
+          fetchPage(
+              (page == first) ? start : Id::fromWord(page),
+              Id::fromWord(page + pageSize))
+      );
+      if (page == first) {
         break;
       }
     }
