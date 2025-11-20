@@ -125,7 +125,7 @@ pub enum LanguageId {
 impl LanguageId {
     pub fn new(s: &str) -> LanguageId {
         use LanguageId::*;
-        match s {
+        match s.to_ascii_lowercase().as_str() {
             "abap" => ABAP,
             "bat" => WindowsBat,
             "bibtex" => BibTeX,

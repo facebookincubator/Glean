@@ -215,6 +215,30 @@ impl Env {
             return Some(LanguageId::Kotlin);
         } else if filepath.ends_with(".java") {
             return Some(LanguageId::Java);
+        } else if filepath.ends_with(".ts") {
+            return Some(LanguageId::TypeScript);
+        } else if filepath.ends_with(".tsx") {
+            return Some(LanguageId::TypeScriptReact);
+        } else if filepath.ends_with(".js") {
+            return Some(LanguageId::JavaScript);
+        } else if filepath.ends_with(".jsx") {
+            return Some(LanguageId::JavaScriptReact);
+        } else if filepath.ends_with(".rs") {
+            return Some(LanguageId::Rust);
+        } else if filepath.ends_with(".go") {
+            return Some(LanguageId::Go);
+        } else if filepath.ends_with(".py") {
+            return Some(LanguageId::Python);
+        } else if filepath.ends_with(".cpp") || filepath.ends_with(".h") {
+            return Some(LanguageId::Cpp);
+        } else if filepath.ends_with(".c") {
+            return Some(LanguageId::C);
+        } else if filepath.ends_with(".cs") {
+            return Some(LanguageId::CSharp);
+        } else if filepath.ends_with(".m") {
+            return Some(LanguageId::ObjectiveC);
+        } else if filepath.ends_with(".mm") {
+            return Some(LanguageId::ObjectiveCpp);
         }
         None
     }
