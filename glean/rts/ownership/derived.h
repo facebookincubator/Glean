@@ -68,7 +68,14 @@ struct DerivedFactOwnership {
 };
 
 struct DerivedFactOwnershipIterator {
-  virtual ~DerivedFactOwnershipIterator() {}
+  virtual ~DerivedFactOwnershipIterator() = default;
+  DerivedFactOwnershipIterator() = default;
+  DerivedFactOwnershipIterator(const DerivedFactOwnershipIterator&) = delete;
+  DerivedFactOwnershipIterator& operator=(const DerivedFactOwnershipIterator&) =
+      delete;
+  DerivedFactOwnershipIterator(DerivedFactOwnershipIterator&&) = delete;
+  DerivedFactOwnershipIterator& operator=(DerivedFactOwnershipIterator&&) =
+      delete;
 
   // Note: the result is only valid until the next call to get()
   virtual folly::Optional<DerivedFactOwnership> get() = 0;
@@ -83,7 +90,13 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
     DerivedFactOwnershipIterator* iter);
 
 struct DerivedDependencyIterator {
-  virtual ~DerivedDependencyIterator() {}
+  virtual ~DerivedDependencyIterator() = default;
+  DerivedDependencyIterator() = default;
+  DerivedDependencyIterator(const DerivedDependencyIterator&) = delete;
+  DerivedDependencyIterator& operator=(const DerivedDependencyIterator&) =
+      delete;
+  DerivedDependencyIterator(DerivedDependencyIterator&&) = delete;
+  DerivedDependencyIterator& operator=(DerivedDependencyIterator&&) = delete;
   virtual folly::Optional<std::pair<std::vector<Id>, std::vector<Id>>>
   get() = 0;
 };
