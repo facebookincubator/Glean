@@ -56,7 +56,7 @@ folly::coro::Task<std::optional<protocol::LocationList>> GlassAccess::handleUSR(
             ::glean::RequestOptions ro;
             // Set revision if provided
             if (revision.has_value()) {
-              ro.revision_ref() = revision.value();
+              ro.revision() = revision.value();
             }
             RpcOptions rpcOptions;
             rpcOptions.setTimeout(std::chrono::milliseconds(GlassTimeoutMs));
@@ -88,7 +88,7 @@ GlassAccess::handleUSRHash(
             ::glean::RequestOptions ro;
             // Set revision if provided
             if (revision.has_value()) {
-              ro.revision_ref() = revision.value();
+              ro.revision() = revision.value();
             }
             RpcOptions rpcOptions;
             rpcOptions.setTimeout(std::chrono::milliseconds(GlassTimeoutMs));
