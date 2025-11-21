@@ -17,6 +17,10 @@
 //! - Parses all descriptor types (namespace, type, term, method, parameter, etc.)
 //! - Supports the "." placeholder for empty package fields
 
+use serde::Serialize;
+
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(tag = "type", rename_all = "lowercase")]
 #[allow(dead_code)]
 pub enum ScipSymbol {
     Local {
@@ -29,6 +33,7 @@ pub enum ScipSymbol {
     },
 }
 
+#[derive(Debug, Clone, PartialEq, Serialize)]
 #[allow(dead_code)]
 pub struct Package {
     pub manager: Option<String>,
@@ -36,22 +41,23 @@ pub struct Package {
     pub version: Option<String>,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct Descriptor {
     pub name: String,
     pub kind: DescriptorKind,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "lowercase")]
 pub enum DescriptorKind {
-    Namespace,              // name/
-    Type,                   // name#
-    Term,                   // name.
-    Method(Option<String>), // name(<disambiguator>?).
-    TypeParameter,          // [name]
-    Parameter,              // (name)
-    Meta,                   // name:
-    Macro,                  // name!
+    Namespace,
+    Type,
+    Term,
+    Method { disambiguator: Option<String> },
+    TypeParameter,
+    Parameter,
+    Meta,
+    Macro,
 }
 
 /// Parses a SCIP symbol string according to the SCIP specification.
@@ -296,7 +302,7 @@ fn parse_method(descriptors_str: &str, name: String, start_pos: usize) -> (Descr
     (
         Descriptor {
             name,
-            kind: DescriptorKind::Method(disambiguator),
+            kind: DescriptorKind::Method { disambiguator },
         },
         i,
     )
@@ -468,7 +474,12 @@ mod tests {
         assert_eq!(descriptors[0].name, "MyClass");
         assert_eq!(descriptors[0].kind, DescriptorKind::Type);
         assert_eq!(descriptors[1].name, "myMethod");
-        assert_eq!(descriptors[1].kind, DescriptorKind::Method(None));
+        assert_eq!(
+            descriptors[1].kind,
+            DescriptorKind::Method {
+                disambiguator: None
+            }
+        );
     }
 
     #[test]
@@ -496,7 +507,12 @@ mod tests {
 
         assert_eq!(descriptors.len(), 2);
         assert_eq!(descriptors[0].name, "func");
-        assert_eq!(descriptors[0].kind, DescriptorKind::Method(None));
+        assert_eq!(
+            descriptors[0].kind,
+            DescriptorKind::Method {
+                disambiguator: None
+            }
+        );
         assert_eq!(descriptors[1].name, "param");
         assert_eq!(descriptors[1].kind, DescriptorKind::Parameter);
     }
@@ -597,7 +613,12 @@ mod tests {
         assert_eq!(descriptors[0].name, "MyClass");
         assert_eq!(descriptors[0].kind, DescriptorKind::Type);
         assert_eq!(descriptors[1].name, "special method");
-        assert_eq!(descriptors[1].kind, DescriptorKind::Method(None));
+        assert_eq!(
+            descriptors[1].kind,
+            DescriptorKind::Method {
+                disambiguator: None
+            }
+        );
     }
 
     #[test]
@@ -615,7 +636,9 @@ mod tests {
         assert_eq!(descriptors[1].name, "myMethod");
         assert_eq!(
             descriptors[1].kind,
-            DescriptorKind::Method(Some("disambig".to_string()))
+            DescriptorKind::Method {
+                disambiguator: Some("disambig".to_string())
+            }
         );
     }
 

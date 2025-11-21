@@ -49,7 +49,7 @@ impl SymbolKind {
             Namespace => SkPackage,
             Type => SkClass,
             Term => SkVariable,
-            Method(_) => SkMethod,
+            Method { .. } => SkMethod,
             TypeParameter => SkTypeParameter,
             Parameter => SkField,
             Meta => SkUnknown,
