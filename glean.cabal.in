@@ -230,6 +230,10 @@ library stubs
         tasty,
         tasty-hunit
 
+    if !flag(fbthrift)
+        other-modules: Facebook.Service.HttpFb303
+        build-depends: wai, http-types
+
 library logger
     import: fb-haskell, fb-cpp, deps
     visibility: private

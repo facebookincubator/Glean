@@ -32,6 +32,7 @@ import Thrift.Processor
 import Thrift.Server.CppServer
 #else
 import Thrift.Server.HTTP
+import Facebook.Service.HttpFb303
 #endif
 
 -- | Runs a facebook service on a CPPServer
@@ -166,7 +167,12 @@ withBackgroundFacebookService_
   -> IO a
 withBackgroundFacebookService_ fb303 handler postProcess opts waitAction = do
   bracketFb303 fb303 Fb303_status_STARTING Fb303_status_STOPPED $ do
-    withBackgroundServer' handler postProcess opts waitAction
+#if FBTHRIFT
+    let opts' = opts
+#else
+    let opts' = opts { middleware = middleware opts . fb303Middleware fb303 }
+#endif
+    withBackgroundServer' handler postProcess opts' waitAction
 
 nilPostProcess :: a -> b -> [c]
 nilPostProcess _ _ = []
