@@ -3,7 +3,7 @@
     {
         "referenced_file_digests": {},
         "revision": "testhash",
-        "size": 19,
+        "size": 22,
         "symbols": {
             "1": [
                 {
@@ -496,6 +496,101 @@
                         "lineEnd": 5
                     },
                     "sym": "test/buck/d/buck_project/my_defs.bzl/f"
+                }
+            ],
+            "32": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 3
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "test_return_value"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project/my_defs.bzl"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 19,
+                        "lineBegin": 32,
+                        "lineEnd": 38
+                    },
+                    "sym": "test/buck/d/buck_project/my_defs.bzl/test_return_value"
+                }
+            ],
+            "34": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 3
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "MY_CONST"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project/my_defs.bzl"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 24,
+                        "lineBegin": 34,
+                        "lineEnd": 34
+                    },
+                    "sym": "test/buck/d/buck_project/my_defs.bzl/MY_CONST",
+                    "target": {
+                        "filepath": "buck_project/my_defs.bzl",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 14,
+                            "lineBegin": 20,
+                            "lineEnd": 20
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "36": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 3
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "hh"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project/my_defs.bzl"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 18,
+                        "lineBegin": 36,
+                        "lineEnd": 36
+                    },
+                    "sym": "test/buck/d/buck_project/my_defs.bzl/hh",
+                    "target": {
+                        "filepath": "buck_project/my_defs.bzl",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 28,
+                            "lineEnd": 30
+                        },
+                        "repository": "test"
+                    }
                 }
             ],
             "4": [
