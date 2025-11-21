@@ -444,7 +444,8 @@ library util
         glean:config,
         glean:if-glean-hs,
         primitive,
-        network
+        network,
+        network-uri
 
 -- Angle AST and parser, schema name resolution
 library angle

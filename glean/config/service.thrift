@@ -22,4 +22,5 @@ struct HostPort {
 union Service {
   1: string tier;
   2: HostPort hostPort;
+  3: string uri;
 } (hs.nonempty)
