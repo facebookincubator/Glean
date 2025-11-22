@@ -1067,6 +1067,7 @@ executable disassemble
         glean:if-glean-hs,
         glean:lib,
         glean:util,
+        glean:angle,
 
 library test-unit
     import: fb-haskell, fb-cpp, deps
