@@ -63,7 +63,7 @@
 #
 
 CABAL_BIN=cabal
-PWD := $(shell /bin/pwd)
+PWD := $(shell pwd)
 
 # There's a lot of parallelism in the schema-generated code
 # If you have >=16G and >=4 cores, trying passing these:
@@ -98,6 +98,11 @@ BYTECODE_GEN= \
 BYTECODE_SRCS= \
 	$(wildcard glean/bytecode/*/Glean/Bytecode/*/*.hs) \
 	$(wildcard glean/bytecode/Glean/Bytecode/*.hs)
+
+# Code generators. May be injected by external build systems if those are
+# managing the build.
+GEN_SCHEMA = $(CABAL) run glean:gen-schema --
+GEN_BYTECODE = $(CABAL) run glean:gen-bytecode-hs --
 
 all:: glean.cabal thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs glean
 
@@ -146,7 +151,7 @@ gen-bytecode: $(BYTECODE_GEN)
 
 # Note we don't rsync here because we have actual dependencies
 $(BYTECODE_GEN) &: $(BYTECODE_SRCS) glean.cabal
-	$(CABAL) run gen-bytecode-hs -- --install_dir=glean/hs
+	$(GEN_BYTECODE) --install_dir=glean/hs
 
 .PHONY: test
 test:: glean.cabal
@@ -243,19 +248,31 @@ thrift:: thrift-compiler thrift-hs
 thrift-hs:: thrift-hsthrift-hs thrift-glean-hs
 
 .PHONY: thrift-compiler
+# Allow injecting a prebuilt thrift compiler by setting THRIFT_COMPILE in
+# environment (e.g. with Nix).
+ifndef THRIFT_COMPILE
 thrift-compiler::
 	(cd hsthrift && make CABAL="$(CABAL)" compiler)
 	$(eval THRIFT_COMPILE := $$(shell $$(CABAL) -v0 list-bin exe:thrift-compiler))
+else
+thrift-compiler::
+	# no-op
+endif
 
 .PHONY: thrift-hsthrift-hs
+ifndef THRIFT_COMPILE
 thrift-hsthrift-hs::
 	(cd hsthrift && make CABAL="$(CABAL)" thrift-hs)
+else
+thrift-hsthrift-hs::
+	# no-op
+endif
 
 .PHONY: gen-schema
 gen-schema :: glean.cabal cxx-libraries
 	rm -rf $(CODEGEN_DIR)/$@
 	mkdir -p $(CODEGEN_DIR)/$@
-	$(CABAL) run glean:gen-schema -- \
+	$(GEN_SCHEMA) \
 		--install_dir $(CODEGEN_DIR)/$@ \
 		--dir glean/schema/source \
 		--thrift glean/schema \
