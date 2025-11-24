@@ -1,0 +1,87 @@
+# https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
+name: Build Docker Images
+on:
+  # Manual trigger:
+  #   https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_dispatch
+  workflow_dispatch:
+  # Scheduled trigger:
+  #   https://docs.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events
+  schedule:
+    - cron: "0 1 * * mon" # every monday at 1am
+
+env:
+  # We have to use 'glean' here, not 'Glean', because Docker does not allow
+  # uppercase letters in image names, so the image push will inevitably fail
+  BASE_IMAGE_NAME: ${{ github.repository_owner }}/glean
+  REGISTRY: ghcr.io
+
+jobs:
+  build-docker:
+    name: Build and Push Docker Images
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a # v2.1.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Derive image tags
+        run: |
+          DATE=$(date +%Y%m%d%H%M)
+          echo "Using date: ${DATE}"
+          echo "Using hash: ${GITHUB_SHA}"
+          echo "IMAGE_DATE_TAG=v${DATE}" >> $GITHUB_ENV
+          echo "IMAGE_SHA_TAG=${GITHUB_SHA}" >> $GITHUB_ENV
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+
+      - name: Build and save Docker images
+        run: |
+          for x in server client demo; do
+            docker build -t $x:latest --target $x .
+            for v in latest ${IMAGE_DATE_TAG} ${IMAGE_SHA_TAG}; do
+              docker tag $x:latest ${REGISTRY}/${BASE_IMAGE_NAME}/$x:$v
+            done
+          done
+        env:
+          REGISTRY: ${{ env.REGISTRY }}
+          BASE_IMAGE_NAME: ${{ env.BASE_IMAGE_NAME }}
+          IMAGE_DATE_TAG: ${{ env.IMAGE_DATE_TAG }}
+          IMAGE_SHA_TAG: ${{ env.IMAGE_SHA_TAG }}
+
+      - name: Test Docker image
+        run: |
+          docker run --rm \
+            --entrypoint /usr/local/bin/glean \
+            demo:latest \
+            shell --db-root /glean/db --schema dir:/glean/schema \
+            ':describe' \
+            ':db react/0' \
+            ':stat'
+
+      - name: Push image to the Container registry
+        run: |
+          set -x
+          for x in server client demo; do
+            for v in latest ${IMAGE_DATE_TAG} ${IMAGE_SHA_TAG}; do
+              echo docker push $x:latest ${REGISTRY}/${BASE_IMAGE_NAME}/$x:$v
+            done
+          done
+        env:
+          REGISTRY: ${{ env.REGISTRY }}
+          BASE_IMAGE_NAME: ${{ env.BASE_IMAGE_NAME }}
+          IMAGE_DATE_TAG: ${{ env.IMAGE_DATE_TAG }}
+          IMAGE_SHA_TAG: ${{ env.IMAGE_SHA_TAG }}
