@@ -208,6 +208,16 @@ type Entity =
     kotlin: SomeEntity |
     swift: SomeEntity |
     python: SomeEntity |
+    typescriptReact: SomeEntity |
+    javascript: SomeEntity |
+    javascriptReact: SomeEntity |
+    c: SomeEntity |
+    cpp: SomeEntity |
+    ruby: SomeEntity |
+    csharp: SomeEntity |
+    visualBasic: SomeEntity |
+    dart: SomeEntity |
+    php: SomeEntity |
   }
 
 # entities are scip.Definitions
@@ -228,10 +238,20 @@ predicate TagDefinition:
     ( Rust = Language; { rust = SomeEntity }) |
     ( Go = Language; { go = SomeEntity }) |
     ( TypeScript = Language; { typescript = SomeEntity }) |
+    ( TypeScriptReact = Language; { typescriptReact = SomeEntity }) |
+    ( JavaScript = Language; { javascript = SomeEntity }) |
+    ( JavaScriptReact = Language; { javascriptReact = SomeEntity }) |
     ( Swift = Language; { swift = SomeEntity }) |
     ( Java = Language; { java = SomeEntity }) |
     ( Python = Language; { python = SomeEntity }) |
-    ( Kotlin = Language; { kotlin = SomeEntity }) = Entity;
+    ( C = Language; { c = SomeEntity }) |
+    ( Cpp = Language; { cpp = SomeEntity }) |
+    ( Kotlin = Language; { kotlin = SomeEntity }) |
+    ( Ruby = Language; { ruby = SomeEntity }) |
+    ( CSharp = Language; { csharp = SomeEntity }) |
+    ( VisualBasic = Language; { visualBasic = SomeEntity }) |
+    ( Dart = Language; { dart = SomeEntity }) |
+    ( PHP = Language; { php = SomeEntity }) = Entity
 
 # eliminate entity language tags. inverse of TagDefinition
 predicate EntityDefinition:
@@ -243,9 +263,20 @@ predicate EntityDefinition:
     ({ rust = SomeEntity }) |
     ({ go = SomeEntity }) |
     ({ typescript = SomeEntity }) |
-    ({ swift = SomeEntity }) |
     ({ java = SomeEntity }) |
-    ({ kotlin = SomeEntity }) = Entity;
+    ({ kotlin = SomeEntity }) |
+    ({ swift = SomeEntity }) |
+    ({ python = SomeEntity }) |
+    ({ typescriptReact = SomeEntity }) |
+    ({ javascript = SomeEntity }) |
+    ({ javascriptReact = SomeEntity }) |
+    ({ c = SomeEntity }) |
+    ({ cpp = SomeEntity }) |
+    ({ ruby = SomeEntity }) |
+    ({ csharp = SomeEntity }) |
+    ({ visualBasic = SomeEntity }) |
+    ({ dart = SomeEntity }) |
+    ({ php = SomeEntity }) = Entity;
     { defn = Defn } = SomeEntity
 
 # Symbol locations type. Analog of codemarkup:Location

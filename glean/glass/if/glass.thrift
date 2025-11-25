@@ -578,6 +578,13 @@ enum Language {
   Swift = 20,
   Angle = 21,
   Chef = 22,
+  Ruby = 23,
+  C = 24,
+  VisualBasic = 25,
+  PHP = 26,
+  Dart = 27,
+  TypeScriptReact = 28,
+  JavaScriptReact = 29,
 }
 
 // Kinds of definitions. E.g. for jump-to-declaration or jump-to-definition

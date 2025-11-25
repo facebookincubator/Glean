@@ -268,6 +268,17 @@ entityLanguage e = case e of
   Code.Entity_scip Scip.Entity_java{} -> Language_Java
   Code.Entity_scip Scip.Entity_kotlin{} -> Language_Kotlin
   Code.Entity_scip Scip.Entity_swift{} -> Language_Swift
+  Code.Entity_scip Scip.Entity_python{} -> Language_Python
+  Code.Entity_scip Scip.Entity_typescriptReact{} -> Language_TypeScriptReact
+  Code.Entity_scip Scip.Entity_javascript{} -> Language_JavaScript
+  Code.Entity_scip Scip.Entity_javascriptReact{} -> Language_JavaScriptReact
+  Code.Entity_scip Scip.Entity_c{} -> Language_C
+  Code.Entity_scip Scip.Entity_cpp{} -> Language_Cpp
+  Code.Entity_scip Scip.Entity_ruby{} -> Language_Ruby
+  Code.Entity_scip Scip.Entity_csharp{} -> Language_CSharp
+  Code.Entity_scip Scip.Entity_visualBasic{} -> Language_VisualBasic
+  Code.Entity_scip Scip.Entity_dart{} -> Language_Dart
+  Code.Entity_scip Scip.Entity_php{} -> Language_PHP
   Code.Entity_scip _ -> Language__UNKNOWN 0
   Code.Entity_EMPTY -> Language__UNKNOWN 0
 
@@ -277,9 +288,11 @@ languageToCodeLang :: Language -> Maybe Code.Language
 languageToCodeLang l = case l of
   Language_Angle -> Just Code.Language_Angle
   Language_Buck -> Just Code.Language_Buck
+  Language_C -> Just Code.Language_C
   Language_Chef -> Just Code.Language_Chef
   Language_CSharp -> Just Code.Language_CSharp
   Language_Cpp -> Just Code.Language_Cpp
+  Language_Dart -> Just Code.Language_Dart
   Language_Dataswarm -> Just Code.Language_Dataswarm
   Language_Erlang -> Just Code.Language_Erlang
   Language_Go -> Just Code.Language_Go
@@ -288,14 +301,19 @@ languageToCodeLang l = case l of
   Language_Haskell -> Just Code.Language_Haskell
   Language_Java -> Just Code.Language_Java
   Language_JavaScript -> Just Code.Language_JavaScript
+  Language_JavaScriptReact -> Just Code.Language_JavaScriptReact
   Language_Kotlin -> Just Code.Language_Kotlin
   Language_ObjectiveC -> Just Code.Language_Cpp -- we don't distinguish these
+  Language_PHP -> Just Code.Language_PHP
   Language_PreProcessor -> Just Code.Language_PreProcessor
   Language_Python -> Just Code.Language_Python
+  Language_Ruby -> Just Code.Language_Ruby
   Language_Rust -> Just Code.Language_Rust
   Language_Swift -> Just Code.Language_Swift
   Language_Thrift -> Just Code.Language_Thrift
   Language_TypeScript -> Just Code.Language_TypeScript
+  Language_TypeScriptReact -> Just Code.Language_TypeScriptReact
+  Language_VisualBasic -> Just Code.Language_VisualBasic
   Language_Yaml -> Just Code.Language_Yaml
   Language__UNKNOWN{} -> Nothing
 
@@ -353,6 +371,16 @@ instance Symbol Code.Entity where
       Scip.Entity_kotlin se -> toSymbolWithPath se p
       Scip.Entity_swift se -> toSymbolWithPath se p
       Scip.Entity_python se -> toSymbolWithPath se p
+      Scip.Entity_typescriptReact se -> toSymbolWithPath se p
+      Scip.Entity_javascript se -> toSymbolWithPath se p
+      Scip.Entity_javascriptReact se -> toSymbolWithPath se p
+      Scip.Entity_c se -> toSymbolWithPath se p
+      Scip.Entity_cpp se -> toSymbolWithPath se p
+      Scip.Entity_ruby se -> toSymbolWithPath se p
+      Scip.Entity_csharp se -> toSymbolWithPath se p
+      Scip.Entity_visualBasic se -> toSymbolWithPath se p
+      Scip.Entity_dart se -> toSymbolWithPath se p
+      Scip.Entity_php se -> toSymbolWithPath se p
       Scip.Entity_EMPTY -> throwM $ SymbolError "Unknown SCIP language"
 
     _ -> throwM $ SymbolError "Language not supported"
@@ -413,6 +441,18 @@ entityToAngle e = case e of
       Scip.Entity_kotlin x -> Right $ alt @"kotlin" (toAngle x)
       Scip.Entity_swift x -> Right $ alt @"swift" (toAngle x)
       Scip.Entity_python x -> Right $ alt @"python" (toAngle x)
+      Scip.Entity_typescriptReact x ->
+        Right $ alt @"typescriptReact" (toAngle x)
+      Scip.Entity_javascript x -> Right $ alt @"javascript" (toAngle x)
+      Scip.Entity_javascriptReact x ->
+        Right $ alt @"javascriptReact" (toAngle x)
+      Scip.Entity_c x -> Right $ alt @"c" (toAngle x)
+      Scip.Entity_cpp x -> Right $ alt @"cpp" (toAngle x)
+      Scip.Entity_ruby x -> Right $ alt @"ruby" (toAngle x)
+      Scip.Entity_csharp x -> Right $ alt @"csharp" (toAngle x)
+      Scip.Entity_visualBasic x -> Right $ alt @"visualBasic" (toAngle x)
+      Scip.Entity_dart x -> Right $ alt @"dart" (toAngle x)
+      Scip.Entity_php x -> Right $ alt @"php" (toAngle x)
       Scip.Entity_EMPTY -> Left "toAngle: Unknown SCIP language"
 
   _ -> Left $
@@ -449,7 +489,7 @@ instance ToQName Code.Entity where
       Lsif.Entity_swift x -> toQName x
       Lsif.Entity_typescript x -> toQName x
       Lsif.Entity_EMPTY -> pure $ Left "LSIF: language unsupported"
-    Code.Entity_scip se -> case se of -- enumerate all cases for lsif
+    Code.Entity_scip se -> case se of -- enumerate all cases for scip
       Scip.Entity_rust x -> toQName x
       Scip.Entity_go x -> toQName x
       Scip.Entity_typescript x -> toQName x
@@ -457,6 +497,16 @@ instance ToQName Code.Entity where
       Scip.Entity_kotlin x -> toQName x
       Scip.Entity_swift x -> toQName x
       Scip.Entity_python x -> toQName x
+      Scip.Entity_typescriptReact x -> toQName x
+      Scip.Entity_javascript x -> toQName x
+      Scip.Entity_javascriptReact x -> toQName x
+      Scip.Entity_c x -> toQName x
+      Scip.Entity_cpp x -> toQName x
+      Scip.Entity_ruby x -> toQName x
+      Scip.Entity_csharp x -> toQName x
+      Scip.Entity_visualBasic x -> toQName x
+      Scip.Entity_dart x -> toQName x
+      Scip.Entity_php x -> toQName x
       Scip.Entity_EMPTY -> pure $ Left "SCIP: language unsupported"
     _ -> pure $ Left ("Language unsupported: " <> textShow (entityLanguage e))
 

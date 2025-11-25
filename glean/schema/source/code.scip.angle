@@ -13,6 +13,16 @@ type Entity =
     kotlin : scip.SomeEntity |
     swift: scip.SomeEntity |
     python: scip.SomeEntity |
+    typescriptReact : scip.SomeEntity |
+    javascript : scip.SomeEntity |
+    javascriptReact : scip.SomeEntity |
+    c: scip.SomeEntity |
+    cpp: scip.SomeEntity |
+    ruby: scip.SomeEntity |
+    csharp: scip.SomeEntity |
+    visualBasic: scip.SomeEntity |
+    dart: scip.SomeEntity |
+    php: scip.SomeEntity |
   }
 
 type SymbolId = scip.Symbol

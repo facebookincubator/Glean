@@ -60,7 +60,8 @@ type Language =
   enum {
     Cpp | PreProcessor | Java | Haskell | Python | Hack | JavaScript | Rust |
     Thrift | Buck | Erlang | FSharp | Go | Kotlin | OCaml | Scala | Swift |
-    TypeScript | CSharp | GraphQL | Dataswarm | Yaml | Angle | Chef |
+    TypeScript | CSharp | GraphQL | Dataswarm | Yaml | Angle | Chef | C |
+    TypeScriptReact | JavaScriptReact | Ruby | VisualBasic | Dart | PHP
   }
 
 # entity tag to language id
@@ -121,6 +122,17 @@ predicate EntityLanguageSCIP:
     | ({ kotlin = _ } = SCIP; Kotlin : Language = Language)
     | ({ typescript = _ } = SCIP; TypeScript : Language = Language)
     | ({ swift = _ } = SCIP; Swift : Language = Language)
+    | ({ typescriptReact = _ } = SCIP; TypeScriptReact : Language = Language)
+    | ({ javascript = _ } = SCIP; JavaScript : Language = Language)
+    | ({ javascriptReact = _ } = SCIP; JavaScriptReact : Language = Language)
+    | ({ python = _ } = SCIP; Python : Language = Language)
+    | ({ c = _ } = SCIP; C : Language = Language)
+    | ({ cpp = _ } = SCIP; Cpp : Language = Language)
+    | ({ csharp = _ } = SCIP; CSharp : Language = Language)
+    | ({ ruby = _ } = SCIP; Ruby : Language = Language)
+    | ({ visualBasic = _ } = SCIP; VisualBasic : Language = Language)
+    | ({ dart = _ } = SCIP; Dart : Language = Language)
+    | ({ php = _ } = SCIP; PHP : Language = Language)
 
 type Annotations =
   {
