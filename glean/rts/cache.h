@@ -11,6 +11,7 @@
 #include <folly/SharedMutex.h>
 #include <folly/Synchronized.h>
 #include <folly/ThreadCachedInt.h>
+#include <folly/system/HardwareConcurrency.h>
 #include <vector>
 
 #include "glean/rts/factset.h"
@@ -103,7 +104,7 @@ struct LookupCache {
 
     /// Number of shards for Touched buffer - should typically be number of
     /// threads.
-    size_t shards = std::thread::hardware_concurrency();
+    size_t shards = folly::hardware_concurrency();
 
     /// How many hits to record locally before draining them to global buffer.
     size_t touched_buffer_size = 64 * 1024;
