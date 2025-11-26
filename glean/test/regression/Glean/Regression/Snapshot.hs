@@ -50,15 +50,15 @@ import Glean.Types
 
 -- | From 'testRoot' this locates all subdirectories below the root
 -- that contain at least one ".out" file.
-discoverTests :: FilePath -> IO [FilePath]
-discoverTests root = go ""
+discoverTests :: Driver opts -> FilePath -> IO [FilePath]
+discoverTests driver root = go ""
   where
   go dir = do
     xs <- listDirectory (root </> dir)
     dirs <- filterM (doesDirectoryExist . ((root </> dir) </>)) xs
     subdirTests <- concat <$> mapM (go . (dir </>)) dirs
     return $
-      if any (".out" `isSuffixOf`) xs
+      if any (withSuffix driver ".out" `isSuffixOf`) xs
         then dir : subdirTests
         else subdirTests
 
@@ -150,22 +150,23 @@ executeTest cfg driver driverOpts base_group group diff subdir =
         }
   createDirectoryIfMissing True $ testOutput test
   outputs <- runTest driver driverOpts (cfgRoot cfg) test
-  compareOutputs test diff base_group group outputs
+  compareOutputs driver test diff base_group group outputs
   where
     with_outdir f = case cfgOutput cfg of
       Just dir -> f dir
       Nothing -> withSystemTempDirectory "glean-regression" f
 
 compareOutputs
-  :: TestConfig
+  :: Driver opts
+  -> TestConfig
   -> (Outputs -> IO Result)  -- ^ compare or overwrite golden outputs
   -> String
   -> String
   -> [FilePath]
   -> IO Result
-compareOutputs test diff base_group group outputs = do
+compareOutputs driver test diff base_group group outputs = do
   fmap mconcat $ forM outputs $ \output -> do
-    let base = testRoot test </> takeFileName output
+    let base = withSuffix driver $ testRoot test </> takeFileName output
         specific
           | group == base_group = base
           | otherwise = outputFileForGroup base group
@@ -178,6 +179,9 @@ compareOutputs test diff base_group group outputs = do
 outputFileForGroup :: FilePath -> String -> FilePath
 outputFileForGroup base group = addExtension (stem <.> group) ext
   where (stem,ext) = splitExtension base
+
+withSuffix :: Driver opts -> FilePath -> FilePath
+withSuffix driver = maybe id (flip (<.>)) (driverOutSuffix driver)
 
 -- | Regenerate golden outputs. Do nothing if 'outGoldenBase' exists and is the
 -- same as 'outGenerated'. Otherwise, copy 'outGenerated' to 'outGoldenGroup'
@@ -228,11 +232,12 @@ testMain driver = do
 testAll :: TestAction -> Config -> Driver opts -> opts -> IO ()
 testAll act cfg driver opts = do
   tests' <- if null $ cfgTests cfg
-    then discoverTests $ cfgRoot cfg
+    then discoverTests driver $ cfgRoot cfg
     else return $ cfgTests cfg
 
   when (null tests') $
-    die $ "No .out files found under " <> cfgRoot cfg
+    die $ "No " <> withSuffix driver ".out" <> " files found under " <>
+      cfgRoot cfg
 
   let tests = filter (`notElem` cfgOmitTests cfg) tests'
 
@@ -256,7 +261,7 @@ testAll act cfg driver opts = do
             -- removeNonRegenerated below.
             result <- mconcat $ flip map groups $ \g ->
               executeTest cfg' driver opts (head groups) g regenerate subdir
-            removeNonRegenerated root subdir result
+            removeNonRegenerated driver root subdir result
             toHUnit result
 
     Nothing ->
@@ -271,13 +276,16 @@ testAll act cfg driver opts = do
   where
       -- clean-up .out or .perf files which weren't regenerated
       -- for instance, if a .query file was removed.
-      removeNonRegenerated _ _ Failure{} = return ()
-      removeNonRegenerated root test (Success regenerated) = do
+      removeNonRegenerated _ _ _ Failure{} = return ()
+      removeNonRegenerated driver root test (Success regenerated) = do
           let path = root </> test
           allFiles <- listDirectory path
-          let allOutFiles = filter
-                (\x -> takeExtension x == ".out" || takeExtension x == ".perf")
-                ((path </>) <$> allFiles)
+          let
+            out = withSuffix driver ".out"
+            perf = withSuffix driver ".perf"
+            allOutFiles = filter
+              (\x -> takeExtension x == out || takeExtension x == perf)
+              ((path </>) <$> allFiles)
           let toDelete = filter (`notElem` regenerated) allOutFiles
           when (not (null toDelete)) $
             logInfo $ "Removing output files that were not regenerated: " <>
