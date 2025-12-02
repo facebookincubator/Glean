@@ -6,20 +6,27 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-module Glean.Indexer.Utils
+module AngleIndexer.Utils
   (toFileInfoMap,
   toResolvedSchemaMap,
   sourceFileInfos,
   SchemaFileInfo(..),
   SourceFileInfo(..),
+  Def(..),
+  Ref(..),
+  ToDef,
+  XRef,
   ToByteSpan,
   FileInfoMap,
   fromSrcSpan,
+  lookupQualRef,
   ) where
 
 import qualified Data.ByteString as B
 import qualified Data.HashMap.Strict as HashMap
-import Control.Exception
+import qualified Data.Text as Text
+
+import Control.Exception ( throwIO, ErrorCall(ErrorCall) )
 import System.FilePath
 import Util.IO ( listDirectoryRecursive )
 
@@ -29,6 +36,7 @@ import qualified Glean.Schema.Src.Types as Src
 import Glean.Angle.Types
 import Glean.Angle.Parser (parseSchema)
 import Glean.Schema.Types
+import Data.Text (Text)
 
 data SourceFileInfo = SourceFileInfo {
   name :: Name
@@ -43,6 +51,11 @@ data SchemaFileInfo = SchemaFileInfo {
 
 type ToByteSpan = SrcSpan -> Src.ByteSpan
 type FileInfoMap = HashMap.HashMap Name SchemaFileInfo
+data Def = PredDef ResolvedPredicateDef | TyDef ResolvedTypeDef
+type ToDef = Ref -> Maybe Def
+data Ref = Pred PredicateRef | Ty TypeRef
+  deriving (Eq, Ord, Show)
+type XRef = (Ref, [SrcSpan])
 
 -- Collect bytestrings from source code
 -- we need this to create the Src.FileLines,
@@ -90,3 +103,27 @@ toSourceRange file SrcSpan{..} =
     , range_columnEnd = toNat $ locCol spanEnd
   }
    where toNat = Glean.Nat . fromIntegral
+
+qualRefToSchemaName :: Text -> Text
+qualRefToSchemaName name = do
+  case reverse $ Text.splitOn "." name of
+    [] -> name -- we assume it's a schema name only (case for import refs)
+    (_:xs) -> Text.intercalate "." (reverse xs)
+
+lookupQualRef :: HashMap.HashMap Name ResolvedSchemaRef -> Ref -> Maybe Def
+lookupQualRef schemas ref = do
+  let schemaName = qualRefToSchemaName $ case ref of
+        Pred pref -> predicateRef_name pref
+        Ty tref -> typeRef_name tref
+  case HashMap.lookup schemaName schemas of
+    Just ResolvedSchema{..} -> do
+      case ref of
+          Pred pref -> case HashMap.lookup pref resolvedSchemaPredicates of
+            Just p -> Just $ PredDef p
+            Nothing ->
+              PredDef <$> HashMap.lookup pref resolvedSchemaReExportedPredicates
+          Ty tref -> case HashMap.lookup tref resolvedSchemaTypes of
+            Just t -> Just $ TyDef t
+            Nothing ->
+              TyDef <$> HashMap.lookup tref resolvedSchemaReExportedTypes
+    _ -> Nothing
