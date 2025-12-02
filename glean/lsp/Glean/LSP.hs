@@ -46,7 +46,6 @@ import Data.Path as Path
     - make hierarchical
     - maybe filter out type parameters?
   - call hierarchy
-  - symbol search
   - update index after edits
     1. make it possible to re-index on the side and create a new DB,
        using a separate glean-server. Need to flush the cache if we
@@ -207,7 +206,7 @@ serverDef glass options = do
                 -- , handleDidChange
                 -- , handleDidSave
                 , handleDidClose
-                -- , handleWorkspaceSymbol
+                , handleWorkspaceSymbol
                 , handleSetTrace
                 -- , handleCodeAction
                 -- , handleResolveCodeAction
@@ -315,6 +314,12 @@ handleReferencesRequest =
       path <- uriToAbsPath params._textDocument._uri
       refs <- findRefs path params._position
       res $ Right $ LSP.InL refs
+
+handleWorkspaceSymbol :: LSP.Handlers GleanLspM
+handleWorkspaceSymbol = LSP.requestHandler LSP.SMethod_WorkspaceSymbol $ \req res -> do
+  -- https://hackage.haskell.org/package/lsp-types-1.6.0.0/docs/Language-LSP-Types.html#t:WorkspaceSymbolParams
+  symbols <- symbolSearch req._params._query
+  res $ Right . LSP.InL $ symbols
 
 -- -----------------------------------------------------------------------------
 -- Glean / Glass stuff
@@ -443,6 +448,34 @@ getDocumentSymbols path = do
     , Just name <- [attrSymbolName sym.symbolX_attributes]
     , let kind = fromMaybe LSP.SymbolKind_Function (attrSymbolKind sym.symbolX_attributes)
     , let range = toLspRange sym.symbolX_range
+    ]
+
+symbolSearch ::
+  Text ->
+  GleanLspM [LSP.SymbolInformation]
+symbolSearch query = do
+  env <- getGleanLspEnv
+  cfg :: LspConfig <- LSP.getConfig
+  let
+    req = def {
+      Glass.symbolSearchRequest_name = query,
+      Glass.symbolSearchRequest_repo_name = Just cfg.repo,
+      Glass.symbolSearchRequest_options = def {
+        Glass.symbolSearchOptions_detailedResults = True -- we need kinds
+      }
+    }
+    opts = def
+  res <- liftIO $ Glass.Handler.searchSymbol env.glass req opts
+  return [
+    LSP.SymbolInformation {
+      _name = sym.symbolDescription_name.qualifiedName_localName.unName,
+      _kind = maybe LSP.SymbolKind_Function toLspSymbolKind sym.symbolDescription_kind,
+      _tags = Nothing,
+      _deprecated = Nothing,
+      _location = toLspLocation env.wsRoot sym.symbolDescription_sym_location,
+      _containerName = Nothing
+    }
+    | sym <- res.symbolSearchResult_symbolDetails
     ]
 
 -- -----------------------------------------------------------------------------
