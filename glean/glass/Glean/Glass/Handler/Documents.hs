@@ -89,6 +89,7 @@ import ServiceData.GlobalStats as Stats
 import ServiceData.Types as Stats
 import Util.Time (elapsedTime, toDiffMillis)
 import Glean.Glass.Attributes.PerfUtils (parseGitDiff, applyLineMappingToDefs, applyLineMappingToRefs)
+import qualified Glean.Glass.Query as Query
 
 -- | Runner for methods that are keyed by a file path.
 -- Select the right Glean DBs and pass them to the function (via a GleanBackend)
@@ -199,7 +200,7 @@ translateMirroredRepoListXResult
   -> DocumentSymbolListXResult
   -> DocumentSymbolListXResult
 translateMirroredRepoListXResult
-  (DocumentSymbolsRequest repository path _ _ _) res =
+  (DocumentSymbolsRequest repository path _ _ _ _) res =
   case repoPathToMirror repository path of
     Just (Mirror mirror prefix origin) ->
       Utils.translateDocumentSymbolListXResult origin mirror prefix Nothing res
@@ -226,6 +227,7 @@ fetchSymbolsAndAttributesGlean
       (requestOptions_revision opts)
       (requestOptions_exact_revision opts)
       withContentHash
+      fetchContent
       ExtraSymbolOpts{..} be mlang dbInfo (requestOptions_attribute_opts opts)
 
   res1 <- if oAmendLinesOnRevisionMismatch
@@ -255,6 +257,7 @@ fetchSymbolsAndAttributesGlean
     oIncludeRefs = documentSymbolsRequest_include_refs req
     oLineRange = documentSymbolsRequest_range req
     withContentHash = shouldFetchContentHash opts
+    fetchContent = documentSymbolsRequest_include_content req
     oIncludeXlangRefs = documentSymbolsRequest_include_xlang_refs req
     oAmendLinesOnRevisionMismatch = maybe False
       featureFlags_amend_lines_on_revision_mismatch (requestOptions_feature_flags opts)
@@ -465,6 +468,7 @@ fromDocumentSymbolResult DocumentSymbolListXResult{..} = DocumentSymbols
   , srcFile = Nothing
   , offsets = Nothing
   , attributes = documentSymbolListXResult_attributes
+  , content = documentSymbolListXResult_content
   }
   where
     createDummyRefEntity :: ReferenceRangeSymbolX ->
@@ -591,6 +595,7 @@ fetchDocumentSymbols
   -> Maybe Revision
   -> Bool  -- ^ exact revision only?
   -> Bool  -- ^ fetch file content hash?
+  -> Bool  -- ^ fetch file content
   -> ExtraSymbolOpts
   -> GleanBackend b
   -> Maybe Language
@@ -598,8 +603,8 @@ fetchDocumentSymbols
   -> AttributeOptions
   -> IO (DocumentSymbols, QueryEachRepoLog, Maybe ErrorLogger)
 fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
-    repoPath mlimit wantedRevision exactRevision fetchContentHash extraOpts
-    b mlang dbInfo attrOpts = do
+    repoPath mlimit wantedRevision exactRevision fetchContentHash fetchContent
+    extraOpts b mlang dbInfo attrOpts = do
   backendRunHaxl b env $ do
     --
     -- we pick the first db in the list that has the full FileInfo{..}
@@ -643,6 +648,12 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
         -- todo this could be done in Glean in a single pass
         (kinds, _, merr) <- withRepo fileRepo $
           documentSymbolKinds mlimit mlang fileId attrOpts
+
+        content <-
+          if fetchContent then
+            withRepo fileRepo $ Utils.fetchData $ Query.fileContent fileId
+          else
+            return Nothing
 
         let revision = getDBRevision (scmRevisions dbInfo) fileRepo scsrepo
         contentMatch <- case wantedRevision of
@@ -796,12 +807,13 @@ data DocumentSymbols = DocumentSymbols
   , srcFile :: Maybe Src.File
   , offsets :: Maybe Range.LineOffsets
   , attributes :: Maybe AttributeList
+  , content :: Maybe Text
   }
 
 emptyDocumentSymbols :: Revision -> DocumentSymbols
 emptyDocumentSymbols revision =
   DocumentSymbols [] [] revision Nothing False Nothing mempty mempty Nothing
-    Nothing Nothing
+    Nothing Nothing Nothing
 
 -- | Drop any remnant entities after we are done with them
 toDocumentSymbolResult :: DocumentSymbols -> DocumentSymbolListXResult
@@ -815,6 +827,7 @@ toDocumentSymbolResult DocumentSymbols{..} = DocumentSymbolListXResult{..}
     documentSymbolListXResult_referenced_file_digests = xref_digests
     documentSymbolListXResult_content_match = contentMatch
     documentSymbolListXResult_attributes = attributes
+    documentSymbolListXResult_content = content
 
 
 
@@ -854,7 +867,8 @@ fetchDocumentSymbolIndex env latest req opts be
           documentSymbolListXResult_referenced_file_digests,
         documentSymbolIndex_content_match =
           documentSymbolListXResult_content_match,
-        documentSymbolIndex_attributes = documentSymbolListXResult_attributes
+        documentSymbolIndex_attributes = documentSymbolListXResult_attributes,
+        documentSymbolIndex_content = documentSymbolListXResult_content
       }
   return ((idxResult, status, gleanDataLog, attrLog), merr1)
 
