@@ -291,22 +291,19 @@ predicate FilePackage :
 predicate FileHasPackageOverride : src.File
 stored F where FilePackage { F, _, true }
 
-# File F has a redundant PackageOverride annotation 
-# if none of the files that refer to any of the declarations
+#  File F has a redundant PackageOverride('prod') if
+# none of the files that refer to any of the declarations
 # in F belong to package 'prod'
-predicate FileHasRedundantPackageOverride : src.File 
+predicate FileHasRedundantPackageOverride : src.File
 F where 
-  hack.FileHasPackageOverride F; 
-  ReferralPackages = all(ReferralPackage where 
-    hack.FileDeclarations { file=F, declarations = Decls };
-    Decl = Decls[..]; 
+  hack.FileHasPackageOverride F;
+  hack.FilePackage { file = F, package_ = "prod" };
+  !(hack.FileDeclarations { file = F, declarations = Decls };
+    Decl = Decls[..];
     Target = hack.XRefTarget { declaration = Decl };
     hack.TargetUses { target = Target, file = ReferralFile };
-    hack.FilePackage { file = ReferralFile, package_ = ReferralPackage }); 
-  !(Pkg = ReferralPackages[..]; Pkg="prod")
-
-
-
+    hack.FilePackage { file = ReferralFile, package_ = "prod" })
+    
 # Infos related to a hack module
 predicate ModuleDefinition :
   {
