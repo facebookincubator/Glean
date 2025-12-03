@@ -8,6 +8,9 @@ predicate File : string
 # Source code digests produced by unspecified hash function
 predicate FileDigest : File -> string
 
+# Source code content (if the indexer stored it)
+predicate FileContent : File -> string
+
 # Common source code location type
 type Loc = {
   file : File,

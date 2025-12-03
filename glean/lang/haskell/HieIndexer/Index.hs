@@ -398,6 +398,10 @@ indexHieFile writer HieIndexerOptions{..} path hie = do
     let fileLines = mkFileLines filefact offs
     Glean.makeFact_ @Src.FileLines fileLines
 
+    when storeSrc $
+      Glean.makeFactV_ @Src.FileContent filefact $
+        Text.decodeUtf8Lenient (hie_hs_src hie)
+
     Glean.makeFact_ @Hs.ModuleSource $
       Hs.ModuleSource_key modfact filefact
 

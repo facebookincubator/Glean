@@ -36,6 +36,8 @@ data HieIndexerOptions = HieIndexerOptions
       -- ^ Prefix to add to source paths
   , unitName :: UnitName
       -- ^ How to handle unit names
+  , storeSrc :: Bool
+      -- ^ Whether to store the indexed source in src.FileContent
   , verbosity :: Int
   }
 
@@ -81,6 +83,10 @@ options = info (helper <*> parser) fullDesc
         long "prefix" <>
         metavar "PATH" <>
         help "Prefix to add to source paths in the DB"))
+
+      storeSrc <- switch (
+        long "store-src" <>
+        help "Store the full source file in src.FileContent")
 
       unitName <- option (maybeReader parseUnit) (
         long "unit" <>
