@@ -15,12 +15,10 @@ import Control.Monad.State (StateT, evalStateT, get, liftIO, put)
 import qualified Data.ByteString as BS
 import Data.Default
 import Data.IORef
-import Data.List.NonEmpty (NonEmpty)
 import qualified Data.List.NonEmpty as NonEmpty
 import qualified Data.Map as AMap
 import qualified Data.Set as Set
 import qualified Data.HashSet as HashSet
-import Data.Text (Text)
 import qualified Data.Text as Text
 import Options.Applicative
 import System.Directory
@@ -87,7 +85,7 @@ defaultMain cfg repo backend = do
 
   Glean.withSender backend repo allPredicates def $ \sender -> do
     Glean.withWriter sender def $
-      indexHieFiles paths (srcPaths cfg) (srcPrefix cfg) (unitName cfg)
+      indexHieFiles paths cfg
 
   predicates <-
     Glean.schemaInfo_predicateIds
@@ -119,22 +117,20 @@ outputMain cfg out schema_id backend = do
   paths <- getHieFilesIn (NonEmpty.toList (hiePaths cfg))
   ((), batch) <-
     Glean.withBatchWriter backend schema_id Nothing def $
-      indexHieFiles paths (srcPaths cfg) (srcPrefix cfg) (unitName cfg)
+      indexHieFiles paths cfg
   BS.writeFile out (Thrift.Protocol.Compact.serializeCompact batch)
 
 indexHieFiles
   :: HashSet.HashSet FilePath
-  -> NonEmpty Text
-  -> Maybe Text
-  -> UnitName
+  -> HieIndexerOptions
   -> Glean.Writer
   -> IO ()
-indexHieFiles paths srcs srcPrefix unitName writer =
+indexHieFiles paths opts writer =
   forM_ (HashSet.toList paths) $ \f -> do
     nc <- newIORef =<< makeNc
     runDbM nc $ do
       withHieFile f $ \h ->
-        liftIO $ indexHieFile writer srcs srcPrefix unitName f h
+        liftIO $ indexHieFile writer opts f h
 
 {- | Recursively search for @.hie@ and @.hie-boot@  files in given directory
    avoiding loops due to symlinks
