@@ -312,6 +312,102 @@
         "hack": {
           "decl": {
             "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "string" },
+                      "namespace_": { "key": { "name": { "key": "HH" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/SourceClass.php" },
+      "span": { "start": 695, "length": 6 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "string" },
+                      "namespace_": { "key": { "name": { "key": "HH" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/SourceClass.php" },
+      "span": { "start": 803, "length": 6 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "string" },
+                      "namespace_": { "key": { "name": { "key": "HH" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/SourceClass.php" },
+      "span": { "start": 937, "length": 6 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "string" },
+                      "namespace_": { "key": { "name": { "key": "HH" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/SourceEnum.php" },
+      "span": { "start": 244, "length": 6 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
               "enum_": {
                 "key": { "name": { "key": { "name": { "key": "Position" } } } }
               }
