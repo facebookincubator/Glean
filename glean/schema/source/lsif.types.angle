@@ -57,6 +57,18 @@ type RangeSpan =
     columnEnd : nat,
   }
 
+predicate RangeSpanContains:
+  {
+    inner: RangeSpan,
+    outer: RangeSpan,
+  } { I, O } where
+    {LBI, CBI, LEI, CEI} = I;
+    {LBO, CBO, LEO, CEO} = O;
+    LBO <= LBI;
+    LEI <= LEO;
+    (LBO < LBI | CBO <= CBI);
+    (LEI < LEO | CEI <= CEO)
+
 # convenience to convert between lsif.RangeSpan and src.Range
 # These are both 1-indexed range types, but lsif doesn't have a File
 predicate ToSrcRange:
