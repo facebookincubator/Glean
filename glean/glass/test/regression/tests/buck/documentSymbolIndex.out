@@ -3,7 +3,7 @@
     {
         "referenced_file_digests": {},
         "revision": "testhash",
-        "size": 29,
+        "size": 31,
         "symbols": {
             "10": [
                 {
@@ -779,6 +779,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "some_thrift_lib"
+                        },
+                        "symbolParent": {
+                            "aString": "."
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 66,
+                        "lineBegin": 56,
+                        "lineEnd": 56
+                    },
+                    "sym": "test/buck/t/buck_project/PATH/./some_thrift_lib"
                 }
             ],
             "58": [
@@ -847,6 +870,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "some_thrift_lib"
+                        },
+                        "symbolParent": {
+                            "aString": "."
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 79,
+                        "lineBegin": 58,
+                        "lineEnd": 58
+                    },
+                    "sym": "test/buck/t/buck_project/PATH/./some_thrift_lib"
                 }
             ],
             "6": [

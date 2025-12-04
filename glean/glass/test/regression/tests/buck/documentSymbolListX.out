@@ -211,6 +211,76 @@
                     "lineEnd": 41
                 },
                 "sym": "test/buck/t/buck_project/PATH/./rust_binary"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "some_thrift_lib"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "."
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 66,
+                    "lineBegin": 56,
+                    "lineEnd": 56
+                },
+                "sym": "test/buck/t/buck_project/PATH/./some_thrift_lib"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "some_thrift_lib"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "."
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 79,
+                    "lineBegin": 58,
+                    "lineEnd": 58
+                },
+                "sym": "test/buck/t/buck_project/PATH/./some_thrift_lib"
             }
         ],
         "referenced_file_digests": {},
