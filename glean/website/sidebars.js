@@ -19,9 +19,10 @@ module.exports = {
           ],
           external: [{
               'Quick Start': [
-                  'trying',
                   'building',
+                  'lsp',
                   'walkthrough',
+                  'docker',
               ]
           }],
       }),
