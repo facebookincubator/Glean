@@ -14,8 +14,10 @@ import Data.Default
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Int
+import Data.List (sortBy)
 import qualified Data.Map as Map
 import Data.Maybe
+import Data.Ord (comparing)
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Language.LSP.Server as LSP
@@ -36,6 +38,7 @@ import qualified Glean.Glass.Main as Glass
 import qualified Glean.Glass.Options as Glass
 import qualified Glean.Glass.Tracing as Glass
 import qualified Glean.Glass.Types as Glass
+import qualified Glean.Glass.Range as Glass
 import qualified Glean.Glass.Handler.Documents as Glass.Handler
 import qualified Glean.Glass.Handler.Symbols as Glass.Handler
 
@@ -44,10 +47,9 @@ import Data.Path as Path
 
 {- TODO / ideas
   - go to decl / go to impl / go to type def?
-  - documentSymbols:
-    - make hierarchical
-    - maybe filter out type parameters?
   - call hierarchy
+  - documentSymbols:
+    - maybe filter out type parameters?
   - update index after edits
     1. make it possible to re-index on the side and create a new DB,
        using a separate glean-server. Need to flush the cache if we
@@ -503,13 +505,40 @@ findRefs path pos = do
         Glass.Handler.findReferenceRanges env.glass defn.symbolX_sym def
       return (map (toLspLocation env.wsRoot) ranges)
 
+-- | Document symbols, used to generate the outline.
+--
+-- We want a hierarchical symbol structure for the outline. Glass
+-- provides a symbolParent attribute, but this only reflects the
+-- parent container of the qualified name which is usually the module
+-- or namespace, not the full containment relation.
+--
+-- We could ask Glass for the containment relation, but that would
+-- likely be expensive. So instead we reconstruct an approximate
+-- symbol hierarchy using source ranges - arguably this is what we
+-- want for the outline anyway.
+--
 getDocumentSymbols ::
   AbsPath ->
   GleanLspM [LSP.DocumentSymbol]
 getDocumentSymbols path = do
   syms <- getSymbolsCached path
-  return [
-    LSP.DocumentSymbol {
+  let
+    defs =
+      [ sym
+      | sym <- concat $ Map.elems syms.documentSymbolIndex_symbols
+      , isNothing sym.symbolX_target -- only definitions
+      ]
+  return $ mkSymbolTree (sortBy (comparing (.symbolX_range)) defs)
+  where
+  mkSymbolTree [] = []
+  mkSymbolTree (sym : rest)
+    | Just name <- attrSymbolName sym.symbolX_attributes =
+      parent name : mkSymbolTree others
+    | otherwise = mkSymbolTree rest
+    where
+    (children, others) = span isChild rest
+    isChild child = sym.symbolX_range `Glass.rangeContains` child.symbolX_range
+    parent name = LSP.DocumentSymbol {
       _name = name,
       _detail = attrSymbolSignature sym.symbolX_attributes,
       _kind = kind,
@@ -517,14 +546,12 @@ getDocumentSymbols path = do
       _deprecated = Nothing,
       _range = range,
       _selectionRange = range,
-      _children = Nothing -- TODO, use symbolParent attribute?
+      _children = case mkSymbolTree children of
+        [] -> Nothing
+        some -> Just some
     }
-    | sym <- concat $ Map.elems syms.documentSymbolIndex_symbols
-    , Nothing <- [sym.symbolX_target] -- only definitions
-    , Just name <- [attrSymbolName sym.symbolX_attributes]
-    , let kind = fromMaybe LSP.SymbolKind_Function (attrSymbolKind sym.symbolX_attributes)
-    , let range = toLspRange sym.symbolX_range
-    ]
+    kind = fromMaybe LSP.SymbolKind_Function (attrSymbolKind sym.symbolX_attributes)
+    range = toLspRange sym.symbolX_range
 
 symbolSearch ::
   Text ->
