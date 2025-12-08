@@ -11,7 +11,11 @@ module Glean.Database.Logger (
   logDBStatistics
 ) where
 
+import Data.Aeson (encode)
+import Data.HashMap.Strict (HashMap)
 import Data.Text (Text)
+import Data.Text.Lazy (toStrict)
+import Data.Text.Lazy.Encoding (decodeUtf8)
 
 import qualified Glean.Database.Types as Database
 import qualified Glean.Types as Thrift
@@ -29,6 +33,7 @@ logDBStatistics
   -> Int          -- ^ Number of bytes backed up
   -> Text         -- ^ Backup locator
   -> Bool         -- ^ The db has exclude property
+  -> HashMap Text Text -- ^ Database properties
   -> IO ()
 logDBStatistics
   env
@@ -37,18 +42,21 @@ logDBStatistics
   maybeOwnershipStats
   size
   locator
-  excluded = do
+  excluded
+  properties = do
   let preamble = mconcat
         [ Logger.SetRepoName repo_name
         , Logger.SetRepoHash repo_hash
         ]
 
   -- We shoehorn a summary row into the format for query rows
-  let summary  = mconcat
+  let propertiesJson = toStrict $ decodeUtf8 $ encode properties
+      summary  = mconcat
         [ Logger.SetPredicateSize size            -- # bytes uploaded
         , Logger.SetPredicateCount factCount      -- # total facts
         , Logger.SetUploadDestination locator
         , Logger.SetHasExcludeProperty excluded
+        , Logger.SetDatabaseProperties propertiesJson
         ]
       factCount = fromIntegral $ sum [predicateStats_count p| (_, p) <- preds]
 

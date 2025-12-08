@@ -278,6 +278,7 @@ doBackup env@Env{..} repo prefix site =
       dataSize
       locator
       excluded
+      (metaProperties meta)
     say logInfo "finished"
     atomically $ do
       void $ Catalog.modifyMeta envCatalog repo $ \meta -> return meta

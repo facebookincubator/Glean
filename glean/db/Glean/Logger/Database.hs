@@ -31,6 +31,7 @@ data GleanDatabaseLog
   | SetCount Int
   | SetSize Int
   | SetHasExcludeProperty Bool
+  | SetDatabaseProperties Text
 
 instance Semigroup GleanDatabaseLog where
   a <> b = GleanDatabaseLogAnd a b
