@@ -25,9 +25,40 @@ const char* admin_names[] = {
     "FIRST_UNIT_ID",
     "NEXT_UNIT_ID",
     "ORPHAN_FACTS",
+    "OWNERSHIP_FORMAT_VERSION",
 };
 
 namespace {
+
+// Read an admin value with backward compatibility for 32-bit -> 64-bit
+// migration. If the stored value is 4 bytes (32-bit) and we expect 8 bytes
+// (64-bit), read the 32-bit value and widen it.
+template <typename T>
+folly::Optional<T> readAdminValueCompat(ContainerImpl& container_, AdminId id) {
+  rocksdb::PinnableSlice val;
+  auto s = container_.db->Get(
+      rocksdb::ReadOptions(),
+      container_.family(Family::admin),
+      toSlice(id),
+      &val);
+  if (s.IsNotFound()) {
+    return folly::none;
+  }
+  check(s);
+
+  // Handle backward compatibility: if stored as 32-bit but expected as 64-bit
+  if constexpr (sizeof(T) == 8) {
+    if (val.size() == 4) {
+      // Old 32-bit value, widen to 64-bit
+      binary::Input inp(byteRange(val));
+      return static_cast<T>(inp.fixed<uint32_t>());
+    }
+  }
+
+  // Normal case: size matches expected
+  binary::Input inp(byteRange(val));
+  return inp.fixed<T>();
+}
 
 template <typename T, typename F>
 T initAdminValue(
@@ -36,7 +67,7 @@ T initAdminValue(
     T def,
     bool write,
     F&& notFound) {
-  auto current = readAdminValue<T>(container_, id);
+  auto current = readAdminValueCompat<T>(container_, id);
   if (current.hasValue()) {
     return *current;
   } else {
@@ -114,6 +145,24 @@ DatabaseImpl::DatabaseImpl(
   if (db_version != version) {
     rts::error("unexpected database version {}", db_version);
   }
+
+  // Initialize ownership format version
+  // For new DBs: write the current (64-bit) format version
+  // For existing DBs: if no version marker exists, assume 32-bit format
+  ownership_format_version = static_cast<uint32_t>(initAdminValue(
+      container_,
+      AdminId::OWNERSHIP_FORMAT_VERSION,
+      static_cast<uint64_t>(
+          container_.mode == Mode::Create ? OWNERSHIP_FORMAT_VERSION_CURRENT
+                                          : OWNERSHIP_FORMAT_VERSION_32BIT),
+      container_.mode == Mode::Create,
+      [] {}));
+
+  VLOG(1) << folly::sformat(
+      "ownership_format_version: {} ({})",
+      ownership_format_version,
+      ownership_format_version == OWNERSHIP_FORMAT_VERSION_32BIT ? "32-bit"
+                                                                 : "64-bit");
 
   stats_.set(loadStats());
 

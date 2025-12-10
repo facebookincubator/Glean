@@ -29,7 +29,16 @@ enum class AdminId : uint32_t {
   FIRST_UNIT_ID,
   NEXT_UNIT_ID,
   ORPHAN_FACTS,
+  OWNERSHIP_FORMAT_VERSION,
 };
+
+// Ownership format versions for backward compatibility:
+// - Version 1 (32-bit/absent): 32-bit UnitId and UsetId
+// - Version 2: 64-bit UnitId and UsetId
+constexpr uint32_t OWNERSHIP_FORMAT_VERSION_32BIT = 1;
+constexpr uint32_t OWNERSHIP_FORMAT_VERSION_64BIT = 2;
+constexpr uint32_t OWNERSHIP_FORMAT_VERSION_CURRENT =
+    OWNERSHIP_FORMAT_VERSION_64BIT;
 
 struct DatabaseImpl final : Database {
   int64_t db_version;
@@ -41,6 +50,11 @@ struct DatabaseImpl final : Database {
   AtomicPredicateStats stats_;
   std::vector<size_t> ownership_unit_counters;
   folly::F14FastMap<uint64_t, size_t> ownership_derived_counters;
+
+  // Ownership format version for backward compatibility
+  // OWNERSHIP_FORMAT_VERSION_32BIT (1): 32-bit UnitId/UsetId (or absent =
+  // 32-bit) OWNERSHIP_FORMAT_VERSION_64BIT (2): 64-bit UnitId/UsetId
+  uint32_t ownership_format_version;
 
   // Cached ownership sets, only used when writing.
   // Note: must only be accessed under the write lock
@@ -177,7 +191,7 @@ struct DatabaseImpl final : Database {
 
   struct FactOwnerCache {
     static void prepare(ContainerImpl& container);
-    void enable(ContainerImpl& container);
+    void enable(ContainerImpl& container, uint32_t ownership_format_version);
 
     // Lookup in the cache. Returns none if the cache is not enabled
     std::optional<rts::UsetId> getOwner(ContainerImpl& container, Id id);
@@ -190,7 +204,8 @@ struct DatabaseImpl final : Database {
     static rts::UsetId lookup(const Page& page, Id id);
     static std::unique_ptr<Page> readPage(
         ContainerImpl& container,
-        uint64_t prefix);
+        uint64_t prefix,
+        uint32_t ownership_format_version);
 
     struct Cache {
       std::vector<rts::UsetId> index;
@@ -198,6 +213,9 @@ struct DatabaseImpl final : Database {
 
       // tracks the memory usage of the cache
       size_t size_;
+
+      // ownership format version for legacy compatibility
+      uint32_t ownership_format_version_;
     };
 
     // nullptr means the cache is disabled (while the DB is writable)

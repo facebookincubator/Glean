@@ -9,6 +9,7 @@
 #pragma once
 
 #include <folly/Optional.h>
+#include <folly/lang/Assume.h>
 #include <stdint.h>
 #include <algorithm>
 #include <cassert>
@@ -512,6 +513,8 @@ class SetU64 {
           }
           break;
         }
+        default:
+          folly::assume_unreachable();
       }
     }
   }

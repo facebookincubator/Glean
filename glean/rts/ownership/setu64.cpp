@@ -50,8 +50,9 @@ bool SetU64::Block::operator==(const SetU64::Block& other) const {
       return *dense == *other.dense;
     case SetU64::Hdr::Full:
       return true;
+    default:
+      folly::assume_unreachable();
   }
-  folly::assume_unreachable();
 }
 
 bool SetU64::Block::includes(const SetU64::Block& other) const {
@@ -86,14 +87,17 @@ bool SetU64::Block::includes(const SetU64::Block& other) const {
 
         case SetU64::Hdr::Full:
           return false;
+
+        default:
+          folly::assume_unreachable();
       }
-      break;
 
     case SetU64::Hdr::Full:
       return true;
-  }
 
-  folly::assume_unreachable();
+    default:
+      folly::assume_unreachable();
+  }
 }
 
 SetU64::SetU64(const SetU64& other, SetU64::copy_capacity_tag) {
@@ -185,6 +189,8 @@ size_t SetU64::size() const {
         s += 256;
         break;
       }
+      default:
+        folly::assume_unreachable();
     }
   }
   return s;
@@ -203,8 +209,9 @@ uint64_t SetU64::upper() const {
     case Hdr::Full: {
       return id | 255;
     }
+    default:
+      folly::assume_unreachable();
   }
-  folly::assume_unreachable();
 }
 
 void SetU64::append(uint64_t value) {
@@ -238,6 +245,10 @@ void SetU64::append(uint64_t value) {
 
       case Hdr::Full:
         assert(bit == 255);
+        break;
+
+      default:
+        folly::assume_unreachable();
     }
   } else {
     hdrs.push_back(Hdr::sparse(block, 1));
@@ -372,6 +383,9 @@ void SetU64::appendMerge(SetU64::Block left, SetU64::Block right) {
         case SetU64::Hdr::Full:
           hdrs.push_back(right.hdr);
           break;
+
+        default:
+          folly::assume_unreachable();
       }
       break;
 
@@ -390,12 +404,18 @@ void SetU64::appendMerge(SetU64::Block left, SetU64::Block right) {
         case SetU64::Hdr::Full:
           hdrs.push_back(right.hdr);
           break;
+
+        default:
+          folly::assume_unreachable();
       }
       break;
 
     case SetU64::Hdr::Full:
       hdrs.push_back(left.hdr);
       break;
+
+    default:
+      folly::assume_unreachable();
   }
 }
 
@@ -486,6 +506,8 @@ void SetU64::dump(SetU64& set) {
         }
         break;
       }
+      default:
+        folly::assume_unreachable();
     }
   }
 }
