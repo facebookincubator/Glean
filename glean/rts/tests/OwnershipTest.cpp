@@ -51,7 +51,7 @@ struct TestOwnership final : Ownership {
     LOG(FATAL) << "unimplemented: lookupSet";
   }
 
-  folly::Optional<SetExpr<SetU32>> getUset(UsetId) override {
+  folly::Optional<SetExpr<SetU64>> getUset(UsetId) override {
     LOG(FATAL) << "unimplemented: getUset";
   }
 
@@ -84,7 +84,7 @@ std::unique_ptr<OwnershipSetIterator> TestOwnership::getSetIterator() {
       if (i_ >= sets_.size()) {
         return folly::none;
       } else {
-        uint32_t i = i_++;
+        size_t i = i_++;
         assert(!sets_.empty()); // be gone, linter
         ownerset = sets_[i].set;
         return std::pair<UnitId, SetExpr<const OwnerSet*>>(
@@ -94,7 +94,7 @@ std::unique_ptr<OwnershipSetIterator> TestOwnership::getSetIterator() {
 
     OwnerSet ownerset;
     UsetId firstId_;
-    uint32_t i_ = 0;
+    size_t i_ = 0;
     std::vector<SetExpr<MutableOwnerSet>>& sets_;
   };
 
@@ -103,8 +103,8 @@ std::unique_ptr<OwnershipSetIterator> TestOwnership::getSetIterator() {
 
 void checkVisibility(
     TestOwnership& ownership,
-    uint32_t firstUsetId,
-    uint32_t numSets,
+    UsetId firstUsetId,
+    UsetId numSets,
     std::vector<UnitId> units,
     bool exclude) {
   std::set set(units.begin(), units.end());
@@ -113,7 +113,7 @@ void checkVisibility(
   auto sl = slice(ownership, base, units, exclude);
 
   using Reader = folly::compression::EliasFanoReader<
-      folly::compression::EliasFanoEncoder<uint32_t, uint32_t>>;
+      folly::compression::EliasFanoEncoder<uint64_t, uint64_t>>;
 
   auto anyMember = [&](Reader& reader, bool member) {
     bool any = false;
@@ -163,7 +163,7 @@ void checkVisibility(
     return all;
   };
 
-  for (uint32_t i = 0; i < numSets; i++) {
+  for (UsetId i = 0; i < numSets; i++) {
     auto setId = ownership.getOwner(Id::fromWord(i));
     bool visible = sl->visible(setId);
     SCOPED_TRACE(
@@ -218,7 +218,7 @@ Usets buildExampleSets(std::vector<UnitId> units) {
   auto firstUsetId = units.size();
   Usets usets(firstUsetId);
 
-  auto addSet = [&](SetOp op, SetU32 set) {
+  auto addSet = [&](SetOp op, SetU64 set) {
     auto uset = new Uset(std::move(set), op, 0);
     auto p = usets.add(uset);
     EXPECT_EQ(p, uset);
@@ -227,9 +227,9 @@ Usets buildExampleSets(std::vector<UnitId> units) {
   };
 
   // form sets of all singletons and pairs of units
-  for (uint32_t i = 0; i < units.size(); i++) {
-    for (uint32_t j = i; j < units.size(); j++) {
-      SetU32 s;
+  for (size_t i = 0; i < units.size(); i++) {
+    for (size_t j = i; j < units.size(); j++) {
+      SetU64 s;
       if (i == j) {
         s.append(units[i]);
       } else {
@@ -244,8 +244,8 @@ Usets buildExampleSets(std::vector<UnitId> units) {
   }
 
   // add the set of all units
-  SetU32 s;
-  for (uint32_t i = 0; i < units.size(); i++) {
+  SetU64 s;
+  for (size_t i = 0; i < units.size(); i++) {
     s.append(units[i]);
   }
   addSet(Or, s);
@@ -255,10 +255,10 @@ Usets buildExampleSets(std::vector<UnitId> units) {
   //   A && B
   //   A || B
   // for all distinct sets A,B
-  uint32_t numSets = usets.statistics().promoted;
-  for (uint32_t i = units.size(); i < numSets; i++) {
-    for (uint32_t j = i + 1; j < numSets; j++) {
-      SetU32 t;
+  UsetId numSets = usets.statistics().promoted;
+  for (UsetId i = units.size(); i < numSets; i++) {
+    for (UsetId j = i + 1; j < numSets; j++) {
+      SetU64 t;
       t.append(i);
       t.append(j);
       auto p1 = addSet(Or, t);
@@ -270,8 +270,8 @@ Usets buildExampleSets(std::vector<UnitId> units) {
 
   // Finally, conjunction/disjunction of all the exprs so far
   numSets = usets.statistics().promoted;
-  SetU32 t;
-  for (uint32_t i = units.size(); i < numSets; i++) {
+  SetU64 t;
+  for (UsetId i = units.size(); i < numSets; i++) {
     t.append(i);
   }
   addSet(Or, t);
@@ -288,11 +288,11 @@ TEST(OwnershipTest, SliceTest) {
   auto usets = buildExampleSets(units);
   auto firstUsetId = usets.getFirstId();
   auto sets = usets.toEliasFano(usets.getFirstId() + usets.size());
-  uint32_t numSets = usets.statistics().promoted;
+  UsetId numSets = usets.statistics().promoted;
 
   // One fact with each different set
   std::vector<UsetId> facts(numSets);
-  for (uint32_t i = 0; i < numSets; i++) {
+  for (UsetId i = 0; i < numSets; i++) {
     facts[i] = i + firstUsetId;
   }
 
@@ -312,8 +312,8 @@ TEST(OwnershipTest, SliceTest) {
 struct SetSerializationTest : testing::Test {};
 
 RC_GTEST_PROP(SetSerializationTest, testSerialization, ()) {
-  const auto set = *rc::gen::nonEmpty(rc::gen::arbitrary<std::set<uint32_t>>());
-  SetU32 a = SetU32::from(set);
+  const auto set = *rc::gen::nonEmpty(rc::gen::arbitrary<std::set<uint64_t>>());
+  SetU64 a = SetU64::from(set);
   MutableOwnerSet b = a.toEliasFano(a.upper() + 1);
   binary::Output o;
   serializeEliasFano(o, b);
@@ -321,7 +321,7 @@ RC_GTEST_PROP(SetSerializationTest, testSerialization, ()) {
   o.expect(8);
   binary::Input i(o.data(), size);
   OwnerSet c = deserializeEliasFano(i);
-  SetU32 d = SetU32::fromEliasFano(c);
+  SetU64 d = SetU64::fromEliasFano(c);
   b.free();
-  RC_ASSERT(set == SetU32::to(d));
+  RC_ASSERT(set == SetU64::to(d));
 }

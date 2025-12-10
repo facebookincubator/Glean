@@ -116,7 +116,7 @@ std::unique_ptr<rts::OwnershipSetIterator> getSetIterator(DatabaseImpl& db) {
         binary::Input val(bytes.get(), iter->value().size());
         exp.op = static_cast<SetOp>(val.trustedNat());
         exp.set = deserializeEliasFano(val);
-        return std::pair<uint32_t, SetExpr<const OwnerSet*>>(
+        return std::pair<UsetId, SetExpr<const OwnerSet*>>(
             usetid, {exp.op, &exp.set});
       } else {
         return folly::none;
@@ -177,7 +177,7 @@ std::unique_ptr<Usets> DatabaseImpl::loadOwnershipSets() {
   auto usets = std::make_unique<Usets>(first + size);
 
   while (const auto iterPair = iter->get()) {
-    auto set = SetU32::fromEliasFano(*iterPair->second.set);
+    auto set = SetU64::fromEliasFano(*iterPair->second.set);
     // paranoia: check the set contents make sense
     set.foreach([first, size](UsetId id) {
       if (id >= first + size) {
@@ -199,7 +199,7 @@ std::unique_ptr<Usets> DatabaseImpl::loadOwnershipSets() {
   return usets;
 }
 
-folly::Optional<uint32_t> DatabaseImpl::getUnitId(folly::ByteRange unit) {
+folly::Optional<UnitId> DatabaseImpl::getUnitId(folly::ByteRange unit) {
   rocksdb::PinnableSlice val;
   auto s = container_.db->Get(
       rocksdb::ReadOptions(),
@@ -208,14 +208,14 @@ folly::Optional<uint32_t> DatabaseImpl::getUnitId(folly::ByteRange unit) {
       &val);
   if (!s.IsNotFound()) {
     check(s);
-    assert(val.size() == sizeof(uint32_t));
-    return folly::loadUnaligned<uint32_t>(val.data());
+    assert(val.size() == sizeof(uint64_t));
+    return folly::loadUnaligned<uint64_t>(val.data());
   } else {
     return folly::none;
   }
 }
 
-folly::Optional<std::string> DatabaseImpl::getUnit(uint32_t unit_id) {
+folly::Optional<std::string> DatabaseImpl::getUnit(UnitId unit_id) {
   rocksdb::PinnableSlice val;
   EncodedNat key(unit_id);
   auto s = container_.db->Get(
@@ -250,7 +250,7 @@ void DatabaseImpl::addOwnership(const std::vector<OwnershipSet>& ownership) {
   rocksdb::WriteBatch batch;
 
   for (const auto& set : ownership) {
-    uint32_t unit_id;
+    UnitId unit_id;
     auto res = getUnitId(set.unit);
     if (res.hasValue()) {
       unit_id = *res;
@@ -318,7 +318,7 @@ DatabaseImpl::getDerivedFactOwnershipIterator(Pid pid) {
           return {};
         }
         const auto val = iter->value();
-        const size_t elts = val.size() / (sizeof(uint32_t) + sizeof(uint64_t));
+        const size_t elts = val.size() / (sizeof(uint64_t) + sizeof(uint64_t));
         const Id* ids = reinterpret_cast<const Id*>(val.data());
         const UsetId* owners = reinterpret_cast<const UsetId*>(
             val.data() + elts * sizeof(uint64_t));
@@ -358,7 +358,7 @@ DatabaseImpl::getOwnershipUnitIterator() {
         const auto val = iter->value();
         iter->Next();
         return rts::OwnershipUnit{
-            static_cast<uint32_t>(unit),
+            unit,
             {reinterpret_cast<const OwnershipUnit::Ids*>(val.data()),
              val.size() / sizeof(OwnershipUnit::Ids)}};
       } else {
@@ -389,7 +389,7 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
     auto upper = ownership.sets_.getFirstId() + ownership.sets_.size();
 
     auto serialized = ownership.sets_.toEliasFano(upper);
-    uint32_t id = ownership.sets_.getFirstId();
+    UsetId id = ownership.sets_.getFirstId();
     CHECK_GE(id, next_uset_id);
 
     for (auto& exp : serialized) {
@@ -490,7 +490,7 @@ struct StoredOwnership : Ownership {
     }
   }
 
-  folly::Optional<SetExpr<SetU32>> getUset(UsetId id) override {
+  folly::Optional<SetExpr<SetU64>> getUset(UsetId id) override {
     rocksdb::PinnableSlice val;
     EncodedNat key(id);
     auto s = db_->container_.db->Get(
@@ -501,9 +501,9 @@ struct StoredOwnership : Ownership {
     binary::Input inp(byteRange(val));
     if (!s.IsNotFound()) {
       check(s);
-      SetExpr<SetU32> exp;
+      SetExpr<SetU64> exp;
       exp.op = static_cast<SetOp>(inp.trustedNat());
-      exp.set = SetU32::fromEliasFano(deserializeEliasFano(inp));
+      exp.set = SetU64::fromEliasFano(deserializeEliasFano(inp));
       return exp;
     } else {
       return folly::none;
@@ -721,7 +721,7 @@ UsetId DatabaseImpl::FactOwnerCache::lookup(
     Id id) {
   // next binary-search on the content of the page to find the
   // interval containing the desired fact ID.
-  uint32_t low, high, mid;
+  size_t low, high, mid;
   uint16_t ix = id.toWord() & PAGE_MASK;
 
   low = 0;
@@ -923,7 +923,7 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
   // add new owner sets
   if (def.newSets_.size() > 0) {
     folly::F14FastMap<UsetId, UsetId> substitution;
-    auto subst = [&](uint32_t old) -> uint32_t {
+    auto subst = [&](UsetId old) -> UsetId {
       auto n = substitution.find(old);
       if (n == substitution.end()) {
         return old;
@@ -937,7 +937,7 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
 
     for (auto uset : def.newSets_) {
       std::set<UsetId> s;
-      uset->exp.set.foreach([&](uint32_t elt) {
+      uset->exp.set.foreach([&](UsetId elt) {
         UsetId newelt = subst(elt);
         if (newelt >= next_uset_id) {
           rts::error(
@@ -945,7 +945,7 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
         }
         s.insert(newelt);
       });
-      SetU32 set = SetU32::from(s);
+      SetU64 set = SetU64::from(s);
 
       auto newUset = std::make_unique<Uset>(std::move(set), uset->exp.op, 0);
       auto p = newUset.get();

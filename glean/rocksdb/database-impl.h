@@ -110,8 +110,8 @@ struct DatabaseImpl final : Database {
 
   /// Ownership
 
-  folly::Optional<uint32_t> getUnitId(folly::ByteRange unit) override;
-  folly::Optional<std::string> getUnit(uint32_t unit_id) override;
+  folly::Optional<rts::UnitId> getUnitId(folly::ByteRange unit) override;
+  folly::Optional<std::string> getUnit(rts::UnitId unit_id) override;
 
   void addOwnership(const std::vector<OwnershipSet>& ownership) override;
 

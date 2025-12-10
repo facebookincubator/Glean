@@ -15,7 +15,6 @@
 #include "glean/rts/ownership/pool.h"
 
 #include <cstdint>
-#include <queue>
 #include <vector>
 
 namespace facebook {
@@ -23,11 +22,10 @@ namespace glean {
 namespace rts {
 
 /**
- * A datastructure which maps ranges of Ids to values. The current
- * implementation is a hack which only supports Ids which fit in 32 bits.
+ * A datastructure which maps ranges of Ids to values.
  *
  * The implementation is a bit trie with a large initial fanout (64k) and then a
- * smaller inner fanout (16), giving a maximum depth of 4 (for 32-bit values).
+ * smaller inner fanout (16), giving a maximum depth of 12 (for 64-bit values).
  *
  * This should most likely be switched to some form of Patricia tree.
  */
@@ -64,9 +62,6 @@ class TrieArray {
 
     minkey_ = std::min(minkey_, start->start.toWord());
     maxkey_ = std::max(maxkey_, finish[-1].finish.toWord());
-
-    // only 32-bit keys are supported; this property is assumed later
-    CHECK(maxkey_ <= std::numeric_limits<uint32_t>::max());
 
     // During insertion if we are replacing all references of an existing value,
     // we want to do that in a single operation so that get() can reuse
@@ -214,11 +209,11 @@ class TrieArray {
  private:
   static constexpr size_t FANOUT_TOP = 65536;
   static constexpr size_t FANOUT = 16;
-  static constexpr size_t BLOCK =
-      (size_t(std::numeric_limits<uint32_t>::max()) + 1) / FANOUT_TOP;
+  // BLOCK = 2^64 / FANOUT_TOP = 2^64 / 2^16 = 2^48
+  static constexpr uint64_t BLOCK = uint64_t(1) << 48;
 
-  static constexpr size_t blockSize(uint8_t level) {
-    auto size = BLOCK;
+  static constexpr uint64_t blockSize(uint8_t level) {
+    uint64_t size = BLOCK;
     while (level != 0) {
       size /= FANOUT;
       --level;
@@ -302,7 +297,6 @@ class TrieArray {
   };
 
   static std::pair<uint64_t, uint64_t> location(uint64_t key) {
-    assert(key <= std::numeric_limits<uint32_t>::max());
     return {key / BLOCK, key % BLOCK};
   }
 

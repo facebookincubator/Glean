@@ -32,7 +32,7 @@ std::unique_ptr<Slice> slice(
   auto t = makeAutoTimer("slice");
 
   auto iter = ownership.getSetIterator();
-  using Reader = EliasFanoReader<EliasFanoEncoder<uint32_t, uint32_t>>;
+  using Reader = EliasFanoReader<EliasFanoEncoder<uint64_t, uint64_t>>;
 
   auto p = iter->sizes();
   auto first = p.first, size = p.second;

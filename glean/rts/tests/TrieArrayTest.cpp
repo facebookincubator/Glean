@@ -115,7 +115,7 @@ TrieArray<Uset> createTrieFromData(const std::vector<UnitData>& data) {
               return prev;
             } else {
               auto entry = std::make_unique<Uset>(
-                  SetU32(prev->exp.set, SetU32::copy_capacity), refs);
+                  SetU64(prev->exp.set, SetU64::copy_capacity), refs);
               entry->exp.set.append(d.unit);
               prev->refs -= refs;
               return entry.release();
@@ -123,7 +123,7 @@ TrieArray<Uset> createTrieFromData(const std::vector<UnitData>& data) {
           } else {
             VLOG(1) << folly::sformat(
                 "unit {} prev == nullptr, refs {}", d.unit, refs);
-            auto entry = std::make_unique<Uset>(SetU32(), refs);
+            auto entry = std::make_unique<Uset>(SetU64(), refs);
             entry->exp.set.append(d.unit);
             return entry.release();
           }

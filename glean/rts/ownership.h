@@ -19,7 +19,7 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
-using UnitId = uint32_t;
+using UnitId = uint64_t;
 
 using MutableOwnerSet = folly::compression::MutableEliasFanoCompressedList;
 using OwnerSet = folly::compression::EliasFanoCompressedList;
@@ -68,7 +68,7 @@ struct Ownership {
 
   // Fetch the set corresponding to a UsetId. This is used for
   // introspection only.
-  virtual folly::Optional<SetExpr<SetU32>> getUset(UsetId) = 0;
+  virtual folly::Optional<SetExpr<SetU64>> getUset(UsetId) = 0;
 
   // Look up the UnitId for a unit
   virtual folly::Optional<UnitId> getUnitId(folly::ByteRange unit) = 0;

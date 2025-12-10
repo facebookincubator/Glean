@@ -959,18 +959,18 @@ void glean_computed_ownership_free(ComputedOwnership* own) {
 
 const char* glean_ownership_next_set_id(
     Ownership* ownership,
-    uint32_t* result) {
+    uint64_t* result) {
   return ffi::wrap([=] { *result = ownership->nextSetId(); });
 }
 
 const char*
-glean_get_fact_owner(Lookup* lookup, glean_fact_id_t fact, uint32_t* uset_id) {
+glean_get_fact_owner(Lookup* lookup, glean_fact_id_t fact, uint64_t* uset_id) {
   return ffi::wrap([=] { *uset_id = lookup->getOwner(Id::fromWord(fact)); });
 }
 
 const char* glean_get_ownership_set(
     Ownership* ownership,
-    uint32_t uset_id,
+    uint64_t uset_id,
     int* op,
     OwnershipSet** result) {
   return ffi::wrap([=] {
@@ -978,7 +978,7 @@ const char* glean_get_ownership_set(
     if (!exp.hasValue()) {
       *result = nullptr;
     } else {
-      std::vector<uint32_t> elts;
+      std::vector<UsetId> elts;
       exp->set.foreach([&](UsetId setid) { elts.push_back(setid); });
       *op = exp->op;
       *result = new HsArray(std::move(elts));
@@ -988,14 +988,14 @@ const char* glean_get_ownership_set(
 
 const char* glean_slice_compute(
     Ownership* ownership,
-    uint32_t* unit_ids,
+    uint64_t* unit_ids,
     size_t unit_ids_size,
     int exclude,
     Slice** bases,
     size_t num_bases,
     Slice** result) {
   return ffi::wrap([=] {
-    auto vec = std::vector<uint32_t>(unit_ids, unit_ids + unit_ids_size);
+    auto vec = std::vector<UnitId>(unit_ids, unit_ids + unit_ids_size);
     std::sort(vec.begin(), vec.end());
     std::vector<const Slice*> slices(bases, bases + num_bases);
     *result = slice(*ownership, Slices(std::move(slices)), vec, exclude != 0)

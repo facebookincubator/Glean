@@ -79,12 +79,12 @@ instance Static UnitIterator where
   destroyStatic = glean_ownership_unit_iterator_free
 
 -- | Id of a unit
-newtype UnitId = UnitId Word32
+newtype UnitId = UnitId Word64
   deriving (Storable, Show)
 
 -- | Id of an ownership set
-newtype UsetId = UsetId Word32
-  deriving (Storable)
+newtype UsetId = UsetId Word64
+  deriving (Storable, Show)
 
 firstUsetId :: UsetId
 firstUsetId = UsetId 0
@@ -288,7 +288,7 @@ getOwnershipSet ownership usetid =
           let op | cop == (#const facebook::glean::rts::Or) = Or
                  | cop == (#const facebook::glean::rts::And) = And
                  | otherwise = error "unknown SetOp"
-          return $ Just (op, unsafeCoerceVector (vec :: VS.Vector Word32))
+          return $ Just (op, unsafeCoerceVector (vec :: VS.Vector Word64))
     )
 
 data OwnershipStats = OwnershipStats
@@ -420,14 +420,14 @@ foreign import ccall safe glean_ownership_compute
 foreign import ccall unsafe glean_get_fact_owner
   :: Ptr Lookup
   -> Word64
-  -> Ptr Word32
+  -> Ptr Word64
   -> IO CString
 
 foreign import ccall unsafe glean_get_ownership_set
   :: Ptr Ownership
   -> UsetId
   -> Ptr CInt
-  -> Ptr (Ptr (HsArray Word32))
+  -> Ptr (Ptr (HsArray Word64))
   -> IO CString
 
 foreign import ccall safe glean_derived_ownership_compute
@@ -445,7 +445,7 @@ foreign import ccall unsafe "&glean_computed_ownership_free"
 
 foreign import ccall safe glean_slice_compute
   :: Ptr Ownership
-  -> Ptr Word32
+  -> Ptr Word64
   -> CSize
   -> CInt
   -> Ptr (Ptr Slice)

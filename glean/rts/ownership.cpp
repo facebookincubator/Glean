@@ -10,7 +10,7 @@
 #include "glean/rts/factset.h"
 #include "glean/rts/inventory.h"
 #include "glean/rts/lookup.h"
-#include "glean/rts/ownership/setu32.h"
+#include "glean/rts/ownership/setu64.h"
 #include "glean/rts/ownership/triearray.h"
 #include "glean/rts/ownership/uset.h"
 #include "glean/rts/timer.h"
@@ -78,7 +78,7 @@ namespace {
  */
 FOLLY_NOINLINE std::unique_ptr<TrieArray<Uset>> fillOwnership(
     OwnershipUnitIterator* iter,
-    uint32_t& firstSetId) {
+    UsetId& firstSetId) {
   struct Stats {
     size_t units = 0;
     size_t intervals = 0;
@@ -117,8 +117,8 @@ FOLLY_NOINLINE std::unique_ptr<TrieArray<Uset>> fillOwnership(
   });
 
   auto utrie = std::make_unique<TrieArray<Uset>>();
-  uint32_t last_unit = 0;
-  uint32_t max_unit = 0;
+  UnitId last_unit = 0;
+  UnitId max_unit = 0;
   Stats stats;
   folly::Optional<OwnershipUnitCopy> d;
   for (queue.blockingRead(d); d; queue.blockingRead(d)) {
@@ -137,13 +137,13 @@ FOLLY_NOINLINE std::unique_ptr<TrieArray<Uset>> fillOwnership(
               return prev;
             } else {
               auto entry = std::make_unique<Uset>(
-                  SetU32(prev->exp.set, SetU32::copy_capacity), refs);
+                  SetU64(prev->exp.set, SetU64::copy_capacity), refs);
               entry->exp.set.append(data.unit);
               prev->refs -= refs;
               return entry.release();
             }
           } else {
-            auto entry = std::make_unique<Uset>(SetU32(), refs);
+            auto entry = std::make_unique<Uset>(SetU64(), refs);
             entry->exp.set.append(data.unit);
             return entry.release();
           }
@@ -161,8 +161,7 @@ FOLLY_NOINLINE std::unique_ptr<TrieArray<Uset>> fillOwnership(
 }
 
 /** Move the sets from the trie to `Usets`. */
-FOLLY_NOINLINE Usets
-collectUsets(uint32_t firstUsetId, TrieArray<Uset>& utrie) {
+FOLLY_NOINLINE Usets collectUsets(UsetId firstUsetId, TrieArray<Uset>& utrie) {
   Usets usets(firstUsetId);
   size_t visits = 0;
   utrie.foreach([&](Uset* entry) -> Uset* {
@@ -270,7 +269,7 @@ FOLLY_NOINLINE void completeOwnership(
       if (fact.id < min_id) {
         auto base_owner = base_lookup->getOwner(fact.id);
         if (base_owner != INVALID_USET) {
-          auto merged = usets.merge(SetU32::from({base_owner}), set);
+          auto merged = usets.merge(SetU64::from({base_owner}), set);
           usets.promote(merged);
           owner(fact.id) = merged;
         }
@@ -443,7 +442,7 @@ std::unique_ptr<ComputedOwnership> computeOwnership(
     Lookup& lookup, // the current DB, *not* stacked
     Lookup* base_lookup, // the base DB stack, if this is a stack
     OwnershipUnitIterator* iter) {
-  uint32_t firstUsetId;
+  UsetId firstUsetId;
   auto t = makeAutoTimer("computeOwnership");
   VLOG(1) << "computing ownership";
 

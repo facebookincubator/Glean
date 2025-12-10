@@ -96,8 +96,8 @@ struct Database : rts::Lookup {
   virtual std::unique_ptr<rts::DerivedFactOwnershipIterator>
   getDerivedFactOwnershipIterator(Pid pid) = 0;
 
-  virtual folly::Optional<uint32_t> getUnitId(folly::ByteRange) = 0;
-  virtual folly::Optional<std::string> getUnit(uint32_t) = 0;
+  virtual folly::Optional<rts::UnitId> getUnitId(folly::ByteRange) = 0;
+  virtual folly::Optional<std::string> getUnit(rts::UnitId) = 0;
 
   virtual void storeOwnership(rts::ComputedOwnership& ownership) = 0;
   virtual std::unique_ptr<rts::Ownership> getOwnership() = 0;
