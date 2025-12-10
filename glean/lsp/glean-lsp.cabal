@@ -86,7 +86,7 @@ executable glean-lsp
         unliftio-core ^>=0.2,
         unordered-containers >= 0.2.9.0 && < 0.3,
         optparse-applicative >= 0.17 && < 0.19,
-        glean:glass-lib,
+        glean:glass-lib >= 0.2 && < 0.3,
         glean:if-glass-hs,
         glean:util,
         fb-util,
