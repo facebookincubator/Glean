@@ -10,6 +10,7 @@
 #include <cpp/memory.h> // @manual
 #else
 #include "common/hs/util/cpp/memory.h"
+#include "justknobs/JustKnobProxy.h"
 #endif
 #include <glean/rts/ownership/uset.h>
 #include "glean/rocksdb/database-impl.h"
@@ -72,6 +73,17 @@ DatabaseImpl::loadOwnershipDerivedCounters() {
 }
 
 namespace {
+
+// Helper to serialize UnitId/UsetId based on format version
+rocksdb::Slice
+toSliceForFormat(binary::Output& out, uint64_t id, uint32_t format_version) {
+  if (format_version == OWNERSHIP_FORMAT_VERSION_32BIT) {
+    out.fixed(static_cast<uint32_t>(id));
+  } else {
+    out.fixed(id);
+  }
+  return slice(out);
+}
 
 void putOwnerSet(
     ContainerImpl& container,
@@ -272,10 +284,12 @@ void DatabaseImpl::addOwnership(const std::vector<OwnershipSet>& ownership) {
       touched.push_back(unit_id);
     } else {
       unit_id = first_unit_id + ownership_unit_counters.size() + new_count;
+      // Write UnitId in format based on ownership_format_version
+      binary::Output unitIdOut;
       check(batch.Put(
           container_.family(Family::ownershipUnits),
           slice(set.unit),
-          toSlice(unit_id)));
+          toSliceForFormat(unitIdOut, unit_id, ownership_format_version)));
       EncodedNat key(unit_id);
       check(batch.Put(
           container_.family(Family::ownershipUnitIds),
@@ -907,6 +921,17 @@ std::optional<UsetId> DatabaseImpl::FactOwnerCache::getOwner(
 }
 
 void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
+  // Static function - need to check gatekeeper for format
+#ifndef OSS
+  static facebook::jk::BooleanKnob use64BitOwnership(
+      "glean/ownership:64_bit_ids");
+  uint32_t format_version = use64BitOwnership()
+      ? OWNERSHIP_FORMAT_VERSION_64BIT
+      : OWNERSHIP_FORMAT_VERSION_32BIT;
+#else
+  uint32_t format_version = OWNERSHIP_FORMAT_VERSION_32BIT;
+#endif
+
   auto t = makeAutoTimer("prepareFactOwnerCache");
 
   std::unique_ptr<rocksdb::Iterator> iter(container.db->NewIterator(
@@ -934,7 +959,18 @@ void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
       index.push_back(HAS_PAGE);
       binary::Output out;
       out.bytes(ids.data(), ids.size() * sizeof(uint16_t));
-      out.bytes(sets.data(), sets.size() * sizeof(UsetId));
+      // Write UsetIds in format based on format_version
+      if (format_version == OWNERSHIP_FORMAT_VERSION_32BIT) {
+        // Write 32-bit UsetIds
+        std::vector<uint32_t> sets32(sets.size());
+        for (size_t i = 0; i < sets.size(); i++) {
+          sets32[i] = static_cast<uint32_t>(sets[i]);
+        }
+        out.bytes(sets32.data(), sets32.size() * sizeof(uint32_t));
+      } else {
+        // Write 64-bit UsetIds
+        out.bytes(sets.data(), sets.size() * sizeof(UsetId));
+      }
       batch.Put(
           container.family(Family::factOwnerPages),
           toSlice(prefix),
@@ -980,19 +1016,39 @@ void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
   // write the last page
   writePage();
 
-  batch.Put(
-      container.family(Family::factOwnerPages),
-      INDEX_KEY,
-      slice(
-          folly::ByteRange(
-              reinterpret_cast<const uint8_t*>(index.data()),
-              index.size() * sizeof(UsetId))));
+  // Write index in format based on format_version
+  if (format_version == OWNERSHIP_FORMAT_VERSION_32BIT) {
+    // Write 32-bit index entries
+    std::vector<uint32_t> index32(index.size());
+    if (!index.empty()) {
+      for (size_t i = 0; i < index.size(); i++) {
+        index32[i] = static_cast<uint32_t>(index[i]);
+      }
+    }
+    batch.Put(
+        container.family(Family::factOwnerPages),
+        INDEX_KEY,
+        slice(
+            folly::ByteRange(
+                reinterpret_cast<const uint8_t*>(index32.data()),
+                index32.size() * sizeof(uint32_t))));
+  } else {
+    // Write 64-bit index entries
+    batch.Put(
+        container.family(Family::factOwnerPages),
+        INDEX_KEY,
+        slice(
+            folly::ByteRange(
+                reinterpret_cast<const uint8_t*>(index.data()),
+                index.size() * sizeof(UsetId))));
+  }
 
   t.logFormat(
-      "{} index entries, {} populated, {} orphans",
+      "{} index entries, {} populated, {} orphans (format: {})",
       index.size(),
       populated,
-      orphaned);
+      orphaned,
+      format_version == OWNERSHIP_FORMAT_VERSION_32BIT ? "32-bit" : "64-bit");
 
   // record the number of orphaned facts, this will be fetched by ownershipStats
   batch.Put(
@@ -1110,16 +1166,38 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
         pred.new_ids_.size() *
             sizeof(std::remove_reference<
                    decltype(pred.new_ids_)>::type::value_type));
-    val.bytes(
-        pred.owners_.data(),
-        pred.owners_.size() *
-            sizeof(std::remove_reference<
-                   decltype(pred.owners_)>::type::value_type));
-    val.bytes(
-        pred.new_owners_.data(),
-        pred.new_owners_.size() *
-            sizeof(std::remove_reference<
-                   decltype(pred.new_owners_)>::type::value_type));
+
+    // Write owners in format based on ownership_format_version
+    if (ownership_format_version == OWNERSHIP_FORMAT_VERSION_32BIT) {
+      // 32-bit UsetId format
+      std::vector<uint32_t> owners32(pred.owners_.size());
+      if (!pred.owners_.empty()) {
+        for (size_t i = 0; i < pred.owners_.size(); i++) {
+          owners32[i] = static_cast<uint32_t>(pred.owners_[i]);
+        }
+      }
+      val.bytes(owners32.data(), owners32.size() * sizeof(uint32_t));
+
+      std::vector<uint32_t> new_owners32(pred.new_owners_.size());
+      if (!pred.new_owners_.empty()) {
+        for (size_t i = 0; i < pred.new_owners_.size(); i++) {
+          new_owners32[i] = static_cast<uint32_t>(pred.new_owners_[i]);
+        }
+      }
+      val.bytes(new_owners32.data(), new_owners32.size() * sizeof(uint32_t));
+    } else {
+      // 64-bit UsetId format
+      val.bytes(
+          pred.owners_.data(),
+          pred.owners_.size() *
+              sizeof(std::remove_reference<
+                     decltype(pred.owners_)>::type::value_type));
+      val.bytes(
+          pred.new_owners_.data(),
+          pred.new_owners_.size() *
+              sizeof(std::remove_reference<
+                     decltype(pred.new_owners_)>::type::value_type));
+    }
 
     check(batch.Put(
         container_.family(Family::ownershipDerivedRaw),

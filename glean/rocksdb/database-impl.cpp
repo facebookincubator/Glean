@@ -11,6 +11,10 @@
 
 #include "glean/rts/timer.h"
 
+#ifndef OSS
+#include "justknobs/JustKnobProxy.h"
+#endif
+
 namespace facebook {
 namespace glean {
 namespace rocks {
@@ -147,16 +151,36 @@ DatabaseImpl::DatabaseImpl(
   }
 
   // Initialize ownership format version
-  // For new DBs: write the current (64-bit) format version
-  // For existing DBs: if no version marker exists, assume 32-bit format
-  ownership_format_version = static_cast<uint32_t>(initAdminValue(
-      container_,
-      AdminId::OWNERSHIP_FORMAT_VERSION,
-      static_cast<uint64_t>(
-          container_.mode == Mode::Create ? OWNERSHIP_FORMAT_VERSION_CURRENT
-                                          : OWNERSHIP_FORMAT_VERSION_32BIT),
-      container_.mode == Mode::Create,
-      [] {}));
+  // For new DBs: Check JustKnob to decide whether to use 64-bit or 32-bit
+  // format. For existing DBs: if no version marker exists, assume 32-bit format
+  // Both formats are always readable regardless of gatekeeper value
+  if (container_.mode == Mode::Create) {
+    // New DB: check JustKnob to determine format
+#ifndef OSS
+    static facebook::jk::BooleanKnob use64BitOwnership(
+        "glean/ownership:64_bit_ids");
+    uint32_t format_to_use = use64BitOwnership()
+        ? OWNERSHIP_FORMAT_VERSION_64BIT
+        : OWNERSHIP_FORMAT_VERSION_32BIT;
+#else
+    // OSS builds always use 32-bit format for now
+    uint32_t format_to_use = OWNERSHIP_FORMAT_VERSION_32BIT;
+#endif
+    ownership_format_version = static_cast<uint32_t>(initAdminValue(
+        container_,
+        AdminId::OWNERSHIP_FORMAT_VERSION,
+        static_cast<uint64_t>(format_to_use),
+        true, // write
+        [] {}));
+  } else {
+    // Existing DB: read format version, default to 32-bit if not present
+    ownership_format_version = static_cast<uint32_t>(initAdminValue(
+        container_,
+        AdminId::OWNERSHIP_FORMAT_VERSION,
+        static_cast<uint64_t>(OWNERSHIP_FORMAT_VERSION_32BIT),
+        false, // don't write
+        [] {}));
+  }
 
   VLOG(1) << folly::sformat(
       "ownership_format_version: {} ({})",
