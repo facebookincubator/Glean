@@ -154,6 +154,7 @@ module Glean
   , makeFactV
   , makeFactV_
   , NewFact(..)
+  , UnitName
 
   -- ** Lower-level write API
   , withSender

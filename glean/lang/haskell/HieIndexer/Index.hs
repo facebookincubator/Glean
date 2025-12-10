@@ -125,6 +125,16 @@ mkModule mod unit = do
   Glean.makeFact @Hs.Module $
     Hs.Module_key modname unitname
 
+-- The Glean unit (used for incremental indexing) is
+-- <package>:<module>.  We use this rather than the source file path,
+-- because you might move the source file while keeping the module
+-- name unchanged.
+gleanUnit :: GHC.Module -> Glean.UnitName
+gleanUnit mod = ghcUnit <> ":" <> moduleName
+  where
+    ghcUnit = GHC.bytesFS $ GHC.unitFS $ GHC.moduleUnit mod
+    moduleName = GHC.bytesFS $ GHC.moduleNameFS $ GHC.moduleName mod
+
 toUnitName :: UnitName -> GHC.Unit -> Text
 toUnitName unitName u = case unitName of
   UnitKey -> t
@@ -380,7 +390,7 @@ indexHieFile
 indexHieFile writer srcPaths srcPrefix unit path hie = do
   srcFile <- findSourceFile srcPaths (hie_module hie) (hie_hs_file hie)
   logInfo $ "Indexing: " <> path <> " (" <> srcFile <> ")"
-  Glean.writeFacts writer $ do
+  Glean.writeFacts writer $ Glean.withUnit (gleanUnit smod) $ do
     modfact <- mkModule smod unit
 
     let offs = getLineOffsets (hie_hs_src hie)
