@@ -87,7 +87,7 @@ defaultMain cfg repo backend = do
 
   Glean.withSender backend repo allPredicates def $ \sender -> do
     Glean.withWriter sender def $
-      indexHieFiles paths (srcPaths cfg)
+      indexHieFiles paths (srcPaths cfg) (srcPrefix cfg) (unitName cfg)
 
   predicates <-
     Glean.schemaInfo_predicateIds
@@ -119,20 +119,22 @@ outputMain cfg out schema_id backend = do
   paths <- getHieFilesIn (NonEmpty.toList (hiePaths cfg))
   ((), batch) <-
     Glean.withBatchWriter backend schema_id Nothing def $
-      indexHieFiles paths (srcPaths cfg)
+      indexHieFiles paths (srcPaths cfg) (srcPrefix cfg) (unitName cfg)
   BS.writeFile out (Thrift.Protocol.Compact.serializeCompact batch)
 
 indexHieFiles
   :: HashSet.HashSet FilePath
   -> NonEmpty Text
+  -> Maybe Text
+  -> UnitName
   -> Glean.Writer
   -> IO ()
-indexHieFiles paths srcs writer =
+indexHieFiles paths srcs srcPrefix unitName writer =
   forM_ (HashSet.toList paths) $ \f -> do
     nc <- newIORef =<< makeNc
     runDbM nc $ do
       withHieFile f $ \h ->
-        liftIO $ indexHieFile writer srcs f h
+        liftIO $ indexHieFile writer srcs srcPrefix unitName f h
 
 {- | Recursively search for @.hie@ and @.hie-boot@  files in given directory
    avoiding loops due to symlinks

@@ -58,7 +58,8 @@ import qualified GHC.Types.Var as GHC (ForAllTyFlag(..), Specificity(..))
 #else
 import qualified GHC.Types.Var as GHC (ArgFlag(..), Specificity(..))
 #endif
-import GHC.Unit.Types (unitFS)
+import qualified GHC.Unit.Types as GHC
+import qualified GHC.Types.Unique.Set as GHC (mkUniqSet, elementOfUniqSet)
 #if !MIN_VERSION_ghc(9,6,0)
 import qualified GHC.Unit.Module.Name as GHC (moduleNameFS)
 #endif
@@ -71,6 +72,7 @@ import Glean.Impl.ConfigProvider ()
 import qualified Glean.Schema.Hs.Types as Hs
 import qualified Glean.Schema.Src.Types as Src
 import Glean.Util.Range
+import HieIndexer.Options
 
 {- TODO
 
@@ -96,6 +98,12 @@ import Glean.Util.Range
     Haddock's Interface type has all the ASTs for the declarations
     in addition to the Hie.
 
+- imports
+  - import refs contain only ModuleName, not Module. This means we can't
+    resolve imports to the correct file for module names that occur in
+    multiple packages.
+  - modules in the export list should be refs
+
 - map Name to exportedness?
 
 - exclude generated names in a cleaner way
@@ -108,14 +116,30 @@ import Glean.Util.Range
   - Haddock docs for symbol
 -}
 
-mkModule :: Glean.NewFact m => GHC.Module -> m Hs.Module
-mkModule mod = do
+mkModule :: Glean.NewFact m => GHC.Module -> UnitName -> m Hs.Module
+mkModule mod unit = do
   modname <- Glean.makeFact @Hs.ModuleName $
     fsToText (GHC.moduleNameFS (GHC.moduleName mod))
   unitname <- Glean.makeFact @Hs.UnitName $
-    fsToText (unitFS (GHC.moduleUnit mod))
+    toUnitName unit $ GHC.moduleUnit mod
   Glean.makeFact @Hs.Module $
     Hs.Module_key modname unitname
+
+toUnitName :: UnitName -> GHC.Unit -> Text
+toUnitName unitName u = case unitName of
+  UnitKey -> t
+  UnitId
+    | isWiredInUnit u -> t
+    | (id, _) <- Text.breakOnEnd "-" t, not (Text.null id) -> Text.init id
+    | otherwise -> t
+    -- TODO: this is not right for local libraries, which have names like
+    -- aeson-pretty-0.8.9-inplace-aeson
+  where t = fsToText $ GHC.unitFS u
+
+isWiredInUnit :: GHC.Unit -> Bool
+isWiredInUnit = \u -> GHC.toUnitId u `GHC.elementOfUniqSet` wiredInUnitIds
+  where
+  wiredInUnitIds = GHC.mkUniqSet GHC.wiredInUnitIds
 
 mkName :: Glean.NewFact m => GHC.Name -> Hs.Module -> Hs.NameSort -> m Hs.Name
 mkName name mod sort = do
@@ -254,9 +278,10 @@ nat = Glean.toNat . fromIntegral
 
 indexTypes
   :: forall m . (MonadFail m, Monad m, Glean.NewFact m)
-  => A.Array TypeIndex HieTypeFlat
+  => UnitName
+  -> A.Array TypeIndex HieTypeFlat
   -> m (IntMap Hs.Type)
-indexTypes typeArr = foldM go IntMap.empty (A.assocs typeArr)
+indexTypes unit typeArr = foldM go IntMap.empty (A.assocs typeArr)
   where
   go tymap (n,ty) = do
     fact <- mkTy ty
@@ -314,7 +339,7 @@ indexTypes typeArr = foldM go IntMap.empty (A.assocs typeArr)
         tcname <- case nameModule_maybe name of
           Nothing -> fail "HTyConApp: internal name"
           Just mod -> do
-            namemod <- mkModule mod
+            namemod <- mkModule mod unit
             mkName name namemod (Hs.NameSort_external def)
         let sort = case GHC.ifaceTyConSort info of
               GHC.IfaceNormalTyCon -> Hs.TyConSort_normal def
@@ -347,25 +372,28 @@ indexTypes typeArr = foldM go IntMap.empty (A.assocs typeArr)
 indexHieFile
   :: Glean.Writer
   -> NonEmpty Text
+  -> Maybe Text
+  -> UnitName
   -> FilePath
   -> HieFile
   -> IO ()
-indexHieFile writer srcPaths path hie = do
+indexHieFile writer srcPaths srcPrefix unit path hie = do
   srcFile <- findSourceFile srcPaths (hie_module hie) (hie_hs_file hie)
   logInfo $ "Indexing: " <> path <> " (" <> srcFile <> ")"
   Glean.writeFacts writer $ do
-    modfact <- mkModule smod
+    modfact <- mkModule smod unit
 
     let offs = getLineOffsets (hie_hs_src hie)
     let hsFileFS = GHC.mkFastString $ hie_hs_file hie
-    filefact <- Glean.makeFact @Src.File (Text.pack srcFile)
+    let file = maybe id (\p f -> (p <> "/" <> f)) srcPrefix (Text.pack srcFile)
+    filefact <- Glean.makeFact @Src.File file
     let fileLines = mkFileLines filefact offs
     Glean.makeFact_ @Src.FileLines fileLines
 
     Glean.makeFact_ @Hs.ModuleSource $
       Hs.ModuleSource_key modfact filefact
 
-    typeMap <- indexTypes (hie_types hie)
+    typeMap <- indexTypes unit (hie_types hie)
 
     let toByteRange = srcRangeToByteRange fileLines (hie_hs_src hie)
         toByteSpan sp
@@ -413,7 +441,7 @@ indexHieFile writer srcPaths path hie = do
               -- But it does happen, so let's not crash.
               return Nothing
             Just m -> do
-              mod <- if m == smod then return modfact else mkModule m
+              mod <- if m == smod then return modfact else mkModule m unit
               Just <$> mkName name mod (Hs.NameSort_external def)
 
     sigMap <- produceDeclInfo filefact toByteSpan getName declInfo
@@ -512,7 +540,7 @@ findSourceFile srcPaths mod src = do
       return src
     Just f -> return f
   where
-  pkg = fsToText (unitFS (GHC.moduleUnit mod))
+  pkg = fsToText (GHC.unitFS (GHC.moduleUnit mod))
   isVer = Text.all (\c -> isDigit c || c == '.')
   pkgNameAndVersion = case break isVer (Text.splitOn "-" pkg) of
     (before, after) -> Text.intercalate "-" (before <> take 1 after)
