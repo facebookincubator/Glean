@@ -24,6 +24,7 @@ data Haskell = Haskell
   { haskellBinary :: FilePath
   , haskellGhc :: Maybe FilePath
   , haskellSrcs :: [FilePath]
+  , haskellArgs :: [String]
   }
 
 options :: Parser Haskell
@@ -42,6 +43,9 @@ options = do
              " (otherwise read existing .hie files)")
     )
   haskellSrcs <- many (strOption (long "src"))
+  haskellArgs <- many (strOption (
+    long "arg" <> metavar "ARG" <>
+    help "argument to pass to hie-indexer"))
   return Haskell{..}
 
 indexer :: Indexer Haskell
@@ -77,7 +81,7 @@ indexer =
                     , "--repo-hash"
                     , "${TEST_REPO_HASH}"
                     , hieDir
-                    ] <> [ "--src=" <> f | f <- haskellSrcs ]
+                    ] <> [ "--src=" <> f | f <- haskellSrcs ] <> haskellArgs
                 , extDerivePredicates = [
                     "hs.OccNameLowerCase",
                     "hs.SourceModule"
