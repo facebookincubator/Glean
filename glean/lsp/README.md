@@ -79,6 +79,60 @@ Now if you open this workspace in VS Code and open one of the source
 files that was indexed, you should have go-to-definition and the other
 features available.
 
+## Example: browse the React codebase with Glean
+
+Clone a copy of React:
+
+```
+$ git clone --depth 1 https://github.com/facebook/react.git
+$ cd react
+```
+
+Start a Glean server:
+
+```
+$ glean-server --db-root .glean --port 1234 &
+```
+
+If you don't have `Flow` installed:
+
+```
+$ sudo npm install -g flow-bin
+```
+
+Index the code into a DB called `react/0`:
+
+```
+$ grep -v '^%' scripts/flow/config/flowconfig >.flowconfig
+$ glean index flow . --write-root "" --service localhost:1234 --db react/0
+```
+
+Put the following into `/tmp/react/.vscode/settings`:
+
+```
+{
+    "glean-lsp": {
+        "repo": "react"
+    },
+    "glspc.server.command": "glean-lsp",
+    "glspc.server.commandArguments": ["--service", "localhost:1234"],
+    "glspc.server.languageId": [
+      "typescript", "javascript"
+    ]
+}
+```
+
+Start VS Code, and open the folder `react` that you cloned. You
+probably want to disable the built-in TypeScript extensions to avoid
+conflicts: `Ctrl-Shift-X` and filter on built-in extensions (Show
+Built-in Extensions in the `...` dropdown), then disable the
+extensions for TypeScript for this workspace only.
+
+Now open a `.js` file, and you should have navigation features
+provided by `glean-lsp`: try right-click and "Go to Definition" or "Go
+to References". Check that the Outline view is populated. Try symbol
+search with `Ctrl-T`.
+
 ## Troubleshooting
 
 In the "Output" pane, select the output for the LSP client in the
