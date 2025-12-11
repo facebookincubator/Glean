@@ -416,6 +416,7 @@ library util
         Glean.Impl.ThriftService
         Glean.Impl.ConfigProvider
         Glean.Impl.TestConfigProvider
+        Glean.Impl.MemoryReader
         Glean.Util.Bisect
         Glean.Util.ConfigProvider
         Glean.Util.Disk

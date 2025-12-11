@@ -47,6 +47,7 @@ import Glean.RTS.Types (Fid(..), invalidFid, Pid(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types (Repo)
 import Glean.Util.Disk
+import Glean.Impl.MemoryReader
 import System.IO.Extra (withTempFile)
 
 newtype Cache = Cache (ForeignPtr Cache)
@@ -68,6 +69,11 @@ data RocksDB = RocksDB
   { rocksRoot :: FilePath
   , rocksCache :: Maybe Cache
   , rocksCacheIndexAndFilterBlocks :: Bool
+  , rocksMaxDiskSize :: Maybe Int
+    -- ^ virtual limit to report capped disk capacities. The limit is
+    -- not enforced. It's up to each io usage to check diskspace before writing.
+    -- We're using this to avoid serving too many dbs on query servers,
+    -- and smarter sharding.
   }
 
 newStorage :: FilePath -> ServerConfig.Config -> IO RocksDB
@@ -76,11 +82,16 @@ newStorage root ServerConfig.Config{..} = do
     then
       Just <$> newCache (fromIntegral config_db_rocksdb_cache_mb * 1024 * 1024)
     else return Nothing
+  mem_capacity <- totalMemCapacity
   return RocksDB
     { rocksRoot = root
     , rocksCache = cache
     , rocksCacheIndexAndFilterBlocks =
         config_db_rocksdb_cache_index_and_filter_blocks
+    , rocksMaxDiskSize = case mem_capacity of
+        Just mem -> (* mem) . fromIntegral <$>
+          config_db_rocksdb_disk_mem_capacity_ratio_limit
+        Nothing -> Nothing
     }
 
 newtype Container = Container (Ptr Container)
@@ -236,7 +247,11 @@ instance Storage RocksDB where
   getTotalCapacity rocksdb = do
     exists <- doesDirectoryExist (rocksRoot rocksdb)
     if exists
-      then Just <$> getDiskSize (rocksRoot rocksdb)
+      then do
+        fullDiskCapacity <- getDiskSize (rocksRoot rocksdb)
+        return $ Just $ case rocksMaxDiskSize rocksdb of
+          Just maxDiskSize -> min maxDiskSize fullDiskCapacity
+          Nothing -> fullDiskCapacity
       else return Nothing
 
   getUsedCapacity rocksdb = do
@@ -245,7 +260,12 @@ instance Storage RocksDB where
       then Just <$> getUsedDiskSpace (rocksRoot rocksdb)
       else return Nothing
 
-  getFreeCapacity = getFreeDiskSpace . rocksRoot
+  getFreeCapacity rocksdb = do
+    used <- getUsedCapacity rocksdb
+    total <- getTotalCapacity rocksdb
+    case (used,total) of
+      (Just used, Just total) -> return $ total - used
+      _ -> getFreeDiskSpace (rocksRoot rocksdb) -- not aware of disk limit
 
   withScratchRoot rocks f = f $ rocksRoot rocks </> ".scratch"
 
