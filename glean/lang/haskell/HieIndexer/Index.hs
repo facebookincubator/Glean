@@ -381,17 +381,15 @@ indexTypes unit typeArr = foldM go IntMap.empty (A.assocs typeArr)
 
 indexHieFile
   :: Glean.Writer
-  -> NonEmpty Text
-  -> Maybe Text
-  -> UnitName
+  -> HieIndexerOptions
   -> FilePath
   -> HieFile
   -> IO ()
-indexHieFile writer srcPaths srcPrefix unit path hie = do
+indexHieFile writer HieIndexerOptions{..} path hie = do
   srcFile <- findSourceFile srcPaths (hie_module hie) (hie_hs_file hie)
   logInfo $ "Indexing: " <> path <> " (" <> srcFile <> ")"
   Glean.writeFacts writer $ Glean.withUnit (gleanUnit smod) $ do
-    modfact <- mkModule smod unit
+    modfact <- mkModule smod unitName
 
     let offs = getLineOffsets (hie_hs_src hie)
     let hsFileFS = GHC.mkFastString $ hie_hs_file hie
@@ -403,7 +401,7 @@ indexHieFile writer srcPaths srcPrefix unit path hie = do
     Glean.makeFact_ @Hs.ModuleSource $
       Hs.ModuleSource_key modfact filefact
 
-    typeMap <- indexTypes unit (hie_types hie)
+    typeMap <- indexTypes unitName (hie_types hie)
 
     let toByteRange = srcRangeToByteRange fileLines (hie_hs_src hie)
         toByteSpan sp
@@ -451,7 +449,7 @@ indexHieFile writer srcPaths srcPrefix unit path hie = do
               -- But it does happen, so let's not crash.
               return Nothing
             Just m -> do
-              mod <- if m == smod then return modfact else mkModule m unit
+              mod <- if m == smod then return modfact else mkModule m unitName
               Just <$> mkName name mod (Hs.NameSort_external def)
 
     sigMap <- produceDeclInfo filefact toByteSpan getName declInfo
