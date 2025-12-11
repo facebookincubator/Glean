@@ -358,7 +358,7 @@ library rts
         glean/rts/ownership/fallbackavx.h
         glean/rts/ownership.h
         glean/rts/ownership/pool.h
-        glean/rts/ownership/setu32.h
+        glean/rts/ownership/setu64.h
         glean/rts/ownership/slice.h
         glean/rts/ownership/triearray.h
         glean/rts/ownership/uset.h

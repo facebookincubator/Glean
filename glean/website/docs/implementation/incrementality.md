@@ -159,7 +159,7 @@ In practice we make this efficient by:
   derived facts in the next stage), so we can normalise `A || B` by
   taking the union of the sets `A` and `B`. We use an efficient
   integer set representation with fast union (see <SrcFile
-  file="glean/rts/ownership/setu32.h"/>).
+  file="glean/rts/ownership/setu64.h"/>).
 
 This propagation requires *O(facts)* time, and the current
 implementation also requires *O(facts)* space too.
