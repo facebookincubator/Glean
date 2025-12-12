@@ -10,7 +10,6 @@
 #include <cpp/memory.h> // @manual
 #else
 #include "common/hs/util/cpp/memory.h"
-#include "justknobs/JustKnobProxy.h"
 #endif
 #include <glean/rts/ownership/uset.h>
 #include "glean/rocksdb/database-impl.h"
@@ -74,17 +73,6 @@ DatabaseImpl::loadOwnershipDerivedCounters() {
 
 namespace {
 
-// Helper to serialize UnitId/UsetId based on format version
-rocksdb::Slice
-toSliceForFormat(binary::Output& out, uint64_t id, uint32_t format_version) {
-  if (format_version == OWNERSHIP_FORMAT_VERSION_32BIT) {
-    out.fixed(static_cast<uint32_t>(id));
-  } else {
-    out.fixed(id);
-  }
-  return slice(out);
-}
-
 void putOwnerSet(
     ContainerImpl& container,
     rocksdb::WriteBatch& batch,
@@ -128,7 +116,7 @@ std::unique_ptr<rts::OwnershipSetIterator> getSetIterator(DatabaseImpl& db) {
         binary::Input val(bytes.get(), iter->value().size());
         exp.op = static_cast<SetOp>(val.trustedNat());
         exp.set = deserializeEliasFano(val);
-        return std::pair<UsetId, SetExpr<const OwnerSet*>>(
+        return std::pair<uint32_t, SetExpr<const OwnerSet*>>(
             usetid, {exp.op, &exp.set});
       } else {
         return folly::none;
@@ -189,7 +177,7 @@ std::unique_ptr<Usets> DatabaseImpl::loadOwnershipSets() {
   auto usets = std::make_unique<Usets>(first + size);
 
   while (const auto iterPair = iter->get()) {
-    auto set = SetU64::fromEliasFano(*iterPair->second.set);
+    auto set = SetU32::fromEliasFano(*iterPair->second.set);
     // paranoia: check the set contents make sense
     set.foreach([first, size](UsetId id) {
       if (id >= first + size) {
@@ -211,7 +199,7 @@ std::unique_ptr<Usets> DatabaseImpl::loadOwnershipSets() {
   return usets;
 }
 
-folly::Optional<UnitId> DatabaseImpl::getUnitId(folly::ByteRange unit) {
+folly::Optional<uint32_t> DatabaseImpl::getUnitId(folly::ByteRange unit) {
   rocksdb::PinnableSlice val;
   auto s = container_.db->Get(
       rocksdb::ReadOptions(),
@@ -220,26 +208,14 @@ folly::Optional<UnitId> DatabaseImpl::getUnitId(folly::ByteRange unit) {
       &val);
   if (!s.IsNotFound()) {
     check(s);
-    // Backward compatibility: detect format based on stored value size
-    // - Legacy format (32-bit): 4 bytes
-    // - Current format (64-bit): 8 bytes
-    if (val.size() == sizeof(uint32_t)) {
-      // Legacy 32-bit format - read as uint32_t and widen to UnitId (uint64_t)
-      return static_cast<UnitId>(folly::loadUnaligned<uint32_t>(val.data()));
-    } else if (val.size() == sizeof(uint64_t)) {
-      // Current 64-bit format
-      return folly::loadUnaligned<uint64_t>(val.data());
-    } else {
-      rts::error(
-          "rocksdb: invalid UnitId size in ownershipUnits: {} (expected 4 or 8)",
-          val.size());
-    }
+    assert(val.size() == sizeof(uint32_t));
+    return folly::loadUnaligned<uint32_t>(val.data());
   } else {
     return folly::none;
   }
 }
 
-folly::Optional<std::string> DatabaseImpl::getUnit(UnitId unit_id) {
+folly::Optional<std::string> DatabaseImpl::getUnit(uint32_t unit_id) {
   rocksdb::PinnableSlice val;
   EncodedNat key(unit_id);
   auto s = container_.db->Get(
@@ -274,7 +250,7 @@ void DatabaseImpl::addOwnership(const std::vector<OwnershipSet>& ownership) {
   rocksdb::WriteBatch batch;
 
   for (const auto& set : ownership) {
-    UnitId unit_id;
+    uint32_t unit_id;
     auto res = getUnitId(set.unit);
     if (res.hasValue()) {
       unit_id = *res;
@@ -284,12 +260,10 @@ void DatabaseImpl::addOwnership(const std::vector<OwnershipSet>& ownership) {
       touched.push_back(unit_id);
     } else {
       unit_id = first_unit_id + ownership_unit_counters.size() + new_count;
-      // Write UnitId in format based on ownership_format_version
-      binary::Output unitIdOut;
       check(batch.Put(
           container_.family(Family::ownershipUnits),
           slice(set.unit),
-          toSliceForFormat(unitIdOut, unit_id, ownership_format_version)));
+          toSlice(unit_id)));
       EncodedNat key(unit_id);
       check(batch.Put(
           container_.family(Family::ownershipUnitIds),
@@ -333,13 +307,8 @@ void DatabaseImpl::addOwnership(const std::vector<OwnershipSet>& ownership) {
 std::unique_ptr<rts::DerivedFactOwnershipIterator>
 DatabaseImpl::getDerivedFactOwnershipIterator(Pid pid) {
   struct DerivedFactIterator : rts::DerivedFactOwnershipIterator {
-    explicit DerivedFactIterator(
-        Pid pid,
-        std::unique_ptr<rocksdb::Iterator> i,
-        uint32_t format_version)
-        : pid_(pid),
-          iter(std::move(i)),
-          ownership_format_version_(format_version) {}
+    explicit DerivedFactIterator(Pid pid, std::unique_ptr<rocksdb::Iterator> i)
+        : pid_(pid), iter(std::move(i)) {}
 
     folly::Optional<DerivedFactOwnership> get() override {
       if (iter->Valid()) {
@@ -349,41 +318,12 @@ DatabaseImpl::getDerivedFactOwnershipIterator(Pid pid) {
           return {};
         }
         const auto val = iter->value();
-
-        // Backward compatibility: element size depends on format version
-        // 32-bit: sizeof(uint64_t) for Id + sizeof(uint32_t) for UsetId
-        // 64-bit: sizeof(uint64_t) for Id + sizeof(uint64_t) for UsetId
-        if (ownership_format_version_ == OWNERSHIP_FORMAT_VERSION_32BIT) {
-          // 32-bit UsetId format
-          const size_t uset_size = sizeof(uint32_t);
-          const size_t elts = val.size() / (sizeof(uint64_t) + uset_size);
-          const Id* ids = reinterpret_cast<const Id*>(val.data());
-          const uint32_t* owners32 = reinterpret_cast<const uint32_t*>(
-              val.data() + elts * sizeof(uint64_t));
-
-          // Convert 32-bit owners to 64-bit on the fly
-          if (elts > 0) {
-            owners_32bit_.resize(elts);
-            for (size_t i = 0; i < elts; i++) {
-              owners_32bit_[i] = static_cast<UsetId>(owners32[i]);
-            }
-          } else {
-            owners_32bit_.clear();
-          }
-
-          iter->Next();
-          return rts::DerivedFactOwnership{
-              {ids, elts}, {owners_32bit_.data(), elts}};
-        } else {
-          // Current 64-bit UsetId format
-          const size_t elts =
-              val.size() / (sizeof(uint64_t) + sizeof(uint64_t));
-          const Id* ids = reinterpret_cast<const Id*>(val.data());
-          const UsetId* owners = reinterpret_cast<const UsetId*>(
-              val.data() + elts * sizeof(uint64_t));
-          iter->Next();
-          return rts::DerivedFactOwnership{{ids, elts}, {owners, elts}};
-        }
+        const size_t elts = val.size() / (sizeof(uint32_t) + sizeof(uint64_t));
+        const Id* ids = reinterpret_cast<const Id*>(val.data());
+        const UsetId* owners = reinterpret_cast<const UsetId*>(
+            val.data() + elts * sizeof(uint64_t));
+        iter->Next();
+        return rts::DerivedFactOwnership{{ids, elts}, {owners, elts}};
       } else {
         return folly::none;
       }
@@ -391,8 +331,6 @@ DatabaseImpl::getDerivedFactOwnershipIterator(Pid pid) {
 
     Pid pid_;
     std::unique_ptr<rocksdb::Iterator> iter;
-    uint32_t ownership_format_version_;
-    std::vector<UsetId> owners_32bit_; // buffer for converting 32->64 bit
   };
 
   std::unique_ptr<rocksdb::Iterator> iter(container_.db->NewIterator(
@@ -404,8 +342,7 @@ DatabaseImpl::getDerivedFactOwnershipIterator(Pid pid) {
 
   EncodedNat key(pid.toWord());
   iter->Seek(slice(key.byteRange()));
-  return std::make_unique<DerivedFactIterator>(
-      pid, std::move(iter), ownership_format_version);
+  return std::make_unique<DerivedFactIterator>(pid, std::move(iter));
 }
 
 std::unique_ptr<rts::OwnershipUnitIterator>
@@ -421,7 +358,7 @@ DatabaseImpl::getOwnershipUnitIterator() {
         const auto val = iter->value();
         iter->Next();
         return rts::OwnershipUnit{
-            unit,
+            static_cast<uint32_t>(unit),
             {reinterpret_cast<const OwnershipUnit::Ids*>(val.data()),
              val.size() / sizeof(OwnershipUnit::Ids)}};
       } else {
@@ -452,7 +389,7 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
     auto upper = ownership.sets_.getFirstId() + ownership.sets_.size();
 
     auto serialized = ownership.sets_.toEliasFano(upper);
-    UsetId id = ownership.sets_.getFirstId();
+    uint32_t id = ownership.sets_.getFirstId();
     CHECK_GE(id, next_uset_id);
 
     for (auto& exp : serialized) {
@@ -553,7 +490,7 @@ struct StoredOwnership : Ownership {
     }
   }
 
-  folly::Optional<SetExpr<SetU64>> getUset(UsetId id) override {
+  folly::Optional<SetExpr<SetU32>> getUset(UsetId id) override {
     rocksdb::PinnableSlice val;
     EncodedNat key(id);
     auto s = db_->container_.db->Get(
@@ -564,9 +501,9 @@ struct StoredOwnership : Ownership {
     binary::Input inp(byteRange(val));
     if (!s.IsNotFound()) {
       check(s);
-      SetExpr<SetU64> exp;
+      SetExpr<SetU32> exp;
       exp.op = static_cast<SetOp>(inp.trustedNat());
-      exp.set = SetU64::fromEliasFano(deserializeEliasFano(inp));
+      exp.set = SetU32::fromEliasFano(deserializeEliasFano(inp));
       return exp;
     } else {
       return folly::none;
@@ -671,7 +608,7 @@ std::unique_ptr<rts::Ownership> DatabaseImpl::getOwnership() {
 }
 
 void DatabaseImpl::cacheOwnership() {
-  factOwnerCache_.enable(container_, ownership_format_version);
+  factOwnerCache_.enable(container_);
 }
 
 void DatabaseImpl::prepareFactOwnerCache() {
@@ -712,9 +649,7 @@ static const size_t PAGE_BITS = 12;
 static const uint64_t PAGE_MASK = (1 << PAGE_BITS) - 1;
 } // namespace
 
-void DatabaseImpl::FactOwnerCache::enable(
-    ContainerImpl& container,
-    uint32_t format_version) {
+void DatabaseImpl::FactOwnerCache::enable(ContainerImpl& container) {
   auto cache = cache_.ulock();
   if (*cache) {
     return;
@@ -734,41 +669,19 @@ void DatabaseImpl::FactOwnerCache::enable(
   }
 
   check(s);
-
-  // Backward compatibility: detect format based on index entry size
-  // 32-bit: index entries are 4 bytes each
-  // 64-bit: index entries are 8 bytes each
-  bool is_32bit_format = (format_version == OWNERSHIP_FORMAT_VERSION_32BIT);
-
-  size_t entry_size = is_32bit_format ? sizeof(uint32_t) : sizeof(uint64_t);
-  CHECK_EQ(val.size() % entry_size, 0);
-  size_t num = val.size() / entry_size;
+  CHECK_EQ(val.size() % sizeof(UsetId), 0);
+  size_t num = val.size() / sizeof(UsetId);
   std::vector<UsetId> index(num);
-
-  if (is_32bit_format) {
-    // Read 32-bit entries and widen to 64-bit
-    const uint32_t* start = reinterpret_cast<const uint32_t*>(val.data());
-    for (size_t i = 0; i < num; i++) {
-      index[i] = static_cast<UsetId>(start[i]);
-    }
-  } else {
-    // Read 64-bit entries directly
-    const UsetId* start = reinterpret_cast<const UsetId*>(val.data());
-    std::copy(start, start + num, index.data());
-  }
-
+  const UsetId* start = reinterpret_cast<const UsetId*>(val.data());
+  std::copy(start, start + num, index.data());
   size_t size = index.size() * sizeof(UsetId);
   Cache content{
       .index = std::move(index),
       .pages = {},
       .size_ = size,
-      .ownership_format_version_ = format_version,
   };
 
-  VLOG(1) << folly::sformat(
-      "owner cache index: {} entries (format: {})",
-      num,
-      is_32bit_format ? "32-bit" : "64-bit");
+  VLOG(1) << folly::sformat("owner cache index: {} entries", num);
 
   auto wcache = cache.moveFromUpgradeToWrite();
   *wcache = std::make_unique<Cache>(std::move(content));
@@ -777,8 +690,7 @@ void DatabaseImpl::FactOwnerCache::enable(
 std::unique_ptr<DatabaseImpl::FactOwnerCache::Page>
 DatabaseImpl::FactOwnerCache::readPage(
     ContainerImpl& container,
-    uint64_t prefix,
-    uint32_t format_version) {
+    uint64_t prefix) {
   rocksdb::PinnableSlice val;
   auto s = container.db->Get(
       rocksdb::ReadOptions(),
@@ -792,33 +704,14 @@ DatabaseImpl::FactOwnerCache::readPage(
   }
 
   auto p = std::make_unique<FactOwnerCache::Page>();
-
-  // Backward compatibility: page format depends on ownership format version
-  // 32-bit UsetId: sizeof(int16_t) + sizeof(uint32_t) per entry
-  // 64-bit UsetId: sizeof(int16_t) + sizeof(uint64_t) per entry
-  bool is_32bit_format = (format_version == OWNERSHIP_FORMAT_VERSION_32BIT);
-  size_t uset_size = is_32bit_format ? sizeof(uint32_t) : sizeof(uint64_t);
-  size_t num = val.size() / (sizeof(int16_t) + uset_size);
-
+  size_t num = val.size() / (sizeof(int16_t) + sizeof(UsetId));
   p->factIds.resize(num);
   p->setIds.resize(num);
-
   const uint16_t* ids = reinterpret_cast<const uint16_t*>(val.data());
+  const UsetId* sets =
+      reinterpret_cast<const UsetId*>(val.data() + num * sizeof(uint16_t));
   std::copy(ids, ids + num, p->factIds.data());
-
-  if (is_32bit_format) {
-    // Read 32-bit UsetIds and widen to 64-bit
-    const uint32_t* sets32 =
-        reinterpret_cast<const uint32_t*>(val.data() + num * sizeof(uint16_t));
-    for (size_t i = 0; i < num; i++) {
-      p->setIds[i] = static_cast<UsetId>(sets32[i]);
-    }
-  } else {
-    // Read 64-bit UsetIds directly
-    const UsetId* sets =
-        reinterpret_cast<const UsetId*>(val.data() + num * sizeof(uint16_t));
-    std::copy(sets, sets + num, p->setIds.data());
-  }
+  std::copy(sets, sets + num, p->setIds.data());
 
   return p;
 }
@@ -828,7 +721,7 @@ UsetId DatabaseImpl::FactOwnerCache::lookup(
     Id id) {
   // next binary-search on the content of the page to find the
   // interval containing the desired fact ID.
-  size_t low, high, mid;
+  uint32_t low, high, mid;
   uint16_t ix = id.toWord() & PAGE_MASK;
 
   low = 0;
@@ -897,8 +790,7 @@ std::optional<UsetId> DatabaseImpl::FactOwnerCache::getOwner(
   } else {
     cachePtr.unlock();
 
-    auto format_version = cache->ownership_format_version_;
-    auto p = FactOwnerCache::readPage(container, prefix, format_version);
+    auto p = FactOwnerCache::readPage(container, prefix);
     auto wlock = cache_.wlock();
     auto wcache = wlock->get();
     auto size = wcache->size_;
@@ -921,17 +813,6 @@ std::optional<UsetId> DatabaseImpl::FactOwnerCache::getOwner(
 }
 
 void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
-  // Static function - need to check gatekeeper for format
-#ifndef OSS
-  static facebook::jk::BooleanKnob use64BitOwnership(
-      "glean/ownership:64_bit_ids");
-  uint32_t format_version = use64BitOwnership()
-      ? OWNERSHIP_FORMAT_VERSION_64BIT
-      : OWNERSHIP_FORMAT_VERSION_32BIT;
-#else
-  uint32_t format_version = OWNERSHIP_FORMAT_VERSION_32BIT;
-#endif
-
   auto t = makeAutoTimer("prepareFactOwnerCache");
 
   std::unique_ptr<rocksdb::Iterator> iter(container.db->NewIterator(
@@ -959,18 +840,7 @@ void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
       index.push_back(HAS_PAGE);
       binary::Output out;
       out.bytes(ids.data(), ids.size() * sizeof(uint16_t));
-      // Write UsetIds in format based on format_version
-      if (format_version == OWNERSHIP_FORMAT_VERSION_32BIT) {
-        // Write 32-bit UsetIds
-        std::vector<uint32_t> sets32(sets.size());
-        for (size_t i = 0; i < sets.size(); i++) {
-          sets32[i] = static_cast<uint32_t>(sets[i]);
-        }
-        out.bytes(sets32.data(), sets32.size() * sizeof(uint32_t));
-      } else {
-        // Write 64-bit UsetIds
-        out.bytes(sets.data(), sets.size() * sizeof(UsetId));
-      }
+      out.bytes(sets.data(), sets.size() * sizeof(UsetId));
       batch.Put(
           container.family(Family::factOwnerPages),
           toSlice(prefix),
@@ -1016,39 +886,19 @@ void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
   // write the last page
   writePage();
 
-  // Write index in format based on format_version
-  if (format_version == OWNERSHIP_FORMAT_VERSION_32BIT) {
-    // Write 32-bit index entries
-    std::vector<uint32_t> index32(index.size());
-    if (!index.empty()) {
-      for (size_t i = 0; i < index.size(); i++) {
-        index32[i] = static_cast<uint32_t>(index[i]);
-      }
-    }
-    batch.Put(
-        container.family(Family::factOwnerPages),
-        INDEX_KEY,
-        slice(
-            folly::ByteRange(
-                reinterpret_cast<const uint8_t*>(index32.data()),
-                index32.size() * sizeof(uint32_t))));
-  } else {
-    // Write 64-bit index entries
-    batch.Put(
-        container.family(Family::factOwnerPages),
-        INDEX_KEY,
-        slice(
-            folly::ByteRange(
-                reinterpret_cast<const uint8_t*>(index.data()),
-                index.size() * sizeof(UsetId))));
-  }
+  batch.Put(
+      container.family(Family::factOwnerPages),
+      INDEX_KEY,
+      slice(
+          folly::ByteRange(
+              reinterpret_cast<const uint8_t*>(index.data()),
+              index.size() * sizeof(UsetId))));
 
   t.logFormat(
-      "{} index entries, {} populated, {} orphans (format: {})",
+      "{} index entries, {} populated, {} orphans",
       index.size(),
       populated,
-      orphaned,
-      format_version == OWNERSHIP_FORMAT_VERSION_32BIT ? "32-bit" : "64-bit");
+      orphaned);
 
   // record the number of orphaned facts, this will be fetched by ownershipStats
   batch.Put(
@@ -1073,7 +923,7 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
   // add new owner sets
   if (def.newSets_.size() > 0) {
     folly::F14FastMap<UsetId, UsetId> substitution;
-    auto subst = [&](UsetId old) -> UsetId {
+    auto subst = [&](uint32_t old) -> uint32_t {
       auto n = substitution.find(old);
       if (n == substitution.end()) {
         return old;
@@ -1087,7 +937,7 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
 
     for (auto uset : def.newSets_) {
       std::set<UsetId> s;
-      uset->exp.set.foreach([&](UsetId elt) {
+      uset->exp.set.foreach([&](uint32_t elt) {
         UsetId newelt = subst(elt);
         if (newelt >= next_uset_id) {
           rts::error(
@@ -1095,7 +945,7 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
         }
         s.insert(newelt);
       });
-      SetU64 set = SetU64::from(s);
+      SetU32 set = SetU32::from(s);
 
       auto newUset = std::make_unique<Uset>(std::move(set), uset->exp.op, 0);
       auto p = newUset.get();
@@ -1166,38 +1016,16 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
         pred.new_ids_.size() *
             sizeof(std::remove_reference<
                    decltype(pred.new_ids_)>::type::value_type));
-
-    // Write owners in format based on ownership_format_version
-    if (ownership_format_version == OWNERSHIP_FORMAT_VERSION_32BIT) {
-      // 32-bit UsetId format
-      std::vector<uint32_t> owners32(pred.owners_.size());
-      if (!pred.owners_.empty()) {
-        for (size_t i = 0; i < pred.owners_.size(); i++) {
-          owners32[i] = static_cast<uint32_t>(pred.owners_[i]);
-        }
-      }
-      val.bytes(owners32.data(), owners32.size() * sizeof(uint32_t));
-
-      std::vector<uint32_t> new_owners32(pred.new_owners_.size());
-      if (!pred.new_owners_.empty()) {
-        for (size_t i = 0; i < pred.new_owners_.size(); i++) {
-          new_owners32[i] = static_cast<uint32_t>(pred.new_owners_[i]);
-        }
-      }
-      val.bytes(new_owners32.data(), new_owners32.size() * sizeof(uint32_t));
-    } else {
-      // 64-bit UsetId format
-      val.bytes(
-          pred.owners_.data(),
-          pred.owners_.size() *
-              sizeof(std::remove_reference<
-                     decltype(pred.owners_)>::type::value_type));
-      val.bytes(
-          pred.new_owners_.data(),
-          pred.new_owners_.size() *
-              sizeof(std::remove_reference<
-                     decltype(pred.new_owners_)>::type::value_type));
-    }
+    val.bytes(
+        pred.owners_.data(),
+        pred.owners_.size() *
+            sizeof(std::remove_reference<
+                   decltype(pred.owners_)>::type::value_type));
+    val.bytes(
+        pred.new_owners_.data(),
+        pred.new_owners_.size() *
+            sizeof(std::remove_reference<
+                   decltype(pred.new_owners_)>::type::value_type));
 
     check(batch.Put(
         container_.family(Family::ownershipDerivedRaw),

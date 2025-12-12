@@ -28,7 +28,7 @@ void DefineOwnership::derivedFrom(
   const auto [it, _] = defines_.insert({pid, PerPredicate()});
   PerPredicate& pred = it->second;
 
-  SetU64 set = SetU64::from(deps);
+  SetU32 set = SetU32::from(deps);
   size_t size = set.size();
 
   UsetId usetid;
@@ -191,7 +191,7 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
 
   for (auto& pair : factOwnerSets) {
     if (pair.second.size() > 1) {
-      SetU64 set = SetU64::from(pair.second);
+      SetU32 set = SetU32::from(pair.second);
       auto uset = std::make_unique<Uset>(std::move(set), Or, 0);
       auto usetid = ownership.lookupSet(uset.get());
       if (usetid == INVALID_USET) {

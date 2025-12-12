@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "glean/rts/ownership/setu64.h"
+#include "glean/rts/ownership/setu32.h"
 
 #include <folly/Hash.h>
 #include <folly/container/F14Set.h>
@@ -18,10 +18,9 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
-using UsetId = uint64_t;
-constexpr UsetId INVALID_USET = 0xffffffffffffffff;
-constexpr UsetId SPECIAL_USET =
-    0xfffffffffffffffe; // special value as a sentinel
+using UsetId = uint32_t;
+constexpr UsetId INVALID_USET = 0xffffffff;
+constexpr UsetId SPECIAL_USET = 0xfffffffe; // special value as a sentinel
 
 enum SetOp { Or, And };
 
@@ -47,15 +46,14 @@ struct SetExpr {
 };
 
 /**
- * A "unique" set stored by `Usets` below. This is a `SetU64` with a memoized
+ * A "unique" set stored by `Usets` below. This is a `SetU32` with a memoized
  * hash, a ref count and some administrative data used by the ownership
  * algorithms. It should probably be given a more sane interface.
  */
 struct Uset {
-  explicit Uset(SetU64 s, uint32_t r = 0)
-      : exp({Or, std::move(s)}), hash(0), refs(r) {}
-  explicit Uset(SetU64 s, SetOp op = Or, uint32_t r = 0)
-      : exp({op, std::move(s)}), hash(0), refs(r) {}
+  explicit Uset(SetU32 s, uint32_t r = 0) : exp({Or, std::move(s)}), refs(r) {}
+  explicit Uset(SetU32 s, SetOp op = Or, uint32_t r = 0)
+      : exp({op, std::move(s)}), refs(r) {}
 
   void rehash() {
     hash = exp.set.hash(exp.op); // don't forget to include op in the hash
@@ -80,7 +78,7 @@ struct Uset {
   }
 
   /** The set */
-  SetExpr<SetU64> exp;
+  SetExpr<SetU32> exp;
 
   /** The set's hash which must be memoized explicitly via `rehash`. */
   size_t hash;
@@ -90,7 +88,7 @@ struct Uset {
 
   /**
    * Once a set is promoted to the DB (i.e. it is the ownership set of
-   * at least one fact), we assign it a 64-bit ID. Before it is promoted,
+   * at least one fact), we assign it a 32-bit ID. Before it is promoted,
    * id is INVALID_USET.
    */
   UsetId id = INVALID_USET;
@@ -118,7 +116,7 @@ struct Uset {
     }
   };
 
-  using MutableEliasFanoList = SetU64::MutableEliasFanoList;
+  using MutableEliasFanoList = SetU32::MutableEliasFanoList;
   SetExpr<MutableEliasFanoList> toEliasFano(UsetId max) const;
 };
 
@@ -126,7 +124,7 @@ struct Uset {
  * Container for `Usets` which guarantees to store each set exactly once.
  */
 struct Usets {
-  explicit Usets(uint64_t firstId) : firstId(firstId), nextId(firstId) {}
+  explicit Usets(uint32_t firstId) : firstId(firstId), nextId(firstId) {}
 
   Usets(Usets&& other) noexcept : firstId(other.firstId), nextId(other.nextId) {
     std::swap(usets, other.usets);
@@ -175,7 +173,7 @@ struct Usets {
     return p;
   }
 
-  Uset* add(SetU64 set, uint32_t refs = 0) {
+  Uset* add(SetU32 set, uint32_t refs = 0) {
     return add(std::unique_ptr<Uset>(new Uset(std::move(set), refs)));
   }
 
@@ -191,9 +189,9 @@ struct Usets {
 
   // only when both sets have the same op
   Uset* merge(Uset* left, Uset* right) {
-    SetU64 set;
+    SetU32 set;
     assert(left->exp.op == right->exp.op);
-    auto res = SetU64::merge(set, left->exp.set, right->exp.set);
+    auto res = SetU32::merge(set, left->exp.set, right->exp.set);
     if (res == &set) {
       return add(std::move(set), 1);
     } else {
@@ -203,11 +201,11 @@ struct Usets {
     }
   }
 
-  // merge a SetU64 directly. Op is assumed to be Or.
-  Uset* merge(SetU64 left, Uset* right) {
-    SetU64 set;
+  // merge a SetU32 directly. Op is assumed to be Or.
+  Uset* merge(SetU32 left, Uset* right) {
+    SetU32 set;
     assert(right->exp.op == Or);
-    auto res = SetU64::merge(set, left, right->exp.set);
+    auto res = SetU32::merge(set, left, right->exp.set);
     if (res == &set) {
       return add(std::move(set), 1);
     } else {
@@ -281,7 +279,7 @@ struct Usets {
     nextId = other.nextId;
   }
 
-  using MutableEliasFanoList = SetU64::MutableEliasFanoList;
+  using MutableEliasFanoList = SetU32::MutableEliasFanoList;
   std::vector<SetExpr<MutableEliasFanoList>> toEliasFano(UsetId max);
 
  private:

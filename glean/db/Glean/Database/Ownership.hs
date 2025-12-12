@@ -16,6 +16,7 @@ import Data.ByteString (ByteString)
 import Data.Coerce
 import Data.Maybe
 import qualified Data.Vector.Storable as Vector
+import Data.Word
 
 import Util.STM
 
@@ -55,7 +56,7 @@ factOwnership env repo fid = do
         Nothing -> getUnit unitId rest
 
     getUset usetId [] = throwIO $ ErrorCall $
-      "unknown UsetId: " <> show usetId
+      "unknown UsetId: " <> show (coerce usetId :: Word32)
     getUset usetId (own : owns) = do
       maybeExpr <- getOwnershipSet own usetId
       case maybeExpr of
