@@ -34,11 +34,11 @@ import Glean.Types (PredicateStats, Repo, SchemaId)
 
 -- | List of binary representation versions we can read
 readableVersions :: [DBVersion]
-readableVersions = [DBVersion 3]
+readableVersions = [DBVersion 3, DBVersion 4]
 
 -- | List of binary representation versions we can write
 writableVersions :: [DBVersion]
-writableVersions = [DBVersion 3]
+writableVersions = [DBVersion 3, DBVersion 4]
 
 -- | Check whether we can open a particular database version
 canOpenVersion :: Mode -> DBVersion -> Bool
@@ -51,7 +51,7 @@ canOpenVersion mode version = version `elem` versions
 
 -- | Default current binary representation version
 currentVersion :: DBVersion
-currentVersion = maximum writableVersions
+currentVersion = DBVersion 3 -- update to 4 later
 
 -- Choose which schema goes into a newly created DB
 data CreateSchema
