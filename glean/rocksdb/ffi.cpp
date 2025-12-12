@@ -112,7 +112,7 @@ void glean_rocksdb_container_free(Container* container) {
 const char* glean_rocksdb_container_open_database(
     Container* container,
     glean_fact_id_t start,
-    uint32_t first_unit_id,
+    uint64_t first_unit_id,
     int64_t version,
     Database** database) {
   return ffi::wrap([=] {
@@ -181,7 +181,7 @@ const char* glean_rocksdb_get_unit_id(
 
 const char* glean_rocksdb_get_unit(
     Database* db,
-    uint32_t unit_id,
+    uint64_t unit_id,
     void** unit,
     size_t* unit_size) {
   return ffi::wrap([=] {

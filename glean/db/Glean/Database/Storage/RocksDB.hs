@@ -211,7 +211,7 @@ instance Storage RocksDB where
     unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
     unsafeWithBytes unit $ \unit_ptr unit_size -> do
       w64 <- invoke $ glean_rocksdb_get_unit_id db_ptr unit_ptr unit_size
-      if w64 > 0xffffffff
+      if w64 == 0xffffffffffffffff
         then return Nothing
         else return (Just (UnitId (fromIntegral w64)))
 
