@@ -12,6 +12,6 @@ import System.Environment
 import qualified Glean.Glass.Regression.Flow as Glass
 
 main :: IO ()
-main = getArgs >>= \args -> withArgs (["--root", path] ++ args) Glass.main
+main = getArgs >>= \args -> withArgs (args ++["--root", path, "--write-root", "test"]) $ Glass.main
   where
     path = "glean/lang/codemarkup/tests/flow/cases/xrefs"
