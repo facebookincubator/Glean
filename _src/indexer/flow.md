@@ -30,15 +30,15 @@ where
 ## Run the indexer (manually)
 
 ```
-flow glean DIR --output-dir JSON --write-root PREFIX
+flow glean DIR --output-dir JSON [--write-root PREFIX]
 ```
 
 where
 
 * `DIR` is the root directory containing the JavaScript/Flow files
 * `JSON` is the directory in which to write the output `.json` files
-* `PREFIX` is a prefix to add to the files in the Glean index (this
-  can be empty if you don't need a prefix)
+* `PREFIX` is a prefix to add to the file paths in the Glean index (this
+  can be omitted if you don't need a prefix)
 
 The generated files can be ingested into a Glean database using [`glean create`](../cli.md#glean-create).
 
