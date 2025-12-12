@@ -7,7 +7,6 @@
  */
 
 #include "glean/rts/ownership.h"
-#include "glean/rts/factset.h"
 #include "glean/rts/inventory.h"
 #include "glean/rts/lookup.h"
 #include "glean/rts/ownership/setu32.h"
@@ -29,8 +28,6 @@
 
 #include <algorithm>
 #include <initializer_list>
-#include <limits>
-#include <type_traits>
 
 namespace facebook {
 namespace glean {
@@ -210,6 +207,8 @@ FOLLY_NOINLINE void completeOwnership(
     size_t local_facts = 0;
     size_t base_facts = 0;
     size_t owned_facts = 0;
+    size_t cache_hits = 0;
+    size_t cache_misses = 0;
 
     void bumpLocal() {
       ++local_facts;
@@ -226,7 +225,25 @@ FOLLY_NOINLINE void completeOwnership(
       }
     }
 
+    void bumpCacheHit() {
+      ++cache_hits;
+    }
+
+    void bumpCacheMiss() {
+      ++cache_misses;
+    }
+
+    double hitRate() const {
+      size_t total = cache_hits + cache_misses;
+      return total > 0 ? (cache_hits * 100.0 / total) : 0.0;
+    }
+
     void dump() {
+      VLOG(1) << folly::sformat(
+          "SetUnionsCache: {} hits, {} misses, hit rate: {:.2f}%",
+          cache_hits,
+          cache_misses,
+          hitRate());
       auto ustats = usets.statistics();
       VLOG(1) << folly::sformat(
           "{} of {} facts ({} visited in base DBs), {} usets, {} promoted, {} bytes, {} adds, {} dups",
@@ -241,7 +258,86 @@ FOLLY_NOINLINE void completeOwnership(
     }
   };
 
+  constexpr size_t SET_UNIONS_CACHE_SIZE = 100;
+  struct UsetUnionsCacheKey {
+    Uset* a;
+    Uset* b;
+
+    UsetUnionsCacheKey(Uset* x, Uset* y) {
+      // Normalize as order doesn't matter. (A∪B = B∪A)
+      a = (x < y) ? x : y;
+      b = (x < y) ? y : x;
+    }
+
+    bool operator==(const UsetUnionsCacheKey& o) const {
+      return (a == o.a && b == o.b);
+    }
+
+    size_t hash() const {
+      return folly::hash::hash_combine(a->hash, b->hash);
+    }
+  };
+
+  struct UsetUnionsCacheKeyHash {
+    size_t operator()(const UsetUnionsCacheKey& k) const {
+      return k.hash();
+    }
+  };
+
+  class UsetUnionsCache {
+    using Map =
+        folly::F14FastMap<UsetUnionsCacheKey, Uset*, UsetUnionsCacheKeyHash>;
+
+    Map new_cache;
+    Map old_cache;
+    Usets& usets;
+    size_t max_size;
+
+    void evictOldCache() {
+      for (auto& [key, value] : old_cache) {
+        usets.drop(key.a);
+        usets.drop(key.b);
+        usets.drop(value);
+      }
+      old_cache.clear();
+    }
+
+   public:
+    UsetUnionsCache(size_t max_size, Usets& usets)
+        : usets(usets), max_size(max_size) {}
+
+    Uset* find(const UsetUnionsCacheKey& key) {
+      auto it = new_cache.find(key);
+      if (it != new_cache.end()) {
+        return it->second;
+      }
+      it = old_cache.find(key);
+      if (it != old_cache.end()) {
+        return it->second;
+      }
+      return nullptr;
+    }
+
+    void insert(const UsetUnionsCacheKey& key, Uset* value) {
+      if (new_cache.size() >= max_size) {
+        evictOldCache();
+        std::swap(old_cache, new_cache);
+      }
+      new_cache.insert({key, value});
+      usets.use(key.a);
+      usets.use(key.b);
+      usets.use(value);
+    }
+
+    void clear() {
+      evictOldCache();
+      std::swap(old_cache, new_cache);
+      evictOldCache();
+    }
+  };
+
   Stats stats{usets};
+  UsetUnionsCache cache(SET_UNIONS_CACHE_SIZE, usets);
 
   std::vector<Id> refs;
   const auto tracker = syscall([&refs](Id id, Pid) { refs.push_back(id); });
@@ -283,45 +379,32 @@ FOLLY_NOINLINE void completeOwnership(
       assert(predicate);
       predicate->traverse(tracker, fact.clause);
 
-      // For each fact we reference, add our ownership set to what we've
-      // computed for it so far. Use the `link` field to avoid computing the
-      // same set union multiple times.
-      //
-      // TODO: Try adding a fixed-size LRU (or LFU?) cache for set unions?
-      std::vector<Uset*> touched;
       for (const auto id : refs) {
         auto& me = owner(id);
         if (me == nullptr) {
           // The fact didn't have ownership info before, assign the set to it.
           me = set;
           usets.use(me, 1);
-        } else if (const auto added = static_cast<Uset*>(me->link())) {
-          // The fact did have ownership info and we've already computed the
-          // union for that particular set.
-          usets.use(added);
-          usets.drop(me);
-          me = added;
         } else {
-          // Compute the union.
-          const auto p = usets.merge(me, set);
-          me->link(p);
-          touched.push_back(me);
-          me = p;
+          UsetUnionsCacheKey key(me, set);
+          auto* cached = cache.find(key);
+          if (cached != nullptr) {
+            stats.bumpCacheHit();
+            usets.use(cached);
+            usets.drop(me);
+            me = cached;
+          } else {
+            stats.bumpCacheMiss();
+            const auto p = usets.merge(me, set);
+            cache.insert(key, p);
+            usets.drop(me);
+            me = p;
+          }
         }
       }
 
-      // Reset the link fields. Note that we always add 1 refcount for sets we
-      // store in `touched` (to avoid having dangling references there) so drop
-      // it here.
-      for (const auto p : touched) {
-        p->link(nullptr);
-        usets.drop(p);
-      }
-
-      touched.clear();
-      // TODO: We can drop the current's fact ownership info here - could shrink
-      // the vector.
-      // facts.shrink(fact.id);
+      // TODO: We can drop the current's fact ownership info here - could
+      // shrink the vector. facts.shrink(fact.id);
       stats.bumpOwned();
     }
   };
@@ -411,6 +494,7 @@ FOLLY_NOINLINE void completeOwnership(
   }
 
   stats.dump();
+  cache.clear();
 }
 } // namespace
 
