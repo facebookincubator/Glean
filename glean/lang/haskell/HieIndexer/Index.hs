@@ -35,6 +35,7 @@ import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
+import Data.Text.Encoding.Error (lenientDecode)
 import qualified Data.Vector.Unboxed as Vector
 import HieDb.Compat (nameModule_maybe, nameOccName)
 import System.Directory
@@ -397,6 +398,10 @@ indexHieFile writer HieIndexerOptions{..} path hie = do
     filefact <- Glean.makeFact @Src.File file
     let fileLines = mkFileLines filefact offs
     Glean.makeFact_ @Src.FileLines fileLines
+
+    when storeSrc $
+      Glean.makeFactV_ @Src.FileContent filefact $
+        Text.decodeUtf8With lenientDecode (hie_hs_src hie)
 
     Glean.makeFact_ @Hs.ModuleSource $
       Hs.ModuleSource_key modfact filefact
