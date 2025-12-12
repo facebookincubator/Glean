@@ -9,9 +9,7 @@
               "key": {
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/exports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "exports.js" } } },
                     "span": { "length": 5, "start": 106 }
                   }
                 },
@@ -24,7 +22,7 @@
       "kind": 8,
       "language": 6,
       "location": {
-        "file": { "key": "test/exports.js" },
+        "file": { "key": "exports.js" },
         "location": { "span": { "length": 14, "start": 106 } },
         "name": "prop1"
       },

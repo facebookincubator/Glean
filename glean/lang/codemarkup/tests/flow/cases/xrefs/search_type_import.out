@@ -13,7 +13,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 551, "length": 12 }
                   }
@@ -25,7 +25,7 @@
       },
       "location": {
         "name": "Introduction",
-        "file": { "key": "test/es_exports.js.flow" },
+        "file": { "key": "es_exports.js.flow" },
         "location": { "span": { "start": 541, "length": 76 } }
       },
       "kind": 20,

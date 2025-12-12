@@ -10,7 +10,7 @@
       },
       "location": {
         "name": "cjs_exports",
-        "file": { "key": "test/cjs_exports.js" },
+        "file": { "key": "cjs_exports.js" },
         "location": { "span": { "start": 0, "length": 0 } }
       },
       "kind": 4,
@@ -23,13 +23,11 @@
       "name": "es_exports",
       "scope": [ ],
       "entity": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/es_exports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "es_exports.js" } } } }
       },
       "location": {
-        "name": "test/es_exports.js",
-        "file": { "key": "test/es_exports.js" },
+        "name": "es_exports.js",
+        "file": { "key": "es_exports.js" },
         "location": { "span": { "start": 0, "length": 0 } }
       },
       "kind": 4,
@@ -42,13 +40,11 @@
       "name": "imports",
       "scope": [ ],
       "entity": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       },
       "location": {
-        "name": "test/imports.js",
-        "file": { "key": "test/imports.js" },
+        "name": "imports.js",
+        "file": { "key": "imports.js" },
         "location": { "span": { "start": 0, "length": 0 } }
       },
       "kind": 4,
@@ -62,12 +58,12 @@
       "scope": [ ],
       "entity": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/subdir/more_cjs.js" } } }
+          "module_": { "key": { "file": { "key": "subdir/more_cjs.js" } } }
         }
       },
       "location": {
-        "name": "test/subdir/more_cjs.js",
-        "file": { "key": "test/subdir/more_cjs.js" },
+        "name": "subdir/more_cjs.js",
+        "file": { "key": "subdir/more_cjs.js" },
         "location": { "span": { "start": 0, "length": 0 } }
       },
       "kind": 4,

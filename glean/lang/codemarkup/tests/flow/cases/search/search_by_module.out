@@ -8,7 +8,7 @@
             "key": {
               "loc": {
                 "key": {
-                  "module": { "key": { "file": { "key": "test/a.js" } } },
+                  "module": { "key": { "file": { "key": "a.js" } } },
                   "span": { "length": 1, "start": 225 }
                 }
               },
@@ -19,9 +19,5 @@
       }
     }
   },
-  {
-    "key": {
-      "flow": { "module_": { "key": { "file": { "key": "test/a.js" } } } }
-    }
-  }
+  { "key": { "flow": { "module_": { "key": { "file": { "key": "a.js" } } } } } }
 ]

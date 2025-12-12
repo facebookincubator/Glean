@@ -11,7 +11,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 381, "length": 8 }
                   }
@@ -23,7 +23,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/es_exports.js.flow" } } }
+          "module_": { "key": { "file": { "key": "es_exports.js.flow" } } }
         }
       }
     }
@@ -38,9 +38,7 @@
                 "name": { "key": "BazClass" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 295, "length": 8 }
                   }
                 }
@@ -50,9 +48,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -67,7 +63,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 632, "length": 1 }
                   }
@@ -79,7 +75,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/es_exports.js.flow" } } }
+          "module_": { "key": { "file": { "key": "es_exports.js.flow" } } }
         }
       }
     }
@@ -94,9 +90,7 @@
                 "name": { "key": "CazClass" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 749, "length": 8 }
                   }
                 }
@@ -106,9 +100,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -122,9 +114,7 @@
                 "name": { "key": "Component" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 555, "length": 9 }
                   }
                 }
@@ -134,9 +124,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -151,7 +139,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 551, "length": 12 }
                   }
@@ -163,7 +151,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/es_exports.js.flow" } } }
+          "module_": { "key": { "file": { "key": "es_exports.js.flow" } } }
         }
       }
     }
@@ -179,7 +167,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 243, "length": 5 }
                   }
@@ -191,7 +179,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/es_exports.js.flow" } } }
+          "module_": { "key": { "file": { "key": "es_exports.js.flow" } } }
         }
       }
     }
@@ -206,9 +194,7 @@
                 "name": { "key": "a" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 238, "length": 1 }
                   }
                 }
@@ -218,9 +204,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -234,9 +218,7 @@
                 "name": { "key": "b" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 240, "length": 1 }
                   }
                 }
@@ -246,9 +228,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -262,9 +242,7 @@
                 "name": { "key": "bar" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 290, "length": 3 }
                   }
                 }
@@ -274,9 +252,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -291,7 +267,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 324, "length": 3 }
                   }
@@ -303,7 +279,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/es_exports.js.flow" } } }
+          "module_": { "key": { "file": { "key": "es_exports.js.flow" } } }
         }
       }
     }
@@ -318,9 +294,7 @@
                 "name": { "key": "c" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 242, "length": 1 }
                   }
                 }
@@ -330,9 +304,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -347,7 +319,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 398, "length": 1 }
                   }
@@ -359,7 +331,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/es_exports.js.flow" } } }
+          "module_": { "key": { "file": { "key": "es_exports.js.flow" } } }
         }
       }
     }
@@ -374,9 +346,7 @@
                 "name": { "key": "d" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 281, "length": 1 }
                   }
                 }
@@ -386,9 +356,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -402,9 +370,7 @@
                 "name": { "key": "e" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 630, "length": 1 }
                   }
                 }
@@ -414,9 +380,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -431,7 +395,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 268, "length": 3 }
                   }
@@ -443,7 +407,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/es_exports.js.flow" } } }
+          "module_": { "key": { "file": { "key": "es_exports.js.flow" } } }
         }
       }
     }
@@ -458,9 +422,7 @@
                 "name": { "key": "foo" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 285, "length": 3 }
                   }
                 }
@@ -470,9 +432,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -487,7 +447,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 564, "length": 4 }
                   }
@@ -499,7 +459,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/es_exports.js.flow" } } }
+          "module_": { "key": { "file": { "key": "es_exports.js.flow" } } }
         }
       }
     }
@@ -515,7 +475,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/cjs_exports.js" } }
+                      "key": { "file": { "key": "cjs_exports.js" } }
                     },
                     "span": { "start": 241, "length": 4 }
                   }
@@ -527,7 +487,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/cjs_exports.js" } } }
+          "module_": { "key": { "file": { "key": "cjs_exports.js" } } }
         }
       }
     }
@@ -542,9 +502,7 @@
                 "name": { "key": "plus" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 414, "length": 4 }
                   }
                 }
@@ -554,9 +512,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -570,9 +526,7 @@
                 "name": { "key": "qux" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 338, "length": 3 }
                   }
                 }
@@ -582,9 +536,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -598,9 +550,7 @@
                 "name": { "key": "s" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 840, "length": 1 }
                   }
                 }
@@ -610,9 +560,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -626,9 +574,7 @@
                 "name": { "key": "times" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 370, "length": 5 }
                   }
                 }
@@ -638,9 +584,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -655,7 +599,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/subdir/more_cjs.js" } }
+                      "key": { "file": { "key": "subdir/more_cjs.js" } }
                     },
                     "span": { "start": 240, "length": 5 }
                   }
@@ -667,7 +611,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/subdir/more_cjs.js" } } }
+          "module_": { "key": { "file": { "key": "subdir/more_cjs.js" } } }
         }
       }
     }
@@ -683,7 +627,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/cjs_exports.js" } }
+                      "key": { "file": { "key": "cjs_exports.js" } }
                     },
                     "span": { "start": 246, "length": 1 }
                   }
@@ -695,7 +639,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/cjs_exports.js" } } }
+          "module_": { "key": { "file": { "key": "cjs_exports.js" } } }
         }
       }
     }
@@ -711,7 +655,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 328, "length": 1 }
                   }
@@ -723,7 +667,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/es_exports.js.flow" } } }
+          "module_": { "key": { "file": { "key": "es_exports.js.flow" } } }
         }
       }
     }
@@ -738,9 +682,7 @@
                 "name": { "key": "x" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 650, "length": 1 }
                   }
                 }
@@ -750,9 +692,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -767,7 +707,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/subdir/more_cjs.js" } }
+                      "key": { "file": { "key": "subdir/more_cjs.js" } }
                     },
                     "span": { "start": 246, "length": 1 }
                   }
@@ -779,7 +719,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/subdir/more_cjs.js" } } }
+          "module_": { "key": { "file": { "key": "subdir/more_cjs.js" } } }
         }
       }
     }
@@ -794,9 +734,7 @@
                 "name": { "key": "y" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 671, "length": 1 }
                   }
                 }
@@ -806,9 +744,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -823,7 +759,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/subdir/more_cjs.js" } }
+                      "key": { "file": { "key": "subdir/more_cjs.js" } }
                     },
                     "span": { "start": 257, "length": 1 }
                   }
@@ -835,7 +771,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/subdir/more_cjs.js" } } }
+          "module_": { "key": { "file": { "key": "subdir/more_cjs.js" } } }
         }
       }
     }
@@ -850,9 +786,7 @@
                 "name": { "key": "z" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 698, "length": 1 }
                   }
                 }
@@ -862,9 +796,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -878,9 +810,7 @@
                 "name": { "key": "z1" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 720, "length": 2 }
                   }
                 }
@@ -890,9 +820,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -907,7 +835,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/cjs_exports.js" } }
+                      "key": { "file": { "key": "cjs_exports.js" } }
                     },
                     "span": { "start": 298, "length": 1 }
                   }
@@ -919,7 +847,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/cjs_exports.js" } } }
+          "module_": { "key": { "file": { "key": "cjs_exports.js" } } }
         }
       }
     }
@@ -935,7 +863,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/cjs_exports.js" } }
+                      "key": { "file": { "key": "cjs_exports.js" } }
                     },
                     "span": { "start": 320, "length": 1 }
                   }
@@ -947,7 +875,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/cjs_exports.js" } } }
+          "module_": { "key": { "file": { "key": "cjs_exports.js" } } }
         }
       }
     }
@@ -963,7 +891,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 324, "length": 3 }
                   }
@@ -975,7 +903,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/es_exports.js.flow" } } }
+          "module_": { "key": { "file": { "key": "es_exports.js.flow" } } }
         }
       }
     }
@@ -991,7 +919,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/cjs_exports.js" } }
+                      "key": { "file": { "key": "cjs_exports.js" } }
                     },
                     "span": { "start": 345, "length": 1 }
                   }
@@ -1003,7 +931,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/cjs_exports.js" } } }
+          "module_": { "key": { "file": { "key": "cjs_exports.js" } } }
         }
       }
     }
@@ -1019,7 +947,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/cjs_exports.js" } }
+                      "key": { "file": { "key": "cjs_exports.js" } }
                     },
                     "span": { "start": 373, "length": 4 }
                   }
@@ -1031,7 +959,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/cjs_exports.js" } } }
+          "module_": { "key": { "file": { "key": "cjs_exports.js" } } }
         }
       }
     }
@@ -1047,7 +975,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 381, "length": 8 }
                   }
@@ -1059,7 +987,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/es_exports.js.flow" } } }
+          "module_": { "key": { "file": { "key": "es_exports.js.flow" } } }
         }
       }
     }
@@ -1075,7 +1003,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 632, "length": 1 }
                   }
@@ -1087,7 +1015,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/es_exports.js.flow" } } }
+          "module_": { "key": { "file": { "key": "es_exports.js.flow" } } }
         }
       }
     }
@@ -1102,9 +1030,7 @@
                 "name": { "key": "C" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 799, "length": 1 }
                   }
                 }
@@ -1114,9 +1040,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -1130,9 +1054,7 @@
                 "name": { "key": "CazClass" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 749, "length": 8 }
                   }
                 }
@@ -1142,9 +1064,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -1158,9 +1078,7 @@
                 "name": { "key": "D" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 829, "length": 1 }
                   }
                 }
@@ -1170,9 +1088,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -1187,7 +1103,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 506, "length": 3 }
                   }
@@ -1199,7 +1115,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/es_exports.js.flow" } } }
+          "module_": { "key": { "file": { "key": "es_exports.js.flow" } } }
         }
       }
     }
@@ -1214,9 +1130,7 @@
                 "name": { "key": "MyT" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 599, "length": 3 }
                   }
                 }
@@ -1226,9 +1140,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -1243,7 +1155,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 479, "length": 3 }
                   }
@@ -1255,7 +1167,7 @@
       },
       "parent": {
         "flow": {
-          "module_": { "key": { "file": { "key": "test/es_exports.js.flow" } } }
+          "module_": { "key": { "file": { "key": "es_exports.js.flow" } } }
         }
       }
     }
@@ -1270,9 +1182,7 @@
                 "name": { "key": "num" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 521, "length": 3 }
                   }
                 }
@@ -1282,9 +1192,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   },
@@ -1298,9 +1206,7 @@
                 "name": { "key": "str" },
                 "loc": {
                   "key": {
-                    "module": {
-                      "key": { "file": { "key": "test/imports.js" } }
-                    },
+                    "module": { "key": { "file": { "key": "imports.js" } } },
                     "span": { "start": 793, "length": 3 }
                   }
                 }
@@ -1310,9 +1216,7 @@
         }
       },
       "parent": {
-        "flow": {
-          "module_": { "key": { "file": { "key": "test/imports.js" } } }
-        }
+        "flow": { "module_": { "key": { "file": { "key": "imports.js" } } } }
       }
     }
   }

@@ -3,13 +3,13 @@
   {
     "key": {
       "name": "a",
-      "parent": { "key": { "file": { "key": "test/cjs_exports.js" } } },
+      "parent": { "key": { "file": { "key": "cjs_exports.js" } } },
       "decl": {
         "key": {
           "name": { "key": "a" },
           "loc": {
             "key": {
-              "module": { "key": { "file": { "key": "test/cjs_exports.js" } } },
+              "module": { "key": { "file": { "key": "cjs_exports.js" } } },
               "span": { "start": 298, "length": 1 }
             }
           }

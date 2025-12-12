@@ -7,9 +7,7 @@
           "name": { "key": "bor" },
           "loc": {
             "key": {
-              "module": {
-                "key": { "file": { "key": "test/es_exports.js.flow" } }
-              },
+              "module": { "key": { "file": { "key": "es_exports.js.flow" } } },
               "span": { "start": 324, "length": 3 }
             }
           }

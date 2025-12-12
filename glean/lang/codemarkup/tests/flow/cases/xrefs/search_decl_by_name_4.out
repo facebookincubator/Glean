@@ -3,13 +3,13 @@
   {
     "key": {
       "name": "b",
-      "parent": { "key": { "file": { "key": "test/imports.js" } } },
+      "parent": { "key": { "file": { "key": "imports.js" } } },
       "decl": {
         "key": {
           "name": { "key": "b" },
           "loc": {
             "key": {
-              "module": { "key": { "file": { "key": "test/imports.js" } } },
+              "module": { "key": { "file": { "key": "imports.js" } } },
               "span": { "start": 240, "length": 1 }
             }
           }

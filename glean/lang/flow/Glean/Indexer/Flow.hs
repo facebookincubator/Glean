@@ -27,7 +27,7 @@ options = do
     long "flow" <>
     value "flow" <>
     help "path to the flow binary"
-  flowWriteRoot <- strOption $ long "write-root" <> value "test"
+  flowWriteRoot <- strOption $ long "write-root" <> value ""
   flowIncludeDirectDeps <- switch (long "include-direct-deps")
   flowIncludeTransitiveDeps <- switch (long "include-transitive-deps")
   return Flow{..}

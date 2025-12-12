@@ -1,2 +1,2 @@
-query: codemarkup.ContainsChildEntity { parent = { flow = { module_ = { file = "test/imports.js" } } } }
+query: codemarkup.ContainsChildEntity { parent = { flow = { module_ = { file = "imports.js" } } } }
 transform: [gensort, []]

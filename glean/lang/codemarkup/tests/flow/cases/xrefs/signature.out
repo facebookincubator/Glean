@@ -9,7 +9,7 @@
             "loc": {
               "key": {
                 "module": {
-                  "key": { "file": { "key": "test/es_exports.js.flow" } }
+                  "key": { "file": { "key": "es_exports.js.flow" } }
                 },
                 "span": { "start": 381, "length": 8 }
               }
@@ -28,7 +28,7 @@
             "name": { "key": "BazClass" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 295, "length": 8 }
               }
             }
@@ -47,7 +47,7 @@
             "loc": {
               "key": {
                 "module": {
-                  "key": { "file": { "key": "test/es_exports.js.flow" } }
+                  "key": { "file": { "key": "es_exports.js.flow" } }
                 },
                 "span": { "start": 632, "length": 1 }
               }
@@ -66,7 +66,7 @@
             "name": { "key": "CazClass" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 749, "length": 8 }
               }
             }
@@ -84,7 +84,7 @@
             "name": { "key": "Component" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 555, "length": 9 }
               }
             }
@@ -103,7 +103,7 @@
             "loc": {
               "key": {
                 "module": {
-                  "key": { "file": { "key": "test/es_exports.js.flow" } }
+                  "key": { "file": { "key": "es_exports.js.flow" } }
                 },
                 "span": { "start": 551, "length": 12 }
               }
@@ -123,7 +123,7 @@
             "loc": {
               "key": {
                 "module": {
-                  "key": { "file": { "key": "test/es_exports.js.flow" } }
+                  "key": { "file": { "key": "es_exports.js.flow" } }
                 },
                 "span": { "start": 243, "length": 5 }
               }
@@ -142,7 +142,7 @@
             "name": { "key": "a" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 238, "length": 1 }
               }
             }
@@ -160,7 +160,7 @@
             "name": { "key": "b" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 240, "length": 1 }
               }
             }
@@ -178,7 +178,7 @@
             "name": { "key": "bar" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 290, "length": 3 }
               }
             }
@@ -197,7 +197,7 @@
             "loc": {
               "key": {
                 "module": {
-                  "key": { "file": { "key": "test/es_exports.js.flow" } }
+                  "key": { "file": { "key": "es_exports.js.flow" } }
                 },
                 "span": { "start": 324, "length": 3 }
               }
@@ -216,7 +216,7 @@
             "name": { "key": "c" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 242, "length": 1 }
               }
             }
@@ -235,7 +235,7 @@
             "loc": {
               "key": {
                 "module": {
-                  "key": { "file": { "key": "test/es_exports.js.flow" } }
+                  "key": { "file": { "key": "es_exports.js.flow" } }
                 },
                 "span": { "start": 398, "length": 1 }
               }
@@ -254,7 +254,7 @@
             "name": { "key": "d" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 281, "length": 1 }
               }
             }
@@ -272,7 +272,7 @@
             "name": { "key": "e" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 630, "length": 1 }
               }
             }
@@ -291,7 +291,7 @@
             "loc": {
               "key": {
                 "module": {
-                  "key": { "file": { "key": "test/es_exports.js.flow" } }
+                  "key": { "file": { "key": "es_exports.js.flow" } }
                 },
                 "span": { "start": 268, "length": 3 }
               }
@@ -310,7 +310,7 @@
             "name": { "key": "foo" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 285, "length": 3 }
               }
             }
@@ -329,7 +329,7 @@
             "loc": {
               "key": {
                 "module": {
-                  "key": { "file": { "key": "test/es_exports.js.flow" } }
+                  "key": { "file": { "key": "es_exports.js.flow" } }
                 },
                 "span": { "start": 564, "length": 4 }
               }
@@ -348,9 +348,7 @@
             "name": { "key": "plus" },
             "loc": {
               "key": {
-                "module": {
-                  "key": { "file": { "key": "test/cjs_exports.js" } }
-                },
+                "module": { "key": { "file": { "key": "cjs_exports.js" } } },
                 "span": { "start": 241, "length": 4 }
               }
             }
@@ -368,7 +366,7 @@
             "name": { "key": "plus" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 414, "length": 4 }
               }
             }
@@ -386,7 +384,7 @@
             "name": { "key": "qux" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 338, "length": 3 }
               }
             }
@@ -404,7 +402,7 @@
             "name": { "key": "s" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 840, "length": 1 }
               }
             }
@@ -422,7 +420,7 @@
             "name": { "key": "times" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 370, "length": 5 }
               }
             }
@@ -441,7 +439,7 @@
             "loc": {
               "key": {
                 "module": {
-                  "key": { "file": { "key": "test/subdir/more_cjs.js" } }
+                  "key": { "file": { "key": "subdir/more_cjs.js" } }
                 },
                 "span": { "start": 240, "length": 5 }
               }
@@ -460,9 +458,7 @@
             "name": { "key": "x" },
             "loc": {
               "key": {
-                "module": {
-                  "key": { "file": { "key": "test/cjs_exports.js" } }
-                },
+                "module": { "key": { "file": { "key": "cjs_exports.js" } } },
                 "span": { "start": 246, "length": 1 }
               }
             }
@@ -481,7 +477,7 @@
             "loc": {
               "key": {
                 "module": {
-                  "key": { "file": { "key": "test/es_exports.js.flow" } }
+                  "key": { "file": { "key": "es_exports.js.flow" } }
                 },
                 "span": { "start": 328, "length": 1 }
               }
@@ -500,7 +496,7 @@
             "name": { "key": "x" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 650, "length": 1 }
               }
             }
@@ -519,7 +515,7 @@
             "loc": {
               "key": {
                 "module": {
-                  "key": { "file": { "key": "test/subdir/more_cjs.js" } }
+                  "key": { "file": { "key": "subdir/more_cjs.js" } }
                 },
                 "span": { "start": 246, "length": 1 }
               }
@@ -538,7 +534,7 @@
             "name": { "key": "y" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 671, "length": 1 }
               }
             }
@@ -557,7 +553,7 @@
             "loc": {
               "key": {
                 "module": {
-                  "key": { "file": { "key": "test/subdir/more_cjs.js" } }
+                  "key": { "file": { "key": "subdir/more_cjs.js" } }
                 },
                 "span": { "start": 257, "length": 1 }
               }
@@ -576,7 +572,7 @@
             "name": { "key": "z" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 698, "length": 1 }
               }
             }
@@ -594,7 +590,7 @@
             "name": { "key": "z1" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 720, "length": 2 }
               }
             }
@@ -613,7 +609,7 @@
             "loc": {
               "key": {
                 "module": {
-                  "key": { "file": { "key": "test/es_exports.js.flow" } }
+                  "key": { "file": { "key": "es_exports.js.flow" } }
                 },
                 "span": { "start": 381, "length": 8 }
               }
@@ -633,7 +629,7 @@
             "loc": {
               "key": {
                 "module": {
-                  "key": { "file": { "key": "test/es_exports.js.flow" } }
+                  "key": { "file": { "key": "es_exports.js.flow" } }
                 },
                 "span": { "start": 632, "length": 1 }
               }
@@ -652,7 +648,7 @@
             "name": { "key": "CazClass" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 749, "length": 8 }
               }
             }
@@ -670,7 +666,7 @@
             "name": { "key": "D" },
             "loc": {
               "key": {
-                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "module": { "key": { "file": { "key": "imports.js" } } },
                 "span": { "start": 829, "length": 1 }
               }
             }
@@ -689,7 +685,7 @@
             "loc": {
               "key": {
                 "module": {
-                  "key": { "file": { "key": "test/es_exports.js.flow" } }
+                  "key": { "file": { "key": "es_exports.js.flow" } }
                 },
                 "span": { "start": 506, "length": 3 }
               }
@@ -709,7 +705,7 @@
             "loc": {
               "key": {
                 "module": {
-                  "key": { "file": { "key": "test/es_exports.js.flow" } }
+                  "key": { "file": { "key": "es_exports.js.flow" } }
                 },
                 "span": { "start": 479, "length": 3 }
               }

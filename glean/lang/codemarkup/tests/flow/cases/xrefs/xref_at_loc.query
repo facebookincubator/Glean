@@ -4,8 +4,8 @@
 #  src.File.1 : 1
 #
 query: |
-  flow.FileXRef { 
-    file = "test/imports.js", 
+  flow.FileXRef {
+    file = "imports.js",
     ref = { typeRef = { loc = { span = { start = 446 }}}}
   }
 

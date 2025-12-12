@@ -11,7 +11,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 381, "length": 8 }
                   }
@@ -21,7 +21,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 295, "length": 8 }
     }
   },
@@ -36,7 +36,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 381, "length": 8 }
                   }
@@ -46,7 +46,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 766, "length": 8 }
     }
   },
@@ -61,7 +61,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 632, "length": 1 }
                   }
@@ -71,7 +71,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 799, "length": 1 }
     }
   },
@@ -86,7 +86,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 632, "length": 1 }
                   }
@@ -96,7 +96,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 833, "length": 1 }
     }
   },
@@ -111,7 +111,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 324, "length": 3 }
                   }
@@ -121,7 +121,7 @@
           }
         }
       },
-      "file": { "key": "test/es_exports.js.flow" },
+      "file": { "key": "es_exports.js.flow" },
       "span": { "start": 434, "length": 3 }
     }
   },
@@ -136,7 +136,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 324, "length": 3 }
                   }
@@ -146,7 +146,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 290, "length": 3 }
     }
   },
@@ -161,7 +161,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 324, "length": 3 }
                   }
@@ -171,7 +171,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 659, "length": 3 }
     }
   },
@@ -186,7 +186,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 398, "length": 1 }
                   }
@@ -196,7 +196,7 @@
           }
         }
       },
-      "file": { "key": "test/es_exports.js.flow" },
+      "file": { "key": "es_exports.js.flow" },
       "span": { "start": 463, "length": 1 }
     }
   },
@@ -211,7 +211,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 398, "length": 1 }
                   }
@@ -221,7 +221,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 281, "length": 1 }
     }
   },
@@ -236,7 +236,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 398, "length": 1 }
                   }
@@ -246,7 +246,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 555, "length": 9 }
     }
   },
@@ -261,7 +261,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 398, "length": 1 }
                   }
@@ -271,7 +271,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 642, "length": 1 }
     }
   },
@@ -286,7 +286,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 398, "length": 1 }
                   }
@@ -296,7 +296,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 793, "length": 3 }
     }
   },
@@ -311,7 +311,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 398, "length": 1 }
                   }
@@ -321,7 +321,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 843, "length": 3 }
     }
   },
@@ -336,7 +336,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 268, "length": 3 }
                   }
@@ -346,7 +346,7 @@
           }
         }
       },
-      "file": { "key": "test/es_exports.js.flow" },
+      "file": { "key": "es_exports.js.flow" },
       "span": { "start": 429, "length": 3 }
     }
   },
@@ -361,7 +361,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 268, "length": 3 }
                   }
@@ -371,7 +371,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 285, "length": 3 }
     }
   },
@@ -386,7 +386,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 268, "length": 3 }
                   }
@@ -396,7 +396,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 688, "length": 3 }
     }
   },
@@ -411,7 +411,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 564, "length": 4 }
                   }
@@ -421,7 +421,7 @@
           }
         }
       },
-      "file": { "key": "test/es_exports.js.flow" },
+      "file": { "key": "es_exports.js.flow" },
       "span": { "start": 605, "length": 4 }
     }
   },
@@ -436,7 +436,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 328, "length": 1 }
                   }
@@ -446,7 +446,7 @@
           }
         }
       },
-      "file": { "key": "test/es_exports.js.flow" },
+      "file": { "key": "es_exports.js.flow" },
       "span": { "start": 358, "length": 1 }
     }
   },
@@ -461,7 +461,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 324, "length": 3 }
                   }
@@ -471,7 +471,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 684, "length": 3 }
     }
   },
@@ -486,7 +486,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 506, "length": 3 }
                   }
@@ -496,7 +496,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 599, "length": 3 }
     }
   },
@@ -511,7 +511,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 479, "length": 3 }
                   }
@@ -521,7 +521,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 521, "length": 3 }
     }
   },
@@ -536,7 +536,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 479, "length": 3 }
                   }
@@ -546,7 +546,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 653, "length": 3 }
     }
   },
@@ -561,7 +561,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 479, "length": 3 }
                   }
@@ -571,7 +571,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 674, "length": 3 }
     }
   },
@@ -586,7 +586,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 479, "length": 3 }
                   }
@@ -596,7 +596,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 701, "length": 3 }
     }
   },
@@ -611,7 +611,7 @@
                 "loc": {
                   "key": {
                     "module": {
-                      "key": { "file": { "key": "test/es_exports.js.flow" } }
+                      "key": { "file": { "key": "es_exports.js.flow" } }
                     },
                     "span": { "start": 479, "length": 3 }
                   }
@@ -621,7 +621,7 @@
           }
         }
       },
-      "file": { "key": "test/imports.js" },
+      "file": { "key": "imports.js" },
       "span": { "start": 724, "length": 3 }
     }
   }

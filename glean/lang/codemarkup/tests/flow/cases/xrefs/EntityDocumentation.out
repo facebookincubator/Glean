@@ -10,7 +10,7 @@
               "loc": {
                 "key": {
                   "module": {
-                    "key": { "file": { "key": "test/es_exports.js.flow" } }
+                    "key": { "file": { "key": "es_exports.js.flow" } }
                   },
                   "span": { "start": 324, "length": 3 }
                 }
@@ -19,50 +19,48 @@
           }
         }
       },
-      "file": { "key": "test/es_exports.js.flow" },
+      "file": { "key": "es_exports.js.flow" },
       "span": { "start": 286, "length": 28 }
     }
   },
   {
     "key": {
       "entity": {
-        "module_": { "key": { "file": { "key": "test/cjs_exports.js" } } }
+        "module_": { "key": { "file": { "key": "cjs_exports.js" } } }
       },
-      "file": { "key": "test/cjs_exports.js" },
+      "file": { "key": "cjs_exports.js" },
       "span": { "start": 0, "length": 220 }
     }
   },
   {
     "key": {
       "entity": {
-        "module_": { "key": { "file": { "key": "test/es_exports.js.flow" } } }
+        "module_": { "key": { "file": { "key": "es_exports.js.flow" } } }
       },
-      "file": { "key": "test/es_exports.js.flow" },
+      "file": { "key": "es_exports.js.flow" },
+      "span": { "start": 0, "length": 220 }
+    }
+  },
+  {
+    "key": {
+      "entity": { "module_": { "key": { "file": { "key": "imports.js" } } } },
+      "file": { "key": "imports.js" },
       "span": { "start": 0, "length": 220 }
     }
   },
   {
     "key": {
       "entity": {
-        "module_": { "key": { "file": { "key": "test/imports.js" } } }
+        "module_": { "key": { "file": { "key": "subdir/more_cjs.js" } } }
       },
-      "file": { "key": "test/imports.js" },
-      "span": { "start": 0, "length": 220 }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "module_": { "key": { "file": { "key": "test/subdir/more_cjs.js" } } }
-      },
-      "file": { "key": "test/subdir/more_cjs.js" },
+      "file": { "key": "subdir/more_cjs.js" },
       "span": { "start": 0, "length": 220 }
     }
   },
   {
     "key": {
       "entity": { "module_": { "key": { "string_": "cjs_exports" } } },
-      "file": { "key": "test/cjs_exports.js" },
+      "file": { "key": "cjs_exports.js" },
       "span": { "start": 0, "length": 220 }
     }
   }
