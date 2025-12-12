@@ -16,6 +16,8 @@ import Language.Haskell.TH
 import System.Exit
 import System.Process
 
+import Util.Control.Exception
+
 buildRule :: Text
 buildRule = "glean"
 
@@ -30,9 +32,9 @@ buildTimeISO8601 = $(do
 
 buildRevision :: Text
 buildRevision = $(do
-  (exit, rev, _) <- liftIO $
+  res <- liftIO $ tryAll $
     readProcessWithExitCode "git" ["rev-parse", "HEAD"] ""
-  case exit of
-    ExitSuccess -> litE (stringL (head (lines rev)))
+  case res of
+    Right (ExitSuccess, rev, _) -> litE (stringL (head (lines rev)))
     _ -> litE (stringL "<unknown>")
   )
