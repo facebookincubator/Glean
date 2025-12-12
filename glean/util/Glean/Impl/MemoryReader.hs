@@ -12,5 +12,5 @@ module Glean.Impl.MemoryReader
 
 -- template for open source build
 -- not implemented yet
-totalMemCapacity :: Maybe Int
-totalMemCapacity = Nothing
+totalMemCapacity :: IO (Maybe Int)
+totalMemCapacity = return Nothing
