@@ -70,7 +70,7 @@ data RocksDB = RocksDB
   , rocksCache :: Maybe Cache
   , rocksCacheIndexAndFilterBlocks :: Bool
   , rocksMaxDiskSize :: Maybe Int
-    -- ^ virtual limit to report capped disk capacities. The limit is
+    -- ^ virtual limit (bytes) to report capped disk capacities. The limit is
     -- not enforced. It's up to each io usage to check diskspace before writing.
     -- We're using this to avoid serving too many dbs on query servers,
     -- and smarter sharding.
@@ -82,14 +82,14 @@ newStorage root ServerConfig.Config{..} = do
     then
       Just <$> newCache (fromIntegral config_db_rocksdb_cache_mb * 1024 * 1024)
     else return Nothing
-  mem_capacity <- totalMemCapacity
+  mem_capacity <- totalMemCapacityKB
   return RocksDB
     { rocksRoot = root
     , rocksCache = cache
     , rocksCacheIndexAndFilterBlocks =
         config_db_rocksdb_cache_index_and_filter_blocks
     , rocksMaxDiskSize = case mem_capacity of
-        Just mem -> (* mem) . fromIntegral <$>
+        Just mem -> (* (mem * 1024)) . fromIntegral <$>
           config_db_rocksdb_disk_mem_capacity_ratio_limit
         Nothing -> Nothing
     }
