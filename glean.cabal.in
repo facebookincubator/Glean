@@ -3,7 +3,7 @@ cabal-version:       3.6
 -- Copyright (c) Facebook, Inc. and its affiliates.
 
 name:                glean
-version:             0.1.0.0
+version:             0.2.0.0
 synopsis: A system for collecting, deriving and working with facts
           about source code.
 homepage:            https://github.com/facebookincubator/Glean
@@ -1068,6 +1068,7 @@ executable disassemble
         glean:if-glean-hs,
         glean:lib,
         glean:util,
+        glean:angle,
 
 library test-unit
     import: fb-haskell, fb-cpp, deps
