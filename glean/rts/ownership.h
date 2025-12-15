@@ -32,7 +32,12 @@ void serializeEliasFano(binary::Output& out, const OwnerSet& set);
 OwnerSet deserializeEliasFano(binary::Input& in);
 
 struct OwnershipSetIterator {
-  virtual ~OwnershipSetIterator() {}
+  OwnershipSetIterator() = default;
+  virtual ~OwnershipSetIterator() = default;
+  OwnershipSetIterator(const OwnershipSetIterator&) = delete;
+  OwnershipSetIterator& operator=(const OwnershipSetIterator&) = delete;
+  OwnershipSetIterator(OwnershipSetIterator&&) = delete;
+  OwnershipSetIterator& operator=(OwnershipSetIterator&&) = delete;
   virtual std::pair<size_t, size_t> sizes() const = 0;
   virtual folly::Optional<std::pair<UsetId, SetExpr<const OwnerSet*>>>
   get() = 0;
@@ -55,7 +60,12 @@ struct OwnershipStats {
 // Interface for reading ownership data.
 //
 struct Ownership {
-  virtual ~Ownership() {}
+  Ownership() = default;
+  virtual ~Ownership() = default;
+  Ownership(const Ownership&) = delete;
+  Ownership& operator=(const Ownership&) = delete;
+  Ownership(Ownership&&) = delete;
+  Ownership& operator=(Ownership&&) = delete;
 
   // Iterate through all the ownership expressions
   virtual std::unique_ptr<OwnershipSetIterator> getSetIterator() = 0;
@@ -114,7 +124,12 @@ struct OwnershipUnit {
 };
 
 struct OwnershipUnitIterator {
-  virtual ~OwnershipUnitIterator() {}
+  OwnershipUnitIterator() = default;
+  virtual ~OwnershipUnitIterator() = default;
+  OwnershipUnitIterator(const OwnershipUnitIterator&) = delete;
+  OwnershipUnitIterator& operator=(const OwnershipUnitIterator&) = delete;
+  OwnershipUnitIterator(OwnershipUnitIterator&&) = delete;
+  OwnershipUnitIterator& operator=(OwnershipUnitIterator&&) = delete;
 
   // `OwnershipUnit`s are expected to be produced in strictly
   // ascending order of `unit`.
