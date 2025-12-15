@@ -7,10 +7,10 @@
 -}
 
 module Glean.Impl.MemoryReader
-  (totalMemCapacity
+  (totalMemCapacityKB
   ) where
 
 -- template for open source build
 -- not implemented yet
-totalMemCapacity :: IO (Maybe Int)
-totalMemCapacity = return Nothing
+totalMemCapacityKB :: IO (Maybe Int)
+totalMemCapacityKB = return Nothing
