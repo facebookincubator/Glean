@@ -407,9 +407,6 @@ class DeclarationTargets {
     bool operator<(const DeclRef& other) const {
       return sort_id < other.sort_id;
     }
-    bool operator==(const DeclRef& other) const {
-      return sort_id == other.sort_id;
-    }
   };
 
   ClangDB& db;
@@ -1762,12 +1759,6 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         return nullptr;
       }
     };
-
-    static const clang::FunctionDecl* FOLLY_NULLABLE
-    getSpecializedDecl(const clang::FunctionDecl* decl) {
-      auto tpl = decl->getPrimaryTemplate();
-      return tpl ? tpl->getTemplatedDecl() : nullptr;
-    }
   };
 
   bool VisitFunctionDecl(const clang::FunctionDecl* decl) {
@@ -1947,16 +1938,6 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         return DeclTraits::getTemplateInstantiationPattern(fieldDecl);
       }
     };
-
-    static const clang::VarDecl* FOLLY_NULLABLE
-    getSpecializedDecl(const clang::VarDecl* decl) {
-      if (auto spec =
-              clang::dyn_cast<clang::VarTemplateSpecializationDecl>(decl)) {
-        auto tpl = spec->getSpecializedTemplate();
-        return tpl ? tpl->getTemplatedDecl() : nullptr;
-      }
-      return nullptr;
-    }
   };
 
   bool VisitVarDecl(const clang::VarDecl* decl) {
