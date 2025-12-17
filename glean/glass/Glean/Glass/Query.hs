@@ -14,6 +14,7 @@ module Glean.Glass.Query
     srcFile
   , fileInfo
   , fileDigests
+  , fileContent
 
   -- * Working with XRefs
   , fileEntityLocations
@@ -74,6 +75,13 @@ fileInfo (GleanPath path) = predicate @Glass.FileInfo $
   rec $
     field @"file" (string path)
   end
+
+fileContent :: Glean.IdOf Src.File -> Angle Text
+fileContent fileId =
+  var $ \content ->
+    content `where_` [
+      stmt $ predicate @Src.FileContent $ factId fileId .-> content
+    ]
 
 -- | Given a file id, look up the index of line endings
 --

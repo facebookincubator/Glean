@@ -1,6 +1,7 @@
 [
     "@generated",
     {
+        "content": "{-\n  Copyright (c) Meta Platforms, Inc. and affiliates.\n  All rights reserved.\n\n  This source code is licensed under the BSD-style license found in the\n  LICENSE file in the root directory of this source tree.\n-}\n\n\nmodule A\n  ( a\n  , A\n  , T(..)\n  , R(..)\n  , C(..)\n  , zero\n  , f\n  ) where\n\nimport Data.Char (toLower, ord)\n\na :: String\na = map toLower \"A\"\n\ntype A = Int\n\ndata T a = C1 Float | C2 A | C3 a\n\ndata R a = R { f1 :: Char, f2 :: [a] }\n\nclass Eq a => C a where\n  m :: a -> Bool\n\ninstance C Int where\n  m x = x == x\n\nzero :: A\nzero = 0\n\nf :: R a -> T a\nf R{f2 = [x]} = C3 x\nf r | m (3::Int) = C2 (ord (f1 r { f1 = 'a' }))\n",
         "referenced_file_digests": {},
         "revision": "testhash",
         "size": 59,
