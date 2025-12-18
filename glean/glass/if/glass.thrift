@@ -51,6 +51,7 @@ struct LineRange {
 
 // Resolved symbol range in a file, using line/column locators.
 // lines and columns are 1-indexed.
+@hack.MigrationBlockingAllowInheritance
 struct Range {
   1: i64 lineBegin (hs.strict);
   2: i64 columnBegin (hs.strict);
@@ -59,12 +60,14 @@ struct Range {
 }
 
 // Accurate byte ranges of symbols (can be resolved to Ranges)
+@hack.MigrationBlockingAllowInheritance
 struct ByteSpan {
   1: i64 start (hs.strict);
   2: i64 length (hs.strict);
 }
 
 // An universal, resolved symbol location.
+@hack.MigrationBlockingAllowInheritance
 struct LocationRange {
   // The repository it is defined in
   1: RepoName repository;
@@ -205,6 +208,7 @@ union SymbolFilter {
 typedef string SymbolId (hs.newtype)
 
 // Type of attributes associated with a symbol.
+@hack.MigrationBlockingAllowInheritance
 union Attribute {
   1: bool aBool;
   2: i64 aInteger;
@@ -221,6 +225,7 @@ union Attribute {
 typedef map<string, Attribute> Attributes (hs.newtype)
 
 // For clients that can't process maps, use an assoc list for attributes
+@hack.MigrationBlockingAllowInheritance
 struct KeyedAttribute {
   1: string key;
   2: Attribute attribute;
@@ -230,6 +235,7 @@ struct KeyedAttribute {
 typedef list<KeyedAttribute> AttributeList (hs.newtype)
 
 // Reference symbols. These are use sites that point to their definition
+@hack.MigrationBlockingAllowInheritance
 struct ReferenceRangeSymbolX {
   // a symbol id to its definition
   1: SymbolId sym;
@@ -245,6 +251,7 @@ struct ReferenceRangeSymbolX {
 }
 
 // a definition symbol
+@hack.MigrationBlockingAllowInheritance
 struct DefinitionSymbolX {
   // a stable name for the definition
   1: SymbolId sym;
@@ -260,6 +267,7 @@ struct DefinitionSymbolX {
 }
 
 // sometimes we prefer to combine all symbols in a file, for use later
+@hack.MigrationBlockingAllowInheritance
 struct SymbolX {
   // A stable name for the definition of this symbol
   1: SymbolId sym;
@@ -281,6 +289,7 @@ struct SymbolX {
 //
 // (deprecated)
 //
+@hack.MigrationBlockingAllowInheritance
 struct SymbolPath {
   // The repository it is defined in
   1: RepoName repository;
@@ -299,6 +308,7 @@ typedef map<string, FileDigestMap> RepoFileDigestMap
 
 // A list of known symbols in the file, their locations, and their keys
 // with all locations resolved to line/column ranges, and attributes
+@hack.MigrationBlockingAllowInheritance
 struct DocumentSymbolListXResult {
   // references that appear in this file
   1: list<ReferenceRangeSymbolX> references;
@@ -331,6 +341,7 @@ struct DocumentSymbolListXResult {
 
 // For cursor navigation in a file, it is useful to have a line indexed
 // map of symbols (to quickly find token under cursor)
+@hack.MigrationBlockingAllowInheritance
 struct DocumentSymbolIndex {
   // all symbols present in this file, 1-indexed by line.
   1: map<i64, list<SymbolX>> symbols;
@@ -389,6 +400,7 @@ safe exception GlassException {
 typedef string Name (hs.newtype)
 
 // A pair of names, usually a scope or qualified name and local identifier
+@hack.MigrationBlockingAllowInheritance
 struct QualifiedName {
   1: Name localName;
   2: Name container;
@@ -398,6 +410,7 @@ struct QualifiedName {
 // in source code. They can be optionally cross-referenced with symbols
 // and symbolic names (e.g. if the directive is a class name)
 //
+@hack.MigrationBlockingAllowInheritance
 struct Annotation {
   1: string source; // the annotation as it appears in the source code
   2: optional SymbolId symbol; // the symbol of the annotation
@@ -444,6 +457,7 @@ enum Modifier {
 
 // A symbol occuring in a type, together with its
 // span relative to the signature field
+@hack.MigrationBlockingAllowInheritance
 struct TypeSymSpan {
   1: SymbolId type;
   2: ByteSpan span;
@@ -459,6 +473,7 @@ struct SymbolBasicDescription {
 }
 
 // A symbol description extends the symbol id with additional attributes
+@hack.MigrationBlockingAllowInheritance
 struct SymbolDescription {
   1: SymbolId sym;
   2: SymbolPath location; // deprecated, use sym_location(s)
@@ -486,6 +501,7 @@ struct SymbolComment {
 }
 
 // summary of search related results
+@hack.MigrationBlockingAllowInheritance
 struct RelationDescription {
   1: optional SymbolId firstParent;
   2: bool hasMoreParents;
@@ -620,6 +636,7 @@ struct SymbolSearchRequest {
 }
 
 // Core symbol result data. All search results have these
+@hack.MigrationBlockingAllowInheritance
 struct SymbolResult {
   1: SymbolId symbol;
   2: LocationRange location; // assumes a single location for this entity
@@ -641,6 +658,7 @@ struct SymbolContext {
 }
 
 // String search, either core symbol data or with full metadata per symbol
+@hack.MigrationBlockingAllowInheritance
 struct SymbolSearchResult {
   1: list<SymbolResult> symbols;
   2: list<SymbolDescription> symbolDetails;
@@ -655,6 +673,7 @@ struct SearchByNameRequest {
 }
 
 // deprecated
+@hack.MigrationBlockingAllowInheritance
 struct SearchByNameResult {
   1: list<SymbolId> symbols;
   2: list<SymbolDescription> symbolDetails;
@@ -749,12 +768,14 @@ struct FileIncludeLocationRequest {
 
 # simplified ReferenceRangeSymbolX when we just need to know the file of the
 # xref and the origin span. Useful for caching/pre-fetching file contents
+@hack.MigrationBlockingAllowInheritance
 struct FileXRefTarget {
   1: Path target; // target file only
   2: Range range (hs.strict); // local line:col of use
 }
 
 # list of struct rather than map to help out GraphQL
+@hack.MigrationBlockingAllowInheritance
 struct FileIncludeXRef {
   1: Path source;
   2: list<FileXRefTarget> includes;
@@ -763,6 +784,7 @@ struct FileIncludeXRef {
 # map of source file, to local spans and their target files only
 typedef list<FileIncludeXRef> XRefFileList (hs.newtype)
 
+@hack.MigrationBlockingAllowInheritance
 struct FileIncludeLocationResults {
   2: Revision revision; // actual revision used for results
   3: XRefFileList references;
