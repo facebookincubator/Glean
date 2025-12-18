@@ -9,6 +9,7 @@
 module Glean.Database.Storage.RocksDB
   ( RocksDB(..)
   , newStorage
+  , getCacheCapacity
   ) where
 
 import Control.Exception
@@ -341,6 +342,13 @@ foreign import ccall unsafe glean_rocksdb_new_cache
   :: CSize -> Ptr (Ptr Cache) -> IO CString
 foreign import ccall unsafe "&glean_rocksdb_free_cache"
   glean_rocksdb_free_cache :: Destroy Cache
+foreign import ccall unsafe glean_rocksdb_cache_capacity
+  :: Ptr Cache -> IO CSize
+
+getCacheCapacity :: RocksDB -> IO Int
+getCacheCapacity rocks = do
+  withCache (rocksCache rocks) $
+    fmap fromIntegral . glean_rocksdb_cache_capacity
 
 
 foreign import ccall safe glean_rocksdb_container_open

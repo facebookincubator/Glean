@@ -7,6 +7,7 @@
  */
 
 #include "glean/rocksdb/rocksdb.h"
+#include <rocksdb/advanced_cache.h>
 #include "glean/rocksdb/container-impl.h"
 
 namespace facebook {
@@ -15,6 +16,13 @@ namespace rocks {
 
 std::shared_ptr<Cache> newCache(size_t capacity) {
   return rocksdb::NewLRUCache(capacity);
+}
+
+size_t getCacheCapacity(const std::shared_ptr<Cache>& cache) {
+  if (cache) {
+    return cache->GetCapacity();
+  }
+  return 0;
 }
 
 std::unique_ptr<Container> open(

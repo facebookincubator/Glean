@@ -40,6 +40,7 @@ typedef struct SharedCache SharedCache;
 
 const char* glean_rocksdb_new_cache(size_t capacity, SharedCache** cache);
 void glean_rocksdb_free_cache(SharedCache* cache);
+size_t glean_rocksdb_cache_capacity(SharedCache* cache);
 
 void glean_rocksdb_container_close(Container* container);
 
