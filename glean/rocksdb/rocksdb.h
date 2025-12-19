@@ -31,6 +31,7 @@ using rts::Pid;
 using Cache = ::rocksdb::Cache;
 
 std::shared_ptr<Cache> newCache(size_t capacity);
+size_t getCacheCapacity(const std::shared_ptr<Cache>& cache);
 
 struct Database;
 

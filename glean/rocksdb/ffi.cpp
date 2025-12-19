@@ -37,6 +37,13 @@ void glean_rocksdb_free_cache(SharedCache* cache) {
   ffi::free_(cache);
 }
 
+size_t glean_rocksdb_cache_capacity(SharedCache* cache) {
+  if (cache) {
+    return rocks::getCacheCapacity(cache->value);
+  }
+  return 0;
+}
+
 void glean_rocksdb_container_close(Container* container) {
   container->close();
 }
