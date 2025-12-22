@@ -9,7 +9,7 @@
 module StorageRocksDBTest where
 
 import Data.Default
-import Data.Maybe (isJust)
+import Data.Maybe (isJust, isNothing)
 import System.IO.Temp (withSystemTempDirectory)
 import Test.HUnit
 
@@ -19,6 +19,8 @@ import qualified Glean.ServerConfig.Types as ServerConfig
 import TestRunner
 import Glean.Init
 import Glean.Util.Disk (getDiskSize)
+
+--------------------- Disk Capacity tests ------------------------------
 
 testNoDiskLimit :: Test
 testNoDiskLimit =
@@ -75,9 +77,59 @@ testGetTotalCapacity =
     -- at risk since it depends on this value
     assertBool "totalCapacity is not empty" (isJust totalCapacity)
 
+--------------------- Cache tests ------------------------------
+
+testCacheWithRatioAndCacheMb :: Test
+testCacheWithRatioAndCacheMb =
+  TestCase $ withSystemTempDirectory "rocksdb-test" $ \tmpDir -> do
+    -- When both cache_to_mem_ratio and cache_mb are provided,
+    -- cache should be created using memCapacity * ratio
+    let config = def
+          { ServerConfig.config_db_rocksdb_cache_to_mem_ratio = Just 0.1
+          , ServerConfig.config_db_rocksdb_cache_mb = 100
+          }
+    storage <- RocksDB.newStorage tmpDir config
+    capacity <- RocksDB.getCacheCapacity storage
+    assertBool
+      "Cache capacity should be greater than 100MB (cache_mb is ignored)"
+        (capacity > 100 * 1024 * 1024)
+
+testCacheWithOnlyCacheMb :: Test
+testCacheWithOnlyCacheMb =
+  TestCase $ withSystemTempDirectory "rocksdb-test" $ \tmpDir -> do
+    -- When cache_to_mem_ratio is Nothing, should use cache_mb
+    let config = def
+          { ServerConfig.config_db_rocksdb_cache_to_mem_ratio = Nothing
+          , ServerConfig.config_db_rocksdb_cache_mb = 100
+          }
+    storage <- RocksDB.newStorage tmpDir config
+    let cache = RocksDB.rocksCache storage
+    assertBool "has cache" $ isJust cache
+    cache_capacity <- RocksDB.getCacheCapacity storage
+    assertEqual "Cache size equals config_db_rocksdb_cache_mb"
+      cache_capacity (100 * 1024 * 1024)
+
+testCacheIsNothingWhenCacheMbIsZero :: Test
+testCacheIsNothingWhenCacheMbIsZero =
+  TestCase $ withSystemTempDirectory "rocksdb-test" $ \tmpDir -> do
+    -- When cache_mb is 0 and no ratio, cache should be Nothing
+    let config = def
+          { ServerConfig.config_db_rocksdb_cache_to_mem_ratio = Nothing
+          , ServerConfig.config_db_rocksdb_cache_mb = 0
+          }
+    storage <- RocksDB.newStorage tmpDir config
+    assertBool "Cache should be Nothing when cache_mb is 0" $
+      isNothing (RocksDB.rocksCache storage)
+
+
+-- TODO: implment last 3 tests, devmate drafted them, might be incorrect
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "Test no disk limit" testNoDiskLimit
   , TestLabel "Test disk limit with ratio" testDiskLimitWithRatio
   , TestLabel "Test getTotalCapacity" testGetTotalCapacity
+  , TestLabel "Test cache with ratio and cache_mb" testCacheWithRatioAndCacheMb
+  , TestLabel "Test cache with only cache_mb" testCacheWithOnlyCacheMb
+  , TestLabel "Test cache is Nothing when cache_mb is 0 and no ratio"
+      testCacheIsNothingWhenCacheMbIsZero
   ]
