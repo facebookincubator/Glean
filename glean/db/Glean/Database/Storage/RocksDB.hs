@@ -77,13 +77,27 @@ data RocksDB = RocksDB
     -- and smarter sharding.
   }
 
+-- | Compute the size of the cache in bytes
+-- There's two configs that control the size:
+-- 1. db_rocksdb_cache_to_mem_ratio is used if provided
+--    sets the rocksdb cache to a fraction of the total memory.
+--    This is useful if the same server binary runs with the same server_config,
+--    but with varying RAM capacity
+-- 2. db_rocksdb_cache_mb is used if the above is not provided,
+--    or if the memory capacity cannot be read
+cacheSize :: ServerConfig.Config -> Maybe Int ->  Int
+cacheSize ServerConfig.Config{..} memCapacityKB =
+  case (memCapacityKB, config_db_rocksdb_cache_to_mem_ratio) of
+    (Just ramKB, Just ratio) -> round $ fromIntegral ramKB * ratio * 1024
+    _ -> fromIntegral (config_db_rocksdb_cache_mb * 1024 * 1024)
+
 newStorage :: FilePath -> ServerConfig.Config -> IO RocksDB
-newStorage root ServerConfig.Config{..} = do
-  cache <- if config_db_rocksdb_cache_mb > 0
-    then
-      Just <$> newCache (fromIntegral config_db_rocksdb_cache_mb * 1024 * 1024)
-    else return Nothing
+newStorage root config@ServerConfig.Config{..} = do
   mem_capacity <- totalMemCapacityKB
+  let cache_size = cacheSize config mem_capacity
+  cache <- if cache_size > 0
+    then Just <$> newCache cache_size
+    else return Nothing
   return RocksDB
     { rocksRoot = root
     , rocksCache = cache
