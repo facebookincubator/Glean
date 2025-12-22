@@ -51,6 +51,13 @@ genSchemaPy _version preddefs typedefs oncall =
     "(\"this function can only be called from @angle_query\")"
   , ""
   , "class InnerGleanSchemaPredicate:"
+  , "  " <> "\"\"\"Base class for Glean predicates in nested query fields."
+  , "  " <> ""
+  , "  " <> "Used for predicates that appear only as parameters within"
+  , "  " <> "outer Angle queries. Hides named types from the user's outer"
+  , "  " <> "query context for type-safe nested query composition. Cannot"
+  , "  " <> "be invoked directly in top-level Angle queries."
+  , "  " <> "\"\"\""
   , "  " <> "@staticmethod"
   , "  " <> "def angle_query(*, arg: str) -> \"InnerGleanSchemaPredicate\":"
   , "    " <> "raise Exception" <> "(\"this function can only be called as" <>
