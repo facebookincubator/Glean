@@ -14,8 +14,8 @@
 #include "glean/rts/ownership.h"
 #include "glean/rts/ownership/pool.h"
 
+#include <array>
 #include <cstdint>
-#include <queue>
 #include <vector>
 
 namespace facebook {
@@ -23,18 +23,38 @@ namespace glean {
 namespace rts {
 
 /**
- * A datastructure which maps ranges of Ids to values. The current
- * implementation is a hack which only supports Ids which fit in 32 bits.
+ * A datastructure which maps ranges of Ids to values.
  *
  * The implementation is a bit trie with a large initial fanout (64k) and then a
- * smaller inner fanout (16), giving a maximum depth of 4 (for 32-bit values).
+ * smaller inner fanout (16), giving a maximum depth of 4 within each 32-bit
+ * page.
+ *
+ * To support 64-bit keys while optimizing for the common case:
+ * - Pages 0 to NUM_PREALLOCATED_PAGES-1 are stored in a fixed array for fast
+ *   direct access (no hash lookup)
+ * - Higher pages are stored in a sparse map and allocated on demand
+ *
+ * Memory usage and performance:
+ *
+ *   | NUM_PREALLOCATED_PAGES | Key range covered | Memory (pages array) |
+ *   |------------------------|-------------------|----------------------|
+ *   | 1                      | 0 to 2^32-1       | 512 KB               |
+ *   | 4                      | 0 to 2^34-1       | 2 MB                 |
+ *   | 16                     | 0 to 2^36-1       | 8 MB                 |
+ *
+ * Keys within the preallocated range use direct array indexing.
+ * Keys beyond that range incur one hash map lookup per operation.
  *
  * This should most likely be switched to some form of Patricia tree.
  */
 template <typename T>
 class TrieArray {
  public:
-  TrieArray() : trees_(new ForestN<FANOUT_TOP>(Tree::null())) {}
+  TrieArray() {
+    for (auto& page : pages_) {
+      page = std::make_unique<ForestN<FANOUT_TOP>>(Tree::null());
+    }
+  }
 
   /**
    * Insert a sorted sequence of non-overlapping Id ranges by combining the
@@ -64,9 +84,6 @@ class TrieArray {
 
     minkey_ = std::min(minkey_, start->start.toWord());
     maxkey_ = std::max(maxkey_, finish[-1].finish.toWord());
-
-    // only 32-bit keys are supported; this property is assumed later
-    CHECK(maxkey_ <= std::numeric_limits<uint32_t>::max());
 
     // During insertion if we are replacing all references of an existing value,
     // we want to do that in a single operation so that get() can reuse
@@ -214,16 +231,37 @@ class TrieArray {
  private:
   static constexpr size_t FANOUT_TOP = 65536;
   static constexpr size_t FANOUT = 16;
-  static constexpr size_t BLOCK =
-      (size_t(std::numeric_limits<uint32_t>::max()) + 1) / FANOUT_TOP;
+  // Each page covers 2^32 keys; page 0 is the common case (32-bit keys)
+  static constexpr uint64_t PAGE_SIZE = uint64_t(1) << 32;
+  // BLOCK = 2^32 / 2^16 = 2^16 (optimized for 32-bit keys)
+  static constexpr size_t BLOCK = PAGE_SIZE / FANOUT_TOP;
+
+  // Number of pages to preallocate in a fixed array for fast direct access.
+  // Increase this if the common key range exceeds the current coverage:
+  //   - 1 page  covers keys 0 to 2^32-1  (512 KB memory)
+  //   - 4 pages covers keys 0 to 2^34-1  (2 MB memory)
+  //   - 16 pages covers keys 0 to 2^36-1 (8 MB memory)
+  // Keys beyond NUM_PREALLOCATED_PAGES * 2^32 will use the overflow_ hash map,
+  // which adds one hash lookup per operation.
+  static constexpr size_t NUM_PREALLOCATED_PAGES = 4;
 
   static constexpr size_t blockSize(uint8_t level) {
-    auto size = BLOCK;
+    size_t size = BLOCK;
     while (level != 0) {
       size /= FANOUT;
       --level;
     }
     return size;
+  }
+
+  // Split a key into page number (high 32 bits) and offset within page
+  static std::pair<uint32_t, uint32_t> pageOf(uint64_t key) {
+    return {static_cast<uint32_t>(key >> 32), static_cast<uint32_t>(key)};
+  }
+
+  // Within a page, get block index and offset within block
+  static std::pair<uint32_t, uint32_t> location(uint32_t key_in_page) {
+    return {key_in_page / BLOCK, key_in_page % BLOCK};
   }
 
   template <uint32_t N>
@@ -301,11 +339,6 @@ class TrieArray {
     }
   };
 
-  static std::pair<uint64_t, uint64_t> location(uint64_t key) {
-    assert(key <= std::numeric_limits<uint32_t>::max());
-    return {key / BLOCK, key % BLOCK};
-  }
-
   template <typename F>
   void traverse(F&& f) {
     if (minkey_ <= maxkey_) {
@@ -320,19 +353,45 @@ class TrieArray {
   // the tree to become a forest in which case `traverse` will descend into it.
   template <typename F>
   void traverse(uint64_t start, uint64_t size, F&& f) {
-    auto [first_block, first_index] = location(start);
-    auto [last_block, last_index] = location(start + (size - 1));
+    auto [first_page, first_key_in_page] = pageOf(start);
+    auto [last_page, last_key_in_page] = pageOf(start + (size - 1));
 
     uint64_t key = start;
+    uint32_t page = first_page;
+    do {
+      auto* forest = getOrCreatePage(page);
+
+      uint32_t page_start = (page == first_page) ? first_key_in_page : 0;
+      uint32_t page_end = (page == last_page)
+          ? last_key_in_page
+          : std::numeric_limits<uint32_t>::max();
+      uint64_t page_size = uint64_t(page_end) - page_start + 1;
+
+      traversePage(forest, key, page_start, page_size, f);
+      key += page_size;
+    } while (page++ != last_page);
+  }
+
+  template <typename F>
+  void traversePage(
+      ForestN<FANOUT_TOP>* forest,
+      uint64_t key,
+      uint32_t start,
+      uint64_t size,
+      F&& f) {
+    auto [first_block, first_index] = location(start);
+    auto [last_block, last_index] =
+        location(static_cast<uint32_t>(start + (size - 1)));
+
     while (first_block < last_block) {
       const auto n = BLOCK - first_index;
-      traverse<0>(trees_->at(first_block), key, first_index, n, f);
+      traverse<0>(forest->at(first_block), key, first_index, n, f);
       key += n;
       ++first_block;
       first_index = 0;
     }
     traverse<0>(
-        trees_->at(first_block),
+        forest->at(first_block),
         key,
         first_index,
         last_index - first_index + 1,
@@ -362,7 +421,35 @@ class TrieArray {
     }
   }
 
-  std::unique_ptr<ForestN<FANOUT_TOP>> trees_;
+  // Get the forest for a page, creating it if needed (for insertion)
+  ForestN<FANOUT_TOP>* getOrCreatePage(uint32_t page) {
+    if (page < NUM_PREALLOCATED_PAGES) {
+      return pages_[page].get();
+    }
+    auto& p = overflow_[page];
+    if (!p) {
+      p = std::make_unique<ForestN<FANOUT_TOP>>(Tree::null());
+    }
+    return p.get();
+  }
+
+  // Get the forest for a page (for read-only access)
+  ForestN<FANOUT_TOP>* getPage(uint32_t page) const {
+    if (page < NUM_PREALLOCATED_PAGES) {
+      return pages_[page].get();
+    }
+    auto it = overflow_.find(page);
+    return it != overflow_.end() ? it->second.get() : nullptr;
+  }
+
+  // Preallocated pages for fast direct access (covers keys 0 to
+  // NUM_PREALLOCATED_PAGES * 2^32 - 1)
+  std::array<std::unique_ptr<ForestN<FANOUT_TOP>>, NUM_PREALLOCATED_PAGES>
+      pages_;
+  // Higher pages - sparse allocation for 64-bit key support beyond the
+  // preallocated range
+  mutable folly::F14FastMap<uint32_t, std::unique_ptr<ForestN<FANOUT_TOP>>>
+      overflow_;
   Pool<Forest> pool_;
   uint64_t minkey_ = std::numeric_limits<uint64_t>::max();
   uint64_t maxkey_ = 0;
