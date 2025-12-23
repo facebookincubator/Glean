@@ -173,20 +173,20 @@ struct Sliced : Lookup {
   }
 
   std::unique_ptr<FactIterator>
-  seek(Pid type, folly::ByteRange start, size_t prefix_size) override {
+  seek(Pid type, folly::ByteRange prefix, std::optional<Fact::Ref> restart) override {
     return FactIterator::filter(
-        base_->seek(type, start, prefix_size),
+        base_->seek(type, prefix, restart),
         [&](Id id) { return slice_.visible(base_->getOwner(id)); });
   }
 
   std::unique_ptr<FactIterator> seekWithinSection(
       Pid type,
-      folly::ByteRange start,
-      size_t prefix_size,
+      folly::ByteRange prefix,
       Id from,
-      Id to) override {
+      Id to,
+      std::optional<Fact::Ref> restart) override {
     return FactIterator::filter(
-        base_->seekWithinSection(type, start, prefix_size, from, to),
+        base_->seekWithinSection(type, prefix, from, to, restart),
         [&](Id id) { return slice_.visible(base_->getOwner(id)); });
   }
 

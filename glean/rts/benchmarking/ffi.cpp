@@ -83,7 +83,7 @@ const char* glean_benchmarking_seek_count(
   return ffi::wrap([=] {
     size_t n = 0;
     for (size_t i = 0; i < pids_count; ++i) {
-      auto iter = lookup->seek(Pid::fromThrift(pids[i]), {}, 0);
+      auto iter = lookup->seek(Pid::fromThrift(pids[i]), {});
       while (auto ref = iter->get(FactIterator::Demand::KeyOnly)) {
         ++n;
         iter->next();

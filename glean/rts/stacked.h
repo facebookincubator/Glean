@@ -78,28 +78,48 @@ struct StackedBase : Iface {
   }
 
   std::unique_ptr<FactIterator>
-  seek(Pid type, folly::ByteRange start, size_t prefix_size) override {
-    return FactIterator::merge(
-        base->seekWithinSection(type, start, prefix_size, Id::invalid(), mid),
-        stacked->seek(type, start, prefix_size),
-        prefix_size);
+  seek(Pid type, folly::ByteRange prefix, std::optional<Fact::Ref> restart) override {
+    if (restart.has_value()) {
+        auto id = restart.value().id;
+        if (id < mid) {
+            return FactIterator::append(
+                base->seekWithinSection(type, prefix, Id::invalid(), mid, restart),
+                stacked->seek(type, prefix));
+        } else {
+            return stacked->seek(type, prefix, restart);
+        }
+    } else {
+        return FactIterator::append(
+            base->seekWithinSection(type, prefix, Id::invalid(), mid),
+            stacked->seek(type, prefix));
+    }
   }
 
   std::unique_ptr<FactIterator> seekWithinSection(
       Pid type,
-      folly::ByteRange start,
-      size_t prefix_size,
+      folly::ByteRange prefix,
       Id from,
-      Id to) override {
+      Id to,
+      std::optional<Fact::Ref> restart) override {
     if (to <= mid) {
-      return base->seekWithinSection(type, start, prefix_size, from, to);
+      return base->seekWithinSection(type, prefix, from, to, restart);
     } else if (mid <= from) {
-      return stacked->seekWithinSection(type, start, prefix_size, from, to);
+      return stacked->seekWithinSection(type, prefix, from, to, restart);
     } else {
-      return FactIterator::merge(
-          base->seekWithinSection(type, start, prefix_size, from, mid),
-          stacked->seekWithinSection(type, start, prefix_size, mid, to),
-          prefix_size);
+        if (restart.has_value()) {
+            auto id = restart.value().id;
+            if (id < mid) {
+                return FactIterator::append(
+                    base->seekWithinSection(type, prefix, from, mid, restart),
+                    stacked->seekWithinSection(type, prefix, mid, to));
+            } else {
+                return stacked->seekWithinSection(type, prefix, mid, to, restart);
+            }
+        } else {
+            return FactIterator::append(
+                base->seekWithinSection(type, prefix, from, mid),
+                stacked->seekWithinSection(type, prefix, mid, to));
+        }
     }
   }
 
