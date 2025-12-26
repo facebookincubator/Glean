@@ -91,7 +91,7 @@ bool FactBlock::lookupEachByKey(Lookup& lookup) const {
 
 bool FactBlock::seekToEach(Lookup& lookup) const {
   for (const auto fact : *this) {
-    auto iter = lookup.seek(fact.type, fact.key(), 0);
+    auto iter = lookup.seek(fact.type, fact.key());
     auto ref = iter->get(FactIterator::Demand::KeyOnly);
     if (ref.id != fact.id) {
       return false;

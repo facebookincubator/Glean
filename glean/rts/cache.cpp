@@ -227,18 +227,18 @@ std::unique_ptr<FactIterator> LookupCache::Anchor::enumerateBack(
 
 std::unique_ptr<FactIterator> LookupCache::Anchor::seek(
     Pid type,
-    folly::ByteRange start,
-    size_t prefix_size) {
-  return base->seek(type, start, prefix_size);
+    folly::ByteRange prefix,
+    std::optional<Fact::Ref> restart) {
+  return base->seek(type, prefix, restart);
 }
 
 std::unique_ptr<FactIterator> LookupCache::Anchor::seekWithinSection(
     Pid type,
-    folly::ByteRange start,
-    size_t prefix_size,
+    folly::ByteRange prefix,
     Id from,
-    Id to) {
-  return base->seekWithinSection(type, start, prefix_size, from, to);
+    Id to,
+    std::optional<Fact::Ref> restart) {
+  return base->seekWithinSection(type, prefix, from, to, restart);
 }
 
 void LookupCache::insert(Fact::unique_ptr owned) {

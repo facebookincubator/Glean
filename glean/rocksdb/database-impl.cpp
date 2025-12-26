@@ -306,8 +306,7 @@ struct SeekIterator final : rts::FactIterator {
 } // namespace
 
 std::unique_ptr<rts::FactIterator>
-DatabaseImpl::seek(Pid type, folly::ByteRange start, size_t prefix_size) {
-  assert(prefix_size <= start.size());
+DatabaseImpl::seek(Pid type, folly::ByteRange prefix, std::optional<rts::Fact::Ref> restart) {
   if (count(type).high() == 0) {
     return std::make_unique<EmptyIterator>();
   }
@@ -316,22 +315,30 @@ DatabaseImpl::seek(Pid type, folly::ByteRange start, size_t prefix_size) {
   binary::Output out;
   out.fixed(type);
   const auto type_size = out.size();
-  out.put(start);
-  return std::make_unique<SeekIterator>(
-      out.bytes(), type_size + prefix_size, type, this);
+
+  if (restart.has_value()) {
+      auto fact = restart.value();
+      out.put(fact.clause.key());
+      return std::make_unique<SeekIterator>(
+          out.bytes(), type_size + prefix.size(), type, this);
+  } else {
+      out.put(prefix);
+      return std::make_unique<SeekIterator>(
+          out.bytes(), type_size + prefix.size(), type, this);
+  }
 }
 
 std::unique_ptr<rts::FactIterator> DatabaseImpl::seekWithinSection(
     Pid type,
-    folly::ByteRange start,
-    size_t prefix_size,
+    folly::ByteRange prefix,
     Id from,
-    Id upto) {
+    Id upto,
+    std::optional<rts::Fact::Ref> restart) {
   if (upto <= startingId() || firstFreeId() <= from) {
     return std::make_unique<EmptyIterator>();
   }
 
-  return Section(this, from, upto).seek(type, start, prefix_size);
+  return Section(this, from, upto).seek(type, prefix, restart);
 }
 
 namespace {
