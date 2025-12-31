@@ -8,11 +8,17 @@
 
 module Glean.Glass.Regression.Haskell (main) where
 
+import System.Environment
 import Glean.Indexer.Haskell as Haskell ( indexer )
 import Glean.Glass.Regression.Snapshot ( mainGlassSnapshot )
 
 main :: IO ()
-main = mainGlassSnapshot testName testPath testIndexer (const [])
+main = do
+  args <- getArgs
+  withArgs ("--arg=--store-src" : args) $
+    -- tells the indexer to produce src.FileContent facts, which support
+    -- include_content=true in documentSymbolIndex calls.
+    mainGlassSnapshot testName testPath testIndexer (const [])
   where
     testName = "glass-regression-haskell"
     testPath = "glean/glass/test/regression/tests/haskell"

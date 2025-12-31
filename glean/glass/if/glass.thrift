@@ -194,6 +194,12 @@ struct DocumentSymbolsRequest {
   // resolved using latest version of target db. This may add latency
   // to the query. includes_refs must be set to true.
   5: bool include_xlang_refs = false;
+
+  // Include indexed file content in the response, if available. This
+  // may be useful if there is no SCM available to retrieve the
+  // content from, or the file was not indexed from a specific SCM
+  // revision.
+  6: bool include_content = false;
 }
 
 // response types
@@ -337,6 +343,9 @@ struct DocumentSymbolListXResult {
   // additional metadata associated with the file, non-symbol specific
   // e.g. list of available attributes / denominators for the file
   8: optional AttributeList attributes;
+
+  // optional file contents, if include_content = true in the request
+  9: optional string content;
 }
 
 // For cursor navigation in a file, it is useful to have a line indexed
@@ -370,6 +379,9 @@ struct DocumentSymbolIndex {
   // additional metadata associated with the file, non-symbol specific
   // e.g. list of available attributes / denominators for the file
   8: optional AttributeList attributes;
+
+  // optional file contents, if include_content = true in the request
+  9: optional string content;
 }
 
 // Generic server exception

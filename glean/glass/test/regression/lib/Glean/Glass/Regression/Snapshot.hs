@@ -317,7 +317,7 @@ instance DeterministicResponse (Either [Text] Cxx.SymbolEnv) where
 
 instance DeterministicResponse DocumentSymbolListXResult where
   det (DocumentSymbolListXResult refs defs _rev truncated digest fileMap
-      contentMatch attributes) =
+      contentMatch attributes content) =
     DocumentSymbolListXResult (det refs) (det defs) (Revision "testhash")
       truncated
       digest
@@ -325,15 +325,17 @@ instance DeterministicResponse DocumentSymbolListXResult where
       -- n.b. don't want to include any test group revision tags
       contentMatch
       attributes
+      content
 
 instance DeterministicResponse DocumentSymbolIndex where
   det (DocumentSymbolIndex syms _rev size truncated digest fileMap
-      contentMatch attributes) =
+      contentMatch attributes content) =
     DocumentSymbolIndex (Map.map sort syms) (Revision "testhash") size truncated
       digest
       fileMap
       contentMatch
       attributes
+      content
 
 instance DeterministicResponse SymbolSearchResult where
   det (SymbolSearchResult syms deets) =
