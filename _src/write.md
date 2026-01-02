@@ -188,17 +188,17 @@ where
 </OssOnly>
 
 * `<name>` is the name for your DB. For indexing repositories we normally use the name of the repository, but it's just a string, so you can use whatever you want.
-* `<hash>` identifies this particular instance of your database. For repositories we normally use the revision hash, but, again, it's just a string.
+* `<instance>` identifies this particular instance of your database. For repositories we normally use the revision hash, but, again, it's just a string.
 * `<filename>` the file containing the JSON facts.
 
 If the file is more than, say, 100MB, this operation will probably time out sending the data to the server. To send large amounts of data you need to batch it up into multiple files, and then send it like this:
 
 ```
-glean create --service <write-server> --db <name>/<hash>
-glean write --service <write-server> --db <name>/<hash> <filename1>
-glean write --service <write-server> --db <name>/<hash> <filename2>
+glean create --service <write-server> --db <name>/<instance>
+glean write --service <write-server> --db <name>/<instance> <filename1>
+glean write --service <write-server> --db <name>/<instance> <filename2>
 ...
-glean finish --service <write-server> --db <name>/<hash>
+glean finish --service <write-server> --db <name>/<instance>
 ```
 To find out if your DB made it:
 
