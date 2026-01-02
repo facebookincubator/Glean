@@ -67,12 +67,21 @@ instance LogRequest RequestOptions where
     Logger.setExactRevision requestOptions_exact_revision <>
     Logger.setMatchingRevision requestOptions_matching_revision <>
     Logger.setContentCheck requestOptions_content_check <>
+    logRequest requestOptions_client_info <>
     logRequest requestOptions_feature_flags <>
     logRequest requestOptions_attribute_opts
 
+instance LogRequest ClientInfo where
+  logRequest ClientInfo{..} = mconcat
+    [ maybe mempty Logger.setClientUnixname clientInfo_unixname
+    , maybe mempty Logger.setClientApplication clientInfo_application
+    , maybe mempty Logger.setClientName clientInfo_name
+    ]
+
 instance LogRequest AttributeOptions where
   logRequest AttributeOptions{..} =
-    Logger.setAttributeOptions $ textShow $ Thrift.serializeJSON AttributeOptions{..}
+    Logger.setAttributeOptions $ textShow $
+      Thrift.serializeJSON AttributeOptions{..}
 
 instance LogRequest FeatureFlags where
   logRequest FeatureFlags{} = mempty

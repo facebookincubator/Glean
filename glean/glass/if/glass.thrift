@@ -121,6 +121,16 @@ typedef string BinaryName (hs.newtype)
 
 typedef string PackageName (hs.newtype)
 
+// Client information for logging and debugging
+struct ClientInfo {
+  // Client name (e.g. api-python3, api-haskell, vscode)
+  1: optional string name;
+  // Unix username of the user making the request
+  2: optional string unixname;
+  // Application identifier (e.g. build rule)
+  3: optional string application;
+}
+
 // Generic request options, supported by most calls
 struct RequestOptions {
   // repo-global preferred revision identifier
@@ -167,6 +177,9 @@ struct RequestOptions {
   6: bool matching_revision = false;
 
   8: AttributeOptions attribute_opts;
+
+  // Information about who is making the call
+  9: optional ClientInfo client_info;
 }
 
 struct FeatureFlags {

@@ -118,3 +118,12 @@ setAttributeOptions _ = GleanGlassLogger
 
 setDynamicAttributeStats  :: [Text] -> GleanGlassLogger
 setDynamicAttributeStats _ = GleanGlassLogger
+
+setClientUnixname :: Text -> GleanGlassLogger
+setClientUnixname _ = GleanGlassLogger
+
+setClientApplication :: Text -> GleanGlassLogger
+setClientApplication _ = GleanGlassLogger
+
+setClientName :: Text -> GleanGlassLogger
+setClientName _ = GleanGlassLogger
