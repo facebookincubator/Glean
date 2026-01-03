@@ -151,14 +151,14 @@ struct LookupCache {
     }
 
     std::unique_ptr<FactIterator>
-    seek(Pid type, folly::ByteRange start, size_t prefix_size) override;
+    seek(Pid type, folly::ByteRange prefix, std::optional<Fact::Ref>) override;
 
     std::unique_ptr<FactIterator> seekWithinSection(
         Pid type,
-        folly::ByteRange start,
-        size_t prefix_size,
+        folly::ByteRange prefix,
         Id from,
-        Id to) override;
+        Id to,
+        std::optional<Fact::Ref>) override;
 
     UsetId getOwner(Id id) override {
       return base->getOwner(id);

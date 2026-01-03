@@ -100,20 +100,6 @@ struct MergeIterator final : public FactIterator {
 
 } // namespace
 
-std::unique_ptr<FactIterator> FactIterator::merge(
-    std::unique_ptr<FactIterator> left,
-    std::unique_ptr<FactIterator> right,
-    size_t prefix_size) {
-  if (left->get(Demand::KeyOnly)) {
-    return right->get(Demand::KeyOnly)
-        ? std::make_unique<MergeIterator>(
-              std::move(left), std::move(right), prefix_size)
-        : std::move(left);
-  } else {
-    return right;
-  }
-}
-
 std::unique_ptr<FactIterator> Section::enumerate(Id from, Id upto) {
   if (upto <= lowBoundary() || highBoundary() <= from) {
     return std::make_unique<EmptyIterator>();
@@ -135,7 +121,7 @@ std::unique_ptr<FactIterator> Section::enumerateBack(Id from, Id downto) {
 }
 
 std::unique_ptr<FactIterator>
-Section::seek(Pid type, folly::ByteRange start, size_t prefix_size) {
+Section::seek(Pid type, folly::ByteRange prefix, std::optional<Fact::Ref> restart) {
   struct Iterator final : FactIterator {
     Iterator(std::unique_ptr<FactIterator> base, Id upto, Id from)
         : base_(std::move(base)), high_boundary_(upto), low_boundary_(from) {}
@@ -170,19 +156,19 @@ Section::seek(Pid type, folly::ByteRange start, size_t prefix_size) {
     Id low_boundary_;
   };
   return std::make_unique<Iterator>(
-      base()->seek(type, start, prefix_size), highBoundary(), lowBoundary());
+      base()->seek(type, prefix, restart), highBoundary(), lowBoundary());
 }
 
 std::unique_ptr<FactIterator> Section::seekWithinSection(
     Pid type,
-    folly::ByteRange start,
-    size_t prefix_size,
+    folly::ByteRange prefix,
     Id from,
-    Id upto) {
+    Id upto,
+    std::optional<Fact::Ref> restart) {
   if (from <= lowBoundary() && highBoundary() <= upto) {
-    return seek(type, start, prefix_size);
+    return seek(type, prefix, restart);
   } else {
-    return Section(base_, from, upto).seek(type, start, prefix_size);
+    return Section(base_, from, upto).seek(type, prefix, restart);
   }
 }
 
