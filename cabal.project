@@ -22,9 +22,30 @@ tests: True
 allow-newer: haskeline:base
 
 -- develop with -Werror on, for consistency with internal Meta CI.
-program-options
+-- Only apply -Werror to our own packages, not dependencies.
+-- NOTE: The original `program-options ghc-options: -Werror` was incorrect
+-- as it applied -Werror globally to ALL packages including third-party deps.
+package glean
     ghc-options: -Werror
 package glean-lsp
+    ghc-options: -Werror
+package glean-clang
+    ghc-options: -Werror
+package fb-util
+    ghc-options: -Werror
+package fb-stubs
+    ghc-options: -Werror
+package mangle
+    ghc-options: -Werror
+package thrift-lib
+    ghc-options: -Werror
+package thrift-compiler
+    ghc-options: -Werror
+package thrift-haxl
+    ghc-options: -Werror
+package thrift-tests
+    ghc-options: -Werror
+package thrift-http
     ghc-options: -Werror
 
 package fb-util
