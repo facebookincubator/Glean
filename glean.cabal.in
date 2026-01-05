@@ -1541,6 +1541,7 @@ executable query-bench
     other-modules: BenchDB
     ghc-options: -main-is QueryBench
     build-depends:
+        glean:backend-api,
         glean:bench-util,
         glean:client-hs,
         glean:core,
@@ -1548,6 +1549,7 @@ executable query-bench
         glean:if-glean-hs,
         glean:schema,
         glean:test-lib,
+        glean:typed,
         glean:util,
         criterion < 1.7
 
@@ -1559,6 +1561,7 @@ executable rename-bench
     main-is: RenameBench.hs
     ghc-options: -main-is RenameBench
     build-depends:
+        glean:backend-local,
         glean:bench-util,
         glean:core,
         glean:db,
@@ -1575,10 +1578,12 @@ executable makefact-bench
     main-is: MakeFactBench.hs
     ghc-options: -main-is MakeFactBench
     build-depends:
+        glean:backend-api,
         glean:bench-util,
         glean:client-hs,
         glean:core,
         glean:schema,
+        glean:typed,
         glean:test-lib,
         criterion < 1.7
 
@@ -1590,6 +1595,8 @@ executable compile-bench
     main-is: CompileBench.hs
     ghc-options: -main-is CompileBench
     build-depends:
+        glean:angle,
+        glean:backend-api,
         glean:client-hs,
         glean:core,
         glean:db,
