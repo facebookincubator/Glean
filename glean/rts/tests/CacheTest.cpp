@@ -43,12 +43,17 @@ struct ConstantLookup : public Lookup {
     return 1;
   }
 
-  std::unique_ptr<FactIterator> seek(Pid, folly::ByteRange, size_t) override {
+  std::unique_ptr<FactIterator>
+  seek(Pid, folly::ByteRange, std::optional<Fact::Ref>) override {
     throw std::runtime_error("ConstantLookup::seek not implemented");
   }
 
-  std::unique_ptr<FactIterator>
-  seekWithinSection(Pid, folly::ByteRange, size_t, Id, Id) override {
+  std::unique_ptr<FactIterator> seekWithinSection(
+      Pid,
+      folly::ByteRange,
+      Id,
+      Id,
+      std::optional<Fact::Ref>) override {
     throw std::runtime_error(
         "ConstantLookup::seekWithinSection not implemented");
   }

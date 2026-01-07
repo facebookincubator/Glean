@@ -284,14 +284,14 @@ struct FactSet final : public Define {
   /// slow. The first call for each predicate will be especially slow as it will
   /// need to create an index.
   std::unique_ptr<FactIterator>
-  seek(Pid type, folly::ByteRange start, size_t prefix_size) override;
+  seek(Pid type, folly::ByteRange prefix, std::optional<Fact::Ref>) override;
 
   std::unique_ptr<FactIterator> seekWithinSection(
       Pid type,
-      folly::ByteRange start,
-      size_t prefix_size,
+      folly::ByteRange prefix,
       Id from,
-      Id to) override;
+      Id to,
+      std::optional<Fact::Ref>) override;
 
   UsetId getOwner(Id) override {
     return INVALID_USET;
@@ -350,6 +350,9 @@ struct FactSet final : public Define {
   /// don't do seeks on FactSets.
   struct Index;
   OnDemand<Index> index;
+
+  std::unique_ptr<FactIterator>
+  seek(Pid type, folly::ByteRange start, size_t prefix_size);
 };
 
 } // namespace rts

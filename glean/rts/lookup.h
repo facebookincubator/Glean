@@ -40,11 +40,6 @@ struct FactIterator {
   virtual std::optional<Id> lower_bound() = 0;
   virtual std::optional<Id> upper_bound() = 0;
 
-  static std::unique_ptr<FactIterator> merge(
-      std::unique_ptr<FactIterator> left,
-      std::unique_ptr<FactIterator> right,
-      size_t prefix_size);
-
   static std::unique_ptr<FactIterator> append(
       std::unique_ptr<FactIterator> left,
       std::unique_ptr<FactIterator> right);
@@ -127,23 +122,27 @@ struct Lookup {
       Id from = Id::invalid(),
       Id downto = Id::invalid()) = 0;
 
-  // Obtain a  prefix iterator for the given predicate. The iterator covers keys
-  // which begin with the first 'prefix_size' bytes of 'start', starting with
-  // the first key not lexicographically less than 'start', and produces facts
-  // in lexicographic order. In particular, setting 'prefix_size' to
-  // 'start.size()' iterates over all keys with the prefix 'start'.
-  virtual std::unique_ptr<FactIterator>
-  seek(Pid type, folly::ByteRange start, size_t prefix_size) = 0;
+  // Obtain a  prefix iterator for the given predicate. The iterator will return
+  // each key with the given prefix exactly once, in no specified order.
+  //
+  // If `restart` is non-empty, the fact must be within the iterator's
+  // range; the iterator will be positioned at the given fact.  This
+  // can be used to resume a previous iterator.
+  virtual std::unique_ptr<FactIterator> seek(
+      Pid type,
+      folly::ByteRange prefix,
+      std::optional<Fact::Ref> restart = {}) = 0;
 
   // Perform a seek on a section of the Lookup.
   // Results will have Ids within the range [from, utpto).
   // Facts can reference Ids outside of the specified range.
+  // See `seek()` for the meaning of `restart`.
   virtual std::unique_ptr<FactIterator> seekWithinSection(
       Pid type,
-      folly::ByteRange start,
-      size_t prefix_size,
+      folly::ByteRange prefix,
       Id from,
-      Id to) = 0;
+      Id to,
+      std::optional<Fact::Ref> restart = {}) = 0;
 
   virtual UsetId getOwner(Id id) = 0;
 };
@@ -183,12 +182,17 @@ struct EmptyLookup final : Lookup {
     return std::make_unique<EmptyIterator>();
   }
 
-  std::unique_ptr<FactIterator> seek(Pid, folly::ByteRange, size_t) override {
+  std::unique_ptr<FactIterator>
+  seek(Pid, folly::ByteRange, std::optional<Fact::Ref>) override {
     return std::make_unique<EmptyIterator>();
   }
 
-  std::unique_ptr<FactIterator>
-  seekWithinSection(Pid, folly::ByteRange, size_t, Id, Id) override {
+  std::unique_ptr<FactIterator> seekWithinSection(
+      Pid,
+      folly::ByteRange,
+      Id,
+      Id,
+      std::optional<Fact::Ref>) override {
     return std::make_unique<EmptyIterator>();
   }
 
@@ -239,14 +243,14 @@ struct Section : Lookup {
   std::unique_ptr<FactIterator> enumerateBack(Id from, Id downto) override;
 
   std::unique_ptr<FactIterator>
-  seek(Pid type, folly::ByteRange start, size_t prefix_size) override;
+  seek(Pid type, folly::ByteRange prefix, std::optional<Fact::Ref>) override;
 
   std::unique_ptr<FactIterator> seekWithinSection(
       Pid type,
-      folly::ByteRange start,
-      size_t prefix_size,
+      folly::ByteRange prefix,
       Id from,
-      Id to) override;
+      Id to,
+      std::optional<Fact::Ref>) override;
 
   UsetId getOwner(Id id) override {
     return isWithinBounds(id) ? base()->getOwner(id) : INVALID_USET;

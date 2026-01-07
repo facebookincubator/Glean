@@ -7,6 +7,7 @@
  */
 
 #include "glean/rts/factset.h"
+#include "glean/rts/binary.h"
 
 namespace facebook {
 namespace glean {
@@ -242,14 +243,30 @@ FactSet::seek(Pid type, folly::ByteRange start, size_t prefix_size) {
   }
 }
 
+std::unique_ptr<FactIterator> FactSet::seek(
+    Pid type,
+    folly::ByteRange prefix,
+    std::optional<Fact::Ref> restart) {
+  if (restart.has_value()) {
+    auto id = restart.value().id;
+    if (id < facts.startingId() || id >= facts.startingId() + facts.size()) {
+      error("seek: restart Id not within set");
+    }
+    auto key = facts[id - facts.startingId()].clause.key();
+    return seek(type, key, prefix.size());
+  } else {
+    return seek(type, prefix, prefix.size());
+  }
+}
+
 std::unique_ptr<FactIterator> FactSet::seekWithinSection(
     Pid type,
-    folly::ByteRange start,
-    size_t prefix_size,
+    folly::ByteRange prefix,
     Id from,
-    Id to) {
+    Id to,
+    std::optional<Fact::Ref> restart) {
   if (from <= startingId() && firstFreeId() <= to) {
-    return seek(type, start, prefix_size);
+    return seek(type, prefix, restart);
   }
 
   // We have no use case for actually performing a bounded

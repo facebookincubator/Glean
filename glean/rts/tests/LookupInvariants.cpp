@@ -182,20 +182,19 @@ void checkLookupInvariants(Lookup& lookup) {
    ***********************************************************************/
   for (const auto& p : keys) {
     const auto type = p.first;
-    auto s = p.second.begin();
-    const auto e = p.second.end();
-    for (auto iter = lookup.seek(type, {}, 0); auto ref = iter->get();
+    const auto typeFacts = p.second;
+    int num = 0;
+    for (auto iter = lookup.seek(type, {}); auto ref = iter->get();
          iter->next()) {
-      CHECK(s != e);
       CHECK_EQ(ref.type, type);
-      CHECK_EQ(ref.id, s->second.first);
-      CHECK_EQ(ref.key().str(), s->first.str());
-      CHECK_EQ(ref.value().str(), s->second.second.str());
+      const auto& factPair = typeFacts.at(ref.key());
+      CHECK(factPair.first == ref.id);
+      CHECK_EQ(ref.value().str(), factPair.second.str());
       // check that resuming seeks works
-      CHECK_EQ(lookup.seek(type, ref.key(), 0)->get().id, ref.id);
-      ++s;
+      CHECK_EQ(lookup.seek(type, {}, ref)->get().id, ref.id);
+      num++;
     }
-    CHECK(s == e);
+    CHECK_EQ(num, typeFacts.size());
   }
 
   // TODO: prefix seeks

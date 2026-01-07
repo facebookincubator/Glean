@@ -83,14 +83,16 @@ struct DatabaseImpl final : Database {
 
   std::unique_ptr<rts::FactIterator> enumerate(Id from, Id upto) override;
   std::unique_ptr<rts::FactIterator> enumerateBack(Id from, Id downto) override;
-  std::unique_ptr<rts::FactIterator>
-  seek(Pid type, folly::ByteRange start, size_t prefix_size) override;
+  std::unique_ptr<rts::FactIterator> seek(
+      Pid type,
+      folly::ByteRange prefix,
+      std::optional<rts::Fact::Ref> restart) override;
   std::unique_ptr<rts::FactIterator> seekWithinSection(
       Pid type,
-      folly::ByteRange start,
-      size_t prefix_size,
+      folly::ByteRange prefix,
       Id from,
-      Id upto) override;
+      Id upto,
+      std::optional<rts::Fact::Ref> restart) override;
 
   rts::UsetId getOwner(Id id) override;
 

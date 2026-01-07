@@ -267,12 +267,7 @@ uint64_t QueryExecutor::seek(
   auto token = iters.size();
   DVLOG(5) << "seek(" << type.toWord() << ") = " << token;
   iters.emplace_back(
-      Iter{
-          facts.seek(type, key, key.size()),
-          type,
-          Id::invalid(),
-          key.size(),
-          true});
+      Iter{facts.seek(type, key), type, Id::invalid(), key.size(), true});
   return static_cast<uint64_t>(token);
 };
 
@@ -287,7 +282,7 @@ uint64_t QueryExecutor::seekWithinSection(
   DVLOG(5) << "seekWithinSection(" << type.toWord() << ") = " << token;
   iters.emplace_back(
       Iter{
-          facts.seekWithinSection(type, key, key.size(), from, upto),
+          facts.seekWithinSection(type, key, from, upto),
           type,
           Id::invalid(),
           key.size(),
@@ -674,29 +669,29 @@ std::unique_ptr<QueryResults> restartQuery(
         serialize::get(in, lower_bound);
         serialize::get(in, upper_bound);
 
-        std::string keyBuf;
         bool found = facts.factById(id, [&](auto pid, Fact::Clause clause) {
+          Fact::Ref ref{id, pid, clause};
+          auto key = clause.key();
+          folly::ByteRange prefix{key.data(), key.data() + prefixSize};
           if (pid != type) {
             error("restart iter fact has wrong type");
           }
-          keyBuf = binary::mkString(clause.key());
+          if (lower_bound.has_value() && upper_bound.has_value()) {
+            auto from = lower_bound.value();
+            auto to = upper_bound.value();
+            iter = facts.seekWithinSection(type, prefix, from, to, ref);
+          } else {
+            iter = facts.seek(type, prefix, ref);
+          }
+          auto res = iter->get(FactIterator::KeyOnly);
+          if (!res || res.key() != key) {
+            error("restart iter didn't find a key");
+          }
+          assert(id == res.id);
         });
         if (!found) {
           error("restart iter fact not found");
         }
-        const auto key = binary::byteRange(keyBuf);
-        if (lower_bound.has_value() && upper_bound.has_value()) {
-          auto from = lower_bound.value();
-          auto to = upper_bound.value();
-          iter = facts.seekWithinSection(type, key, prefixSize, from, to);
-        } else {
-          iter = facts.seek(type, key, prefixSize);
-        }
-        auto res = iter->get(FactIterator::KeyOnly);
-        if (!res || res.key() != key) {
-          error("restart iter didn't find a key");
-        }
-        id = res.id;
         result.prefix_size = prefixSize;
         result.first = first;
       } else {
