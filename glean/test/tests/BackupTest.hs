@@ -34,6 +34,7 @@ import Glean.Database.Config
 import Glean.Database.Env
 import Glean.Database.Janitor
 import Glean.Database.Meta
+import Glean.Database.Test hiding (withTestEnv)
 import Glean.Database.Types
 import Glean.Database.Finish (finalizeWait)
 import Glean.Init
@@ -86,14 +87,15 @@ goodDbAgeDeps name hash age deps =
   TestDbSpec (Repo name hash) age (Just deps)
 
 withTestEnv
-  :: [TestDbSpec]
+  :: [Setting]
+  -> [TestDbSpec]
   -> (ServerTypes.Config -> ServerTypes.Config)
   -> (TestEnv -> IO ())
   -> EventBaseDataplane
   -> NullConfigProvider
   -> FilePath
   -> IO ()
-withTestEnv dbs init_server_cfg action evb cfgAPI backupdir = do
+withTestEnv settings dbs init_server_cfg action evb cfgAPI backupdir = do
   (server_cfg, update_server_cfg) <- ThriftSource.mutable $ init_server_cfg def
     { config_backup = def
       { databaseBackupPolicy_allowed = mempty
@@ -106,7 +108,7 @@ withTestEnv dbs init_server_cfg action evb cfgAPI backupdir = do
     , config_db_rocksdb_cache_mb = 0
     }
   (l, events) <- recorder
-  let config = def
+  let config = foldl' (\acc f -> f acc) def
         { cfgDataStore = tmpDataStore
         , cfgSchemaLocation = Just schemaLocationFiles
         , cfgServerConfig = server_cfg
@@ -114,6 +116,7 @@ withTestEnv dbs init_server_cfg action evb cfgAPI backupdir = do
         , cfgMockWrites = False
         , cfgListener = l
         }
+        settings
 
   withDatabases evb config cfgAPI $ \env -> do
     now <- getCurrentTime
@@ -155,7 +158,7 @@ makeDB TestEnv{testEnv = env} now (TestDbSpec repo age deps) = do
   void $ finishDatabase env repo
   finalizeWait env repo
 
-makeDB TestEnv{testBackup} now CloudTestDbSpec{..} =
+makeDB TestEnv{testBackup,testEnv} now CloudTestDbSpec{..} =
   withTempFileContents ("" :: String) $ \path ->
   void $ Backup.backup testBackup testDbRepo props Nothing path
   where
@@ -171,10 +174,11 @@ makeDB TestEnv{testBackup} now CloudTestDbSpec{..} =
         , metaDependencies = testDbDeps
         , metaCompletePredicates = mempty
         , metaAxiomComplete = False
+        , metaStorage = envDefaultStorage testEnv
         }
 
-basicBackupTest :: Test
-basicBackupTest = TestCase $ withTest $ withTestEnv
+basicBackupTest :: [Setting] -> Test
+basicBackupTest settings = TestCase $ withTest $ withTestEnv settings
   repos
   id
   $ \TestEnv{..} -> do
@@ -198,8 +202,8 @@ basicBackupTest = TestCase $ withTest $ withTestEnv
       , goodDb "test" "2"
       , goodDb "test" "3" ]
 
-allowedTest :: Test
-allowedTest = TestCase $ withTest $ withTestEnv
+allowedTest :: [Setting] -> Test
+allowedTest settings = TestCase $ withTest $ withTestEnv settings
   repos
   id
   $ \TestEnv{..} -> do
@@ -221,8 +225,8 @@ allowedTest = TestCase $ withTest $ withTestEnv
       , goodDb "baz" "4"
       , goodDb "bar" "5" ]
 
-restoreOrderTest :: Test
-restoreOrderTest = TestCase $ withTest $ withTestEnv
+restoreOrderTest :: [Setting] -> Test
+restoreOrderTest settings = TestCase $ withTest $ withTestEnv settings
   repos
   id
   $ \TestEnv{..} -> do
@@ -288,9 +292,9 @@ restoreOrderTest = TestCase $ withTest $ withTestEnv
       , goodDbAge "baz" "4" 3
       ]
 
-restoreNoDiskSpaceTest :: Test
-restoreNoDiskSpaceTest =
-  TestCase $ withTest $ withTestEnv repos id $ \TestEnv{..} -> do
+restoreNoDiskSpaceTest :: [Setting] -> Test
+restoreNoDiskSpaceTest settings =
+  TestCase $ withTest $ withTestEnv settings repos id $ \TestEnv{..} -> do
     testUpdConfig $ \scfg -> scfg
       { config_restore = def { databaseRestorePolicy_enabled = True }
       }
@@ -304,10 +308,18 @@ restoreNoDiskSpaceTest =
     tb :: Int64
     tb = 1000000000000
 
+backends :: ([Setting] -> Test) -> Test
+backends fn =
+  TestList [
+    TestLabel lbl (fn settings)
+    | (lbl, settings) <- allStorage
+    , lbl /= "memory" -- doesn't support ownership yet
+  ]
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
-  [ TestLabel "basicBackup" basicBackupTest
-  , TestLabel "allowedTest" allowedTest
-  , TestLabel "restoreOrderTest" restoreOrderTest
-  , TestLabel "restoreNoDiskSpace" restoreNoDiskSpaceTest
+  [ TestLabel "basicBackup" $ backends basicBackupTest
+  , TestLabel "allowedTest" $ backends allowedTest
+  , TestLabel "restoreOrderTest" $ backends restoreOrderTest
+  , TestLabel "restoreNoDiskSpace" $ backends restoreNoDiskSpaceTest
   ]

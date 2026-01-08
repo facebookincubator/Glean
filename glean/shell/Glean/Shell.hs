@@ -1296,7 +1296,10 @@ completion line@(left,_) =
 reportService :: LocalOrRemote backend => backend -> Eval ()
 reportService backend = case backendKind backend of
   BackendEnv Env{..} -> do
-    output $  "Using local DBs from " <> pretty (describe envStorage)
+    output $  "Using local DBs from " <>
+      case HashMap.elems envStorage of
+        Some s : _ -> pretty (describe s)
+        _ -> "???"
   BackendThrift thrift -> do
     case Glean.clientConfig_serv (thriftBackendClientConfig thrift) of
       Tier tier -> output $ "Using service " <> pretty tier

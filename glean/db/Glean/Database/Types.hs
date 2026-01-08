@@ -15,6 +15,10 @@ module Glean.Database.Types (
   EnableRecursion(..),
   JanitorRunResult(..), JanitorException(..),
   DebugFlags(..),
+
+  withStorageFor,
+  withDefaultStorage,
+  getStorage,
 ) where
 
 import Control.DeepSeq
@@ -24,9 +28,11 @@ import Control.Exception
 import Control.Trace (Tracer)
 import Data.ByteString (ByteString)
 import Data.HashMap.Strict (HashMap)
+import qualified Data.HashMap.Strict as HashMap
 import Data.HashSet (HashSet)
 import Data.IORef (IORef)
 import Data.Text (Text)
+import qualified Data.Text as Text
 import Data.Typeable (Typeable)
 import Data.Time
 import System.Clock
@@ -40,10 +46,12 @@ import qualified Glean.Database.Backup.Backend as Backup
 import qualified Glean.Database.BatchLocation as BatchLocation
 import Glean.Database.Catalog (Catalog)
 import Glean.Database.Config
+import Glean.Database.Exception
 import Glean.Database.Meta
 import Glean.Database.Schema.Types
-import Glean.Database.Storage (Database, Storage, describe, WriteLock(..))
+import Glean.Database.Storage (Storage, DatabaseOps, WriteLock(..))
 import Glean.Database.Trace
+import Glean.Internal.Types (StorageName(..))
 import Glean.Logger.Server (GleanServerLogger)
 import Glean.Logger.Database (GleanDatabaseLogger)
 import Glean.RTS.Foreign.FactSet (FactSet)
@@ -86,9 +94,9 @@ data Writing = Writing
   }
 
 -- An open database
-data OpenDB s = OpenDB
+data OpenDB = OpenDB
   { -- The database handle
-    odbHandle :: Database s
+    odbHandle :: Some DatabaseOps
 
     -- Write queue, caches etc. Nothing means DB is read only.
   , odbWriting :: Maybe Writing
@@ -108,12 +116,12 @@ data OpenDB s = OpenDB
   }
 
 -- State of a databases
-data DBState s
+data DBState
     -- In the process of being open
   = Opening
 
     -- Currently open
-  | Open (OpenDB s)
+  | Open OpenDB
 
     -- In the process of being closed
   | Closing
@@ -122,12 +130,12 @@ data DBState s
   | Closed
 
 -- A known database
-data DB s = DB
+data DB = DB
   { -- The repo the database refers to
     dbRepo :: Thrift.Repo
 
     -- Database state
-  , dbState :: TVar (DBState s)
+  , dbState :: TVar DBState
 
     -- Number of users
   , dbUsers :: TVar Int
@@ -218,14 +226,15 @@ data JanitorException
 
 instance Exception JanitorException
 
-data Env = forall storage. Storage storage => Env
+data Env = Env
   { envEventBase :: EventBaseDataplane
   , envServerLogger :: Some GleanServerLogger
   , envDatabaseLogger :: Some GleanDatabaseLogger
   , envBatchLocationParser :: Some BatchLocation.Parser
   , envLoggerRateLimit :: RateLimiterMap Text
   , envCatalog :: Catalog
-  , envStorage :: storage
+  , envStorage :: HashMap StorageName (Some Storage)
+  , envDefaultStorage :: StorageName
   , envSchemaSource :: Observed SchemaIndex
     -- ^ The schema source, and its parsed/resolved form are both cached here.
   , envDbSchemaCache :: MVar DbSchemaCache
@@ -235,7 +244,7 @@ data Env = forall storage. Storage storage => Env
     -- ^ Used to store the schema ID for the session when using the local backend
   , envServerConfig :: Observed ServerConfig.Config
   , envBackupBackends :: Backup.Backends
-  , envActive :: TVar (HashMap Thrift.Repo (DB storage))
+  , envActive :: TVar (HashMap Thrift.Repo DB)
   , envDeleting :: TVar (HashMap Thrift.Repo (Async ()))
   , envCompleting :: TVar (HashMap Thrift.Repo (Async ()))
   , envCompletingDerived ::
@@ -267,6 +276,30 @@ data Env = forall storage. Storage storage => Env
   , envDebug :: DebugFlags
   }
 
-instance Show Env where
-  show Env{..} = unwords [ "Glean.Database.Types.Env {",
-    "envStorage: " <> describe envStorage, "}" ]
+withStorageFor
+  :: Env
+  -> Thrift.Repo
+  -> Meta
+  -> (forall s. Storage s => s -> IO a) -> IO a
+withStorageFor env repo meta f = do
+  let name
+        | Text.null (unStorageName n) = rocksdbName -- backwards compat
+        | otherwise = n
+        where n = metaStorage meta
+  case HashMap.lookup name (envStorage env) of
+    Nothing -> dbError repo $
+      "unknown storage: " <> Text.unpack (unStorageName name)
+    Just (Some storage) -> f storage
+
+withDefaultStorage :: Env -> (forall s. Storage s => s -> IO a) -> IO a
+withDefaultStorage env = getStorage env (envDefaultStorage env)
+
+getStorage
+  :: Env
+  -> StorageName
+  -> (forall s. Storage s => s -> IO a) -> IO a
+getStorage env name f =
+  case HashMap.lookup name (envStorage env) of
+    Nothing -> throwIO $ Thrift.Exception $
+      "unknown storage: " <> unStorageName name
+    Just (Some storage) -> f storage

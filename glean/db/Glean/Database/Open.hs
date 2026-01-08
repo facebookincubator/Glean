@@ -9,7 +9,6 @@
 module Glean.Database.Open (
   usingActiveDatabase,
   withOpenDatabase, withOpenDatabaseStack, withWritableDatabase,
-  withOpenDatabaseStorage,
   readDatabase, readDatabaseWithBoundaries,
   asyncOpenDB,
   newDB, acquireDB, releaseDB,
@@ -71,25 +70,18 @@ import Glean.Types (PredicateStats(..))
 import Glean.Util.Mutex
 import qualified Glean.Util.Observed as Observed
 import Util.Time
+import Glean.Util.Some
 import qualified Glean.Util.Warden as Warden
 import qualified Glean.Write.Stats as Stats
 
 withOpenDatabase
- :: HasCallStack
- => Env
- -> Repo
- -> (forall s . Storage s => OpenDB s -> IO a)
- -> IO a
-withOpenDatabase env repo act = withOpenDatabaseStorage env repo (const act)
-
-withOpenDatabaseStorage
   :: HasCallStack
   => Env
   -> Repo
-  -> (forall s . Storage s => s -> OpenDB s -> IO a)
+  -> (OpenDB -> IO a)
   -> IO a
-withOpenDatabaseStorage env@Env{..} repo action =
-  withActiveDatabase env repo $ \storage db@DB{..} -> do
+withOpenDatabase env@Env{..} repo action =
+  withActiveDatabase env repo $ \db@DB{..} -> do
     odb <- mask $ \restore -> do
       r <- atomically $ do
         state <- readTVar dbState
@@ -114,16 +106,18 @@ withOpenDatabaseStorage env@Env{..} repo action =
       case r of
         Left odb -> return odb
         Right (version, mode) -> do
-          deps <- atomically $ metaDependencies <$>
-            Catalog.readMeta envCatalog dbRepo
+          meta <- atomically $ Catalog.readMeta envCatalog dbRepo
           let
+            deps = metaDependencies meta
             onFailure ex = atomically $ Catalog.dbFailed envCatalog dbRepo ex
           -- opening a DB has long uninterruptible sections so do it on a
           -- separate thread in case we get cancelled
-          opener <-
-            asyncOpenDB env storage db version mode deps (return ()) onFailure
-          restore $ wait opener
-    action storage odb `finally` do
+          withStorageFor env repo meta $ \storage -> do
+            opener <-
+              asyncOpenDB env storage db version mode deps (return ())
+                onFailure
+            restore $ wait opener
+    action odb `finally` do
       t <- getTimePoint
       atomically $ writeTVar (odbIdleSince odb) t
 
@@ -131,7 +125,7 @@ withOpenDatabaseStorage env@Env{..} repo action =
 withOpenDatabaseStack
   :: Env
   -> Repo
-  -> (forall s . Storage s => OpenDB s -> IO a)
+  -> (OpenDB -> IO a)
   -> IO [a]
 withOpenDatabaseStack env repo action = do
   parents <- repoParents env repo
@@ -158,10 +152,9 @@ depParent deps = case deps of
   Thrift.Dependencies_stacked Thrift.Stacked{..} -> Thrift.Repo stacked_name stacked_hash
 
 withOpenDBLookup
-  :: Storage s
-  => Env
+  :: Env
   -> Repo
-  -> OpenDB s
+  -> OpenDB
   -> (Boundaries -> Lookup -> IO a)
   -> IO a
 withOpenDBLookup env repo OpenDB{ odbBaseSlices = baseSlices, .. } f =
@@ -212,7 +205,7 @@ withWritableDatabase env repo action =
 readDatabase
   :: Env
   -> Repo
-  -> (forall s . Storage s => OpenDB s -> Lookup.Lookup -> IO a)
+  -> (OpenDB -> Lookup.Lookup -> IO a)
   -> IO a
 readDatabase env repo f =
   readDatabaseWithBoundaries env repo $ \odb _ lookup ->
@@ -221,26 +214,26 @@ readDatabase env repo f =
 readDatabaseWithBoundaries
   :: Env
   -> Repo
-  -> (forall s. Storage s => OpenDB s -> Boundaries -> Lookup -> IO a)
+  -> (OpenDB -> Boundaries -> Lookup -> IO a)
   -> IO a
 readDatabaseWithBoundaries env repo f =
   withOpenDatabase env repo $ \odb ->
   withOpenDBLookup env repo odb $ \bounds lookup ->
     f odb bounds lookup
 
-newDB :: Repo -> STM (DB s)
+newDB :: Repo -> STM DB
 newDB repo = DB repo
   <$> newTVar Closed
   <*> newTVar 0
 
-acquireDB :: DB s -> STM ()
+acquireDB :: DB -> STM ()
 acquireDB db = modifyTVar' (dbUsers db) (+1)
 
 -- | MUST be paired with 'acquireDB'
 releaseDB
   :: Catalog.Catalog
-  -> TVar (HashMap Thrift.Repo (DB storage))
-  -> DB s
+  -> TVar (HashMap Thrift.Repo DB)
+  -> DB
   -> STM ()
 releaseDB catalog active DB{..} = do
   users <- readTVar dbUsers
@@ -259,7 +252,7 @@ withActiveDatabase
   :: HasCallStack
   => Env
   -> Repo
-  -> (forall s . Storage s => s -> DB s -> IO a)
+  -> (DB -> IO a)
   -> IO a
 withActiveDatabase Env{..} repo act = bracket
   (atomically $ do
@@ -278,12 +271,12 @@ withActiveDatabase Env{..} repo act = bracket
     acquireDB db
     return db)
   (atomically . releaseDB envCatalog envActive)
-  (\db -> act envStorage db)
+  (\db -> act db)
 
 usingActiveDatabase
   :: Env
   -> Repo
-  -> (forall s. Storage s => Maybe (DB s) -> IO a)
+  -> (Maybe DB -> IO a)
   -> IO a
 usingActiveDatabase Env{..} repo = bracket
   (atomically $ do
@@ -295,7 +288,7 @@ usingActiveDatabase Env{..} repo = bracket
 withMaybeActiveDatabase
   :: Env
   -> Repo
-  -> (forall s . Storage s => Maybe (DB s) -> STM a)
+  -> (Maybe DB -> STM a)
   -> STM a
 withMaybeActiveDatabase Env{..} repo fn = do
   active <- readTVar envActive
@@ -306,7 +299,13 @@ updateLookupCacheStats env =
   Stats.bump (envStats env) Stats.lookupCacheStats
   =<< LookupCache.readStatsAndResetCounters (envLookupCacheStats env)
 
-setupSchema :: Storage s => Env -> Repo -> Database s -> Mode -> IO DbSchema
+setupSchema
+  :: DatabaseOps db
+  => Env
+  -> Repo
+  -> db
+  -> Mode
+  -> IO DbSchema
 setupSchema Env{..} _ handle (Create _ _ initial) = do
   schema <- Observed.get envSchemaSource
   dbSchema <- case initial of
@@ -471,7 +470,7 @@ asyncOpenDB
   :: Storage s
   => Env
   -> s
-  -> DB s
+  -> DB
   -> DBVersion
   -> Mode
   -> Maybe Thrift.Dependencies
@@ -480,7 +479,7 @@ asyncOpenDB
       -- 'Open'. If this fails, we will call the failure action.
   -> (SomeException -> IO ())
       -- ^ Action to run on any failure.
-  -> IO (Async (OpenDB s))
+  -> IO (Async OpenDB)
 asyncOpenDB env@Env{..} storage db@DB{..} version mode deps
     on_success on_failure =
   -- Be paranoid about 'spawnMask' itself throwing.
@@ -524,7 +523,7 @@ asyncOpenDB env@Env{..} storage db@DB{..} version mode deps
             ownership <- newTVarIO =<< Storage.getOwnership handle
             on_success
             return OpenDB
-              { odbHandle = handle
+              { odbHandle = Some handle
               , odbWriting = writing
               , odbSchema = dbSchema
               , odbIdleSince = idle

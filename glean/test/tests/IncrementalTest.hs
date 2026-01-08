@@ -82,11 +82,11 @@ incrementalDB env base inc prune = do
       } }
   return inc
 
-incrementalTest :: Test
-incrementalTest = TestCase $
+incrementalTest :: [Setting] -> Test
+incrementalTest settings = TestCase $
 
   -- build a DB with some units and a non-trivial fact graph
-  withTestEnv [] $ \env -> do
+  withTestEnv settings $ \env -> do
     let base = Repo "base" "0"
     kickOffTestDB env base id
     mkGraph env base
@@ -192,9 +192,9 @@ incrementalTest = TestCase $
     r <- edgesFrom "b"
     assertEqual "inc 6" ["a"] r
 
-stackedIncrementalTest :: Test
-stackedIncrementalTest = TestCase $
-  withTestEnv [] $ \env -> do
+stackedIncrementalTest :: [Setting] -> Test
+stackedIncrementalTest settings = TestCase $
+  withTestEnv settings $ \env -> do
     let
       deriveAndFinish :: Env -> Repo -> IO ()
       deriveAndFinish env repo = do
@@ -425,9 +425,9 @@ stackedIncrementalTest = TestCase $
       _ -> assertFailure "query failed"
 
 
-stackedIncrementalTest2 :: Test
-stackedIncrementalTest2 = TestCase $
-  withTestEnv [] $ \env -> do
+stackedIncrementalTest2 :: [Setting] -> Test
+stackedIncrementalTest2 settings = TestCase $
+  withTestEnv settings $ \env -> do
     let
       deriveAndFinish :: Env -> Repo -> IO ()
       deriveAndFinish env repo = do
@@ -534,9 +534,9 @@ stackedIncrementalTest2 = TestCase $
     pairsAre "1p" inc3 [("c","d"),("d","c")]
 
 -- tickled a bug in the storage of ownership information
-dupSetTest :: Test
-dupSetTest = TestCase $
-  withTestEnv [] $ \env -> do
+dupSetTest :: [Setting] -> Test
+dupSetTest settings = TestCase $
+  withTestEnv settings $ \env -> do
     let base = Repo "base" "0"
     kickOffTestDB env base id
     writeFactsIntoDB env base [ Glean.Test.allPredicates ] $ do
@@ -557,9 +557,9 @@ dupSetTest = TestCase $
       predicate @Glean.Test.Node wild
     assertEqual "dupSetTest" 2 (length results)
 
-orphanTest :: Test
-orphanTest = TestCase $
-  withTestEnv [] $ \env -> do
+orphanTest :: [Setting] -> Test
+orphanTest settings = TestCase $
+  withTestEnv settings $ \env -> do
     let base = Repo "base" "0"
     kickOffTestDB env base id
     writeFactsIntoDB env base [ Glean.Test.allPredicates ] $ do
@@ -607,8 +607,8 @@ orphanTest = TestCase $
         (rec $ field @"child" (rec $ field @"label" (string "d") end) end)
     assertEqual "orphan 3" 1 (length results)
 
-externalDerivationTest :: Test
-externalDerivationTest = TestList
+externalDerivationTest :: [Setting] -> Test
+externalDerivationTest settings = TestList
   [ TestLabel "add fact with dependencies" $ TestCase $
     withDB $ \env repo -> do
       writeFactsIntoDB env repo [ Glean.Test.allPredicates ] $ do
@@ -669,7 +669,7 @@ externalDerivationTest = TestList
     traverse (factOwnership env repo) fids
 
   withDB act =
-    withTestEnv [setCompactOnCompletion] $ \env -> do
+    withTestEnv (settings <> [setCompactOnCompletion]) $ \env -> do
       let repo = Repo "base" "0"
       kickOffTestDB env repo id
       writeFactsIntoDB env repo [ Glean.Test.allPredicates ] $ do
@@ -680,9 +680,9 @@ externalDerivationTest = TestList
       void $ completePredicates env repo $ CompletePredicates_axiom def
       act env repo
 
-deriveTest :: Test
-deriveTest = TestCase $
-  withTestEnv [setCompactOnCompletion] $ \env -> do
+deriveTest :: [Setting] -> Test
+deriveTest settings = TestCase $
+  withTestEnv (settings <> [setCompactOnCompletion]) $ \env -> do
     let base = Repo "base" "0"
     kickOffTestDB env base id
     mkGraph env base
@@ -756,9 +756,9 @@ deriveTest = TestCase $
       predicate @Glean.Test.SkipRevEdge wild
     assertEqual "derived 6" 1 (length results)
 
-restartIndexing :: Test
-restartIndexing = TestCase $
-  withTestEnv [] $ \env -> do
+restartIndexing :: [Setting] -> Test
+restartIndexing settings = TestCase $
+  withTestEnv settings $ \env -> do
     let repo = Repo "base" "0"
     kickOffTestDB env repo id
     writeFactsIntoDB env repo [ Glean.Test.allPredicates ] $ do
@@ -790,14 +790,22 @@ main = do
       putStrLn "Incremental Glean not supported on non-x86_64 (see ownership.{h/cpp})"
       exitWith (ExitFailure 1)
 
+backends :: ([Setting] -> Test) -> Test
+backends fn =
+  TestList [
+    TestLabel lbl (fn settings)
+    | (lbl, settings) <- allStorage
+    , lbl /= "memory" -- doesn't support ownership yet
+  ]
+
 main_ :: IO ()
 main_ = withUnitTest $ testRunner $ TestList
-  [ TestLabel "incrementalTest" incrementalTest
-  , TestLabel "dupSetTest" dupSetTest
-  , TestLabel "orphanTest" orphanTest
-  , TestLabel "deriveTest" deriveTest
-  , TestLabel "externalDerivationTest" externalDerivationTest
-  , TestLabel "stackedIncrementalTest" stackedIncrementalTest
-  , TestLabel "stackedIncrementalTest2" stackedIncrementalTest2
-  , TestLabel "restartIndexing" restartIndexing
+  [ TestLabel "incrementalTest" $ backends incrementalTest
+  , TestLabel "dupSetTest" $ backends dupSetTest
+  , TestLabel "orphanTest" $ backends orphanTest
+  , TestLabel "deriveTest" $ backends deriveTest
+  , TestLabel "externalDerivationTest" $ backends externalDerivationTest
+  , TestLabel "stackedIncrementalTest" $ backends stackedIncrementalTest
+  , TestLabel "stackedIncrementalTest2" $ backends stackedIncrementalTest2
+  , TestLabel "restartIndexing" $ backends restartIndexing
   ]

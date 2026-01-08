@@ -39,7 +39,7 @@ closeDatabases env@Env{..} = do
   dbs <- readTVarIO envActive
   forM_ (HashMap.keys dbs) $ closeDatabase env
 
-isIdle :: (TimePoint -> Bool) -> DB s -> OpenDB s -> STM Bool
+isIdle :: (TimePoint -> Bool) -> DB -> OpenDB -> STM Bool
 isIdle long_enough db odb = and <$> sequence
   [ (== 1) <$> readTVar (dbUsers db)  -- we are the only user
   , long_enough <$> readTVar (odbIdleSince odb)
@@ -52,7 +52,7 @@ isIdle long_enough db odb = and <$> sequence
   ]
 
 closeIf
-  :: (forall s . DB s -> DBState s -> STM (Maybe (OpenDB s)))
+  :: (DB -> DBState -> STM (Maybe OpenDB))
   -> Env
   -> Repo
   -> IO ()
@@ -132,7 +132,7 @@ exportOpenDBStats Env{..} = do
   forM_ (HashMap.toList repoOpenCounts) $ \(repoNm,count) -> do
     setCounter ("glean.db." <> Text.encodeUtf8 repoNm <> ".open") count
 
-closeOpenDB :: Storage.Storage s => Env -> OpenDB s -> IO ()
+closeOpenDB :: Env -> OpenDB -> IO ()
 closeOpenDB env OpenDB{..} = do
   case odbWriting of
     Just Writing{..} -> do

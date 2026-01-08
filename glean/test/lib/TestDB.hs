@@ -20,7 +20,6 @@ import Test.HUnit
 
 import Util.IO
 
-import Glean.Database.Storage (DBVersion(..), currentVersion, writableVersions)
 import Glean.Database.Test
 import Glean.Database.Types
 import Glean.Backend.Types as Backend
@@ -81,13 +80,7 @@ toTestCases testCases action = TestList
 dbFlavours :: [Setting] -> [(String, RunTest)]
 dbFlavours testCaseSettings =
   [ (label1 ++ label2, run)
-    | (label2, settings) <-
-        [ ("memory", [setMemoryStorage])
-        , ("rocksdb", [])
-        ]
-        ++
-        [ ("rocksdb-" ++ show (unDBVersion v), [setDBVersion v])
-          | v <- writableVersions, v /= currentVersion ]
+    | (label2, settings) <- allStorage
     , let allSettings = settings <> testCaseSettings
     , (label1, run) <-
         [ ("", RunTest (withWritableTestDB allSettings))

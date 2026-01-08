@@ -60,6 +60,7 @@ import Glean.Database.Open
 import Glean.Database.Trace
 import Glean.Database.Types
 import Glean.Database.Schema
+import Glean.Database.Storage
 import Glean.Logger
 import Glean.RTS.Foreign.Ownership (getOwnershipStats, showOwnershipStats)
 import Glean.ServerConfig.Types (DatabaseBackupPolicy(..))
@@ -241,7 +242,7 @@ doBackup env@Env{..} repo prefix site =
           hasExcludeProperty repo (metaProperties meta) config_retention
     atomically $ notify envListener $ BackupStarted repo
     say logInfo "starting"
-    withOpenDatabaseStorage env repo $ \_storage OpenDB{..} -> do
+    withOpenDatabase env repo $ \OpenDB{..} -> do
     say logInfo "packing"
     stats <- mapMaybe
       (\(pid,stats) -> (,stats) . predicateRef <$> lookupPid pid odbSchema)
@@ -249,8 +250,9 @@ doBackup env@Env{..} repo prefix site =
     ownershipStats <- do
       maybeOwnership <- readTVarIO odbOwnership
       mapM getOwnershipStats maybeOwnership
+    withStorageFor env repo meta $ \storage -> do
 
-    Backend.Data{..} <- withScratchDirectory envStorage repo $ \scratch ->
+    Backend.Data{..} <- withScratchDirectory storage repo $ \scratch ->
       Storage.backup odbHandle scratch $ \path Data{dataSize} -> do
         say logInfo "uploading"
         let policy = ServerConfig.databaseBackupPolicy_repos config_backup
@@ -313,7 +315,8 @@ doRestore env@Env{..} repo meta
             case config_restore_timeout of
               Just seconds -> void . timeout (fromIntegral seconds * 1000000)
               Nothing -> id
-      maybeTimeout $ restore site size `catch` handler
+      withStorageFor env repo meta $ \storage ->
+        maybeTimeout $ restore site storage size `catch` handler storage
 
       -- NOTE: No point in adding the repo to the sinbin if there was
       -- an exception, the handler removed it from the list of known DBs
@@ -330,10 +333,10 @@ doRestore env@Env{..} repo meta
   where
   say log s = log $ inRepo repo $ "restore: " ++ s
 
-  restore :: Site s => s -> Maybe Int64 -> IO ()
-  restore site bytes = traceMsg envTracer (GleanTraceDownload repo) $ do
+  restore :: (Storage st, Site s) => s -> st -> Maybe Int64 -> IO ()
+  restore site storage bytes = traceMsg envTracer (GleanTraceDownload repo) $ do
     atomically $ notify envListener $ RestoreStarted repo
-    mbFreeBytes <- (Just <$> Storage.getFreeCapacity envStorage)
+    mbFreeBytes <- (Just <$> Storage.getFreeCapacity storage)
                   `catch` \(_ :: IOException) -> return Nothing
     case (mbFreeBytes, bytes)  of
       (Just freeBytes, Just size) -> do
@@ -345,7 +348,7 @@ doRestore env@Env{..} repo meta
               neededBytes freeBytes
       _ -> return ()
 
-    withScratchDirectory envStorage repo $ \scratch -> do
+    withScratchDirectory storage repo $ \scratch -> do
     say logInfo "starting"
     say logInfo "downloading"
     let scratch_restore = scratch </> "restore"
@@ -356,14 +359,15 @@ doRestore env@Env{..} repo meta
     say logInfo "restoring"
     createDirectoryIfMissing True scratch_restore
     traceMsg envTracer GleanTraceStorageRestore $
-      Storage.restore envStorage repo scratch_restore scratch_file
+      Storage.restore storage repo scratch_restore scratch_file
     say logInfo "adding"
     traceMsg envTracer GleanTraceFinishRestore $
       Catalog.finishRestoring envCatalog repo
     atomically $ notify envListener $ RestoreFinished repo
     say logInfo "finished"
 
-  handler exc = do
+  handler :: Storage s => s -> SomeException -> IO ()
+  handler storage exc = do
     failed <- atomically $ do
       failed <- Catalog.exists envCatalog [Restoring] repo
       when failed $ do
@@ -372,7 +376,7 @@ doRestore env@Env{..} repo meta
       return failed
     when failed $ do
       say logError $ "failed: " ++ show exc
-      swallow $ Storage.safeRemoveForcibly envStorage repo
+      swallow $ Storage.safeRemoveForcibly storage repo
     rethrowAsync exc
 
 

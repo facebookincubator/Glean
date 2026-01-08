@@ -115,29 +115,28 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
       handle
         (\Catalog.EntryAlreadyExists{} ->
             return $ Thrift.KickOffResponse True) $
-        mask $ \unmask ->
+        mask $ \unmask -> do
         -- FIXME: There is a tiny race here where we might fail in a weird way
         -- if kick off a DB that is being deleted after it got removed from
         -- the Catalog but before it got removed from the storage. The entire
         -- concept of deleting DBs will change with the new metadata handling so
         -- it's not worth fixing at this point, especially since we aren't
         -- supposed to be kicking off DBs we've previously deleted.
+        let meta = newMeta envDefaultStorage version time
+                     (Incomplete def) allProps
+                     (lightDeps kickOff_dependencies')
         bracket_
-          (Catalog.create
-            envCatalog
-            kickOff_repo
-            (newMeta version time (Incomplete def) allProps
-              (lightDeps kickOff_dependencies')) $ do
-                modifyTVar' envActive $ HashMap.insert kickOff_repo db
-                writeTVar (dbState db) Opening
-                acquireDB db)
+          (Catalog.create envCatalog kickOff_repo meta $ do
+             modifyTVar' envActive $ HashMap.insert kickOff_repo db
+             writeTVar (dbState db) Opening
+             acquireDB db)
           (atomically $ releaseDB envCatalog envActive db) $
-          do
+            withStorageFor env kickOff_repo meta $ \storage -> do
             -- Open the new db in Create mode which will create the
             -- physical storage. This might fail - in that case, we
             -- mark the db as failed. NB. pass the full dependencies
             -- here, not lightDeps.
-            opener <- asyncOpenDB env envStorage db version mode
+            opener <- asyncOpenDB env storage db version mode
                 kickOff_dependencies'
               (do
                 logInfo $ inRepo kickOff_repo "created")
