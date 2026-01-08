@@ -1897,6 +1897,7 @@ library bench-lib
         BenchDB
     build-depends:
         glean:backend-api,
+        glean:bench-util,
         glean:client-hs,
         glean:core,
         glean:db,

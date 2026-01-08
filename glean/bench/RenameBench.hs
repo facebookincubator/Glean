@@ -22,7 +22,7 @@ import Glean.Util.Benchmark
 import TestBatch
 
 main :: IO ()
-main = benchmarkMain $ \run ->
+main = benchmarkMain $ \_conf run ->
   withEmptyTestDB [] $ \env repo -> do
   schema <- loadDbSchema env repo
   batch <- testBatch 500000 env repo

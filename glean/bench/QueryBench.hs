@@ -29,7 +29,8 @@ import Glean.Util.Benchmark
 import BenchDB
 
 main :: IO ()
-main = benchmarkMain $ \run -> withBenchDB 10000 $ \env repo -> do
+main = benchmarkMain $ \conf run ->
+  withBenchDB conf 10000 $ \env repo -> do
   let
     nestedAngle :: Query Cxx.FunctionName
     nestedAngle = angle "cxx1.FunctionName { name = \"x1\" }"
