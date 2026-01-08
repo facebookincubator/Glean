@@ -22,6 +22,7 @@ module Glean.Database.Test
   , setMaxSetSize
   , enableTcDebug
   , enableQueryDebug
+  , enableRocksDBCache
   , withTestEnv
   , kickOffTestDB
   , waitUntilComplete
@@ -119,6 +120,13 @@ enableTcDebug cfg = cfg
 enableQueryDebug :: Setting
 enableQueryDebug cfg = cfg
   { cfgDebug = (cfgDebug cfg) { queryDebug = True } }
+
+enableRocksDBCache :: Setting
+enableRocksDBCache cfg = cfg
+  { cfgServerConfig = (cfgServerConfig cfg) <&> \scfg -> scfg
+      { ServerConfig.config_db_rocksdb_cache_mb =
+        ServerConfig.config_db_rocksdb_cache_mb def }
+  }
 
 withTestEnv
   :: [Setting]
