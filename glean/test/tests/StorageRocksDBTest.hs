@@ -17,6 +17,7 @@ import Glean.Database.Storage (Storage(..))
 import qualified Glean.Database.Storage.RocksDB as RocksDB
 import qualified Glean.ServerConfig.Types as ServerConfig
 import TestRunner
+import Glean.Impl.MemoryReader
 import Glean.Init
 import Glean.Util.Disk (getDiskSize)
 
@@ -42,8 +43,9 @@ testDiskLimitWithRatio =
               Just 20
           }
     storage <- RocksDB.newStorage tmpDir config
+    mem <- totalMemCapacityKB -- Nothing if unsupported
     assertBool "Disk limit exist" $
-      isJust (RocksDB.rocksMaxDiskSize storage)
+      isNothing mem || isJust (RocksDB.rocksMaxDiskSize storage)
 
 testGetTotalCapacity :: Test
 testGetTotalCapacity =
@@ -90,9 +92,12 @@ testCacheWithRatioAndCacheMb =
           }
     storage <- RocksDB.newStorage tmpDir config
     capacity <- RocksDB.getCacheCapacity storage
+    mem <- totalMemCapacityKB -- Nothing if unsupported
     assertBool
-      "Cache capacity should be greater than 100MB (cache_mb is ignored)"
-        (capacity > 100 * 1024 * 1024)
+      "Cache capacity should be greater than 100MB (cache_mb is ignored)" $
+        case mem of
+          Nothing -> capacity == 100 * 1024 * 1024
+          Just{} -> capacity > 100 * 1024 * 1024
 
 testCacheWithOnlyCacheMb :: Test
 testCacheWithOnlyCacheMb =

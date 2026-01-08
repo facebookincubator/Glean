@@ -89,7 +89,7 @@ cacheSize :: ServerConfig.Config -> Maybe Int ->  Int
 cacheSize ServerConfig.Config{..} memCapacityKB =
   case (memCapacityKB, config_db_rocksdb_cache_to_mem_ratio) of
     (Just ramKB, Just ratio) -> round $ fromIntegral ramKB * ratio * 1024
-    _ -> fromIntegral (config_db_rocksdb_cache_mb * 1024 * 1024)
+    _ -> fromIntegral config_db_rocksdb_cache_mb * 1024 * 1024
 
 newStorage :: FilePath -> ServerConfig.Config -> IO RocksDB
 newStorage root config@ServerConfig.Config{..} = do

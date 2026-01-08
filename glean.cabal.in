@@ -2344,6 +2344,17 @@ test-suite glass-range
         glean:test-lib,
         glean:test-unit,
 
+test-suite storage-rocksdb
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: StorageRocksDBTest.hs
+    ghc-options: -main-is StorageRocksDBTest
+    build-depends:
+        glean:config,
+        glean:db,
+        glean:stubs,
+        glean:util,
+
 ------------------------------------------------------------------------
 -- Regression tests for schemas, indexers and systems
 --
