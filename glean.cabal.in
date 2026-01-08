@@ -422,6 +422,22 @@ library rocksdb
         glean:storage,
         glean:rts,
 
+library lmdb
+    import: fb-haskell, fb-cpp, deps, folly
+    visibility: private
+    CXX_LIB_glean_cpp_lmdb
+    include-dirs: .
+    install-includes:
+        glean/lmdb/container-impl.h
+        glean/lmdb/database-impl.h
+        glean/lmdb/ffi.h
+        glean/lmdb/glean_lmdb.h
+        glean/lmdb/util.h
+    pkgconfig-depends: fmt
+    build-depends:
+        glean:storage,
+        glean:rts,
+
 library util
     import: fb-haskell, fb-cpp, deps, thrift-client
     visibility: public
@@ -606,6 +622,7 @@ library db
         Glean.Database.Storage.Memory
         Glean.Database.Storage.DB
         Glean.Database.Storage.RocksDB
+        Glean.Database.Storage.LMDB
         Glean.Database.Trace
         Glean.Database.Types
         Glean.Database.Validate
@@ -660,6 +677,7 @@ library db
         glean:rts,
         glean:stubs,
         glean:rocksdb,
+        glean:lmdb,
 
 -- Backend API, and a few things built on top
 library backend-api

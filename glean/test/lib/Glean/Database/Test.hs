@@ -15,6 +15,7 @@ module Glean.Database.Test
   , setSchemaId
   , disableStrictSchemaId
   , setMemoryStorage
+  , setLMDBStorage
   , allStorage
   , setDBVersion
   , setCompactOnCompletion
@@ -81,10 +82,15 @@ disableStrictSchemaId cfg = cfg {
 setMemoryStorage :: Setting
 setMemoryStorage cfg = cfg{ cfgDataStore = memoryDataStore }
 
+setLMDBStorage :: Setting
+setLMDBStorage cfg =
+  cfg{ cfgDataStore = tmpDataStore { defaultStorage = lmdbName }}
+
 allStorage :: [(String, [Setting])]
 allStorage =
   [
     ("rocksdb", []),
+    ("lmdb", [setLMDBStorage]),
     ("memory", [setMemoryStorage])
   ]
   ++
