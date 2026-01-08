@@ -46,15 +46,18 @@ CXX_SOURCES_glean_cpp_rts = \
     glean/rts/validate.cpp
 CXX_FLAGS_glean_cpp_rts = -DOSS=1
 
-CXX_SOURCES_glean_cpp_rocksdb_stats = \
-    glean/rocksdb/stats.cpp
+CXX_SOURCES_glean_cpp_storage = \
+    glean/storage/ffi.cpp \
+    glean/storage/stats.cpp
+
+CXX_FLAGS_glean_cpp_storage = -DOSS=1
 
 CXX_SOURCES_glean_cpp_rocksdb = \
     glean/rocksdb/container-impl.cpp \
     glean/rocksdb/database-impl.cpp \
-    glean/rocksdb/ownership.cpp \
     glean/rocksdb/ffi.cpp \
     glean/rocksdb/rocksdb.cpp
+
 # -fno-rtti is needed because RocksDB is compiled with it, and we
 # get linker errors for references to missing typeinfo symbols if
 # we don't.

@@ -63,7 +63,7 @@ DatabaseImpl::DatabaseImpl(
     Id start,
     UsetId first_unit_id_,
     int64_t version)
-    : container_(std::move(c)) {
+    : DatabaseCommon<ContainerImpl>(std::move(c)) {
   starting_id = Id::fromWord(initAdminValue(
       container_,
       AdminId::STARTING_ID,
@@ -537,6 +537,62 @@ void DatabaseImpl::commit(rts::FactSet& facts) {
   next_id = first_free_id;
 
   stats_.set(std::move(new_stats));
+}
+
+rts::OwnershipStats DatabaseImpl::getOwnershipStats() {
+  rocksdb::Range range(toSlice(""), toSlice("\xff"));
+  uint64_t units_size, unit_ids_size, sets_size, owners_size, num_owners,
+      owner_pages_size, num_owner_pages;
+  auto& db = container_.db;
+  rocksdb::FlushOptions opts;
+  db->Flush(
+      opts,
+      {container_.family(Family::ownershipUnits),
+       container_.family(Family::ownershipUnitIds),
+       container_.family(Family::ownershipSets),
+       container_.family(Family::factOwners),
+       container_.family(Family::factOwnerPages)});
+  check(db->GetApproximateSizes(
+      container_.family(Family::ownershipUnits),
+      &range,
+      1,
+      &units_size));
+  check(db->GetApproximateSizes(
+      container_.family(Family::ownershipUnitIds),
+      &range,
+      1,
+      &unit_ids_size));
+  check(db->GetApproximateSizes(
+      container_.family(Family::ownershipSets), &range, 1, &sets_size));
+  db->GetIntProperty(
+      container_.family(Family::factOwners),
+      "rocksdb.estimate-num-keys",
+      &num_owners);
+  check(db->GetApproximateSizes(
+      container_.family(Family::factOwners), &range, 1, &owners_size));
+  db->GetIntProperty(
+      container_.family(Family::factOwnerPages),
+      "rocksdb.estimate-num-keys",
+      &num_owner_pages);
+  check(db->GetApproximateSizes(
+      container_.family(Family::factOwnerPages),
+      &range,
+      1,
+      &owner_pages_size));
+
+  OwnershipStats stats;
+  stats.num_units = nextUnitId() - first_unit_id; // accurate
+  stats.units_size = units_size + unit_ids_size; // estimate
+  stats.num_sets = next_uset_id - stats.num_units; // accurate
+  stats.sets_size = sets_size; // estimate
+  stats.num_owner_entries = num_owners + num_owner_pages; // estimate
+  stats.owners_size = owners_size + owner_pages_size; // estimate
+
+  auto orphans =
+      readAdminValue<int64_t>(container_, AdminId::ORPHAN_FACTS);
+  stats.num_orphan_facts = orphans ? *orphans : -1;
+
+  return stats;
 }
 
 } // namespace impl
