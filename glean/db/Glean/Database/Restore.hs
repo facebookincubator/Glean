@@ -13,6 +13,7 @@ module Glean.Database.Restore (
 ) where
 
 import Control.Exception hiding(handle)
+import Data.Maybe
 import qualified Data.Set as Set
 import Data.Text (Text)
 
@@ -20,6 +21,7 @@ import Util.STM
 
 import qualified Glean.Database.Backup.Backend as Backup
 import qualified Glean.Database.Backup.Locator as Backup
+import Glean.Database.Meta
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Types
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -66,7 +68,7 @@ restoreDatabase :: Env -> Text -> IO ()
 restoreDatabase env loc
   | Just (_, site, repo) <-
       Backup.fromRepoLocator (envBackupBackends env) loc =
-        atomically =<< restoreDatabaseFromSite env site repo
+        atomically =<< restoreDatabaseFromSite env site repo loc
   | otherwise = throwIO $
       Thrift.InvalidLocator $ "invalid locator '" <> loc <>  "'"
 
@@ -75,7 +77,15 @@ restoreDatabaseFromSite
   => Env
   -> site
   -> Repo
+  -> Text
   -> IO (STM ())
-restoreDatabaseFromSite Env{..} site repo = do
+restoreDatabaseFromSite Env{..} site repo loc = do
   props <- Backup.inspect site repo
-  return $ Catalog.startRestoring envCatalog repo props
+  -- doRestore expects to find the location in metaBackup, but
+  -- Backup.inspect is not required to populate this so we fill it
+  -- in if it's missing.
+  let props'
+        | isNothing (metaBackup props) =
+            props { metaBackup = Just loc }
+        | otherwise = props
+  return $ Catalog.startRestoring envCatalog repo props'
