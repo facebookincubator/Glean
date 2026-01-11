@@ -117,4 +117,4 @@ instance DatabaseOps (Database Memory) where
   prepareFactOwnerCache _ = return ()
 
   -- TODO
-  backup db _ _ = dbError (dbRepo db) "unimplemented 'backup'"
+  backup db _ _ _ = dbError (dbRepo db) "unimplemented 'backup'"

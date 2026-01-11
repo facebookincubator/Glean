@@ -236,7 +236,7 @@ doBackup env@Env{..} repo prefix site =
   say log s = log $ inRepo repo $ "backup: " ++ s
 
   backup = loggingAction (runLogRepo "backup" env repo) (const mempty) $ do
-    ServerConfig.Config{..} <- Observed.get envServerConfig
+    cfg@ServerConfig.Config{..} <- Observed.get envServerConfig
     meta <- atomically $ Catalog.readMeta envCatalog repo
     let excluded =
           hasExcludeProperty repo (metaProperties meta) config_retention
@@ -253,7 +253,7 @@ doBackup env@Env{..} repo prefix site =
     withStorageFor env repo meta $ \storage -> do
 
     Backend.Data{..} <- withScratchDirectory storage repo $ \scratch ->
-      Storage.backup odbHandle scratch $ \path Data{dataSize} -> do
+      Storage.backup odbHandle cfg scratch $ \path Data{dataSize} -> do
         say logInfo "uploading"
         let policy = ServerConfig.databaseBackupPolicy_repos config_backup
             ttl = case Map.lookup (repo_name repo) policy of
