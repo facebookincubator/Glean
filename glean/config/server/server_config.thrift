@@ -320,6 +320,10 @@ struct Config {
   // How much of total memory capacity to use for rocksdb cache.
   // Overrides db_rocksdb_cache_mb if set.
   38: optional float db_rocksdb_cache_to_mem_ratio;
+
+  // Args to pass to mksquashfs when creating a backup of an LMDB
+  39: list<string> db_lmdb_mksquashfs_args =
+    [ "-comp", "zstd", "-Xcompression-level", "8" ];
 }
 
 // The following were automatically generated and may benefit from renaming.
