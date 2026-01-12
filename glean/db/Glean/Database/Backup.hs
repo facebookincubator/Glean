@@ -310,13 +310,13 @@ doRestore env@Env{..} repo meta
   , Just (_, Some site, r_repo) <- fromRepoLocator envBackupBackends loc
   , r_repo == repo =
     loggingAction (runLogRepo "restore" env repo) (const mempty) $ do
-      ServerConfig.Config{..} <- Observed.get envServerConfig
+      cfg@ServerConfig.Config{..} <- Observed.get envServerConfig
       let maybeTimeout =
             case config_restore_timeout of
               Just seconds -> void . timeout (fromIntegral seconds * 1000000)
               Nothing -> id
       withStorageFor env repo meta $ \storage ->
-        maybeTimeout $ restore site storage size `catch` handler storage
+        maybeTimeout $ restore site storage cfg size `catch` handler storage
 
       -- NOTE: No point in adding the repo to the sinbin if there was
       -- an exception, the handler removed it from the list of known DBs
@@ -333,8 +333,15 @@ doRestore env@Env{..} repo meta
   where
   say log s = log $ inRepo repo $ "restore: " ++ s
 
-  restore :: (Storage st, Site s) => s -> st -> Maybe Int64 -> IO ()
-  restore site storage bytes = traceMsg envTracer (GleanTraceDownload repo) $ do
+  restore
+    :: (Storage st, Site s)
+    => s
+    -> st
+    -> ServerConfig.Config
+    -> Maybe Int64
+    -> IO ()
+  restore site storage cfg bytes =
+      traceMsg envTracer (GleanTraceDownload repo) $ do
     atomically $ notify envListener $ RestoreStarted repo
     mbFreeBytes <- (Just <$> Storage.getFreeCapacity storage)
                   `catch` \(_ :: IOException) -> return Nothing
@@ -359,7 +366,7 @@ doRestore env@Env{..} repo meta
     say logInfo "restoring"
     createDirectoryIfMissing True scratch_restore
     traceMsg envTracer GleanTraceStorageRestore $
-      Storage.restore storage repo scratch_restore scratch_file
+      Storage.restore storage cfg repo scratch_restore scratch_file
     say logInfo "adding"
     traceMsg envTracer GleanTraceFinishRestore $
       Catalog.finishRestoring envCatalog repo

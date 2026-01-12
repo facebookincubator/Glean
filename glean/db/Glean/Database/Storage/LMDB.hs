@@ -12,6 +12,7 @@ module Glean.Database.Storage.LMDB
   ) where
 
 import Control.Exception
+import Control.Monad
 import Data.Int
 import qualified Data.Text as Text
 import Foreign.C.String
@@ -60,15 +61,25 @@ newStorage root ServerConfig.Config{..} = do
         Nothing -> Nothing
     }
 
-newtype instance Database LMDB = Database DB
-  deriving (CanLookup)
+data instance Database LMDB = Database DB LMDB
+
+instance CanLookup (Database LMDB) where
+  withLookup (Database db _) = withLookup db
+  lookupName (Database db _) = lookupName db
 
 instance Storage LMDB where
   describe db = "lmdb:" <> lmdbRoot db
 
   open lmdb repo mode (DBVersion version) = do
     (cmode, start, ownership) <- case mode of
-      ReadOnly -> return (0, invalidFid, Nothing)
+      ReadOnly -> do
+        exists <- doesDirectoryExist (path </> "data.mdb")
+        when (not exists) $ do
+          haveSquash <- doesFileExist squash
+          when haveSquash $ do
+            createDirectoryIfMissing True path
+            callProcess "squashfuse_ll" [squash, path]
+        return (0, invalidFid, Nothing)
       ReadWrite -> return (1, invalidFid, Nothing)
       Create start ownership _ -> do
         createDirectoryIfMissing True path
@@ -82,9 +93,10 @@ instance Storage LMDB where
           glean_lmdb_container_open_database container start
             first_unit_id version
         newForeignPtr glean_rocksdb_database_free p
-      return (Database (DB (castForeignPtr fp) repo))
+      return (Database (DB (castForeignPtr fp) repo) lmdb)
     where
       path = containerPath lmdb repo
+      squash = path <.> "squashfs"
 
   delete lmdb = safeRemovePathForcibly . containerPath lmdb
 
@@ -116,39 +128,49 @@ instance Storage LMDB where
 
   withScratchRoot rocks f = f $ lmdbRoot rocks </> ".scratch"
 
-  restore lmdb repo scratch scratch_file = do
+  restore lmdb cfg repo scratch scratch_file = do
     withTempDirectory scratch "restore" $ \scratch_restore -> do
-      let db = scratch_restore </> "db"
-      createDirectoryIfMissing True db
-      callProcess "unsquashfs" ["-d", db, scratch_file ]
-        -- to avoid retaining an extra copy of the DB during restore,
-        -- delete the input file now.
       let target = containerPath lmdb repo
       createDirectoryIfMissing True $ takeDirectory target
-      renameDirectory db target
+      if ServerConfig.config_db_lmdb_restore_unpack cfg
+        then do
+          let db = scratch_restore </> "db"
+          createDirectoryIfMissing True db
+          callProcess "unsquashfs" ["-d", db, scratch_file ]
+            -- to avoid retaining an extra copy of the DB during restore,
+            -- delete the input file now.
+          renameDirectory db target
+        else
+          renameFile scratch_file (target <.> "squashfs")
 
 containerPath :: LMDB -> Repo -> FilePath
 containerPath LMDB{..} repo = databasePath lmdbRoot repo </> "db"
 
 instance DatabaseOps (Database LMDB) where
-  close (Database db) = close db
-  predicateStats (Database db) = predicateStats db
-  store (Database db) = store db
-  retrieve (Database db) = retrieve db
-  commit (Database db) = commit db
-  addOwnership (Database db) = addOwnership db
-  optimize (Database db) = optimize db
-  computeOwnership (Database db) = computeOwnership db
-  storeOwnership (Database db) = storeOwnership db
-  getOwnership (Database db) = getOwnership db
-  getUnitId (Database db) = getUnitId db
-  getUnit (Database db) = getUnit db
-  addDefineOwnership (Database db) = addDefineOwnership db
-  computeDerivedOwnership (Database db) = computeDerivedOwnership db
-  cacheOwnership (Database db) = cacheOwnership db
-  prepareFactOwnerCache (Database db) = prepareFactOwnerCache db
+  close (Database db@(DB _ repo) lmdb) = do
+    close db
+    let path = containerPath lmdb repo; squash = path <.> "squashfs"
+    haveSquash <- doesFileExist squash
+    when haveSquash $ callProcess "umount" [path]
+      `catch` \(_ :: IOException) -> return ()
 
-  backup (Database db) cfg scratch process =
+  predicateStats (Database db _) = predicateStats db
+  store (Database db _) = store db
+  retrieve (Database db _) = retrieve db
+  commit (Database db _) = commit db
+  addOwnership (Database db _) = addOwnership db
+  optimize (Database db _) = optimize db
+  computeOwnership (Database db _) = computeOwnership db
+  storeOwnership (Database db _) = storeOwnership db
+  getOwnership (Database db _) = getOwnership db
+  getUnitId (Database db _) = getUnitId db
+  getUnit (Database db _) = getUnit db
+  addDefineOwnership (Database db _) = addDefineOwnership db
+  computeDerivedOwnership (Database db _) = computeDerivedOwnership db
+  cacheOwnership (Database db _) = cacheOwnership db
+  prepareFactOwnerCache (Database db _) = prepareFactOwnerCache db
+
+  backup (Database db _) cfg scratch process =
     backup db cfg scratch $ \path _ -> do
       withTempDirectory scratch "out" $ \tmpdir -> do
         let out = tmpdir </> "db.squashfs"

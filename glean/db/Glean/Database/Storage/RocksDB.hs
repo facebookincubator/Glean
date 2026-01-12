@@ -162,7 +162,7 @@ instance Storage RocksDB where
 
   withScratchRoot rocks f = f $ rocksRoot rocks </> ".scratch"
 
-  restore rocks repo scratch scratch_file =
+  restore rocks _ repo scratch scratch_file =
     withTempDirectory scratch "restore" $ \scratch_restore -> do
       unTar scratch_file scratch_restore
       -- to avoid retaining an extra copy of the DB during restore,
