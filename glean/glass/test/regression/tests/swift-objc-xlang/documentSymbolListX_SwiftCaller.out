@@ -359,7 +359,7 @@
                 },
                 "sym": "test-xlang/cpp/fbobjc/NSObject/.decl",
                 "target": {
-                    "filepath": "buck-out/glean-indexer/gen/fbsource/digest_50f85c75e5d76949b8623e93c88886ad0e941e94/xplat/toolchains/apple/__xcode_26.0.0_17a324-iphonesimulator-sdk_genrule-actual__/iPhoneSimulator26.0.sdk/usr/include/objc/NSObject.h",
+                    "filepath": "buck-out/glean-indexer/gen/fbsource/digest_50f85c75e5d76949b8623e93c88886ad0e941e94/xplat/toolchains/apple/__xcode_26.2.0_17c52-iphonesimulator-sdk_genrule-actual__/iPhoneSimulator26.2.sdk/usr/include/objc/NSObject.h",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 5,
@@ -416,7 +416,7 @@
                 },
                 "sym": "test-xlang/cpp/fbobjc/ProcessingStatus/.decl",
                 "target": {
-                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.h",
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/ObjcInterface.h",
                     "range": {
                         "columnBegin": 9,
                         "columnEnd": 2,
@@ -473,7 +473,7 @@
                 },
                 "sym": "test-xlang/cpp/fbobjc/ProcessingStatus/.decl",
                 "target": {
-                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.h",
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/ObjcInterface.h",
                     "range": {
                         "columnBegin": 9,
                         "columnEnd": 2,
@@ -530,7 +530,7 @@
                 },
                 "sym": "test-xlang/cpp/fbobjc/ProcessingStatus/.decl",
                 "target": {
-                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.h",
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/ObjcInterface.h",
                     "range": {
                         "columnBegin": 9,
                         "columnEnd": 2,
@@ -575,7 +575,7 @@
                 },
                 "sym": "test-xlang/cpp/fbobjc/SwiftObjcBridge/.decl",
                 "target": {
-                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.h",
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/ObjcInterface.h",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 5,
@@ -620,7 +620,7 @@
                 },
                 "sym": "test-xlang/cpp/fbobjc/SwiftObjcBridge/.decl",
                 "target": {
-                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.h",
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/ObjcInterface.h",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 5,
@@ -671,7 +671,7 @@
                 },
                 "sym": "test-xlang/cpp/fbobjc/SwiftObjcBridge/computeValueWithA/andB/.decl",
                 "target": {
-                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/ObjcInterface.m",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
@@ -722,7 +722,7 @@
                 },
                 "sym": "test-xlang/cpp/fbobjc/SwiftObjcBridge/processString/withFlag/.decl",
                 "target": {
-                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/ObjcInterface.m",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
@@ -773,7 +773,7 @@
                 },
                 "sym": "test-xlang/cpp/fbobjc/SwiftObjcBridge/processString/withFlag/.decl",
                 "target": {
-                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/ObjcInterface.m",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
@@ -824,7 +824,7 @@
                 },
                 "sym": "test-xlang/cpp/fbobjc/SwiftObjcBridge/simpleMethod/.decl",
                 "target": {
-                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/ObjcInterface.m",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
@@ -881,7 +881,7 @@
                 },
                 "sym": "test-xlang/cpp/fbobjc/calculateDistance/.f/Point2D,Point2D/.decl",
                 "target": {
-                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/ObjcInterface.m",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
@@ -938,7 +938,7 @@
                 },
                 "sym": "test-xlang/cpp/fbobjc/createDefaultConfig/.f/NSInteger/.decl",
                 "target": {
-                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/ObjcInterface.m",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
@@ -995,7 +995,7 @@
                 },
                 "sym": "test-xlang/cpp/fbobjc/createDefaultConfig/.f/NSInteger/.decl",
                 "target": {
-                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/ObjcInterface.m",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
@@ -1052,7 +1052,7 @@
                 },
                 "sym": "test-xlang/cpp/fbobjc/isValidStatus/.f/ProcessingStatus/.decl",
                 "target": {
-                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/ObjcInterface.m",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
@@ -1109,7 +1109,7 @@
                 },
                 "sym": "test-xlang/cpp/fbobjc/isValidStatus/.f/ProcessingStatus/.decl",
                 "target": {
-                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/ObjcInterface.m",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
@@ -1166,7 +1166,7 @@
                 },
                 "sym": "test-xlang/cpp/fbobjc/isValidStatus/.f/ProcessingStatus/.decl",
                 "target": {
-                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/Objc.m",
+                    "filepath": "fbobjc/Extra/GleanTests/SwiftObjc/Objc/ObjcInterface.m",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
