@@ -37,9 +37,7 @@ def main():
         parser.error("You must specify either --snapshot or --snapshot-file")
 
     add_snapshot = (
-        "INSERT INTO snapshot "
-        "(repo, revision, file, snapshot) "
-        "VALUES (%s, %s, %s, %s)"
+        "INSERT INTO snapshot (repo, revision, file, snapshot) VALUES (%s, %s, %s, %s)"
     )
 
     cursor.execute(add_snapshot, (args.repo, args.revision, args.file, snapshot))

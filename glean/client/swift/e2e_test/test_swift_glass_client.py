@@ -610,12 +610,12 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
                 )  # 15 second timeout
                 if not ready:
                     self.fail(
-                        f"Timeout: No response received for request {i+1} within 15 seconds"
+                        f"Timeout: No response received for request {i + 1} within 15 seconds"
                     )
 
                 response_line = process.stdout.readline().strip()
                 if not response_line:
-                    self.fail(f"No response received for request {i+1}")
+                    self.fail(f"No response received for request {i + 1}")
 
                 try:
                     response = json.loads(response_line)
@@ -623,7 +623,7 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
                     response_times.append(time.time() - start_time)
                 except json.JSONDecodeError as e:
                     self.fail(
-                        f"Failed to parse response {i+1} as JSON: {response_line}. Error: {e}"
+                        f"Failed to parse response {i + 1} as JSON: {response_line}. Error: {e}"
                     )
 
             # Verify we got exactly 3 responses
@@ -684,12 +684,12 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
 
             # Verify all responses have correct structure
             for i, response in enumerate(responses):
-                self.assertIn("id", response, f"Response {i+1} missing id field")
+                self.assertIn("id", response, f"Response {i + 1} missing id field")
                 self.assertIn(
-                    "result", response, f"Response {i+1} missing result field"
+                    "result", response, f"Response {i + 1} missing result field"
                 )
                 self.assertNotIn(
-                    "error", response, f"Response {i+1} has unexpected error field"
+                    "error", response, f"Response {i + 1} has unexpected error field"
                 )
 
                 # If definitions are found, verify they point to Swift files
@@ -704,7 +704,7 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
                         )
 
             print(
-                f"✓ Async test passed: responses received in order {response_ids} at times {[f'{t*1000:.0f}ms' for t in response_times]}"
+                f"✓ Async test passed: responses received in order {response_ids} at times {[f'{t * 1000:.0f}ms' for t in response_times]}"
             )
 
         finally:

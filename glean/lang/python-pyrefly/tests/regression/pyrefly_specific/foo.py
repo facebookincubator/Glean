@@ -8,7 +8,6 @@ from typing import Optional, Union
 
 import bigger_module.submodule
 import some_module
-
 from bar import Bar
 from bigger_module.another_submodule import SubmoduleClass
 from generic import Generic

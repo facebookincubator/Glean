@@ -35,7 +35,7 @@ for k in range(1, 5):
     print(k)
 
 print("hello world")
-print("hello" "world")
+print("helloworld")
 print("hello", "world")
 
 print("world", hello="hello")

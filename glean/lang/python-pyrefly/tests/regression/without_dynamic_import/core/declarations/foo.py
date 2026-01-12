@@ -169,14 +169,12 @@ def callable_return() -> Callable[[str, Optional[bool]], Optional[int]]:
     return lambda x: None
 
 
-def pep593_return() -> (
-    Annotated[
-        int,
-        ValueRange(3, [10, *star]),
-        ctype("char"),
-        dtype(kv={"k1": "v1", "k2": "v2", **star}),
-    ]
-):
+def pep593_return() -> Annotated[
+    int,
+    ValueRange(3, [10, *star]),
+    ctype("char"),
+    dtype(kv={"k1": "v1", "k2": "v2", **star}),
+]:
     return 3
 
 
@@ -184,9 +182,9 @@ def await_return() -> await Optional[int]:
     return None
 
 
-def complex_return() -> (
-    Optional[Union[FooClass, Callable[[int], bool], int | str | None]]
-):
+def complex_return() -> Optional[
+    Union[FooClass, Callable[[int], bool], int | str | None]
+]:
     return None
 
 
