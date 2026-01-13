@@ -812,27 +812,27 @@
               },
               "xrefs": [
                 {
-                  "source": { "length": 3, "start": 35 },
+                  "source": { "length": 3, "start": 40 },
                   "target": { "key": "int" }
                 },
                 {
-                  "source": { "length": 3, "start": 48 },
+                  "source": { "length": 3, "start": 53 },
                   "target": { "key": "int" }
                 },
                 {
-                  "source": { "length": 3, "start": 54 },
+                  "source": { "length": 3, "start": 59 },
                   "target": { "key": "str" }
                 },
                 {
-                  "source": { "length": 4, "start": 41 },
+                  "source": { "length": 4, "start": 46 },
                   "target": { "key": "bool" }
                 },
                 {
-                  "source": { "length": 4, "start": 60 },
+                  "source": { "length": 4, "start": 65 },
                   "target": { "key": "None" }
                 },
                 {
-                  "source": { "length": 5, "start": 9 },
+                  "source": { "length": 5, "start": 14 },
                   "target": { "key": "typing.Union" }
                 },
                 {
@@ -840,11 +840,11 @@
                   "target": { "key": "typing.Optional" }
                 },
                 {
-                  "source": { "length": 8, "start": 15 },
+                  "source": { "length": 8, "start": 20 },
                   "target": { "key": "foo.FooClass" }
                 },
                 {
-                  "source": { "length": 8, "start": 25 },
+                  "source": { "length": 8, "start": 30 },
                   "target": { "key": "typing.Callable" }
                 }
               ]
@@ -1439,7 +1439,7 @@
               },
               "xrefs": [
                 {
-                  "source": { "length": 3, "start": 19 },
+                  "source": { "length": 3, "start": 15 },
                   "target": { "key": "int" }
                 },
                 {

@@ -28,7 +28,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 142, "start": 3344 }
+      "span": { "length": 142, "start": 3314 }
     }
   },
   {
@@ -90,7 +90,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 103, "start": 3489 }
+      "span": { "length": 103, "start": 3459 }
     }
   },
   {
@@ -99,7 +99,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 58, "start": 3595 }
+      "span": { "length": 58, "start": 3565 }
     }
   },
   {
@@ -108,7 +108,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 120, "start": 3656 }
+      "span": { "length": 120, "start": 3626 }
     }
   },
   {
@@ -117,7 +117,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 65, "start": 3779 }
+      "span": { "length": 65, "start": 3749 }
     }
   },
   {
@@ -165,7 +165,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 38, "start": 3448 }
+      "span": { "length": 38, "start": 3418 }
     }
   },
   {
@@ -178,7 +178,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 34, "start": 3388 }
+      "span": { "length": 34, "start": 3358 }
     }
   },
   {
@@ -260,7 +260,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 39, "start": 3508 }
+      "span": { "length": 39, "start": 3478 }
     }
   },
   {
@@ -271,7 +271,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 39, "start": 3553 }
+      "span": { "length": 39, "start": 3523 }
     }
   },
   {
@@ -282,7 +282,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 39, "start": 3614 }
+      "span": { "length": 39, "start": 3584 }
     }
   },
   {
@@ -293,7 +293,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 39, "start": 3692 }
+      "span": { "length": 39, "start": 3662 }
     }
   },
   {
@@ -304,7 +304,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 39, "start": 3737 }
+      "span": { "length": 39, "start": 3707 }
     }
   },
   {
@@ -315,7 +315,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 39, "start": 3805 }
+      "span": { "length": 39, "start": 3775 }
     }
   },
   {
@@ -326,7 +326,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 58, "start": 3086 }
+      "span": { "length": 58, "start": 3058 }
     }
   },
   {
@@ -348,7 +348,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 115, "start": 3147 }
+      "span": { "length": 113, "start": 3119 }
     }
   },
   {
@@ -417,7 +417,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 76, "start": 3265 }
+      "span": { "length": 76, "start": 3235 }
     }
   },
   {
@@ -507,7 +507,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 185, "start": 2898 }
+      "span": { "length": 157, "start": 2898 }
     }
   },
   {
@@ -935,7 +935,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
       },
-      "span": { "length": 848, "start": 0 }
+      "span": { "length": 845, "start": 0 }
     }
   },
   {
@@ -944,7 +944,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 3845, "start": 0 }
+      "span": { "length": 3815, "start": 0 }
     }
   },
   {
@@ -1069,7 +1069,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
       },
-      "span": { "length": 3, "start": 815 }
+      "span": { "length": 3, "start": 812 }
     }
   },
   {
@@ -1128,7 +1128,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 4, "start": 3476 }
+      "span": { "length": 4, "start": 3446 }
     }
   },
   {
@@ -1143,7 +1143,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 4, "start": 3412 }
+      "span": { "length": 4, "start": 3382 }
     }
   },
   {
@@ -1244,7 +1244,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 4, "start": 3520 }
+      "span": { "length": 4, "start": 3490 }
     }
   },
   {
@@ -1257,7 +1257,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 4, "start": 3565 }
+      "span": { "length": 4, "start": 3535 }
     }
   },
   {
@@ -1270,7 +1270,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 4, "start": 3626 }
+      "span": { "length": 4, "start": 3596 }
     }
   },
   {
@@ -1283,7 +1283,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 4, "start": 3704 }
+      "span": { "length": 4, "start": 3674 }
     }
   },
   {
@@ -1296,7 +1296,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 4, "start": 3749 }
+      "span": { "length": 4, "start": 3719 }
     }
   },
   {
@@ -1309,7 +1309,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/foo.py"
       },
-      "span": { "length": 4, "start": 3817 }
+      "span": { "length": 4, "start": 3787 }
     }
   },
   {
