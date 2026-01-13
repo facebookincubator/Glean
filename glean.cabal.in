@@ -391,6 +391,18 @@ library rts
     extra-libraries: atomic
     pkgconfig-depends: libunwind, libglog, icu-uc, gflags, libxxhash
 
+library storage
+    import: fb-haskell, fb-cpp, deps, folly
+    visibility: private
+    CXX_LIB_glean_cpp_storage
+    include-dirs: .
+    install-includes:
+        glean/storage/ffi.h
+        glean/storage/db.h
+        glean/storage/stats.h
+    build-depends:
+        glean:rts,
+
 library rocksdb
     import: fb-haskell, fb-cpp, deps, folly
     visibility: private
@@ -404,18 +416,7 @@ library rocksdb
         glean/rocksdb/util.h
     pkgconfig-depends: rocksdb, fmt
     build-depends:
-        glean:rocksdb-stats,
-        glean:rts,
-
--- This needs to be separate from rocksdb because it can't be compiled with -fno-rtti
-library rocksdb-stats
-    import: fb-haskell, fb-cpp, deps, folly
-    visibility: private
-    CXX_LIB_glean_cpp_rocksdb_stats
-    include-dirs: .
-    install-includes:
-        glean/rocksdb/stats.h
-    build-depends:
+        glean:storage,
         glean:rts,
 
 library util
@@ -600,6 +601,7 @@ library db
         Glean.Database.Schema.Types
         Glean.Database.Storage
         Glean.Database.Storage.Memory
+        Glean.Database.Storage.DB
         Glean.Database.Storage.RocksDB
         Glean.Database.Trace
         Glean.Database.Types

@@ -14,17 +14,11 @@ module Glean.Database.Storage.RocksDB
 
 import Control.Exception
 import Control.Monad
-import qualified Data.HashMap.Strict as HashMap
 import Data.Int
-import Data.List (unzip4)
-import qualified Data.Vector.Storable as VS
-import Data.Word
 import Foreign.C.String
 import Foreign.C.Types
 import Foreign.ForeignPtr
-import Foreign.Marshal.Array
 import Foreign.Ptr
-import Foreign.Storable
 import System.Directory
 import System.IO.Temp (withTempDirectory)
 import System.FilePath
@@ -37,14 +31,12 @@ import Util.IO (safeRemovePathForcibly)
 import Glean.Database.Backup.Backend (Data(Data))
 import Glean.Database.Repo (databasePath)
 import Glean.Database.Storage
+import Glean.Database.Storage.DB
 import Glean.FFI
-import Glean.Repo.Text
-import Glean.RTS.Foreign.FactSet (FactSet)
-import Glean.RTS.Foreign.Lookup
-  (CanLookup(..), Lookup(..))
+import Glean.RTS.Foreign.Lookup (CanLookup(..))
 import Glean.RTS.Foreign.Ownership as Ownership
-import Glean.RTS.Foreign.Stats (marshalPredicateStats)
-import Glean.RTS.Types (Fid(..), invalidFid, Pid(..))
+  hiding (computeDerivedOwnership)
+import Glean.RTS.Types (Fid(..), invalidFid)
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types (Repo)
 import Glean.Util.Disk
@@ -109,18 +101,10 @@ newStorage root config@ServerConfig.Config{..} = do
         Nothing -> Nothing
     }
 
-newtype Container = Container (Ptr Container)
-  deriving(Storable)
-
-instance Static Container where
-  destroyStatic = glean_rocksdb_container_free
+newtype instance Database RocksDB = Database DB
+  deriving (CanLookup)
 
 instance Storage RocksDB where
-  data Database RocksDB = Database
-    { dbPtr :: ForeignPtr (Database RocksDB)
-    , dbRepo :: Repo
-    }
-
   describe rocks = "rocksdb:" <> rocksRoot rocks
 
   open rocks repo mode (DBVersion version) = do
@@ -144,120 +128,14 @@ instance Storage RocksDB where
           glean_rocksdb_container_open_database container start
             first_unit_id version
         newForeignPtr glean_rocksdb_database_free p
-      return (Database fp repo)
+      return (Database (DB (castForeignPtr fp) repo))
     where
       path = containerPath rocks repo
-
-  close db = withContainer db glean_rocksdb_container_close
 
   delete rocks = safeRemovePathForcibly . containerPath rocks
 
   safeRemoveForcibly rocks =
       safeRemovePathForcibly . databasePath (rocksRoot rocks)
-
-  predicateStats db = unsafeWithForeignPtr (dbPtr db)
-    $ marshalPredicateStats . glean_rocksdb_database_predicateStats
-
-  store db key value =
-    withContainer db $ \s_ptr ->
-    unsafeWithBytes key $ \key_ptr key_size ->
-    unsafeWithBytes value $ \value_ptr value_size ->
-    invoke $ glean_rocksdb_container_write_data
-      s_ptr
-      key_ptr
-      key_size
-      value_ptr
-      value_size
-
-  retrieve db key =
-    withContainer db $ \s_ptr ->
-    unsafeWithBytes key $ \key_ptr key_size -> do
-      (value_ptr, value_size, found)
-        <- invoke $ glean_rocksdb_container_read_data s_ptr key_ptr key_size
-      if found /= 0
-        then Just <$> unsafeMallocedByteString value_ptr value_size
-        else return Nothing
-
-  commit db facts = unsafeWithForeignPtr (dbPtr db) $ \db_ptr -> do
-    with facts $ \facts_ptr -> invoke $ glean_rocksdb_commit db_ptr facts_ptr
-
-  addOwnership db _ owned =
-    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
-    when (not $ HashMap.null owned) $
-      withMany entry (HashMap.toList owned) $ \xs ->
-      let (unit_ptrs, unit_sizes, facts_ptrs, facts_sizes) = unzip4 xs
-      in
-      withArray unit_ptrs $ \p_unit_ptrs ->
-      withArray unit_sizes $ \p_unit_sizes ->
-      withArray facts_ptrs $ \p_facts_ptrs ->
-      withArray facts_sizes $ \p_facts_sizes ->
-      invoke $ glean_rocksdb_add_ownership
-        db_ptr
-        (fromIntegral $ HashMap.size owned)
-        p_unit_ptrs
-        p_unit_sizes
-        p_facts_ptrs
-        p_facts_sizes
-    where
-      entry (unit, facts) f =
-        unsafeWithBytes unit $ \unit_ptr unit_size ->
-        VS.unsafeWith facts $ \facts_ptr ->
-        f (unit_ptr, unit_size, facts_ptr, fromIntegral $ VS.length facts)
-
-  optimize db compact = withContainer db $ \s_ptr ->
-    invoke $ glean_rocksdb_container_optimize s_ptr
-      (fromIntegral (fromEnum compact))
-
-  computeOwnership db base inv =
-    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
-    using (invoke $ glean_rocksdb_get_ownership_unit_iterator db_ptr) $
-    Ownership.compute inv db base
-
-  storeOwnership db _ own =
-    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
-    with own $ \own_ptr ->
-    invoke $ glean_rocksdb_store_ownership db_ptr own_ptr
-
-  getOwnership db = fmap Just $
-    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
-    construct $ invoke $ glean_rocksdb_get_ownership db_ptr
-
-  getUnitId db unit =
-    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
-    unsafeWithBytes unit $ \unit_ptr unit_size -> do
-      w64 <- invoke $ glean_rocksdb_get_unit_id db_ptr unit_ptr unit_size
-      if w64 > 0xffffffff
-        then return Nothing
-        else return (Just (UnitId (fromIntegral w64)))
-
-  getUnit db unit =
-    unsafeWithForeignPtr (dbPtr db) $ \db_ptr -> do
-      (unit_ptr, unit_size) <- invoke $ glean_rocksdb_get_unit db_ptr unit
-      if unit_size /= 0
-        then Just <$> unsafeMallocedByteString unit_ptr unit_size
-        else return Nothing
-
-  addDefineOwnership db _ define =
-    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
-    with define $ \define_ptr ->
-      invoke $ glean_rocksdb_add_define_ownership db_ptr define_ptr
-
-  computeDerivedOwnership db _ ownership base (Pid pid) =
-    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
-    using
-      (invoke $
-        glean_rocksdb_get_derived_fact_ownership_iterator
-          db_ptr
-          (fromIntegral pid)) $
-      Ownership.computeDerivedOwnership ownership base
-
-  cacheOwnership db =
-    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
-      invoke $ glean_rocksdb_cache_ownership db_ptr
-
-  prepareFactOwnerCache db =
-    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
-      invoke $ glean_rocksdb_prepare_fact_owner_cache db_ptr
 
   getTotalCapacity rocksdb = do
     exists <- doesDirectoryExist (rocksRoot rocksdb)
@@ -283,17 +161,6 @@ instance Storage RocksDB where
       _ -> getFreeDiskSpace (rocksRoot rocksdb) -- not aware of disk limit
 
   withScratchRoot rocks f = f $ rocksRoot rocks </> ".scratch"
-
-  backup db scratch process = do
-    createDirectoryIfMissing True path
-    withContainer db $ \s_ptr ->
-      withCString path $ invoke . glean_rocksdb_container_backup s_ptr
-    withTempFile $ \tarFile -> do
-      tar ["-cf", tarFile, "-C", scratch, "backup"]
-      size <- getFileSize tarFile
-      process tarFile (Data $ fromIntegral size)
-    where
-      path = scratch </> "backup"
 
   restore rocks repo scratch scratch_file =
     withTempDirectory scratch "restore" $ \scratch_restore -> do
@@ -326,6 +193,32 @@ instance Storage RocksDB where
       createDirectoryIfMissing True $ takeDirectory target
       renameDirectory db target
 
+instance DatabaseOps (Database RocksDB) where
+  close (Database db) = close db
+  predicateStats (Database db) = predicateStats db
+  store (Database db) = store db
+  retrieve (Database db) = retrieve db
+  commit (Database db) = commit db
+  addOwnership (Database db) = addOwnership db
+  optimize (Database db) = optimize db
+  computeOwnership (Database db) = computeOwnership db
+  storeOwnership (Database db) = storeOwnership db
+  getOwnership (Database db) = getOwnership db
+  getUnitId (Database db) = getUnitId db
+  getUnit (Database db) = getUnit db
+  addDefineOwnership (Database db) = addDefineOwnership db
+  computeDerivedOwnership (Database db) = computeDerivedOwnership db
+  cacheOwnership (Database db) = cacheOwnership db
+  prepareFactOwnerCache (Database db) = prepareFactOwnerCache db
+
+  backup (Database db) scratch process = do
+    createDirectoryIfMissing True (scratch </> "backup")
+    backup db scratch $ \_ _ ->
+      withTempFile $ \tarFile -> do
+        tar ["-cf", tarFile, "-C", scratch, "backup"]
+        size <- getFileSize tarFile
+        process tarFile (Data $ fromIntegral size)
+
 
 unTar :: FilePath -> FilePath -> IO ()
 unTar scratch_file scratch_restore =
@@ -342,15 +235,6 @@ tar args = do
 
 containerPath :: RocksDB -> Repo -> FilePath
 containerPath RocksDB{..} repo = databasePath rocksRoot repo </> "db"
-
-instance CanLookup (Database RocksDB) where
-  lookupName db = "rocksdb:" <> repoToText (dbRepo db)
-  withLookup db f = unsafeWithForeignPtr (dbPtr db) $
-    f . glean_rocksdb_database_lookup
-
-withContainer :: Database RocksDB -> (Container -> IO a) -> IO a
-withContainer db f = unsafeWithForeignPtr (dbPtr db) $
-  f . glean_rocksdb_database_container
 
 foreign import ccall unsafe glean_rocksdb_new_cache
   :: CSize -> Ptr (Ptr Cache) -> IO CString
@@ -372,34 +256,6 @@ foreign import ccall safe glean_rocksdb_container_open
   -> Ptr Cache
   -> Ptr Container
   -> IO CString
-foreign import ccall safe glean_rocksdb_container_free
-  :: Container -> IO ()
-
-foreign import ccall safe glean_rocksdb_container_close
-  :: Container -> IO ()
-
-foreign import ccall unsafe glean_rocksdb_container_write_data
-  :: Container
-  -> Ptr ()
-  -> CSize
-  -> Ptr ()
-  -> CSize
-  -> IO CString
-
-foreign import ccall unsafe glean_rocksdb_container_read_data
-  :: Container
-  -> Ptr ()
-  -> CSize
-  -> Ptr (Ptr ())
-  -> Ptr CSize
-  -> Ptr CChar
-  -> IO CString
-
-foreign import ccall safe glean_rocksdb_container_optimize
-  :: Container -> CBool -> IO CString
-
-foreign import ccall safe glean_rocksdb_container_backup
-  :: Container -> CString -> IO CString
 
 foreign import ccall safe glean_rocksdb_container_open_database
   :: Container
@@ -411,83 +267,7 @@ foreign import ccall safe glean_rocksdb_container_open_database
 foreign import ccall safe "&glean_rocksdb_database_free"
   glean_rocksdb_database_free :: Destroy (Database RocksDB)
 
-foreign import ccall unsafe glean_rocksdb_database_container
-  :: Ptr (Database RocksDB) -> Container
-
-foreign import ccall unsafe glean_rocksdb_database_lookup
-  :: Ptr (Database RocksDB) -> Ptr Lookup
-
-foreign import ccall safe glean_rocksdb_commit
-  :: Ptr (Database RocksDB)
-  -> Ptr FactSet
-  -> IO CString
-
-foreign import ccall safe glean_rocksdb_add_ownership
-  :: Ptr (Database RocksDB)
-  -> CSize
-  -> Ptr (Ptr ())
-  -> Ptr CSize
-  -> Ptr (Ptr Fid)
-  -> Ptr CSize
-  -> IO CString
-
-foreign import ccall safe glean_rocksdb_get_ownership_unit_iterator
-  :: Ptr (Database RocksDB)
-  -> Ptr Ownership.UnitIterator
-  -> IO CString
-
-foreign import ccall unsafe glean_rocksdb_database_predicateStats
-  :: Ptr (Database RocksDB)
-  -> Ptr CSize
-  -> Ptr (Ptr Int64)
-  -> Ptr (Ptr Word64)
-  -> Ptr (Ptr Word64)
-  -> IO CString
-
 foreign import ccall safe glean_rocksdb_restore
   :: CString
   -> CString
-  -> IO CString
-
-foreign import ccall unsafe glean_rocksdb_get_unit_id
-  :: Ptr (Database RocksDB)
-  -> Ptr ()
-  -> CSize
-  -> Ptr Word64
-  -> IO CString
-
-foreign import ccall unsafe glean_rocksdb_get_unit
-  :: Ptr (Database RocksDB)
-  -> UnitId
-  -> Ptr (Ptr ())
-  -> Ptr CSize
-  -> IO CString
-
-foreign import ccall safe glean_rocksdb_store_ownership
-  :: Ptr (Database RocksDB)
-  -> Ptr ComputedOwnership
-  -> IO CString
-
-foreign import ccall unsafe glean_rocksdb_get_ownership
-  :: Ptr (Database RocksDB)
-  -> Ptr (Ptr Ownership)
-  -> IO CString
-
-foreign import ccall safe glean_rocksdb_add_define_ownership
-  :: Ptr (Database RocksDB)
-  -> Ptr DefineOwnership
-  -> IO CString
-
-foreign import ccall unsafe glean_rocksdb_get_derived_fact_ownership_iterator
-  :: Ptr (Database RocksDB)
-  -> Word64
-  -> Ptr Ownership.DerivedFactOwnershipIterator
-  -> IO CString
-
-foreign import ccall unsafe glean_rocksdb_cache_ownership
-  :: Ptr (Database RocksDB)
-  -> IO CString
-
-foreign import ccall safe glean_rocksdb_prepare_fact_owner_cache
-  :: Ptr (Database RocksDB)
   -> IO CString

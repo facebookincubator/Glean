@@ -14,7 +14,7 @@
 
 namespace facebook {
 namespace glean {
-namespace rocks {
+namespace db {
 
 using PredicateStats = rts::DenseMap<rts::Pid, rts::MemoryStats>;
 
@@ -38,6 +38,6 @@ class AtomicPredicateStats {
   std::unique_ptr<Impl> impl;
 };
 
-} // namespace rocks
+} // namespace db
 } // namespace glean
 } // namespace facebook

@@ -265,22 +265,6 @@ void ContainerImpl::writeData(folly::ByteRange key, folly::ByteRange value) {
   check(db->Put(writeOptions, family(Family::meta), slice(key), slice(value)));
 }
 
-bool ContainerImpl::readData(
-    folly::ByteRange key,
-    std::function<void(folly::ByteRange)> f) {
-  requireOpen();
-  rocksdb::PinnableSlice val;
-  auto s =
-      db->Get(rocksdb::ReadOptions(), family(Family::meta), slice(key), &val);
-  if (s.IsNotFound()) {
-    return false;
-  } else {
-    check(s);
-    f(byteRange(val));
-    return true;
-  }
-}
-
 void ContainerImpl::optimize(bool compact) {
   for (uint32_t i = 0; i < families.size(); i++) {
     auto family = Family::family(i);

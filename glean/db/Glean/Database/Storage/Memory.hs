@@ -36,13 +36,14 @@ newtype Memory = Memory (TVar (HashMap Repo (Database Memory)))
 newStorage :: IO Memory
 newStorage = Memory <$> newTVarIO HashMap.empty
 
+data instance Database Memory = Database
+  { dbRepo :: Repo
+  , dbFacts :: FactSet
+  , dbData :: TVar (HashMap ByteString ByteString)
+  }
+
 -- | An abstract storage for fact database
 instance Storage Memory where
-  data Database Memory = Database
-    { dbRepo :: Repo
-    , dbFacts :: FactSet
-    , dbData :: TVar (HashMap ByteString ByteString)
-    }
 
   describe = const "memory:"
 
@@ -62,12 +63,31 @@ instance Storage Memory where
       Just db -> return db
       Nothing -> dbError repo "database doesn't exist"
 
-  -- TODO
-  close _ = return ()
-
   delete (Memory v) = atomically . modifyTVar' v . HashMap.delete
 
   safeRemoveForcibly = delete
+
+  -- TODO
+  getTotalCapacity _ = return Nothing
+
+  -- TODO
+  getUsedCapacity _ = return Nothing
+
+  -- TODO
+  getFreeCapacity _ = return maxBound
+
+  withScratchRoot _ f = withSystemTempDirectory "glean" f
+
+  -- TODO
+  restore _ repo _ _ = dbError repo "unimplemented 'restore'"
+
+instance CanLookup (Database Memory) where
+  lookupName Database{..} = "memory:" <> repoToText dbRepo
+  withLookup = withLookup . dbFacts
+
+instance DatabaseOps (Database Memory) where
+  -- TODO
+  close _ = return ()
 
   predicateStats = FactSet.predicateStats . dbFacts
 
@@ -97,21 +117,4 @@ instance Storage Memory where
   prepareFactOwnerCache _ = return ()
 
   -- TODO
-  getTotalCapacity _ = return Nothing
-
-  -- TODO
-  getUsedCapacity _ = return Nothing
-
-  -- TODO
-  getFreeCapacity _ = return maxBound
-
-  withScratchRoot _ f = withSystemTempDirectory "glean" f
-
-  -- TODO
   backup db _ _ = dbError (dbRepo db) "unimplemented 'backup'"
-  -- TODO
-  restore _ repo _ _ = dbError repo "unimplemented 'restore'"
-
-instance CanLookup (Database Memory) where
-  lookupName Database{..} = "memory:" <> repoToText dbRepo
-  withLookup = withLookup . dbFacts

@@ -6,13 +6,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "glean/rocksdb/stats.h"
+#include "glean/storage/stats.h"
 
 #include <folly/synchronization/Hazptr.h>
 
 namespace facebook {
 namespace glean {
-namespace rocks {
+namespace db {
 
 struct AtomicPredicateStats::Impl {
   // This needs to be protected by a hazard poiter for access. We support reads
@@ -65,6 +65,6 @@ size_t AtomicPredicateStats::count(rts::Pid pid) const {
   }
 }
 
-} // namespace rocks
+} // namespace db
 } // namespace glean
 } // namespace facebook
