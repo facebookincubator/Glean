@@ -47,6 +47,9 @@ instance Storage Memory where
 
   describe = const "memory:"
 
+  readableVersions _ = [DBVersion 0]
+  writableVersions _ = [DBVersion 0]
+
   open (Memory v) repo (Create start _unit _) _ = do
     facts <- FactSet.new start
     atomically $ do

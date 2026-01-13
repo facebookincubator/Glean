@@ -18,7 +18,6 @@ module Glean.Database.Types (
 
   withStorageFor,
   withDefaultStorage,
-  getStorage,
 ) where
 
 import Control.DeepSeq
@@ -31,6 +30,7 @@ import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.HashSet (HashSet)
 import Data.IORef (IORef)
+import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Typeable (Typeable)
@@ -64,7 +64,7 @@ import qualified Glean.ServerConfig.Types as ServerConfig
 import qualified Glean.Types as Thrift
 import Glean.Util.Metric (Point)
 import Glean.Util.Mutex
-import Glean.Util.Observed
+import Glean.Util.Observed as Observed
 import Glean.Util.ShardManager
 import Glean.Util.Some
 import Util.Time
@@ -239,7 +239,7 @@ data Env = Env
   , envLoggerRateLimit :: RateLimiterMap Text
   , envCatalog :: Catalog
   , envStorage :: HashMap StorageName (Some Storage)
-  , envDefaultStorage :: StorageName
+  , envDefaultStorage :: (StorageName, Bool)
   , envSchemaSource :: Observed SchemaIndex
     -- ^ The schema source, and its parsed/resolved form are both cached here.
   , envDbSchemaCache :: MVar DbSchemaCache
@@ -296,15 +296,20 @@ withStorageFor env repo meta f = do
       "unknown storage: " <> Text.unpack (unStorageName name)
     Just (Some storage) -> f storage
 
-withDefaultStorage :: Env -> (forall s. Storage s => s -> IO a) -> IO a
-withDefaultStorage env = getStorage env (envDefaultStorage env)
-
-getStorage
+withDefaultStorage
   :: Env
-  -> StorageName
-  -> (forall s. Storage s => s -> IO a) -> IO a
-getStorage env name f =
+  -> (forall s. Storage s => StorageName -> s -> IO a)
+  -> IO a
+withDefaultStorage env fn = do
+  name <- case envDefaultStorage env of
+    (name, cli)
+      | cli -> return name
+      | otherwise -> do
+        cfg <- Observed.get (envServerConfig env)
+        return $ fromMaybe name $ fmap StorageName $
+          ServerConfig.config_db_create_storage cfg
   case HashMap.lookup name (envStorage env) of
     Nothing -> throwIO $ Thrift.Exception $
       "unknown storage: " <> unStorageName name
-    Just (Some storage) -> f storage
+    Just (Some storage) -> fn name storage
+

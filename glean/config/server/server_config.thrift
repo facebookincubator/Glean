@@ -241,7 +241,7 @@ struct Config {
   16: i32 db_lookup_cache_limit_mb = 1000;
 
   // What binary representation to use for newly created databases
-  // (nothing means use latest supported).
+  // (nothing means use latest supported). See also db_create_storage.
   19: optional DBVersion db_create_version;
 
   // Disable completed dependencies check in stored predicates derivation
@@ -330,6 +330,10 @@ struct Config {
   // runtime cost to decompress the DB on demand. Mounting requires
   // squashfs-tools and squashfuse to be installed on Linux.
   40: bool db_lmdb_restore_unpack = true;
+
+  // Default storage backend for newly created databases. Can be overriden
+  // by command-line options. See also db_create_version.
+  41: optional string db_create_storage;
 }
 
 // The following were automatically generated and may benefit from renaming.
