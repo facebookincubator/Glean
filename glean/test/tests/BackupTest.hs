@@ -160,11 +160,11 @@ makeDB TestEnv{testEnv = env} now (TestDbSpec repo age deps) = do
 
 makeDB TestEnv{testBackup,testEnv} now CloudTestDbSpec{..} =
   withTempFileContents ("" :: String) $ \path ->
-  void $ Backup.backup testBackup testDbRepo props Nothing path
-  where
-    dbtime = utcTimeToPosixEpochTime (created testDbAge now)
-    props = Meta
-        { metaVersion = Storage.currentVersion
+  withDefaultStorage testEnv $ \storageName storage -> do
+    let
+      dbtime = utcTimeToPosixEpochTime (created testDbAge now)
+      props = Meta
+        { metaVersion = Storage.currentVersion storage
         , metaCreated = dbtime
         , metaRepoHashTime = Nothing
         , metaCompleteness =
@@ -174,8 +174,9 @@ makeDB TestEnv{testBackup,testEnv} now CloudTestDbSpec{..} =
         , metaDependencies = testDbDeps
         , metaCompletePredicates = mempty
         , metaAxiomComplete = False
-        , metaStorage = envDefaultStorage testEnv
+        , metaStorage = storageName
         }
+    void $ Backup.backup testBackup testDbRepo props Nothing path
 
 basicBackupTest :: [Setting] -> Test
 basicBackupTest settings = TestCase $ withTest $ withTestEnv settings

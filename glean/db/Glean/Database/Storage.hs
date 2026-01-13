@@ -17,7 +17,6 @@ module Glean.Database.Storage
   , WriteLock(..)
   , canOpenVersion
   , currentVersion
-  , writableVersions
   ) where
 
 import Data.ByteString (ByteString)
@@ -36,26 +35,18 @@ import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types (PredicateStats, Repo, SchemaId)
 import Glean.Util.Some
 
--- | List of binary representation versions we can read
-readableVersions :: [DBVersion]
-readableVersions = [DBVersion 3]
-
--- | List of binary representation versions we can write
-writableVersions :: [DBVersion]
-writableVersions = [DBVersion 3]
-
 -- | Check whether we can open a particular database version
-canOpenVersion :: Mode -> DBVersion -> Bool
-canOpenVersion mode version = version `elem` versions
+canOpenVersion :: Storage s => s -> Mode -> DBVersion -> Bool
+canOpenVersion s mode version = version `elem` versions
   where
     versions = case mode of
-      ReadOnly -> readableVersions
-      ReadWrite -> writableVersions
-      Create{} -> writableVersions
+      ReadOnly -> readableVersions s
+      ReadWrite -> writableVersions s
+      Create{} -> writableVersions s
 
 -- | Default current binary representation version
-currentVersion :: DBVersion
-currentVersion = maximum writableVersions
+currentVersion :: Storage s => s -> DBVersion
+currentVersion = maximum . writableVersions
 
 -- Choose which schema goes into a newly created DB
 data CreateSchema
@@ -86,6 +77,12 @@ data family Database s
 class DatabaseOps (Database s) => Storage s where
   -- | A short, user-readable description of the storage
   describe :: s -> String
+
+  -- | List of binary representation versions we can read
+  readableVersions :: s -> [DBVersion]
+
+  -- | List of binary representation versions we can write
+  writableVersions :: s -> [DBVersion]
 
   -- | Open a database
   open :: s -> Repo -> Mode -> DBVersion -> IO (Database s)
