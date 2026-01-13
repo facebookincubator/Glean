@@ -32,129 +32,129 @@
         "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
       },
       "xrefs": [
-        { "source": { "length": 3, "start": 301 }, "target": { "key": "bar" } },
+        { "source": { "length": 3, "start": 300 }, "target": { "key": "bar" } },
         {
-          "source": { "length": 3, "start": 312 },
+          "source": { "length": 3, "start": 311 },
           "target": { "key": "bar.Bar" }
         },
-        { "source": { "length": 3, "start": 490 }, "target": { "key": "str" } },
-        { "source": { "length": 3, "start": 504 }, "target": { "key": "int" } },
+        { "source": { "length": 3, "start": 489 }, "target": { "key": "str" } },
+        { "source": { "length": 3, "start": 503 }, "target": { "key": "int" } },
         {
-          "source": { "length": 3, "start": 520 },
+          "source": { "length": 3, "start": 519 },
           "target": { "key": "bar.Bar" }
         },
         {
-          "source": { "length": 3, "start": 551 },
+          "source": { "length": 3, "start": 550 },
           "target": { "key": "bar.Bar" }
         },
-        { "source": { "length": 3, "start": 616 }, "target": { "key": "int" } },
-        { "source": { "length": 3, "start": 650 }, "target": { "key": "int" } },
+        { "source": { "length": 3, "start": 615 }, "target": { "key": "int" } },
+        { "source": { "length": 3, "start": 649 }, "target": { "key": "int" } },
         {
-          "source": { "length": 3, "start": 672 },
+          "source": { "length": 3, "start": 671 },
           "target": { "key": "foo.Foo" }
         },
         {
-          "source": { "length": 3, "start": 815 },
+          "source": { "length": 3, "start": 814 },
           "target": { "key": "foo.baz.<locals>.foo" }
         },
         {
-          "source": { "length": 3, "start": 1275 },
+          "source": { "length": 3, "start": 1274 },
           "target": { "key": "foo.baz.<locals>.foo" }
         },
         {
-          "source": { "length": 3, "start": 1378 },
+          "source": { "length": 3, "start": 1377 },
           "target": { "key": "foo.baz.<locals>.foo" }
         },
         {
-          "source": { "length": 3, "start": 1503 },
+          "source": { "length": 3, "start": 1502 },
           "target": { "key": "int" }
         },
         {
-          "source": { "length": 3, "start": 1518 },
+          "source": { "length": 3, "start": 1517 },
           "target": { "key": "int" }
         },
         {
-          "source": { "length": 3, "start": 1673 },
+          "source": { "length": 3, "start": 1672 },
           "target": { "key": "int" }
         },
         {
-          "source": { "length": 3, "start": 1888 },
+          "source": { "length": 3, "start": 1887 },
           "target": { "key": "bar.Bar" }
         },
         {
-          "source": { "length": 3, "start": 1904 },
+          "source": { "length": 3, "start": 1903 },
           "target": { "key": "bar.Bar" }
         },
         {
-          "source": { "length": 3, "start": 2038 },
+          "source": { "length": 3, "start": 2037 },
           "target": { "key": "int" }
         },
         {
-          "source": { "length": 3, "start": 2063 },
+          "source": { "length": 3, "start": 2062 },
           "target": { "key": "int" }
         },
         {
-          "source": { "length": 3, "start": 2124 },
+          "source": { "length": 3, "start": 2123 },
           "target": { "key": "int" }
         },
         {
-          "source": { "length": 3, "start": 2158 },
+          "source": { "length": 3, "start": 2157 },
           "target": { "key": "int" }
         },
         {
-          "source": { "length": 3, "start": 2201 },
+          "source": { "length": 3, "start": 2200 },
           "target": { "key": "bar.Bar" }
         },
         {
-          "source": { "length": 3, "start": 2227 },
+          "source": { "length": 3, "start": 2226 },
           "target": { "key": "bar.Bar" }
         },
         {
-          "source": { "length": 3, "start": 2613 },
+          "source": { "length": 3, "start": 2612 },
           "target": { "key": "int" }
         },
         {
-          "source": { "length": 3, "start": 2627 },
+          "source": { "length": 3, "start": 2626 },
           "target": { "key": "foo.Foo" }
         },
         {
-          "source": { "length": 3, "start": 2823 },
+          "source": { "length": 3, "start": 2822 },
           "target": { "key": "foo.Foo" }
         },
         {
-          "source": { "length": 3, "start": 2947 },
+          "source": { "length": 3, "start": 2946 },
           "target": { "key": "foo.foo" }
         },
         {
-          "source": { "length": 3, "start": 3509 },
+          "source": { "length": 3, "start": 3508 },
           "target": { "key": "foo.Foo" }
         },
         {
-          "source": { "length": 4, "start": 680 },
+          "source": { "length": 4, "start": 679 },
           "target": { "key": "None" }
         },
         {
-          "source": { "length": 4, "start": 819 },
+          "source": { "length": 4, "start": 818 },
           "target": { "key": "foo.Foo.name" }
         },
         {
-          "source": { "length": 4, "start": 1837 },
+          "source": { "length": 4, "start": 1836 },
           "target": { "key": "None" }
         },
         {
-          "source": { "length": 4, "start": 1854 },
+          "source": { "length": 4, "start": 1853 },
           "target": { "key": "None" }
         },
         {
-          "source": { "length": 4, "start": 2646 },
+          "source": { "length": 4, "start": 2645 },
           "target": { "key": "None" }
         },
         {
-          "source": { "length": 4, "start": 2951 },
+          "source": { "length": 4, "start": 2950 },
           "target": { "key": "foo.Foo.name" }
         },
         {
-          "source": { "length": 4, "start": 3515 },
+          "source": { "length": 4, "start": 3514 },
           "target": { "key": "foo.Foo.name" }
         },
         {
@@ -162,15 +162,15 @@
           "target": { "key": "typing.Union" }
         },
         {
-          "source": { "length": 5, "start": 2195 },
+          "source": { "length": 5, "start": 2194 },
           "target": { "key": "typing.Union" }
         },
         {
-          "source": { "length": 5, "start": 2599 },
+          "source": { "length": 5, "start": 2598 },
           "target": { "key": "typing.Union" }
         },
         {
-          "source": { "length": 5, "start": 3533 },
+          "source": { "length": 5, "start": 3532 },
           "target": { "key": "str.lower" }
         },
         {
@@ -178,59 +178,59 @@
           "target": { "key": "typing" }
         },
         {
-          "source": { "length": 6, "start": 1279 },
+          "source": { "length": 6, "start": 1278 },
           "target": { "key": "foo.Foo.my_bar" }
         },
         {
-          "source": { "length": 7, "start": 380 },
+          "source": { "length": 7, "start": 379 },
           "target": { "key": "generic" }
         },
         {
-          "source": { "length": 7, "start": 395 },
+          "source": { "length": 7, "start": 394 },
           "target": { "key": "generic.Generic" }
         },
         {
-          "source": { "length": 7, "start": 1495 },
+          "source": { "length": 7, "start": 1494 },
           "target": { "key": "generic.Generic" }
         },
         {
-          "source": { "length": 7, "start": 1510 },
+          "source": { "length": 7, "start": 1509 },
           "target": { "key": "generic.Generic" }
         },
         {
-          "source": { "length": 7, "start": 2030 },
+          "source": { "length": 7, "start": 2029 },
           "target": { "key": "generic.Generic" }
         },
         {
-          "source": { "length": 7, "start": 2055 },
+          "source": { "length": 7, "start": 2054 },
           "target": { "key": "generic.Generic" }
         },
         {
-          "source": { "length": 7, "start": 2108 },
+          "source": { "length": 7, "start": 2107 },
           "target": { "key": "generic.Generic" }
         },
         {
-          "source": { "length": 7, "start": 2116 },
+          "source": { "length": 7, "start": 2115 },
           "target": { "key": "generic.Generic" }
         },
         {
-          "source": { "length": 7, "start": 2142 },
+          "source": { "length": 7, "start": 2141 },
           "target": { "key": "generic.Generic" }
         },
         {
-          "source": { "length": 7, "start": 2150 },
+          "source": { "length": 7, "start": 2149 },
           "target": { "key": "generic.Generic" }
         },
         {
-          "source": { "length": 7, "start": 2206 },
+          "source": { "length": 7, "start": 2205 },
           "target": { "key": "generic.Generic" }
         },
         {
-          "source": { "length": 7, "start": 2605 },
+          "source": { "length": 7, "start": 2604 },
           "target": { "key": "generic.Generic" }
         },
         {
-          "source": { "length": 7, "start": 2619 },
+          "source": { "length": 7, "start": 2618 },
           "target": { "key": "generic.Generic" }
         },
         {
@@ -238,103 +238,103 @@
           "target": { "key": "typing.Optional" }
         },
         {
-          "source": { "length": 8, "start": 542 },
+          "source": { "length": 8, "start": 541 },
           "target": { "key": "typing.Optional" }
         },
         {
-          "source": { "length": 8, "start": 591 },
+          "source": { "length": 8, "start": 590 },
           "target": { "key": "typing.Optional" }
         },
         {
-          "source": { "length": 8, "start": 1648 },
+          "source": { "length": 8, "start": 1647 },
           "target": { "key": "typing.Optional" }
         },
         {
-          "source": { "length": 8, "start": 2590 },
+          "source": { "length": 8, "start": 2589 },
           "target": { "key": "typing.Optional" }
         },
         {
-          "source": { "length": 9, "start": 948 },
+          "source": { "length": 9, "start": 947 },
           "target": { "key": "foo.baz.<locals>.local_str" }
         },
         {
-          "source": { "length": 9, "start": 1200 },
+          "source": { "length": 9, "start": 1199 },
           "target": { "key": "foo.baz.<locals>.local_str" }
         },
         {
-          "source": { "length": 9, "start": 2285 },
+          "source": { "length": 9, "start": 2284 },
           "target": { "key": "some_module.SomeClass" }
         },
         {
-          "source": { "length": 9, "start": 2319 },
+          "source": { "length": 9, "start": 2318 },
           "target": { "key": "some_module.SomeClass" }
         },
         {
-          "source": { "length": 9, "start": 2481 },
+          "source": { "length": 9, "start": 2480 },
           "target": { "key": "bigger_module.submodule" }
         },
         {
-          "source": { "length": 9, "start": 2491 },
+          "source": { "length": 9, "start": 2490 },
           "target": { "key": "bigger_module.submodule.SomeClass" }
         },
         {
-          "source": { "length": 9, "start": 2527 },
+          "source": { "length": 9, "start": 2526 },
           "target": { "key": "bigger_module.submodule" }
         },
         {
-          "source": { "length": 9, "start": 2537 },
+          "source": { "length": 9, "start": 2536 },
           "target": { "key": "bigger_module.submodule.SomeClass" }
         },
         {
-          "source": { "length": 10, "start": 824 },
+          "source": { "length": 10, "start": 823 },
           "target": { "key": "str.capitalize" }
         },
         {
-          "source": { "length": 10, "start": 1098 },
+          "source": { "length": 10, "start": 1097 },
           "target": { "key": "str.capitalize" }
         },
         {
-          "source": { "length": 10, "start": 1210 },
+          "source": { "length": 10, "start": 1209 },
           "target": { "key": "str.capitalize" }
         },
         {
-          "source": { "length": 10, "start": 1395 },
+          "source": { "length": 10, "start": 1394 },
           "target": { "key": "bar.Bar.bar_method" }
         },
         {
-          "source": { "length": 10, "start": 2382 },
+          "source": { "length": 10, "start": 2381 },
           "target": {
             "key": "bigger_module.another_submodule.SubmoduleClass.InnerClass"
           }
         },
         {
-          "source": { "length": 10, "start": 2420 },
+          "source": { "length": 10, "start": 2419 },
           "target": {
             "key": "bigger_module.another_submodule.SubmoduleClass.InnerClass"
           }
         },
         {
-          "source": { "length": 10, "start": 2956 },
+          "source": { "length": 10, "start": 2955 },
           "target": { "key": "str.capitalize" }
         },
         {
-          "source": { "length": 10, "start": 3067 },
+          "source": { "length": 10, "start": 3066 },
           "target": { "key": "foo.global_str" }
         },
         {
-          "source": { "length": 10, "start": 3214 },
+          "source": { "length": 10, "start": 3213 },
           "target": { "key": "str.capitalize" }
         },
         {
-          "source": { "length": 10, "start": 3308 },
+          "source": { "length": 10, "start": 3307 },
           "target": { "key": "foo.global_str" }
         },
         {
-          "source": { "length": 10, "start": 3319 },
+          "source": { "length": 10, "start": 3318 },
           "target": { "key": "str.capitalize" }
         },
         {
-          "source": { "length": 10, "start": 3520 },
+          "source": { "length": 10, "start": 3519 },
           "target": { "key": "str.capitalize" }
         },
         {
@@ -342,27 +342,27 @@
           "target": { "key": "some_module" }
         },
         {
-          "source": { "length": 11, "start": 1542 },
+          "source": { "length": 11, "start": 1541 },
           "target": { "key": "generic.Generic.test_method" }
         },
         {
-          "source": { "length": 11, "start": 1728 },
+          "source": { "length": 11, "start": 1727 },
           "target": { "key": "optional_generic.OptionalGeneric.test_method" }
         },
         {
-          "source": { "length": 11, "start": 2273 },
+          "source": { "length": 11, "start": 2272 },
           "target": { "key": "some_module" }
         },
         {
-          "source": { "length": 11, "start": 2307 },
+          "source": { "length": 11, "start": 2306 },
           "target": { "key": "some_module" }
         },
         {
-          "source": { "length": 12, "start": 1382 },
+          "source": { "length": 12, "start": 1381 },
           "target": { "key": "foo.Foo.optional_bar" }
         },
         {
-          "source": { "length": 12, "start": 1529 },
+          "source": { "length": 12, "start": 1528 },
           "target": { "key": "foo.baz.<locals>.test_generic" }
         },
         {
@@ -370,83 +370,83 @@
           "target": { "key": "bigger_module" }
         },
         {
-          "source": { "length": 13, "start": 1286 },
+          "source": { "length": 13, "start": 1285 },
           "target": { "key": "bar.Bar.bar_attribute" }
         },
         {
-          "source": { "length": 13, "start": 2467 },
+          "source": { "length": 13, "start": 2466 },
           "target": { "key": "bigger_module" }
         },
         {
-          "source": { "length": 13, "start": 2513 },
+          "source": { "length": 13, "start": 2512 },
           "target": { "key": "bigger_module" }
         },
         {
-          "source": { "length": 14, "start": 360 },
+          "source": { "length": 14, "start": 359 },
           "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
         },
         {
-          "source": { "length": 14, "start": 1949 },
+          "source": { "length": 14, "start": 1948 },
           "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
         },
         {
-          "source": { "length": 14, "start": 1976 },
+          "source": { "length": 14, "start": 1975 },
           "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
         },
         {
-          "source": { "length": 14, "start": 2367 },
+          "source": { "length": 14, "start": 2366 },
           "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
         },
         {
-          "source": { "length": 14, "start": 2405 },
+          "source": { "length": 14, "start": 2404 },
           "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
         },
         {
-          "source": { "length": 14, "start": 2694 },
+          "source": { "length": 14, "start": 2693 },
           "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
         },
         {
-          "source": { "length": 14, "start": 2738 },
+          "source": { "length": 14, "start": 2737 },
           "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
         },
         {
-          "source": { "length": 14, "start": 2769 },
+          "source": { "length": 14, "start": 2768 },
           "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
         },
         {
-          "source": { "length": 14, "start": 2798 },
+          "source": { "length": 14, "start": 2797 },
           "target": { "key": "foo.function.<locals>.inner_function" }
         },
         {
-          "source": { "length": 15, "start": 432 },
+          "source": { "length": 15, "start": 431 },
           "target": { "key": "optional_generic.OptionalGeneric" }
         },
         {
-          "source": { "length": 15, "start": 600 },
+          "source": { "length": 15, "start": 599 },
           "target": { "key": "optional_generic.OptionalGeneric" }
         },
         {
-          "source": { "length": 15, "start": 634 },
+          "source": { "length": 15, "start": 633 },
           "target": { "key": "optional_generic.OptionalGeneric" }
         },
         {
-          "source": { "length": 15, "start": 1657 },
+          "source": { "length": 15, "start": 1656 },
           "target": { "key": "optional_generic.OptionalGeneric" }
         },
         {
-          "source": { "length": 16, "start": 408 },
+          "source": { "length": 16, "start": 407 },
           "target": { "key": "optional_generic" }
         },
         {
-          "source": { "length": 16, "start": 1711 },
+          "source": { "length": 16, "start": 1710 },
           "target": { "key": "foo.baz.<locals>.optional_generic" }
         },
         {
-          "source": { "length": 21, "start": 1076 },
+          "source": { "length": 21, "start": 1075 },
           "target": { "key": "foo.baz.<locals>.placeholder_local_str" }
         },
         {
-          "source": { "length": 22, "start": 3191 },
+          "source": { "length": 22, "start": 3190 },
           "target": { "key": "foo.placeholder_glocal_str" }
         },
         {
@@ -454,11 +454,11 @@
           "target": { "key": "bigger_module.submodule" }
         },
         {
-          "source": { "length": 23, "start": 1681 },
+          "source": { "length": 23, "start": 1680 },
           "target": { "key": "foo.return_optional_generic" }
         },
         {
-          "source": { "length": 31, "start": 321 },
+          "source": { "length": 31, "start": 320 },
           "target": { "key": "bigger_module.another_submodule" }
         }
       ]
