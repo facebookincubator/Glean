@@ -70,6 +70,10 @@ instance CanLookup (Database LMDB) where
 instance Storage LMDB where
   describe db = "lmdb:" <> lmdbRoot db
 
+  -- we started at 3 because that's what RocksDB was on
+  readableVersions _ = [DBVersion 3]
+  writableVersions _ = [DBVersion 3]
+
   open lmdb repo mode (DBVersion version) = do
     (cmode, start, ownership) <- case mode of
       ReadOnly -> do
