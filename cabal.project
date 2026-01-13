@@ -48,6 +48,10 @@ package thrift-tests
 package thrift-http
     ghc-options: -Werror
 
+-- Assertions and debug symbols on for dev builds
+package glean
+    flags: -opt
+
 package fb-util
     flags: +folly
 

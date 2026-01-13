@@ -56,15 +56,18 @@ common fb-haskell
        ghc-options: -O2
 
 common fb-cpp
-  cxx-options: -std=c++17 -Wno-nullability-completeness
+  cxx-options: -std=c++17 -Wno-nullability-completeness -fno-omit-frame-pointer
   if !flag(clang)
      cxx-options: -fcoroutines
   if flag(asan)
      cxx-options: -fsanitize=address
   if arch(x86_64)
      cxx-options: -march=haswell
-  if flag(opt)
+  if flag(opt) && !flag(asan)
      cxx-options: -O3 -DNDEBUG
+  else
+     cc-options: -g
+     cxx-options: -g
   CXX_EXTRA_LIB_DIRS
 
 common exe
@@ -85,7 +88,7 @@ flag asan
      default: False
 
 flag opt
-     default: False
+     default: True
 
 flag benchmarks
      default: False
