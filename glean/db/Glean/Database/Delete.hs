@@ -63,10 +63,9 @@ expireDatabase delay env@Env{..} repo = do
 
 -- | Database deletion thread
 removeDatabase
-  :: Storage.Storage s
-  => Env
+  :: Env
   -> Repo
-  -> TMVar (Maybe (DB s))
+  -> TMVar (Maybe DB)
   -> IO ()
 removeDatabase env@Env{..} repo todo = uninterruptibleMask_ $
   -- This runs under uninterruptibleMask_ because there is really nothing
@@ -94,12 +93,14 @@ removeDatabase env@Env{..} repo todo = uninterruptibleMask_ $
           Open odb -> closeOpenDB env odb
             `finally` atomically (writeTVar dbState Closed)
           _ -> return ()
-        Storage.delete envStorage repo
-        Catalog.delete envCatalog repo
-        Storage.safeRemoveForcibly envStorage repo
+        meta <- atomically $ Catalog.readMeta envCatalog repo
+        withStorageFor env repo meta $ \storage -> do
+          Storage.delete storage repo
+          Catalog.delete envCatalog repo
+          Storage.safeRemoveForcibly storage repo
         atomically $ modifyTVar envDerivations $
           HashMap.filterWithKey (\(repo',_) _ -> repo' /= repo)
-      logInfo $ inRepo repo "deleted"
+        logInfo $ inRepo repo "deleted"
 
 -- | Schedule a DB for deletion and return the 'Async' which can be used to
 -- obtain the result.

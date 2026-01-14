@@ -44,6 +44,8 @@ union Completeness {
   5: DatabaseFinalizing finalizing;
 } (hs.prefix = "", hs.nonempty)
 
+typedef string StorageName (hs.newtype)
+
 // Information about a database stored by Glean.
 struct Meta {
   // Database version
@@ -76,6 +78,9 @@ struct Meta {
   // If present, this is the time when the source data was read.
   // This should always be earlier than created time.
   9: optional glean.PosixEpochTime metaRepoHashTime;
+
+  // Which storage backend to use.
+  10: StorageName metaStorage;
 } (hs.prefix = "")
 
 // ---------------------------------------------------------------------------

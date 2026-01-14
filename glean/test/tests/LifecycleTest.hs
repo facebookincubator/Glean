@@ -41,6 +41,7 @@ import Glean.Internal.Types
 import Glean.Test.HUnit
 import Glean.Test.Mock
 import Glean.Types hiding (Exception)
+import Glean.Util.Some
 
 data TEnv = TEnv
   { tEnv :: Env
@@ -51,10 +52,13 @@ withTEnv :: (TEnv -> IO a) -> IO a
 withTEnv f = do
   catalog <- memStore
   storage <- newStorage
+  let name = StorageName "memory"
   withTestEnv
     [\cfg -> cfg
         { cfgDataStore = DataStore
-            { withDataStore = \_ f -> f catalog storage
+            { withStorage = \_ f ->
+                f (HashMap.fromList [(name, Some storage)], Some catalog)
+            , defaultStorage = StorageName "memory"
             , dataStoreTag = "test"
             }
         }]
@@ -80,7 +84,9 @@ mkDB env repo =
 
 checkActive :: HasCallStack => Env -> Bool -> IO ()
 checkActive Env{..} allow_deleting = do
-  checkConsistency envCatalog
+  when (not allow_deleting) $ checkConsistency envCatalog
+    -- checkConsistency modifies the Meta which confuses a
+    -- concurrent deletion operation
   atomically $ do
     active <- readTVar envActive
     forM_ (HashMap.toList active) $ \(repo, DB{..}) -> do

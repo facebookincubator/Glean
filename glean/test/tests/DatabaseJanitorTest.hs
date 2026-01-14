@@ -191,6 +191,7 @@ makeFakeDB schema root repo dbtime completeness opts = do
       , metaDependencies = Nothing
       , metaCompletePredicates = mempty
       , metaAxiomComplete = False
+      , metaStorage = rocksdbName
       }
   let repoPath = databasePath root repo
   createDirectoryIfMissing True repoPath
@@ -242,6 +243,7 @@ makeFakeCloudDB schema backupDir repo dbtime completeness opts = do
         , metaDependencies = Nothing
         , metaCompletePredicates = mempty
         , metaAxiomComplete = False
+        , metaStorage = rocksdbName
         }
 
 dbConfig :: FilePath -> ServerTypes.Config -> Glean.Database.Config.Config

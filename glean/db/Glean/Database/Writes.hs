@@ -448,7 +448,7 @@ reapWrites Env{..} writes = forever $ do
   now <- getTimePoint
   atomically $ modifyTVar' writes $ HashMap.filter $ \x -> writeTimeout x > now
 
-deleteWriteQueues :: Env -> OpenDB s -> STM ()
+deleteWriteQueues :: Env -> OpenDB -> STM ()
 deleteWriteQueues env OpenDB{odbWriting = Just Writing{..}} = do
   let !WriteQueue{..} = wrQueue
   size <- readTVar writeQueueSize

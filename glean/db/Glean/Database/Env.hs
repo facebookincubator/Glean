@@ -17,6 +17,7 @@ import Control.Concurrent.Async (async, waitEither, withAsync)
 import Control.Exception.Safe
 import Control.Monad.Extra
 import Data.Default
+import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.List.Split
 import Data.Time
@@ -45,6 +46,7 @@ import Glean.Util.ConfigProvider
 import Glean.Util.Observed as Observed
 import Glean.Util.Periodic
 import Glean.Util.ShardManager (SomeShardManager)
+import Glean.Util.Some
 import Glean.Util.ThriftSource as ThriftSource
 import Util.Time
 import qualified Glean.Util.Warden as Warden
@@ -65,13 +67,14 @@ withDatabases evb cfg cfgapi act =
   logInfo $ "Using schema from " <> showSchemaLocation schemaLoc
   let (schema, updateSchema) = cfgSchemaHook cfg schemaLoc
   ThriftSource.withValue cfgapi schema $ \schema_source -> do
-  withDataStore (cfgDataStore cfg) server_cfg $ \catalog storage -> do
+  withStorage (cfgDataStore cfg) server_cfg $ \(storageMap, Some catalog) -> do
     envCatalog <- Catalog.open catalog
     cfgShardManager cfg envCatalog server_config $ \shardManager ->
       bracket
         (initEnv
           evb
-          storage
+          storageMap
+          (defaultStorage (cfgDataStore cfg))
           envCatalog
           shardManager
           cfg
@@ -84,9 +87,9 @@ withDatabases evb cfg cfgapi act =
             act env
 
 initEnv
-  :: Storage.Storage storage
-  => EventBaseDataplane
-  -> storage
+  :: EventBaseDataplane
+  -> HashMap StorageName (Some Storage.Storage)
+  -> StorageName
   -> Catalog.Catalog
   -> SomeShardManager
   -> Config
@@ -94,7 +97,7 @@ initEnv
   -> Bool
   -> Observed ServerConfig.Config
   -> IO Env
-initEnv evb envStorage envCatalog shardManager cfg
+initEnv evb envStorage envDefaultStorage envCatalog shardManager cfg
   envSchemaSource updateSchema envServerConfig = do
     ServerConfig.Config{..} <- Observed.get envServerConfig
 
@@ -218,9 +221,10 @@ spawnThreads env@Env{..} = do
       atomically $ void $ tryPutTMVar envSchemaUpdateSignal ()
 
   -- Disk usage counters
-  Warden.spawn_ envWarden $ doPeriodically (seconds 600) $ do
-    diskSize <- Storage.getTotalCapacity envStorage
-    diskUsed <- Storage.getUsedCapacity envStorage
+  Warden.spawn_ envWarden $ doPeriodically (seconds 600) $
+    withDefaultStorage env $ \storage -> do
+    diskSize <- Storage.getTotalCapacity storage
+    diskUsed <- Storage.getUsedCapacity storage
 
     whenJust diskSize $ \size ->
         void $ setCounter "glean.db.disk.capacity_bytes" size

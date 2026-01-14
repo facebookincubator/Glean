@@ -319,7 +319,7 @@ runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
       Just par -> parallelDerivation odb bounds lookup par
 
   where
-    deriveQuery :: OpenDB s -> Boundaries -> Lookup -> UserQuery -> IO ()
+    deriveQuery :: OpenDB -> Boundaries -> Lookup -> UserQuery -> IO ()
     deriveQuery odb bounds lookup q = do
       config <- Observed.get (envServerConfig env)
       result <- try $
@@ -334,7 +334,7 @@ runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
             Nothing -> return ()
 
     parallelDerivation
-      :: OpenDB s
+      :: OpenDB
       -> Boundaries
       -> Lookup
       -> ParallelDerivation

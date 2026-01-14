@@ -91,7 +91,7 @@ makeDefineOwnership env repo nextId deps
       Ownership.addDerivedOwners lookup define (Pid pid) ownerMap
     return define
 
-checkWritable :: Repo -> OpenDB s -> IO Writing
+checkWritable :: Repo -> OpenDB -> IO Writing
 checkWritable repo OpenDB{..} =
   case odbWriting of
     Nothing -> dbError repo "can't write to a read only database"
@@ -144,10 +144,9 @@ writeDatabase env repo WriteContent{..} latency =
           deDupBatch env repo odb lookup writing size writeBatch writeOwnership
 
 reallyWriteBatch
-  :: Storage.Storage s
-  => Env
+  :: Env
   -> Repo
-  -> OpenDB s
+  -> OpenDB
   -> Storage.WriteLock w
   -> Lookup
   -> Writing
@@ -239,10 +238,9 @@ reallyWriteBatch env repo OpenDB{..} lock lookup writing original_size deduped
         -- commit takes place outside the write lock
 
 deDupBatch
-  :: Storage.Storage s
-  => Env
+  :: Env
   -> Repo
-  -> OpenDB s
+  -> OpenDB
   -> Lookup
   -> Writing
   -> Word64

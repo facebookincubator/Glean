@@ -10,9 +10,11 @@
 module Glean.Database.Config (
   -- * DataStore
   DataStore(..),
+  StorageName,
   fileDataStore,
   tmpDataStore,
   memoryDataStore,
+  rocksdbName,
 
   -- * Config, and options parser
   options,
@@ -84,6 +86,7 @@ import qualified Glean.Database.Storage.Memory as Memory
 import qualified Glean.Database.Storage.RocksDB as RocksDB
 import Glean.Database.Trace
 import qualified Glean.Internal.Types as Internal
+import Glean.Internal.Types (StorageName(..))
 import Glean.DefaultConfigs
 import Glean.Logger.Database
 import Glean.Logger.Server
@@ -104,36 +107,51 @@ import Paths_glean
 #endif
 
 data DataStore = DataStore
-  { withDataStore
-      :: forall a. ServerConfig.Config
-      -> (forall c s. (Catalog.Store c, Storage s) => c -> s -> IO a)
-      -> IO a
+  { withStorage ::
+      -- setup the storage backend. Must be scoped, because it might
+      -- involve creating temporary resources.
+      forall a.
+      ServerConfig.Config ->
+      ((HashMap StorageName (Some Storage), Some Catalog.Store) -> IO a) ->
+      IO a
+  , defaultStorage :: StorageName
   , dataStoreTag :: String
   }
 
+rocksdbName, memoryName :: StorageName
+rocksdbName = StorageName "rocksdb"
+memoryName = StorageName "memory"
+
 fileDataStore :: FilePath -> DataStore
 fileDataStore path = DataStore
-  { withDataStore = \scfg f -> do
+  { withStorage = \scfg f -> do
       rocksdb <- RocksDB.newStorage path scfg
-      f (Catalog.fileCatalog path) rocksdb
-  , dataStoreTag = "rocksdb:" <> path
+      f (
+        HashMap.fromList
+          [ (rocksdbName, Some rocksdb)
+          ],
+        Some (Catalog.fileCatalog path)
+        )
+  , defaultStorage = rocksdbName
+  , dataStoreTag = "db:" <> path
   }
 
 tmpDataStore :: DataStore
 tmpDataStore = DataStore
-  { withDataStore = \scfg f -> withSystemTempDirectory "glean" $ \tmp -> do
+  { withStorage = \scfg f -> withSystemTempDirectory "glean" $ \tmp -> do
       logInfo $ "Storing temporary DBs in " <> tmp
-      rocksdb <- RocksDB.newStorage tmp scfg
-      f (Catalog.fileCatalog tmp) rocksdb
-  , dataStoreTag = "rocksdb:{TMP}"
+      withStorage (fileDataStore tmp) scfg f
+  , defaultStorage = rocksdbName
+  , dataStoreTag = dataStoreTag (fileDataStore "<tmp>")
   }
 
 memoryDataStore :: DataStore
 memoryDataStore = DataStore
-  { withDataStore = \_ f -> do
+  { withStorage = \_ f -> do
       cat <- Catalog.memoryCatalog
       mem <- Memory.newStorage
-      f cat mem
+      f (HashMap.fromList [(memoryName, Some mem)], Some cat)
+  , defaultStorage = memoryName
   , dataStoreTag = "memory"
   }
 
@@ -488,10 +506,12 @@ schemaLocationOption = option (eitherReader schemaLocationParser)
 options :: Parser Config
 options = do
   let
-    dbRoot = fileDataStore <$> strOption (
-      long "db-root" <>
-      metavar "DIR" <>
-      help "Directory containing databases")
+    dbRoot = do
+      path <- strOption (
+        long "db-root" <>
+        metavar "DIR" <>
+        help "Directory containing databases")
+      pure $ fileDataStore path
     dbTmp = tmpDataStore <$ flag' () (
       long "db-tmp" <>
       help "Store databases in a temporary directory (default)")

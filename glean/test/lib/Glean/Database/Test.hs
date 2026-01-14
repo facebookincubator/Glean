@@ -15,6 +15,7 @@ module Glean.Database.Test
   , setSchemaId
   , disableStrictSchemaId
   , setMemoryStorage
+  , allStorage
   , setDBVersion
   , setCompactOnCompletion
   , setMaxSetSize
@@ -43,6 +44,7 @@ import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Config
 import Glean.Database.Env
 import Glean.Database.Write.Batch
+import Glean.Database.Storage (DBVersion(..), currentVersion, writableVersions)
 import Glean.Database.Types
 import qualified Glean.Internal.Types as Thrift
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -78,6 +80,16 @@ disableStrictSchemaId cfg = cfg {
 
 setMemoryStorage :: Setting
 setMemoryStorage cfg = cfg{ cfgDataStore = memoryDataStore }
+
+allStorage :: [(String, [Setting])]
+allStorage =
+  [
+    ("rocksdb", []),
+    ("memory", [setMemoryStorage])
+  ]
+  ++
+  [ ("rocksdb-" ++ show (unDBVersion v), [setDBVersion v])
+    | v <- writableVersions, v /= currentVersion ]
 
 setDBVersion :: ServerConfig.DBVersion -> Setting
 setDBVersion ver cfg = cfg

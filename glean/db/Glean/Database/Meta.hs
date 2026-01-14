@@ -47,13 +47,14 @@ data DBTimestamp = DBTimestamp
 
 -- | Produce DB metadata
 newMeta
-  :: DBVersion -- ^ DB version
+  :: StorageName
+  -> DBVersion -- ^ DB version
   -> DBTimestamp -- ^ creation time and repo hash time
   -> Completeness -- ^ write status
   -> DatabaseProperties -- ^ user properties
   -> Maybe Dependencies -- ^ stacked
   -> Meta
-newMeta version timestamp completeness properties deps = Meta
+newMeta storage version timestamp completeness properties deps = Meta
   { metaVersion = version
   , metaCreated = utcTimeToPosixEpochTime $ timestampCreated timestamp
   , metaRepoHashTime = utcTimeToPosixEpochTime <$> timestampRepoHash timestamp
@@ -63,6 +64,7 @@ newMeta version timestamp completeness properties deps = Meta
   , metaDependencies = deps
   , metaCompletePredicates = mempty
   , metaAxiomComplete = False
+  , metaStorage = storage
   }
 
 showCompleteness :: Completeness -> Text
