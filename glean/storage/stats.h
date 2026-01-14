@@ -26,6 +26,10 @@ class AtomicPredicateStats {
  public:
   AtomicPredicateStats();
   ~AtomicPredicateStats();
+  AtomicPredicateStats(const AtomicPredicateStats&) = delete;
+  AtomicPredicateStats& operator=(const AtomicPredicateStats&) = delete;
+  AtomicPredicateStats(AtomicPredicateStats&&) = delete;
+  AtomicPredicateStats& operator=(AtomicPredicateStats&&) = delete;
 
   void set(PredicateStats stats);
   PredicateStats get() const;

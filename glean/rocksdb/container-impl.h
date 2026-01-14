@@ -32,6 +32,9 @@ struct Family {
 
   Family(const Family&) = delete;
   Family& operator=(const Family&) = delete;
+  ~Family() = default;
+  Family(Family&&) = delete;
+  Family& operator=(Family&&) = delete;
 
   static std::vector<const Family*> families;
 

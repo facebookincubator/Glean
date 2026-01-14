@@ -49,6 +49,7 @@ struct DatabaseImpl final : DatabaseCommon<ContainerImpl> {
   DatabaseImpl& operator=(const DatabaseImpl&) = delete;
   DatabaseImpl(DatabaseImpl&&) = delete;
   DatabaseImpl& operator=(DatabaseImpl&&) = delete;
+  ~DatabaseImpl() override = default;
 
   Container& container() noexcept override {
     return container_;
