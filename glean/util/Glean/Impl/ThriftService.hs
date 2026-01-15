@@ -73,7 +73,6 @@ instance IsThriftService ThriftService where
 
 #else /* !FBTHRIFT */
 
-import Data.List (uncons)
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Network.URI (URI(..), URIAuth(..), parseURI)
