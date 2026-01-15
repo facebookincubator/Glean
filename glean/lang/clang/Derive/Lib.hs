@@ -10,6 +10,7 @@ module Derive.Lib
   ( dispatchDerive
   , allPredicates
   , allManualPasses
+  , allCxxPasses
   , DerivePass(..)
   , optionsPasses
   ) where
@@ -69,6 +70,44 @@ allManualPasses =
   , DeriveFunctionCalls_Pass_2
   ]
 
+--
+-- Standard things we need to derive (also Glass) for full code search/nav
+--
+allCxxPasses :: [DerivePass]
+allCxxPasses =
+  allManualPasses <>
+  [DeriveGeneric "cxx1.FunctionDeclAttribute"
+  ,DeriveGeneric "cxx1.DeclarationToUSR"
+  ,DeriveGeneric "cxx1.RecordDerived"
+  ,DeriveGeneric "cxx1.ThriftToCxx"
+  -- name search
+  ,DeriveGeneric "cxx1.EnumDeclarationByName"
+  ,DeriveGeneric "cxx1.EnumeratorByName"
+  ,DeriveGeneric "cxx1.FunctionDeclarationByNameScope"
+  ,DeriveGeneric "cxx1.NamespaceDeclarationByName"
+  ,DeriveGeneric "cxx1.ObjcContainerDeclarationInterface"
+  ,DeriveGeneric "cxx1.RecordDeclarationClass"
+  ,DeriveGeneric "cxx1.RecordDeclarationStruct"
+  ,DeriveGeneric "cxx1.RecordDeclarationUnion"
+  ,DeriveGeneric "cxx1.TypeAliasDeclarationByName"
+  ,DeriveGeneric "cxx1.VariableDeclarationNonLocalByName"
+  -- lowercase name search
+  ,DeriveGeneric "pp1.DefineLowerCase"
+  ,DeriveGeneric "cxx1.EnumLowerCase"
+  ,DeriveGeneric "cxx1.EnumeratorLowerCase"
+  ,DeriveGeneric "cxx1.FunctionLowerCase"
+  ,DeriveGeneric "cxx1.NamespaceLowerCase"
+  ,DeriveGeneric "cxx1.ObjcContainerInterfaceLowerCase"
+  ,DeriveGeneric "cxx1.RecordClassLowerCase"
+  ,DeriveGeneric "cxx1.RecordStructLowerCase"
+  ,DeriveGeneric "cxx1.RecordUnionLowerCase"
+  ,DeriveGeneric "cxx1.TypeAliasLowerCase"
+  ,DeriveGeneric "cxx1.VariableLowerCase"
+  -- objc
+  ,DeriveGeneric "cxx1.ObjcContainerInheritance"
+  ,DeriveGeneric "cxx1.ObjcInterfaceToImplementation"
+  ]
+
 optionsPasses :: O.Parser (Set DerivePass)
 optionsPasses =
   -- With no flags, we run all the derive passes. If you specify
@@ -85,4 +124,4 @@ optionsPasses =
           )
       ])
     <|>
-      pure allManualPasses
+      pure allCxxPasses
