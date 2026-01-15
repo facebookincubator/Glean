@@ -266,6 +266,8 @@ library config
         Glean.Service.Types
         Glean.ClientConfig.Types
         Glean.ServerConfig.Types
+    build-depends:
+        glean:thrift-annotation
 
 library defaultconfigs
     import: fb-haskell, fb-cpp, deps
