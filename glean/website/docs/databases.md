@@ -79,7 +79,8 @@ are supported in this state, and always reflect the current contents.
 
 :::note
 
-There are currently no backup backends implemented for open-source Glean.
+There is currently one backup backend supported in open source Glean: Amazon S3.
+See the `Glean.Database.Backup.S3` module for details.
 
 :::
 
