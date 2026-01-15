@@ -16,8 +16,8 @@ namespace glean {
 namespace db {
 #endif
 
-typedef struct Container Container;
-typedef struct Database Database;
+using Container = struct Container;
+using Database = struct Database;
 
 #ifdef __cplusplus
 }
