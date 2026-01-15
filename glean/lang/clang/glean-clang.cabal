@@ -93,7 +93,7 @@ common fb-haskell
       ghc-options: -O2
 
 common fb-cpp
-  cxx-options: -DOSS=1 -std=c++17
+  cxx-options: -DOSS=1 -std=c++17 -Wno-nullability-completeness
   if arch(x86_64)
       cxx-options: -DGLEAN_X86_64 -march=haswell
   if flag(opt)

@@ -51,6 +51,10 @@ DEFINE_string(
     dump,
     "",
     "PATH where generated facts will be dumped instead of sending them to the Glean write server. You MUST specify --dump.");
+DEFINE_int32(
+    dump_every,
+    0,
+    "If set, the facts will be dumped to <dump>.i after indexing N files");
 DEFINE_string(
     ownership_dump,
     "",
@@ -262,7 +266,10 @@ struct Config {
     if (!FLAGS_dump.empty()) {
       // logging is historical, we always dump to a file now
       should_log = false;
-      sender = fileWriter(FLAGS_dump);
+      sender = fileWriter(
+          FLAGS_dump_every != 0
+          ? fmt::format("{}.0", FLAGS_dump)
+          : FLAGS_dump);
     } else if (!FLAGS_print_sources_count) {
       fail("missing --dump");
     }
@@ -386,11 +393,13 @@ class CDB {
 
 struct SourceIndexer {
   const Config& config;
-  Batch<SCHEMA> batch;
+  std::unique_ptr<Batch<SCHEMA>> batch;
   CDB cdb;
 
   explicit SourceIndexer(Config& cfg)
-      : config(cfg), batch(cfg.schema.get(), FLAGS_fact_cache) {
+      : config(cfg),
+        batch(std::make_unique<Batch<SCHEMA>>(
+                cfg.schema.get(), FLAGS_fact_cache)) {
     blank_cell_name = (!FLAGS_blank_cell_name.empty())
         ? folly::Optional<std::string>(FLAGS_blank_cell_name)
         : folly::none;
@@ -400,7 +409,7 @@ struct SourceIndexer {
     if (FLAGS_ownership) {
       // source file paths will be absolute (see loadCompilationDatabase()) but
       // we need the unit path to be relative.
-      batch.beginUnit(
+      batch->beginUnit(
           std::filesystem::path(source.file)
               .lexically_relative(config.root)
               .string());
@@ -415,7 +424,7 @@ struct SourceIndexer {
             config.root,
             config.target_subdir,
             config.path_prefix,
-            batch,
+            *batch,
         },
         config.diagnostics.get()};
     FrontendActionFactory factory(&cfg);
@@ -465,9 +474,15 @@ struct SourceIndexer {
     });
     auto ok = tool.run(&factory) == 0;
     if (FLAGS_ownership) {
-      batch.endUnit();
+      batch->endUnit();
     }
     return ok;
+  }
+
+  void flush() {
+    config.sender->flush(batch->base());
+    batch = std::make_unique<Batch<SCHEMA>>(
+      config.schema.get(), FLAGS_fact_cache);
   }
 
  private:
@@ -510,7 +525,7 @@ struct SourceIndexer {
 
     return {
         repo_cell,
-        batch.fact<Buck::Locator>(
+        batch->fact<Buck::Locator>(
             maybe(cell),
             source.target.substr(path_start, path_len),
             source.target.substr(name_start))};
@@ -518,7 +533,7 @@ struct SourceIndexer {
 
   folly::Optional<Fact<Buck::Platform>> platformOf(const SourceFile& file) {
     if (file.platform) {
-      return batch.fact<Buck::Platform>(file.platform.value());
+      return batch->fact<Buck::Platform>(file.platform.value());
     } else {
       return folly::none;
     }
@@ -690,15 +705,15 @@ int main(int argc, char** argv) {
                             << "] " << config.sources[i].file;
       if (FLAGS_fact_stats) {
         LOG_CFG(INFO, config)
-            << "fact buffer: " << showStats(indexer.batch.bufferStats())
-            << " cache: " << showStats(indexer.batch.cacheStats().facts)
+            << "fact buffer: " << showStats(indexer.batch->bufferStats())
+            << " cache: " << showStats(indexer.batch->cacheStats().facts)
             << " lifetime: " << showStats(lifetime_stats);
       }
     }
 
     const auto& source = config.sources[i];
-    const auto buf_stats = indexer.batch.bufferStats();
-    const auto cache_stats = indexer.batch.cacheStats();
+    const auto buf_stats = indexer.batch->bufferStats();
+    const auto cache_stats = indexer.batch->cacheStats();
     try {
       bool ok = config.logger("clang/index")
                     .log_index(source, buf_stats, cache_stats, [&]() {
@@ -732,7 +747,7 @@ int main(int argc, char** argv) {
             << "fact buffer size " << buf_stats.memory << ", waiting";
       }
       config.logger(wait ? "clang/wait" : "clang/send").log([&]() {
-        config.sender->rebaseAndSend(indexer.batch.base(), wait);
+        config.sender->rebaseAndSend(indexer.batch->base(), wait);
       });
       if (wait) {
         const auto wait_time = std::chrono::steady_clock::now() - start;
@@ -742,7 +757,7 @@ int main(int argc, char** argv) {
                    .count();
       }
     }
-    prev_stats = indexer.batch.bufferStats();
+    prev_stats = indexer.batch->bufferStats();
     ++lifetime_files;
 
     memory_exit = FLAGS_max_rss != 0 && (rss = getSelfRSS()) > FLAGS_max_rss;
@@ -758,16 +773,22 @@ int main(int argc, char** argv) {
       // because that will skip the next target for no good reason
       break;
     }
+
+    if (FLAGS_dump_every != 0 && lifetime_files % FLAGS_dump_every == 0) {
+      indexer.flush();
+      config.sender = fileWriter(
+        fmt::format("{}.{}", FLAGS_dump, lifetime_files / FLAGS_dump_every));
+    }
   }
 
   if (!FLAGS_dry_run) {
     LOG_CFG(INFO, config) << "flushing";
     config.logger("clang/flush").log([&]() {
-      config.sender->flush(indexer.batch.base());
+      indexer.flush();
     });
   }
 
-  indexer.batch.logEnd();
+  indexer.batch->logEnd();
 
   // Write ownership data to JSON file if dump path is specified
   // This honors the output_ownership_files flag which controls whether
@@ -775,7 +796,7 @@ int main(int argc, char** argv) {
   if (!FLAGS_ownership_dump.empty()) {
     LOG_CFG(INFO, config) << "Writing ownership data to "
                           << FLAGS_ownership_dump;
-    auto ownership_data = indexer.batch.base().serializeOwnership();
+    auto ownership_data = indexer.batch->base().serializeOwnership();
 
     folly::dynamic ownership_json = folly::dynamic::object;
     for (const auto& [unit_name, fact_id_ranges] : ownership_data) {
