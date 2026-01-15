@@ -204,11 +204,10 @@ FOLLY_NOINLINE void completeOwnership(
     Lookup* base_lookup) {
   struct Stats {
     Usets& usets;
+    const UsetsMerge::Cache::Stats& mergeStats;
     size_t local_facts = 0;
     size_t base_facts = 0;
     size_t owned_facts = 0;
-    size_t cache_hits = 0;
-    size_t cache_misses = 0;
 
     void bumpLocal() {
       ++local_facts;
@@ -225,25 +224,12 @@ FOLLY_NOINLINE void completeOwnership(
       }
     }
 
-    void bumpCacheHit() {
-      ++cache_hits;
-    }
-
-    void bumpCacheMiss() {
-      ++cache_misses;
-    }
-
-    double hitRate() const {
-      size_t total = cache_hits + cache_misses;
-      return total > 0 ? (cache_hits * 100.0 / total) : 0.0;
-    }
-
     void dump() {
       VLOG(1) << folly::sformat(
-          "SetUnionsCache: {} hits, {} misses, hit rate: {:.2f}%",
-          cache_hits,
-          cache_misses,
-          hitRate());
+          "UsetsMergeCache: {} hits, {} misses, hit rate: {:.2f}%",
+          mergeStats.hits,
+          mergeStats.misses,
+          mergeStats.hitRate());
       auto ustats = usets.statistics();
       VLOG(1) << folly::sformat(
           "{} of {} facts ({} visited in base DBs), {} usets, {} promoted, {} bytes, {} adds, {} dups",
@@ -257,87 +243,8 @@ FOLLY_NOINLINE void completeOwnership(
           ustats.dups);
     }
   };
-
-  constexpr size_t SET_UNIONS_CACHE_SIZE = 100;
-  struct UsetUnionsCacheKey {
-    Uset* a;
-    Uset* b;
-
-    UsetUnionsCacheKey(Uset* x, Uset* y) {
-      // Normalize as order doesn't matter. (A∪B = B∪A)
-      a = (x < y) ? x : y;
-      b = (x < y) ? y : x;
-    }
-
-    bool operator==(const UsetUnionsCacheKey& o) const {
-      return (a == o.a && b == o.b);
-    }
-
-    size_t hash() const {
-      return folly::hash::hash_combine(a->hash, b->hash);
-    }
-  };
-
-  struct UsetUnionsCacheKeyHash {
-    size_t operator()(const UsetUnionsCacheKey& k) const {
-      return k.hash();
-    }
-  };
-
-  class UsetUnionsCache {
-    using Map =
-        folly::F14FastMap<UsetUnionsCacheKey, Uset*, UsetUnionsCacheKeyHash>;
-
-    Map new_cache;
-    Map old_cache;
-    Usets& usets;
-    size_t max_size;
-
-    void evictOldCache() {
-      for (auto& [key, value] : old_cache) {
-        usets.drop(key.a);
-        usets.drop(key.b);
-        usets.drop(value);
-      }
-      old_cache.clear();
-    }
-
-   public:
-    UsetUnionsCache(size_t max_size, Usets& usets)
-        : usets(usets), max_size(max_size) {}
-
-    Uset* find(const UsetUnionsCacheKey& key) {
-      auto it = new_cache.find(key);
-      if (it != new_cache.end()) {
-        return it->second;
-      }
-      it = old_cache.find(key);
-      if (it != old_cache.end()) {
-        return it->second;
-      }
-      return nullptr;
-    }
-
-    void insert(const UsetUnionsCacheKey& key, Uset* value) {
-      if (new_cache.size() >= max_size) {
-        evictOldCache();
-        std::swap(old_cache, new_cache);
-      }
-      new_cache.insert({key, value});
-      usets.use(key.a);
-      usets.use(key.b);
-      usets.use(value);
-    }
-
-    void clear() {
-      evictOldCache();
-      std::swap(old_cache, new_cache);
-      evictOldCache();
-    }
-  };
-
-  Stats stats{usets};
-  UsetUnionsCache cache(SET_UNIONS_CACHE_SIZE, usets);
+  UsetsMerge usetsMerge{usets};
+  Stats stats{usets, usetsMerge.statistics()};
 
   std::vector<Id> refs;
   const auto tracker = syscall([&refs](Id id, Pid) { refs.push_back(id); });
@@ -359,46 +266,47 @@ FOLLY_NOINLINE void completeOwnership(
   auto processFact = [&, min_id](Fact::Ref fact) {
     // `set == nullptr` means that the fact doesn't have an ownership set - we
     // might want to make that an error eventually?
-    if (auto set = owner(fact.id)) {
+    if (auto set = owner(fact.id); set || usetsMerge.contains(fact.id)) {
+      auto merged = usetsMerge.addUsetAndMerge(fact.id, set);
+      owner(fact.id) = merged;
+      if (set) {
+        usets.drop(set);
+      }
+      set = merged;
+      usets.promote(set);
+
       // If the fact is in a base DB, then we record its owner as (set || X)
       // where X is the existing owner of the fact. We only propagate `set`,
       // not `X`, to the facts it refers to.
       if (fact.id < min_id) {
         auto base_owner = base_lookup->getOwner(fact.id);
         if (base_owner != INVALID_USET) {
-          auto merged = usets.merge(SetU32::from({base_owner}), set);
-          usets.promote(merged);
-          owner(fact.id) = merged;
+          auto mergedWithBase = usets.merge(SetU32::from({base_owner}), set);
+          usets.promote(mergedWithBase);
+          owner(fact.id) = mergedWithBase;
         }
       }
-
-      usets.promote(set);
 
       // Collect all references to facts
       const auto* predicate = inventory.lookupPredicate(fact.type);
       assert(predicate);
       predicate->traverse(tracker, fact.clause);
 
-      for (const auto id : refs) {
-        auto& me = owner(id);
-        if (me == nullptr) {
-          // The fact didn't have ownership info before, assign the set to it.
-          me = set;
-          usets.use(me, 1);
-        } else {
-          UsetUnionsCacheKey key(me, set);
-          auto* cached = cache.find(key);
-          if (cached != nullptr) {
-            stats.bumpCacheHit();
-            usets.use(cached);
-            usets.drop(me);
-            me = cached;
-          } else {
-            stats.bumpCacheMiss();
-            const auto p = usets.merge(me, set);
-            cache.insert(key, p);
-            usets.drop(me);
-            me = p;
+      for (const auto ref : refs) {
+        usetsMerge.addUset(ref, set);
+
+        // Do the merge earlier if the used space is greater than 1 GB to free
+        // the memory
+        constexpr size_t ONE_GB = 1ULL << 30;
+        if (usetsMerge.bytes() > ONE_GB) {
+          auto factIds = usetsMerge.factIds();
+          for (const auto factId : factIds) {
+            auto& me = owner(factId);
+            auto result = usetsMerge.addUsetAndMerge(factId, me);
+            if (me) {
+              usets.drop(me);
+            }
+            me = result;
           }
         }
       }
@@ -497,7 +405,7 @@ FOLLY_NOINLINE void completeOwnership(
   }
 
   stats.dump();
-  cache.clear();
+  usetsMerge.clear();
 }
 } // namespace
 

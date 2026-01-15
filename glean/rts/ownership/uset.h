@@ -8,9 +8,11 @@
 
 #pragma once
 
+#include "glean/rts/id.h"
 #include "glean/rts/ownership/setu32.h"
 
 #include <folly/Hash.h>
+#include <folly/container/F14Map.h>
 #include <folly/container/F14Set.h>
 #include <vector>
 
@@ -287,6 +289,204 @@ struct Usets {
   Stats stats;
   const UsetId firstId;
   UsetId nextId;
+};
+
+constexpr size_t USETS_MERGE_CACHE_SIZE = 10000;
+struct UsetsMerge {
+  struct CacheKey {
+    Uset* a;
+    Uset* b;
+
+    CacheKey(Uset* x, Uset* y) {
+      // Normalize as order doesn't matter. (A∪B = B∪A)
+      a = (x < y) ? x : y;
+      b = (x < y) ? y : x;
+    }
+
+    bool operator==(const CacheKey& o) const {
+      return (a == o.a && b == o.b);
+    }
+
+    size_t hash() const {
+      return folly::hash::hash_combine(a->hash, b->hash);
+    }
+  };
+
+  struct CacheKeyHash {
+    size_t operator()(const CacheKey& k) const {
+      return k.hash();
+    }
+  };
+
+  // Very simple bounded cache with approximate LRU by dividing into
+  // semi-spaces (new,old). If new fills up, old is discarded and new is
+  // moved into old. Both semi-spaces are used for fulfilling lookups.
+  struct Cache {
+    using Map = folly::F14FastMap<CacheKey, Uset*, CacheKeyHash>;
+
+    struct Stats {
+      size_t hits = 0;
+      size_t misses = 0;
+
+      double hitRate() const {
+        size_t total = hits + misses;
+        return total > 0 ? (hits * 100.0 / total) : 0.0;
+      }
+    };
+
+   private:
+    Map new_cache;
+    Map old_cache;
+    Usets& usets;
+    size_t max_size;
+    Stats stats;
+
+    void evictOldCache() {
+      for (auto& [key, value] : old_cache) {
+        usets.drop(key.a);
+        usets.drop(key.b);
+        usets.drop(value);
+      }
+      old_cache.clear();
+    }
+
+   public:
+    Cache(size_t max_size, Usets& usets) : usets(usets), max_size(max_size) {}
+
+    Uset* find(const CacheKey& key) {
+      auto it = new_cache.find(key);
+      if (it != new_cache.end()) {
+        stats.hits += 1;
+        return it->second;
+      }
+      it = old_cache.find(key);
+      if (it != old_cache.end()) {
+        stats.hits += 1;
+        return it->second;
+      }
+      stats.misses += 1;
+      return nullptr;
+    }
+
+    void insert(const CacheKey& key, Uset* value) {
+      if (new_cache.size() >= max_size) {
+        evictOldCache();
+        std::swap(old_cache, new_cache);
+      }
+      new_cache.insert({key, value});
+      usets.use(key.a);
+      usets.use(key.b);
+      usets.use(value);
+    }
+
+    const Stats& statistics() const {
+      return stats;
+    }
+
+    void clear() {
+      evictOldCache();
+      std::swap(old_cache, new_cache);
+      evictOldCache();
+    }
+  };
+
+ private:
+  Usets& usets;
+  Cache cache{USETS_MERGE_CACHE_SIZE, usets};
+
+  // Map from fact id to the vector of corresponding usets that have to be
+  // merged. A vector can contain duplicates, but it still performs better than
+  // set
+  folly::F14FastMap<Id, std::vector<Uset*>> refs;
+  size_t usets_count = 0;
+
+  Uset* mergeUsets(std::vector<Uset*>& setsToMerge) {
+    CHECK(!setsToMerge.empty());
+    if (setsToMerge.size() == 1) {
+      return setsToMerge[0];
+    }
+
+    while (setsToMerge.size() > 1) {
+      size_t numPairs = setsToMerge.size() / 2;
+      std::vector<Uset*> result(numPairs + (setsToMerge.size() % 2), nullptr);
+
+      for (size_t i = 0; i < numPairs; ++i) {
+        result[i] = merge(setsToMerge[i * 2], setsToMerge[i * 2 + 1]);
+      }
+
+      if (setsToMerge.size() % 2 == 1) {
+        result[numPairs] = setsToMerge.back();
+      }
+
+      setsToMerge.swap(result);
+    }
+
+    return setsToMerge[0];
+  }
+
+  Uset* merge(Uset* setA, Uset* setB) {
+    CacheKey key(setA, setB);
+    if (auto* cached = cache.find(key)) {
+      usets.use(cached);
+      usets.drop(setA);
+      usets.drop(setB);
+      return cached;
+    }
+    Uset* merged = usets.merge(setA, setB);
+    cache.insert(key, merged);
+    usets.drop(setA);
+    usets.drop(setB);
+    return merged;
+  }
+
+ public:
+  explicit UsetsMerge(Usets& usets_) : usets(usets_) {}
+
+  void addUset(Id factId, Uset* uset) {
+    refs[factId].push_back(uset);
+    usets.use(uset);
+    usets_count += 1;
+  }
+
+  Uset* addUsetAndMerge(Id factId, Uset* uset) {
+    if (uset) {
+      addUset(factId, uset);
+    }
+
+    auto factUsets = refs[factId];
+    usets_count -= factUsets.size();
+    auto merged = mergeUsets(factUsets);
+    refs.erase(factId);
+
+    return merged;
+  }
+
+  size_t bytes() const {
+    return refs.getAllocatedMemorySize() + usets_count * sizeof(Uset*);
+  }
+
+  const Cache::Stats& statistics() const {
+    return cache.statistics();
+  }
+
+  auto factIds() const {
+    std::vector<Id> factIds;
+    factIds.reserve(refs.size());
+    for (const auto& [key, _] : refs) {
+      factIds.push_back(key);
+    }
+    return factIds;
+  }
+
+  bool contains(Id factId) {
+    return refs.contains(factId);
+  }
+
+  void clear() {
+    cache.clear();
+    refs.clear();
+    usets_count = 0;
+  }
 };
 
 } // namespace rts
