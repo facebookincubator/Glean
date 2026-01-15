@@ -164,13 +164,15 @@ thriftServiceWithTimeout ClientConfig{..} opts =
   where
     -- add host_timeout_ms if a timeout wasn't already specified and
     -- we're talking to a specific host.
+    timeoutOpts =
+      opts {
+        processingTimeout = processingTimeout opts <|> Just t,
+        queueTimeout = queueTimeout opts <|> Just t
+        }
+      where t = fromIntegral clientConfig_host_timeout_ms / 1000
     opts' = case clientConfig_serv of
-      HostPort{} ->
-        opts {
-          processingTimeout = processingTimeout opts <|> Just t,
-          queueTimeout = queueTimeout opts <|> Just t
-          }
-        where t = fromIntegral clientConfig_host_timeout_ms / 1000
+      HostPort{} -> timeoutOpts
+      Uri{} -> timeoutOpts
       _otherwise -> opts
 
 

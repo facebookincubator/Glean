@@ -73,6 +73,12 @@ instance IsThriftService ThriftService where
 
 #else /* !FBTHRIFT */
 
+import Data.List (uncons)
+import Data.Text (Text)
+import qualified Data.Text as Text
+import Network.URI (URI(..), URIAuth(..), parseURI)
+import Text.Read (readMaybe)
+
 import Thrift.Channel.HTTP
 import Thrift.Protocol.Id
 
@@ -83,18 +89,36 @@ newtype ThriftService p = ThriftService
 
 deriving instance Show (ThriftService p)
 
+baseHttpConfig :: Text -> Int -> ThriftServiceOptions -> HTTPConfig p
+baseHttpConfig host port ThriftServiceOptions{..} = HTTPConfig
+  { httpHost = Text.encodeUtf8 host
+  , httpPort = port
+  , httpProtocolId = compactProtocolId
+  , httpUseHttps = False
+  , httpResponseTimeout =
+      Just $ round (fromMaybe 30 processingTimeout * 1000000)
+  }
+
 instance IsThriftService ThriftService where
-  mkThriftService (HostPort h p) ThriftServiceOptions{..} = Just $ ThriftService
-    { httpConfig = httpConfig
+  mkThriftService (HostPort h p) serviceOpts = Just $ ThriftService
+    { httpConfig = baseHttpConfig h (fromIntegral p) serviceOpts
     }
-    where
-    httpConfig = HTTPConfig
-      { httpHost = Text.encodeUtf8 h
-      , httpPort = fromIntegral p
-      , httpProtocolId = compactProtocolId
-      , httpResponseTimeout =
-          Just $ round (fromMaybe 30 processingTimeout * 1000000)
+  mkThriftService (Uri u_) serviceOpts
+    | Just u <- parseURI (Text.unpack u_)
+    , Just auth <- uriAuthority u
+    , uriScheme u `elem` ["http:", "https:"]
+    , Just port <- parsePort (uriScheme u) (uriPort auth)
+    = Just $ ThriftService
+      { httpConfig = (baseHttpConfig (Text.pack $ uriRegName auth) port serviceOpts)
+        { httpUseHttps = uriScheme u == "https:"
+        }
       }
+    where
+    parsePort :: String -> String -> Maybe Int
+    parsePort scheme port
+      | null port = Just $ if scheme == "https:" then 443 else 80
+      | otherwise = readMaybe (drop 1 port) -- port has an initial ':'
+
   mkThriftService _ _ = Nothing
 
   thriftServiceWithDbShard t _ = t

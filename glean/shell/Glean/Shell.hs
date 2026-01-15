@@ -1305,6 +1305,8 @@ reportService backend = case backendKind backend of
       Tier tier -> output $ "Using service " <> pretty tier
       HostPort host port ->
         output $ "Using service at " <> pretty host <> ":" <> pretty port
+      Uri uri ->
+        output $ "Using service at " <> pretty uri
       _ -> error "shouldn't happen"
 
 evalMain :: Config -> Maybe String -> Eval ()
