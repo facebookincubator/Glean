@@ -7,6 +7,10 @@
  */
 
 include "glean/glass/if/glass.thrift"
+include "thrift/annotation/thrift.thrift"
+
+@thrift.AllowLegacyMissingUris
+package;
 
 namespace hs Glean
 namespace py3 glean

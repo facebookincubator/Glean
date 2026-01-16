@@ -8,6 +8,11 @@
 
 // Test file to be used in Glass smoke test
 
+include "thrift/annotation/thrift.thrift"
+
+@thrift.AllowLegacyMissingUris
+package;
+
 namespace hack GleanGlass
 namespace py3 glean
 namespace cpp2 glean

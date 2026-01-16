@@ -10,6 +10,9 @@ include "glean/github/if/fb303.thrift"
 include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/thrift.thrift"
 
+@thrift.AllowLegacyMissingUris
+package;
+
 cpp_include "folly/FBString.h"
 
 hs_include "glean/if/glean_include.hs"

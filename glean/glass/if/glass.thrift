@@ -11,6 +11,9 @@ include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/hack.thrift"
 include "thrift/annotation/thrift.thrift"
 
+@thrift.AllowLegacyMissingUris
+package;
+
 namespace hs Glean
 namespace hack GleanGlass
 namespace py3 glean

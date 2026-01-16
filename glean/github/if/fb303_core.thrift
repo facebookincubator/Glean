@@ -8,6 +8,9 @@
 
 include "thrift/annotation/thrift.thrift"
 
+@thrift.AllowLegacyMissingUris
+package;
+
 enum fb303_status {
   DEAD = 0,
   STARTING = 1,

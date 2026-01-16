@@ -8,6 +8,10 @@
 
 include "glean/config/server/server_config.thrift"
 include "glean/if/glean.thrift"
+include "thrift/annotation/thrift.thrift"
+
+@thrift.AllowLegacyMissingUris
+package;
 
 namespace cpp2 facebook.glean.thrift.internal
 namespace hs Glean
