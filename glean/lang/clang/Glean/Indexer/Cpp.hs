@@ -16,6 +16,8 @@ import Control.Concurrent.Async
 import Control.Exception
 import Control.Monad
 import qualified Data.ByteString as BS
+import Data.List
+import Data.Maybe
 import Data.Proxy
 import Options.Applicative
 import qualified System.Console.ANSI as ANSI
@@ -64,9 +66,13 @@ data Clang = Clang
       -- ^ (optional) path to pre-existing @compile_commands.json@
   , clangTarget       :: Maybe String -- ^ (optional) target to index
   , clangJobs         :: Int -- ^ number of indexers to run concurrently
+  , clangBatch        :: Int -- ^ dump indexer output every N files
   , clangVerbose      :: Bool -- ^ display debugging information
   , clangProgress     :: Bool -- ^ display indexing progress
+  , clangCmakeOpts    :: [String] -- ^ extra flags to cmake
   , clangIncremental  :: Bool -- ^ use incremental derivation
+  , clangOutDir       :: Maybe FilePath -- ^ where to put output files
+  , clangSkipIndexing :: Bool -- ^ use existing indexer output files
   } deriving Show
 
 options :: Parser Clang
@@ -88,6 +94,11 @@ options = do
     long "jobs" <>
     value 1 <>
     help "run N indexers in parallel"
+  clangBatch <- option auto $
+    short 'n' <>
+    long "batch" <>
+    value 100 <>
+    help "index files in batches of N"
   clangVerbose <- switch $
     short 'v' <>
     long "verbose" <>
@@ -95,6 +106,17 @@ options = do
   clangProgress <- switch $
     long "progress" <>
     help "Display indexing progress even in verbose mode"
+  clangCmakeOpts <- many $ strOption $
+    long "cmake-opt" <>
+    help "Extra flag to pass to cmake"
+  clangOutDir <- optional $ strOption $
+    long "out" <>
+    metavar "DIR" <>
+    help "Directory to save indexer output"
+  clangSkipIndexing <- switch $
+    long "skip-indexing" <>
+    help ("If indexing has already been done, " <>
+      "use the existing indexer output files. Requires --out DIR")
   clangIncremental <- pure False -- internal, not a CLI flag
   return Clang{..}
 
@@ -118,20 +140,27 @@ indexerWith deriveToo = Indexer {
   indexerRun = \clang@Clang{..} backend repo IndexerParams{..} -> do
     -- indexing
     let tmpDir        = indexerOutput
+        buildDir      = indexerOutput </> "build"
+        outDir        = fromMaybe (indexerOutput </> "indexer") clangOutDir
         inventoryFile = tmpDir </> "inventory.data"
+    createDirectoryIfMissing True buildDir
+    createDirectoryIfMissing True outDir
     generateInventory backend repo inventoryFile
     compileDBDir <-
       case clangCompileDBDir of
         Nothing  ->
           case clangTarget of
-            Nothing -> cmake clangVerbose indexerRoot tmpDir >> return tmpDir
+            Nothing -> cmake clang indexerRoot buildDir >> return buildDir
             Just target -> do
               cdb <- runBuckFullCompilationDatabase target
               return $ takeDirectory cdb
         Just dir -> return dir
-    indexerData <-
-      index clang inventoryFile indexerRoot compileDBDir indexerOutput
-    writeToDB backend repo indexerData
+
+    index clang inventoryFile indexerRoot compileDBDir outDir
+
+    files <- map (outDir </>) . filter ("indexer-" `isPrefixOf`) <$>
+      listDirectory outDir
+    writeToDB backend repo files
 
     -- deriving
     when deriveToo $ do
@@ -171,12 +200,12 @@ indexerWith deriveToo = Indexer {
     generateInventory backend repo outFile =
       serializeInventory backend repo >>= BS.writeFile outFile
 
-    cmake verbose srcDir tmpDir = withExe "cmake" Nothing $ \cmakeBin ->
-      spawnAndConcurrentLog verbose cmakeBin
+    cmake Clang{..} srcDir tmpDir = withExe "cmake" Nothing $ \cmakeBin ->
+      spawnAndConcurrentLog clangVerbose cmakeBin $
         [ "-DCMAKE_EXPORT_COMPILE_COMMANDS=1"
         , "-S", srcDir
         , "-B", tmpDir
-        ]
+        ] <> clangCmakeOpts
 
     index Clang{..} inventory srcDir buildDir tmpDir =
       withExe "clang-index" clangIndexBin $ \clangIndex -> do
@@ -220,13 +249,15 @@ indexerWith deriveToo = Indexer {
           let dataFile i = tmpDir </> "indexer-" <> show i <> ".data"
               workerargs i = args ++
                 [ "-dump", dataFile i
+                , "-dump_every", show clangBatch
                 , "--work_file", wfile
                 , "--worker_index", show i
                 , "--worker_count", show workers
                 ]
           currentDir <- getCurrentDirectory
           let cdUp = not $ isPathPrefixOf currentDir buildDir
-          forConcurrently_ [0 .. workers-1] $ \i -> bracket
+          unless clangSkipIndexing $
+            forConcurrently_ [0 .. workers-1] $ \i -> bracket
             -- createProcess_ because we don't want the stdout/stderr handles
             -- to be closed
             (createProcess_
