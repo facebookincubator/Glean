@@ -10,7 +10,7 @@ module Glean.Glass.Regression.CppXLang (main) where
 
 import qualified Glean.Clang.Test.DerivePass as DerivePass
 
-import qualified Glean.Regression.Driver.DeriveForCodemarkup as Code
+import qualified Derive.Lib as DeriveLib
 import Glean.Indexer.Fbthrift as Fbthrift (indexer)
 import Glean.Glass.Regression.Snapshot (mainGlassSnapshotXLang)
 
@@ -19,6 +19,6 @@ main = mainGlassSnapshotXLang
   testName
     testPath (d, "test-xlang-source") (Fbthrift.indexer, "test-xlang-target")
   where
-    d = DerivePass.driver Code.codemarkupDerivePasses
+    d = DerivePass.driver DeriveLib.allCxxPasses
     testName = "glass-regression-cpp-xlang"
     testPath = "glean/glass/test/regression/tests/cpp-xlang"

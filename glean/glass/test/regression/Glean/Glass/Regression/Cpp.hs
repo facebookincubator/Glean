@@ -14,7 +14,7 @@ import Test.HUnit
 import Data.Bifunctor
 import Data.Text (Text)
 
-import qualified Glean.Regression.Driver.DeriveForCodemarkup as Code
+import qualified Derive.Lib as DeriveLib
 import Glean.Glass.Types
 import Glean.Glass.Regression.Tests
 import Glean.Glass.Regression.Snapshot
@@ -22,7 +22,7 @@ import Glean.Glass.Regression.Snapshot
 main :: IO ()
 main = mainGlassSnapshotGeneric testName testPath driver unitTests
   where
-    driver = DerivePass.driver Code.codemarkupDerivePasses
+    driver = DerivePass.driver DeriveLib.allCxxPasses
     testName = "glass-regression-cpp"
     testPath = "glean/glass/test/regression/tests/cpp"
 

@@ -22,7 +22,7 @@ import Glean.Regression.Snapshot (testMain)
 import Glean.Regression.Snapshot.Driver
 import qualified Glean.Clang.Test as Clang
 import qualified Glean.Clang.Test.DerivePass as DerivePass
-import qualified Glean.Regression.Driver.DeriveForCodemarkup as Code
+import qualified Derive.Lib as DeriveLib
 
 main :: IO ()
 main = testMain incrementalClangDriver
@@ -33,7 +33,7 @@ incrementalClangDriver = clangDriver {
     driverIndexer = driverIndexer clangDriver
   }
   where
-  clangDriver = DerivePass.driver Code.codemarkupDerivePasses
+  clangDriver = DerivePass.driver DeriveLib.allCxxPasses
 
   createDB opts backend indexer test = do
     let
