@@ -69,11 +69,7 @@ CXX_SOURCES_glean_cpp_lmdb = \
     glean/lmdb/ffi.cpp \
     glean/lmdb/glean_lmdb.cpp
 
-C_SOURCES_glean_cpp_lmdb = \
-    glean/lmdb/mdb.c \
-    glean/lmdb/midl.c
-
-CXX_FLAGS_glean_cpp_lmdb = -DOSS=1 -DMDB_MAXKEYSIZE=0
+CXX_FLAGS_glean_cpp_lmdb = -DOSS=1
 
 CXX_SOURCES_glean_cpp_client = \
     glean/cpp/filewriter.cpp \

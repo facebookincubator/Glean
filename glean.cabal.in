@@ -437,6 +437,7 @@ library lmdb
     build-depends:
         glean:storage,
         glean:rts,
+        lmdb-clib,
 
 library util
     import: fb-haskell, fb-cpp, deps, thrift-client
