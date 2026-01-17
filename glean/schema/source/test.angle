@@ -281,4 +281,7 @@ predicate FooToFoo : Foo -> Foo
 # To test predicates without facts
 predicate EmptyPred : string
 
+# For testing large keys
+predicate LargeKey : string
+
 }
