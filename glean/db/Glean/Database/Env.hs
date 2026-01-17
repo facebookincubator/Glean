@@ -89,7 +89,7 @@ withDatabases evb cfg cfgapi act =
 initEnv
   :: EventBaseDataplane
   -> HashMap StorageName (Some Storage.Storage)
-  -> StorageName
+  -> (StorageName, Bool)
   -> Catalog.Catalog
   -> SomeShardManager
   -> Config
@@ -222,7 +222,7 @@ spawnThreads env@Env{..} = do
 
   -- Disk usage counters
   Warden.spawn_ envWarden $ doPeriodically (seconds 600) $
-    withDefaultStorage env $ \storage -> do
+    withDefaultStorage env $ \_ storage -> do
     diskSize <- Storage.getTotalCapacity storage
     diskUsed <- Storage.getUsedCapacity storage
 

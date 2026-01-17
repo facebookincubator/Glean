@@ -58,7 +58,7 @@ withTEnv f = do
         { cfgDataStore = DataStore
             { withStorage = \_ f ->
                 f (HashMap.fromList [(name, Some storage)], Some catalog)
-            , defaultStorage = StorageName "memory"
+            , defaultStorage = (StorageName "memory", True)
             , dataStoreTag = "test"
             }
         }]
