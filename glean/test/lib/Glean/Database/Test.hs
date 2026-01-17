@@ -15,12 +15,15 @@ module Glean.Database.Test
   , setSchemaId
   , disableStrictSchemaId
   , setMemoryStorage
+  , setLMDBStorage
   , allStorage
   , setDBVersion
   , setCompactOnCompletion
   , setMaxSetSize
+  , setLMDBNoUnpack
   , enableTcDebug
   , enableQueryDebug
+  , enableRocksDBCache
   , withTestEnv
   , kickOffTestDB
   , waitUntilComplete
@@ -81,10 +84,15 @@ disableStrictSchemaId cfg = cfg {
 setMemoryStorage :: Setting
 setMemoryStorage cfg = cfg{ cfgDataStore = memoryDataStore }
 
+setLMDBStorage :: Setting
+setLMDBStorage cfg =
+  cfg{ cfgDataStore = tmpDataStore { defaultStorage = lmdbName }}
+
 allStorage :: [(String, [Setting])]
 allStorage =
   [
     ("rocksdb", []),
+    ("lmdb", [setLMDBStorage]),
     ("memory", [setMemoryStorage])
   ]
   ++
@@ -106,6 +114,11 @@ setMaxSetSize i cfg = cfg
   { cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
       { ServerConfig.config_max_set_size_bytes = Just i } }
 
+setLMDBNoUnpack :: Setting
+setLMDBNoUnpack cfg = cfg
+  { cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
+      { ServerConfig.config_db_lmdb_restore_unpack = False } }
+
 enableTcDebug :: Setting
 enableTcDebug cfg = cfg
   { cfgDebug = (cfgDebug cfg) { tcDebug = True } }
@@ -113,6 +126,13 @@ enableTcDebug cfg = cfg
 enableQueryDebug :: Setting
 enableQueryDebug cfg = cfg
   { cfgDebug = (cfgDebug cfg) { queryDebug = True } }
+
+enableRocksDBCache :: Setting
+enableRocksDBCache cfg = cfg
+  { cfgServerConfig = (cfgServerConfig cfg) <&> \scfg -> scfg
+      { ServerConfig.config_db_rocksdb_cache_mb =
+        ServerConfig.config_db_rocksdb_cache_mb def }
+  }
 
 withTestEnv
   :: [Setting]

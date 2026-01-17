@@ -32,6 +32,7 @@ import Glean.RTS.Foreign.Lookup (CanLookup(..), Lookup)
 import Glean.RTS.Foreign.Ownership hiding (computeDerivedOwnership)
 import Glean.RTS.Types (Fid, Pid)
 import Glean.ServerConfig.Types (DBVersion(..))
+import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types (PredicateStats, Repo, SchemaId)
 import Glean.Util.Some
 
@@ -120,6 +121,7 @@ class DatabaseOps (Database s) => Storage s where
   -- to reduce the number of copies of the DB on disk during a restore.
   restore
     :: s   -- ^ storage
+    -> ServerConfig.Config  -- ^ server config
     -> Repo  -- ^ repo
     -> FilePath  -- ^ scratch directory
     -> FilePath  -- ^ file containing the serialiased database (produced by 'backup')
@@ -202,6 +204,7 @@ class CanLookup db => DatabaseOps db where
   -- the operation completes.
   backup
     :: db  -- ^ database
+    -> ServerConfig.Config  -- ^ server config
     -> FilePath  -- ^ scratch directory
     -> (FilePath -> Data -> IO a)
           -- ^ function which expects the serialised database

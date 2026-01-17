@@ -315,6 +315,16 @@ struct Config {
   // How much of total memory capacity to use for rocksdb cache.
   // Overrides db_rocksdb_cache_mb if set.
   38: optional float db_rocksdb_cache_to_mem_ratio;
+
+  // Args to pass to mksquashfs when creating a backup of an LMDB
+  39: list<string> db_lmdb_mksquashfs_args =
+    [ "-comp", "zstd", "-Xcompression-level", "8" ];
+
+  // LMDB: unpack a restored DB. If false, the DB will be mounted using
+  // squashfs instead, which is more space-efficient but incurs a small
+  // runtime cost to decompress the DB on demand. Mounting requires
+  // squashfs-tools and squashfuse to be installed on Linux.
+  40: bool db_lmdb_restore_unpack = true;
 }
 
 // The following were automatically generated and may benefit from renaming.

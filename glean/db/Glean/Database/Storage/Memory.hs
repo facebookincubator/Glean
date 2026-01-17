@@ -79,7 +79,7 @@ instance Storage Memory where
   withScratchRoot _ f = withSystemTempDirectory "glean" f
 
   -- TODO
-  restore _ repo _ _ = dbError repo "unimplemented 'restore'"
+  restore _ _ repo _ _ = dbError repo "unimplemented 'restore'"
 
 instance CanLookup (Database Memory) where
   lookupName Database{..} = "memory:" <> repoToText dbRepo
@@ -117,4 +117,4 @@ instance DatabaseOps (Database Memory) where
   prepareFactOwnerCache _ = return ()
 
   -- TODO
-  backup db _ _ = dbError (dbRepo db) "unimplemented 'backup'"
+  backup db _ _ _ = dbError (dbRepo db) "unimplemented 'backup'"
