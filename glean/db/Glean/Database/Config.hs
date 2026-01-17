@@ -15,6 +15,7 @@ module Glean.Database.Config (
   tmpDataStore,
   memoryDataStore,
   rocksdbName,
+  lmdbName,
 
   -- * Config, and options parser
   options,
@@ -84,6 +85,7 @@ import Glean.Database.Schema.ComputeIds
 import Glean.Database.Storage
 import qualified Glean.Database.Storage.Memory as Memory
 import qualified Glean.Database.Storage.RocksDB as RocksDB
+import qualified Glean.Database.Storage.LMDB as LMDB
 import Glean.Database.Trace
 import qualified Glean.Internal.Types as Internal
 import Glean.Internal.Types (StorageName(..))
@@ -114,25 +116,30 @@ data DataStore = DataStore
       ServerConfig.Config ->
       ((HashMap StorageName (Some Storage), Some Catalog.Store) -> IO a) ->
       IO a
-  , defaultStorage :: StorageName
+  , defaultStorage :: (StorageName, Bool)
+    -- ^ Default storage, Bool => explicitly selected on CLI
+    -- (otherwise can be overriden by ServerConfig.config_db_create_storage)
   , dataStoreTag :: String
   }
 
-rocksdbName, memoryName :: StorageName
+rocksdbName, lmdbName, memoryName :: StorageName
 rocksdbName = StorageName "rocksdb"
+lmdbName = StorageName "lmdb"
 memoryName = StorageName "memory"
 
 fileDataStore :: FilePath -> DataStore
 fileDataStore path = DataStore
   { withStorage = \scfg f -> do
       rocksdb <- RocksDB.newStorage path scfg
+      lmdb <- LMDB.newStorage path scfg
       f (
         HashMap.fromList
-          [ (rocksdbName, Some rocksdb)
+          [ (rocksdbName, Some rocksdb),
+            (lmdbName, Some lmdb)
           ],
         Some (Catalog.fileCatalog path)
         )
-  , defaultStorage = rocksdbName
+  , defaultStorage = (rocksdbName, False)
   , dataStoreTag = "db:" <> path
   }
 
@@ -141,7 +148,7 @@ tmpDataStore = DataStore
   { withStorage = \scfg f -> withSystemTempDirectory "glean" $ \tmp -> do
       logInfo $ "Storing temporary DBs in " <> tmp
       withStorage (fileDataStore tmp) scfg f
-  , defaultStorage = rocksdbName
+  , defaultStorage = (rocksdbName, False)
   , dataStoreTag = dataStoreTag (fileDataStore "<tmp>")
   }
 
@@ -151,7 +158,7 @@ memoryDataStore = DataStore
       cat <- Catalog.memoryCatalog
       mem <- Memory.newStorage
       f (HashMap.fromList [(memoryName, Some mem)], Some cat)
-  , defaultStorage = memoryName
+  , defaultStorage = (memoryName, False)
   , dataStoreTag = "memory"
   }
 
@@ -511,7 +518,10 @@ options = do
         long "db-root" <>
         metavar "DIR" <>
         help "Directory containing databases")
-      pure $ fileDataStore path
+      lmdb <- switch (long "lmdb")
+      pure $
+        (if lmdb then \s -> s { defaultStorage = (lmdbName, True) } else id) $
+        fileDataStore path
     dbTmp = tmpDataStore <$ flag' () (
       long "db-tmp" <>
       help "Store databases in a temporary directory (default)")
