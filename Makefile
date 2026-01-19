@@ -343,3 +343,11 @@ $(BUILD_DIR)/current.sh: force
 .PHONY: install
 install::
 	mkdir -p $(PREFIX)
+
+.PHONY: setup-folly
+setup-folly::
+	$(MAKE) -C hsthrift setup-folly
+
+.PHONY: setup-folly-version
+setup-folly-version::
+	$(MAKE) -C hsthrift setup-folly-version
