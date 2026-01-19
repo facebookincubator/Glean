@@ -330,7 +330,8 @@ library if-index-hs
         Glean.Index.GleanIndexingService.Client
         Glean.Index.GleanIndexingService.Service
     build-depends:
-        glean:if-glean-hs
+        glean:if-glean-hs,
+        glean:thrift-annotation
 
 library if-internal-hs
     import: fb-haskell, fb-cpp, deps
@@ -341,7 +342,8 @@ library if-internal-hs
         Glean.Internal.Types
     build-depends:
         glean:config,
-        glean:if-glean-hs
+        glean:if-glean-hs,
+        glean:thrift-annotation
 
 library rts
     import: fb-haskell, fb-cpp, deps, folly
