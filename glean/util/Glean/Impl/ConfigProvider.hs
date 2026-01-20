@@ -18,8 +18,8 @@ module Glean.Impl.ConfigProvider (
 
 import Control.Concurrent
 import Control.Exception
+import Data.Maybe (fromMaybe)
 import qualified Data.ByteString as ByteString
-import qualified Data.ByteString.Char8 as BC
 import Data.ByteString (ByteString)
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
@@ -29,17 +29,22 @@ import Options.Applicative
 import System.Directory
 import System.FilePath
 import System.IO.Error
-import System.INotify
+
+import qualified System.FSNotify as FSNotify
 
 import Util.Control.Exception
+import Util.Concurrent
 
 import Glean.Util.ConfigProvider
 
 data ConfigAPI = ConfigAPI
-  { opts :: LocalConfigOptions
-  , inotify :: INotify
+  { canonConfigDir :: FilePath
+  , opts :: LocalConfigOptions
+  -- ^ Canonicalized configuration directory (since the file watcher will
+  -- likely canonicalize paths).
+  , watchManager :: FSNotify.WatchManager
   , subscriptions ::
-      MVar (HashMap ConfigPath (WatchDescriptor, [ByteString -> IO ()]))
+      IO (MVar (HashMap ConfigPath [ByteString -> IO ()]))
   }
 
 newtype LocalConfigOptions = LocalConfigOptions
@@ -57,6 +62,22 @@ newtype ConfigProviderException = ConfigProviderException Text
 
 instance Exception ConfigProviderException
 
+-- | Whether to accept a FS event for a given path
+acceptEvent :: FSNotify.Event -> Bool
+acceptEvent (FSNotify.Added _path _time FSNotify.IsFile) = True
+acceptEvent (FSNotify.Modified _path _time FSNotify.IsFile) = True
+-- Included for documentation of intent
+acceptEvent (FSNotify.Removed _path _time _isDir) = False
+acceptEvent (FSNotify.ModifiedAttributes _path _time _isDir) = False
+acceptEvent _ = False
+
+onEvent :: MVar (HashMap ConfigPath [ByteString -> IO ()]) -> FilePath -> IO ()
+onEvent subs path = do
+  callbacks <- fromMaybe [] . HashMap.lookup (Text.pack path) <$> readMVar subs
+  contents <- ByteString.readFile path
+  mapM_ ($ contents) callbacks
+    `catchAll` \_ -> return ()
+
 instance ConfigProvider ConfigAPI where
   configOptions = do
     configDir <- optional $ strOption
@@ -70,46 +91,42 @@ instance ConfigProvider ConfigAPI where
   defaultConfigOptions = LocalConfigOptions { configDir = Nothing }
 
   withConfigProvider opts f =
-    withINotify $ \inotify -> do
+    FSNotify.withManager $ \watchManager -> do
       subs <- newMVar HashMap.empty
-      f (ConfigAPI opts inotify subs)
+      -- fsnotify seems to give us canonicalized absolute paths back; we would
+      -- like to look things up by the paths it gives us, so we need to have
+      -- our own paths be canonicalized and absolute as well.
+      canonConfigDir <- canonicalizePath =<< getDir opts
+      -- Defer watcher startup until someone actually subscribes to an event
+      -- (notably, proving that the config directory actually exists so that we
+      -- can watch it, as watching a nonexistent directory on Linux is an
+      -- error).
+      subs' <- cacheSuccess
+        (subs <$ FSNotify.watchTree watchManager canonConfigDir acceptEvent (\ev -> onEvent subs (FSNotify.eventPath ev)))
+      let cfg = ConfigAPI canonConfigDir opts watchManager subs'
+      f cfg
 
   type Subscription ConfigAPI = LocalSubscription
 
   subscribe cfg@ConfigAPI{..} path updated deserializer = do
     a <- get cfg path deserializer
     updated a
-    dir <- getDir opts
-    modifyMVar_ subscriptions $ \hm -> do
-      let
-        changed contents =
-          deserialize path deserializer contents >>= updated
-      case HashMap.lookup path hm of
-        Just (watch, others) ->
-          return $ HashMap.insert path (watch, changed:others) hm
-        Nothing -> do
-          let file = BC.pack $ dir </> Text.unpack path
-          watch <- addWatch inotify [Modify,MoveIn,Create] file $ \_events -> do
-            callbacks <- withMVar subscriptions $ \hm -> do
-              case HashMap.lookup path hm of
-                Nothing -> return []
-                Just (_, callbacks) -> return callbacks
-            contents <- ByteString.readFile (dir </> Text.unpack path)
-            mapM_ ($ contents) callbacks
-              `catchAll` \_ -> return ()
-          return $ HashMap.insert path (watch, [changed]) hm
+    let absPath = Text.pack $ canonConfigDir </> Text.unpack path
+    subscriptions >>= \subs -> modifyMVar_ subs $ \hm ->
+      let changed contents =
+            deserialize path deserializer contents >>= updated
+      in pure $ HashMap.insertWith (<>) absPath [changed] hm
     return LocalSubscription
 
   cancel _ _ = return () -- unimplemented for now
 
   get ConfigAPI{..} path deserializer = do
-    dir <- getDir opts
-    contents <- ByteString.readFile (dir </> Text.unpack path)
+    contents <- ByteString.readFile (canonConfigDir </> Text.unpack path)
       `catch` \e ->
         if isDoesNotExistError e
           then throwIO $ ConfigProviderException $
             "no config for " <> path <> " at " <>
-              Text.pack (dir </> Text.unpack path)
+              Text.pack (canonConfigDir </> Text.unpack path)
           else
             throwIO e
     deserialize path deserializer contents
