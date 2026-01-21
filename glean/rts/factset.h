@@ -233,14 +233,16 @@ struct FactSet final : public Define {
     return begin() +
         (id <= facts.startingId()
              ? 0
-             : std::min(distance(facts.startingId(), id), facts.size()));
+             : std::min(
+                   distance(facts.startingId(), id), uint64_t(facts.size())));
   }
 
   const_iterator upper_bound(Id id) const {
     return begin() +
-        (id < facts.startingId()
-             ? 0
-             : std::min(distance(facts.startingId(), id) + 1, facts.size()));
+        (id < facts.startingId() ? 0
+                                 : std::min(
+                                       distance(facts.startingId(), id) + 1,
+                                       uint64_t(facts.size())));
   }
 
   /// Return the number of bytes occupied by facts.

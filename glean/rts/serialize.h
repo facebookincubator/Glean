@@ -22,6 +22,16 @@ namespace serialize {
 inline void put(binary::Output& o, uint64_t i) {
   o.nat(i);
 }
+// Note [size_t differences]:
+// Since size_t != uint64_t on macOS, we will have a whole lot of headaches if
+// we don't define an overload so code serializing size_ts just works, but we
+// can't do it on Linux because it will be duplicated. I don't think I can fix
+// this with a template.
+#if __APPLE__
+inline void put(binary::Output& o, size_t i) {
+  o.nat(i);
+}
+#endif
 inline void put(binary::Output& o, uint32_t i) {
   o.nat(i);
 }
@@ -105,6 +115,12 @@ void put(binary::Output& o, const std::shared_ptr<T>& s) {
 inline void get(binary::Input& i, uint64_t& r) {
   r = i.untrustedNat();
 }
+// See Note [size_t differences].
+#if __APPLE__
+inline void get(binary::Input& i, size_t& r) {
+  r = i.untrustedNat();
+}
+#endif
 inline void get(binary::Input& i, uint32_t& r) {
   r = i.untrustedNat();
 }
