@@ -15,12 +15,15 @@ module Glean.Database.Test
   , setSchemaId
   , disableStrictSchemaId
   , setMemoryStorage
+  , setLMDBStorage
   , allStorage
   , setDBVersion
   , setCompactOnCompletion
   , setMaxSetSize
+  , setLMDBNoUnpack
   , enableTcDebug
   , enableQueryDebug
+  , enableRocksDBCache
   , withTestEnv
   , kickOffTestDB
   , waitUntilComplete
@@ -45,6 +48,7 @@ import Glean.Database.Config
 import Glean.Database.Env
 import Glean.Database.Write.Batch
 import Glean.Database.Storage (DBVersion(..), currentVersion, writableVersions)
+import Glean.Database.Storage.RocksDB
 import Glean.Database.Types
 import qualified Glean.Internal.Types as Thrift
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -81,15 +85,21 @@ disableStrictSchemaId cfg = cfg {
 setMemoryStorage :: Setting
 setMemoryStorage cfg = cfg{ cfgDataStore = memoryDataStore }
 
+setLMDBStorage :: Setting
+setLMDBStorage cfg =
+  cfg{ cfgDataStore = tmpDataStore { defaultStorage = (lmdbName, True) }}
+
 allStorage :: [(String, [Setting])]
 allStorage =
   [
     ("rocksdb", []),
+    ("lmdb", [setLMDBStorage]),
     ("memory", [setMemoryStorage])
   ]
   ++
   [ ("rocksdb-" ++ show (unDBVersion v), [setDBVersion v])
-    | v <- writableVersions, v /= currentVersion ]
+    | v <- writableVersions (undefined :: RocksDB)
+    , v /= currentVersion (undefined :: RocksDB) ]
 
 setDBVersion :: ServerConfig.DBVersion -> Setting
 setDBVersion ver cfg = cfg
@@ -106,6 +116,11 @@ setMaxSetSize i cfg = cfg
   { cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
       { ServerConfig.config_max_set_size_bytes = Just i } }
 
+setLMDBNoUnpack :: Setting
+setLMDBNoUnpack cfg = cfg
+  { cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
+      { ServerConfig.config_db_lmdb_restore_unpack = False } }
+
 enableTcDebug :: Setting
 enableTcDebug cfg = cfg
   { cfgDebug = (cfgDebug cfg) { tcDebug = True } }
@@ -113,6 +128,13 @@ enableTcDebug cfg = cfg
 enableQueryDebug :: Setting
 enableQueryDebug cfg = cfg
   { cfgDebug = (cfgDebug cfg) { queryDebug = True } }
+
+enableRocksDBCache :: Setting
+enableRocksDBCache cfg = cfg
+  { cfgServerConfig = (cfgServerConfig cfg) <&> \scfg -> scfg
+      { ServerConfig.config_db_rocksdb_cache_mb =
+        ServerConfig.config_db_rocksdb_cache_mb def }
+  }
 
 withTestEnv
   :: [Setting]
