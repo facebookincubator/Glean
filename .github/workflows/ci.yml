@@ -169,7 +169,7 @@ jobs:
         run: echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS --index-state=${{ matrix.index-state }}" >>"$GITHUB_ENV"
 
       - name: Install hsthrift and Glean dependencies
-        run: apt-get install -y pkg-config rsync libgmock-dev libpcre3-dev libtinfo-dev libxxhash-dev
+        run: apt-get install -y pkg-config rsync libgmock-dev libpcre3-dev libtinfo-dev libxxhash-dev squashfs-tools
 
       - name: Build hsthrift and Glean
         run: make
