@@ -16,7 +16,7 @@ import qualified Data.Text as Text
 
 import Glean
 import Glean.Backend.Types (loadPredicates)
-import Glean.Database.Test (withEmptyTestDB, completeTestDB)
+import Glean.Database.Test
 import Glean.Database.Open
 import Glean.Database.Write.Batch
 import qualified Glean.Schema.Sys.Types as Sys
@@ -26,9 +26,20 @@ import qualified Glean.Schema.Sys as Sys
 import qualified Glean.Schema.Cxx1 as Cxx
 import qualified Glean.Schema.GleanTest as Glean.Test
 import Glean.Typed
+import Glean.Util.Benchmark
 
-withBenchDB :: Int -> (forall b . Backend b => b -> Repo -> IO a) -> IO a
-withBenchDB num act = withEmptyTestDB [] $ \env repo -> do
+withBenchDB
+  :: GleanBenchConfig
+  -> Int
+  -> (forall b . Backend b => b -> Repo -> IO a)
+  -> IO a
+withBenchDB conf num act = do
+  let
+    settings
+      | useLMDB conf = [setLMDBStorage]
+      | otherwise = []
+
+  withEmptyTestDB settings $ \env repo -> do
   withOpenDatabase env repo $ \odb ->
     void $ return odb
 
