@@ -1,0 +1,32 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
+schema python.xrefs.1 {
+import builtin.1
+import python.4
+import src
+
+
+type XRefDefinitionLocation = {
+    name: python.Name,
+    file: maybe src.File,
+}
+
+type XRef = {
+    target: XRefDefinitionLocation,
+    source: src.ByteSpan,
+}
+
+predicate XRefsByFile:
+{
+    file: src.File,
+    xrefs: [XRef]
+}
+
+predicate XRefsByTarget:
+{
+    target: python.DeclarationLocation,
+    file: src.File,
+    spans: [src.ByteSpan]
+}
+
+}
