@@ -87,9 +87,14 @@ struct Subroutine {
       alignas(Activation) unsigned char buf[byteSize(sub)];
       struct Guard {
         Activation* ptr;
+        explicit Guard(Activation* p) : ptr(p) {}
         ~Guard() {
           ptr->~Activation();
         }
+        Guard(const Guard&) = delete;
+        Guard& operator=(const Guard&) = delete;
+        Guard(Guard&&) = delete;
+        Guard& operator=(Guard&&) = delete;
       };
       Guard guard{new (buf) Activation(sub, context)};
       return std::forward<F>(f)(*guard.ptr);
