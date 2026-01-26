@@ -9,6 +9,7 @@
 {-# LANGUAGE QuasiQuotes #-}
 module TimeoutTest (main) where
 
+import Data.Default
 import Test.HUnit
 
 import TestRunner
@@ -21,7 +22,7 @@ import qualified Glean.Schema.GleanTest.Types as Glean.Test
 import BenchDB
 
 timeoutTest :: Test
-timeoutTest = TestCase $ withBenchDB 10000 $ \env repo -> do
+timeoutTest = TestCase $ withBenchDB def 10000 $ \env repo -> do
   -- The test spends most of its time building the DB (withBenchDB above),
   -- so to keep things reasonable in debug mode we limit the number of
   -- facts to 10K and set the time limit to 1ms which is as low as we

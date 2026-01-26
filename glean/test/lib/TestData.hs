@@ -15,6 +15,7 @@ module TestData
   ) where
 
 import Data.Default
+import qualified Data.Text as Text
 
 import Glean.Typed
 import Glean.Types
@@ -188,6 +189,10 @@ mkTestFacts first second = do
   bar2 <- makeFactV @Glean.Test.Bar "bar2" qux2
   foo2 <- makeFactV @Glean.Test.Foo "foo2" bar2
   first $ makeFactV_ @Glean.Test.FooToFoo foo1 foo2
+
+  -- Testing large keys. LMDB indexes the first ~2kB of the key
+  let strings = [ Text.replicate n "x" | n <- [1000..2500] ]
+  mapM_ (makeFact @Glean.Test.LargeKey) strings
 
 testFacts :: NewFact m => m ()
 testFacts = mkTestFacts id id
