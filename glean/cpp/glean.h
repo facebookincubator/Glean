@@ -464,6 +464,7 @@ class BatchBase {
       const SchemaInventory* inventory,
       size_t cache_capacity,
       std::string schemaId);
+  ~BatchBase() = default;
   BatchBase(const BatchBase&) = delete;
   BatchBase(BatchBase&&) = delete;
   BatchBase& operator=(const BatchBase&) = delete;

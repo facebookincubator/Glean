@@ -10,11 +10,13 @@
 
 #include "glean/cpp/glean.h"
 
+#include <folly/Utility.h>
+
 namespace facebook {
 namespace glean {
 
-struct Sender {
-  virtual ~Sender() {}
+struct Sender : folly::NonCopyableNonMovable {
+  virtual ~Sender() = default;
 
   // If we called rebaseAndSend previously, check if we have a response from
   // the server (or wait for it if 'wait' is true) and rebase the batch (i.e.,
