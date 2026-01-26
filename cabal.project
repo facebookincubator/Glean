@@ -12,6 +12,7 @@ packages:
     glean.cabal
     glean/lang/clang/glean-clang.cabal
     glean/lsp
+    glean/lmdb-clib
 
 optional-packages:
     hsthrift/folly-clib/folly-clib.cabal
@@ -50,6 +51,9 @@ package thrift-http
 
 -- Assertions and debug symbols on for dev builds
 package glean
+    flags: -opt
+
+package lmdb-clib
     flags: -opt
 
 package fb-util

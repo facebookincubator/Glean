@@ -15,6 +15,7 @@ module Glean.Database.Config (
   tmpDataStore,
   memoryDataStore,
   rocksdbName,
+  lmdbName,
 
   -- * Config, and options parser
   options,
@@ -84,6 +85,7 @@ import Glean.Database.Schema.ComputeIds
 import Glean.Database.Storage
 import qualified Glean.Database.Storage.Memory as Memory
 import qualified Glean.Database.Storage.RocksDB as RocksDB
+import qualified Glean.Database.Storage.LMDB as LMDB
 import Glean.Database.Trace
 import qualified Glean.Internal.Types as Internal
 import Glean.Internal.Types (StorageName(..))
@@ -118,17 +120,20 @@ data DataStore = DataStore
   , dataStoreTag :: String
   }
 
-rocksdbName, memoryName :: StorageName
+rocksdbName, lmdbName, memoryName :: StorageName
 rocksdbName = StorageName "rocksdb"
+lmdbName = StorageName "lmdb"
 memoryName = StorageName "memory"
 
 fileDataStore :: FilePath -> DataStore
 fileDataStore path = DataStore
   { withStorage = \scfg f -> do
       rocksdb <- RocksDB.newStorage path scfg
+      lmdb <- LMDB.newStorage path scfg
       f (
         HashMap.fromList
-          [ (rocksdbName, Some rocksdb)
+          [ (rocksdbName, Some rocksdb),
+            (lmdbName, Some lmdb)
           ],
         Some (Catalog.fileCatalog path)
         )
@@ -511,7 +516,10 @@ options = do
         long "db-root" <>
         metavar "DIR" <>
         help "Directory containing databases")
-      pure $ fileDataStore path
+      lmdb <- switch (long "lmdb")
+      pure $
+        (if lmdb then \s -> s { defaultStorage = lmdbName } else id) $
+        fileDataStore path
     dbTmp = tmpDataStore <$ flag' () (
       long "db-tmp" <>
       help "Store databases in a temporary directory (default)")
