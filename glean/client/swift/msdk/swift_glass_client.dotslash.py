@@ -15,6 +15,7 @@ dotslash.export_fbcode_build(
         dotslash.InstallPlatform.LINUX_X86_64,
         dotslash.InstallPlatform.LINUX_AARCH64,
         dotslash.InstallPlatform.MAC,
+        dotslash.InstallPlatform.MAC_AARCH64,
     },
     oncall="swift_lsp",
 )
