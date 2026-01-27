@@ -132,6 +132,9 @@ struct Usets {
     std::swap(usets, other.usets);
     stats = other.stats;
   }
+  Usets(const Usets&) = delete;
+  Usets& operator=(const Usets&) = delete;
+  Usets& operator=(Usets&&) = delete;
 
   ~Usets() {
     // We can't delete the Usets before destroying the `usets` map because

@@ -10,6 +10,8 @@
 
 #include <boost/dynamic_bitset.hpp>
 
+#include <folly/Utility.h>
+
 #include "glean/rts/fact.h"
 #include "glean/rts/lookup.h"
 #include "glean/rts/ownership.h"
@@ -125,8 +127,8 @@ std::unique_ptr<Slice> slice(
 // each Lookup in the stack.
 //
 template <typename Slice>
-struct Sliced : Lookup {
-  ~Sliced() override {}
+struct Sliced : Lookup, folly::NonCopyableNonMovable {
+  ~Sliced() override = default;
 
   Sliced(Lookup* base, Slice slice) : base_(base), slice_(std::move(slice)) {}
 
