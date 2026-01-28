@@ -72,10 +72,17 @@ parseWriteOpts = do
     factsSource
   }
 
-data FactsSource = Locations [Text] | Files [FilePath]
+data FactsSource
+  = Locations [Text] Bool
+  -- ^ remote locations, async
+  | Files [FilePath]
+  -- ^ local files
 
 factsSourceOpts :: Parser FactsSource
-factsSourceOpts = Files <$> fileArg <|> Locations <$> locationOpt
+factsSourceOpts = locations <|> files
+  where
+    locations = Locations <$> locationOpt <*> asyncOpt
+    files = Files <$> fileArg
 
 fileArg :: Parser [FilePath]
 fileArg = many $ strArgument
@@ -89,6 +96,14 @@ locationOpt = many $ strOption
   (  long "location"
   <> metavar "LOCATION"
   <> help "Location(s) of facts to be downloaded and written to the db"
+  )
+
+asyncOpt :: Parser Bool
+asyncOpt = switch
+  (  long "async"
+  <> help ("Don't wait till write is complete. "
+  <> "Can be used only with --location. "
+  <> "All writes are guaranteed to finish before db completes")
   )
 
 finishOpt :: Parser Bool
@@ -143,7 +158,8 @@ instance Plugin WriteCommand where
     write WriteOpts{..} = do
       case factsSource of
         Files writeFiles -> writeBatches writeFiles WriteOpts{..}
-        Locations locations -> writeBatchDescriptors locations WriteOpts{..}
+        Locations locations async
+          -> writeBatchDescriptors locations async WriteOpts{..}
     writeBatches writeFiles WriteOpts{useLocalCache = True, ..} = do
       dbSchema <- loadDbSchema backend writeRepo
       logMessages <- newTQueueIO
@@ -214,24 +230,33 @@ instance Plugin WriteCommand where
           atomically (flushTQueue logMessages) >>= mapM_ putStrLn
           return ()
       atomically (flushTQueue logMessages) >>= mapM_ putStrLn
-    writeBatchDescriptors locations WriteOpts{..} = do
+
+    writeBatchDescriptors locations False WriteOpts{..} = do
       logMessages <- newTQueueIO
       let settings = sendAndRebaseQueueSendQueueSettings sendQueueSettings
       Glean.withSendQueue backend writeRepo settings $ \queue ->
         stream writeMaxConcurrency (forM_ locations) $ \location -> do
-          let batchDescriptor = Thrift.BatchDescriptor {
-            Thrift.batchDescriptor_location = location,
-            Thrift.batchDescriptor_format = batchFormat writeFileFormat}
+          let descriptor = batchDescriptor location writeFileFormat
           atomically
-            $ Glean.writeSendQueueDescriptor queue batchDescriptor $ \_ ->
+            $ Glean.writeSendQueueDescriptor queue descriptor $ \_ ->
               writeTQueue logMessages $ "Wrote " <> Text.unpack location
           atomically (flushTQueue logMessages) >>= mapM_ putStrLn
           return ()
       atomically (flushTQueue logMessages) >>= mapM_ putStrLn
 
+    -- Send directly without the client queue as we're writing asynchronously.
+    writeBatchDescriptors locations True WriteOpts{..} = do
+      stream writeMaxConcurrency (forM_ locations) $ \location -> do
+        let descriptor = batchDescriptor location writeFileFormat
+        Glean.sendBatchDescriptor backend writeRepo descriptor False
+        return ()
     batchFormat writeFileFormat = case writeFileFormat of
       BinaryFormat -> Thrift.BatchFormat_Binary
       JsonFormat -> Thrift.BatchFormat_JSON
+    batchDescriptor location fileFormat = Thrift.BatchDescriptor
+      { Thrift.batchDescriptor_location = location
+      , Thrift.batchDescriptor_format = batchFormat fileFormat
+      }
     resultToFailure Right{} = Nothing
     resultToFailure (Left err) = Just (show err)
 

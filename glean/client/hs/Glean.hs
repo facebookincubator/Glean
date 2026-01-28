@@ -189,6 +189,9 @@ module Glean
   , SendJsonBatch(..)
   , JsonFactBatch(..)
 
+  -- ** Writing with batch locations
+  , sendBatchDescriptor
+
   -- * Misc
   , showUserQueryStats
   , databases
