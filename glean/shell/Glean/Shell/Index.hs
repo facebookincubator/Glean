@@ -102,7 +102,7 @@ load repo files = withBackend $ \be ->  liftIO $ do
   Glean.fillDatabase be repo Nothing onExisting $
     forM_ parsedFiles $ \(batches, schema_id) -> do
       let opts = schemaIdToOpts schema_id
-      Glean.sendJsonBatch be repo batches opts
+      Glean.sendJsonBatchAndWait be repo batches opts
 
 create :: Glean.Repo -> Eval ()
 create repo = withBackend $ \be ->  liftIO $ do

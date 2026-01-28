@@ -281,10 +281,10 @@ sendFromQueue backend repo settings sq = do
           BatchDescriptor descriptor -> SendQueueSendingDescriptor descriptor
         start <- getTimePoint
         handle <- case batch of
-          BinaryBatch bin -> sendBatchAsync backend repo bin
-          JsonBatch _ json -> sendJsonBatchAsync backend repo json Nothing
+          BinaryBatch bin -> sendBatch backend repo bin True
+          JsonBatch _ json -> sendJsonBatch backend repo json Nothing True
           BatchDescriptor descriptor
-            -> sendBatchDescriptorAsync backend repo descriptor
+            -> sendBatchDescriptor backend repo descriptor True
         atomically $ writeTQueue (sqWaitQueue sq) Wait
           { waitHandle = handle
           , waitStart = start

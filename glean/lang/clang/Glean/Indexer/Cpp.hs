@@ -43,7 +43,7 @@ import qualified Thrift.Server.HTTP as ThriftServer
 #endif
 
 import Glean
-  ( sendBatch
+  ( sendBatchAndWait
   , clientConfig_serv
   , showRepo
   , completePredicates
@@ -285,7 +285,7 @@ indexerWith deriveToo = Indexer {
       dat <- BS.readFile dataFile
       case deserializeGen (Proxy :: Proxy Compact) dat of
         Left parseError -> error parseError
-        Right batch     -> sendBatch backend repo batch
+        Right batch     -> sendBatchAndWait backend repo batch
 
     derive verbose deriveBin backend repo =
       withExe "clang-derive" deriveBin $ \clangDerive -> do

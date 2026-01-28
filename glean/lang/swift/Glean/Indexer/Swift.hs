@@ -86,5 +86,5 @@ sendBatch backend repo factFile = do
     case deserializeGen (Proxy :: Proxy Compact) dat of
       Left parseError -> error parseError
       Right batch     -> do
-        _subst <- Glean.sendBatch backend repo batch
+        _subst <- Glean.sendBatchAndWait backend repo batch
         return ()

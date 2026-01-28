@@ -182,10 +182,10 @@ module Glean
   , withBatchWriter
 
   -- ** Writing binary
-  , sendBatch
+  , sendBatchAndWait
 
   -- ** Writing JSON
-  , sendJsonBatch
+  , sendJsonBatchAndWait
   , SendJsonBatch(..)
   , JsonFactBatch(..)
 

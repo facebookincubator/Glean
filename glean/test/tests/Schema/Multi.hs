@@ -620,7 +620,7 @@ schemaMismatch = TestCase $
                 [ [s| { "key" : { "a" : "abc" }} |] ]
             ]
         -- don't use syncWriteJsonBatch, it doesn't check the schema ID
-        r <- try $ sendJsonBatch env repo facts (Just def {
+        r <- try $ sendJsonBatchAndWait env repo facts (Just def {
           sendJsonBatchOptions_schema_id = Just (SchemaId "v0") })
         assertBool "schema mismatch" $ case r of
           Left (e :: SomeException) ->

@@ -65,7 +65,7 @@ import Text.Printf
 
 import Util.EventBase
 
-import Glean hiding (finalize, sendJsonBatch)
+import Glean hiding (finalize)
   -- we will provide versions of finalize and sendJsonBatch that are
   -- more efficient with local DBs.
 import qualified Glean
@@ -289,4 +289,4 @@ sendJsonBatch backend repo batches opts = do
   case backendKind backend of
     -- syncWriteJsonBatch is faster than polling if we have local DBs.
     BackendEnv env -> syncWriteJsonBatch env repo batches opts
-    _ -> void $ Glean.sendJsonBatch backend repo batches opts
+    _ -> void $ Glean.sendJsonBatchAndWait backend repo batches opts

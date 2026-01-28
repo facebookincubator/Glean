@@ -11,12 +11,12 @@
 -- asynchronous write API, by doing polling and waiting as necessary.
 --
 module Glean.Write.SendBatch
-  ( sendBatch
-  , sendBatchAsync
+  ( sendBatchAndWait
+  , sendBatch
+  , sendJsonBatchAndWait
   , sendJsonBatch
-  , sendJsonBatchAsync
+  , sendBatchDescriptorAndWait
   , sendBatchDescriptor
-  , sendBatchDescriptorAsync
   , waitBatch
   ) where
 
@@ -28,48 +28,44 @@ import System.Time.Extra
 import Glean.Backend.Types
 import qualified Glean.Types as Thrift
 
-sendBatch
+sendBatchAndWait
   :: Backend be
   => be
   -> Thrift.Repo
   -> Thrift.Batch
   -> IO Thrift.Subst
-sendBatch backend repo batch = do
-  handle <- sendBatchAsync backend repo batch
+sendBatchAndWait backend repo batch = do
+  handle <- sendBatch backend repo batch True
   waitBatch backend handle
 
-sendBatchAsync
+sendBatch
   :: Backend be
   => be
   -> Thrift.Repo
   -> Thrift.Batch
+  -> Bool
   -> IO Thrift.Handle
-sendBatchAsync backend repo batch = do
-  r <- enqueueBatch backend $ Thrift.ComputedBatch repo True batch
+sendBatch backend repo batch remember = do
+  r <- enqueueBatch backend $ Thrift.ComputedBatch repo remember batch
   case r of
     Thrift.SendResponse_handle h -> return h
     Thrift.SendResponse_retry (Thrift.BatchRetry r) ->
-      retry r $ sendBatchAsync backend repo batch
+      retry r $ sendBatch backend repo batch remember
 
-sendJsonBatchAsync
+sendJsonBatchAndWait
   :: Backend be
   => be
   -> Thrift.Repo
   -> [Thrift.JsonFactBatch]
   -> Maybe Thrift.SendJsonBatchOptions
-  -> IO Thrift.Handle
-sendJsonBatchAsync backend repo batches opts = do
-  r <- try $ enqueueJsonBatch backend repo
-    Thrift.SendJsonBatch
-      { Thrift.sendJsonBatch_batches = batches
-      , Thrift.sendJsonBatch_options = opts
-      , Thrift.sendJsonBatch_remember = True }
-  case r of
-    Right Thrift.SendJsonBatchResponse{..} ->
-      return sendJsonBatchResponse_handle
-    Left Thrift.Retry{..} ->
-      retry retry_seconds $
-        sendJsonBatchAsync backend repo batches opts
+  -> IO Thrift.Subst
+sendJsonBatchAndWait backend repo batches opts = do
+  handle <- sendJsonBatch backend repo batches opts True
+  -- Cope with talking to an old server where this API was synchronous
+  -- and didn't return a handle.
+  if Text.null handle
+    then return def
+    else waitBatch backend handle
 
 sendJsonBatch
   :: Backend be
@@ -77,11 +73,29 @@ sendJsonBatch
   -> Thrift.Repo
   -> [Thrift.JsonFactBatch]
   -> Maybe Thrift.SendJsonBatchOptions
+  -> Bool
+  -> IO Thrift.Handle
+sendJsonBatch backend repo batches opts remember = do
+  r <- try $ enqueueJsonBatch backend repo
+    Thrift.SendJsonBatch
+      { Thrift.sendJsonBatch_batches = batches
+      , Thrift.sendJsonBatch_options = opts
+      , Thrift.sendJsonBatch_remember = remember }
+  case r of
+    Right Thrift.SendJsonBatchResponse{..} ->
+      return sendJsonBatchResponse_handle
+    Left Thrift.Retry{..} ->
+      retry retry_seconds $
+        sendJsonBatch backend repo batches opts remember
+
+sendBatchDescriptorAndWait
+  :: Backend be
+  => be
+  -> Thrift.Repo
+  -> Thrift.BatchDescriptor
   -> IO Thrift.Subst
-sendJsonBatch backend repo batches opts = do
-  handle <- sendJsonBatchAsync backend repo batches opts
-  -- Cope with talking to an old server where this API was synchronous
-  -- and didn't return a handle.
+sendBatchDescriptorAndWait backend repo descriptor = do
+  handle <- sendBatchDescriptor backend repo descriptor True
   if Text.null handle
     then return def
     else waitBatch backend handle
@@ -91,29 +105,20 @@ sendBatchDescriptor
   => be
   -> Thrift.Repo
   -> Thrift.BatchDescriptor
-  -> IO Thrift.Subst
-sendBatchDescriptor backend repo descriptor = do
-  handle <- sendBatchDescriptorAsync backend repo descriptor
-  if Text.null handle
-    then return def
-    else waitBatch backend handle
-
-sendBatchDescriptorAsync
-  :: Backend be
-  => be
-  -> Thrift.Repo
-  -> Thrift.BatchDescriptor
+  -> Bool
   -> IO Thrift.Handle
-sendBatchDescriptorAsync backend repo descriptor = do
+sendBatchDescriptor backend repo descriptor remember = do
   let batch = Thrift.EnqueueBatch_descriptor descriptor
-  r <- try $ enqueueBatchDescriptor backend repo batch
-    Thrift.EnqueueBatchWaitPolicy_Remember
+      policy = if remember
+        then Thrift.EnqueueBatchWaitPolicy_Remember
+        else Thrift.EnqueueBatchWaitPolicy_None
+  r <- try $ enqueueBatchDescriptor backend repo batch policy
   case r of
     Right Thrift.EnqueueBatchResponse{..} ->
       return enqueueBatchResponse_handle
     Left Thrift.Retry{..} ->
       retry retry_seconds $
-        sendBatchDescriptorAsync backend repo descriptor
+        sendBatchDescriptor backend repo descriptor remember
 
 retry :: Double -> IO a -> IO a
 retry secs action = do
