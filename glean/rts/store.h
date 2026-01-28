@@ -11,11 +11,13 @@
 #include "glean/rts/fact.h"
 #include "glean/rts/lookup.h"
 
+#include <folly/Utility.h>
+
 namespace facebook {
 namespace glean {
 namespace rts {
 
-struct Store {
+struct Store : folly::NonCopyableNonMovable {
   /// Insert a new fact into the set if it doesn't conflict with existing
   /// facts. The return value indicates whether the fact was new.
   ///
@@ -27,7 +29,7 @@ struct Store {
   /// Inserting the same fact twice is fine.
   virtual void insert(Fact::Ref fact) = 0;
 
-  virtual ~Store() {}
+  virtual ~Store() = default;
 };
 
 inline void copyFacts(Store& store, Lookup& lookup) {

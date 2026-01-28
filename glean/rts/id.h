@@ -31,9 +31,6 @@ struct WordId {
 
   WordId() : val(0) {}
 
-  WordId(const WordId&) = default;
-  WordId& operator=(const WordId&) = default;
-
   static constexpr WordId invalid() {
     return WordId(INVALID_ID);
   }
