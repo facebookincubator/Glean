@@ -1,0 +1,56 @@
+cabal-version:      3.4
+name:               lmdb-clib
+version:            0.9.31
+synopsis:           Lightning Memory-Mapped Database
+author:             Howard Chu, Symas Corporation.
+maintainer:         Simon Marlow <marlowsd@gmail.com>
+copyright:          Copyright 2011-2021 Howard Chu, Symas Corp.
+homepage:           https://www.symas.com/mdb
+license:            BSD-3-Clause
+license-files:      LICENSE
+build-type:         Simple
+
+Description:
+  Cabal wrapper around the LMDB C library, with one tweak to increase
+  the default max key size from 511 bytes to ~2kB.
+
+source-repository head
+  type: git
+  location: https://git.openldap.org/openldap/openldap/tree/mdb.master
+
+-- Note: if you import a new version, copy the local change to
+-- #define PAGEBASE that is needed to increase the max key size.
+
+common fb-cpp
+  cxx-options: -std=c++20 -Wno-nullability-completeness -fno-omit-frame-pointer
+  if !flag(clang)
+     cxx-options: -fcoroutines
+  if arch(x86_64)
+     cxx-options: -march=haswell
+  if flag(opt) && !flag(asan)
+     cxx-options: -O3 -DNDEBUG
+  else
+     cc-options: -g
+     cxx-options: -g
+
+flag clang
+     default: False
+
+flag asan
+     default: False
+
+flag opt
+     default: True
+
+library
+    import: fb-cpp
+    default-language: Haskell2010
+    c-sources:
+        mdb.c
+        midl.c
+    cc-options: -DMDB_MAXKEYSIZE=0
+    include-dirs: .
+    install-includes:
+        lmdb.h
+        midl.h
+
