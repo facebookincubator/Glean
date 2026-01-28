@@ -102,6 +102,7 @@ genNamespace namespaces version
     , "use serde_repr::*;"
     , ""
     , "use crate::report::glean::schema::*;"
+    , "use crate::report::glean::facts::GleanPredicate;"
     ] ++
     -- builtin only
     if namespace /= "builtin" then [] else
@@ -275,16 +276,7 @@ genPred here PredicateDef{..} = do
         , [ ""]
         , [ "impl " <> name <> " {" ]
         , indentLines
-            [ "pub fn GLEAN_name() -> String {"
-            , addIndent 1
-              <> "String::from(\""
-              <> predicateRef_name predicateDefRef
-              <> "."
-              <> showt (predicateRef_version predicateDefRef)
-              <> "\")"
-            , "}"
-            , ""
-            , "pub fn new(" <> paramList <> ") -> Self {"
+            [ "pub fn new(" <> paramList <> ") -> Self {"
             , addIndent 1 <> name <> " {"
             , addIndent 2 <> "id: 0,"
             , addIndent 2 <> "key: " <> keyConstruction <> ","
@@ -297,6 +289,20 @@ genPred here PredicateDef{..} = do
             , addIndent 1 <> "}"
             ]
         , [ "}" ]
+        , [ "" ]
+        , [ "impl GleanPredicate for " <> name <> " {"]
+        , indentLines
+            [ "fn GLEAN_name() -> String {"
+            , addIndent 1
+              <> "String::from(\""
+              <> predicateRef_name predicateDefRef
+              <> "."
+              <> showt (predicateRef_version predicateDefRef)
+              <> "\")"
+            , "}"
+            , ""
+            ]
+          , [ "}" ]
         ]
   extra <- popDefs
   return (define,  nubOrd (extra ++ define_key ++ define_value))
