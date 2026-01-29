@@ -4840,6 +4840,10 @@ static const mdb_nchar_t* const mdb_suffixes[2][2] = {
     {MDB_NAME("/data.mdb"), MDB_NAME("")},
     {MDB_NAME("/lock.mdb"), MDB_NAME("-lock")}};
 
+/** Filename suffix lengths (excluding null terminator)
+ * [datafile,lockfile][without,with MDB_NOSUBDIR] */
+static const size_t mdb_suffix_lens[2][2] = {{9, 0}, {9, 5}};
+
 #define MDB_SUFFLEN 9 /**< Max string length in #mdb_suffixes[] */
 
 /** Set up filename + scratch area for filename suffix, for opening files.
@@ -4862,7 +4866,7 @@ mdb_fname_init(const char* path, unsigned envflags, MDB_name* fname) {
     fname->mn_val = (char*)path;
   else if ((fname->mn_val = malloc(fname->mn_len + MDB_SUFFLEN + 1)) != NULL) {
     fname->mn_alloced = 1;
-    strcpy(fname->mn_val, path);
+    memcpy(fname->mn_val, path, fname->mn_len + 1);
   } else
     return ENOMEM;
   return MDB_SUCCESS;
@@ -4931,11 +4935,14 @@ static int ESECT mdb_fopen(
   int flags;
 #endif
 
-  if (fname->mn_alloced) /* modifiable copy */
-    mdb_name_cpy(
-        fname->mn_val + fname->mn_len,
-        mdb_suffixes[which == MDB_O_LOCKS]
-                    [F_ISSET(env->me_flags, MDB_NOSUBDIR)]);
+  if (fname->mn_alloced) { /* modifiable copy */
+    const mdb_nchar_t* suffix = mdb_suffixes[which == MDB_O_LOCKS][F_ISSET(
+        env->me_flags, MDB_NOSUBDIR)];
+    size_t suffix_len = mdb_suffix_lens[which == MDB_O_LOCKS]
+                                       [F_ISSET(env->me_flags, MDB_NOSUBDIR)] +
+        1;
+    memcpy(fname->mn_val + fname->mn_len, suffix, suffix_len * sizeof(mdb_nchar_t));
+  }
 
   /* The directory must already exist.  Usually the file need not.
    * MDB_O_META requires the file because we already created it using
@@ -11400,8 +11407,9 @@ int ESECT mdb_reader_list(MDB_env* env, MDB_msg_func* func, void* ctx) {
   for (i = 0; i < rdrs; i++) {
     if (mr[i].mr_pid) {
       txnid_t txnid = mr[i].mr_txnid;
-      sprintf(
+      snprintf(
           buf,
+          sizeof(buf),
           txnid == (txnid_t)-1 ? "%10d %" Z "x -\n" : "%10d %" Z "x %" Yu "\n",
           (int)mr[i].mr_pid,
           (size_t)mr[i].mr_tid,
