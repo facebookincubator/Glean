@@ -54,7 +54,7 @@ import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Map as Map
 import qualified Data.Monoid as Monoid
-import Data.Text as Text (Text)
+import Data.Text as Text (Text, pack)
 import qualified Data.Text.Encoding as Text
 import qualified Data.UUID as UUID
 import qualified Data.UUID.V4 as UUID
@@ -72,12 +72,14 @@ import Util.Log
 import Util.STM
 
 import Glean.Database.BatchLocation as BatchLocation
+import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Exception
 import Glean.Database.Open
 import Glean.Database.Schema.Types
 import Glean.Database.Trace
 import Glean.Database.Write.Batch
 import Glean.Database.Types
+import Glean.Internal.Types as Thrift
 import qualified Glean.RTS.Foreign.Subst as Subst
 import Glean.RTS.Foreign.Ownership (DefineOwnership)
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -127,6 +129,14 @@ writerThread env WriteQueues{..} = mask $ \restore ->
       addStatValueType "glean.db.write.failed" (writeSize `div` k) Sum
     else
       addStatValueType "glean.db.write.succeeded" (writeSize `div` k) Sum
+    case result of
+      Left exc | writeFailureIrrecoverable ->
+        void $ atomically $ Catalog.modifyMeta (envCatalog env) repo $ \meta ->
+          return meta {
+            Thrift.metaCompleteness = Thrift.Broken
+              (Thrift.DatabaseBroken "write" (Text.pack (show exc)))
+          }
+      _ -> return ()
     immediately $ do
       now $ writeTVar writeQueueLatency latency
       now $ modifyTVar' writeQueueActive (subtract 1)
@@ -220,9 +230,11 @@ enqueueWrite
   -> Int
   -> Maybe SchemaId
   -> Bool
+  -> Bool
   -> IO WriteContent
   -> IO (MVar (Either SomeException Subst.Subst))
-enqueueWrite env@Env{..} repo size optSchemaId checkQueueSize writeContent = do
+enqueueWrite env@Env{..} repo size optSchemaId checkQueueSize remember
+    writeContent = do
   start <- beginTick 1
   config <- Observed.get envServerConfig
   mvar <- newEmptyMVar
@@ -251,7 +263,8 @@ enqueueWrite env@Env{..} repo size optSchemaId checkQueueSize writeContent = do
               { writeSize = size
               , writeContentIO = writeContent
               , writeDone = mvar
-              , writeStart = start }
+              , writeStart = start
+              , writeFailureIrrecoverable = not remember }
         queueCount <- now $ updateTVar writeQueueCount (+1)
         queueSize <- now $ updateTVar writeQueueSize (+ size)
         later $ do
@@ -315,7 +328,8 @@ enqueueBatch env ComputedBatch{..} ownership = do
 
   let size = batchSize computedBatch_batch
       optSchemaId = batch_schema_id computedBatch_batch
-  r <- try $ enqueueWrite env computedBatch_repo size optSchemaId True $ pure $
+  r <- try $ enqueueWrite env computedBatch_repo size optSchemaId
+      True computedBatch_remember $ pure $
         (writeContentFromBatch computedBatch_batch) {
           writeOwnership= ownership
         }
@@ -360,13 +374,14 @@ enqueueJsonBatch env repo batch = do
       maybe 0 ByteString.length jsonFactBatch_unit
     size = sum (map jsonFactBatchSize (sendJsonBatch_batches batch))
   traceMsg (envTracer env) (GleanTraceEnqueue repo EnqueueJsonBatch size) $ do
-  handle <- UUID.toText <$> UUID.nextRandom
-  let optSchemaId =
-        sendJsonBatch_options batch >>= sendJsonBatchOptions_schema_id
-  write <- enqueueWrite env repo size optSchemaId True $
-    writeJsonBatch env repo batch
-  when (sendJsonBatch_remember batch) $ rememberWrite env handle write
-  return $ def { sendJsonBatchResponse_handle = handle }
+    handle <- UUID.toText <$> UUID.nextRandom
+    let optSchemaId =
+          sendJsonBatch_options batch >>= sendJsonBatchOptions_schema_id
+        remember = sendJsonBatch_remember batch
+    write <- enqueueWrite env repo size optSchemaId True remember $
+      writeJsonBatch env repo batch
+    when remember $ rememberWrite env handle write
+    return $ def { sendJsonBatchResponse_handle = handle }
 
 enqueueBatchDescriptor
   :: Env
@@ -377,15 +392,15 @@ enqueueBatchDescriptor
 enqueueBatchDescriptor env repo enqueueBatch waitPolicy = do
   traceMsg (envTracer env)
     (GleanTraceEnqueue repo EnqueueBatchDescriptor 0) $ do
-  handle <- UUID.toText <$> UUID.nextRandom
-  descriptor <- case enqueueBatch of
-    Thrift.EnqueueBatch_descriptor descriptor -> return descriptor
-    Thrift.EnqueueBatch_EMPTY -> throwIO $ Thrift.Exception "empty batch"
-  write <- enqueueWrite env repo 0 Nothing False $
-    writeContentFromBatch <$> downloadBatchFromLocation env descriptor
-  when (waitPolicy == Thrift.EnqueueBatchWaitPolicy_Remember)
-    $ rememberWrite env handle write
-  return $ def { enqueueBatchResponse_handle = handle }
+    handle <- UUID.toText <$> UUID.nextRandom
+    descriptor <- case enqueueBatch of
+      Thrift.EnqueueBatch_descriptor descriptor -> return descriptor
+      Thrift.EnqueueBatch_EMPTY -> throwIO $ Thrift.Exception "empty batch"
+    let remember = waitPolicy == Thrift.EnqueueBatchWaitPolicy_Remember
+    write <- enqueueWrite env repo 0 Nothing False remember $
+      writeContentFromBatch <$> downloadBatchFromLocation env descriptor
+    when remember $ rememberWrite env handle write
+    return $ def { enqueueBatchResponse_handle = handle }
 
 pollBatch :: Env -> Handle -> IO FinishResponse
 pollBatch env@Env{..} handle = do
