@@ -23,6 +23,7 @@ import Foreign.ForeignPtr
 import Foreign.Marshal.Array
 import Foreign.Ptr
 import Foreign.Storable
+import System.Directory
 import System.FilePath
 
 import Util.FFI
@@ -156,12 +157,12 @@ instance DatabaseOps DB where
     unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
       invoke $ glean_rocksdb_prepare_fact_owner_cache db_ptr
 
-  backup db scratch process = do
+  backup db _ scratch process = do
+    let path = scratch </> "backup"
+    createDirectoryIfMissing True path
     withContainer db $ \s_ptr ->
       withCString path $ invoke . glean_rocksdb_container_backup s_ptr
     process path (Data 0)
-    where
-      path = scratch </> "backup"
 
 newtype Container = Container (Ptr Container)
   deriving(Storable)
