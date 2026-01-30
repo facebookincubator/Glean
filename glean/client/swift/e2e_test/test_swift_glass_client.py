@@ -238,8 +238,45 @@ class SwiftGlassClientE2ETest(unittest.TestCase):
 
             # Should not have error field for successful not_found case
             self.assertNotIn("error", response)
+
+            # Verify that missing definitions log warnings (not errors)
+            logs = self._drain_stderr_lines(process, timeout_seconds=1.0)
+            exception_logs = [line for line in logs if "EXCEPTION searching" in line]
+
+            # If present, EXCEPTION logs should be warnings (start with 'W')
+            for line in exception_logs:
+                self.assertTrue(
+                    line.startswith("W"),
+                    f"Expected warning log for missing definition, got: {line}",
+                )
+
+            # Ensure no error-level EXCEPTION logs were emitted
+            self.assertFalse(
+                any(
+                    line.startswith("E") and "EXCEPTION searching" in line
+                    for line in logs
+                ),
+                f"Unexpected error-level exception logs: {logs}",
+            )
         finally:
             self._stop_process(process)
+
+    def _drain_stderr_lines(self, process, timeout_seconds: float = 1.0):
+        """Collect stderr lines for a short duration without blocking indefinitely."""
+        import select
+
+        lines = []
+        end_time = time.time() + timeout_seconds
+        while time.time() < end_time:
+            ready, _, _ = select.select([process.stderr], [], [], 0.1)
+            if not ready:
+                continue
+
+            line = process.stderr.readline()
+            if not line:
+                break
+            lines.append(line.strip())
+        return lines
 
     def test_invalid_request_parse_error(self):
         """Test sending invalid request, expecting parse error response."""

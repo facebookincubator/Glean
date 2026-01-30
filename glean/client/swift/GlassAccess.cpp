@@ -143,8 +143,17 @@ folly::coro::Task<std::optional<T>> GlassAccess::runGlassMethod(
   try {
     co_return std::make_optional(co_await f());
   } catch (::glean::ServerException& ex) {
-    msg += "::glean::ServerException(" + ex.message().value() + ");";
-    LOG(ERROR) << "EXCEPTION searching " << msg << "\n";
+    const auto exMsg = ex.message().value();
+    msg += "::glean::ServerException(" + exMsg + ");";
+
+    // "No definition result for USR" is common while editing before Glean
+    // ingests the new symbol; log it as a warning instead of an error to avoid
+    // alarming users for expected misses.
+    if (exMsg.find("No definition result for USR") != std::string::npos) {
+      LOG(WARNING) << "EXCEPTION searching " << msg << "\n";
+    } else {
+      LOG(ERROR) << "EXCEPTION searching " << msg << "\n";
+    }
   } catch (std::exception& ex) {
     msg += folly::exceptionStr(ex) + ";";
     LOG(ERROR) << "EXCEPTION running " << method << ":" << ex.what() << ":"
