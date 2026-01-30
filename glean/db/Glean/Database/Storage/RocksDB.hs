@@ -107,6 +107,9 @@ newtype instance Database RocksDB = Database DB
 instance Storage RocksDB where
   describe rocks = "rocksdb:" <> rocksRoot rocks
 
+  readableVersions _ = [DBVersion 3]
+  writableVersions _ = [DBVersion 3]
+
   open rocks repo mode (DBVersion version) = do
     (cmode, start, ownership) <- case mode of
       ReadOnly -> return (0, invalidFid, Nothing)
@@ -162,7 +165,7 @@ instance Storage RocksDB where
 
   withScratchRoot rocks f = f $ rocksRoot rocks </> ".scratch"
 
-  restore rocks repo scratch scratch_file =
+  restore rocks _ repo scratch scratch_file =
     withTempDirectory scratch "restore" $ \scratch_restore -> do
       unTar scratch_file scratch_restore
       -- to avoid retaining an extra copy of the DB during restore,
@@ -211,11 +214,11 @@ instance DatabaseOps (Database RocksDB) where
   cacheOwnership (Database db) = cacheOwnership db
   prepareFactOwnerCache (Database db) = prepareFactOwnerCache db
 
-  backup (Database db) scratch process = do
-    createDirectoryIfMissing True (scratch </> "backup")
-    backup db scratch $ \_ _ ->
+  backup (Database db) cfg scratch process = do
+    backup db cfg scratch $ \path _ -> do
+      let (base, dir) = splitFileName path
       withTempFile $ \tarFile -> do
-        tar ["-cf", tarFile, "-C", scratch, "backup"]
+        tar ["-cf", tarFile, "-C", base, dir]
         size <- getFileSize tarFile
         process tarFile (Data $ fromIntegral size)
 
