@@ -1897,6 +1897,7 @@ library bench-lib
         BenchDB
     build-depends:
         glean:backend-api,
+        glean:bench-util,
         glean:client-hs,
         glean:core,
         glean:db,
@@ -2142,8 +2143,6 @@ test-suite dbjanitor
         glean:schema,
         glean:config,
         glean:util
-    -- https://github.com/facebookincubator/Glean/issues/224
-    buildable: False
 
 test-suite dbderive
     import: test

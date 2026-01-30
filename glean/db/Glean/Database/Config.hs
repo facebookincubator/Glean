@@ -116,7 +116,9 @@ data DataStore = DataStore
       ServerConfig.Config ->
       ((HashMap StorageName (Some Storage), Some Catalog.Store) -> IO a) ->
       IO a
-  , defaultStorage :: StorageName
+  , defaultStorage :: (StorageName, Bool)
+    -- ^ Default storage, Bool => explicitly selected on CLI
+    -- (otherwise can be overriden by ServerConfig.config_db_create_storage)
   , dataStoreTag :: String
   }
 
@@ -137,7 +139,7 @@ fileDataStore path = DataStore
           ],
         Some (Catalog.fileCatalog path)
         )
-  , defaultStorage = rocksdbName
+  , defaultStorage = (rocksdbName, False)
   , dataStoreTag = "db:" <> path
   }
 
@@ -146,7 +148,7 @@ tmpDataStore = DataStore
   { withStorage = \scfg f -> withSystemTempDirectory "glean" $ \tmp -> do
       logInfo $ "Storing temporary DBs in " <> tmp
       withStorage (fileDataStore tmp) scfg f
-  , defaultStorage = rocksdbName
+  , defaultStorage = (rocksdbName, False)
   , dataStoreTag = dataStoreTag (fileDataStore "<tmp>")
   }
 
@@ -156,7 +158,7 @@ memoryDataStore = DataStore
       cat <- Catalog.memoryCatalog
       mem <- Memory.newStorage
       f (HashMap.fromList [(memoryName, Some mem)], Some cat)
-  , defaultStorage = memoryName
+  , defaultStorage = (memoryName, False)
   , dataStoreTag = "memory"
   }
 
@@ -518,7 +520,7 @@ options = do
         help "Directory containing databases")
       lmdb <- switch (long "lmdb")
       pure $
-        (if lmdb then \s -> s { defaultStorage = lmdbName } else id) $
+        (if lmdb then \s -> s { defaultStorage = (lmdbName, True) } else id) $
         fileDataStore path
     dbTmp = tmpDataStore <$ flag' () (
       long "db-tmp" <>
