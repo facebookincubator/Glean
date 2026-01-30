@@ -14,6 +14,10 @@
         { "source": { "length": 3, "start": 334 }, "target": { "key": "lib" } },
         { "source": { "length": 3, "start": 390 }, "target": { "key": "int" } },
         { "source": { "length": 3, "start": 419 }, "target": { "key": "int" } },
+        {
+          "source": { "length": 3, "start": 478 },
+          "target": { "key": "all.lib" }
+        },
         { "source": { "length": 3, "start": 478 }, "target": { "key": "lib" } },
         {
           "source": { "length": 4, "start": 274 },
@@ -21,7 +25,15 @@
         },
         {
           "source": { "length": 4, "start": 385 },
+          "target": { "key": "all.List" }
+        },
+        {
+          "source": { "length": 4, "start": 385 },
           "target": { "key": "typing.List" }
+        },
+        {
+          "source": { "length": 4, "start": 414 },
+          "target": { "key": "all.List" }
         },
         {
           "source": { "length": 4, "start": 414 },
@@ -49,7 +61,15 @@
         },
         {
           "source": { "length": 6, "start": 434 },
+          "target": { "key": "all.timeit" }
+        },
+        {
+          "source": { "length": 6, "start": 434 },
           "target": { "key": "timeit" }
+        },
+        {
+          "source": { "length": 6, "start": 574 },
+          "target": { "key": "all.Helper" }
         },
         {
           "source": { "length": 6, "start": 574 },
@@ -65,6 +85,10 @@
         },
         {
           "source": { "length": 7, "start": 494 },
+          "target": { "key": "all.big_var" }
+        },
+        {
+          "source": { "length": 7, "start": 494 },
           "target": { "key": "big_lib.big_var" }
         },
         {
@@ -73,7 +97,15 @@
         },
         {
           "source": { "length": 8, "start": 616 },
+          "target": { "key": "all.Helper" }
+        },
+        {
+          "source": { "length": 8, "start": 616 },
           "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 8, "start": 665 },
+          "target": { "key": "all.Helper" }
         },
         {
           "source": { "length": 8, "start": 665 },
@@ -89,6 +121,10 @@
         },
         {
           "source": { "length": 9, "start": 442 },
+          "target": { "key": "all.lru_cache" }
+        },
+        {
+          "source": { "length": 9, "start": 442 },
           "target": { "key": "functools.lru_cache" }
         },
         {
@@ -97,7 +133,15 @@
         },
         {
           "source": { "length": 9, "start": 675 },
+          "target": { "key": "all.big_var" }
+        },
+        {
+          "source": { "length": 9, "start": 675 },
           "target": { "key": "big_lib.big_var" }
+        },
+        {
+          "source": { "length": 10, "start": 626 },
+          "target": { "key": "all.big_func" }
         },
         {
           "source": { "length": 10, "start": 626 },
@@ -106,6 +150,10 @@
         {
           "source": { "length": 11, "start": 345 },
           "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 11, "start": 482 },
+          "target": { "key": "all.lib.HelperClass" }
         },
         {
           "source": { "length": 11, "start": 482 },
@@ -126,7 +174,15 @@
       "xrefs": [
         { "source": { "length": 3, "start": 258 }, "target": { "key": "all" } },
         { "source": { "length": 3, "start": 299 }, "target": { "key": "lib" } },
+        {
+          "source": { "length": 3, "start": 411 },
+          "target": { "key": "as.lib" }
+        },
         { "source": { "length": 3, "start": 411 }, "target": { "key": "lib" } },
+        {
+          "source": { "length": 3, "start": 427 },
+          "target": { "key": "as.big" }
+        },
         {
           "source": { "length": 3, "start": 427 },
           "target": { "key": "big_lib" }
@@ -166,6 +222,10 @@
         },
         {
           "source": { "length": 4, "start": 570 },
+          "target": { "key": "as.Dict" }
+        },
+        {
+          "source": { "length": 4, "start": 570 },
           "target": { "key": "typing.Dict" }
         },
         {
@@ -174,7 +234,15 @@
         },
         {
           "source": { "length": 4, "start": 663 },
+          "target": { "key": "as.Dict" }
+        },
+        {
+          "source": { "length": 4, "start": 663 },
           "target": { "key": "typing.Dict" }
+        },
+        {
+          "source": { "length": 4, "start": 673 },
+          "target": { "key": "as.Dict" }
         },
         {
           "source": { "length": 4, "start": 673 },
@@ -214,11 +282,23 @@
         },
         {
           "source": { "length": 5, "start": 862 },
+          "target": { "key": "as.Union" }
+        },
+        {
+          "source": { "length": 5, "start": 862 },
           "target": { "key": "typing.Union" }
         },
         {
           "source": { "length": 5, "start": 894 },
+          "target": { "key": "as.Union" }
+        },
+        {
+          "source": { "length": 5, "start": 894 },
           "target": { "key": "typing.Union" }
+        },
+        {
+          "source": { "length": 5, "start": 947 },
+          "target": { "key": "as.Union" }
         },
         {
           "source": { "length": 5, "start": 947 },
@@ -230,11 +310,19 @@
         },
         {
           "source": { "length": 5, "start": 1007 },
+          "target": { "key": "as.Union" }
+        },
+        {
+          "source": { "length": 5, "start": 1007 },
           "target": { "key": "typing.Union" }
         },
         {
           "source": { "length": 5, "start": 1013 },
           "target": { "key": "float" }
+        },
+        {
+          "source": { "length": 5, "start": 1050 },
+          "target": { "key": "as.Union" }
         },
         {
           "source": { "length": 5, "start": 1050 },
@@ -254,6 +342,10 @@
         },
         {
           "source": { "length": 7, "start": 431 },
+          "target": { "key": "as.big.big_var" }
+        },
+        {
+          "source": { "length": 7, "start": 431 },
           "target": { "key": "big_lib.big_var" }
         },
         {
@@ -262,7 +354,15 @@
         },
         {
           "source": { "length": 8, "start": 561 },
+          "target": { "key": "as.Optional" }
+        },
+        {
+          "source": { "length": 8, "start": 561 },
           "target": { "key": "typing.Optional" }
+        },
+        {
+          "source": { "length": 8, "start": 619 },
+          "target": { "key": "as.Optional" }
         },
         {
           "source": { "length": 8, "start": 619 },
@@ -270,7 +370,15 @@
         },
         {
           "source": { "length": 8, "start": 769 },
+          "target": { "key": "as.Optional" }
+        },
+        {
+          "source": { "length": 8, "start": 769 },
           "target": { "key": "typing.Optional" }
+        },
+        {
+          "source": { "length": 8, "start": 789 },
+          "target": { "key": "as.Optional" }
         },
         {
           "source": { "length": 8, "start": 789 },
@@ -283,6 +391,10 @@
         {
           "source": { "length": 9, "start": 868 },
           "target": { "key": "bytearray" }
+        },
+        {
+          "source": { "length": 11, "start": 415 },
+          "target": { "key": "as.lib.HelperClass" }
         },
         {
           "source": { "length": 11, "start": 415 },
@@ -325,6 +437,10 @@
         {
           "source": { "length": 8, "start": 249 },
           "target": { "key": "big_lib.big_func" }
+        },
+        {
+          "source": { "length": 8, "start": 249 },
+          "target": { "key": "big_lib.relative.big_func" }
         }
       ]
     }
@@ -345,6 +461,10 @@
         },
         {
           "source": { "length": 5, "start": 523 },
+          "target": { "key": "lib.Union" }
+        },
+        {
+          "source": { "length": 5, "start": 523 },
           "target": { "key": "typing.Union" }
         },
         {
@@ -358,6 +478,10 @@
         {
           "source": { "length": 7, "start": 265 },
           "target": { "key": "big_lib" }
+        },
+        {
+          "source": { "length": 7, "start": 345 },
+          "target": { "key": "lib.TypeVar" }
         },
         {
           "source": { "length": 7, "start": 345 },
@@ -427,6 +551,10 @@
           "target": { "key": "big_lib.big_func" }
         },
         {
+          "source": { "length": 4, "start": 377 },
+          "target": { "key": "main.func" }
+        },
+        {
           "source": { "length": 4, "start": 442 },
           "target": { "key": "None" }
         },
@@ -437,6 +565,10 @@
         {
           "source": { "length": 6, "start": 392 },
           "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 6, "start": 392 },
+          "target": { "key": "main.Helper" }
         },
         {
           "source": { "length": 6, "start": 407 },
@@ -455,6 +587,14 @@
           "target": { "key": "big_lib.big_func" }
         },
         {
+          "source": { "length": 8, "start": 362 },
+          "target": { "key": "main.big_func" }
+        },
+        {
+          "source": { "length": 8, "start": 549 },
+          "target": { "key": "main.__name__" }
+        },
+        {
           "source": { "length": 11, "start": 284 },
           "target": { "key": "lib.helper_func" }
         },
@@ -467,12 +607,20 @@
           "target": { "key": "lib.helper_func" }
         },
         {
+          "source": { "length": 11, "start": 344 },
+          "target": { "key": "main.helper_func" }
+        },
+        {
           "source": { "length": 11, "start": 468 },
           "target": { "key": "lib.HelperClass" }
         },
         {
           "source": { "length": 11, "start": 509 },
           "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 11, "start": 509 },
+          "target": { "key": "main.OtherHelper" }
         }
       ]
     }
@@ -496,12 +644,20 @@
           "target": { "key": "big_lib.big_var" }
         },
         {
+          "source": { "length": 7, "start": 341 },
+          "target": { "key": "shadow.big_var" }
+        },
+        {
           "source": { "length": 7, "start": 499 },
           "target": { "key": "shadow.shadow_func.<locals>.big_var" }
         },
         {
           "source": { "length": 7, "start": 573 },
           "target": { "key": "big_lib.big_var" }
+        },
+        {
+          "source": { "length": 7, "start": 573 },
+          "target": { "key": "shadow.big_var" }
         },
         {
           "source": { "length": 8, "start": 245 },
@@ -512,12 +668,20 @@
           "target": { "key": "big_lib.big_func" }
         },
         {
+          "source": { "length": 8, "start": 316 },
+          "target": { "key": "shadow.big_func" }
+        },
+        {
           "source": { "length": 8, "start": 474 },
           "target": { "key": "shadow.shadow_func.<locals>.big_func" }
         },
         {
           "source": { "length": 8, "start": 552 },
           "target": { "key": "big_lib.big_func" }
+        },
+        {
+          "source": { "length": 8, "start": 552 },
+          "target": { "key": "shadow.big_func" }
         },
         {
           "source": { "length": 9, "start": 365 },

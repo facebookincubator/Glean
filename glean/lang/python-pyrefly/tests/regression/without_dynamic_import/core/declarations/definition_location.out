@@ -153,7 +153,10 @@
       "definition": {
         "cls": {
           "key": {
-            "bases": [ { "key": { "name": { "key": "abc.ABC" } } } ],
+            "bases": [
+              { "key": { "name": { "key": "abc.ABC" } } },
+              { "key": { "name": { "key": "foo.ABC" } } }
+            ],
             "container": { "module": { "key": { "name": { "key": "foo" } } } },
             "declaration": { "key": { "name": { "key": "foo.AbstractFoo" } } }
           }
@@ -170,7 +173,10 @@
       "definition": {
         "cls": {
           "key": {
-            "bases": [ { "key": { "name": { "key": "bar.Bar" } } } ],
+            "bases": [
+              { "key": { "name": { "key": "bar.Bar" } } },
+              { "key": { "name": { "key": "foo.Bar" } } }
+            ],
             "container": { "module": { "key": { "name": { "key": "foo" } } } },
             "declaration": { "key": { "name": { "key": "foo.FooBar" } } }
           }
@@ -854,6 +860,10 @@
                 },
                 {
                   "source": { "length": 8, "start": 6 },
+                  "target": { "key": "foo.Optional" }
+                },
+                {
+                  "source": { "length": 8, "start": 6 },
                   "target": { "key": "typing.Optional" }
                 }
               ]
@@ -899,11 +909,23 @@
                 },
                 {
                   "source": { "length": 8, "start": 0 },
+                  "target": { "key": "foo.Callable" }
+                },
+                {
+                  "source": { "length": 8, "start": 0 },
                   "target": { "key": "typing.Callable" }
                 },
                 {
                   "source": { "length": 8, "start": 15 },
+                  "target": { "key": "foo.Optional" }
+                },
+                {
+                  "source": { "length": 8, "start": 15 },
                   "target": { "key": "typing.Optional" }
+                },
+                {
+                  "source": { "length": 8, "start": 32 },
+                  "target": { "key": "foo.Optional" }
                 },
                 {
                   "source": { "length": 8, "start": 32 },
@@ -960,7 +982,15 @@
                 },
                 {
                   "source": { "length": 5, "start": 14 },
+                  "target": { "key": "foo.Union" }
+                },
+                {
+                  "source": { "length": 5, "start": 14 },
                   "target": { "key": "typing.Union" }
+                },
+                {
+                  "source": { "length": 8, "start": 0 },
+                  "target": { "key": "foo.Optional" }
                 },
                 {
                   "source": { "length": 8, "start": 0 },
@@ -969,6 +999,10 @@
                 {
                   "source": { "length": 8, "start": 20 },
                   "target": { "key": "foo.FooClass" }
+                },
+                {
+                  "source": { "length": 8, "start": 30 },
+                  "target": { "key": "foo.Callable" }
                 },
                 {
                   "source": { "length": 8, "start": 30 },
@@ -1048,8 +1082,16 @@
                   "target": { "key": "bar.Bar" }
                 },
                 {
+                  "source": { "length": 3, "start": 0 },
+                  "target": { "key": "foo.Bar" }
+                },
+                {
                   "source": { "length": 8, "start": 4 },
                   "target": { "key": "bar.Bar.InnerBar" }
+                },
+                {
+                  "source": { "length": 8, "start": 4 },
+                  "target": { "key": "foo.Bar.InnerBar" }
                 }
               ]
             }
@@ -1152,6 +1194,10 @@
               "xrefs": [
                 {
                   "source": { "length": 8, "start": 0 },
+                  "target": { "key": "foo.Optional" }
+                },
+                {
+                  "source": { "length": 8, "start": 0 },
                   "target": { "key": "typing.Optional" }
                 },
                 {
@@ -1187,6 +1233,10 @@
                   "xrefs": [
                     {
                       "source": { "length": 8, "start": 0 },
+                      "target": { "key": "foo.Optional" }
+                    },
+                    {
+                      "source": { "length": 8, "start": 0 },
                       "target": { "key": "typing.Optional" }
                     },
                     {
@@ -1215,6 +1265,10 @@
                 "typeInfo": {
                   "displayType": { "key": "Optional[FooClass]" },
                   "xrefs": [
+                    {
+                      "source": { "length": 8, "start": 0 },
+                      "target": { "key": "foo.Optional" }
+                    },
                     {
                       "source": { "length": 8, "start": 0 },
                       "target": { "key": "typing.Optional" }
@@ -1260,6 +1314,10 @@
                   "xrefs": [
                     {
                       "source": { "length": 8, "start": 0 },
+                      "target": { "key": "foo.Optional" }
+                    },
+                    {
+                      "source": { "length": 8, "start": 0 },
                       "target": { "key": "typing.Optional" }
                     },
                     {
@@ -1276,6 +1334,10 @@
                 "typeInfo": {
                   "displayType": { "key": "Optional[FooClass]" },
                   "xrefs": [
+                    {
+                      "source": { "length": 8, "start": 0 },
+                      "target": { "key": "foo.Optional" }
+                    },
                     {
                       "source": { "length": 8, "start": 0 },
                       "target": { "key": "typing.Optional" }
@@ -1381,6 +1443,10 @@
                   "xrefs": [
                     {
                       "source": { "length": 8, "start": 0 },
+                      "target": { "key": "foo.Optional" }
+                    },
+                    {
+                      "source": { "length": 8, "start": 0 },
                       "target": { "key": "typing.Optional" }
                     },
                     {
@@ -1404,12 +1470,28 @@
                       "target": { "key": "bar.Bar" }
                     },
                     {
+                      "source": { "length": 3, "start": 26 },
+                      "target": { "key": "foo.Bar" }
+                    },
+                    {
                       "source": { "length": 3, "start": 39 },
                       "target": { "key": "int" }
                     },
                     {
                       "source": { "length": 5, "start": 0 },
+                      "target": { "key": "foo.Union" }
+                    },
+                    {
+                      "source": { "length": 5, "start": 0 },
                       "target": { "key": "typing.Union" }
+                    },
+                    {
+                      "source": { "length": 7, "start": 31 },
+                      "target": { "key": "foo.Generic" }
+                    },
+                    {
+                      "source": { "length": 8, "start": 6 },
+                      "target": { "key": "foo.Optional" }
                     },
                     {
                       "source": { "length": 8, "start": 6 },
@@ -1457,8 +1539,32 @@
                   "target": { "key": "int" }
                 },
                 {
+                  "source": { "length": 4, "start": 44 },
+                  "target": { "key": "foo.star" }
+                },
+                {
+                  "source": { "length": 4, "start": 111 },
+                  "target": { "key": "foo.star" }
+                },
+                {
+                  "source": { "length": 5, "start": 56 },
+                  "target": { "key": "foo.ctype" }
+                },
+                {
+                  "source": { "length": 5, "start": 75 },
+                  "target": { "key": "foo.dtype" }
+                },
+                {
+                  "source": { "length": 9, "start": 0 },
+                  "target": { "key": "foo.Annotated" }
+                },
+                {
                   "source": { "length": 9, "start": 0 },
                   "target": { "key": "typing.Annotated" }
+                },
+                {
+                  "source": { "length": 10, "start": 24 },
+                  "target": { "key": "foo.ValueRange" }
                 }
               ]
             }
@@ -1487,6 +1593,10 @@
             "returnsInfo": {
               "displayType": { "key": "Union[FooClass | FooBar]" },
               "xrefs": [
+                {
+                  "source": { "length": 5, "start": 0 },
+                  "target": { "key": "foo.Union" }
+                },
                 {
                   "source": { "length": 5, "start": 0 },
                   "target": { "key": "typing.Union" }
@@ -1617,6 +1727,10 @@
               "xrefs": [
                 {
                   "source": { "length": 5, "start": 0 },
+                  "target": { "key": "foo.Union" }
+                },
+                {
+                  "source": { "length": 5, "start": 0 },
                   "target": { "key": "typing.Union" }
                 },
                 {
@@ -1720,6 +1834,10 @@
                 {
                   "source": { "length": 4, "start": 9 },
                   "target": { "key": "bool" }
+                },
+                {
+                  "source": { "length": 8, "start": 0 },
+                  "target": { "key": "foo.ClassVar" }
                 }
               ]
             }
@@ -2201,6 +2319,10 @@
               "xrefs": [
                 {
                   "source": { "length": 8, "start": 0 },
+                  "target": { "key": "foo.Optional" }
+                },
+                {
+                  "source": { "length": 8, "start": 0 },
                   "target": { "key": "typing.Optional" }
                 },
                 {
@@ -2236,6 +2358,10 @@
             "typeInfo": {
               "displayType": { "key": "Optional[FooClass]" },
               "xrefs": [
+                {
+                  "source": { "length": 8, "start": 0 },
+                  "target": { "key": "foo.Optional" }
+                },
                 {
                   "source": { "length": 8, "start": 0 },
                   "target": { "key": "typing.Optional" }
@@ -2338,6 +2464,10 @@
               "xrefs": [
                 {
                   "source": { "length": 8, "start": 0 },
+                  "target": { "key": "foo.Optional" }
+                },
+                {
+                  "source": { "length": 8, "start": 0 },
                   "target": { "key": "typing.Optional" }
                 },
                 {
@@ -2377,6 +2507,10 @@
             "typeInfo": {
               "displayType": { "key": "Optional[FooClass]" },
               "xrefs": [
+                {
+                  "source": { "length": 8, "start": 0 },
+                  "target": { "key": "foo.Optional" }
+                },
                 {
                   "source": { "length": 8, "start": 0 },
                   "target": { "key": "typing.Optional" }
@@ -2572,6 +2706,10 @@
               "xrefs": [
                 {
                   "source": { "length": 8, "start": 0 },
+                  "target": { "key": "foo.Optional" }
+                },
+                {
+                  "source": { "length": 8, "start": 0 },
                   "target": { "key": "typing.Optional" }
                 },
                 {
@@ -2632,12 +2770,28 @@
                   "target": { "key": "bar.Bar" }
                 },
                 {
+                  "source": { "length": 3, "start": 26 },
+                  "target": { "key": "foo.Bar" }
+                },
+                {
                   "source": { "length": 3, "start": 39 },
                   "target": { "key": "int" }
                 },
                 {
                   "source": { "length": 5, "start": 0 },
+                  "target": { "key": "foo.Union" }
+                },
+                {
+                  "source": { "length": 5, "start": 0 },
                   "target": { "key": "typing.Union" }
+                },
+                {
+                  "source": { "length": 7, "start": 31 },
+                  "target": { "key": "foo.Generic" }
+                },
+                {
+                  "source": { "length": 8, "start": 6 },
+                  "target": { "key": "foo.Optional" }
                 },
                 {
                   "source": { "length": 8, "start": 6 },

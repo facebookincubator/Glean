@@ -251,6 +251,13 @@
                     },
                     {
                         "span": {
+                            "length": 5,
+                            "start": 61
+                        },
+                        "type": "test/py/glean/lib.Union"
+                    },
+                    {
+                        "span": {
                             "length": 11,
                             "start": 67
                         },

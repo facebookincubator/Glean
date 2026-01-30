@@ -113,6 +113,54 @@
       "declaration": {
         "imp": {
           "key": {
+            "as_name": { "key": "mod_a.Cls" },
+            "from_name": { "key": "mod_b.util.Cls" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
+      },
+      "span": { "length": 3, "start": 400 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "mod_a.helper" },
+            "from_name": { "key": "mod_b.helper" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
+      },
+      "span": { "length": 6, "start": 385 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "mod_a.only_indirectly" },
+            "from_name": { "key": "mod_b.helper.only_indirectly" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
+      },
+      "span": { "length": 15, "start": 363 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
             "as_name": { "key": "mod_b.helper.Cls" },
             "from_name": { "key": "mod_b.util.Cls" }
           }
@@ -122,6 +170,22 @@
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
       },
       "span": { "length": 3, "start": 392 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "mod_b.helper.Cls" },
+            "from_name": { "key": "mod_b.util.Cls" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_b/helper.py"
+      },
+      "span": { "length": 3, "start": 327 }
     }
   },
   {

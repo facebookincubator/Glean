@@ -54,13 +54,6 @@
                             "start": 4
                         },
                         "type": "test/py/glean/all.LocalClass.meth"
-                    },
-                    {
-                        "span": {
-                            "length": 6,
-                            "start": 36
-                        },
-                        "type": "test/py/glean/lib.HelperClass"
                     }
                 ],
                 "visibility": 20
@@ -124,6 +117,13 @@
                             "start": 42
                         },
                         "type": "test/py/glean/lib.HelperClass"
+                    },
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 61
+                        },
+                        "type": "test/py/glean/lib.Union"
                     },
                     {
                         "span": {

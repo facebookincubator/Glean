@@ -92,7 +92,7 @@ testPythonFindReferences get = TestLabel "findReferences" $ TestList [
   "test/py/glean/shadow.ShadowClass.big_func" --> [],
   "test/py/glean/shadow.ShadowClass.other_var" --> [],
   "test/py/glean/shadow.local_var" --> [("glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",2)],
-  "test/py/glean/shadow.big_func" --> [],
+  "test/py/glean/shadow.big_func" --> [("glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/shadow.py",2)],
   "test/py/glean/shadow.other_var" --> [],
   "test/py/glean/all.LocalClass" --> [("glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",1)]
   ]

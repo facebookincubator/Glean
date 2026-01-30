@@ -12,7 +12,15 @@
         },
         {
           "source": { "length": 3, "start": 392 },
+          "target": { "key": "mod_a.helper.Cls" }
+        },
+        {
+          "source": { "length": 3, "start": 392 },
           "target": { "key": "mod_b.helper.Cls" }
+        },
+        {
+          "source": { "length": 3, "start": 400 },
+          "target": { "key": "mod_a.Cls" }
         },
         {
           "source": { "length": 3, "start": 400 },
@@ -40,7 +48,15 @@
         },
         {
           "source": { "length": 6, "start": 385 },
+          "target": { "key": "mod_a.helper" }
+        },
+        {
+          "source": { "length": 6, "start": 385 },
           "target": { "key": "mod_b.helper" }
+        },
+        {
+          "source": { "length": 8, "start": 404 },
+          "target": { "key": "mod_a.Cls.some_var" }
         },
         {
           "source": { "length": 8, "start": 404 },
@@ -60,6 +76,10 @@
         },
         {
           "source": { "length": 15, "start": 363 },
+          "target": { "key": "mod_a.only_indirectly" }
+        },
+        {
+          "source": { "length": 15, "start": 363 },
           "target": { "key": "mod_b.util.only_indirectly" }
         }
       ]
@@ -74,6 +94,10 @@
         {
           "source": { "length": 3, "start": 291 },
           "target": { "key": "mod_b.util.Cls" }
+        },
+        {
+          "source": { "length": 3, "start": 327 },
+          "target": { "key": "mod_b.helper.Cls" }
         },
         {
           "source": { "length": 3, "start": 327 },

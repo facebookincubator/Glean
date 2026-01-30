@@ -44,8 +44,16 @@
           "target": { "key": "bar.Bar" }
         },
         {
+          "source": { "length": 3, "start": 519 },
+          "target": { "key": "foo.Bar" }
+        },
+        {
           "source": { "length": 3, "start": 550 },
           "target": { "key": "bar.Bar" }
+        },
+        {
+          "source": { "length": 3, "start": 550 },
+          "target": { "key": "foo.Bar" }
         },
         { "source": { "length": 3, "start": 615 }, "target": { "key": "int" } },
         { "source": { "length": 3, "start": 649 }, "target": { "key": "int" } },
@@ -82,8 +90,16 @@
           "target": { "key": "bar.Bar" }
         },
         {
+          "source": { "length": 3, "start": 1887 },
+          "target": { "key": "foo.Bar" }
+        },
+        {
           "source": { "length": 3, "start": 1903 },
           "target": { "key": "bar.Bar" }
+        },
+        {
+          "source": { "length": 3, "start": 1903 },
+          "target": { "key": "foo.Bar" }
         },
         {
           "source": { "length": 3, "start": 2037 },
@@ -106,8 +122,16 @@
           "target": { "key": "bar.Bar" }
         },
         {
+          "source": { "length": 3, "start": 2200 },
+          "target": { "key": "foo.Bar" }
+        },
+        {
           "source": { "length": 3, "start": 2226 },
           "target": { "key": "bar.Bar" }
+        },
+        {
+          "source": { "length": 3, "start": 2226 },
+          "target": { "key": "foo.Bar" }
         },
         {
           "source": { "length": 3, "start": 2612 },
@@ -163,7 +187,15 @@
         },
         {
           "source": { "length": 5, "start": 2194 },
+          "target": { "key": "foo.Union" }
+        },
+        {
+          "source": { "length": 5, "start": 2194 },
           "target": { "key": "typing.Union" }
+        },
+        {
+          "source": { "length": 5, "start": 2598 },
+          "target": { "key": "foo.Union" }
         },
         {
           "source": { "length": 5, "start": 2598 },
@@ -191,7 +223,15 @@
         },
         {
           "source": { "length": 7, "start": 1494 },
+          "target": { "key": "foo.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 1494 },
           "target": { "key": "generic.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 1509 },
+          "target": { "key": "foo.Generic" }
         },
         {
           "source": { "length": 7, "start": 1509 },
@@ -199,7 +239,15 @@
         },
         {
           "source": { "length": 7, "start": 2029 },
+          "target": { "key": "foo.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2029 },
           "target": { "key": "generic.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2054 },
+          "target": { "key": "foo.Generic" }
         },
         {
           "source": { "length": 7, "start": 2054 },
@@ -207,7 +255,15 @@
         },
         {
           "source": { "length": 7, "start": 2107 },
+          "target": { "key": "foo.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2107 },
           "target": { "key": "generic.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2115 },
+          "target": { "key": "foo.Generic" }
         },
         {
           "source": { "length": 7, "start": 2115 },
@@ -215,7 +271,15 @@
         },
         {
           "source": { "length": 7, "start": 2141 },
+          "target": { "key": "foo.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2141 },
           "target": { "key": "generic.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2149 },
+          "target": { "key": "foo.Generic" }
         },
         {
           "source": { "length": 7, "start": 2149 },
@@ -223,11 +287,23 @@
         },
         {
           "source": { "length": 7, "start": 2205 },
+          "target": { "key": "foo.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2205 },
           "target": { "key": "generic.Generic" }
         },
         {
           "source": { "length": 7, "start": 2604 },
+          "target": { "key": "foo.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2604 },
           "target": { "key": "generic.Generic" }
+        },
+        {
+          "source": { "length": 7, "start": 2618 },
+          "target": { "key": "foo.Generic" }
         },
         {
           "source": { "length": 7, "start": 2618 },
@@ -239,7 +315,15 @@
         },
         {
           "source": { "length": 8, "start": 541 },
+          "target": { "key": "foo.Optional" }
+        },
+        {
+          "source": { "length": 8, "start": 541 },
           "target": { "key": "typing.Optional" }
+        },
+        {
+          "source": { "length": 8, "start": 590 },
+          "target": { "key": "foo.Optional" }
         },
         {
           "source": { "length": 8, "start": 590 },
@@ -247,7 +331,15 @@
         },
         {
           "source": { "length": 8, "start": 1647 },
+          "target": { "key": "foo.Optional" }
+        },
+        {
+          "source": { "length": 8, "start": 1647 },
           "target": { "key": "typing.Optional" }
+        },
+        {
+          "source": { "length": 8, "start": 2589 },
+          "target": { "key": "foo.Optional" }
         },
         {
           "source": { "length": 8, "start": 2589 },
@@ -263,7 +355,15 @@
         },
         {
           "source": { "length": 9, "start": 2284 },
+          "target": { "key": "foo.some_module.SomeClass" }
+        },
+        {
+          "source": { "length": 9, "start": 2284 },
           "target": { "key": "some_module.SomeClass" }
+        },
+        {
+          "source": { "length": 9, "start": 2318 },
+          "target": { "key": "foo.some_module.SomeClass" }
         },
         {
           "source": { "length": 9, "start": 2318 },
@@ -274,16 +374,32 @@
           "target": { "key": "bigger_module.submodule" }
         },
         {
+          "source": { "length": 9, "start": 2480 },
+          "target": { "key": "foo.bigger_module.submodule" }
+        },
+        {
           "source": { "length": 9, "start": 2490 },
           "target": { "key": "bigger_module.submodule.SomeClass" }
+        },
+        {
+          "source": { "length": 9, "start": 2490 },
+          "target": { "key": "foo.bigger_module.submodule.SomeClass" }
         },
         {
           "source": { "length": 9, "start": 2526 },
           "target": { "key": "bigger_module.submodule" }
         },
         {
+          "source": { "length": 9, "start": 2526 },
+          "target": { "key": "foo.bigger_module.submodule" }
+        },
+        {
           "source": { "length": 9, "start": 2536 },
           "target": { "key": "bigger_module.submodule.SomeClass" }
+        },
+        {
+          "source": { "length": 9, "start": 2536 },
+          "target": { "key": "foo.bigger_module.submodule.SomeClass" }
         },
         {
           "source": { "length": 10, "start": 823 },
@@ -308,10 +424,18 @@
           }
         },
         {
+          "source": { "length": 10, "start": 2381 },
+          "target": { "key": "foo.SubmoduleClass.InnerClass" }
+        },
+        {
           "source": { "length": 10, "start": 2419 },
           "target": {
             "key": "bigger_module.another_submodule.SubmoduleClass.InnerClass"
           }
+        },
+        {
+          "source": { "length": 10, "start": 2419 },
+          "target": { "key": "foo.SubmoduleClass.InnerClass" }
         },
         {
           "source": { "length": 10, "start": 2955 },
@@ -351,7 +475,15 @@
         },
         {
           "source": { "length": 11, "start": 2272 },
+          "target": { "key": "foo.some_module" }
+        },
+        {
+          "source": { "length": 11, "start": 2272 },
           "target": { "key": "some_module" }
+        },
+        {
+          "source": { "length": 11, "start": 2306 },
+          "target": { "key": "foo.some_module" }
         },
         {
           "source": { "length": 11, "start": 2306 },
@@ -378,8 +510,16 @@
           "target": { "key": "bigger_module" }
         },
         {
+          "source": { "length": 13, "start": 2466 },
+          "target": { "key": "foo.bigger_module" }
+        },
+        {
           "source": { "length": 13, "start": 2512 },
           "target": { "key": "bigger_module" }
+        },
+        {
+          "source": { "length": 13, "start": 2512 },
+          "target": { "key": "foo.bigger_module" }
         },
         {
           "source": { "length": 14, "start": 359 },
@@ -390,28 +530,56 @@
           "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
         },
         {
+          "source": { "length": 14, "start": 1948 },
+          "target": { "key": "foo.SubmoduleClass" }
+        },
+        {
           "source": { "length": 14, "start": 1975 },
           "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+        },
+        {
+          "source": { "length": 14, "start": 1975 },
+          "target": { "key": "foo.SubmoduleClass" }
         },
         {
           "source": { "length": 14, "start": 2366 },
           "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
         },
         {
+          "source": { "length": 14, "start": 2366 },
+          "target": { "key": "foo.SubmoduleClass" }
+        },
+        {
           "source": { "length": 14, "start": 2404 },
           "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+        },
+        {
+          "source": { "length": 14, "start": 2404 },
+          "target": { "key": "foo.SubmoduleClass" }
         },
         {
           "source": { "length": 14, "start": 2693 },
           "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
         },
         {
+          "source": { "length": 14, "start": 2693 },
+          "target": { "key": "foo.SubmoduleClass" }
+        },
+        {
           "source": { "length": 14, "start": 2737 },
           "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
         },
         {
+          "source": { "length": 14, "start": 2737 },
+          "target": { "key": "foo.SubmoduleClass" }
+        },
+        {
           "source": { "length": 14, "start": 2768 },
           "target": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+        },
+        {
+          "source": { "length": 14, "start": 2768 },
+          "target": { "key": "foo.SubmoduleClass" }
         },
         {
           "source": { "length": 14, "start": 2797 },
@@ -423,11 +591,23 @@
         },
         {
           "source": { "length": 15, "start": 599 },
+          "target": { "key": "foo.OptionalGeneric" }
+        },
+        {
+          "source": { "length": 15, "start": 599 },
           "target": { "key": "optional_generic.OptionalGeneric" }
         },
         {
           "source": { "length": 15, "start": 633 },
+          "target": { "key": "foo.OptionalGeneric" }
+        },
+        {
+          "source": { "length": 15, "start": 633 },
           "target": { "key": "optional_generic.OptionalGeneric" }
+        },
+        {
+          "source": { "length": 15, "start": 1656 },
+          "target": { "key": "foo.OptionalGeneric" }
         },
         {
           "source": { "length": 15, "start": 1656 },
@@ -472,6 +652,10 @@
       "xrefs": [
         {
           "source": { "length": 1, "start": 285 },
+          "target": { "key": "generic.G" }
+        },
+        {
+          "source": { "length": 1, "start": 285 },
           "target": { "key": "typing.Generic" }
         },
         {
@@ -492,6 +676,10 @@
         },
         {
           "source": { "length": 7, "start": 256 },
+          "target": { "key": "generic.TypeVar" }
+        },
+        {
+          "source": { "length": 7, "start": 256 },
           "target": { "key": "typing.TypeVar" }
         }
       ]
@@ -503,6 +691,10 @@
         "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/optional_generic.py"
       },
       "xrefs": [
+        {
+          "source": { "length": 1, "start": 293 },
+          "target": { "key": "optional_generic.G" }
+        },
         {
           "source": { "length": 1, "start": 293 },
           "target": { "key": "typing.Generic" }
@@ -522,6 +714,10 @@
         {
           "source": { "length": 7, "start": 242 },
           "target": { "key": "typing.TypeVar" }
+        },
+        {
+          "source": { "length": 7, "start": 256 },
+          "target": { "key": "optional_generic.TypeVar" }
         },
         {
           "source": { "length": 7, "start": 256 },

@@ -20,8 +20,24 @@
         { "source": { "length": 1, "start": 288 }, "target": { "key": "a.b" } },
         { "source": { "length": 1, "start": 291 }, "target": { "key": "a.c" } },
         { "source": { "length": 1, "start": 299 }, "target": { "key": "a.b" } },
+        {
+          "source": { "length": 1, "start": 299 },
+          "target": { "key": "current_module.b" }
+        },
         { "source": { "length": 1, "start": 301 }, "target": { "key": "a.c" } },
+        {
+          "source": { "length": 1, "start": 301 },
+          "target": { "key": "current_module.d" }
+        },
+        {
+          "source": { "length": 1, "start": 304 },
+          "target": { "key": "current_module.x" }
+        },
         { "source": { "length": 1, "start": 304 }, "target": { "key": "x" } },
+        {
+          "source": { "length": 1, "start": 306 },
+          "target": { "key": "current_module.x.f" }
+        },
         { "source": { "length": 1, "start": 306 }, "target": { "key": "x.f" } },
         { "source": { "length": 3, "start": 241 }, "target": { "key": "u.v" } },
         { "source": { "length": 3, "start": 270 }, "target": { "key": "x.y" } }
@@ -34,7 +50,11 @@
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/star.py"
       },
       "xrefs": [
-        { "source": { "length": 1, "start": 214 }, "target": { "key": "u" } }
+        { "source": { "length": 1, "start": 214 }, "target": { "key": "u" } },
+        {
+          "source": { "length": 1, "start": 239 },
+          "target": { "key": "star.v" }
+        }
       ]
     }
   },

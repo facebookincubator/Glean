@@ -166,13 +166,6 @@
                             "start": 4
                         },
                         "type": "test/py/glean/all.LocalClass.meth"
-                    },
-                    {
-                        "span": {
-                            "length": 6,
-                            "start": 36
-                        },
-                        "type": "test/py/glean/lib.HelperClass"
                     }
                 ],
                 "visibility": 20
@@ -519,6 +512,13 @@
                             "start": 0
                         },
                         "type": "test/py/glean/all.var1"
+                    },
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 6
+                        },
+                        "type": "test/py/glean/all.List"
                     }
                 ],
                 "visibility": 20
@@ -575,6 +575,13 @@
                             "start": 0
                         },
                         "type": "test/py/glean/all.var2"
+                    },
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 6
+                        },
+                        "type": "test/py/glean/all.List"
                     }
                 ],
                 "visibility": 20
@@ -892,6 +899,41 @@
                             "start": 4
                         },
                         "type": "test/py/glean/as.pep570_posonly_test_kwonly"
+                    },
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 40
+                        },
+                        "type": "test/py/glean/as.Union"
+                    },
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 72
+                        },
+                        "type": "test/py/glean/as.Union"
+                    },
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 123
+                        },
+                        "type": "test/py/glean/as.Union"
+                    },
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 181
+                        },
+                        "type": "test/py/glean/as.Union"
+                    },
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 224
+                        },
+                        "type": "test/py/glean/as.Union"
                     }
                 ],
                 "visibility": 20
@@ -948,6 +990,41 @@
                             "start": 4
                         },
                         "type": "test/py/glean/as.test_fun"
+                    },
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 45
+                        },
+                        "type": "test/py/glean/as.Optional"
+                    },
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 54
+                        },
+                        "type": "test/py/glean/as.Dict"
+                    },
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 103
+                        },
+                        "type": "test/py/glean/as.Optional"
+                    },
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 146
+                        },
+                        "type": "test/py/glean/as.Dict"
+                    },
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 156
+                        },
+                        "type": "test/py/glean/as.Dict"
                     }
                 ],
                 "visibility": 20
@@ -1004,6 +1081,20 @@
                             "start": 4
                         },
                         "type": "test/py/glean/as.test_more_fun"
+                    },
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 61
+                        },
+                        "type": "test/py/glean/as.Optional"
+                    },
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 80
+                        },
+                        "type": "test/py/glean/as.Optional"
                     }
                 ],
                 "visibility": 20
@@ -1459,6 +1550,13 @@
                             "start": 42
                         },
                         "type": "test/py/glean/lib.HelperClass"
+                    },
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 61
+                        },
+                        "type": "test/py/glean/lib.Union"
                     },
                     {
                         "span": {
@@ -2047,13 +2145,6 @@
                             "start": 4
                         },
                         "type": "test/py/glean/main.g.%3Clocals%3E.h"
-                    },
-                    {
-                        "span": {
-                            "length": 11,
-                            "start": 14
-                        },
-                        "type": "test/py/glean/lib.HelperClass"
                     }
                 ],
                 "visibility": 20

@@ -46,6 +46,66 @@
   },
   {
     "key": {
+      "callee": { "key": "foo.Bar" },
+      "caller": { "key": "foo.return_type_class" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "foo.Bar" },
+      "caller": { "key": "foo.return_union_type" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "foo.Generic" },
+      "caller": { "key": "foo.baz" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "foo.Generic" },
+      "caller": { "key": "foo.return_type_class_generic" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "foo.Generic" },
+      "caller": { "key": "foo.return_type_nested_generic" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "foo.OptionalGeneric" },
+      "caller": { "key": "foo.return_optional_generic" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "foo.SubmoduleClass" },
+      "caller": { "key": "foo.function.<locals>.inner_function" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "foo.SubmoduleClass" },
+      "caller": { "key": "foo.return_type_submodule_class" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "foo.SubmoduleClass.InnerClass" },
+      "caller": { "key": "foo.return_pyre_infered_type" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "foo.bigger_module.submodule.SomeClass" },
+      "caller": { "key": "foo.return_submodule_types" }
+    }
+  },
+  {
+    "key": {
       "callee": { "key": "foo.function.<locals>.inner_function" },
       "caller": { "key": "foo.function" }
     }
@@ -54,6 +114,12 @@
     "key": {
       "callee": { "key": "foo.return_optional_generic" },
       "caller": { "key": "foo.baz" }
+    }
+  },
+  {
+    "key": {
+      "callee": { "key": "foo.some_module.SomeClass" },
+      "caller": { "key": "foo.return_fully_qualified_types" }
     }
   },
   {

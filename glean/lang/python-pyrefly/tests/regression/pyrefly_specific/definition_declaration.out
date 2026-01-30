@@ -126,7 +126,10 @@
       "definition": {
         "cls": {
           "key": {
-            "bases": [ { "key": { "name": { "key": "typing.Generic" } } } ],
+            "bases": [
+              { "key": { "name": { "key": "generic.G" } } },
+              { "key": { "name": { "key": "typing.Generic" } } }
+            ],
             "container": {
               "module": { "key": { "name": { "key": "generic" } } }
             },
@@ -146,7 +149,10 @@
       "definition": {
         "cls": {
           "key": {
-            "bases": [ { "key": { "name": { "key": "typing.Generic" } } } ],
+            "bases": [
+              { "key": { "name": { "key": "optional_generic.G" } } },
+              { "key": { "name": { "key": "typing.Generic" } } }
+            ],
             "container": {
               "module": { "key": { "name": { "key": "optional_generic" } } }
             },
@@ -260,6 +266,10 @@
                   "target": {
                     "key": "bigger_module.another_submodule.SubmoduleClass"
                   }
+                },
+                {
+                  "source": { "length": 14, "start": 0 },
+                  "target": { "key": "foo.SubmoduleClass" }
                 }
               ]
             }
@@ -298,6 +308,10 @@
                   "target": {
                     "key": "bigger_module.another_submodule.SubmoduleClass"
                   }
+                },
+                {
+                  "source": { "length": 14, "start": 0 },
+                  "target": { "key": "foo.SubmoduleClass" }
                 }
               ]
             }
@@ -329,7 +343,15 @@
               "xrefs": [
                 {
                   "source": { "length": 9, "start": 12 },
+                  "target": { "key": "foo.some_module.SomeClass" }
+                },
+                {
+                  "source": { "length": 9, "start": 12 },
                   "target": { "key": "some_module.SomeClass" }
+                },
+                {
+                  "source": { "length": 11, "start": 0 },
+                  "target": { "key": "foo.some_module" }
                 },
                 {
                   "source": { "length": 11, "start": 0 },
@@ -367,7 +389,15 @@
                 },
                 {
                   "source": { "length": 8, "start": 0 },
+                  "target": { "key": "foo.Optional" }
+                },
+                {
+                  "source": { "length": 8, "start": 0 },
                   "target": { "key": "typing.Optional" }
+                },
+                {
+                  "source": { "length": 15, "start": 9 },
+                  "target": { "key": "foo.OptionalGeneric" }
                 },
                 {
                   "source": { "length": 15, "start": 9 },
@@ -413,7 +443,15 @@
                 },
                 {
                   "source": { "length": 5, "start": 9 },
+                  "target": { "key": "foo.Union" }
+                },
+                {
+                  "source": { "length": 5, "start": 9 },
                   "target": { "key": "typing.Union" }
+                },
+                {
+                  "source": { "length": 7, "start": 15 },
+                  "target": { "key": "foo.Generic" }
                 },
                 {
                   "source": { "length": 7, "start": 15 },
@@ -421,7 +459,15 @@
                 },
                 {
                   "source": { "length": 7, "start": 29 },
+                  "target": { "key": "foo.Generic" }
+                },
+                {
+                  "source": { "length": 7, "start": 29 },
                   "target": { "key": "generic.Generic" }
+                },
+                {
+                  "source": { "length": 8, "start": 0 },
+                  "target": { "key": "foo.Optional" }
                 },
                 {
                   "source": { "length": 8, "start": 0 },
@@ -460,10 +506,18 @@
                   }
                 },
                 {
+                  "source": { "length": 10, "start": 15 },
+                  "target": { "key": "foo.SubmoduleClass.InnerClass" }
+                },
+                {
                   "source": { "length": 14, "start": 0 },
                   "target": {
                     "key": "bigger_module.another_submodule.SubmoduleClass"
                   }
+                },
+                {
+                  "source": { "length": 14, "start": 0 },
+                  "target": { "key": "foo.SubmoduleClass" }
                 }
               ]
             }
@@ -496,12 +550,24 @@
                   "target": { "key": "bigger_module.submodule" }
                 },
                 {
+                  "source": { "length": 9, "start": 14 },
+                  "target": { "key": "foo.bigger_module.submodule" }
+                },
+                {
                   "source": { "length": 9, "start": 24 },
                   "target": { "key": "bigger_module.submodule.SomeClass" }
                 },
                 {
+                  "source": { "length": 9, "start": 24 },
+                  "target": { "key": "foo.bigger_module.submodule.SomeClass" }
+                },
+                {
                   "source": { "length": 13, "start": 0 },
                   "target": { "key": "bigger_module" }
+                },
+                {
+                  "source": { "length": 13, "start": 0 },
+                  "target": { "key": "foo.bigger_module" }
                 }
               ]
             }
@@ -532,6 +598,10 @@
                 {
                   "source": { "length": 3, "start": 0 },
                   "target": { "key": "bar.Bar" }
+                },
+                {
+                  "source": { "length": 3, "start": 0 },
+                  "target": { "key": "foo.Bar" }
                 }
               ]
             }
@@ -564,6 +634,10 @@
                 {
                   "source": { "length": 3, "start": 8 },
                   "target": { "key": "int" }
+                },
+                {
+                  "source": { "length": 7, "start": 0 },
+                  "target": { "key": "foo.Generic" }
                 },
                 {
                   "source": { "length": 7, "start": 0 },
@@ -603,7 +677,15 @@
                 },
                 {
                   "source": { "length": 7, "start": 0 },
+                  "target": { "key": "foo.Generic" }
+                },
+                {
+                  "source": { "length": 7, "start": 0 },
                   "target": { "key": "generic.Generic" }
+                },
+                {
+                  "source": { "length": 7, "start": 8 },
+                  "target": { "key": "foo.Generic" }
                 },
                 {
                   "source": { "length": 7, "start": 8 },
@@ -693,6 +775,10 @@
                   "target": {
                     "key": "bigger_module.another_submodule.SubmoduleClass"
                   }
+                },
+                {
+                  "source": { "length": 14, "start": 0 },
+                  "target": { "key": "foo.SubmoduleClass" }
                 }
               ]
             }
@@ -725,8 +811,20 @@
                   "target": { "key": "bar.Bar" }
                 },
                 {
+                  "source": { "length": 3, "start": 6 },
+                  "target": { "key": "foo.Bar" }
+                },
+                {
+                  "source": { "length": 5, "start": 0 },
+                  "target": { "key": "foo.Union" }
+                },
+                {
                   "source": { "length": 5, "start": 0 },
                   "target": { "key": "typing.Union" }
+                },
+                {
+                  "source": { "length": 7, "start": 11 },
+                  "target": { "key": "foo.Generic" }
                 },
                 {
                   "source": { "length": 7, "start": 11 },
@@ -925,6 +1023,10 @@
                 {
                   "source": { "length": 3, "start": 0 },
                   "target": { "key": "bar.Bar" }
+                },
+                {
+                  "source": { "length": 3, "start": 0 },
+                  "target": { "key": "foo.Bar" }
                 }
               ]
             }
@@ -975,6 +1077,14 @@
                 {
                   "source": { "length": 3, "start": 9 },
                   "target": { "key": "bar.Bar" }
+                },
+                {
+                  "source": { "length": 3, "start": 9 },
+                  "target": { "key": "foo.Bar" }
+                },
+                {
+                  "source": { "length": 8, "start": 0 },
+                  "target": { "key": "foo.Optional" }
                 },
                 {
                   "source": { "length": 8, "start": 0 },
@@ -1085,7 +1195,15 @@
                 },
                 {
                   "source": { "length": 8, "start": 0 },
+                  "target": { "key": "foo.Optional" }
+                },
+                {
+                  "source": { "length": 8, "start": 0 },
                   "target": { "key": "typing.Optional" }
+                },
+                {
+                  "source": { "length": 15, "start": 9 },
+                  "target": { "key": "foo.OptionalGeneric" }
                 },
                 {
                   "source": { "length": 15, "start": 9 },
@@ -1143,6 +1261,10 @@
                 {
                   "source": { "length": 3, "start": 8 },
                   "target": { "key": "int" }
+                },
+                {
+                  "source": { "length": 7, "start": 0 },
+                  "target": { "key": "foo.Generic" }
                 },
                 {
                   "source": { "length": 7, "start": 0 },

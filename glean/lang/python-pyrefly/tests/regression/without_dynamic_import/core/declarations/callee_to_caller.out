@@ -8,6 +8,12 @@
   },
   {
     "key": {
+      "callee": { "key": "foo.Bar.InnerBar" },
+      "caller": { "key": "foo.imported_inner_class_return" }
+    }
+  },
+  {
+    "key": {
       "callee": { "key": "foo.FooBar" },
       "caller": { "key": "foo.pipe_union_return" }
     }
