@@ -21,7 +21,7 @@ import Glean.Util.Benchmark
 import Glean.Typed
 
 main :: IO ()
-main = benchmarkMain $ \run -> do
+main = benchmarkMain $ \_conf run -> do
   withEmptyTestDB [] $ \env repo -> do
     predicates <- Backend.loadPredicates env repo
       [ Cxx.allPredicates
