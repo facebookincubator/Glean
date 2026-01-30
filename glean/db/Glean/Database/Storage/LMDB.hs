@@ -13,6 +13,7 @@ module Glean.Database.Storage.LMDB
 
 import Control.Exception
 import Data.Int
+import qualified Data.Text as Text
 import Foreign.C.String
 import Foreign.C.Types
 import Foreign.ForeignPtr
@@ -126,7 +127,6 @@ instance Storage LMDB where
       createDirectoryIfMissing True $ takeDirectory target
       renameDirectory db target
 
-
 containerPath :: LMDB -> Repo -> FilePath
 containerPath LMDB{..} repo = databasePath lmdbRoot repo </> "db"
 
@@ -148,16 +148,15 @@ instance DatabaseOps (Database LMDB) where
   cacheOwnership (Database db) = cacheOwnership db
   prepareFactOwnerCache (Database db) = prepareFactOwnerCache db
 
-  backup (Database db) scratch process = do
-    createDirectoryIfMissing True (scratch </> "backup")
-    backup db scratch $ \_ _ -> do
+  backup (Database db) cfg scratch process =
+    backup db cfg scratch $ \path _ -> do
       withTempDirectory scratch "out" $ \tmpdir -> do
         let out = tmpdir </> "db.squashfs"
-        callProcess "mksquashfs" [
-          scratch </> "backup", out,
-          "-comp", "zstd", "-Xcompression-level", "8" ]
+        callProcess "mksquashfs" $ [ path, out ] <>
+          map Text.unpack (ServerConfig.config_db_lmdb_mksquashfs_args cfg)
         size <- getFileSize out
         process out (Data $ fromIntegral size)
+
 
 foreign import ccall safe glean_lmdb_container_open
   :: CString

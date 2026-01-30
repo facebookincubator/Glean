@@ -229,7 +229,7 @@ makeFakeCloudDB schema backupDir repo dbtime completeness opts = do
       storeSchema hdl $ toStoredSchema schema
       tmpDir <- getCanonicalTemporaryDirectory
       withTempDirectory tmpDir "scratch" $ \scratch ->
-        Storage.backup hdl scratch $ \file _data ->
+        Storage.backup hdl def scratch $ \file _data ->
           void $ backup (mockSite backupDir) repo props Nothing file
     )
   where
