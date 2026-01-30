@@ -39,7 +39,7 @@ withBenchDB conf num act = do
       | useLMDB conf = [setLMDBStorage]
       | otherwise = []
 
-  withEmptyTestDB settings $ \env repo -> do
+  withEmptyTestDB (enableRocksDBCache : settings) $ \env repo -> do
   withOpenDatabase env repo $ \odb ->
     void $ return odb
 
