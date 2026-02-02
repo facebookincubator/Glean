@@ -312,7 +312,8 @@ backends :: ([Setting] -> Test) -> Test
 backends fn =
   TestList [
     TestLabel lbl (fn settings)
-    | (lbl, settings) <- allStorage
+    | (lbl, settings) <- allStorage <>
+        [("lmdb.squashfs", [setLMDBStorage, setLMDBNoUnpack])]
     , lbl /= "memory" -- doesn't support ownership yet
   ]
 

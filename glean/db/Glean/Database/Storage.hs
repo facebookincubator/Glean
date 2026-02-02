@@ -121,6 +121,7 @@ class DatabaseOps (Database s) => Storage s where
   -- to reduce the number of copies of the DB on disk during a restore.
   restore
     :: s   -- ^ storage
+    -> ServerConfig.Config  -- ^ server config
     -> Repo  -- ^ repo
     -> FilePath  -- ^ scratch directory
     -> FilePath  -- ^ file containing the serialiased database (produced by 'backup')

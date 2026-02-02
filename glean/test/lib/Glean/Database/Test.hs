@@ -20,6 +20,7 @@ module Glean.Database.Test
   , setDBVersion
   , setCompactOnCompletion
   , setMaxSetSize
+  , setLMDBNoUnpack
   , enableTcDebug
   , enableQueryDebug
   , enableRocksDBCache
@@ -112,6 +113,11 @@ setMaxSetSize :: Int64 -> Setting
 setMaxSetSize i cfg = cfg
   { cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
       { ServerConfig.config_max_set_size_bytes = Just i } }
+
+setLMDBNoUnpack :: Setting
+setLMDBNoUnpack cfg = cfg
+  { cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
+      { ServerConfig.config_db_lmdb_restore_unpack = False } }
 
 enableTcDebug :: Setting
 enableTcDebug cfg = cfg
