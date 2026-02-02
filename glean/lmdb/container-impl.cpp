@@ -70,7 +70,18 @@ ContainerImpl::ContainerImpl(const std::string& path, Mode m)
   MDB_env* db_ptr;
   check(mdb_env_create(&db_ptr));
   check(mdb_env_set_maxdbs(db_ptr, Family::count()));
-  check(mdb_env_set_mapsize(db_ptr, 10 * 1024 * 1024 * 1024UL));
+
+  // LMDB needs us to pre-set the memory map size, which determines
+  // the maximum size of the DB. Setting it to zero uses the mapsize
+  // when the DB was created, while setting it to a value smaller than
+  // the actual size of the DB causes LMDB to use the DB size - this
+  // is what we want for a read-only DB. For a read/write DB we have
+  // to pick a huge value, because the mapsize can only be increased
+  // if there are no transactions in progress, and we don't have a good
+  // way to do that aside from closing and re-opening the DB.
+  check(mdb_env_set_mapsize(
+      db_ptr, m == Mode::ReadOnly ? 1 : 1024 * 1024 * 1024 * 1024UL));
+
   check(mdb_env_open(db_ptr, path.c_str(), flags, 0666));
   SCOPE_FAIL {
     mdb_env_close(db_ptr);
