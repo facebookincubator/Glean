@@ -15,7 +15,9 @@
       },
       "xrefs": [
         { "source": { "length": 1, "start": 241 }, "target": { "key": "u" } },
+        { "source": { "length": 1, "start": 243 }, "target": { "key": "u.v" } },
         { "source": { "length": 1, "start": 270 }, "target": { "key": "x" } },
+        { "source": { "length": 1, "start": 272 }, "target": { "key": "x.y" } },
         { "source": { "length": 1, "start": 279 }, "target": { "key": "a" } },
         { "source": { "length": 1, "start": 288 }, "target": { "key": "a.b" } },
         { "source": { "length": 1, "start": 291 }, "target": { "key": "a.c" } },
@@ -38,9 +40,7 @@
           "source": { "length": 1, "start": 306 },
           "target": { "key": "current_module.x.f" }
         },
-        { "source": { "length": 1, "start": 306 }, "target": { "key": "x.f" } },
-        { "source": { "length": 3, "start": 241 }, "target": { "key": "u.v" } },
-        { "source": { "length": 3, "start": 270 }, "target": { "key": "x.y" } }
+        { "source": { "length": 1, "start": 306 }, "target": { "key": "x.f" } }
       ]
     }
   },

@@ -346,6 +346,10 @@
           "target": { "key": "typing.Optional" }
         },
         {
+          "source": { "length": 9, "start": 266 },
+          "target": { "key": "bigger_module.submodule" }
+        },
+        {
           "source": { "length": 9, "start": 947 },
           "target": { "key": "foo.baz.<locals>.local_str" }
         },
@@ -628,10 +632,6 @@
         {
           "source": { "length": 22, "start": 3190 },
           "target": { "key": "foo.placeholder_glocal_str" }
-        },
-        {
-          "source": { "length": 23, "start": 252 },
-          "target": { "key": "bigger_module.submodule" }
         },
         {
           "source": { "length": 23, "start": 1680 },
