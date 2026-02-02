@@ -103,6 +103,14 @@ Where Glean databases are stored. When `--db-tmp` is used, Glean
 creates a temporary directory for storage, and deletes it on
 exit. `--db-memory` stores databases in memory.
 
+* `--lmdb`<br />
+When using local databases with `--db-root`, the `--lmdb` option
+creates new DBs using LMDB instead of the default RocksDB (LMDB is
+currently experimental).  The `--lmdb` option only affects the
+creation of new DBs; Glean can always work with existing DBs created
+by either RocksDB or LMDB. See also the `db_create_storage` in the
+Server Config.
+
 * `--schema (file:FILE | dir:DIR | config:PATH | DIR)`<br />
 **Default**: <Alt internal="indexconfig:glean/schema/index" external="dir:$datadir/glean/schema/source" /><br />
 The location of the schema definition. This can either be:
@@ -135,7 +143,8 @@ indexers to specify the indexing steps and dependencies between them.
 
 * `--server-config (file:PATH | config:PATH)`<br />
 **Default**: <Alt internal="config:glean/server" external="config:server" /><br />
-**Thrift file:** [server-config.thrift](https://github.com/facebookincubator/Glean/blob/master/glean/config/server/server_config.thrift)
+**Thrift file:** [server-config.thrift](https://github.com/facebookincubator/Glean/blob/master/glean/config/server/server_config.thrift) <br />
+Most Glean configuration options are specified using this config file. See [Configuration Files](#configuration-files) for how to use configuration files.
 
 * `--tier TIER`<br />
 Equivalent to <Alt internal="--server-config config:glean/server/TIER" external="--server-config config:server/TIER" /><br />
