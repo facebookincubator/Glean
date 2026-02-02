@@ -107,6 +107,9 @@ newtype instance Database RocksDB = Database DB
 instance Storage RocksDB where
   describe rocks = "rocksdb:" <> rocksRoot rocks
 
+  readableVersions _ = [DBVersion 3]
+  writableVersions _ = [DBVersion 3]
+
   open rocks repo mode (DBVersion version) = do
     (cmode, start, ownership) <- case mode of
       ReadOnly -> return (0, invalidFid, Nothing)

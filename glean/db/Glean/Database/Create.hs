@@ -105,10 +105,14 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
           , timestampRepoHash =
               posixEpochTimeToUTCTime <$> kickOff_repo_hash_time
           }
+      withDefaultStorage env $ \storageName storage -> do
+
       version <-
-        fromMaybe Storage.currentVersion . ServerConfig.config_db_create_version
+        fromMaybe (Storage.currentVersion storage) .
+          ServerConfig.config_db_create_version
         <$> Observed.get envServerConfig
-      when (not $ Storage.canOpenVersion Storage.ReadWrite version) $
+
+      when (not $ Storage.canOpenVersion storage Storage.ReadWrite version) $
         dbError kickOff_repo
           "can't create databases (unsupported binary version)"
       db <- atomically $ newDB kickOff_repo
@@ -122,7 +126,7 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
         -- concept of deleting DBs will change with the new metadata handling so
         -- it's not worth fixing at this point, especially since we aren't
         -- supposed to be kicking off DBs we've previously deleted.
-        let meta = newMeta envDefaultStorage version time
+        let meta = newMeta storageName version time
                      (Incomplete def) allProps
                      (lightDeps kickOff_dependencies')
         bracket_

@@ -99,8 +99,6 @@ withOpenDatabase env@Env{..} repo action =
                     -- Note: Finalizing also needs to be ReadWrite,
                     -- because compaction modifies the DB.
                   where completeness = metaCompleteness meta
-            when (not $ canOpenVersion mode version) $ dbError dbRepo
-              $ "can't open database version " ++ show (unDBVersion version)
             writeTVar dbState Opening
             return $ Right (version, mode)
       case r of
@@ -484,10 +482,13 @@ asyncOpenDB env@Env{..} storage db@DB{..} version mode deps
     on_success on_failure =
   -- Be paranoid about 'spawnMask' itself throwing.
   handling_failures $ Warden.spawnMask envWarden $ \restore ->
-  loggingAction (runLogRepo "open" env dbRepo) (const mempty) $
+  loggingAction (runLogRepo "open" env dbRepo) (const mempty) $ do
+  when (not $ canOpenVersion storage mode version) $
+    dbError dbRepo $
+      "can't open database version " ++ show (unDBVersion version)
   bracket_
     (atomically $ acquireDB db)
-    (atomically $ releaseDB envCatalog envActive db) $
+    (atomically $ releaseDB envCatalog envActive db) $ do
   handling_failures $ do
     logInfo $ inRepo dbRepo "opening"
     bracketOnError

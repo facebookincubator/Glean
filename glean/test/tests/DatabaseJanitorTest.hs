@@ -180,9 +180,10 @@ makeFakeDB
   -> (Meta -> Meta)
   -> IO ()
 makeFakeDB schema root repo dbtime completeness opts = do
+  storage <- RocksDB.newStorage root def
   let
     meta = opts $ Meta
-      { metaVersion = Storage.currentVersion
+      { metaVersion = Storage.currentVersion storage
       , metaCreated = utcTimeToPosixEpochTime dbtime
       , metaRepoHashTime = Nothing
       , metaCompleteness = completeness dbtime
@@ -195,13 +196,12 @@ makeFakeDB schema root repo dbtime completeness opts = do
       }
   let repoPath = databasePath root repo
   createDirectoryIfMissing True repoPath
-  storage <- RocksDB.newStorage root def
   bracket
     (Storage.open
       storage
       repo
       (Storage.Create lowestFid Nothing Storage.UseDefaultSchema)
-      Storage.currentVersion)
+      (Storage.currentVersion storage))
     Storage.close
     (\hdl -> storeSchema hdl $ toStoredSchema schema)
   LB.writeFile (repoPath </> "meta") (encode meta)
@@ -223,18 +223,18 @@ makeFakeCloudDB schema backupDir repo dbtime completeness opts = do
       storage
       repo
       (Storage.Create lowestFid Nothing Storage.UseDefaultSchema)
-      Storage.currentVersion)
+      (Storage.currentVersion storage))
     Storage.close
     (\hdl -> do
       storeSchema hdl $ toStoredSchema schema
       tmpDir <- getCanonicalTemporaryDirectory
       withTempDirectory tmpDir "scratch" $ \scratch ->
         Storage.backup hdl def scratch $ \file _data ->
-          void $ backup (mockSite backupDir) repo props Nothing file
+          void $ backup (mockSite backupDir) repo (props storage) Nothing file
     )
   where
-    props = opts $ Meta
-        { metaVersion = Storage.currentVersion
+    props storage = opts $ Meta
+        { metaVersion = Storage.currentVersion storage
         , metaCreated = utcTimeToPosixEpochTime dbtime
         , metaRepoHashTime = Nothing
         , metaCompleteness = completeness dbtime
@@ -319,7 +319,7 @@ deleteOldDBsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   dbdirs2 <- listDirectory (dbdir </> "test2")
   assertEqual "directories deleted"
     [ "0001", "0004", "0005", "0006" ]
-    (dbdirs1 ++ dbdirs2)
+    (sort (dbdirs1 ++ dbdirs2))
 
   runDatabaseJanitor env
   waitDel env
@@ -946,7 +946,7 @@ retentionCheckMissingDepsTest = TestCase $
       --- 0014 is the newest test2 db
       --- 0016 is the newest test db, but it's missing dependency
       --- so restoring next available test db 0015 and it's dependency 0013
-      assertEqual "after" [ "0013", "0014","0015"] (map repo_hash repos)
+      assertEqual "after" [ "0013", "0014","0015"] (sort (map repo_hash repos))
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList

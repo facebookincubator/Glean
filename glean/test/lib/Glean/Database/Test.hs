@@ -48,6 +48,7 @@ import Glean.Database.Config
 import Glean.Database.Env
 import Glean.Database.Write.Batch
 import Glean.Database.Storage (DBVersion(..), currentVersion, writableVersions)
+import Glean.Database.Storage.RocksDB
 import Glean.Database.Types
 import qualified Glean.Internal.Types as Thrift
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -86,7 +87,7 @@ setMemoryStorage cfg = cfg{ cfgDataStore = memoryDataStore }
 
 setLMDBStorage :: Setting
 setLMDBStorage cfg =
-  cfg{ cfgDataStore = tmpDataStore { defaultStorage = lmdbName }}
+  cfg{ cfgDataStore = tmpDataStore { defaultStorage = (lmdbName, True) }}
 
 allStorage :: [(String, [Setting])]
 allStorage =
@@ -97,7 +98,8 @@ allStorage =
   ]
   ++
   [ ("rocksdb-" ++ show (unDBVersion v), [setDBVersion v])
-    | v <- writableVersions, v /= currentVersion ]
+    | v <- writableVersions (undefined :: RocksDB)
+    , v /= currentVersion (undefined :: RocksDB) ]
 
 setDBVersion :: ServerConfig.DBVersion -> Setting
 setDBVersion ver cfg = cfg
