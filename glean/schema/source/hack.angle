@@ -365,6 +365,7 @@ predicate TraitDefinition :
     requireImplements : [InterfaceDeclaration],
     module_ : maybe ModuleMembership,
     requireClass : maybe [ClassDeclaration],
+    requireThisAs : [ClassDeclaration],
   }
 
 # Definition of a Hack enum
