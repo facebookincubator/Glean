@@ -1,0 +1,444 @@
+[
+    "@generated",
+    {
+        "edges": [
+            {
+                "child": "test/php/RefClass/:prop/raz",
+                "parent": "test/php/RefClass"
+            },
+            {
+                "child": "test/php/RefClass/JAZZ",
+                "parent": "test/php/RefClass"
+            },
+            {
+                "child": "test/php/RefClass/bar",
+                "parent": "test/php/RefClass"
+            },
+            {
+                "child": "test/php/RefClass/bazza",
+                "parent": "test/php/RefClass"
+            },
+            {
+                "child": "test/php/RefClass/foo",
+                "parent": "test/php/RefClass"
+            },
+            {
+                "child": "test/php/RefClass/lotsofkeywords",
+                "parent": "test/php/RefClass"
+            }
+        ],
+        "symbolDetails": {
+            "test/php/RefClass": {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": true
+                },
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 37
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "RefClass"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "class RefClass",
+                "sym": "test/php/RefClass",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 37
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 6
+                        },
+                        "type": "test/php/RefClass"
+                    }
+                ]
+            },
+            "test/php/RefClass/:prop/raz": {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 9,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 25,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "RefClass",
+                    "localName": "raz"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "private int raz",
+                "sym": "test/php/RefClass/:prop/raz",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 25,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 40
+            },
+            "test/php/RefClass/JAZZ": {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 16,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 23,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [
+                    6
+                ],
+                "name": {
+                    "container": "RefClass",
+                    "localName": "JAZZ"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "const JAZZ",
+                "sym": "test/php/RefClass/JAZZ",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 23,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 6
+                        },
+                        "type": "test/php/RefClass/JAZZ"
+                    }
+                ],
+                "visibility": 20
+            },
+            "test/php/RefClass/bar": {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 30,
+                        "lineEnd": 36
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "RefClass",
+                    "localName": "bar"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "public function bar(SourceClass::T $param): int",
+                "sym": "test/php/RefClass/bar",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 30,
+                        "lineEnd": 36
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 3,
+                            "start": 16
+                        },
+                        "type": "test/php/RefClass/bar"
+                    },
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 20
+                        },
+                        "type": "test/php/SourceClass"
+                    },
+                    {
+                        "span": {
+                            "length": 1,
+                            "start": 33
+                        },
+                        "type": "test/php/SourceClass/T"
+                    }
+                ],
+                "visibility": 20
+            },
+            "test/php/RefClass/bazza": {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 22,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "RefClass",
+                    "localName": "bazza"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "public function bazza(): int",
+                "sym": "test/php/RefClass/bazza",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 22,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 16
+                        },
+                        "type": "test/php/RefClass/bazza"
+                    }
+                ],
+                "visibility": 20
+            },
+            "test/php/RefClass/foo": {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 18,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [
+                    4
+                ],
+                "name": {
+                    "container": "RefClass",
+                    "localName": "foo"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "public static function foo(): int",
+                "sym": "test/php/RefClass/foo",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 18,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 3,
+                            "start": 23
+                        },
+                        "type": "test/php/RefClass/foo"
+                    }
+                ],
+                "visibility": 20
+            },
+            "test/php/RefClass/lotsofkeywords": {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 26,
+                        "lineEnd": 28
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [
+                    2,
+                    3,
+                    4
+                ],
+                "name": {
+                    "container": "RefClass",
+                    "localName": "lotsofkeywords"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "final internal static async function lotsofkeywords(): int",
+                "sym": "test/php/RefClass/lotsofkeywords",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 26,
+                        "lineEnd": 28
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 14,
+                            "start": 37
+                        },
+                        "type": "test/php/RefClass/lotsofkeywords"
+                    }
+                ],
+                "visibility": 50
+            }
+        }
+    }
+]

@@ -14,6 +14,7 @@
 
 module Glean.Glass.Regression.Snapshot (
     mainGlassSnapshot,
+    mainGlassSnapshotCLI,
     mainGlassSnapshotGeneric,
     mainGlassSnapshotXLang,
     Output, Getter
@@ -40,6 +41,7 @@ import qualified Data.Map.Strict as Map
 import qualified Data.Yaml as Yaml
 import Util.List ( uniq )
 import Data.Either.Extra
+import System.IO.Unsafe ( unsafePerformIO )
 
 import qualified Thrift.Protocol
 import qualified Thrift.Protocol.JSON as Thrift
@@ -119,6 +121,51 @@ mainGlassSnapshot
 mainGlassSnapshot testName testRoot indexer extras =
   mainGlassSnapshot_ testName testRoot
     (Glean.driverFromIndexer indexer) extras
+
+-- | Like 'mainGlassSnapshot', but reads testName and testPath from
+-- command-line arguments (--test-name and --test-path).
+-- This allows a single module to be reused for multiple test targets.
+mainGlassSnapshotCLI
+  :: Glean.Indexer opts
+  -> (Getter -> [Test])
+  -> IO ()
+mainGlassSnapshotCLI indexer extras =
+  mainGlassSnapshotCLI_ (Glean.driverFromIndexer indexer) extras
+
+-- | Configuration parsed from CLI for test name and path
+data TestPathConfig = TestPathConfig
+  { tpcTestName :: String
+  , tpcTestPath :: FilePath
+  }
+
+testPathConfigParser :: Parser TestPathConfig
+testPathConfigParser = TestPathConfig
+  <$> strOption
+      ( long "test-name"
+     <> metavar "NAME"
+     <> help "Name for the test suite" )
+  <*> strOption
+      ( long "test-path"
+     <> metavar "PATH"
+     <> help "Path to test directory containing .query files" )
+
+mainGlassSnapshotCLI_
+  :: Glean.Driver opts
+  -> (Getter -> [Test])
+  -> IO ()
+mainGlassSnapshotCLI_ driver extras = do
+  withOutput cfgOutput $ \temp ->
+    mainTestIndexGeneric driver combinedParser "" $
+      \(snapConfig, TestPathConfig{..}) _ config _ get ->
+        let qs = unsafePerformIO $ findQueries tpcTestPath
+        in TestList $ testAll snapConfig config temp qs get : extras get
+  where
+    cfgOutput = Nothing
+
+    combinedParser = (,) <$> configParser <*> testPathConfigParser
+
+    withOutput (Just out) f = f out
+    withOutput Nothing f = withSystemTempDirectory "glass-test" f
 
 mainGlassSnapshotGeneric
   :: String

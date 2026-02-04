@@ -1,0 +1,98 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [
+            {
+                "annotations": [
+                    {
+                        "name": "TestAnnotation",
+                        "source": "TestAnnotation(\"Text\")",
+                        "symbol": "test/php/TestAnnotation"
+                    }
+                ],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 13,
+                        "lineEnd": 38
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "SourceClass"
+                },
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "www/SourceClass.php",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 10,
+                                "lineEnd": 12
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceClass",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 13,
+                        "lineEnd": 38
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            }
+        ],
+        "symbols": [
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 13,
+                        "lineEnd": 38
+                    },
+                    "repository": "test"
+                },
+                "name": "SourceClass",
+                "qname": {
+                    "container": "",
+                    "localName": "SourceClass"
+                },
+                "score": {
+                    "exactness": 0
+                },
+                "symbol": "test/php/SourceClass"
+            }
+        ]
+    }
+]

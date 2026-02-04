@@ -1,0 +1,1384 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [],
+        "symbols": [
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 49,
+                        "lineEnd": 55
+                    },
+                    "repository": "test"
+                },
+                "name": "AirBus",
+                "qname": {
+                    "container": "",
+                    "localName": "AirBus"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/AirBus"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "AirBus"
+                    },
+                    "symbol": "test/php/AirBus"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 52,
+                        "lineEnd": 54
+                    },
+                    "repository": "test"
+                },
+                "name": "fly",
+                "qname": {
+                    "container": "AirBus",
+                    "localName": "fly"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/AirBus/fly"
+            },
+            {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 55,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "repository": "test"
+                },
+                "name": "EnumClassExample",
+                "qname": {
+                    "container": "",
+                    "localName": "EnumClassExample"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/EnumClassExample"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 57,
+                        "lineEnd": 59
+                    },
+                    "repository": "test"
+                },
+                "name": "FancyTypes",
+                "qname": {
+                    "container": "",
+                    "localName": "FancyTypes"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/FancyTypes"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "FancyTypes"
+                    },
+                    "symbol": "test/php/FancyTypes"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 85,
+                        "lineBegin": 58,
+                        "lineEnd": 58
+                    },
+                    "repository": "test"
+                },
+                "name": "flatten",
+                "qname": {
+                    "container": "FancyTypes",
+                    "localName": "flatten"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/FancyTypes/flatten"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "Fliers"
+                    },
+                    "symbol": "test/php/Fliers"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 31,
+                        "lineBegin": 33,
+                        "lineEnd": 33
+                    },
+                    "repository": "test"
+                },
+                "name": "fly",
+                "qname": {
+                    "container": "Fliers",
+                    "localName": "fly"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Fliers/fly"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 14,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "name": "Machine",
+                "qname": {
+                    "container": "",
+                    "localName": "Machine"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Machine"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "Machine"
+                    },
+                    "symbol": "test/php/Machine"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 18,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "closeDoors",
+                "qname": {
+                    "container": "Machine",
+                    "localName": "closeDoors"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Machine/closeDoors"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "Machine"
+                    },
+                    "symbol": "test/php/Machine"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 15,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": "openDoors",
+                "qname": {
+                    "container": "Machine",
+                    "localName": "openDoors"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Machine/openDoors"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Namespace2.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 13,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "AnotherNamespaceClass",
+                "qname": {
+                    "container": "NS",
+                    "localName": "AnotherNamespaceClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/NS/AnotherNamespaceClass"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "NS",
+                        "localName": "AnotherNamespaceClass"
+                    },
+                    "symbol": "test/php/NS/AnotherNamespaceClass"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Namespace2.php",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 14,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": "another_class_function",
+                "qname": {
+                    "container": "NS\\AnotherNamespaceClass",
+                    "localName": "another_class_function"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/NS/AnotherNamespaceClass/another_class_function"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Namespace.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 12,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "NamespaceClass",
+                "qname": {
+                    "container": "NS",
+                    "localName": "NamespaceClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/NS/NamespaceClass"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "NS",
+                        "localName": "NamespaceClass"
+                    },
+                    "symbol": "test/php/NS/NamespaceClass"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Namespace.php",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 13,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": "class_function",
+                "qname": {
+                    "container": "NS\\NamespaceClass",
+                    "localName": "class_function"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/NS/NamespaceClass/class_function"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 26,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": "Pilot",
+                "qname": {
+                    "container": "",
+                    "localName": "Pilot"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Pilot"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "Plane"
+                    },
+                    "symbol": "test/php/Plane"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 42,
+                        "lineEnd": 46
+                    },
+                    "repository": "test"
+                },
+                "name": "takeOff",
+                "qname": {
+                    "container": "Plane",
+                    "localName": "takeOff"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Plane/takeOff"
+            },
+            {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 16,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "name": "Position",
+                "qname": {
+                    "container": "",
+                    "localName": "Position"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Position"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 37
+                    },
+                    "repository": "test"
+                },
+                "name": "RefClass",
+                "qname": {
+                    "container": "",
+                    "localName": "RefClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/RefClass"
+            },
+            {
+                "kind": 9,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 25,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "raz",
+                "qname": {
+                    "container": "RefClass",
+                    "localName": "raz"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/RefClass/:prop/raz"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "RefClass"
+                    },
+                    "symbol": "test/php/RefClass"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 30,
+                        "lineEnd": 36
+                    },
+                    "repository": "test"
+                },
+                "name": "bar",
+                "qname": {
+                    "container": "RefClass",
+                    "localName": "bar"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/RefClass/bar"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "RefClass"
+                    },
+                    "symbol": "test/php/RefClass"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 22,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": "bazza",
+                "qname": {
+                    "container": "RefClass",
+                    "localName": "bazza"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/RefClass/bazza"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "RefClass"
+                    },
+                    "symbol": "test/php/RefClass"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 18,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "foo",
+                "qname": {
+                    "container": "RefClass",
+                    "localName": "foo"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/RefClass/foo"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "RefClass"
+                    },
+                    "symbol": "test/php/RefClass"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 26,
+                        "lineEnd": 28
+                    },
+                    "repository": "test"
+                },
+                "name": "lotsofkeywords",
+                "qname": {
+                    "container": "RefClass",
+                    "localName": "lotsofkeywords"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/RefClass/lotsofkeywords"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 22,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "name": "SecretClass",
+                "qname": {
+                    "container": "",
+                    "localName": "SecretClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SecretClass"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SecretClass"
+                    },
+                    "symbol": "test/php/SecretClass"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 23,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "name": "secretSecrets",
+                "qname": {
+                    "container": "SecretClass",
+                    "localName": "secretSecrets"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SecretClass/secretSecrets"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 13,
+                        "lineEnd": 38
+                    },
+                    "repository": "test"
+                },
+                "name": "SourceClass",
+                "qname": {
+                    "container": "",
+                    "localName": "SourceClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceClass"
+            },
+            {
+                "kind": 9,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 23,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "daz",
+                "qname": {
+                    "container": "SourceClass",
+                    "localName": "daz"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceClass/:prop/daz"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceClass"
+                    },
+                    "symbol": "test/php/SourceClass"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 22,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": "bar",
+                "qname": {
+                    "container": "SourceClass",
+                    "localName": "bar"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceClass/bar"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceClass"
+                    },
+                    "symbol": "test/php/SourceClass"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 30,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "name": "overrideMe",
+                "qname": {
+                    "container": "SourceClass",
+                    "localName": "overrideMe"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceClass/overrideMe"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceClass"
+                    },
+                    "symbol": "test/php/SourceClass"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 60,
+                        "lineBegin": 37,
+                        "lineEnd": 37
+                    },
+                    "repository": "test"
+                },
+                "name": "pleaseOverride",
+                "qname": {
+                    "container": "SourceClass",
+                    "localName": "pleaseOverride"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceClass/pleaseOverride"
+            },
+            {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": "SourceEnum",
+                "qname": {
+                    "container": "",
+                    "localName": "SourceEnum"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceEnum"
+            },
+            {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 15,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": "SourceEnum2",
+                "qname": {
+                    "container": "",
+                    "localName": "SourceEnum2"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceEnum2"
+            },
+            {
+                "kind": 12,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceEnum.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 44,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                },
+                "name": "SourceEnumClass3",
+                "qname": {
+                    "container": "",
+                    "localName": "SourceEnumClass3"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceEnumClass3"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceInterface"
+                    },
+                    "symbol": "test/php/SourceInterface"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 37,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "foo",
+                "qname": {
+                    "container": "SourceInterface",
+                    "localName": "foo"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceInterface/foo"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceInterface"
+                    },
+                    "symbol": "test/php/SourceInterface"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 37,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "quux",
+                "qname": {
+                    "container": "SourceInterface",
+                    "localName": "quux"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceInterface/quux"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceSecretTrait"
+                    },
+                    "symbol": "test/php/SourceSecretTrait"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 22,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": "quokka",
+                "qname": {
+                    "container": "SourceSecretTrait",
+                    "localName": "quokka"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceSecretTrait/quokka"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceTrait"
+                    },
+                    "symbol": "test/php/SourceTrait"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 11,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": "quux",
+                "qname": {
+                    "container": "SourceTrait",
+                    "localName": "quux"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceTrait/quux"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SourceTrait"
+                    },
+                    "symbol": "test/php/SourceTrait"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 15,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": "superAdd",
+                "qname": {
+                    "container": "SourceTrait",
+                    "localName": "superAdd"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SourceTrait/superAdd"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 40,
+                        "lineEnd": 45
+                    },
+                    "repository": "test"
+                },
+                "name": "SubClass",
+                "qname": {
+                    "container": "",
+                    "localName": "SubClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SubClass"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SubClass"
+                    },
+                    "symbol": "test/php/SubClass"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 41,
+                        "lineEnd": 44
+                    },
+                    "repository": "test"
+                },
+                "name": "pleaseOverride",
+                "qname": {
+                    "container": "SubClass",
+                    "localName": "pleaseOverride"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SubClass/pleaseOverride"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SuperClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "name": "SuperClass",
+                "qname": {
+                    "container": "",
+                    "localName": "SuperClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SuperClass"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SuperClass"
+                    },
+                    "symbol": "test/php/SuperClass"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SuperClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 18,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "overrideMe",
+                "qname": {
+                    "container": "SuperClass",
+                    "localName": "overrideMe"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SuperClass/overrideMe"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "SuperClass"
+                    },
+                    "symbol": "test/php/SuperClass"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SuperClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 14,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "superAdd",
+                "qname": {
+                    "container": "SuperClass",
+                    "localName": "superAdd"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SuperClass/superAdd"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 23,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": "SuperEngine",
+                "qname": {
+                    "container": "",
+                    "localName": "SuperEngine"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SuperEngine"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 47,
+                        "lineEnd": 55
+                    },
+                    "repository": "test"
+                },
+                "name": "TestAnnotation",
+                "qname": {
+                    "container": "",
+                    "localName": "TestAnnotation"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/TestAnnotation"
+            },
+            {
+                "kind": 9,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 46,
+                        "columnEnd": 51,
+                        "lineBegin": 48,
+                        "lineEnd": 48
+                    },
+                    "repository": "test"
+                },
+                "name": "test",
+                "qname": {
+                    "container": "TestAnnotation",
+                    "localName": "test"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/TestAnnotation/:prop/test"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "TestAnnotation"
+                    },
+                    "symbol": "test/php/TestAnnotation"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 55,
+                        "lineBegin": 48,
+                        "lineEnd": 48
+                    },
+                    "repository": "test"
+                },
+                "name": "__construct",
+                "qname": {
+                    "container": "TestAnnotation",
+                    "localName": "__construct"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/TestAnnotation/__construct"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "TestAnnotation"
+                    },
+                    "symbol": "test/php/TestAnnotation"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 51,
+                        "lineEnd": 54
+                    },
+                    "repository": "test"
+                },
+                "name": "io_good",
+                "qname": {
+                    "container": "TestAnnotation",
+                    "localName": "io_good"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/TestAnnotation/io_good"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "NS",
+                        "localName": "InnerNS"
+                    },
+                    "symbol": "test/php/ns/NS/InnerNS"
+                },
+                "kind": 14,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Namespace3.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 36,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "name": "deep_function",
+                "qname": {
+                    "container": "NS\\InnerNS",
+                    "localName": "deep_function"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/fun/NS/InnerNS/deep_function"
+            },
+            {
+                "kind": 14,
+                "language": 3,
+                "location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 12,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "corge",
+                "qname": {
+                    "container": "",
+                    "localName": "corge"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/fun/corge"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "glean.test.thing"
+                    },
+                    "symbol": "test/php/module/glean.test.thing"
+                },
+                "kind": 14,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 12,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "fun1",
+                "qname": {
+                    "container": "",
+                    "localName": "fun1"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/fun/fun1"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "glean.test.thing"
+                    },
+                    "symbol": "test/php/module/glean.test.thing"
+                },
+                "kind": 14,
+                "language": 3,
+                "location": {
+                    "filepath": "www/ModuleMember.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 16,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "name": "fun2",
+                "qname": {
+                    "container": "",
+                    "localName": "fun2"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/fun/fun2"
+            }
+        ]
+    }
+]

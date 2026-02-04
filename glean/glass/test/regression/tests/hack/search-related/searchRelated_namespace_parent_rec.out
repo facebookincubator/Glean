@@ -1,0 +1,126 @@
+[
+    "@generated",
+    {
+        "edges": [
+            {
+                "child": "test/php/RefClass/bazza",
+                "parent": "test/php/RefClass"
+            }
+        ],
+        "symbolDetails": {
+            "test/php/RefClass": {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": true
+                },
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 37
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "RefClass"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "class RefClass",
+                "sym": "test/php/RefClass",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 37
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 6
+                        },
+                        "type": "test/php/RefClass"
+                    }
+                ]
+            },
+            "test/php/RefClass/bazza": {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 22,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "RefClass",
+                    "localName": "bazza"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "public function bazza(): int",
+                "sym": "test/php/RefClass/bazza",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 22,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 16
+                        },
+                        "type": "test/php/RefClass/bazza"
+                    }
+                ],
+                "visibility": 20
+            }
+        }
+    }
+]
