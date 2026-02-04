@@ -358,10 +358,18 @@ struct Config {
     } else {
       // Forward the diagnostics to TextDiagnosticPrinter which prints
       // the diagnostics to standard error.
+#if LLVM_VERSION_MAJOR >= 21
+      static clang::DiagnosticOptions diagnosticOptions;
+      return std::make_unique<GleanDiagnosticBuffer>(
+          FLAGS_max_diagnostics_size,
+          std::make_unique<clang::TextDiagnosticPrinter>(
+              llvm::errs(), diagnosticOptions));
+#else
       return std::make_unique<GleanDiagnosticBuffer>(
           FLAGS_max_diagnostics_size,
           std::make_unique<clang::TextDiagnosticPrinter>(
               llvm::errs(), new clang::DiagnosticOptions{}));
+#endif
     }
   }
 };
