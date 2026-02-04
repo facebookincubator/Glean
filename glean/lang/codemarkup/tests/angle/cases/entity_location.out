@@ -1,0 +1,661 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "derive_": {
+              "key": { "name": { "key": "a.FooReversed.1" }, "derive_": 1 }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "a.FooReversed.1",
+        "file": { "key": "cases/code/schema.a.angle" },
+        "location": { "span": { "start": 523, "length": 24 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "derive_": {
+              "key": { "name": { "key": "a.PairExample.1" }, "derive_": 1 }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "a.PairExample.1",
+        "file": { "key": "cases/code/schema.a.angle" },
+        "location": { "span": { "start": 449, "length": 13 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "derive_": {
+              "key": { "name": { "key": "a.PairReversed.1" }, "derive_": 2 }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "a.PairReversed.1",
+        "file": { "key": "cases/code/schema.a.angle" },
+        "location": { "span": { "start": 366, "length": 30 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": { "angle": { "decl": { "imp": { "key": "b.1" } } } },
+      "location": {
+        "name": "b.1",
+        "file": { "key": "cases/code/schema.a.angle" },
+        "location": { "span": { "start": 116, "length": 2 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "pred": {
+              "key": {
+                "name": { "key": "a.FooReversed.1" },
+                "keyTy": {
+                  "key": {
+                    "record_": [
+                      {
+                        "name": { "key": "y" },
+                        "ty": { "key": { "named_": { "key": "b.Bar.1" } } }
+                      },
+                      {
+                        "name": { "key": "x" },
+                        "ty": { "key": { "predicate_": { "key": "b.Name.1" } } }
+                      }
+                    ]
+                  }
+                },
+                "valTy": { "key": { "record_": [ ] } },
+                "derived": 0
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "a.FooReversed.1",
+        "file": { "key": "cases/code/schema.a.angle" },
+        "location": { "span": { "start": 471, "length": 76 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "pred": {
+              "key": {
+                "name": { "key": "a.Pair.1" },
+                "keyTy": {
+                  "key": {
+                    "record_": [
+                      {
+                        "name": { "key": "x" },
+                        "ty": { "key": { "string_": { } } }
+                      },
+                      {
+                        "name": { "key": "y" },
+                        "ty": { "key": { "nat_": { } } }
+                      }
+                    ]
+                  }
+                },
+                "valTy": { "key": { "record_": [ ] } },
+                "derived": 0
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "a.Pair.1",
+        "file": { "key": "cases/code/schema.a.angle" },
+        "location": { "span": { "start": 274, "length": 40 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "pred": {
+              "key": {
+                "name": { "key": "a.PairExample.1" },
+                "keyTy": {
+                  "key": {
+                    "record_": [
+                      {
+                        "name": { "key": "x" },
+                        "ty": { "key": { "string_": { } } }
+                      },
+                      {
+                        "name": { "key": "y" },
+                        "ty": { "key": { "nat_": { } } }
+                      }
+                    ]
+                  }
+                },
+                "valTy": { "key": { "record_": [ ] } },
+                "derived": 0
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "a.PairExample.1",
+        "file": { "key": "cases/code/schema.a.angle" },
+        "location": { "span": { "start": 397, "length": 65 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "pred": {
+              "key": {
+                "name": { "key": "a.PairReversed.1" },
+                "keyTy": {
+                  "key": {
+                    "record_": [
+                      {
+                        "name": { "key": "y" },
+                        "ty": { "key": { "nat_": { } } }
+                      },
+                      {
+                        "name": { "key": "x" },
+                        "ty": { "key": { "string_": { } } }
+                      }
+                    ]
+                  }
+                },
+                "valTy": { "key": { "record_": [ ] } },
+                "derived": 0
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "a.PairReversed.1",
+        "file": { "key": "cases/code/schema.a.angle" },
+        "location": { "span": { "start": 315, "length": 81 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "pred": {
+              "key": {
+                "name": { "key": "a.Person.1" },
+                "keyTy": {
+                  "key": {
+                    "record_": [
+                      {
+                        "name": { "key": "name" },
+                        "ty": { "key": { "predicate_": { "key": "b.Name.1" } } }
+                      },
+                      {
+                        "name": { "key": "age" },
+                        "ty": { "key": { "named_": { "key": "a.Age.1" } } }
+                      },
+                      {
+                        "name": { "key": "lives" },
+                        "ty": { "key": { "named_": { "key": "a.City.1" } } }
+                      }
+                    ]
+                  }
+                },
+                "valTy": { "key": { "record_": [ ] } },
+                "derived": 0
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "a.Person.1",
+        "file": { "key": "cases/code/schema.a.angle" },
+        "location": { "span": { "start": 174, "length": 78 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "pred": {
+              "key": {
+                "name": { "key": "b.Foo.1" },
+                "keyTy": {
+                  "key": {
+                    "record_": [
+                      {
+                        "name": { "key": "x" },
+                        "ty": { "key": { "predicate_": { "key": "b.Name.1" } } }
+                      },
+                      {
+                        "name": { "key": "y" },
+                        "ty": { "key": { "named_": { "key": "b.Bar.1" } } }
+                      }
+                    ]
+                  }
+                },
+                "valTy": { "key": { "record_": [ ] } },
+                "derived": 0
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "b.Foo.1",
+        "file": { "key": "cases/code/schema.b.angle" },
+        "location": { "span": { "start": 170, "length": 50 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "pred": {
+              "key": {
+                "name": { "key": "b.Name.1" },
+                "keyTy": { "key": { "string_": { } } },
+                "valTy": { "key": { "record_": [ ] } },
+                "derived": 0
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "b.Name.1",
+        "file": { "key": "cases/code/schema.b.angle" },
+        "location": { "span": { "start": 66, "length": 24 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "schema": {
+              "key": {
+                "name": { "key": "a.1" },
+                "declarations": [
+                  { "imp": { "key": "b.1" } },
+                  {
+                    "pred": {
+                      "key": {
+                        "name": { "key": "a.PairReversed.1" },
+                        "keyTy": {
+                          "key": {
+                            "record_": [
+                              {
+                                "name": { "key": "y" },
+                                "ty": { "key": { "nat_": { } } }
+                              },
+                              {
+                                "name": { "key": "x" },
+                                "ty": { "key": { "string_": { } } }
+                              }
+                            ]
+                          }
+                        },
+                        "valTy": { "key": { "record_": [ ] } },
+                        "derived": 0
+                      }
+                    }
+                  },
+                  {
+                    "pred": {
+                      "key": {
+                        "name": { "key": "a.Person.1" },
+                        "keyTy": {
+                          "key": {
+                            "record_": [
+                              {
+                                "name": { "key": "name" },
+                                "ty": {
+                                  "key": { "predicate_": { "key": "b.Name.1" } }
+                                }
+                              },
+                              {
+                                "name": { "key": "age" },
+                                "ty": {
+                                  "key": { "named_": { "key": "a.Age.1" } }
+                                }
+                              },
+                              {
+                                "name": { "key": "lives" },
+                                "ty": {
+                                  "key": { "named_": { "key": "a.City.1" } }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "valTy": { "key": { "record_": [ ] } },
+                        "derived": 0
+                      }
+                    }
+                  },
+                  {
+                    "pred": {
+                      "key": {
+                        "name": { "key": "a.FooReversed.1" },
+                        "keyTy": {
+                          "key": {
+                            "record_": [
+                              {
+                                "name": { "key": "y" },
+                                "ty": {
+                                  "key": { "named_": { "key": "b.Bar.1" } }
+                                }
+                              },
+                              {
+                                "name": { "key": "x" },
+                                "ty": {
+                                  "key": { "predicate_": { "key": "b.Name.1" } }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "valTy": { "key": { "record_": [ ] } },
+                        "derived": 0
+                      }
+                    }
+                  },
+                  {
+                    "pred": {
+                      "key": {
+                        "name": { "key": "a.PairExample.1" },
+                        "keyTy": {
+                          "key": {
+                            "record_": [
+                              {
+                                "name": { "key": "x" },
+                                "ty": { "key": { "string_": { } } }
+                              },
+                              {
+                                "name": { "key": "y" },
+                                "ty": { "key": { "nat_": { } } }
+                              }
+                            ]
+                          }
+                        },
+                        "valTy": { "key": { "record_": [ ] } },
+                        "derived": 0
+                      }
+                    }
+                  },
+                  {
+                    "pred": {
+                      "key": {
+                        "name": { "key": "a.Pair.1" },
+                        "keyTy": {
+                          "key": {
+                            "record_": [
+                              {
+                                "name": { "key": "x" },
+                                "ty": { "key": { "string_": { } } }
+                              },
+                              {
+                                "name": { "key": "y" },
+                                "ty": { "key": { "nat_": { } } }
+                              }
+                            ]
+                          }
+                        },
+                        "valTy": { "key": { "record_": [ ] } },
+                        "derived": 0
+                      }
+                    }
+                  },
+                  {
+                    "ty": {
+                      "key": {
+                        "name": { "key": "a.City.1" },
+                        "ty": {
+                          "key": {
+                            "enum_": [
+                              { "key": "London" },
+                              { "key": "NewYork" }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "ty": {
+                      "key": {
+                        "name": { "key": "a.Age.1" },
+                        "ty": { "key": { "nat_": { } } }
+                      }
+                    }
+                  },
+                  {
+                    "derive_": {
+                      "key": {
+                        "name": { "key": "a.PairReversed.1" },
+                        "derive_": 2
+                      }
+                    }
+                  },
+                  {
+                    "derive_": {
+                      "key": {
+                        "name": { "key": "a.FooReversed.1" },
+                        "derive_": 1
+                      }
+                    }
+                  },
+                  {
+                    "derive_": {
+                      "key": {
+                        "name": { "key": "a.PairExample.1" },
+                        "derive_": 1
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "a.1",
+        "file": { "key": "cases/code/schema.a.angle" },
+        "location": { "span": { "start": 96, "length": 454 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "schema": {
+              "key": {
+                "name": { "key": "b.1" },
+                "declarations": [
+                  {
+                    "pred": {
+                      "key": {
+                        "name": { "key": "b.Name.1" },
+                        "keyTy": { "key": { "string_": { } } },
+                        "valTy": { "key": { "record_": [ ] } },
+                        "derived": 0
+                      }
+                    }
+                  },
+                  {
+                    "pred": {
+                      "key": {
+                        "name": { "key": "b.Foo.1" },
+                        "keyTy": {
+                          "key": {
+                            "record_": [
+                              {
+                                "name": { "key": "x" },
+                                "ty": {
+                                  "key": { "predicate_": { "key": "b.Name.1" } }
+                                }
+                              },
+                              {
+                                "name": { "key": "y" },
+                                "ty": {
+                                  "key": { "named_": { "key": "b.Bar.1" } }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "valTy": { "key": { "record_": [ ] } },
+                        "derived": 0
+                      }
+                    }
+                  },
+                  {
+                    "ty": {
+                      "key": {
+                        "name": { "key": "b.Bar.1" },
+                        "ty": {
+                          "key": {
+                            "record_": [
+                              {
+                                "name": { "key": "a" },
+                                "ty": { "key": { "nat_": { } } }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "b.1",
+        "file": { "key": "cases/code/schema.b.angle" },
+        "location": { "span": { "start": 52, "length": 170 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "ty": {
+              "key": {
+                "name": { "key": "a.Age.1" },
+                "ty": { "key": { "nat_": { } } }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "a.Age.1",
+        "file": { "key": "cases/code/schema.a.angle" },
+        "location": { "span": { "start": 119, "length": 15 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "ty": {
+              "key": {
+                "name": { "key": "a.City.1" },
+                "ty": {
+                  "key": {
+                    "enum_": [ { "key": "London" }, { "key": "NewYork" } ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "a.City.1",
+        "file": { "key": "cases/code/schema.a.angle" },
+        "location": { "span": { "start": 135, "length": 38 } }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "ty": {
+              "key": {
+                "name": { "key": "b.Bar.1" },
+                "ty": {
+                  "key": {
+                    "record_": [
+                      {
+                        "name": { "key": "a" },
+                        "ty": { "key": { "nat_": { } } }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "b.Bar.1",
+        "file": { "key": "cases/code/schema.b.angle" },
+        "location": { "span": { "start": 132, "length": 23 } }
+      }
+    }
+  }
+]

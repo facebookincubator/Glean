@@ -1,0 +1,32 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+# Angle example schema for regression test
+
+schema a.1 {
+import b
+
+type Age = nat
+
+type City = enum { London | NewYork }
+
+predicate Person :
+  {
+    name : b.Name,
+    age : Age,
+    lives : City
+  }
+
+# Derived predicates
+predicate Pair : { x : string, y : nat}
+
+predicate PairReversed :
+  { y : nat, x : string } stored {Y,X} where Pair {X,Y}
+
+predicate PairExample :
+  { x : string , y : nat  } {"hello", 5}
+
+# XRefs
+predicate FooReversed :
+  { y : b.Bar, x : b.Name } {Y,X} where b.Foo {X,Y}
+
+}

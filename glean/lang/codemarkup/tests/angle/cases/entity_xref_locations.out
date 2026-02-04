@@ -1,0 +1,286 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "pred": {
+              "key": {
+                "derived": 0,
+                "keyTy": {
+                  "key": {
+                    "record_": [
+                      {
+                        "name": { "key": "x" },
+                        "ty": { "key": { "predicate_": { "key": "b.Name.1" } } }
+                      },
+                      {
+                        "name": { "key": "y" },
+                        "ty": { "key": { "named_": { "key": "b.Bar.1" } } }
+                      }
+                    ]
+                  }
+                },
+                "name": { "key": "b.Foo.1" },
+                "valTy": { "key": { "record_": [ ] } }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "cases/code/schema.a.angle" },
+      "xref": {
+        "source": { "span": { "length": 6, "start": 535 } },
+        "target": {
+          "file": { "key": "cases/code/schema.b.angle" },
+          "location": { "span": { "length": 50, "start": 170 } },
+          "name": "b.Foo.1"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "pred": {
+              "key": {
+                "derived": 0,
+                "keyTy": {
+                  "key": {
+                    "record_": [
+                      {
+                        "name": { "key": "x" },
+                        "ty": { "key": { "string_": { } } }
+                      },
+                      {
+                        "name": { "key": "y" },
+                        "ty": { "key": { "nat_": { } } }
+                      }
+                    ]
+                  }
+                },
+                "name": { "key": "a.Pair.1" },
+                "valTy": { "key": { "record_": [ ] } }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "cases/code/schema.a.angle" },
+      "xref": {
+        "source": { "span": { "length": 5, "start": 385 } },
+        "target": {
+          "file": { "key": "cases/code/schema.a.angle" },
+          "location": { "span": { "length": 40, "start": 274 } },
+          "name": "a.Pair.1"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "pred": {
+              "key": {
+                "derived": 0,
+                "keyTy": { "key": { "string_": { } } },
+                "name": { "key": "b.Name.1" },
+                "valTy": { "key": { "record_": [ ] } }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "cases/code/schema.a.angle" },
+      "xref": {
+        "source": { "span": { "length": 7, "start": 208 } },
+        "target": {
+          "file": { "key": "cases/code/schema.b.angle" },
+          "location": { "span": { "length": 24, "start": 66 } },
+          "name": "b.Name.1"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "pred": {
+              "key": {
+                "derived": 0,
+                "keyTy": { "key": { "string_": { } } },
+                "name": { "key": "b.Name.1" },
+                "valTy": { "key": { "record_": [ ] } }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "cases/code/schema.a.angle" },
+      "xref": {
+        "source": { "span": { "length": 7, "start": 514 } },
+        "target": {
+          "file": { "key": "cases/code/schema.b.angle" },
+          "location": { "span": { "length": 24, "start": 66 } },
+          "name": "b.Name.1"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "pred": {
+              "key": {
+                "derived": 0,
+                "keyTy": { "key": { "string_": { } } },
+                "name": { "key": "b.Name.1" },
+                "valTy": { "key": { "record_": [ ] } }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "cases/code/schema.b.angle" },
+      "xref": {
+        "source": { "span": { "length": 5, "start": 198 } },
+        "target": {
+          "file": { "key": "cases/code/schema.b.angle" },
+          "location": { "span": { "length": 24, "start": 66 } },
+          "name": "b.Name.1"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "ty": {
+              "key": {
+                "name": { "key": "a.Age.1" },
+                "ty": { "key": { "nat_": { } } }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "cases/code/schema.a.angle" },
+      "xref": {
+        "source": { "span": { "length": 4, "start": 226 } },
+        "target": {
+          "file": { "key": "cases/code/schema.a.angle" },
+          "location": { "span": { "length": 15, "start": 119 } },
+          "name": "a.Age.1"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "ty": {
+              "key": {
+                "name": { "key": "a.City.1" },
+                "ty": {
+                  "key": {
+                    "enum_": [ { "key": "London" }, { "key": "NewYork" } ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "cases/code/schema.a.angle" },
+      "xref": {
+        "source": { "span": { "length": 5, "start": 243 } },
+        "target": {
+          "file": { "key": "cases/code/schema.a.angle" },
+          "location": { "span": { "length": 38, "start": 135 } },
+          "name": "a.City.1"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "ty": {
+              "key": {
+                "name": { "key": "b.Bar.1" },
+                "ty": {
+                  "key": {
+                    "record_": [
+                      {
+                        "name": { "key": "a" },
+                        "ty": { "key": { "nat_": { } } }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "cases/code/schema.a.angle" },
+      "xref": {
+        "source": { "span": { "length": 6, "start": 503 } },
+        "target": {
+          "file": { "key": "cases/code/schema.b.angle" },
+          "location": { "span": { "length": 23, "start": 132 } },
+          "name": "b.Bar.1"
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "angle": {
+          "decl": {
+            "ty": {
+              "key": {
+                "name": { "key": "b.Bar.1" },
+                "ty": {
+                  "key": {
+                    "record_": [
+                      {
+                        "name": { "key": "a" },
+                        "ty": { "key": { "nat_": { } } }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "cases/code/schema.b.angle" },
+      "xref": {
+        "source": { "span": { "length": 4, "start": 212 } },
+        "target": {
+          "file": { "key": "cases/code/schema.b.angle" },
+          "location": { "span": { "length": 23, "start": 132 } },
+          "name": "b.Bar.1"
+        }
+      }
+    }
+  }
+]

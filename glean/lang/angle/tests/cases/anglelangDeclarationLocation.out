@@ -7,7 +7,7 @@
           "key": { "name": { "key": "a.FooReversed.1" }, "derive_": 1 }
         }
       },
-      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "file": { "key": "cases/code/schema.a.angle" },
       "span": { "start": 523, "length": 24 }
     }
   },
@@ -18,7 +18,7 @@
           "key": { "name": { "key": "a.PairExample.1" }, "derive_": 1 }
         }
       },
-      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "file": { "key": "cases/code/schema.a.angle" },
       "span": { "start": 449, "length": 13 }
     }
   },
@@ -29,14 +29,14 @@
           "key": { "name": { "key": "a.PairReversed.1" }, "derive_": 2 }
         }
       },
-      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "file": { "key": "cases/code/schema.a.angle" },
       "span": { "start": 366, "length": 30 }
     }
   },
   {
     "key": {
       "decl": { "imp": { "key": "b.1" } },
-      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "file": { "key": "cases/code/schema.a.angle" },
       "span": { "start": 116, "length": 2 }
     }
   },
@@ -65,7 +65,7 @@
           }
         }
       },
-      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "file": { "key": "cases/code/schema.a.angle" },
       "span": { "start": 471, "length": 76 }
     }
   },
@@ -91,7 +91,7 @@
           }
         }
       },
-      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "file": { "key": "cases/code/schema.a.angle" },
       "span": { "start": 274, "length": 40 }
     }
   },
@@ -117,7 +117,7 @@
           }
         }
       },
-      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "file": { "key": "cases/code/schema.a.angle" },
       "span": { "start": 397, "length": 65 }
     }
   },
@@ -143,7 +143,7 @@
           }
         }
       },
-      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "file": { "key": "cases/code/schema.a.angle" },
       "span": { "start": 315, "length": 81 }
     }
   },
@@ -176,7 +176,7 @@
           }
         }
       },
-      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "file": { "key": "cases/code/schema.a.angle" },
       "span": { "start": 174, "length": 78 }
     }
   },
@@ -205,7 +205,7 @@
           }
         }
       },
-      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.b.angle" },
+      "file": { "key": "cases/code/schema.b.angle" },
       "span": { "start": 170, "length": 50 }
     }
   },
@@ -221,7 +221,7 @@
           }
         }
       },
-      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.b.angle" },
+      "file": { "key": "cases/code/schema.b.angle" },
       "span": { "start": 66, "length": 24 }
     }
   },
@@ -395,7 +395,7 @@
           }
         }
       },
-      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "file": { "key": "cases/code/schema.a.angle" },
       "span": { "start": 96, "length": 454 }
     }
   },
@@ -462,7 +462,7 @@
           }
         }
       },
-      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.b.angle" },
+      "file": { "key": "cases/code/schema.b.angle" },
       "span": { "start": 52, "length": 170 }
     }
   },
@@ -476,7 +476,7 @@
           }
         }
       },
-      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "file": { "key": "cases/code/schema.a.angle" },
       "span": { "start": 119, "length": 15 }
     }
   },
@@ -492,7 +492,7 @@
           }
         }
       },
-      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "file": { "key": "cases/code/schema.a.angle" },
       "span": { "start": 135, "length": 38 }
     }
   },
@@ -512,7 +512,7 @@
           }
         }
       },
-      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.b.angle" },
+      "file": { "key": "cases/code/schema.b.angle" },
       "span": { "start": 132, "length": 23 }
     }
   }

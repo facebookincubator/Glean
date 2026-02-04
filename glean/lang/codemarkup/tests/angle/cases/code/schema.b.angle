@@ -1,0 +1,17 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema b.1 {
+
+predicate Name : string
+
+# XRefs referenced in schema.a
+# NamedTy
+type Bar = { a : nat }
+
+# PredicateTy
+predicate Foo :
+  {
+    x : Name,
+    y : Bar
+  }
+}
