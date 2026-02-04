@@ -43,12 +43,14 @@ import qualified Glean.Indexer.SCIP as SCIP
 import qualified Glean.Indexer.Haskell as Hs
 import qualified Glean.Indexer.PythonScip as PythonScip
 import qualified Glean.Indexer.DotnetScip as DotnetScip
+import qualified Glean.Indexer.Angle as Angle
 
 data SomeIndexer = forall opts . SomeIndexer (Indexer opts)
 
 indexers :: [SomeIndexer]
 indexers =
-  [ SomeIndexer Cpp.indexer
+  [ SomeIndexer Angle.indexer
+  , SomeIndexer Cpp.indexer
   , SomeIndexer Erlang.indexer
   , SomeIndexer External.externalIndexer
   , SomeIndexer Flow.indexer
