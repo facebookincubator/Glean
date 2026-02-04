@@ -18,7 +18,11 @@
 #include <folly/MapUtil.h>
 #include <folly/gen/Base.h>
 
+#if GLEAN_FACEBOOK
 #include "glean/lang/clang/gleandiagnosticbuffer.h"
+#else
+#include "gleandiagnosticbuffer.h"
+#endif
 #include "glean/schema/cpp/schema.h"
 
 namespace facebook::glean::clangx {

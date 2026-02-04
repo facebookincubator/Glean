@@ -10,11 +10,7 @@
 
 #include "glean/rts/binary.h"
 #include "glean/rts/error.h"
-#ifdef GLEAN_FACEBOOK
 #include "lmdb.h"
-#else
-#include "glean/lmdb-clib/lmdb.h"
-#endif
 
 namespace facebook {
 namespace glean {

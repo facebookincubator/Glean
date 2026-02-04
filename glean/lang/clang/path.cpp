@@ -6,7 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+#if GLEAN_FACEBOOK
 #include "glean/lang/clang/path.h"
+#else
+#include "path.h"
+#endif
 
 #include <glog/logging.h>
 #include <algorithm>
