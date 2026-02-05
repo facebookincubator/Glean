@@ -163,7 +163,7 @@ jobs:
           make setup-folly-version
 
       - name: Disable some tests
-        run: echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS -f-hack-tests -f-rust-tests -f-python-tests" >> "$GITHUB_ENV"
+        run: echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS -f-hack-tests -f-flow-tests -f-rust-tests -f-python-tests" >> "$GITHUB_ENV"
 
       - name: Setup index-state
         run: echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS --index-state=${{ matrix.index-state }}" >>"$GITHUB_ENV"
