@@ -97,12 +97,12 @@ ContainerImpl::ContainerImpl(const std::string& path, Mode m)
     families.resize(Family::count());
     for (size_t i = 0; i < Family::count(); i++) {
       auto family = Family::family(i);
-      unsigned int flags = family->flags;
+      unsigned int familyFlags = family->flags;
       if (mode != Mode::ReadOnly) {
-        flags |= MDB_CREATE; // create it if it doesn't exist
+        familyFlags |= MDB_CREATE; // create it if it doesn't exist
       }
       check(mdb_dbi_open(
-          txn.ptr(), family->name, flags, &families[family->index]));
+          txn.ptr(), family->name, familyFlags, &families[family->index]));
     }
     txn.commit();
   }
