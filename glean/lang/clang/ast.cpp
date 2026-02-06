@@ -23,9 +23,16 @@
 #include "folly/Overload.h"
 #include "folly/ScopeGuard.h"
 #include "folly/lang/Assume.h"
+
+#if GLEAN_FACEBOOK
 #include "glean/lang/clang/ast.h"
 #include "glean/lang/clang/hash.h"
 #include "glean/lang/clang/index.h"
+#else
+#include "ast.h"
+#include "hash.h"
+#include "index.h"
+#endif
 
 // This file implements the Clang AST traversal.
 

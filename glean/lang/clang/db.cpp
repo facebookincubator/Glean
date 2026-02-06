@@ -6,16 +6,23 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+#if GLEAN_FACEBOOK
 #include "glean/lang/clang/db.h"
+#else
+#include "db.h"
+#endif
+
 #include <llvm/Support/SHA1.h>
 
 #include <folly/Overload.h>
 
 #include <utility>
 
-#include "glean/lang/clang/path.h"
 #if GLEAN_FACEBOOK
+#include "glean/lang/clang/path.h"
 #include "glean/facebook/lang/clang/path.h"
+#else
+#include "path.h"
 #endif
 
 namespace facebook::glean::clangx {

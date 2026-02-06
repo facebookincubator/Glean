@@ -9,11 +9,7 @@
 #pragma once
 
 #include "glean/storage/db.h"
-#ifdef GLEAN_FACEBOOK
 #include "lmdb.h"
-#else
-#include "glean/lmdb-clib/lmdb.h"
-#endif
 #include "glean/lmdb/util.h"
 #include "glean/storage/db.h"
 

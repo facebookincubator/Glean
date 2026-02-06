@@ -167,6 +167,12 @@ server</SrcFileLink>, build and install it with:
 cabal install glean-lsp
 ```
 
+If you want to use the [C++ indexer](indexer/cxx.md), install it with
+
+```
+cabal install glean-clang
+```
+
 ## Building from the repository
 
 Clone the repository:
