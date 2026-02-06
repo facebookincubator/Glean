@@ -193,6 +193,13 @@ predicate ObjcMethodDeclaration :
     source : src.Range,
   }
 
+predicate ObjcContainerMethods :
+  {
+    container : ObjcContainerId,
+    method: ObjcMethodDeclaration,
+  } stored { C, M } where
+    M = ObjcMethodDeclaration { container = C }
+
 # The full name of an ObjC method declaration.
 #
 # If the method has no parameters, the name is the method name. e.g., `foo`
@@ -225,6 +232,13 @@ predicate ObjcPropertyDeclaration :
     isAtomic : bool,
     source : src.Range,
   }
+
+predicate ObjcContainerProperties :
+  {
+    container : ObjcContainerId,
+    property : ObjcPropertyDeclaration,
+  } stored { C, P } where
+    P = ObjcPropertyDeclaration { container = C }
 
 # Objective C property implementation kind
 type ObjcPropertyKind = enum { Synthesize | Dynamic }
