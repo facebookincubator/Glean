@@ -52,6 +52,10 @@ import Glean.Util.ConfigProvider
 import Glean.Util.ShellPrint
 import Glean.Shell
 
+#if ENABLE_S3
+import qualified Glean.Database.Backup.S3 as S3
+#endif
+
 import GleanCLI.Backup
 import GleanCLI.Common
 import GleanCLI.Complete
@@ -157,19 +161,25 @@ main =
   withEventBaseDataplane $ \evb ->
   withConfigProvider cfgOpts $ \cfgAPI ->
   case cfgCommand of
-    PluginCommand c ->
-      withService evb cfgAPI
-        (liftServerConfig (serverConfigTransform c) $
-          withRemoteBackups evb cfgService)
-        c
+    PluginCommand c -> do
+      cfgService' <- withRemoteBackups evb cfgService
+      withService evb cfgAPI (liftServerConfig (serverConfigTransform c) cfgService') c
 
-withRemoteBackups :: EventBaseDataplane -> Glean.Service -> Glean.Service
-withRemoteBackups _evb = liftConfig
+withRemoteBackups :: EventBaseDataplane -> Glean.Service -> IO Glean.Service
+withRemoteBackups _evb = liftConfigIO $
 #if GLEAN_FACEBOOK
-  (XDB.withXdbCatalog "manifold" . Manifold.withManifoldBackups _evb)
+  pure . (XDB.withXdbCatalog "manifold" . Manifold.withManifoldBackups _evb)
+#elif ENABLE_S3
+  S3.withS3Backups
 #else
-  id
+  pure
 #endif
+
+liftConfigIO
+  :: (GleanDB.Config -> IO GleanDB.Config)
+  -> Glean.Service -> IO Glean.Service
+liftConfigIO f (Glean.Local cfg log) = fmap (\cfg' -> Glean.Local cfg' log) $ f cfg
+liftConfigIO _ other@Glean.Remote{} = pure other
 
 liftConfig
   :: (GleanDB.Config -> GleanDB.Config)
