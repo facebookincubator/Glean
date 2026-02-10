@@ -99,6 +99,20 @@ predicate EnclosingRange:
     enclosingRange: scip.FileRange,
   }
 
+# For example, the symbol for a class enclosed the symbol for a method of that class
+predicate EnclosingSymbol:
+  {
+    symbol: scip.Symbol,
+    enclosing: scip.Symbol,
+  }
+
+predicate EnclosedSymbol:
+  {
+    symbol: scip.Symbol,
+    enclosed: scip.Symbol,
+  } stored { Enclosing, Enclosed } where
+    scip.EnclosingSymbol { Enclosing, Enclosed }
+
 predicate ReferenceLocation:
   {
     file : src.File,
