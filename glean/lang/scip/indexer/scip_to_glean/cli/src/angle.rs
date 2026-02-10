@@ -258,6 +258,12 @@ impl Env {
             if !info.display_name.is_empty() {
                 self.display_name_facts(info.display_name, sym_id);
             }
+            if !info.enclosing_symbol.is_empty() {
+                let enclosing_symbol_id = self.get_symbol_id(&info.enclosing_symbol, filepath);
+                if let Some(enclosing_symbol_id) = enclosing_symbol_id {
+                    self.out.enclosing_symbol(sym_id, enclosing_symbol_id);
+                }
+            }
             info.relationships.iter().for_each(|rel| {
                 if rel.is_implementation {
                     let implemented_symbol = &rel.symbol;

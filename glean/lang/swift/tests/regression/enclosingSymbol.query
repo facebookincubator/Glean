@@ -1,0 +1,3 @@
+query: "{ enclosed = M, enclosing = C } where scip.DisplayNameSymbol { M, MS }; scip.EnclosingSymbol { MS, CS }; scip.SymbolDisplayName { CS, C }"
+perf: True
+transform: [gensort, []]

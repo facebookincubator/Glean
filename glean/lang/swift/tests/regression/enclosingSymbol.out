@@ -1,0 +1,567 @@
+[
+  "@generated",
+  {
+    "key": {
+      "enclosed": { "key": "_" },
+      "enclosing": { "key": "canvasView(_:didDoubleTapBallId:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "_" },
+      "enclosing": { "key": "canvasView(_:didDoubleTapPosition:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "_" },
+      "enclosing": { "key": "canvasView(_:didLongPressBallId:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "_" },
+      "enclosing": { "key": "canvasView(_:didPanBallId:position:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "_" },
+      "enclosing": { "key": "canvasView(_:didTapBallId:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "_" },
+      "enclosing": { "key": "canvasView(_:didTapPosition:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "_" },
+      "enclosing": { "key": "canvasView(_:didTripleTapBallId:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "_" },
+      "enclosing": { "key": "canvasView(_:didTripleTapPosition:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": {
+        "key": "addOrUpdateBall(withId:position:altitude:color:supportsUpdate:)"
+      },
+      "enclosing": { "key": "CIBCanvasView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "altitude" },
+      "enclosing": {
+        "key": "addOrUpdateBall(withId:position:altitude:color:supportsUpdate:)"
+      }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "altitude" },
+      "enclosing": { "key": "update(altitude:color:supportsUpdate:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "ballDoubleTapped(sender:)" },
+      "enclosing": { "key": "CIBCanvasView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "ballId" },
+      "enclosing": { "key": "CIBCanvasBallView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "ballId" },
+      "enclosing": {
+        "key": "addOrUpdateBall(withId:position:altitude:color:supportsUpdate:)"
+      }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "ballId" },
+      "enclosing": { "key": "createBallViewIfNeeded(_:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "ballId" },
+      "enclosing": { "key": "init(ballId:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "ballId" },
+      "enclosing": { "key": "performRainbowAnimation(withId:completion:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "ballId" },
+      "enclosing": { "key": "removeBall(withId:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "ballLongPressed(sender:)" },
+      "enclosing": { "key": "CIBCanvasView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "ballPanned(sender:)" },
+      "enclosing": { "key": "CIBCanvasView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "ballTapped(sender:)" },
+      "enclosing": { "key": "CIBCanvasView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "ballTripleTapped(sender:)" },
+      "enclosing": { "key": "CIBCanvasView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "canvasDoubleTapped(sender:)" },
+      "enclosing": { "key": "CIBCanvasView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "canvasTapped(sender:)" },
+      "enclosing": { "key": "CIBCanvasView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "canvasTripleTapped(sender:)" },
+      "enclosing": { "key": "CIBCanvasView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "canvasView(_:didDoubleTapBallId:)" },
+      "enclosing": { "key": "CIBCanvasViewDelegate" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "canvasView(_:didDoubleTapPosition:)" },
+      "enclosing": { "key": "CIBCanvasViewDelegate" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "canvasView(_:didLongPressBallId:)" },
+      "enclosing": { "key": "CIBCanvasViewDelegate" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "canvasView(_:didPanBallId:position:)" },
+      "enclosing": { "key": "CIBCanvasViewDelegate" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "canvasView(_:didTapBallId:)" },
+      "enclosing": { "key": "CIBCanvasViewDelegate" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "canvasView(_:didTapPosition:)" },
+      "enclosing": { "key": "CIBCanvasViewDelegate" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "canvasView(_:didTripleTapBallId:)" },
+      "enclosing": { "key": "CIBCanvasViewDelegate" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "canvasView(_:didTripleTapPosition:)" },
+      "enclosing": { "key": "CIBCanvasViewDelegate" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "coder" },
+      "enclosing": { "key": "init(coder:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "color" },
+      "enclosing": {
+        "key": "addOrUpdateBall(withId:position:altitude:color:supportsUpdate:)"
+      }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "color" },
+      "enclosing": { "key": "update(altitude:color:supportsUpdate:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "completion" },
+      "enclosing": { "key": "performRainbowAnimation(_:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "completion" },
+      "enclosing": { "key": "performRainbowAnimation(withId:completion:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "createBallViewIfNeeded(_:)" },
+      "enclosing": { "key": "CIBCanvasView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "delegate" },
+      "enclosing": { "key": "CIBCanvasView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "didDoubleTapBallId" },
+      "enclosing": { "key": "canvasView(_:didDoubleTapBallId:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "didDoubleTapPosition" },
+      "enclosing": { "key": "canvasView(_:didDoubleTapPosition:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "didLongPressBallId" },
+      "enclosing": { "key": "canvasView(_:didLongPressBallId:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "didPanBallId" },
+      "enclosing": { "key": "canvasView(_:didPanBallId:position:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "didTapBallId" },
+      "enclosing": { "key": "canvasView(_:didTapBallId:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "didTapPosition" },
+      "enclosing": { "key": "canvasView(_:didTapPosition:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "didTripleTapBallId" },
+      "enclosing": { "key": "canvasView(_:didTripleTapBallId:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "didTripleTapPosition" },
+      "enclosing": { "key": "canvasView(_:didTripleTapPosition:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "frame" },
+      "enclosing": { "key": "init(frame:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "getter:ballId" },
+      "enclosing": { "key": "ballId" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "getter:delegate" },
+      "enclosing": { "key": "delegate" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "getter:kBallSize" },
+      "enclosing": { "key": "kBallSize" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "getter:kRainbowColors" },
+      "enclosing": { "key": "kRainbowColors" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "getter:kRelativeDuration" },
+      "enclosing": { "key": "kRelativeDuration" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "getter:kTotalDuration" },
+      "enclosing": { "key": "kTotalDuration" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "getter:kTotalTransformations" },
+      "enclosing": { "key": "kTotalTransformations" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "getter:label" },
+      "enclosing": { "key": "label" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "getter:views" },
+      "enclosing": { "key": "views" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "init(ballId:)" },
+      "enclosing": { "key": "CIBCanvasBallView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "init(coder:)" },
+      "enclosing": { "key": "CIBCanvasBallView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "init(coder:)" },
+      "enclosing": { "key": "CIBCanvasView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "init(frame:)" },
+      "enclosing": { "key": "CIBCanvasBallView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "init(frame:)" },
+      "enclosing": { "key": "CIBCanvasView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "label" },
+      "enclosing": { "key": "CIBCanvasBallView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "layoutSubviews()" },
+      "enclosing": { "key": "CIBCanvasBallView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "performRainbowAnimation(_:)" },
+      "enclosing": { "key": "CIBCanvasBallView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "performRainbowAnimation(withId:completion:)" },
+      "enclosing": { "key": "CIBCanvasView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "position" },
+      "enclosing": {
+        "key": "addOrUpdateBall(withId:position:altitude:color:supportsUpdate:)"
+      }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "position" },
+      "enclosing": { "key": "canvasView(_:didPanBallId:position:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "removeAll()" },
+      "enclosing": { "key": "CIBCanvasView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "removeBall(withId:)" },
+      "enclosing": { "key": "CIBCanvasView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "sender" },
+      "enclosing": { "key": "ballDoubleTapped(sender:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "sender" },
+      "enclosing": { "key": "ballLongPressed(sender:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "sender" },
+      "enclosing": { "key": "ballPanned(sender:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "sender" },
+      "enclosing": { "key": "ballTapped(sender:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "sender" },
+      "enclosing": { "key": "ballTripleTapped(sender:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "sender" },
+      "enclosing": { "key": "canvasDoubleTapped(sender:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "sender" },
+      "enclosing": { "key": "canvasTapped(sender:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "sender" },
+      "enclosing": { "key": "canvasTripleTapped(sender:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "setter:ballId" },
+      "enclosing": { "key": "ballId" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "setter:delegate" },
+      "enclosing": { "key": "delegate" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "setter:kBallSize" },
+      "enclosing": { "key": "kBallSize" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "setter:kRainbowColors" },
+      "enclosing": { "key": "kRainbowColors" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "setter:kRelativeDuration" },
+      "enclosing": { "key": "kRelativeDuration" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "setter:kTotalDuration" },
+      "enclosing": { "key": "kTotalDuration" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "setter:kTotalTransformations" },
+      "enclosing": { "key": "kTotalTransformations" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "setter:label" },
+      "enclosing": { "key": "label" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "setter:views" },
+      "enclosing": { "key": "views" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "supportsUpdate" },
+      "enclosing": {
+        "key": "addOrUpdateBall(withId:position:altitude:color:supportsUpdate:)"
+      }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "supportsUpdate" },
+      "enclosing": { "key": "update(altitude:color:supportsUpdate:)" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "update(altitude:color:supportsUpdate:)" },
+      "enclosing": { "key": "CIBCanvasBallView" }
+    }
+  },
+  {
+    "key": {
+      "enclosed": { "key": "views" },
+      "enclosing": { "key": "CIBCanvasView" }
+    }
+  }
+]

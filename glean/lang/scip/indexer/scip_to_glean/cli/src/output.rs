@@ -63,6 +63,11 @@ struct IsImplementation {
     implemented: ScipId,
 }
 #[derive(Serialize, Clone, Eq, PartialEq, Hash)]
+struct EnclosingSymbol {
+    symbol: ScipId,
+    enclosing: ScipId,
+}
+#[derive(Serialize, Clone, Eq, PartialEq, Hash)]
 struct SymbolAndKind {
     kind: u8,
     symbol: ScipId,
@@ -85,6 +90,7 @@ struct DisplayNameSymbol {
 enum Node {
     SymbolName(Key<SymbolName>),
     IsImplementation(Key<IsImplementation>),
+    EnclosingSymbol(Key<EnclosingSymbol>),
     FileLanguage(IdKey<FileLang>),
     SymbolKind(Key<SymbolAndKind>),
     Definition(Key<SymbolLocation>),
@@ -112,6 +118,7 @@ pub struct GleanJSONOutput {
     local_names: Vec<IdKey<Box<str>>>,
     symbol_names: Vec<Key<SymbolName>>,
     is_implementation: Vec<Key<IsImplementation>>,
+    enclosing_symbols: Vec<Key<EnclosingSymbol>>,
     symbol_kinds: Vec<Key<SymbolAndKind>>,
     metadata: Vec<Key<Metadata>>,
     display_names: Vec<IdKey<Box<str>>>,
@@ -128,6 +135,7 @@ where
             match node {
                 Node::SymbolName(node) => output.symbol_names.push(node),
                 Node::IsImplementation(node) => output.is_implementation.push(node),
+                Node::EnclosingSymbol(node) => output.enclosing_symbols.push(node),
                 Node::FileLanguage(node) => output.file_langs.push(node),
                 Node::File(node) => output.src_files.push(node),
                 Node::FileRange(node) => output.file_ranges.push(node),
@@ -241,6 +249,14 @@ impl GleanJSONOutput {
             },
         });
     }
+    pub fn enclosing_symbol(&mut self, symbol_id: ScipId, enclosing_id: ScipId) {
+        self.enclosing_symbols.push(Key {
+            key: EnclosingSymbol {
+                symbol: symbol_id,
+                enclosing: enclosing_id,
+            },
+        });
+    }
     pub fn symbol_kind(&mut self, symbol_id: ScipId, kind: SymbolKind) {
         self.symbol_kinds.push(Key {
             key: SymbolAndKind {
@@ -286,6 +302,7 @@ impl GleanJSONOutput {
             + self.local_names.len()
             + self.symbol_names.len()
             + self.is_implementation.len()
+            + self.enclosing_symbols.len()
             + self.symbol_kinds.len()
             + self.metadata.len()
             + self.display_names.len()
@@ -330,6 +347,11 @@ impl GleanJSONOutput {
                 .into_iter()
                 .map(Node::IsImplementation),
         );
+        source_nodes.extend(
+            self.enclosing_symbols
+                .into_iter()
+                .map(Node::EnclosingSymbol),
+        );
         source_nodes.extend(self.file_langs.into_iter().map(Node::FileLanguage));
         source_nodes.extend(self.symbol_kinds.into_iter().map(Node::SymbolKind));
         source_nodes.extend(self.definitions.into_iter().map(Node::Definition));
@@ -370,6 +392,12 @@ impl GleanJSONOutput {
                                 *symbols.get(&is_implementation.key.implemented).unwrap();
                             to_visit.push(Node::Symbol(symbol.clone()));
                             to_visit.push(Node::Symbol(implemented.clone()));
+                        }
+                        Node::EnclosingSymbol(enclosing_symbol) => {
+                            let symbol = *symbols.get(&enclosing_symbol.key.symbol).unwrap();
+                            let enclosing = *symbols.get(&enclosing_symbol.key.enclosing).unwrap();
+                            to_visit.push(Node::Symbol(symbol.clone()));
+                            to_visit.push(Node::Symbol(enclosing.clone()));
                         }
                         Node::FileLanguage(file_language) => {
                             let file = *files.get(&file_language.key.file).unwrap();
@@ -476,6 +504,7 @@ impl GleanJSONOutput {
         )?;
         sub(&mut w, "scip.SymbolName", self.symbol_names, ifl)?;
         sub(&mut w, "scip.IsImplementation", self.is_implementation, ifl)?;
+        sub(&mut w, "scip.EnclosingSymbol", self.enclosing_symbols, ifl)?;
         sub(&mut w, "scip.SymbolKind", self.symbol_kinds, ifl)?;
         sub(&mut w, "scip.Metadata", self.metadata, ifl)?;
         sub(&mut w, "scip.DisplayName", self.display_names, ifl)?;
