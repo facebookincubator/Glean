@@ -1,0 +1,10 @@
+[package]
+name = "scip_symbol"
+version = "0.1.0"
+edition = "2021"
+license = "BSD-3-Clause"
+description = "SCIP symbol string parser"
+
+[dependencies]
+log = "0.4"
+serde = { version = "1", features = ["derive"] }

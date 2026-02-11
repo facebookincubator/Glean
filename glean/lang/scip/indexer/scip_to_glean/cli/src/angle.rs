@@ -13,10 +13,22 @@ use std::path::Path;
 // Use ahash instead of std hashmap for a slight performance gain.
 use ahash::AHashMap as HashMap;
 use anyhow::Result;
+#[cfg(feature = "facebook")]
 use proto_rust::scip::Document;
+#[cfg(not(feature = "facebook"))]
+use crate::proto::scip::Document;
+#[cfg(feature = "facebook")]
 use proto_rust::scip::Metadata;
+#[cfg(not(feature = "facebook"))]
+use crate::proto::scip::Metadata;
+#[cfg(feature = "facebook")]
 use proto_rust::scip::Occurrence;
+#[cfg(not(feature = "facebook"))]
+use crate::proto::scip::Occurrence;
+#[cfg(feature = "facebook")]
 use proto_rust::scip::SymbolInformation;
+#[cfg(not(feature = "facebook"))]
+use crate::proto::scip::SymbolInformation;
 use scip_symbol::Descriptor;
 use scip_symbol::ScipSymbol;
 use scip_symbol::parse_scip_symbol;

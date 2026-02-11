@@ -1,0 +1,885 @@
+// An index contains one or more pieces of information about a given piece of
+// source code or software artifact. Complementary information can be merged
+// together from multiple sources to provide a unified code intelligence
+// experience.
+//
+// Programs producing a file of this format is an "indexer" and may operate
+// somewhere on the spectrum between precision, such as indexes produced by
+// compiler-backed indexers, and heurstics, such as indexes produced by local
+// syntax-directed analysis for scope rules.
+
+syntax = "proto3";
+
+package scip;
+
+option go_package = "github.com/sourcegraph/scip/bindings/go/scip/";
+
+// Index represents a complete SCIP index for a workspace this is rooted at a
+// single directory. An Index message payload can have a large memory footprint
+// and it's therefore recommended to emit and consume an Index payload one field
+// value at a time. To permit streaming consumption of an Index payload, the
+// `metadata` field must appear at the start of the stream and must only appear
+// once in the stream. Other field values may appear in any order.
+message Index {
+  // Metadata about this index.
+  Metadata metadata = 1;
+  // Documents that belong to this index.
+  repeated Document documents = 2;
+  // (optional) Symbols that are referenced from this index but are defined in
+  // an external package (a separate `Index` message). Leave this field empty
+  // if you assume the external package will get indexed separately. If the
+  // external package won't get indexed for some reason then you can use this
+  // field to provide hover documentation for those external symbols.
+  repeated SymbolInformation external_symbols = 3;
+  // IMPORTANT: When adding a new field to `Index` here, add a matching
+  // function in `IndexVisitor` and update `ParseStreaming`.
+}
+
+message Metadata {
+  // Which version of this protocol was used to generate this index?
+  ProtocolVersion version = 1;
+  // Information about the tool that produced this index.
+  ToolInfo tool_info = 2;
+  // URI-encoded absolute path to the root directory of this index. All
+  // documents in this index must appear in a subdirectory of this root
+  // directory.
+  string project_root = 3;
+  // Text encoding of the source files on disk that are referenced from
+  // `Document.relative_path`. This value is unrelated to the `Document.text`
+  // field, which is a Protobuf string and hence must be UTF-8 encoded.
+  TextEncoding text_document_encoding = 4;
+}
+
+enum ProtocolVersion {
+  UnspecifiedProtocolVersion = 0;
+}
+
+enum TextEncoding {
+  UnspecifiedTextEncoding = 0;
+  UTF8 = 1;
+  UTF16 = 2;
+}
+
+message ToolInfo {
+  // Name of the indexer that produced this index.
+  string name = 1;
+  // Version of the indexer that produced this index.
+  string version = 2;
+  // Command-line arguments that were used to invoke this indexer.
+  repeated string arguments = 3;
+}
+
+// Document defines the metadata about a source file on disk.
+message Document {
+  // The string ID for the programming language this file is written in.
+  // The `Language` enum contains the names of most common programming languages.
+  // This field is typed as a string to permit any programming language, including
+  // ones that are not specified by the `Language` enum.
+  string language = 4;
+  // (Required) Unique path to the text document.
+  //
+  // 1. The path must be relative to the directory supplied in the associated
+  //    `Metadata.project_root`.
+  // 2. The path must not begin with a leading '/'.
+  // 3. The path must point to a regular file, not a symbolic link.
+  // 4. The path must use '/' as the separator, including on Windows.
+  // 5. The path must be canonical; it cannot include empty components ('//'),
+  //    or '.' or '..'.
+  string relative_path = 1;
+  // Occurrences that appear in this file.
+  repeated Occurrence occurrences = 2;
+  // Symbols that are "defined" within this document.
+  //
+  // This should include symbols which technically do not have any definition,
+  // but have a reference and are defined by some other symbol (see
+  // Relationship.is_definition).
+  repeated SymbolInformation symbols = 3;
+
+  // (optional) Text contents of the this document. Indexers are not expected to
+  // include the text by default. It's preferrable that clients read the text
+  // contents from the file system by resolving the absolute path from joining
+  // `Index.metadata.project_root` and `Document.relative_path`. This field was
+  // introduced to support `SymbolInformation.signature_documentation`, but it
+  // can be used for other purposes as well, for example testing or when working
+  // with virtual/in-memory documents.
+  string text = 5;
+
+  // Specifies the encoding used for source ranges in this Document.
+  //
+  // Usually, this will match the type used to index the string type
+  // in the indexer's implementation language in O(1) time.
+  // - For an indexer implemented in JVM/.NET language or JavaScript/TypeScript,
+  //   use UTF16CodeUnitOffsetFromLineStart.
+  // - For an indexer implemented in Python,
+  //   use UTF32CodeUnitOffsetFromLineStart.
+  // - For an indexer implemented in Go, Rust or C++,
+  //   use UTF8ByteOffsetFromLineStart.
+  PositionEncoding position_encoding = 6;
+}
+
+// Encoding used to interpret the 'character' value in source ranges.
+enum PositionEncoding {
+  // Default value. This value should not be used by new SCIP indexers
+  // so that a consumer can process the SCIP index without ambiguity.
+  UnspecifiedPositionEncoding = 0;
+  // The 'character' value is interpreted as an offset in terms
+  // of UTF-8 code units (i.e. bytes).
+  //
+  // Example: For the string "🚀 Woo" in UTF-8, the bytes are
+  // [240, 159, 154, 128, 32, 87, 111, 111], so the offset for 'W'
+  // would be 5.
+  UTF8CodeUnitOffsetFromLineStart = 1;
+  // The 'character' value is interpreted as an offset in terms
+  // of UTF-16 code units (each is 2 bytes).
+  //
+  // Example: For the string "🚀 Woo", the UTF-16 code units are
+  // ['\ud83d', '\ude80', ' ', 'W', 'o', 'o'], so the offset for 'W'
+  // would be 3.
+  UTF16CodeUnitOffsetFromLineStart = 2;
+  // The 'character' value is interpreted as an offset in terms
+  // of UTF-32 code units (each is 4 bytes).
+  //
+  // Example: For the string "🚀 Woo", the UTF-32 code units are
+  // ['🚀', ' ', 'W', 'o', 'o'], so the offset for 'W' would be 2.
+  UTF32CodeUnitOffsetFromLineStart = 3;
+}
+
+// Symbol is similar to a URI, it identifies a class, method, or a local
+// variable. `SymbolInformation` contains rich metadata about symbols such as
+// the docstring.
+//
+// Symbol has a standardized string representation, which can be used
+// interchangeably with `Symbol`. The syntax for Symbol is the following:
+// ```
+// # (<x>)+ stands for one or more repetitions of <x>
+// # (<x>)? stands for zero or one occurrence of <x>
+// <symbol>               ::= <scheme> ' ' <package> ' ' (<descriptor>)+ | 'local ' <local-id>
+// <package>              ::= <manager> ' ' <package-name> ' ' <version>
+// <scheme>               ::= any UTF-8, escape spaces with double space. Must not be empty nor start with 'local'
+// <manager>              ::= any UTF-8, escape spaces with double space. Use the placeholder '.' to indicate an empty value
+// <package-name>         ::= same as above
+// <version>              ::= same as above
+// <descriptor>           ::= <namespace> | <type> | <term> | <method> | <type-parameter> | <parameter> | <meta> | <macro>
+// <namespace>            ::= <name> '/'
+// <type>                 ::= <name> '#'
+// <term>                 ::= <name> '.'
+// <meta>                 ::= <name> ':'
+// <macro>                ::= <name> '!'
+// <method>               ::= <name> '(' (<method-disambiguator>)? ').'
+// <type-parameter>       ::= '[' <name> ']'
+// <parameter>            ::= '(' <name> ')'
+// <name>                 ::= <identifier>
+// <method-disambiguator> ::= <simple-identifier>
+// <identifier>           ::= <simple-identifier> | <escaped-identifier>
+// <simple-identifier>    ::= (<identifier-character>)+
+// <identifier-character> ::= '_' | '+' | '-' | '$' | ASCII letter or digit
+// <escaped-identifier>   ::= '`' (<escaped-character>)+ '`', must contain at least one non-<identifier-character>
+// <escaped-characters>   ::= any UTF-8, escape backticks with double backtick.
+// <local-id>             ::= <simple-identifier>
+// ```
+//
+// The list of descriptors for a symbol should together form a fully
+// qualified name for the symbol. That is, it should serve as a unique
+// identifier across the package. Typically, it will include one descriptor
+// for every node in the AST (along the ancestry path) between the root of
+// the file and the node corresponding to the symbol.
+//
+// Local symbols MUST only be used for entities which are local to a Document,
+// and cannot be accessed from outside the Document.
+message Symbol {
+  string scheme = 1;
+  Package package = 2;
+  repeated Descriptor descriptors = 3;
+}
+
+// Unit of packaging and distribution.
+//
+// NOTE: This corresponds to a module in Go and JVM languages.
+message Package {
+  string manager = 1;
+  string name = 2;
+  string version = 3;
+}
+
+message Descriptor {
+  enum Suffix {
+    option allow_alias = true;
+    UnspecifiedSuffix = 0;
+    // Unit of code abstraction and/or namespacing.
+    //
+    // NOTE: This corresponds to a package in Go and JVM languages.
+    Namespace = 1;
+    // Use Namespace instead.
+    Package = 1 [deprecated=true];
+    Type = 2;
+    Term = 3;
+    Method = 4;
+    TypeParameter = 5;
+    Parameter = 6;
+    // Can be used for any purpose.
+    Meta = 7;
+    Local = 8;
+    Macro = 9;
+  }
+  string name = 1;
+  string disambiguator = 2;
+  Suffix suffix = 3;
+  // NOTE: If you add new fields here, make sure to update the prepareSlot()
+  // function responsible for parsing symbols.
+}
+
+// SymbolInformation defines metadata about a symbol, such as the symbol's
+// docstring or what package it's defined it.
+message SymbolInformation {
+  // Identifier of this symbol, which can be referenced from `Occurence.symbol`.
+  // The string must be formatted according to the grammar in `Symbol`.
+  string symbol = 1;
+  // (optional, but strongly recommended) The markdown-formatted documentation
+  // for this symbol. Use `SymbolInformation.signature_documentation` to
+  // document the method/class/type signature of this symbol.
+  // Due to historical reasons, indexers may include signature documentation in
+  // this field by rendering markdown code blocks. New indexers should only
+  // include non-code documentation in this field, for example docstrings.
+  repeated string documentation = 3;
+  // (optional) Relationships to other symbols (e.g., implements, type definition).
+  repeated Relationship relationships = 4;
+  // The kind of this symbol. Use this field instead of
+  // `SymbolDescriptor.Suffix` to determine whether something is, for example, a
+  // class or a method.
+  Kind kind = 5;
+  // (optional) Kind represents the fine-grained category of a symbol, suitable for presenting
+  // information about the symbol's meaning in the language.
+  //
+  // For example:
+  // - A Java method would have the kind `Method` while a Go function would
+  //   have the kind `Function`, even if the symbols for these use the same
+  //   syntax for the descriptor `SymbolDescriptor.Suffix.Method`.
+  // - A Go struct has the symbol kind `Struct` while a Java class has
+  //   the symbol kind `Class` even if they both have the same descriptor:
+  //   `SymbolDescriptor.Suffix.Type`.
+  //
+  // Since Kind is more fine-grained than Suffix:
+  // - If two symbols have the same Kind, they should share the same Suffix.
+  // - If two symbols have different Suffixes, they should have different Kinds.
+  enum Kind {
+      UnspecifiedKind = 0;
+      // A method which may or may not have a body. For Java, Kotlin etc.
+      AbstractMethod = 66;
+      // For Ruby's attr_accessor
+      Accessor = 72;
+      Array = 1;
+      // For Alloy
+      Assertion = 2;
+      AssociatedType = 3;
+      // For C++
+      Attribute = 4;
+      // For Lean
+      Axiom = 5;
+      Boolean = 6;
+      Class = 7;
+      // For C++
+      Concept = 86;
+      Constant = 8;
+      Constructor = 9;
+      // For Solidity
+      Contract = 62;
+      // For Haskell
+      DataFamily = 10;
+      // For C# and F#
+      Delegate = 73;
+      Enum = 11;
+      EnumMember = 12;
+      Error = 63;
+      Event = 13;
+      // For Dart
+      Extension = 84;
+      // For Alloy
+      Fact = 14;
+      Field = 15;
+      File = 16;
+      Function = 17;
+      // For 'get' in Swift, 'attr_reader' in Ruby
+      Getter = 18;
+      // For Raku
+      Grammar = 19;
+      // For Purescript and Lean
+      Instance = 20;
+      Interface = 21;
+      Key = 22;
+      // For Racket
+      Lang = 23;
+      // For Lean
+      Lemma = 24;
+      // For solidity
+      Library = 64;
+      Macro = 25;
+      Method = 26;
+      // For Ruby
+      MethodAlias = 74;
+      // Analogous to 'ThisParameter' and 'SelfParameter', but for languages
+      // like Go where the receiver doesn't have a conventional name.
+      MethodReceiver = 27;
+      // Analogous to 'AbstractMethod', for Go.
+      MethodSpecification = 67;
+      // For Protobuf
+      Message = 28;
+      // For Dart
+      Mixin = 85;
+      // For Solidity
+      Modifier = 65;
+      Module = 29;
+      Namespace = 30;
+      Null = 31;
+      Number = 32;
+      Object = 33;
+      Operator = 34;
+      Package = 35;
+      PackageObject = 36;
+      Parameter = 37;
+      ParameterLabel = 38;
+      // For Haskell's PatternSynonyms
+      Pattern = 39;
+      // For Alloy
+      Predicate = 40;
+      Property = 41;
+      // Analogous to 'Trait' and 'TypeClass', for Swift and Objective-C
+      Protocol = 42;
+      // Analogous to 'AbstractMethod', for Swift and Objective-C.
+      ProtocolMethod = 68;
+      // Analogous to 'AbstractMethod', for C++.
+      PureVirtualMethod = 69;
+      // For Haskell
+      Quasiquoter = 43;
+      // 'self' in Python, Rust, Swift etc.
+      SelfParameter = 44;
+      // For 'set' in Swift, 'attr_writer' in Ruby
+      Setter = 45;
+      // For Alloy, analogous to 'Struct'.
+      Signature = 46;
+      // For Ruby
+      SingletonClass = 75;
+      // Analogous to 'StaticMethod', for Ruby.
+      SingletonMethod = 76;
+      // Analogous to 'StaticField', for C++
+      StaticDataMember = 77;
+      // For C#
+      StaticEvent = 78;
+      // For C#
+      StaticField = 79;
+      // For Java, C#, C++ etc.
+      StaticMethod = 80;
+      // For C#, TypeScript etc.
+      StaticProperty = 81;
+      // For C, C++
+      StaticVariable = 82;
+      String = 48;
+      Struct = 49;
+      // For Swift
+      Subscript = 47;
+      // For Lean
+      Tactic = 50;
+      // For Lean
+      Theorem = 51;
+      // Method receiver for languages
+      // 'this' in JavaScript, C++, Java etc.
+      ThisParameter = 52;
+      // Analogous to 'Protocol' and 'TypeClass', for Rust, Scala etc.
+      Trait = 53;
+      // Analogous to 'AbstractMethod', for Rust, Scala etc.
+      TraitMethod = 70;
+      // Data type definition for languages like OCaml which use `type`
+      // rather than separate keywords like `struct` and `enum`.
+      Type = 54;
+      TypeAlias = 55;
+      // Analogous to 'Trait' and 'Protocol', for Haskell, Purescript etc.
+      TypeClass = 56;
+      // Analogous to 'AbstractMethod', for Haskell, Purescript etc.
+      TypeClassMethod = 71;
+      // For Haskell
+      TypeFamily = 57;
+      TypeParameter = 58;
+      // For C, C++, Capn Proto
+      Union = 59;
+      Value = 60;
+      Variable = 61;
+      // Next = 87;
+      // Feel free to open a PR proposing new language-specific kinds.
+  }
+  // (optional) The name of this symbol as it should be displayed to the user.
+  // For example, the symbol "com/example/MyClass#myMethod(+1)." should have the
+  // display name "myMethod". The `symbol` field is not a reliable source of
+  // the display name for several reasons:
+  //
+  // - Local symbols don't encode the name.
+  // - Some languages have case-insensitive names, so the symbol is all-lowercase.
+  // - The symbol may encode names with special characters that should not be
+  //   displayed to the user.
+  string display_name = 6;
+  // (optional) The signature of this symbol as it's displayed in API
+  // documentation or in hover tooltips. For example, a Java method that adds
+  // two numbers this would have `Document.language = "java"` and `Document.text
+  // = "void add(int a, int b)". The `language` and `text` fields are required
+  // while other fields such as `Documentation.occurrences` can be optionally
+  // included to support hyperlinking referenced symbols in the signature.
+  Document signature_documentation = 7;
+  // (optional) The enclosing symbol if this is a local symbol.  For non-local
+  // symbols, the enclosing symbol should be parsed from the `symbol` field
+  // using the `Descriptor` grammar.
+  //
+  // The primary use-case for this field is to allow local symbol to be displayed
+  // in a symbol hierarchy for API documentation. It's OK to leave this field
+  // empty for local variables since local variables usually don't belong in API
+  // documentation. However, in the situation that you wish to include a local
+  // symbol in the hierarchy, then you can use `enclosing_symbol` to locate the
+  // "parent" or "owner" of this local symbol. For example, a Java indexer may
+  // choose to use local symbols for private class fields while providing an
+  // `enclosing_symbol` to reference the enclosing class to allow the field to
+  // be part of the class documentation hierarchy. From the perspective of an
+  // author of an indexer, the decision to use a local symbol or global symbol
+  // should exclusively be determined whether the local symbol is accessible
+  // outside the document, not by the capability to find the enclosing
+  // symbol.
+  string enclosing_symbol = 8;
+}
+
+
+message Relationship {
+  string symbol = 1;
+  // When resolving "Find references", this field documents what other symbols
+  // should be included together with this symbol. For example, consider the
+  // following TypeScript code that defines two symbols `Animal#sound()` and
+  // `Dog#sound()`:
+  // ```ts
+  // interface Animal {
+  //           ^^^^^^ definition Animal#
+  //   sound(): string
+  //   ^^^^^ definition Animal#sound()
+  // }
+  // class Dog implements Animal {
+  //       ^^^ definition Dog#, relationships = [{symbol: "Animal#", is_implementation: true}]
+  //   public sound(): string { return "woof" }
+  //          ^^^^^ definition Dog#sound(), references_symbols = Animal#sound(), relationships = [{symbol: "Animal#sound()", is_implementation:true, is_reference: true}]
+  // }
+  // const animal: Animal = new Dog()
+  //               ^^^^^^ reference Animal#
+  // console.log(animal.sound())
+  //                    ^^^^^ reference Animal#sound()
+  // ```
+  // Doing "Find references" on the symbol `Animal#sound()` should return
+  // references to the `Dog#sound()` method as well. Vice-versa, doing "Find
+  // references" on the `Dog#sound()` method should include references to the
+  // `Animal#sound()` method as well.
+  bool is_reference = 2;
+  // Similar to `is_reference` but for "Find implementations".
+  // It's common for `is_implementation` and `is_reference` to both be true but
+  // it's not always the case.
+  // In the TypeScript example above, observe that `Dog#` has an
+  // `is_implementation` relationship with `"Animal#"` but not `is_reference`.
+  // This is because "Find references" on the "Animal#" symbol should not return
+  // "Dog#". We only want "Dog#" to return as a result for "Find
+  // implementations" on the "Animal#" symbol.
+  bool is_implementation = 3;
+  // Similar to `references_symbols` but for "Go to type definition".
+  bool is_type_definition = 4;
+  // Allows overriding the behavior of "Go to definition" and "Find references"
+  // for symbols which do not have a definition of their own or could
+  // potentially have multiple definitions.
+  //
+  // For example, in a language with single inheritance and no field overriding,
+  // inherited fields can reuse the same symbol as the ancestor which declares
+  // the field. In such a situation, is_definition is not needed.
+  //
+  // On the other hand, in languages with single inheritance and some form
+  // of mixins, you can use is_definition to relate the symbol to the
+  // matching symbol in ancestor classes, and is_reference to relate the
+  // symbol to the matching symbol in mixins.
+  //
+  // NOTE: At the moment, due to limitations of the SCIP to LSIF conversion,
+  // only global symbols in an index are allowed to use is_definition.
+  // The relationship may not get recorded if either symbol is local.
+  bool is_definition = 5;
+  // Update registerInverseRelationships on adding a new field here.
+}
+
+// SymbolRole declares what "role" a symbol has in an occurrence. A role is
+// encoded as a bitset where each bit represents a different role. For example,
+// to determine if the `Import` role is set, test whether the second bit of the
+// enum value is defined. In pseudocode, this can be implemented with the
+// logic: `const isImportRole = (role.value & SymbolRole.Import.value) > 0`.
+enum SymbolRole {
+  // This case is not meant to be used; it only exists to avoid an error
+  // from the Protobuf code generator.
+  UnspecifiedSymbolRole = 0;
+  // Is the symbol defined here? If not, then this is a symbol reference.
+  Definition = 0x1;
+  // Is the symbol imported here?
+  Import = 0x2;
+  // Is the symbol written here?
+  WriteAccess = 0x4;
+  // Is the symbol read here?
+  ReadAccess = 0x8;
+  // Is the symbol in generated code?
+  Generated = 0x10;
+  // Is the symbol in test code?
+  Test = 0x20;
+  // Is this a signature for a symbol that is defined elsewhere?
+  //
+  // Applies to forward declarations for languages like C, C++
+  // and Objective-C, as well as `val` declarations in interface
+  // files in languages like SML and OCaml.
+  ForwardDefinition = 0x40;
+}
+
+enum SyntaxKind {
+  option allow_alias = true;
+
+  UnspecifiedSyntaxKind = 0;
+
+  // Comment, including comment markers and text
+  Comment = 1;
+
+  // `;` `.` `,`
+  PunctuationDelimiter = 2;
+  // (), {}, [] when used syntactically
+  PunctuationBracket = 3;
+
+  // `if`, `else`, `return`, `class`, etc.
+  Keyword = 4;
+  IdentifierKeyword = 4 [deprecated=true];
+
+  // `+`, `*`, etc.
+  IdentifierOperator = 5;
+
+  // non-specific catch-all for any identifier not better described elsewhere
+  Identifier = 6;
+  // Identifiers builtin to the language: `min`, `print` in Python.
+  IdentifierBuiltin = 7;
+  // Identifiers representing `null`-like values: `None` in Python, `nil` in Go.
+  IdentifierNull = 8;
+  // `xyz` in `const xyz = "hello"`
+  IdentifierConstant = 9;
+  // `var X = "hello"` in Go
+  IdentifierMutableGlobal = 10;
+  // Parameter definition and references
+  IdentifierParameter = 11;
+  // Identifiers for variable definitions and references within a local scope
+  IdentifierLocal = 12;
+  // Identifiers that shadow other identifiers in an outer scope
+  IdentifierShadowed = 13;
+  // Identifier representing a unit of code abstraction and/or namespacing.
+  //
+  // NOTE: This corresponds to a package in Go and JVM languages,
+  // and a module in languages like Python and JavaScript.
+  IdentifierNamespace = 14;
+  IdentifierModule = 14 [deprecated=true];
+
+  // Function references, including calls
+  IdentifierFunction = 15;
+  // Function definition only
+  IdentifierFunctionDefinition = 16;
+
+  // Macro references, including invocations
+  IdentifierMacro = 17;
+  // Macro definition only
+  IdentifierMacroDefinition = 18;
+
+  // non-builtin types
+  IdentifierType = 19;
+  // builtin types only, such as `str` for Python or `int` in Go
+  IdentifierBuiltinType = 20;
+
+  // Python decorators, c-like __attribute__
+  IdentifierAttribute = 21;
+
+  // `\b`
+  RegexEscape = 22;
+  // `*`, `+`
+  RegexRepeated = 23;
+  // `.`
+  RegexWildcard = 24;
+  // `(`, `)`, `[`, `]`
+  RegexDelimiter = 25;
+  // `|`, `-`
+  RegexJoin = 26;
+
+  // Literal strings: "Hello, world!"
+  StringLiteral = 27;
+  // non-regex escapes: "\t", "\n"
+  StringLiteralEscape = 28;
+  // datetimes within strings, special words within a string, `{}` in format strings
+  StringLiteralSpecial = 29;
+  // "key" in { "key": "value" }, useful for example in JSON
+  StringLiteralKey = 30;
+  // 'c' or similar, in languages that differentiate strings and characters
+  CharacterLiteral = 31;
+  // Literal numbers, both floats and integers
+  NumericLiteral = 32;
+  // `true`, `false`
+  BooleanLiteral = 33;
+
+  // Used for XML-like tags
+  Tag = 34;
+  // Attribute name in XML-like tags
+  TagAttribute = 35;
+  // Delimiters for XML-like tags
+  TagDelimiter = 36;
+}
+
+// Occurrence associates a source position with a symbol and/or highlighting
+// information.
+//
+// If possible, indexers should try to bundle logically related information
+// across occurrences into a single occurrence to reduce payload sizes.
+message Occurrence {
+  // Half-open [start, end) range of this occurrence. Must be exactly three or four
+  // elements:
+  //
+  // - Four elements: `[startLine, startCharacter, endLine, endCharacter]`
+  // - Three elements: `[startLine, startCharacter, endCharacter]`. The end line
+  //   is inferred to have the same value as the start line.
+  //
+  // It is allowed for the range to be empty (i.e. start==end).
+  //
+  // Line numbers and characters are always 0-based. Make sure to increment the
+  // line/character values before displaying them in an editor-like UI because
+  // editors conventionally use 1-based numbers.
+  //
+  // The 'character' value is interpreted based on the PositionEncoding for
+  // the Document.
+  //
+  // Historical note: the original draft of this schema had a `Range` message
+  // type with `start` and `end` fields of type `Position`, mirroring LSP.
+  // Benchmarks revealed that this encoding was inefficient and that we could
+  // reduce the total payload size of an index by 50% by using `repeated int32`
+  // instead. The `repeated int32` encoding is admittedly more embarrassing to
+  // work with in some programming languages but we hope the performance
+  // improvements make up for it.
+  repeated int32 range = 1;
+  // (optional) The symbol that appears at this position. See
+  // `SymbolInformation.symbol` for how to format symbols as strings.
+  string symbol = 2;
+  // (optional) Bitset containing `SymbolRole`s in this occurrence.
+  // See `SymbolRole`'s documentation for how to read and write this field.
+  int32 symbol_roles = 3;
+  // (optional) CommonMark-formatted documentation for this specific range. If
+  // empty, the `Symbol.documentation` field is used instead. One example
+  // where this field might be useful is when the symbol represents a generic
+  // function (with abstract type parameters such as `List<T>`) and at this
+  // occurrence we know the exact values (such as `List<String>`).
+  //
+  // This field can also be used for dynamically or gradually typed languages,
+  // which commonly allow for type-changing assignment.
+  repeated string override_documentation = 4;
+  // (optional) What syntax highlighting class should be used for this range?
+  SyntaxKind syntax_kind = 5;
+  // (optional) Diagnostics that have been reported for this specific range.
+  repeated Diagnostic diagnostics = 6;
+  // (optional) Using the same encoding as the sibling `range` field, half-open
+  // source range of the nearest non-trivial enclosing AST node. This range must
+  // enclose the `range` field. Example applications that make use of the
+  // enclosing_range field:
+  //
+  // - Call hierarchies: to determine what symbols are references from the body
+  //   of a function
+  // - Symbol outline: to display breadcrumbs from the cursor position to the
+  //   root of the file
+  // - Expand selection: to select the nearest enclosing AST node.
+  // - Highlight range: to indicate the AST expression that is associated with a
+  //   hover popover
+  //
+  // For definition occurrences, the enclosing range should indicate the
+  // start/end bounds of the entire definition AST node, including
+  // documentation.
+  // ```
+  // const n = 3
+  //       ^ range
+  // ^^^^^^^^^^^ enclosing_range
+  //
+  // /** Parses the string into something */
+  // ^ enclosing_range start --------------------------------------|
+  // function parse(input string): string {                        |
+  //          ^^^^^ range                                          |
+  //     return input.slice(n)                                     |
+  // }                                                             |
+  // ^ enclosing_range end <---------------------------------------|
+  // ```
+  //
+  // Any attributes/decorators/attached macros should also be part of the
+  // enclosing range.
+  //
+  // ```python
+  // @cache
+  // ^ enclosing_range start---------------------|
+  // def factorial(n):                           |
+  //     return n * factorial(n-1) if n else 1   |
+  // < enclosing_range end-----------------------|
+  //
+  // ```
+  //
+  // For reference occurrences, the enclosing range should indicate the start/end
+  // bounds of the parent expression.
+  // ```
+  // const a = a.b
+  //             ^ range
+  //           ^^^ enclosing_range
+  // const b = a.b(41).f(42).g(43)
+  //                   ^ range
+  //           ^^^^^^^^^^^^^ enclosing_range
+  // ```
+  repeated int32 enclosing_range = 7;
+}
+
+// Represents a diagnostic, such as a compiler error or warning, which should be
+// reported for a document.
+message Diagnostic {
+  // Should this diagnostic be reported as an error, warning, info, or hint?
+  Severity severity = 1;
+  // (optional) Code of this diagnostic, which might appear in the user interface.
+  string code = 2;
+  // Message of this diagnostic.
+  string message = 3;
+  // (optional) Human-readable string describing the source of this diagnostic, e.g.
+  // 'typescript' or 'super lint'.
+  string source = 4;
+  repeated DiagnosticTag tags = 5;
+}
+
+enum Severity {
+  UnspecifiedSeverity = 0;
+  Error = 1;
+  Warning = 2;
+  Information = 3;
+  Hint = 4;
+}
+
+enum DiagnosticTag {
+  UnspecifiedDiagnosticTag = 0;
+  Unnecessary = 1;
+  Deprecated = 2;
+}
+
+// Language standardises names of common programming languages that can be used
+// for the `Document.language` field. The primary purpose of this enum is to
+// prevent a situation where we have a single programming language ends up with
+// multiple string representations. For example, the C++ language uses the name
+// "CPP" in this enum and other names such as "cpp" are incompatible.
+// Feel free to send a pull-request to add missing programming languages.
+enum Language {
+  UnspecifiedLanguage = 0;
+  ABAP = 60;
+  Apex = 96;
+  APL = 49;
+  Ada = 39;
+  Agda = 45;
+  AsciiDoc = 86;
+  Assembly = 58;
+  Awk = 66;
+  Bat = 68;
+  BibTeX = 81;
+  C = 34;
+  COBOL = 59;
+  CPP = 35; // C++ (the name "CPP" was chosen for consistency with LSP)
+  CSS = 26;
+  CSharp = 1;
+  Clojure = 8;
+  Coffeescript = 21;
+  CommonLisp = 9;
+  Coq = 47;
+  CUDA = 97;
+  Dart = 3;
+  Delphi = 57;
+  Diff = 88;
+  Dockerfile = 80;
+  Dyalog = 50;
+  Elixir = 17;
+  Erlang = 18;
+  FSharp = 42;
+  Fish = 65;
+  Flow = 24;
+  Fortran = 56;
+  Git_Commit = 91;
+  Git_Config = 89;
+  Git_Rebase = 92;
+  Go = 33;
+  GraphQL = 98;
+  Groovy = 7;
+  HTML = 30;
+  Hack = 20;
+  Handlebars = 90;
+  Haskell = 44;
+  Idris = 46;
+  Ini = 72;
+  J = 51;
+  JSON = 75;
+  Java = 6;
+  JavaScript = 22;
+  JavaScriptReact = 93;
+  Jsonnet = 76;
+  Julia =  55;
+  Justfile = 109;
+  Kotlin = 4;
+  LaTeX = 83;
+  Lean = 48;
+  Less = 27;
+  Lua = 12;
+  Luau = 108;
+  Makefile = 79;
+  Markdown = 84;
+  Matlab = 52;
+  Nickel = 110; // https://nickel-lang.org/
+  Nix = 77;
+  OCaml = 41;
+  Objective_C = 36;
+  Objective_CPP = 37;
+  Pascal = 99;
+  PHP = 19;
+  PLSQL = 70;
+  Perl = 13;
+  PowerShell = 67;
+  Prolog = 71;
+  Protobuf = 100;
+  Python = 15;
+  R = 54;
+  Racket = 11;
+  Raku = 14;
+  Razor = 62;
+  Repro = 102; // Internal language for testing SCIP
+  ReST = 85;
+  Ruby = 16;
+  Rust = 40;
+  SAS = 61;
+  SCSS = 29;
+  SML = 43;
+  SQL = 69;
+  Sass = 28;
+  Scala = 5;
+  Scheme = 10;
+  ShellScript = 64; // Bash
+  Skylark = 78;
+  Slang = 107;
+  Solidity = 95;
+  Svelte = 106;
+  Swift = 2;
+  Tcl = 101;
+  TOML = 73;
+  TeX = 82;
+  Thrift = 103;
+  TypeScript = 23;
+  TypeScriptReact = 94;
+  Verilog = 104;
+  VHDL = 105;
+  VisualBasic = 63;
+  Vue = 25;
+  Wolfram = 53;
+  XML = 31;
+  XSL = 32;
+  YAML = 74;
+  Zig = 38;
+  // NextLanguage = 111;
+  // Steps add a new language:
+  // 1. Copy-paste the "NextLanguage = N" line above
+  // 2. Increment "NextLanguage = N" to "NextLanguage = N+1"
+  // 3. Replace "NextLanguage = N" with the name of the new language.
+  // 4. Move the new language to the correct line above using alphabetical order
+  // 5. (optional) Add a brief comment behind the language if the name is not self-explanatory
+}

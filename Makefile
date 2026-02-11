@@ -141,6 +141,13 @@ cxx-test-%: force
 glean:: glean.cabal cxx-libraries
 	$(CABAL) build glean glean-server glean-hyperlink
 
+SCIP_TO_GLEAN_DIR = glean/lang/scip/indexer/scip_to_glean
+
+.PHONY: scip-to-glean
+scip-to-glean::
+	cd $(SCIP_TO_GLEAN_DIR) && cargo build --release
+	@echo "scip-to-glean binary built at $(SCIP_TO_GLEAN_DIR)/target/release/scip-to-glean"
+
 .PHONY: gen-bytecode
 gen-bytecode: $(BYTECODE_GEN)
 

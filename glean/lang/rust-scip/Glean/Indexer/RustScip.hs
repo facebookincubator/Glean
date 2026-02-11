@@ -29,7 +29,9 @@ options = do
     help "path to the rust-analyzer binary"
   scipRustIndexer <- optional (strOption $
     long "rust-indexer" <>
-    help "Path to the rust indexer binary. If not provided, uses the haskell indexer instead")
+    help "Path to the scip-to-glean binary. By default, looks for \
+         \scip-to-glean on PATH and falls back to the Haskell converter \
+         \if not found")
   return RustScip{..}
 
 indexer :: Indexer RustScip

@@ -16,12 +16,22 @@ use anyhow::Error;
 use anyhow::Result;
 use anyhow::anyhow;
 use clap::Parser;
+#[cfg(feature = "facebook")]
 use fbinit::FacebookInit;
-use proto_rust::scip::Index;
 use protobuf::Message;
 use serde::Deserialize;
 use serde::Serialize;
 use tracing::info;
+
+#[cfg(not(feature = "facebook"))]
+mod proto {
+    include!(concat!(env!("OUT_DIR"), "/proto_gen/mod.rs"));
+}
+#[cfg(not(feature = "facebook"))]
+use proto::scip::Index;
+
+#[cfg(feature = "facebook")]
+use proto_rust::scip::Index;
 
 use crate::angle::Env;
 use crate::lsif::LanguageId;
@@ -67,10 +77,18 @@ struct BuildJsonArgs {
     shard: Option<usize>,
 }
 
+#[cfg(feature = "facebook")]
 #[cli::main("scip_to_glean", error_logging(user(default_level = "info")))]
 async fn main(_fb: FacebookInit, args: BuildJsonArgs) -> Result<cli::ExitCode> {
     build_json(args)?;
     Ok(cli::ExitCode::SUCCESS)
+}
+
+#[cfg(not(feature = "facebook"))]
+fn main() -> Result<()> {
+    env_logger::init();
+    let args = BuildJsonArgs::parse();
+    build_json(args)
 }
 
 fn decode_scip_data(
