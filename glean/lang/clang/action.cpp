@@ -6,7 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+#if GLEAN_FACEBOOK
 #include "glean/lang/clang/action.h"
+#else
+#include "action.h"
+#endif
 
 #if GLEAN_FACEBOOK && !defined(_WIN32)
 #include "common/fbwhoami/FbWhoAmI.h"

@@ -8,7 +8,11 @@
 
 #pragma once
 
+#if GLEAN_FACEBOOK
 #include "glean/lang/clang/db.h"
+#else
+#include "db.h"
+#endif
 
 namespace facebook::glean::clangx {
 

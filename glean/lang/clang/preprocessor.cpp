@@ -6,7 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+#if GLEAN_FACEBOOK
 #include "glean/lang/clang/preprocessor.h"
+#else
+#include "preprocessor.h"
+#endif
+
 #include <llvm/Config/llvm-config.h>
 
 namespace {

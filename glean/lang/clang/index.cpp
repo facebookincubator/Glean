@@ -40,10 +40,19 @@
 #include "glean/cpp/sender.h"
 #include "glean/interprocess/cpp/counters.h"
 #include "glean/interprocess/cpp/worklist.h"
+
+#if GLEAN_FACEBOOK
 #include "glean/lang/clang/action.h"
 #include "glean/lang/clang/ast.h"
 #include "glean/lang/clang/gleandiagnosticbuffer.h"
 #include "glean/lang/clang/preprocessor.h"
+#else
+#include "action.h"
+#include "ast.h"
+#include "gleandiagnosticbuffer.h"
+#include "preprocessor.h"
+#endif
+
 #include "glean/rts/binary.h"
 #include "glean/rts/inventory.h"
 

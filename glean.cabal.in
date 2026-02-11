@@ -405,6 +405,7 @@ library storage
     include-dirs: .
     install-includes:
         glean/storage/ffi.h
+        glean/storage/common.h
         glean/storage/db.h
         glean/storage/stats.h
     build-depends:
@@ -807,6 +808,7 @@ library client-cpp
         glean/interprocess/cpp/counters_ffi.h
         glean/interprocess/cpp/worklist.h
         glean/interprocess/cpp/worklist_ffi.h
+        glean/schema/cpp/schema.h
     build-depends:
         glean:rts
 
