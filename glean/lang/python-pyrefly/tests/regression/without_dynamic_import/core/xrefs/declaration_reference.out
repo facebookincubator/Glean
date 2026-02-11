@@ -423,6 +423,19 @@
       "target": {
         "imp": {
           "key": {
+            "as_name": { "key": "lib.func" },
+            "from_name": { "key": "big_lib.big_func" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "func": { "key": { "name": { "key": "main.f" } } } },
+      "target": {
+        "imp": {
+          "key": {
             "as_name": { "key": "main.Helper" },
             "from_name": { "key": "lib.HelperClass" }
           }
@@ -1187,6 +1200,19 @@
     "key": {
       "source": { "module": { "key": { "name": { "key": "main" } } } },
       "target": { "func": { "key": { "name": { "key": "main.f" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "main" } } } },
+      "target": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "lib.func" },
+            "from_name": { "key": "big_lib.big_func" }
+          }
+        }
+      }
     }
   },
   {

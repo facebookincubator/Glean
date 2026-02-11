@@ -80,6 +80,10 @@
         },
         {
           "source": { "length": 15, "start": 363 },
+          "target": { "key": "mod_b.helper.only_indirectly" }
+        },
+        {
+          "source": { "length": 15, "start": 363 },
           "target": { "key": "mod_b.util.only_indirectly" }
         }
       ]

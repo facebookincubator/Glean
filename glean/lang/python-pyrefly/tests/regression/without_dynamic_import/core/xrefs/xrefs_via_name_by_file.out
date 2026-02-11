@@ -552,6 +552,10 @@
         },
         {
           "source": { "length": 4, "start": 377 },
+          "target": { "key": "lib.func" }
+        },
+        {
+          "source": { "length": 4, "start": 377 },
           "target": { "key": "main.func" }
         },
         {
