@@ -20,6 +20,15 @@
   },
   {
     "key": {
+      "declaration": { "func": { "key": { "name": { "key": "u.v" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/u/__init__.py"
+      },
+      "span": { "length": 17, "start": 230 }
+    }
+  },
+  {
+    "key": {
       "declaration": { "func": { "key": { "name": { "key": "u.v.f" } } } },
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/u/v.py"
@@ -160,7 +169,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/u/__init__.py"
       },
-      "span": { "length": 228, "start": 0 }
+      "span": { "length": 248, "start": 0 }
     }
   },
   {

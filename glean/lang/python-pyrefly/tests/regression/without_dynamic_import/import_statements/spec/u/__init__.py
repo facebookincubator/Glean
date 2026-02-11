@@ -7,3 +7,7 @@
 
 def f():
     pass
+
+
+def v():
+    pass

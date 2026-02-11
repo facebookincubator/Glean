@@ -20,6 +20,24 @@
   },
   {
     "key": {
+      "declaration": { "func": { "key": { "name": { "key": "u.v" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/current_module.py"
+      },
+      "span": { "length": 1, "start": 243 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "func": { "key": { "name": { "key": "u.v" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/star.py"
+      },
+      "span": { "length": 1, "start": 239 }
+    }
+  },
+  {
+    "key": {
       "declaration": { "func": { "key": { "name": { "key": "x.f" } } } },
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/current_module.py"
@@ -109,6 +127,15 @@
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/current_module.py"
       },
       "span": { "length": 1, "start": 243 }
+    }
+  },
+  {
+    "key": {
+      "declaration": { "module": { "key": { "name": { "key": "u.v" } } } },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/import_statements/spec/star.py"
+      },
+      "span": { "length": 1, "start": 239 }
     }
   },
   {

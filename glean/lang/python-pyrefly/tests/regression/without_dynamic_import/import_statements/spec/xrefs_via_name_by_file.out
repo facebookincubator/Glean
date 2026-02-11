@@ -54,7 +54,8 @@
         {
           "source": { "length": 1, "start": 239 },
           "target": { "key": "star.v" }
-        }
+        },
+        { "source": { "length": 1, "start": 239 }, "target": { "key": "u.v" } }
       ]
     }
   },
