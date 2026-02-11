@@ -6,10 +6,12 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-module Glean.Glass.Regression.Hack.Main (main) where
+module Glean.Glass.Regression.Hack.Main ( main ) where
 
-import Glean.Indexer.Hack as Hack ( indexer )
-import Glean.Glass.Regression.Snapshot ( mainGlassSnapshotCLI )
+import System.Environment
+import qualified Glean.Glass.Regression.Hack as Glass
 
 main :: IO ()
-main = mainGlassSnapshotCLI Hack.indexer (const [])
+main = getArgs >>= \args -> withArgs (["--root", path] ++ args) Glass.main
+  where
+    path = "glean/lang/codemarkup/tests/hack/cases/xrefs"

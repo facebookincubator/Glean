@@ -6,10 +6,12 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-module Glean.Glass.Regression.Flow.Main (main) where
+module Glean.Glass.Regression.Flow.Main ( main ) where
 
-import Glean.Indexer.Flow as Flow ( indexer )
-import Glean.Glass.Regression.Snapshot ( mainGlassSnapshotCLI )
+import System.Environment
+import qualified Glean.Glass.Regression.Flow as Glass
 
 main :: IO ()
-main = mainGlassSnapshotCLI Flow.indexer (const [])
+main = getArgs >>= \args -> withArgs (args ++["--root", path, "--write-root", "test"]) $ Glass.main
+  where
+    path = "glean/lang/codemarkup/tests/flow/cases/xrefs"
