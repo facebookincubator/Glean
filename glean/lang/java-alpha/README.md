@@ -31,8 +31,8 @@ The indexer implementation resides in `fbcode/glean/lang/java`.
 - `indexer/java` contains the Indexer source. `Indexer.java` is the entry point.
 - `indexer/examples` contains example classes to test the indexer. See the Buck target descriptions below for more info.
 
-### Syncing to fbandroid
-After making changes to the indexer in fbcode, you **must sync the changes to fbandroid**. This is necessary since buck targets in fbandroid cannot directly depend on fbcode targets. The sync is done via Dewey, is fully automated, and instant. After testing and committing your changes, run `buck run //glean/lang/java:sync-to-fbandroid`. This will build, test, sync, and verify the indexer works in fbandroid. **Commit the sync diff**.
+### Syncing to xplat
+After making changes to the indexer in fbcode, you **must sync the changes to xplat**. This is necessary since buck targets in xplat cannot directly depend on fbcode targets. The sync is done via Manifold, is fully automated, and instant. After testing and committing your changes, run `buck run fbcode//glean/lang/java-alpha:sync-to-xplat`. This will build, upload to Manifold, update the BUCK file SHA1, and verify the indexer works in xplat. **Commit the sync diff**.
 
 # Overview of BUCK Targets
 
@@ -77,15 +77,18 @@ End to end test of the indexer. This test compiles the indexer, indexes the exam
 buck run fbcode//glean/lang/java:e2e-test
 ```
 
-**fbcode//glean/lang/java:sync-to-fbandroid**
-Syncs the fully bundled indexer jar to fbsource/fbandroid/tools/glean. This target builds the latest version of the indexer, uploads it to Dewey, updates the target definitions in fbandroid, and verifies that the new indexer functions. This is necessary since fbandroid targets cannot directly depend on fbcode targets. Remeber to commit the sync diff.
+**fbcode//glean/lang/java-alpha:sync-to-xplat**
+Syncs the fully bundled indexer jar to fbsource/xplat/glean/lang/java. This target builds the latest version of the indexer, uploads it to Manifold, updates the BUCK file SHA1 hash, and verifies that the new indexer functions. This is necessary since xplat targets cannot directly depend on fbcode targets. Remember to commit the sync diff.
 
-## fbsource/fbandroid/tools/glean
-**fbsource//fbandroid/tools/glean:indexer-dewey-artifact**
-Dewey target that points to the latest stable indexer release. The hash in this file is the fbcode revision the indexer was built on.
+## fbsource/xplat/glean/lang/java
+**fbsource//xplat/glean/lang/java:indexer-artifact**
+Manifold target that points to the latest stable indexer release stored in the `csi_misc` bucket.
 
-**fbsource//fbandroid/tools/glean:indexer-jar**
-Buck prebuilt jar target that wraps the Dewey artifact. This is how we expose the Dewey artifact to the rest of Buck as a jar file.
+**fbsource//xplat/glean/lang/java:indexer-alpha-artifact**
+Manifold target that points to the latest alpha indexer release stored in the `csi_misc` bucket.
+
+**fbsource//xplat/glean/lang/java:indexer-jar**
+Buck prebuilt jar target that wraps the Manifold artifact. This is how we expose the indexer artifact to the rest of Buck as a jar file.
 
 **fbsource//fbandroid/tools/glean:glean**
 This is the javac plugin target for the indexer. For any target to be indexed, it must include this target as a compiler plugin. See notes on the javac plugin decorator on how to do this easily.
@@ -141,4 +144,4 @@ buck build @fbandroid/mode/server fbsource//fbandroid/java/com/facebook/movies/g
 
 # Resources
 - Java plugin docs: https://docs.oracle.com/javase/8/docs/jdk/api/javac/tree/com/sun/source/util/Plugin.html
-- Dewey docs: https://our.internmc.facebook.com/intern/wiki/DeweyGuide/
+- Manifold docs: https://www.internalfb.com/wiki/Manifold/

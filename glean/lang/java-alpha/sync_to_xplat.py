@@ -8,33 +8,32 @@
 # pyre-strict
 
 
+import hashlib
 import os
+import re
 import shutil
 import sys
 import tempfile
-import time
 from subprocess import CalledProcessError
 
 from xplat.glean.constants import FB_CODE_ROOT, FB_SOURCE_ROOT, XPLAT_ROOT
 from xplat.glean.utils import eprint, shell_exec
 
 
-DEWEY_TAG: str = "glean/lang/java-alpha"
-INDEXER_JAR_FILENAME: str = "indexer-alpha.jar"
-STABLE_VERSION_FILE: str = os.path.join(
-    XPLAT_ROOT, "glean", "lang", "java", "stable_alpha_version.bzl"
-)
+MANIFOLD_BUCKET: str = "csi_misc"
+MANIFOLD_PATH: str = "tree/glean-java-alpha"
+BUCK_FILE: str = os.path.join(XPLAT_ROOT, "glean", "lang", "java", "BUCK")
 
 
-def get_head_sha1_hash() -> str:
+def has_uncommitted_changes() -> bool:
+    """Check if there are uncommitted changes in the repository."""
     cmd = "hg --debug id -i"
     stdout = shell_exec(cmd)
     if stdout:
-        x = stdout.split("\n")
-        hash_index = 0 if len(x) == 1 else 1
-        return str(x[hash_index]).strip()
+        # If the hash ends with "+", there are uncommitted changes
+        return stdout.strip().endswith("+")
     else:
-        raise RuntimeError("Failed to get head mercurial hash")
+        raise RuntimeError("Failed to get mercurial status")
 
 
 def build_indexer_jar() -> str:
@@ -59,41 +58,47 @@ def build_indexer_jar() -> str:
     return os.path.join(tmp_dir, "java_alpha.jar")
 
 
-def upload_to_dewey(hash: str, indexer_jar_path: str) -> None:
-    tmp_dir = "/tmp/" + str(int(time.time()))
+def upload_to_manifold(indexer_jar_path: str) -> str:
+    """Upload the indexer jar to Manifold and return its SHA1 hash."""
+    from manifold.clients.python import ManifoldClient
 
-    shell_exec("mkdir -p %s" % tmp_dir)
+    # Read and hash the file
+    # lint-ignore: poor-choice-of-hash-function
+    # SHA1 is required by the manifold_get BUCK macro for integrity verification
+    with open(indexer_jar_path, "rb") as f:
+        file_contents = f.read()
+    sha1_hash = hashlib.sha1(file_contents).hexdigest()  # noqa: S324
 
-    cmd = "cp {src} {dst}/{name}".format(
-        src=indexer_jar_path, dst=tmp_dir, name=INDEXER_JAR_FILENAME
+    # Upload to Manifold (allow overwrite since we're updating the artifact)
+    with ManifoldClient.get_client(MANIFOLD_BUCKET) as client:
+        client.sync_put(
+            MANIFOLD_PATH,
+            file_contents,
+            predicate=ManifoldClient.Predicates.AllowOverwrite,
+        )
+
+    eprint(
+        f"Uploaded {indexer_jar_path} to manifold://{MANIFOLD_BUCKET}/{MANIFOLD_PATH}"
     )
-    shell_exec(cmd)
+    eprint(f"SHA1: {sha1_hash}")
 
-    cmd = "dewey publish --verbose --create-tag --commit {hash} --tag {tag} --location {location}".format(
-        hash=hash, tag=DEWEY_TAG, location=tmp_dir
-    )
-
-    try:
-        shell_exec(cmd)
-    except CalledProcessError as e:
-        if "glean/lang/java-alpha tag for %s is already published" % hash in e.stderr:
-            # this hash has already been uploaded. We can proceed normally
-            pass
-        else:
-            raise e
+    return sha1_hash
 
 
-def get_xplat_stable_version() -> str:
-    if os.path.isfile(STABLE_VERSION_FILE):
-        with open(STABLE_VERSION_FILE, "r") as infile:
-            return infile.read().strip().split("=")[1].strip()
-    else:
-        return ""
+def update_buck_sha1(sha1_hash: str) -> None:  # noqa: S324
+    """Update the sha1 hash in the BUCK file for the alpha indexer."""
+    with open(BUCK_FILE, "r") as f:
+        content = f.read()
 
+    # Update the sha1 for indexer-alpha-artifact
+    pattern = r'(name = "indexer-alpha-artifact".*?sha1 = ")[a-f0-9]+(")'
+    new_content = re.sub(pattern, rf"\g<1>{sha1_hash}\g<2>", content, flags=re.DOTALL)
 
-def update_xplat_stable_version(hash: str) -> None:
-    with open(STABLE_VERSION_FILE, "w") as outfile:
-        outfile.write('DEWEY_STABLE_ALPHA_VERSION = "%s"\n' % hash)
+    if new_content == content:
+        raise RuntimeError("Failed to update SHA1 in BUCK file - pattern not found")
+
+    with open(BUCK_FILE, "w") as f:
+        f.write(new_content)
 
 
 def verify_xplat_indexer() -> bool:
@@ -108,18 +113,13 @@ def verify_xplat_indexer() -> bool:
 
 
 def main() -> None:
-    head_hash = get_head_sha1_hash()
-    if head_hash.endswith("+"):
-        eprint("Uncomitted changes. Aborting")
+    if has_uncommitted_changes():
+        eprint("Uncommitted changes. Aborting")
         sys.exit(1)
 
-    if get_xplat_stable_version() == head_hash:
-        eprint("xplat version matches head. Nothing to do.")
-        sys.exit(0)
-
     indexer_jar_path = build_indexer_jar()
-    upload_to_dewey(head_hash, indexer_jar_path)
-    update_xplat_stable_version(head_hash)
+    sha1_hash = upload_to_manifold(indexer_jar_path)
+    update_buck_sha1(sha1_hash)
 
     verify_xplat_indexer()
 
