@@ -663,6 +663,10 @@
           "target": { "key": "generic.T" }
         },
         {
+          "source": { "length": 4, "start": 321 },
+          "target": { "key": "None" }
+        },
+        {
           "source": { "length": 6, "start": 214 },
           "target": { "key": "typing" }
         },

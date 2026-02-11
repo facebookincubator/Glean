@@ -11,4 +11,5 @@ T = TypeVar("T")
 
 
 class Generic(G[T]):
-    pass
+    def test_method(self) -> None:
+        pass

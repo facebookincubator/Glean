@@ -840,6 +840,38 @@
   {
     "key": {
       "declaration": {
+        "func": { "key": { "name": { "key": "generic.Generic.test_method" } } }
+      },
+      "definition": {
+        "func": {
+          "key": {
+            "container": {
+              "cls": { "key": { "name": { "key": "generic.Generic" } } }
+            },
+            "declaration": {
+              "key": { "name": { "key": "generic.Generic.test_method" } }
+            },
+            "is_async": false,
+            "kwonly_params": [ ],
+            "params": [ { "name": { "key": "self" } } ],
+            "posonly_params": [ ],
+            "returnsInfo": {
+              "displayType": { "key": "None" },
+              "xrefs": [
+                {
+                  "source": { "length": 4, "start": 0 },
+                  "target": { "key": "None" }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
         "func": {
           "key": {
             "name": { "key": "optional_generic.OptionalGeneric.test_method" }
@@ -1320,6 +1352,33 @@
             "container": { "module": { "key": { "name": { "key": "foo" } } } },
             "declaration": {
               "key": { "name": { "key": "foo.placeholder_glocal_str" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": { "key": "generic.Generic.test_method.<locals>.self" }
+          }
+        }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": {
+              "func": {
+                "key": { "name": { "key": "generic.Generic.test_method" } }
+              }
+            },
+            "declaration": {
+              "key": {
+                "name": { "key": "generic.Generic.test_method.<locals>.self" }
+              }
             }
           }
         }
