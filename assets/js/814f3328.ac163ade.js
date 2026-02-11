@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[7472],{55513:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Glean Release 0.2","permalink":"/blog/release-0-2"},{"title":"Incremental indexing with Glean","permalink":"/blog/incremental"}]}')}}]);
