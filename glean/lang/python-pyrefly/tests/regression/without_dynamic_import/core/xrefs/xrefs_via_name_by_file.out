@@ -10,6 +10,10 @@
           "source": { "length": 2, "start": 598 },
           "target": { "key": "all.fn" }
         },
+        {
+          "source": { "length": 2, "start": 653 },
+          "target": { "key": "all.fn" }
+        },
         { "source": { "length": 3, "start": 287 }, "target": { "key": "lib" } },
         { "source": { "length": 3, "start": 334 }, "target": { "key": "lib" } },
         { "source": { "length": 3, "start": 390 }, "target": { "key": "int" } },
@@ -19,6 +23,10 @@
           "target": { "key": "all.lib" }
         },
         { "source": { "length": 3, "start": 478 }, "target": { "key": "lib" } },
+        {
+          "source": { "length": 3, "start": 659 },
+          "target": { "key": "all.var" }
+        },
         {
           "source": { "length": 4, "start": 274 },
           "target": { "key": "typing.List" }
@@ -42,14 +50,6 @@
         {
           "source": { "length": 4, "start": 426 },
           "target": { "key": "all.var1" }
-        },
-        {
-          "source": { "length": 4, "start": 652 },
-          "target": { "key": "all.fn" }
-        },
-        {
-          "source": { "length": 5, "start": 658 },
-          "target": { "key": "all.var" }
         },
         {
           "source": { "length": 6, "start": 216 },
@@ -76,6 +76,22 @@
           "target": { "key": "lib.HelperClass" }
         },
         {
+          "source": { "length": 6, "start": 617 },
+          "target": { "key": "all.Helper" }
+        },
+        {
+          "source": { "length": 6, "start": 617 },
+          "target": { "key": "lib.HelperClass" }
+        },
+        {
+          "source": { "length": 6, "start": 666 },
+          "target": { "key": "all.Helper" }
+        },
+        {
+          "source": { "length": 6, "start": 666 },
+          "target": { "key": "lib.HelperClass" }
+        },
+        {
           "source": { "length": 7, "start": 296 },
           "target": { "key": "big_lib" }
         },
@@ -92,24 +108,24 @@
           "target": { "key": "big_lib.big_var" }
         },
         {
+          "source": { "length": 7, "start": 676 },
+          "target": { "key": "all.big_var" }
+        },
+        {
+          "source": { "length": 7, "start": 676 },
+          "target": { "key": "big_lib.big_var" }
+        },
+        {
           "source": { "length": 8, "start": 311 },
           "target": { "key": "big_lib.big_func" }
         },
         {
-          "source": { "length": 8, "start": 616 },
-          "target": { "key": "all.Helper" }
+          "source": { "length": 8, "start": 627 },
+          "target": { "key": "all.big_func" }
         },
         {
-          "source": { "length": 8, "start": 616 },
-          "target": { "key": "lib.HelperClass" }
-        },
-        {
-          "source": { "length": 8, "start": 665 },
-          "target": { "key": "all.Helper" }
-        },
-        {
-          "source": { "length": 8, "start": 665 },
-          "target": { "key": "lib.HelperClass" }
+          "source": { "length": 8, "start": 627 },
+          "target": { "key": "big_lib.big_func" }
         },
         {
           "source": { "length": 9, "start": 228 },
@@ -132,20 +148,8 @@
           "target": { "key": "all.fn.<locals>.local_var" }
         },
         {
-          "source": { "length": 9, "start": 675 },
-          "target": { "key": "all.big_var" }
-        },
-        {
-          "source": { "length": 9, "start": 675 },
-          "target": { "key": "big_lib.big_var" }
-        },
-        {
-          "source": { "length": 10, "start": 626 },
-          "target": { "key": "all.big_func" }
-        },
-        {
-          "source": { "length": 10, "start": 626 },
-          "target": { "key": "big_lib.big_func" }
+          "source": { "length": 10, "start": 639 },
+          "target": { "key": "all.LocalClass" }
         },
         {
           "source": { "length": 11, "start": 345 },
@@ -158,10 +162,6 @@
         {
           "source": { "length": 11, "start": 482 },
           "target": { "key": "lib.HelperClass" }
-        },
-        {
-          "source": { "length": 12, "start": 638 },
-          "target": { "key": "all.LocalClass" }
         }
       ]
     }
