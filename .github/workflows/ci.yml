@@ -94,7 +94,6 @@ jobs:
       - name: Install indexer (rust)
         run: |
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
           . "$HOME/.cargo/env"
           rustup toolchain install nightly-2025-06-11
           rustup component add rust-analyzer --toolchain nightly-2025-06-11
