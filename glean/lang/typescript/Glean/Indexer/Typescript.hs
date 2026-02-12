@@ -19,7 +19,7 @@ import Glean.SCIP.Driver as SCIP
 
 data Typescript = Typescript
   { scipTypescriptBinary :: FilePath
-  , scipRustIndexer :: Maybe FilePath
+  , scipToGlean :: Maybe FilePath
   }
 
 options :: Parser Typescript
@@ -28,12 +28,17 @@ options = do
     long "scip-typescript" <>
     value "scip-typescript" <>
     help "path to the scip-typescipt binary"
-  scipRustIndexer <- optional (strOption $
-    long "rust-indexer" <>
+  scipToGlean <- optional (strOption $
+    long "scip-to-glean" <>
     help "Path to the scip-to-glean binary. By default, looks for \
          \scip-to-glean on PATH and falls back to the Haskell converter \
          \if not found")
-  return Typescript{..}
+  scipToGleanCompat <- optional (strOption $
+    long "rust-indexer" <> hidden)
+  return Typescript
+    { scipTypescriptBinary
+    , scipToGlean = scipToGlean <|> scipToGleanCompat
+    }
 
 indexer :: Indexer Typescript
 indexer = Indexer {
@@ -51,7 +56,7 @@ indexer = Indexer {
         scipWritesLocal = False,
         scipRoot = indexerRoot,
         scipLanguage = Just SCIP.TypeScript,
-        scipRustIndexer = scipRustIndexer
+        scipToGlean = scipToGlean
       }
     val <- SCIP.runIndexer params
     sendJsonBatches backend repo (scipTypescriptBinary <> "/scip") val
