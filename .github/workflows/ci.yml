@@ -93,11 +93,24 @@ jobs:
 
       - name: Install indexer (rust)
         run: |
-          export RUST_ANALYZER=2023-11-06
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
-          curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/${RUST_ANALYZER}/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > "$LOCAL_BIN"/rust-analyzer
-          chmod +x "$LOCAL_BIN"/rust-analyzer
+          . "$HOME/.cargo/env"
+          # We need a nightly rust-analyzer for the Rust SCIP tests.
+          # We symlink the real binary from the toolchain directory
+          # into LOCAL_BIN, bypassing the rustup proxy which would
+          # try to find rust-analyzer in the default (stable)
+          # toolchain. We intentionally do NOT add ~/.cargo/bin to
+          # GITHUB_PATH, so that the proxy doesn't shadow our
+          # symlink in LOCAL_BIN.
+          rustup toolchain install nightly-2025-06-11
+          rustup component add rust-analyzer --toolchain nightly-2025-06-11
+          NIGHTLY_DIR="$(rustup run nightly-2025-06-11 rustc --print sysroot)/bin"
+          ln -sf "$NIGHTLY_DIR/rust-analyzer" "$LOCAL_BIN"/rust-analyzer
+
+      - name: Build scip-to-glean
+        run: |
+          . "$HOME/.cargo/env"
+          cd glean/lang/scip/indexer/scip_to_glean && cargo build --release
 
       - name: Setup Haskell
         run: |
@@ -163,7 +176,7 @@ jobs:
           make setup-folly-version
 
       - name: Disable some tests
-        run: echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS -f-hack-tests -f-rust-tests -f-python-tests" >> "$GITHUB_ENV"
+        run: echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS -f-hack-tests" >> "$GITHUB_ENV"
 
       - name: Setup index-state
         run: echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS --index-state=${{ matrix.index-state }}" >>"$GITHUB_ENV"
