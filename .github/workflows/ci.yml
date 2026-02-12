@@ -98,7 +98,7 @@ jobs:
           . "$HOME/.cargo/env"
           rustup toolchain install nightly-2025-06-11
           rustup component add rust-analyzer --toolchain nightly-2025-06-11
-          cp "$(rustup which rust-analyzer --toolchain nightly-2025-06-11)" "$LOCAL_BIN"/rust-analyzer
+          cp "$(rustup run nightly-2025-06-11 which rust-analyzer)" "$LOCAL_BIN"/rust-analyzer
 
       - name: Build scip-to-glean
         run: |
