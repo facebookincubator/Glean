@@ -47,7 +47,7 @@ data ScipIndexerParams = ScipIndexerParams
   , scipWritesLocal :: Bool
      -- ^ e.g. rust-analyzer always writes index.scip to repoDir
   , scipLanguage :: Maybe LanguageId -- ^ a default language if known
-  , scipRustIndexer :: Maybe FilePath
+  , scipToGlean :: Maybe FilePath
      -- ^ explicit path to scip-to-glean binary override
   }
 
@@ -62,7 +62,7 @@ runIndexer params@ScipIndexerParams{..} = do
     when scipWritesLocal $ do
         copyFile (repoDir </> "index.scip") scipFile
         removeFile (repoDir </> "index.scip")
-    rustBin <- resolveScipToGlean scipRustIndexer
+    rustBin <- resolveScipToGlean scipToGlean
     case rustBin of
       Just bin -> runRustIndexer bin scipFile scipDir
       Nothing -> processSCIP scipLanguage False Nothing Nothing scipFile

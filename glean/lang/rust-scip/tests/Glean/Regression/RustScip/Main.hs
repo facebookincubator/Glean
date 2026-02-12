@@ -16,7 +16,7 @@ import Glean.Regression.Snapshot.Driver
 
 main :: IO ()
 main = getArgs >>= \args ->
-    withArgs (args ++ ["--rust-indexer", scipToGlean, "--root", path]) $
+    withArgs (args ++ ["--scip-to-glean", scipToGlean, "--root", path]) $
       testMain (driverFromIndexer RustScip.indexer)
   where
     path = "glean/lang/rust-scip/tests/cases"
