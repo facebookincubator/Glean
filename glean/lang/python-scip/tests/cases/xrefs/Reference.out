@@ -2,6 +2,182 @@
   "@generated",
   {
     "key": {
+      "symbol": { "key": "example.py/local 0" },
+      "location": {
+        "key": {
+          "file": { "key": "example.py" },
+          "range": {
+            "lineBegin": 77,
+            "columnBegin": 19,
+            "lineEnd": 77,
+            "columnEnd": 19
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.py/local 0" },
+      "location": {
+        "key": {
+          "file": { "key": "example.py" },
+          "range": {
+            "lineBegin": 79,
+            "columnBegin": 9,
+            "lineEnd": 79,
+            "columnEnd": 9
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.py/local 0" },
+      "location": {
+        "key": {
+          "file": { "key": "example.py" },
+          "range": {
+            "lineBegin": 80,
+            "columnBegin": 19,
+            "lineEnd": 80,
+            "columnEnd": 19
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.py/local 1" },
+      "location": {
+        "key": {
+          "file": { "key": "example.py" },
+          "range": {
+            "lineBegin": 83,
+            "columnBegin": 19,
+            "lineEnd": 83,
+            "columnEnd": 19
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.py/local 1" },
+      "location": {
+        "key": {
+          "file": { "key": "example.py" },
+          "range": {
+            "lineBegin": 85,
+            "columnBegin": 9,
+            "lineEnd": 85,
+            "columnEnd": 9
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.py/local 1" },
+      "location": {
+        "key": {
+          "file": { "key": "example.py" },
+          "range": {
+            "lineBegin": 86,
+            "columnBegin": 19,
+            "lineEnd": 86,
+            "columnEnd": 19
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.py/local 2" },
+      "location": {
+        "key": {
+          "file": { "key": "example.py" },
+          "range": {
+            "lineBegin": 119,
+            "columnBegin": 43,
+            "lineEnd": 119,
+            "columnEnd": 48
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.py/local 3" },
+      "location": {
+        "key": {
+          "file": { "key": "example.py" },
+          "range": {
+            "lineBegin": 141,
+            "columnBegin": 43,
+            "lineEnd": 141,
+            "columnEnd": 48
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.py/local 4" },
+      "location": {
+        "key": {
+          "file": { "key": "example.py" },
+          "range": {
+            "lineBegin": 146,
+            "columnBegin": 24,
+            "lineEnd": 146,
+            "columnEnd": 26
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.py/local 5" },
+      "location": {
+        "key": {
+          "file": { "key": "example.py" },
+          "range": {
+            "lineBegin": 150,
+            "columnBegin": 8,
+            "lineEnd": 150,
+            "columnEnd": 10
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.py/local 6" },
+      "location": {
+        "key": {
+          "file": { "key": "example.py" },
+          "range": {
+            "lineBegin": 170,
+            "columnBegin": 47,
+            "lineEnd": 170,
+            "columnEnd": 52
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "symbol": { "key": "scip-python python . test example/colors." },
       "location": {
         "key": {
