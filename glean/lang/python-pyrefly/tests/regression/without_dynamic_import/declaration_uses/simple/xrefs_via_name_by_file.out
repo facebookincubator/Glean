@@ -19,6 +19,10 @@
           "target": { "key": "mod_b.helper.Cls" }
         },
         {
+          "source": { "length": 3, "start": 392 },
+          "target": { "key": "mod_b.util.Cls" }
+        },
+        {
           "source": { "length": 3, "start": 400 },
           "target": { "key": "mod_a.Cls" }
         },
