@@ -55,7 +55,6 @@ indexer = Indexer {
         scipOutDir = Nothing,
         scipWritesLocal = False,
         scipRoot = indexerRoot,
-        scipLanguage = Just SCIP.TypeScript,
         scipToGlean = scipToGlean
       }
     val <- SCIP.runIndexer params

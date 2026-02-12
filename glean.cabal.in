@@ -1384,25 +1384,7 @@ library scip
     import: fb-haskell, fb-cpp, deps
     hs-source-dirs: glean/lang/scip
     exposed-modules:
-        Data.SCIP.Angle
         Glean.SCIP.Driver
-    build-depends:
-        glean:if-proto-scip-hs,
-        glean:lsif,
-        microlens,
-        proto-lens,
-
--- SCIP support.
---
--- Haskell bindings and spec https://github.com/sourcegraph/scip
---
-library if-proto-scip-hs
-    import: fb-haskell, deps
-    exposed-modules:
-        Proto.Scip,
-        Proto.Scip_Fields
-    hs-source-dirs: glean/lang/scip/proto
-    build-depends: proto-lens-runtime
 
 -- -----------------------------------------------------------------------------
 -- Glass services

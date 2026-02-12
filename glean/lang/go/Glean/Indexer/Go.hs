@@ -67,7 +67,6 @@ indexer = Indexer {
         scipOutDir = Nothing,
         scipRoot = indexerRoot,
         scipWritesLocal = False,
-        scipLanguage = Just SCIP.Go,
         scipToGlean = scipToGlean
       }
     sendJsonBatches backend repo (scipGoBinary <> "/scip") val

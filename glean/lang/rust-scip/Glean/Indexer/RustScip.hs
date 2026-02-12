@@ -51,7 +51,6 @@ indexer = Indexer {
                     scipOutDir = Nothing,
                     scipRoot = indexerRoot,
                     scipWritesLocal = True,
-                    scipLanguage = Just SCIP.Rust,
                     scipToGlean = scipToGlean
                  }
     sendJsonBatches backend repo (rustAnalyzerBinary <> "/scip") val

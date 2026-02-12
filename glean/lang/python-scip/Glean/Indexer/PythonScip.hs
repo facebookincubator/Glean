@@ -51,7 +51,6 @@ indexer = Indexer {
             scipOutDir = Nothing,
             scipRoot = indexerRoot,
             scipWritesLocal = True,
-            scipLanguage = Just SCIP.Python,
             scipToGlean = scipToGlean
         }
         sendJsonBatches backend repo (pythonScipBinary <> "/scip") val
