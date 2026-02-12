@@ -7,27 +7,25 @@
 -}
 
 --
--- Utility to convert .scip files to Glean JSON for indexing, acting as an
--- external indexer binary
+-- Utility to convert .scip files to Glean JSON for indexing,
+-- acting as an external indexer binary.
+-- This is a thin wrapper around scip-to-glean.
 --
 {-# LANGUAGE ApplicativeDo #-}
 module Glean.Indexer.SCIP.Main ( main ) where
 
-import qualified Data.Text as Text
 import Options.Applicative
 import Control.Monad
 import Glean.Init (withOptions)
 import System.Directory (doesFileExist)
+import System.IO.Temp (withSystemTempDirectory)
 import Glean.SCIP.Driver as SCIP
 import qualified Glean.LSIF.Driver as Util
 
 data SCIP = SCIP
-  { scipFile :: FilePath -- ^ input file
-  , outputFile :: FilePath -- ^ output file
-  , scipLanguage :: Maybe LanguageId -- ^ a default language if known
-  , inferLanguage :: Bool -- ^ default False, infer language using file suffix
-  , scipPathPrefix :: Maybe FilePath -- ^ optional path to prefix file paths
-  , stripPathPrefix :: Maybe FilePath -- ^ optional prefix to drop from paths
+  { scipFile :: FilePath
+  , outputFile :: FilePath
+  , scipToGleanBin :: Maybe FilePath
   }
 
 options :: Parser SCIP
@@ -38,45 +36,18 @@ options = do
   outputFile <- option str $ long "output"
     <> metavar "PATH"
     <> help "Output filepath to write encoded schema info"
-  scipLanguage <- option (Just <$> readLanguage) $ long "language" <>
-    metavar "LANGUAGE" <>
-    value Nothing <>
-    help "Default language of files in the index"
-  inferLanguage <- switch $
-    short 'i' <>
-    long "infer-language" <>
-    help ("Infer symbol language based on file suffix" <>
-     "(when set this takes precedence over --language)")
-  scipPathPrefix <- option (Just <$> str) $ long "root-prefix" <>
-    metavar "PATH" <>
-    value Nothing <>
-    help "Path to prepend to file path data"
-  stripPathPrefix <- option (Just <$> str) $ long "strip-prefix" <>
-    metavar "PATH" <>
-    value Nothing <>
-    help "Path prefix to strip from path data"
+  scipToGleanBin <- optional (strOption $
+    long "scip-to-glean" <>
+    help "Path to scip-to-glean binary")
   return SCIP{..}
 
--- If the indexer doesn't set the language Id of the files, we
--- can assert it here. Otherwise Glean won't know what language the
--- symbols are in
-readLanguage ::  ReadM LanguageId
-readLanguage = do
-  ln <- Text.toLower <$> str
-  case ln of
-    "typescript" -> return TypeScript
-    "rust" -> return Rust
-    "go" -> return Go
-    "java" -> return Java
-    "kotlin" -> return Kotlin
-    "csharp" -> return CSharp
-    "swift" -> return Swift
-    _ -> readerError "Unrecognized SCIP language"
-
 main :: IO ()
-main = withOptions (info (helper <*> options) fullDesc) $ \SCIP{..} -> do
-  scipExists <- doesFileExist scipFile
-  when (not scipExists) $ error ("Could not find SCIP file at: " <> scipFile)
-  json <- SCIP.processSCIP scipLanguage inferLanguage scipPathPrefix
-            stripPathPrefix scipFile
-  Util.writeJSON outputFile json
+main = withOptions (info (helper <*> options) fullDesc) $
+  \SCIP{..} -> do
+    scipExists <- doesFileExist scipFile
+    when (not scipExists) $
+      error ("Could not find SCIP file at: " <> scipFile)
+    bin <- SCIP.resolveScipToGlean scipToGleanBin
+    json <- withSystemTempDirectory "glean-scip" $
+      \tmpDir -> SCIP.runRustIndexer bin scipFile tmpDir
+    Util.writeJSON outputFile json

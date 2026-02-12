@@ -75,7 +75,6 @@ indexer = Indexer {
         scipOutDir = Just tmpDir,
         scipRoot = indexerRoot,
         scipWritesLocal = False,
-        scipLanguage = Just SCIP.Swift,
         scipToGlean = scipToGlean
       }
     sendJsonBatches backend repo (scipGen <> "/scip") val
