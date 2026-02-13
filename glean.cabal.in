@@ -3,7 +3,7 @@ cabal-version:       3.6
 -- Copyright (c) Facebook, Inc. and its affiliates.
 
 name:                glean
-version:             0.2.0.0
+version:             0.2.0.1
 synopsis: A system for collecting, deriving and working with facts
           about source code.
 homepage:            https://github.com/facebookincubator/Glean
@@ -209,14 +209,14 @@ common thrift-server
        cpp-options: -DFBTHRIFT
        build-depends: thrift-server
     else
-       build-depends: thrift-http
+       build-depends: thrift-http ^>=0.3.0.0
 
 common thrift-client
     if flag(fbthrift)
        cpp-options: -DFBTHRIFT
        build-depends: thrift-cpp-channel
     else
-       build-depends: thrift-http
+       build-depends: thrift-http ^>=0.3.0.0
 
 library stubs
     import: fb-haskell, fb-cpp, deps, thrift-server
