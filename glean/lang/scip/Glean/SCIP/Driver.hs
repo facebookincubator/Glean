@@ -20,6 +20,8 @@ module Glean.SCIP.Driver (
     ScipIndexerParams(..),
     runIndexer,
     processSCIP,
+    resolveScipToGlean,
+    runRustIndexer,
     LanguageId(..),
 
   ) where
@@ -46,6 +48,7 @@ data ScipIndexerParams = ScipIndexerParams
      -- ^ e.g. rust-analyzer always writes index.scip to repoDir
   , scipLanguage :: Maybe LanguageId -- ^ a default language if known
   , scipRustIndexer :: Maybe FilePath
+     -- ^ explicit path to scip-to-glean binary override
   }
 
 -- | Run a generic SCIP-producing indexer, and convert to a Glean's scip.angle
@@ -59,14 +62,10 @@ runIndexer params@ScipIndexerParams{..} = do
     when scipWritesLocal $ do
         copyFile (repoDir </> "index.scip") scipFile
         removeFile (repoDir </> "index.scip")
-    case scipRustIndexer of
+    rustBin <- resolveScipToGlean scipRustIndexer
+    case rustBin of
+      Just bin -> runRustIndexer bin scipFile scipDir
       Nothing -> processSCIP scipLanguage False Nothing Nothing scipFile
-      Just rustIndexer -> do
-        let jsonPath = scipDir </> "index.json"
-        callProcess rustIndexer
-          ["--input", scipFile, "--infer-language", "--output", jsonPath]
-        mJson <- Aeson.decodeFileStrict jsonPath
-        return $ fromMaybe (error "rust indexer did not produce JSON") mJson
 
 withDirOrTmp :: Maybe FilePath -> (FilePath -> IO a) -> IO a
 withDirOrTmp Nothing f = withSystemTempDirectory "glean-scip" f
@@ -90,6 +89,32 @@ processSCIP
   -> FilePath
   -> IO Aeson.Value
 processSCIP mlang inferLanguage mPathPrefix mStripPrefix scipFile = do
-  logInfo $ "Using SCIP from " <> scipFile
+  logInfo $ "Using Haskell SCIP converter for " <> scipFile
   scipToAngle mlang inferLanguage mPathPrefix mStripPrefix <$>
     B.readFile scipFile
+
+-- | Resolve which scip-to-glean binary to use.
+-- If an explicit path is given, use it. Otherwise look for
+-- @scip-to-glean@ on PATH. Returns Nothing if not found (fall back
+-- to Haskell).
+resolveScipToGlean :: Maybe FilePath -> IO (Maybe FilePath)
+resolveScipToGlean (Just path) = return (Just path)
+resolveScipToGlean Nothing = do
+  mBin <- findExecutable "scip-to-glean"
+  case mBin of
+    Just bin -> do
+      logInfo $ "Found scip-to-glean on PATH: " <> bin
+      return (Just bin)
+    Nothing -> do
+      logInfo "scip-to-glean not found on PATH, using Haskell fallback"
+      return Nothing
+
+-- | Run the Rust scip-to-glean binary
+runRustIndexer :: FilePath -> FilePath -> FilePath -> IO Aeson.Value
+runRustIndexer rustIndexer scipFile tmpDir = do
+  let jsonPath = tmpDir </> "index.json"
+  logInfo $ printf "Using Rust SCIP converter: %s" rustIndexer
+  callProcess rustIndexer
+    ["--input", scipFile, "--infer-language", "--output", jsonPath]
+  mJson <- Aeson.decodeFileStrict jsonPath
+  return $ fromMaybe (error "scip-to-glean did not produce valid JSON") mJson
