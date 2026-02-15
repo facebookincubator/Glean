@@ -97,12 +97,14 @@ jobs:
           . "$HOME/.cargo/env"
           echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
           # We need a nightly rust-analyzer for the Rust SCIP tests.
-          # We symlink the real binary into LOCAL_BIN rather than
-          # relying on the rustup proxy, which would try to find
+          # We symlink the real binary from the toolchain directory
+          # into LOCAL_BIN (which precedes ~/.cargo/bin in PATH),
+          # bypassing the rustup proxy which would try to find
           # rust-analyzer in the default (stable) toolchain.
           rustup toolchain install nightly-2025-06-11
           rustup component add rust-analyzer --toolchain nightly-2025-06-11
-          ln -sf "$(rustup run nightly-2025-06-11 which rust-analyzer)" "$LOCAL_BIN"/rust-analyzer
+          NIGHTLY_DIR="$(rustup run nightly-2025-06-11 rustc --print sysroot)/bin"
+          ln -sf "$NIGHTLY_DIR/rust-analyzer" "$LOCAL_BIN"/rust-analyzer
 
       - name: Build scip-to-glean
         run: cd glean/lang/scip/indexer/scip_to_glean && cargo build --release
