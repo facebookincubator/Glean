@@ -157,6 +157,18 @@ $(BYTECODE_GEN) &: $(BYTECODE_SRCS) glean.cabal
 test:: glean.cabal
 	$(CABAL) test glean:tests
 
+# Flow glass regression tests split into smaller chunks to avoid CI timeout/OOM
+FLOW_GLASS_TESTS = describe document references resolve search-basic search-prefix search-prefix-empty
+
+.PHONY: test-flow-glass
+test-flow-glass:: glean.cabal
+	@for t in $(FLOW_GLASS_TESTS); do \
+		echo "Running flow glass test: $$t"; \
+		$(CABAL) test glass-regression-flow-$$t \
+			--test-option=--test-name=flow-$$t \
+			--test-option=--test-path=glean/glass/test/regression/tests/flow/$$t || exit 1; \
+	done
+
 SCHEMAS= \
 	anglelang \
 	buck \

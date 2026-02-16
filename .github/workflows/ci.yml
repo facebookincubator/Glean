@@ -190,6 +190,9 @@ jobs:
       - name: Run tests
         run: make test
 
+      - name: Run Flow glass regression tests
+        run: make test-flow-glass
+
       - name: Build glean-lsp
         run: make glean-lsp
 

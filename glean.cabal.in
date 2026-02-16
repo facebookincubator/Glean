@@ -2684,7 +2684,10 @@ test-suite glass-regression-cpp
    if !flag(clang-tests)
         buildable: False
 
-test-suite glass-regression-flow
+-- Flow glass regression tests split into smaller chunks to avoid CI timeout/OOM
+-- Each test suite uses the same Main.hs but is run with different --test-path args
+m4_define(`FLOW_GLASS_TEST', `
+test-suite glass-regression-flow-$1
     import: glass-regression-deps, fb-haskell, deps, exe
     type: exitcode-stdio-1.0
     main-is: Glean/Glass/Regression/Flow/Main.hs
@@ -2696,6 +2699,14 @@ test-suite glass-regression-flow
         glean:util
     if !flag(flow-tests)
         buildable: False
+')m4_dnl
+FLOW_GLASS_TEST(describe)
+FLOW_GLASS_TEST(document)
+FLOW_GLASS_TEST(references)
+FLOW_GLASS_TEST(resolve)
+FLOW_GLASS_TEST(search-basic)
+FLOW_GLASS_TEST(search-prefix)
+FLOW_GLASS_TEST(search-prefix-empty)
 
 test-suite glass-regression-hack
     import: glass-regression-deps, fb-haskell, deps, exe
