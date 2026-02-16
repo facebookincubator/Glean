@@ -1,0 +1,49 @@
+[
+    "@generated",
+    {
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 3,
+        "language": 11,
+        "location": {
+            "filepath": "sky_project/defs.sky",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 16,
+                "lineBegin": 1,
+                "lineEnd": 2
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "sky_project/defs.sky",
+            "localName": "helper_function"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "sym": "test/buck/d/sky_project/defs.sky/helper_function",
+        "sym_location": {
+            "filepath": "sky_project/defs.sky",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 16,
+                "lineBegin": 1,
+                "lineEnd": 2
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": []
+    }
+]
