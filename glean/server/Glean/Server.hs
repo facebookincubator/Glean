@@ -59,6 +59,10 @@ import Glean.Server.Sharding (
   waitForTerminateSignalsAndGracefulShutdown)
 import Glean.Util.ConfigProvider
 
+#if ENABLE_S3
+import qualified Glean.Database.Backup.S3 as S3
+#endif
+
 main :: IO ()
 main =
   withConfigOptions (O.info options O.fullDesc) $ \(cfg0, cfgOpts) ->
@@ -69,24 +73,28 @@ main =
   withTracing $ \tracer ->
   withAvailableDBFilterViaSR evb $ \filterAvailableDBs ->
 #endif
-  let dbCfg = (cfgDBConfig cfg0){
-        cfgShardManager = shardManagerConfig (cfgPort cfg)
+  let
+    dbCfg = (cfgDBConfig cfg0){
+      cfgShardManager = shardManagerConfig (cfgPort cfg0)
 #if GLEAN_FACEBOOK
-        , cfgServerLogger = Some (GleanServerFacebookLogger logger)
-        , cfgDatabaseLogger = Some (GleanDatabaseFacebookLogger logger)
-        , cfgBatchLocationParser = Some (FacebookBatchLocationParser)
-        , cfgFilterAvailableDBs = filterAvailableDBs
-        , cfgTracer = tracer
+      , cfgServerLogger = Some (GleanServerFacebookLogger logger)
+      , cfgDatabaseLogger = Some (GleanDatabaseFacebookLogger logger)
+      , cfgBatchLocationParser = Some (FacebookBatchLocationParser)
+      , cfgFilterAvailableDBs = filterAvailableDBs
+      , cfgTracer = tracer
 #endif
       }
-
 #if GLEAN_FACEBOOK
-      cfg = cfg0{cfgDBConfig = XDB.withXdbCatalog "manifold" $
+    cfg = cfg0{cfgDBConfig = XDB.withXdbCatalog "manifold" $
                   Manifold.withManifoldBackups evb dbCfg}
-#else
-      cfg = cfg0{cfgDBConfig = dbCfg}
-#endif
   in
+#elif ENABLE_S3
+  in do
+  cfg <- (\dbCfg' -> cfg0{cfgDBConfig = dbCfg'}) <$> S3.withS3Backups dbCfg
+#else
+    cfg = cfg0{cfgDBConfig = dbCfg}
+  in
+#endif
   withDatabases evb (cfgDBConfig cfg) configAPI $ \databases -> do
   terminating <- newTVarIO False
   withShardsUpdater evb cfg databases (1 :: Seconds) (readTVar terminating) $ do
