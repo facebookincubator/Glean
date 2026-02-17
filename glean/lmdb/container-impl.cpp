@@ -61,6 +61,12 @@ const Family Family::factOwners("factOwners", 0, false);
 //    prefix -> ([suffix], [UsetId])
 const Family Family::factOwnerPages("factOwnerPages", 0);
 
+// Stores locations of fact batches
+// which should be written to the DB before glean complete.
+// The key is a batch location
+// The value is a tuple of (batch format, is the batch written)
+const Family Family::batchDescriptors("batchDescriptors", 0, false);
+
 ContainerImpl::ContainerImpl(const std::string& path, Mode m)
     : db(nullptr, &mdb_env_close) {
   mode = m;

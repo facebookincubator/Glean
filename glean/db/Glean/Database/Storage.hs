@@ -21,6 +21,7 @@ module Glean.Database.Storage
 
 import Data.ByteString (ByteString)
 import Data.HashMap.Strict (HashMap)
+import Data.Text (Text)
 import qualified Data.Vector.Storable as VS
 
 import Glean.Database.Backup.Backend (Data)
@@ -32,7 +33,7 @@ import Glean.RTS.Foreign.Ownership hiding (computeDerivedOwnership)
 import Glean.RTS.Types (Fid, Pid)
 import Glean.ServerConfig.Types (DBVersion(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
-import Glean.Types (PredicateStats, Repo, SchemaId)
+import Glean.Types (BatchDescriptor, PredicateStats, Repo, SchemaId)
 import Glean.Util.Some
 
 -- | Check whether we can open a particular database version
@@ -70,6 +71,9 @@ type AxiomOwnership = HashMap ByteString (VS.Vector Fid)
 
 -- | Token representing the write lock
 data WriteLock w = WriteLock w
+
+-- | The location of a batch descriptor
+type BatchLocation = Text
 
 data family Database s
 
@@ -141,6 +145,21 @@ class CanLookup db => DatabaseOps db where
 
   -- | Retrieve the value of a key previously stored with 'store'.
   retrieve :: db -> ByteString -> IO (Maybe ByteString)
+
+  -- | Store a batch descriptor.
+  -- These descriptors should be materialised to facts
+  -- and be written to the database before `glean complete`.
+  -- When the db becomes readonly, all information is cleared.
+  addBatchDescriptor :: db -> BatchDescriptor -> IO ()
+
+  -- | Mark a batch descriptor as written.
+  markBatchDescriptorAsWritten :: db -> BatchLocation -> IO ()
+
+  -- | Check if a batch descriptor is stored.
+  isBatchDescriptorStored :: db -> BatchLocation -> IO Bool
+
+  -- | Get all unprocessed (not maked as 'written') batch descriptors.
+  getUnprocessedBatchDescriptors :: db -> IO [BatchDescriptor]
 
   -- | Commit a set of facts to the database. The facts must have the right ids,
   -- they are NOT renamed.
@@ -216,6 +235,10 @@ instance DatabaseOps (Some DatabaseOps) where
   predicateStats (Some db) = predicateStats db
   store (Some db) = store db
   retrieve (Some db) = retrieve db
+  addBatchDescriptor (Some db) = addBatchDescriptor db
+  markBatchDescriptorAsWritten (Some db) = markBatchDescriptorAsWritten db
+  isBatchDescriptorStored (Some db) = isBatchDescriptorStored db
+  getUnprocessedBatchDescriptors (Some db) = getUnprocessedBatchDescriptors db
   commit (Some db) = commit db
   addOwnership (Some db) = addOwnership db
   optimize (Some db) = optimize db

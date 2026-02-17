@@ -71,7 +71,20 @@ struct Database : rts::Lookup {
     // representing the inclusive ranges x1..x2, y1..y2, ...
   };
 
+  struct BatchDescriptor {
+    std::string location;
+    uint32_t format{};
+  };
+
   virtual void commit(rts::FactSet& facts) = 0;
+
+  virtual void addBatchDescriptor(BatchDescriptor batchDescriptor) = 0;
+
+  virtual void markBatchDescriptorAsWritten(folly::ByteRange location) = 0;
+
+  virtual bool isBatchDescriptorStored(folly::ByteRange location) = 0;
+
+  virtual std::vector<BatchDescriptor> getUnprocessedBatchDescriptors() = 0;
 
   virtual void addOwnership(const std::vector<OwnershipSet>& ownership) = 0;
   virtual std::unique_ptr<rts::OwnershipUnitIterator>

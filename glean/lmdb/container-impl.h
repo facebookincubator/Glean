@@ -53,6 +53,7 @@ struct Family {
   static const Family ownershipSets;
   static const Family factOwners;
   static const Family factOwnerPages;
+  static const Family batchDescriptors;
 
   static size_t count() {
     return families.size();

@@ -92,6 +92,15 @@ const Family Family::factOwnerPages("factOwnerPages", [](auto& opts) {
   opts.OptimizeForPointLookup(10);
 });
 
+// Stores locations of fact batches
+// which should be written to the DB before glean complete.
+// The key is a batch location
+// The value is a tuple of (batch format, is the batch written)
+const Family Family::batchDescriptors(
+    "batchDescriptors",
+    [](auto& opts) { opts.OptimizeForPointLookup(10); },
+    false);
+
 #ifndef GLEAN_FACEBOOK
 namespace {
 rocksdb::Status openRocksDB(

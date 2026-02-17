@@ -161,6 +161,11 @@ instance DatabaseOps (Database LMDB) where
   predicateStats (Database db _) = predicateStats db
   store (Database db _) = store db
   retrieve (Database db _) = retrieve db
+  addBatchDescriptor (Database db _) = addBatchDescriptor db
+  markBatchDescriptorAsWritten (Database db _) = markBatchDescriptorAsWritten db
+  isBatchDescriptorStored (Database db _) = isBatchDescriptorStored db
+  getUnprocessedBatchDescriptors (Database db _) =
+    getUnprocessedBatchDescriptors db
   commit (Database db _) = commit db
   addOwnership (Database db _) = addOwnership db
   optimize (Database db _) = optimize db

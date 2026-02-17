@@ -67,6 +67,30 @@ Lookup* glean_rocksdb_database_lookup(Database* db);
 
 const char* glean_rocksdb_commit(Database* db, FactSet* facts);
 
+const char* glean_rocksdb_add_batch_descriptor(
+    Database* db,
+    const char* location,
+    size_t location_size,
+    int format);
+
+const char* glean_rocksdb_mark_batch_descriptor_as_written(
+    Database* db,
+    const char* location,
+    size_t location_size);
+
+const char* glean_rocksdb_is_batch_descriptor_stored(
+    Database* db,
+    const char* location,
+    size_t location_size,
+    unsigned char* found);
+
+const char* glean_rocksdb_get_unprocessed_batch_descriptors(
+    Database* db,
+    size_t* count,
+    char*** locations,
+    size_t** location_sizes,
+    uint32_t** formats);
+
 const char* glean_rocksdb_add_ownership(
     Database* db,
     size_t count,

@@ -99,6 +99,11 @@ instance DatabaseOps (Database Memory) where
   retrieve db key =
     atomically $ HashMap.lookup key <$> readTVar (dbData db)
 
+  addBatchDescriptor _ _ = return ()
+  markBatchDescriptorAsWritten _ _ = return ()
+  isBatchDescriptorStored _ _ = return False
+  getUnprocessedBatchDescriptors _ = return []
+
   commit db facts = FactSet.append (dbFacts db) facts
 
   -- TODO: ownership

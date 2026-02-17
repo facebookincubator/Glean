@@ -80,6 +80,11 @@ struct DatabaseCommon : Database {
   folly::Optional<std::string> getUnit(uint32_t unit_id) override;
   uint32_t nextUnitId();
 
+  void addBatchDescriptor(BatchDescriptor batchDescriptor) override;
+  void markBatchDescriptorAsWritten(folly::ByteRange location) override;
+  bool isBatchDescriptorStored(folly::ByteRange location) override;
+  std::vector<BatchDescriptor> getUnprocessedBatchDescriptors() override;
+
   void addOwnership(const std::vector<OwnershipSet>& ownership) override;
 
   std::unique_ptr<rts::DerivedFactOwnershipIterator>
@@ -214,6 +219,80 @@ DatabaseCommon<C>::loadOwnershipDerivedCounters() {
   }
 
   VLOG(1) << "derived fact owners for " << result.size() << " pids";
+  return result;
+}
+
+template <typename C>
+void DatabaseCommon<C>::addBatchDescriptor(BatchDescriptor batchDescriptor) {
+  container_.requireOpen();
+  binary::Output value;
+  value.nat(batchDescriptor.format);
+  value.nat(0); // completed=false
+  auto writer = container_.write();
+  writer.put(
+      C::Family::batchDescriptors,
+      folly::ByteRange(
+          reinterpret_cast<const unsigned char*>(
+              batchDescriptor.location.data()),
+          batchDescriptor.location.size()),
+      value.bytes());
+  writer.commit();
+}
+
+template <typename C>
+void DatabaseCommon<C>::markBatchDescriptorAsWritten(
+    folly::ByteRange location) {
+  container_.requireOpen();
+  uint32_t format = 0;
+  bool found = container_.get(
+      C::Family::batchDescriptors, location, [&format](folly::ByteRange val) {
+        binary::Input input(val);
+        format = static_cast<uint32_t>(input.trustedNat());
+      });
+  if (!found) {
+    LOG(WARNING) << "batch descriptor not found for location "
+                 << folly::hexlify(location);
+    return;
+  }
+  binary::Output value;
+  value.nat(format);
+  value.nat(1); // completed=true
+  auto writer = container_.write();
+  writer.put(C::Family::batchDescriptors, location, value.bytes());
+  writer.commit();
+}
+
+template <typename C>
+bool DatabaseCommon<C>::isBatchDescriptorStored(folly::ByteRange location) {
+  container_.requireOpen();
+  return container_.get(
+      C::Family::batchDescriptors, location, [](folly::ByteRange) {});
+}
+
+template <typename C>
+std::vector<Database::BatchDescriptor>
+DatabaseCommon<C>::getUnprocessedBatchDescriptors() {
+  container_.requireOpen();
+  std::vector<Database::BatchDescriptor> result;
+  size_t total = 0;
+  auto iter = container_.read(C::Family::batchDescriptors);
+  for (iter.seek_first(); iter.valid(); iter.next()) {
+    ++total;
+    auto key = iter.key();
+    auto val = iter.value();
+    binary::Input input(val);
+    uint32_t format = static_cast<uint32_t>(input.trustedNat());
+    bool completed = input.trustedNat() != 0;
+    if (!completed) {
+      Database::BatchDescriptor entry;
+      entry.location =
+          std::string(reinterpret_cast<const char*>(key.data()), key.size());
+      entry.format = format;
+      result.push_back(std::move(entry));
+    }
+  }
+  LOG(INFO) << "batch descriptors loaded: " << total << " total, "
+            << result.size() << " unprocessed";
   return result;
 }
 

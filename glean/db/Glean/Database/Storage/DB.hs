@@ -20,12 +20,14 @@ import Data.Word
 import Foreign.C.String
 import Foreign.C.Types
 import Foreign.ForeignPtr
+import Foreign.Marshal.Alloc (free)
 import Foreign.Marshal.Array
 import Foreign.Ptr
 import Foreign.Storable
 import System.Directory
 import System.FilePath
 
+import Thrift.Protocol (fromThriftEnum, toThriftEnum)
 import Util.FFI
 
 import Glean.Database.Backup.Backend (Data(Data))
@@ -39,6 +41,7 @@ import Glean.RTS.Foreign.Ownership as Ownership
 import Glean.RTS.Foreign.Stats (marshalPredicateStats)
 import Glean.RTS.Types (Fid(..), Pid(..))
 import Glean.Types (Repo)
+import qualified Glean.Types as Thrift
 
 data DB = DB
   { dbPtr :: ForeignPtr DB
@@ -75,6 +78,51 @@ instance DatabaseOps DB where
       if found /= 0
         then Just <$> unsafeMallocedByteString value_ptr value_size
         else return Nothing
+
+  addBatchDescriptor db descriptor =
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
+    withUTF8Text (Thrift.batchDescriptor_location descriptor)
+    $ \loc_ptr loc_size ->
+    invoke $
+      glean_rocksdb_add_batch_descriptor
+        db_ptr
+        loc_ptr
+        loc_size
+        (fromIntegral $ fromThriftEnum $
+          Thrift.batchDescriptor_format descriptor)
+
+  markBatchDescriptorAsWritten db location =
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
+    withUTF8Text location $ \loc_ptr loc_size ->
+    invoke $
+      glean_rocksdb_mark_batch_descriptor_as_written db_ptr loc_ptr loc_size
+
+  isBatchDescriptorStored db location =
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
+    withUTF8Text location $ \loc_ptr loc_size -> do
+      found <- invoke $
+        glean_rocksdb_is_batch_descriptor_stored db_ptr loc_ptr loc_size
+      return (found /= 0)
+
+  getUnprocessedBatchDescriptors db =
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr -> do
+      (count, locs, loc_sizes, formats) <-
+        invoke $ glean_rocksdb_get_unprocessed_batch_descriptors db_ptr
+      results <- if count == 0
+        then return []
+        else forM [0 .. count - 1] $ \i -> do
+          loc_ptr <- peekElemOff locs (fromIntegral i)
+          loc_size <- peekElemOff loc_sizes (fromIntegral i)
+          location <- unsafeMallocedUTF8 (castPtr loc_ptr) loc_size
+          format <- fromIntegral <$> peekElemOff formats (fromIntegral i)
+          return $ Thrift.BatchDescriptor
+            { Thrift.batchDescriptor_location = location
+            , Thrift.batchDescriptor_format = toThriftEnum format
+            }
+      free locs
+      free loc_sizes
+      free formats
+      return results
 
   commit db facts = unsafeWithForeignPtr (dbPtr db) $ \db_ptr -> do
     with facts $ \facts_ptr -> invoke $ glean_rocksdb_commit db_ptr facts_ptr
@@ -198,6 +246,34 @@ foreign import ccall unsafe glean_rocksdb_container_read_data
   -> Ptr (Ptr ())
   -> Ptr CSize
   -> Ptr CChar
+  -> IO CString
+
+foreign import ccall safe glean_rocksdb_add_batch_descriptor
+  :: Ptr DB
+  -> Ptr ()
+  -> CSize
+  -> CInt
+  -> IO CString
+
+foreign import ccall safe glean_rocksdb_mark_batch_descriptor_as_written
+  :: Ptr DB
+  -> Ptr ()
+  -> CSize
+  -> IO CString
+
+foreign import ccall safe glean_rocksdb_is_batch_descriptor_stored
+  :: Ptr DB
+  -> Ptr ()
+  -> CSize
+  -> Ptr CChar
+  -> IO CString
+
+foreign import ccall safe glean_rocksdb_get_unprocessed_batch_descriptors
+  :: Ptr DB
+  -> Ptr CSize
+  -> Ptr (Ptr CString)
+  -> Ptr (Ptr CSize)
+  -> Ptr (Ptr Word32)
   -> IO CString
 
 foreign import ccall safe glean_rocksdb_container_optimize

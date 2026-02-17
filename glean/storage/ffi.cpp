@@ -94,6 +94,71 @@ const char* glean_rocksdb_commit(Database* db, FactSet* facts) {
   return ffi::wrap([=] { db->commit(*facts); });
 }
 
+const char* glean_rocksdb_add_batch_descriptor(
+    Database* db,
+    const char* location,
+    size_t location_size,
+    int format) {
+  return ffi::wrap([=] {
+    Database::BatchDescriptor desc;
+    desc.location = std::string(location, location_size);
+    desc.format = static_cast<uint32_t>(format);
+    db->addBatchDescriptor(std::move(desc));
+  });
+}
+
+const char* glean_rocksdb_mark_batch_descriptor_as_written(
+    Database* db,
+    const char* location,
+    size_t location_size) {
+  return ffi::wrap([=] {
+    db->markBatchDescriptorAsWritten(
+        folly::ByteRange(
+            reinterpret_cast<const unsigned char*>(location), location_size));
+  });
+}
+
+const char* glean_rocksdb_is_batch_descriptor_stored(
+    Database* db,
+    const char* location,
+    size_t location_size,
+    unsigned char* found) {
+  return ffi::wrap([=] {
+    *found = db->isBatchDescriptorStored(
+                 folly::ByteRange(
+                     reinterpret_cast<const unsigned char*>(location),
+                     location_size))
+        ? 1
+        : 0;
+  });
+}
+
+const char* glean_rocksdb_get_unprocessed_batch_descriptors(
+    Database* db,
+    size_t* count,
+    char*** locations,
+    size_t** location_sizes,
+    uint32_t** formats) {
+  return ffi::wrap([=] {
+    auto writes = db->getUnprocessedBatchDescriptors();
+    const auto n = writes.size();
+    *count = n;
+    auto locs = ffi::malloc_array<char*>(n);
+    auto sizes = ffi::malloc_array<size_t>(n);
+    auto fmts = ffi::malloc_array<uint32_t>(n);
+    for (size_t i = 0; i < n; ++i) {
+      const auto& w = writes[i];
+      fmts[i] = w.format;
+      sizes[i] = w.location.size();
+      auto loc = ffi::clone_bytes(w.location);
+      locs[i] = reinterpret_cast<char*>(loc.release());
+    }
+    *locations = locs.release();
+    *location_sizes = sizes.release();
+    *formats = fmts.release();
+  });
+}
+
 const char* glean_rocksdb_add_ownership(
     Database* db,
     size_t count,

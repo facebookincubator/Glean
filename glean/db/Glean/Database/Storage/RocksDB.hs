@@ -201,6 +201,11 @@ instance DatabaseOps (Database RocksDB) where
   predicateStats (Database db) = predicateStats db
   store (Database db) = store db
   retrieve (Database db) = retrieve db
+  addBatchDescriptor (Database db) = addBatchDescriptor db
+  markBatchDescriptorAsWritten (Database db) = markBatchDescriptorAsWritten db
+  isBatchDescriptorStored (Database db) = isBatchDescriptorStored db
+  getUnprocessedBatchDescriptors (Database db) =
+    getUnprocessedBatchDescriptors db
   commit (Database db) = commit db
   addOwnership (Database db) = addOwnership db
   optimize (Database db) = optimize db
