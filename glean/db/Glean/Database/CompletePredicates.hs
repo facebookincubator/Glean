@@ -12,6 +12,7 @@ module Glean.Database.CompletePredicates
   ) where
 
 import Control.Concurrent.Async
+import Control.Concurrent.MVar
 import Control.Exception
 import Control.Monad
 import qualified Data.HashMap.Strict as HashMap
@@ -27,6 +28,7 @@ import Util.STM
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Open
 import Glean.Database.Schema
+import Glean.Database.Writes (enqueueCheckpoint)
 import Glean.Database.Schema.Types
   ( lookupPredicateSourceRef
   , SchemaSelector(..)
@@ -35,6 +37,7 @@ import qualified Glean.Database.Storage as Storage
 import Glean.Database.Types
 import Glean.Internal.Types as Thrift
 import Glean.Logger
+import Glean.Repo.Text (repoToText)
 import Glean.RTS.Foreign.Ownership
 import Glean.RTS.Types (Pid)
 import Glean.Schema.Util (convertRef)
@@ -63,6 +66,8 @@ syncCompletePredicates env repo =
   -- and doesn't record the total time spent.
   loggingAction
     (runLogRepo "completePredicates(server)" env repo) (const mempty) $ do
+  -- Wait for all pending async writes to finish before starting the completion
+  waitForWrites env repo
   maybeBase <- repoParent env repo
   let withBase repo f =
         readDatabase env repo $ \_ lookup -> f (Just lookup)
@@ -105,6 +110,26 @@ completeAxiomPredicates env@Env{..} repo = do
 
   scheduleCompletion
     env repo SkipIfComplete doCompletion isInProgress storeComputation
+
+-- | Wait for all pending async writes to complete for a repo.
+-- This enqueues a checkpoint on the write queue and blocks until
+-- all previous writes have finished.
+-- If the db is readonly, it's guaranteed there is no pending writes
+-- and no writes will be enqueued.
+waitForWrites :: Env -> Repo -> IO ()
+waitForWrites env repo = do
+  shouldWait <- withOpenDatabase env repo $ \OpenDB{..} -> case odbWriting of
+    Nothing -> return False
+    Just writing -> do
+      count <- readTVarIO $ writeQueueCount $ wrQueue writing
+      return (count > 0)
+  when shouldWait $ do
+    let repoText = repoToText repo
+    logInfo $ "Waiting for pending writes to complete for " <> repoText
+    done <- newEmptyMVar
+    enqueueCheckpoint env repo (putMVar done ())
+    takeMVar done
+    logInfo $ "All pending writes completed for " <> repoText
 
 -- | Propagate ownership information for an externally derived predicate.
 syncCompleteDerivedPredicate :: Env -> Repo -> Pid -> IO ()
