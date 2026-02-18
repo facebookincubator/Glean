@@ -344,18 +344,6 @@ size_t Subroutine::size() const {
       constants.size() * sizeof(uint64_t);
 }
 
-namespace {
-template <typename T, typename U>
-std::vector<T> copy_as(const std::vector<U>& xs) {
-  std::vector<T> ys;
-  ys.reserve(xs.size());
-  for (const auto& x : xs) {
-    ys.push_back(static_cast<T>(x));
-  }
-  return ys;
-}
-} // namespace
-
 void Subroutine::put(binary::Output& out, const Subroutine& sub) {
   serialize::put(out, sub.code, serialize::AsBytes{});
   serialize::put(out, sub.inputs);
