@@ -31,6 +31,10 @@
           "target": { "key": "mod_b.util.Cls" }
         },
         {
+          "source": { "length": 4, "start": 302 },
+          "target": { "key": "mod_b.util" }
+        },
+        {
           "source": { "length": 4, "start": 334 },
           "target": { "key": "None" }
         },
@@ -43,11 +47,23 @@
           "target": { "key": "mod_b" }
         },
         {
+          "source": { "length": 5, "start": 255 },
+          "target": { "key": "mod_b" }
+        },
+        {
+          "source": { "length": 5, "start": 296 },
+          "target": { "key": "mod_b" }
+        },
+        {
           "source": { "length": 5, "start": 344 },
           "target": { "key": "print" }
         },
         {
           "source": { "length": 6, "start": 243 },
+          "target": { "key": "mod_b.helper" }
+        },
+        {
+          "source": { "length": 6, "start": 261 },
           "target": { "key": "mod_b.helper" }
         },
         {
@@ -65,14 +81,6 @@
         {
           "source": { "length": 8, "start": 404 },
           "target": { "key": "mod_b.util.Cls.some_var" }
-        },
-        {
-          "source": { "length": 10, "start": 296 },
-          "target": { "key": "mod_b.util" }
-        },
-        {
-          "source": { "length": 12, "start": 255 },
-          "target": { "key": "mod_b.helper" }
         },
         {
           "source": { "length": 15, "start": 275 },
@@ -112,12 +120,16 @@
           "target": { "key": "mod_b.util.Cls" }
         },
         {
-          "source": { "length": 5, "start": 278 },
+          "source": { "length": 4, "start": 236 },
           "target": { "key": "mod_b.util" }
         },
         {
-          "source": { "length": 10, "start": 230 },
-          "target": { "key": "mod_b.util" }
+          "source": { "length": 4, "start": 279 },
+          "target": { "key": "util" }
+        },
+        {
+          "source": { "length": 5, "start": 230 },
+          "target": { "key": "mod_b" }
         },
         {
           "source": { "length": 15, "start": 248 },

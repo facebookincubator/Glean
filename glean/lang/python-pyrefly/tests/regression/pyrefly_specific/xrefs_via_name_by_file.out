@@ -506,6 +506,10 @@
           "target": { "key": "bigger_module" }
         },
         {
+          "source": { "length": 13, "start": 320 },
+          "target": { "key": "bigger_module" }
+        },
+        {
           "source": { "length": 13, "start": 1285 },
           "target": { "key": "bar.Bar.bar_attribute" }
         },
@@ -626,6 +630,10 @@
           "target": { "key": "foo.baz.<locals>.optional_generic" }
         },
         {
+          "source": { "length": 17, "start": 334 },
+          "target": { "key": "bigger_module.another_submodule" }
+        },
+        {
           "source": { "length": 21, "start": 1075 },
           "target": { "key": "foo.baz.<locals>.placeholder_local_str" }
         },
@@ -636,10 +644,6 @@
         {
           "source": { "length": 23, "start": 1680 },
           "target": { "key": "foo.return_optional_generic" }
-        },
-        {
-          "source": { "length": 31, "start": 320 },
-          "target": { "key": "bigger_module.another_submodule" }
         }
       ]
     }
