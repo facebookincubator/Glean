@@ -639,6 +639,7 @@ library db
         Glean.Database.Validate
         Glean.Database.Writes
         Glean.Database.Write.Batch
+        Glean.Database.Write.Queue
         Glean.Logger.Database
         Glean.Logger.Server
         Glean.Write.JSON

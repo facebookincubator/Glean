@@ -10,7 +10,6 @@ module Glean.Database.Write.Batch
   ( syncWriteDatabase
   , syncWriteContentDatabase
   , writeDatabase
-  , writeContentFromBatch
   ) where
 
 import Control.Exception
@@ -36,6 +35,7 @@ import qualified Glean.Database.Storage as Storage
 import Glean.Database.Schema
 import Glean.Database.Trace
 import Glean.Database.Types
+import Glean.Database.Write.Queue
 import Glean.FFI
 import Glean.Internal.Types as Thrift
 import Glean.RTS.Foreign.Define (trustRefs)
@@ -54,12 +54,6 @@ import Glean.Util.Metric
 import Glean.Util.Mutex
 import Glean.Util.Vector
 import qualified Glean.Write.Stats as Stats
-
-writeContentFromBatch :: Thrift.Batch -> WriteContent
-writeContentFromBatch writeBatch = WriteContent
-  { writeBatch = writeBatch
-  , writeOwnership = Nothing
-  }
 
 syncWriteDatabase
   :: Env

@@ -40,6 +40,7 @@ import Util.FFI (invoke)
 
 import Glean.Database.Open
 import Glean.Database.Write.Batch
+import Glean.Database.Write.Queue
 import Glean.Database.Schema.Types
 import Glean.Database.Types as Database
 import Glean.Display
