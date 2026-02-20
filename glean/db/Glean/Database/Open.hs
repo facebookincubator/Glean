@@ -53,6 +53,7 @@ import Glean.Database.Meta (Meta(..))
 import Glean.Database.Schema
 import Glean.Database.Schema.Types
 import Glean.Database.Types
+import Glean.Database.Write.Queue
 import Glean.Logger
 import Glean.Query.Codegen (Boundaries, flatBoundaries, stackedBoundaries)
 import Glean.Repo.Text
@@ -532,6 +533,7 @@ asyncOpenDB env@Env{..} storage db@DB{..} version mode deps
               , odbOwnership = ownership
               }
           atomically $ writeTVar dbState $ Open odb
+          enqueueBatchDescriptorsFromDatabase env db odb
           return odb
   where
     handling_failures :: IO a -> IO a
@@ -540,6 +542,18 @@ asyncOpenDB env@Env{..} storage db@DB{..} version mode deps
       logError $ inRepo dbRepo "couldn't open: " ++ show (exc :: SomeException)
       on_failure exc
       throwIO exc
+
+-- | Re-enqueue all unprocessed batch descriptors which were enqueued before
+-- but never materialised and written to the DB
+enqueueBatchDescriptorsFromDatabase :: Env -> DB -> OpenDB -> IO ()
+enqueueBatchDescriptorsFromDatabase env DB{..} OpenDB{..} =
+  case odbWriting of
+    Just Writing{..} -> do
+      descriptors <- Storage.getUnprocessedBatchDescriptors odbHandle
+      forM_ descriptors $ \descriptor ->
+        void $ enqueueWrite env dbRepo wrQueue odbSchema 0 Nothing False False $
+          downloadBatchFromLocation env descriptor
+    Nothing -> return ()
 
 
 -- | Fetch the glean.schema_id property of a DB, if it has one. This
