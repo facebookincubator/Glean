@@ -9,16 +9,17 @@
 module Glean.Database.Write.Queue
   (
     enqueueWrite,
+    enqueueBatchDescriptorWithResultHandling,
     addWriteJobToQueue,
     reportQueueSizes,
-    downloadBatchFromLocation,
     writeContentFromBatch
   ) where
 
 import Control.Concurrent (MVar, newEmptyMVar)
 import Control.Exception (SomeException, throwIO)
-import Control.Monad (forM_, when)
+import Control.Monad (forM_, void, when)
 import qualified Data.Map as Map
+import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import Text.Printf (printf)
 import System.Clock (TimeSpec, toNanoSecs)
@@ -28,15 +29,47 @@ import ServiceData.Types (ExportType(..))
 import Util.Defer (immediately, now, later)
 import Util.STM
 
+import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.BatchLocation as BatchLocation
 import Glean.Database.Exception (dbError)
+import qualified Glean.Database.Storage as Storage
 import Glean.Database.Types
 import Glean.Database.Schema.Types
+import qualified Glean.Internal.Types as Thrift
 import Glean.Types as Thrift hiding (Database)
 import qualified Glean.RTS.Foreign.Subst as Subst
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Util.Observed as Observed
 import Glean.Util.Metric (beginTick)
+import Glean.Util.Some
+
+-- | Enqueue a batch descriptor
+-- with result handling for asynchornous writes only
+-- Mark the DB as broken on failure
+-- Mark the batch descriptor as written on success
+enqueueBatchDescriptorWithResultHandling
+  :: Env
+  -> Repo
+  -> WriteQueue
+  -> DbSchema
+  -> Some Storage.DatabaseOps
+  -> Thrift.BatchDescriptor
+  -> Bool
+  -> IO (MVar (Either SomeException Subst.Subst))
+enqueueBatchDescriptorWithResultHandling env@Env{..} repo queue
+    odbSchema odbHandle descriptor async = do
+  let location = Thrift.batchDescriptor_location descriptor
+      onComplete result = when async $ case result of
+        Left exc ->
+          void $ atomically $ Catalog.modifyMeta envCatalog repo $
+            \meta -> pure meta {
+              Thrift.metaCompleteness = Thrift.Broken
+                (Thrift.DatabaseBroken "write" (Text.pack (show exc)))
+            }
+        Right _ ->
+          Storage.markBatchDescriptorAsWritten odbHandle location
+  enqueueWrite env repo queue odbSchema 0 Nothing False
+    onComplete $ downloadBatchFromLocation env descriptor
 
 -- | Add a write job to the queue, or throw 'Retry' if no memory available
 enqueueWrite
@@ -47,11 +80,11 @@ enqueueWrite
   -> Int
   -> Maybe SchemaId
   -> Bool
-  -> Bool
+  -> (Either SomeException Subst.Subst -> IO ())
   -> IO WriteContent
   -> IO (MVar (Either SomeException Subst.Subst))
 enqueueWrite env@Env{..} repo queue@WriteQueue{..} odbSchema size
-    optSchemaId checkQueueSize remember writeContent = do
+    optSchemaId checkQueueSize onComplete writeContent = do
   start <- beginTick 1
   config <- Observed.get envServerConfig
   mvar <- newEmptyMVar
@@ -80,7 +113,7 @@ enqueueWrite env@Env{..} repo queue@WriteQueue{..} odbSchema size
               , writeContentIO = writeContent
               , writeDone = mvar
               , writeStart = start
-              , writeFailureIrrecoverable = not remember }
+              , writeOnComplete = onComplete }
         queueCount <- now $ updateTVar writeQueueCount (+1)
         queueSize <- now $ updateTVar writeQueueSize (+ size)
         later $ do

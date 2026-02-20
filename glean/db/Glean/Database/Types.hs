@@ -160,11 +160,8 @@ data WriteJob
     , writeContentIO :: IO WriteContent
     , writeDone :: MVar (Either SomeException Subst)
     , writeStart :: Point
-    , writeFailureIrrecoverable :: Bool
-      -- ^ If False, clients are supposed to check the write
-      -- and handle the result.
-      -- If True, the write is fully handled by server.
-      -- In case of an error, the db will be marked as 'broken'
+    , writeOnComplete :: Either SomeException Subst -> IO ()
+      -- ^ Action to run when the write completes.
     }
   | WriteCheckpoint
     { writeCheckpoint :: IO ()
@@ -312,4 +309,3 @@ withDefaultStorage env fn = do
     Nothing -> throwIO $ Thrift.Exception $
       "unknown storage: " <> unStorageName name
     Just (Some storage) -> fn name storage
-

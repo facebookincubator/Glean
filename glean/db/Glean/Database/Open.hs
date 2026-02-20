@@ -195,10 +195,13 @@ withOpenDBStack env repo lookup f = do
         withOpenDBStack env baseRepo baseLookup $ \base -> do
           Lookup.withCanLookup (Stacked.stacked base lookup) f
 
-withWritableDatabase :: Env -> Repo -> ((WriteQueue, DbSchema) -> IO a) -> IO a
+withWritableDatabase
+  :: Env
+  -> Repo
+  -> ((WriteQueue, DbSchema, Some DatabaseOps) -> IO a) -> IO a
 withWritableDatabase env repo action =
   withOpenDatabase env repo $ \OpenDB{..} -> case odbWriting of
-    Just Writing{..} -> action (wrQueue, odbSchema)
+    Just Writing{..} -> action (wrQueue, odbSchema, odbHandle)
     Nothing -> dbError repo "can't write to a read-only database"
 
 readDatabase
@@ -551,8 +554,8 @@ enqueueBatchDescriptorsFromDatabase env DB{..} OpenDB{..} =
     Just Writing{..} -> do
       descriptors <- Storage.getUnprocessedBatchDescriptors odbHandle
       forM_ descriptors $ \descriptor ->
-        void $ enqueueWrite env dbRepo wrQueue odbSchema 0 Nothing False False $
-          downloadBatchFromLocation env descriptor
+        enqueueBatchDescriptorWithResultHandling env dbRepo wrQueue
+          odbSchema odbHandle descriptor True
     Nothing -> return ()
 
 

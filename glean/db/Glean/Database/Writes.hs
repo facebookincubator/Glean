@@ -52,7 +52,6 @@ import Data.Either
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Monoid as Monoid
-import Data.Text as Text (pack)
 import qualified Data.UUID as UUID
 import qualified Data.UUID.V4 as UUID
 import qualified Data.Vector.Storable as VS
@@ -67,14 +66,12 @@ import Util.Defer
 import Util.Log
 import Util.STM
 
-import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Open
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Trace
 import Glean.Database.Write.Batch
 import Glean.Database.Write.Queue
 import Glean.Database.Types
-import Glean.Internal.Types as Thrift
 import qualified Glean.RTS.Foreign.Subst as Subst
 import Glean.RTS.Foreign.Ownership (DefineOwnership)
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -124,14 +121,7 @@ writerThread env WriteQueues{..} = mask $ \restore ->
       addStatValueType "glean.db.write.failed" (writeSize `div` k) Sum
     else
       addStatValueType "glean.db.write.succeeded" (writeSize `div` k) Sum
-    case result of
-      Left exc | writeFailureIrrecoverable ->
-        void $ atomically $ Catalog.modifyMeta (envCatalog env) repo $ \meta ->
-          return meta {
-            Thrift.metaCompleteness = Thrift.Broken
-              (Thrift.DatabaseBroken "write" (Text.pack (show exc)))
-          }
-      _ -> return ()
+    writeOnComplete result
     immediately $ do
       now $ writeTVar writeQueueLatency latency
       now $ modifyTVar' writeQueueActive (subtract 1)
@@ -199,9 +189,10 @@ enqueueCheckpoint
   -> Repo
   -> IO ()
   -> IO ()
-enqueueCheckpoint env repo io = withWritableDatabase env repo $ \(queue, _) ->
-  atomically $ void $
-    addWriteJobToQueue repo queue (envWriteQueues env) (WriteCheckpoint io)
+enqueueCheckpoint env repo io =
+  withWritableDatabase env repo $ \(queue, _, _) ->
+    atomically $ void $
+      addWriteJobToQueue repo queue (envWriteQueues env) (WriteCheckpoint io)
 
 enqueueBatch :: Env -> ComputedBatch -> Maybe DefineOwnership -> IO SendResponse
 enqueueBatch env ComputedBatch{..} ownership = do
@@ -215,9 +206,10 @@ enqueueBatch env ComputedBatch{..} ownership = do
 
   let size = batchSize computedBatch_batch
       optSchemaId = batch_schema_id computedBatch_batch
-  r <- withWritableDatabase env computedBatch_repo $ \(queue, odbSchema) -> do
-    try $ enqueueWrite env computedBatch_repo queue odbSchema size optSchemaId
-      True computedBatch_remember $ pure $
+      repo = computedBatch_repo
+  r <- withWritableDatabase env repo $ \(queue, odbSchema, _) -> do
+    try $ enqueueWrite env repo queue odbSchema size optSchemaId
+      True (const $ pure ()) $ pure $
         (writeContentFromBatch computedBatch_batch) {
           writeOwnership= ownership
         }
@@ -266,9 +258,9 @@ enqueueJsonBatch env repo batch = do
     let optSchemaId =
           sendJsonBatch_options batch >>= sendJsonBatchOptions_schema_id
         remember = sendJsonBatch_remember batch
-    write <- withWritableDatabase env repo $ \(queue, odbSchema) -> do
-      enqueueWrite env repo queue odbSchema size optSchemaId True remember $
-        writeJsonBatch env repo batch
+    write <- withWritableDatabase env repo $ \(queue, odbSchema, _) -> do
+      enqueueWrite env repo queue odbSchema size optSchemaId True
+        (const $ pure ()) $ writeJsonBatch env repo batch
     when remember $ rememberWrite env handle write
     return $ def { sendJsonBatchResponse_handle = handle }
 
@@ -286,20 +278,18 @@ enqueueBatchDescriptor env repo enqueueBatch waitPolicy = do
       Thrift.EnqueueBatch_descriptor descriptor -> return descriptor
       Thrift.EnqueueBatch_EMPTY -> throwIO $ Thrift.Exception "empty batch"
     let remember = waitPolicy == Thrift.EnqueueBatchWaitPolicy_Remember
-    write <- withWritableDatabase env repo $ \(queue, odbSchema) -> do
-      enqueueWrite env repo queue odbSchema 0 Nothing False remember $
-        downloadBatchFromLocation env descriptor
-    -- If we're asked to remember the write handle,
-    -- the clients are responsible to check the status.
-    -- If not, we should store the batch descriptor in persistent storage
-    -- to make sure it will be written.
-    if remember
-      then do
-        rememberWrite env handle write
-      else do
-        withOpenDatabase env repo $ \OpenDB{..} ->
-          Storage.addBatchDescriptor odbHandle descriptor
-    return $ def { enqueueBatchResponse_handle = handle }
+    withWritableDatabase env repo $ \(queue, odbSchema, odbHandle) -> do
+      -- If we're asked to remember the write handle,
+      -- the clients are responsible to check the status.
+      -- If not, the write is asynchronous and
+      -- server should store the batch descriptor in persistent storage
+      -- to make sure it will be written.
+      let async = not remember
+      when async $ Storage.addBatchDescriptor odbHandle descriptor
+      write <- enqueueBatchDescriptorWithResultHandling env repo queue
+        odbSchema odbHandle descriptor async
+      when remember $ rememberWrite env handle write
+      return $ def { enqueueBatchResponse_handle = handle }
 
 pollBatch :: Env -> Handle -> IO FinishResponse
 pollBatch env@Env{..} handle = do
