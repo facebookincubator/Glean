@@ -76,6 +76,7 @@ import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Exception
 import Glean.Database.Open
 import Glean.Database.Schema.Types
+import qualified Glean.Database.Storage as Storage
 import Glean.Database.Trace
 import Glean.Database.Write.Batch
 import Glean.Database.Types
@@ -399,7 +400,16 @@ enqueueBatchDescriptor env repo enqueueBatch waitPolicy = do
     let remember = waitPolicy == Thrift.EnqueueBatchWaitPolicy_Remember
     write <- enqueueWrite env repo 0 Nothing False remember $
       writeContentFromBatch <$> downloadBatchFromLocation env descriptor
-    when remember $ rememberWrite env handle write
+    -- If we're asked to remember the write handle,
+    -- the clients are responsible to check the status.
+    -- If not, we should store the batch descriptor in persistent storage
+    -- to make sure it will be written.
+    if remember
+      then do
+        rememberWrite env handle write
+      else do
+        withOpenDatabase env repo $ \OpenDB{..} ->
+          Storage.addBatchDescriptor odbHandle descriptor
     return $ def { enqueueBatchResponse_handle = handle }
 
 pollBatch :: Env -> Handle -> IO FinishResponse
