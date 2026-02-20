@@ -7,7 +7,14 @@ sidebar_label: Python
 import {OssOnly, FbInternalOnly} from 'internaldocs-fb-helpers';
 import {SrcFile,SrcFileLink} from '@site/utils';
 
-To index [Python](https://www.python.org) we use SourceGraph's [SCIP indexer for python](https://github.com/sourcegraph/scip-python). [SCIP](https://about.sourcegraph.com/blog/announcing-scip) is a new format for tools to share information about code. Releases of [scip-python](https://github.com/sourcegraph/scip-python) can be installed with `yarn` or `npm` and used as indexers for SCIP, which Glean will accept. The indexer itself requires a [python](https://www.python.org) runtime.
+To index [Python](https://www.python.org) we use SourceGraph's [SCIP indexer for Python](https://github.com/sourcegraph/scip-python). [SCIP](https://about.sourcegraph.com/blog/announcing-scip) is a format for tools to share information about code.
+
+## Prerequisites
+
+You will need:
+
+* [scip-python](https://github.com/sourcegraph/scip-python), installable with `npm install -g @sourcegraph/scip-python`
+* [scip-to-glean](#installing-scip-to-glean), the SCIP-to-Glean converter
 
 ## Run the indexer
 
@@ -35,6 +42,19 @@ Python source can also be indexed directly from the [Glean shell](../shell.md):
 ```
 
 The shell will pick a DB name and hash for you based on `DIR`.
+
+## Installing scip-to-glean
+
+All SCIP-based indexers require the `scip-to-glean` converter, which
+converts SCIP protobuf output into Glean facts. Install it with:
+
+```
+cargo install --git https://github.com/facebookincubator/Glean \
+  --path glean/lang/scip/indexer/scip_to_glean/cli
+```
+
+This installs the `scip-to-glean` binary into `~/.cargo/bin`. Make
+sure this is on your `PATH`.
 
 ## Schema
 

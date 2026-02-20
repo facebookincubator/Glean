@@ -12,6 +12,10 @@ import System.Environment
 import qualified Glean.Glass.Regression.SCIP as Glass
 
 main :: IO ()
-main = getArgs >>= \args -> withArgs (["--input", path] ++ args) Glass.main
+main = getArgs >>= \args ->
+  withArgs (["--scip-to-glean", scipToGlean, "--input", path] ++ args)
+    Glass.main
   where
     path = "glean/lang/scip/tests/cases/index.scip"
+    scipToGlean =
+      "glean/lang/scip/indexer/scip_to_glean/target/release/scip-to-glean"

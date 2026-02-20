@@ -14,10 +14,7 @@ module Glean.Indexer.SCIP (
 import Options.Applicative
 import Data.Text ( Text )
 import Control.Monad ( forM_ )
-import Data.Maybe ( fromMaybe )
-import System.FilePath ( (</>) )
-import System.Process ( callProcess )
-import qualified Data.Aeson as Aeson
+import System.IO.Temp (withSystemTempDirectory)
 
 import Glean.Derive
 import Glean.Indexer
@@ -27,7 +24,6 @@ import Glean.Write
 
 import qualified Glean
 import System.Directory (doesFileExist)
-import System.IO.Temp (withSystemTempDirectory)
 import Util.OptParse (maybeStrOption)
 
 -- | A generic SCIP indexer, for existing scip files
@@ -45,8 +41,9 @@ options =
       help "Optional path to a specific scip index file")
     <*> maybeStrOption (
       long "scip-to-glean" <>
-      help "Path to scip-to-glean indexer binary. If not provided, uses \
-           \the haskell indexer instead")
+      help "Path to scip-to-glean binary. By default, looks for \
+           \scip-to-glean on PATH and falls back to the Haskell \
+           \converter if not found")
 
 -- | An indexer that just slurps an existing SCIP file. Usage:
 --
@@ -66,14 +63,9 @@ indexer = Indexer {
         if mFile
           then pure indexerRoot
           else error "Neither --input nor --root are scip files"
-    val <- case scipToGlean of
-      Nothing -> SCIP.processSCIP Nothing False Nothing Nothing scipFile
-      Just rustIndexer -> withSystemTempDirectory "glean-scip" $ \tmpDir -> do
-        let jsonPath = tmpDir </> "index.json"
-        callProcess rustIndexer
-          ["--input", scipFile, "--infer-language", "--output", jsonPath]
-        mJson <- Aeson.decodeFileStrict jsonPath
-        return $ fromMaybe (error "rust indexer did not produce JSON") mJson
+    bin <- SCIP.resolveScipToGlean scipToGlean
+    val <- withSystemTempDirectory "glean-scip" $ \tmpDir ->
+      SCIP.runRustIndexer bin scipFile tmpDir
     sendJsonBatches backend repo "scip" val
     derive backend repo
   }

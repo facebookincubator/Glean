@@ -1,5 +1,12 @@
 [
   "@generated",
+  { "key": "example.py/local 0" },
+  { "key": "example.py/local 1" },
+  { "key": "example.py/local 2" },
+  { "key": "example.py/local 3" },
+  { "key": "example.py/local 4" },
+  { "key": "example.py/local 5" },
+  { "key": "example.py/local 6" },
   { "key": "scip-python python . test example/__init__:" },
   { "key": "scip-python python . test example/colors." },
   { "key": "scip-python python . test example/delay." },

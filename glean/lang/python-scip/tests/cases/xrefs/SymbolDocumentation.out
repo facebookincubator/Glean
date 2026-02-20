@@ -2,6 +2,18 @@
   "@generated",
   {
     "key": {
+      "symbol": { "key": "example.py/local 0" },
+      "docs": { "key": "```python\u000abuiltins.float\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.py/local 1" },
+      "docs": { "key": "```python\u000abuiltins.float\u000a```" }
+    }
+  },
+  {
+    "key": {
       "symbol": { "key": "scip-python python . test example/__init__:" },
       "docs": { "key": "(module) example" }
     }
