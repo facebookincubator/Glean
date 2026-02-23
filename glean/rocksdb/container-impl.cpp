@@ -230,6 +230,13 @@ ContainerImpl::ContainerImpl(
       auto family = Family::family(i);
       assert(family != nullptr);
 
+      // Backward compatibility: don't create batchDescriptors column family
+      // for old DBs in read-only mode. This column family is droped in
+      // optimisation step and only used during writing.
+      if (mode == Mode::ReadOnly && family == &Family::batchDescriptors) {
+        continue;
+      }
+
       rocksdb::ColumnFamilyOptions opts(options);
       family->options(opts);
       check(db->CreateColumnFamily(opts, family->name, &families[i]));
