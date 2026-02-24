@@ -1,0 +1,16 @@
+[package]
+name = "scip_symbol_parse"
+version = "0.1.0"
+edition = "2021"
+license = "BSD-3-Clause"
+description = "CLI tool for parsing SCIP symbols"
+
+[[bin]]
+name = "scip-symbol-parse"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+scip_symbol = { path = "../scip_symbol" }
+serde_json = "1"

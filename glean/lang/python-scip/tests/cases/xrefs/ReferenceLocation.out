@@ -2111,6 +2111,33 @@
     "key": {
       "file": { "key": "example.py" },
       "range": {
+        "lineBegin": 77,
+        "columnBegin": 19,
+        "lineEnd": 77,
+        "columnEnd": 19
+      },
+      "xref": {
+        "key": {
+          "symbol": { "key": "example.py/local 0" },
+          "location": {
+            "key": {
+              "file": { "key": "example.py" },
+              "range": {
+                "lineBegin": 77,
+                "columnBegin": 19,
+                "lineEnd": 77,
+                "columnEnd": 19
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.py" },
+      "range": {
         "lineBegin": 78,
         "columnBegin": 8,
         "lineEnd": 78,
@@ -2127,6 +2154,33 @@
                 "columnBegin": 8,
                 "lineEnd": 78,
                 "columnEnd": 11
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.py" },
+      "range": {
+        "lineBegin": 79,
+        "columnBegin": 9,
+        "lineEnd": 79,
+        "columnEnd": 9
+      },
+      "xref": {
+        "key": {
+          "symbol": { "key": "example.py/local 0" },
+          "location": {
+            "key": {
+              "file": { "key": "example.py" },
+              "range": {
+                "lineBegin": 79,
+                "columnBegin": 9,
+                "lineEnd": 79,
+                "columnEnd": 9
               }
             }
           }
@@ -2239,6 +2293,33 @@
                 "columnBegin": 14,
                 "lineEnd": 80,
                 "columnEnd": 17
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.py" },
+      "range": {
+        "lineBegin": 80,
+        "columnBegin": 19,
+        "lineEnd": 80,
+        "columnEnd": 19
+      },
+      "xref": {
+        "key": {
+          "symbol": { "key": "example.py/local 0" },
+          "location": {
+            "key": {
+              "file": { "key": "example.py" },
+              "range": {
+                "lineBegin": 80,
+                "columnBegin": 19,
+                "lineEnd": 80,
+                "columnEnd": 19
               }
             }
           }
@@ -2389,6 +2470,33 @@
     "key": {
       "file": { "key": "example.py" },
       "range": {
+        "lineBegin": 83,
+        "columnBegin": 19,
+        "lineEnd": 83,
+        "columnEnd": 19
+      },
+      "xref": {
+        "key": {
+          "symbol": { "key": "example.py/local 1" },
+          "location": {
+            "key": {
+              "file": { "key": "example.py" },
+              "range": {
+                "lineBegin": 83,
+                "columnBegin": 19,
+                "lineEnd": 83,
+                "columnEnd": 19
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.py" },
+      "range": {
         "lineBegin": 84,
         "columnBegin": 8,
         "lineEnd": 84,
@@ -2405,6 +2513,33 @@
                 "columnBegin": 8,
                 "lineEnd": 84,
                 "columnEnd": 11
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.py" },
+      "range": {
+        "lineBegin": 85,
+        "columnBegin": 9,
+        "lineEnd": 85,
+        "columnEnd": 9
+      },
+      "xref": {
+        "key": {
+          "symbol": { "key": "example.py/local 1" },
+          "location": {
+            "key": {
+              "file": { "key": "example.py" },
+              "range": {
+                "lineBegin": 85,
+                "columnBegin": 9,
+                "lineEnd": 85,
+                "columnEnd": 9
               }
             }
           }
@@ -2517,6 +2652,33 @@
                 "columnBegin": 14,
                 "lineEnd": 86,
                 "columnEnd": 17
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.py" },
+      "range": {
+        "lineBegin": 86,
+        "columnBegin": 19,
+        "lineEnd": 86,
+        "columnEnd": 19
+      },
+      "xref": {
+        "key": {
+          "symbol": { "key": "example.py/local 1" },
+          "location": {
+            "key": {
+              "file": { "key": "example.py" },
+              "range": {
+                "lineBegin": 86,
+                "columnBegin": 19,
+                "lineEnd": 86,
+                "columnEnd": 19
               }
             }
           }
@@ -3784,6 +3946,33 @@
       "file": { "key": "example.py" },
       "range": {
         "lineBegin": 119,
+        "columnBegin": 43,
+        "lineEnd": 119,
+        "columnEnd": 48
+      },
+      "xref": {
+        "key": {
+          "symbol": { "key": "example.py/local 2" },
+          "location": {
+            "key": {
+              "file": { "key": "example.py" },
+              "range": {
+                "lineBegin": 119,
+                "columnBegin": 43,
+                "lineEnd": 119,
+                "columnEnd": 48
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.py" },
+      "range": {
+        "lineBegin": 119,
         "columnBegin": 50,
         "lineEnd": 119,
         "columnEnd": 54
@@ -4844,6 +5033,33 @@
       "file": { "key": "example.py" },
       "range": {
         "lineBegin": 141,
+        "columnBegin": 43,
+        "lineEnd": 141,
+        "columnEnd": 48
+      },
+      "xref": {
+        "key": {
+          "symbol": { "key": "example.py/local 3" },
+          "location": {
+            "key": {
+              "file": { "key": "example.py" },
+              "range": {
+                "lineBegin": 141,
+                "columnBegin": 43,
+                "lineEnd": 141,
+                "columnEnd": 48
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.py" },
+      "range": {
+        "lineBegin": 141,
         "columnBegin": 50,
         "lineEnd": 141,
         "columnEnd": 54
@@ -4973,6 +5189,33 @@
                 "columnBegin": 18,
                 "lineEnd": 146,
                 "columnEnd": 22
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.py" },
+      "range": {
+        "lineBegin": 146,
+        "columnBegin": 24,
+        "lineEnd": 146,
+        "columnEnd": 26
+      },
+      "xref": {
+        "key": {
+          "symbol": { "key": "example.py/local 4" },
+          "location": {
+            "key": {
+              "file": { "key": "example.py" },
+              "range": {
+                "lineBegin": 146,
+                "columnBegin": 24,
+                "lineEnd": 146,
+                "columnEnd": 26
               }
             }
           }
@@ -5270,6 +5513,33 @@
                 "columnBegin": 33,
                 "lineEnd": 149,
                 "columnEnd": 33
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.py" },
+      "range": {
+        "lineBegin": 150,
+        "columnBegin": 8,
+        "lineEnd": 150,
+        "columnEnd": 10
+      },
+      "xref": {
+        "key": {
+          "symbol": { "key": "example.py/local 5" },
+          "location": {
+            "key": {
+              "file": { "key": "example.py" },
+              "range": {
+                "lineBegin": 150,
+                "columnBegin": 8,
+                "lineEnd": 150,
+                "columnEnd": 10
               }
             }
           }
@@ -6293,6 +6563,33 @@
                 "columnBegin": 17,
                 "lineEnd": 169,
                 "columnEnd": 21
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.py" },
+      "range": {
+        "lineBegin": 170,
+        "columnBegin": 47,
+        "lineEnd": 170,
+        "columnEnd": 52
+      },
+      "xref": {
+        "key": {
+          "symbol": { "key": "example.py/local 6" },
+          "location": {
+            "key": {
+              "file": { "key": "example.py" },
+              "range": {
+                "lineBegin": 170,
+                "columnBegin": 47,
+                "lineEnd": 170,
+                "columnEnd": 52
               }
             }
           }

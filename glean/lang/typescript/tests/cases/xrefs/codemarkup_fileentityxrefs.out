@@ -5,56 +5,7 @@
       "file": { "key": "example.ts" },
       "xref": {
         "target": {
-          "name": "`example.ts`/Git",
-          "file": { "key": "example.ts" },
-          "location": {
-            "range": {
-              "file": { "key": "example.ts" },
-              "lineBegin": 14,
-              "columnBegin": 7,
-              "lineEnd": 14,
-              "columnEnd": 9
-            }
-          }
-        },
-        "source": {
-          "range": {
-            "file": { "key": "example.ts" },
-            "lineBegin": 46,
-            "columnBegin": 58,
-            "lineEnd": 46,
-            "columnEnd": 60
-          }
-        }
-      },
-      "entity": {
-        "typescript": {
-          "defn": {
-            "key": {
-              "symbol": { "key": "scip-typescript npm . . `example.ts`/Git#" },
-              "location": {
-                "key": {
-                  "file": { "key": "example.ts" },
-                  "range": {
-                    "lineBegin": 14,
-                    "columnBegin": 7,
-                    "lineEnd": 14,
-                    "columnEnd": 9
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "example.ts" },
-      "xref": {
-        "target": {
-          "name": "`example.ts`/Git#`<constructor>`()",
+          "name": "<constructor>",
           "file": { "key": "example.ts" },
           "location": {
             "range": {
@@ -105,7 +56,56 @@
       "file": { "key": "example.ts" },
       "xref": {
         "target": {
-          "name": "`example.ts`/Git#`<constructor>`().(dir",
+          "name": "Git",
+          "file": { "key": "example.ts" },
+          "location": {
+            "range": {
+              "file": { "key": "example.ts" },
+              "lineBegin": 14,
+              "columnBegin": 7,
+              "lineEnd": 14,
+              "columnEnd": 9
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "example.ts" },
+            "lineBegin": 46,
+            "columnBegin": 58,
+            "lineEnd": 46,
+            "columnEnd": 60
+          }
+        }
+      },
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "scip-typescript npm . . `example.ts`/Git#" },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 14,
+                    "columnBegin": 7,
+                    "lineEnd": 14,
+                    "columnEnd": 9
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.ts" },
+      "xref": {
+        "target": {
+          "name": "dir",
           "file": { "key": "example.ts" },
           "location": {
             "range": {
@@ -156,7 +156,7 @@
       "file": { "key": "example.ts" },
       "xref": {
         "target": {
-          "name": "`example.ts`/Git#`<constructor>`().(dir",
+          "name": "dir",
           "file": { "key": "example.ts" },
           "location": {
             "range": {
@@ -207,7 +207,7 @@
       "file": { "key": "example.ts" },
       "xref": {
         "target": {
-          "name": "`example.ts`/Git#`<constructor>`().(dir",
+          "name": "dir",
           "file": { "key": "example.ts" },
           "location": {
             "range": {
@@ -258,7 +258,7 @@
       "file": { "key": "example.ts" },
       "xref": {
         "target": {
-          "name": "`example.ts`/Git#`<constructor>`().(dir",
+          "name": "dir",
           "file": { "key": "example.ts" },
           "location": {
             "range": {
@@ -309,7 +309,7 @@
       "file": { "key": "example.ts" },
       "xref": {
         "target": {
-          "name": "`example.ts`/Git#`<constructor>`().(dir",
+          "name": "dir",
           "file": { "key": "example.ts" },
           "location": {
             "range": {
@@ -360,7 +360,7 @@
       "file": { "key": "example.ts" },
       "xref": {
         "target": {
-          "name": "`example.ts`/createTempRepo().typeLiteral10:git",
+          "name": "git",
           "file": { "key": "example.ts" },
           "location": {
             "range": {
@@ -397,57 +397,6 @@
                     "columnBegin": 53,
                     "lineEnd": 46,
                     "columnEnd": 55
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "example.ts" },
-      "xref": {
-        "target": {
-          "name": "`example.ts`/createTempRepo().typeLiteral10:repoDir",
-          "file": { "key": "example.ts" },
-          "location": {
-            "range": {
-              "file": { "key": "example.ts" },
-              "lineBegin": 46,
-              "columnBegin": 36,
-              "lineEnd": 46,
-              "columnEnd": 42
-            }
-          }
-        },
-        "source": {
-          "range": {
-            "file": { "key": "example.ts" },
-            "lineBegin": 51,
-            "columnBegin": 11,
-            "lineEnd": 51,
-            "columnEnd": 17
-          }
-        }
-      },
-      "entity": {
-        "typescript": {
-          "defn": {
-            "key": {
-              "symbol": {
-                "key": "scip-typescript npm . . `example.ts`/createTempRepo().typeLiteral10:repoDir."
-              },
-              "location": {
-                "key": {
-                  "file": { "key": "example.ts" },
-                  "range": {
-                    "lineBegin": 46,
-                    "columnBegin": 36,
-                    "lineEnd": 46,
-                    "columnEnd": 42
                   }
                 }
               }
@@ -889,6 +838,57 @@
                     "columnBegin": 11,
                     "lineEnd": 35,
                     "columnEnd": 16
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.ts" },
+      "xref": {
+        "target": {
+          "name": "repoDir",
+          "file": { "key": "example.ts" },
+          "location": {
+            "range": {
+              "file": { "key": "example.ts" },
+              "lineBegin": 46,
+              "columnBegin": 36,
+              "lineEnd": 46,
+              "columnEnd": 42
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "example.ts" },
+            "lineBegin": 51,
+            "columnBegin": 11,
+            "lineEnd": 51,
+            "columnEnd": 17
+          }
+        }
+      },
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . `example.ts`/createTempRepo().typeLiteral10:repoDir."
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 46,
+                    "columnBegin": 36,
+                    "lineEnd": 46,
+                    "columnEnd": 42
                   }
                 }
               }

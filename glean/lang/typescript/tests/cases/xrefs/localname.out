@@ -51,13 +51,13 @@
   {
     "key": {
       "symbol": { "key": "scip-typescript npm . . `example.ts`/" },
-      "name": { "key": "`example.ts`" }
+      "name": { "key": "example.ts" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-typescript npm . . `example.ts`/Git#" },
-      "name": { "key": "`example.ts`/Git" }
+      "name": { "key": "Git" }
     }
   },
   {
@@ -65,7 +65,7 @@
       "symbol": {
         "key": "scip-typescript npm . . `example.ts`/Git#`<constructor>`()."
       },
-      "name": { "key": "`example.ts`/Git#`<constructor>`()" }
+      "name": { "key": "<constructor>" }
     }
   },
   {
@@ -73,13 +73,13 @@
       "symbol": {
         "key": "scip-typescript npm . . `example.ts`/Git#`<constructor>`().(dir)"
       },
-      "name": { "key": "`example.ts`/Git#`<constructor>`().(dir" }
+      "name": { "key": "dir" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-typescript npm . . `example.ts`/Git#commit()." },
-      "name": { "key": "`example.ts`/Git#commit()" }
+      "name": { "key": "commit" }
     }
   },
   {
@@ -87,7 +87,7 @@
       "symbol": {
         "key": "scip-typescript npm . . `example.ts`/Git#commit().(author)"
       },
-      "name": { "key": "`example.ts`/Git#commit().(author" }
+      "name": { "key": "author" }
     }
   },
   {
@@ -95,7 +95,7 @@
       "symbol": {
         "key": "scip-typescript npm . . `example.ts`/Git#commit().(date)"
       },
-      "name": { "key": "`example.ts`/Git#commit().(date" }
+      "name": { "key": "date" }
     }
   },
   {
@@ -103,7 +103,7 @@
       "symbol": {
         "key": "scip-typescript npm . . `example.ts`/Git#commit().(msg)"
       },
-      "name": { "key": "`example.ts`/Git#commit().(msg" }
+      "name": { "key": "msg" }
     }
   },
   {
@@ -111,7 +111,7 @@
       "symbol": {
         "key": "scip-typescript npm . . `example.ts`/createTempRepo()."
       },
-      "name": { "key": "`example.ts`/createTempRepo()" }
+      "name": { "key": "createTempRepo" }
     }
   },
   {
@@ -119,7 +119,7 @@
       "symbol": {
         "key": "scip-typescript npm . . `example.ts`/createTempRepo().typeLiteral10:git."
       },
-      "name": { "key": "`example.ts`/createTempRepo().typeLiteral10:git" }
+      "name": { "key": "git" }
     }
   },
   {
@@ -127,67 +127,67 @@
       "symbol": {
         "key": "scip-typescript npm . . `example.ts`/createTempRepo().typeLiteral10:repoDir."
       },
-      "name": { "key": "`example.ts`/createTempRepo().typeLiteral10:repoDir" }
+      "name": { "key": "repoDir" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-typescript npm . . `example.ts`/cwd0:" },
-      "name": { "key": "`example.ts`/cwd0" }
+      "name": { "key": "cwd0" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-typescript npm . . `example.ts`/cwd1:" },
-      "name": { "key": "`example.ts`/cwd1" }
+      "name": { "key": "cwd1" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-typescript npm . . `example.ts`/cwd2:" },
-      "name": { "key": "`example.ts`/cwd2" }
+      "name": { "key": "cwd2" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-typescript npm . . `example.ts`/cwd3:" },
-      "name": { "key": "`example.ts`/cwd3" }
+      "name": { "key": "cwd3" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-typescript npm . . `example.ts`/cwd4:" },
-      "name": { "key": "`example.ts`/cwd4" }
+      "name": { "key": "cwd4" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-typescript npm . . `example.ts`/silent0:" },
-      "name": { "key": "`example.ts`/silent0" }
+      "name": { "key": "silent0" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-typescript npm . . `example.ts`/silent1:" },
-      "name": { "key": "`example.ts`/silent1" }
+      "name": { "key": "silent1" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-typescript npm . . `example.ts`/silent2:" },
-      "name": { "key": "`example.ts`/silent2" }
+      "name": { "key": "silent2" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-typescript npm . . `example.ts`/silent3:" },
-      "name": { "key": "`example.ts`/silent3" }
+      "name": { "key": "silent3" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-typescript npm . . `example.ts`/silent4:" },
-      "name": { "key": "`example.ts`/silent4" }
+      "name": { "key": "silent4" }
     }
   },
   {
@@ -195,7 +195,7 @@
       "symbol": {
         "key": "scip-typescript npm typescript 5.9.3 lib/`lib.es2022.error.d.ts`/Error#"
       },
-      "name": { "key": "lib/`lib.es2022.error.d.ts`/Error" }
+      "name": { "key": "Error" }
     }
   },
   {
@@ -203,7 +203,7 @@
       "symbol": {
         "key": "scip-typescript npm typescript 5.9.3 lib/`lib.es5.d.ts`/Error#"
       },
-      "name": { "key": "lib/`lib.es5.d.ts`/Error" }
+      "name": { "key": "Error" }
     }
   },
   {
@@ -211,7 +211,7 @@
       "symbol": {
         "key": "scip-typescript npm typescript 5.9.3 lib/`lib.es5.d.ts`/Error."
       },
-      "name": { "key": "lib/`lib.es5.d.ts`/Error" }
+      "name": { "key": "Error" }
     }
   }
 ]

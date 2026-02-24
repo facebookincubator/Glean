@@ -40,7 +40,7 @@
   {
     "key": {
       "location": {
-        "name": "f1_go()",
+        "name": "f1_go",
         "file": { "key": "src/lib.rs" },
         "location": {
           "range": {
@@ -410,7 +410,7 @@
   {
     "key": {
       "location": {
-        "name": "sum_f1()",
+        "name": "sum_f1",
         "file": { "key": "src/lib.rs" },
         "location": {
           "range": {
@@ -447,7 +447,7 @@
   {
     "key": {
       "location": {
-        "name": "sum_f2()",
+        "name": "sum_f2",
         "file": { "key": "src/lib.rs" },
         "location": {
           "range": {
@@ -484,7 +484,7 @@
   {
     "key": {
       "location": {
-        "name": "sum_f3()",
+        "name": "sum_f3",
         "file": { "key": "src/lib.rs" },
         "location": {
           "range": {

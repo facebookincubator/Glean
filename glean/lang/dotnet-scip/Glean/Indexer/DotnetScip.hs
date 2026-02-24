@@ -18,7 +18,7 @@ import Glean.SCIP.Driver as SCIP
 
 data DotnetScip = DotnetScip
     { dotnetScipBinary :: FilePath
-    , scipRustIndexer :: Maybe FilePath
+    , scipToGlean :: Maybe FilePath
     }
 
 options :: Parser DotnetScip
@@ -27,10 +27,17 @@ options = do
         long "scip-dotnet" <>
         value "scip-dotnet" <>
         help "path to scip-dotnet binary"
-    scipRustIndexer <- optional (strOption $
-        long "rust-indexer" <>
-        help "Path to the rust indexer binary. If not provided, uses the haskell indexer instead")
-    return DotnetScip{..}
+    scipToGlean <- optional (strOption $
+        long "scip-to-glean" <>
+        help "Path to the scip-to-glean binary. By default, looks for \
+             \scip-to-glean on PATH and falls back to the Haskell converter \
+             \if not found")
+    scipToGleanCompat <- optional (strOption $
+        long "rust-indexer" <> hidden)
+    return DotnetScip
+      { dotnetScipBinary
+      , scipToGlean = scipToGlean <|> scipToGleanCompat
+      }
 
 indexer :: Indexer DotnetScip
 indexer = Indexer {
@@ -44,8 +51,7 @@ indexer = Indexer {
                 scipOutDir = Nothing,
                 scipRoot = indexerRoot,
                 scipWritesLocal = True,
-                scipLanguage = Just SCIP.CSharp,
-                scipRustIndexer = scipRustIndexer
+                scipToGlean = scipToGlean
             }
             sendJsonBatches backend repo (dotnetScipBinary <> "/scip") val
             derive backend repo

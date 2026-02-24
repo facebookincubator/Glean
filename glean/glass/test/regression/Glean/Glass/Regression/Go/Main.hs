@@ -12,6 +12,10 @@ import System.Environment
 import qualified Glean.Glass.Regression.Go as Glass
 
 main :: IO ()
-main = getArgs >>= \args -> withArgs (["--root", path] ++ args) Glass.main
+main = getArgs >>= \args ->
+  withArgs (["--scip-to-glean", scipToGlean, "--root", path] ++ args)
+    Glass.main
   where
     path = "glean/lang/go/tests/cases/xrefs"
+    scipToGlean =
+      "glean/lang/scip/indexer/scip_to_glean/target/release/scip-to-glean"

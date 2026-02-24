@@ -19,8 +19,8 @@ module Glean.SCIP.Driver (
 
     ScipIndexerParams(..),
     runIndexer,
-    processSCIP,
-    LanguageId(..),
+    resolveScipToGlean,
+    runRustIndexer,
 
   ) where
 
@@ -33,9 +33,6 @@ import System.Process ( callProcess )
 import Text.Printf ( printf )
 import Util.Log ( logInfo )
 import qualified Data.Aeson as Aeson
-import qualified Data.ByteString as B
-
-import Data.SCIP.Angle ( scipToAngle, LanguageId(..) )
 
 data ScipIndexerParams = ScipIndexerParams
   { scipBinary :: FilePath
@@ -44,12 +41,13 @@ data ScipIndexerParams = ScipIndexerParams
   , scipRoot :: FilePath
   , scipWritesLocal :: Bool
      -- ^ e.g. rust-analyzer always writes index.scip to repoDir
-  , scipLanguage :: Maybe LanguageId -- ^ a default language if known
-  , scipRustIndexer :: Maybe FilePath
+  , scipToGlean :: Maybe FilePath
+     -- ^ explicit path to scip-to-glean binary override
   }
 
--- | Run a generic SCIP-producing indexer, and convert to a Glean's scip.angle
--- database returning a single JSON value that can be sent to the Glean server
+-- | Run a generic SCIP-producing indexer, and convert to a
+-- Glean's scip.angle database returning a single JSON value
+-- that can be sent to the Glean server
 runIndexer :: ScipIndexerParams -> IO Aeson.Value
 runIndexer params@ScipIndexerParams{..} = do
   repoDir <- makeAbsolute scipRoot
@@ -59,37 +57,50 @@ runIndexer params@ScipIndexerParams{..} = do
     when scipWritesLocal $ do
         copyFile (repoDir </> "index.scip") scipFile
         removeFile (repoDir </> "index.scip")
-    case scipRustIndexer of
-      Nothing -> processSCIP scipLanguage False Nothing Nothing scipFile
-      Just rustIndexer -> do
-        let jsonPath = scipDir </> "index.json"
-        callProcess rustIndexer
-          ["--input", scipFile, "--infer-language", "--output", jsonPath]
-        mJson <- Aeson.decodeFileStrict jsonPath
-        return $ fromMaybe (error "rust indexer did not produce JSON") mJson
+    bin <- resolveScipToGlean scipToGlean
+    runRustIndexer bin scipFile scipDir
 
 withDirOrTmp :: Maybe FilePath -> (FilePath -> IO a) -> IO a
 withDirOrTmp Nothing f = withSystemTempDirectory "glean-scip" f
 withDirOrTmp (Just dir) f = withCurrentDirectory dir $ f dir
 
--- | Run a SCIP indexer on a repository, put scip dump output into outputFile
+-- | Run a SCIP indexer on a repository, put scip dump output
+-- into outputFile
 runSCIPIndexer :: ScipIndexerParams -> FilePath -> IO ()
 runSCIPIndexer ScipIndexerParams{..} outputFile =
   withCurrentDirectory scipRoot $ do
-    logInfo $ printf "Indexing %s with %s" (takeBaseName scipRoot) scipBinary
+    logInfo $
+      printf "Indexing %s with %s" (takeBaseName scipRoot) scipBinary
     let args = scipArgs outputFile
-    logInfo $ printf "Running command: %s %s" scipBinary (unwords args)
+    logInfo $
+      printf "Running command: %s %s" scipBinary (unwords args)
     callProcess scipBinary args
 
--- | Convert an scip protobufs encoded file into Glean lsif.angle JSON object
-processSCIP
-  :: Maybe LanguageId
-  -> Bool
-  -> Maybe FilePath
-  -> Maybe FilePath
-  -> FilePath
+-- | Resolve which scip-to-glean binary to use.
+-- If an explicit path is given, use it. Otherwise look for
+-- @scip-to-glean@ on PATH.
+resolveScipToGlean :: Maybe FilePath -> IO FilePath
+resolveScipToGlean (Just path) = return path
+resolveScipToGlean Nothing = do
+  mBin <- findExecutable "scip-to-glean"
+  case mBin of
+    Just bin -> do
+      logInfo $ "Found scip-to-glean on PATH: " <> bin
+      return bin
+    Nothing ->
+      error "scip-to-glean not found. Please install it or \
+            \pass --scip-to-glean <path>"
+
+-- | Run the scip-to-glean binary
+runRustIndexer :: FilePath -> FilePath -> FilePath
   -> IO Aeson.Value
-processSCIP mlang inferLanguage mPathPrefix mStripPrefix scipFile = do
-  logInfo $ "Using SCIP from " <> scipFile
-  scipToAngle mlang inferLanguage mPathPrefix mStripPrefix <$>
-    B.readFile scipFile
+runRustIndexer rustIndexer scipFile tmpDir = do
+  let jsonPath = tmpDir </> "index.json"
+  logInfo $ printf "Using Rust SCIP converter: %s" rustIndexer
+  callProcess rustIndexer
+    [ "--input", scipFile
+    , "--infer-language"
+    , "--output", jsonPath ]
+  mJson <- Aeson.decodeFileStrict jsonPath
+  return $
+    fromMaybe (error "scip-to-glean: invalid JSON") mJson

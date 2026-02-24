@@ -7,7 +7,14 @@ sidebar_label: Rust
 import {OssOnly, FbInternalOnly} from 'internaldocs-fb-helpers';
 import {SrcFile,SrcFileLink} from '@site/utils';
 
-To index [Rust](https://www.rust-lang.org/) we use [rust-analyzer](https://rust-analyzer.github.io/) in LSIF mode. Pre-built binaries of [rust-analyzer](https://github.com/rust-analyzer/rust-analyzer/releases) can be used as indexers that emit LSIF from Rust source.
+To index [Rust](https://www.rust-lang.org/) we use [rust-analyzer](https://rust-analyzer.github.io/) in SCIP mode.
+
+## Prerequisites
+
+You will need:
+
+* [rust-analyzer](https://rust-analyzer.github.io/), available via `rustup component add rust-analyzer`
+* [scip-to-glean](python-scip.md#installing-scip-to-glean), the SCIP-to-Glean converter
 
 ## Run the indexer
 
@@ -16,7 +23,7 @@ the `glean` executable is on your `PATH`.
 
 Index your Rust repository with:
 ```
-glean index rust-lsif DIR --db-root DB --db NAME/INSTANCE
+glean index rust-scip DIR --db-root DB --db NAME/INSTANCE
 ```
 
 where
@@ -30,11 +37,11 @@ where
 Rust source can also be indexed directly from the [Glean shell](../shell.md):
 
 ```
-:index rust-lsif DIR
+:index rust-scip DIR
 ```
 
 The shell will pick a DB name and hash for you based on `DIR`.
 
 ## Schema
 
-The schema is in <SrcFile file="glean/schema/source/lsif.angle" />
+The schema is in <SrcFile file="glean/schema/source/scip.angle" />
