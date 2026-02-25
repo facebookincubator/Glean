@@ -242,7 +242,9 @@ size_t storeNat(unsigned char* out, uint64_t val) {
     return 1;
   } else if (val < 0x4080) {
     folly::storeUnaligned<uint16_t>(
-        out, folly::Endian::big(static_cast<uint16_t>(val - 0x80)) | 0x80);
+        out,
+        static_cast<uint16_t>(
+            folly::Endian::big(static_cast<uint16_t>(val - 0x80)) | 0x80));
     return 2;
   } else if (val < 0x204080) {
     val -= 0x4080;
