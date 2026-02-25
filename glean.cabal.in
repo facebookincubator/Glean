@@ -199,10 +199,11 @@ common deps
         ghc-prim >=0.5.2.0 && <0.11,
         parsec ^>=3.1.13.0,
         haxl >= 2.1.2.0 && < 2.6,
-        hinotify ^>= 0.4.1
+        fsnotify ^>= 0.4.2.0
+
 
 common hsc2hs-cpp
-    hsc2hs-options: --cc=g++ --lflag=-lstdc++ --cflag=-D__HSC2HS__=1 --cflag=-std=c++17
+    hsc2hs-options: --cc=c++ --lflag=-lstdc++ --cflag=-D__HSC2HS__=1 --cflag=-std=c++17
 
 common thrift-server
     if flag(fbthrift)
@@ -398,8 +399,9 @@ library rts
         glean/rts/thrift.h
         glean/rts/timer.h
         glean/rts/validate.h
-    -- __atomic_is_lock_free missing with clang
-    extra-libraries: atomic
+    if os(linux)
+        -- __atomic_is_lock_free missing with clang
+        extra-libraries: atomic
     pkgconfig-depends: libunwind, libglog, icu-uc, gflags, libxxhash
 
 library storage
@@ -2012,6 +2014,10 @@ common angle-test
         glean:schema,
         glean:typed
 
+common util-test
+    build-depends:
+        glean:stubs,
+
 test-suite angle-test-angle
     import: test, angle-test
     type: exitcode-stdio-1.0
@@ -2255,6 +2261,15 @@ test-suite catalog
         QuickCheck,
         quickcheck-io,
         glean:util
+
+test-suite configprovider
+    import: test, util-test
+    type: exitcode-stdio-1.0
+    main-is: ConfigProviderTest.hs
+    ghc-options: -main-is ConfigProviderTest
+    hs-source-dirs: glean/util/tests
+    build-depends:
+        glean:util,
 
 test-suite lifecycle
     import: test
