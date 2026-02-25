@@ -295,7 +295,7 @@ stored F where FilePackage { F, _, true }
 # none of the files that refer to any of the declarations
 # in F belong to package 'prod'
 predicate FileHasRedundantPackageOverride : src.File
-F where 
+F where
   hack.FileHasPackageOverride F;
   hack.FilePackage { file = F, package_ = "prod" };
   !(hack.FileDeclarations { file = F, declarations = Decls };
@@ -303,7 +303,7 @@ F where
     Target = hack.XRefTarget { declaration = Decl };
     hack.TargetUses { target = Target, file = ReferralFile };
     hack.FilePackage { file = ReferralFile, package_ = "prod" })
-    
+
 # Infos related to a hack module
 predicate ModuleDefinition :
   {
@@ -598,6 +598,15 @@ predicate TargetUsesAbs :
   }
   { T, F, prim.relToAbsByteSpans U } where
   hack.TargetUses { target = T, file = F, uses = U }
+
+# When building the prod deployment not all references are followed
+# This relation records the files that use the target in a position
+# NOT followed when building the prod deployment.
+predicate TargetNotUsedInProdBuild :
+  {
+    target: hack.XRefTarget,
+    file: src.File,
+  }
 
 predicate DeclarationTarget :
   {
