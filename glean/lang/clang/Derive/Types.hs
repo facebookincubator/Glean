@@ -52,8 +52,6 @@ data Config = Config
   , cfgDebugPrintReferences :: Bool  -- ^ function-calls pass
   , cfgBatchSize :: Int -- ^ batch size for function-calls
   , cfgIncremental :: Bool  -- ^ derive incrementally
-  , cfgTestedFileShards :: Int -- Number of shards for --tested-file deriver
-  , cfgTestedFileShard :: Int -- Shard number for ---tested-file deriver
   }
 
 -- | Only used for regression testing derived passes
@@ -77,8 +75,6 @@ testConfig repo = Config
   , cfgMatchAlgorithm = def
   , cfgDebugPrintReferences = False
   , cfgIncremental = False
-  , cfgTestedFileShards = 1
-  , cfgTestedFileShard = 0
   , cfgBatchSize = 1
   }
 
@@ -134,16 +130,6 @@ options = do
     -- ignored for backwards-compat
   cfgIncremental <- O.switch $
     O.long "incremental"
-  cfgTestedFileShards <- O.option O.auto $
-    O.long "tested-file-shards"
-    <> O.metavar "N"
-    <> O.value 1
-    <> O.help "number of file shards for the --tested-file deriver"
-  cfgTestedFileShard <- O.option O.auto $
-    O.long "tested-file-shard"
-    <> O.metavar "N"
-    <> O.value 0
-    <> O.help "the shard number to filter files for ---tested-file deriver"
   cfgBatchSize <- O.option O.auto $
     O.long "batch-size"
     <> O.metavar "N"
