@@ -51,6 +51,7 @@ import Glean.Util.Some ( Some(Some) )
 import Glean.Glass.RepoMapping -- site-specific
 import qualified Glean.Glass.Env as Glass
 import Glean.Glass.Repos (withLatestRepos)
+import Glean.Glass.SourceControl (setCallerInfo)
 import qualified Glean.Glass.Options as Glass
 import qualified Glean.Glass.Handler.Documents as Handler
 import qualified Glean.Glass.Handler.Symbols as Handler
@@ -58,8 +59,8 @@ import Glean.Glass.GlassService.Service ( GlassServiceCommand(..) )
 
 import Glean.Glass.Types
   ( GlassException (GlassException, glassException_reasons),
-    GlassExceptionReason (..), RequestOptions)
-import Glean.Glass.Env (Env'(tracer), Env)
+    GlassExceptionReason (..), RequestOptions(..))
+import Glean.Glass.Env (Env'(tracer, sourceControl), Env)
 import Glean.Glass.Tracer ( isTracingEnabled )
 import Glean.Glass.Handler.Cxx as Cxx
 import Glean.Glass.Tracing
@@ -191,7 +192,13 @@ glassHandler :: Glass.Env' GlassTraceWithId -> GlassServiceCommand r -> IO r
 glassHandler env0 cmd =
   Glass.withAllocationLimit env0 $
   withRequestTracing env0 $ \env1 ->
-  withCurrentRepoMapping (getOptsFromCommand cmd) env1 $ \env ->
+  withCurrentRepoMapping opts env1 $ \env2 ->
+  let env = env2
+        { sourceControl =
+            setCallerInfo (requestOptions_client_info opts)
+              (sourceControl env2)
+        }
+  in
   tracing env $
   withTimeout $ case cmd of
   SuperFacebookService r -> fb303Handler (Glass.fb303 env) r
@@ -223,6 +230,7 @@ glassHandler env0 cmd =
   UsrToDefinition r opts -> fst <$> Cxx.usrToDefinition env r opts
 
   where
+    opts = getOptsFromCommand cmd
     tracing env
       | SuperFacebookService{} <- cmd = id
       | otherwise = traceMsg (tracer env) (TraceCommand cmd)

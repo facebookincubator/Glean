@@ -53,6 +53,11 @@ class SourceControl scm where
     -> Text
     -> IO Bool
 
+  -- | Set caller identity info for downstream propagation.
+  -- Default implementation is a no-op.
+  setCallerInfo :: Maybe ClientInfo -> scm -> scm
+  setCallerInfo _ scm = scm
+
 data NilSourceControl = NilSourceControl
 
 instance SourceControl NilSourceControl where
@@ -66,3 +71,4 @@ instance SourceControl (Some SourceControl) where
   getFileContentHash (Some scm) = getFileContentHash scm
   isDescendantBranch (Some scm) = isDescendantBranch scm
   getFileLineDiff (Some scm) = getFileLineDiff scm
+  setCallerInfo ci (Some scm) = Some (setCallerInfo ci scm)
