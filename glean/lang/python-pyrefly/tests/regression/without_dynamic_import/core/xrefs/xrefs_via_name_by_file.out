@@ -543,6 +543,10 @@
           "target": { "key": "big_lib.big_func" }
         },
         {
+          "source": { "length": 4, "start": 278 },
+          "target": { "key": "lib.func" }
+        },
+        {
           "source": { "length": 4, "start": 333 },
           "target": { "key": "None" }
         },

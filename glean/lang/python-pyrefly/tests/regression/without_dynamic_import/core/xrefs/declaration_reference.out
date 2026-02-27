@@ -773,6 +773,26 @@
       "source": {
         "imp": {
           "key": {
+            "as_name": { "key": "main.func" },
+            "from_name": { "key": "lib.func" }
+          }
+        }
+      },
+      "target": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "lib.func" },
+            "from_name": { "key": "big_lib.big_func" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
             "as_name": { "key": "main.helper_func" },
             "from_name": { "key": "lib.helper_func" }
           }

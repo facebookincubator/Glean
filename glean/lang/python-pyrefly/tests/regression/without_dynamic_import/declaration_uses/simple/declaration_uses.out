@@ -212,6 +212,22 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
       },
+      "span": { "length": 15, "start": 275 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "mod_b.helper.only_indirectly" },
+            "from_name": { "key": "mod_b.util.only_indirectly" }
+          }
+        }
+      },
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_a/__init__.py"
+      },
       "span": { "length": 15, "start": 363 }
     }
   },
