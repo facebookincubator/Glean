@@ -1239,7 +1239,6 @@ library indexers
         glean/lang/swift
         glean/lang/python-scip
         glean/lang/dotnet-scip
-        glean/lang/rust-lsif
         glean/lang/rust-scip
         glean/lang/typescript
         glean/index
@@ -1258,7 +1257,6 @@ library indexers
         Glean.Indexer.LSIF
         Glean.Indexer.SCIP
         Glean.Indexer.Swift
-        Glean.Indexer.RustLsif
         Glean.Indexer.RustScip
         Glean.Indexer.Typescript
         Glean.Indexer.PythonScip
@@ -1422,25 +1420,7 @@ library scip
     import: fb-haskell, fb-cpp, deps
     hs-source-dirs: glean/lang/scip
     exposed-modules:
-        Data.SCIP.Angle
         Glean.SCIP.Driver
-    build-depends:
-        glean:if-proto-scip-hs,
-        glean:lsif,
-        microlens,
-        proto-lens,
-
--- SCIP support.
---
--- Haskell bindings and spec https://github.com/sourcegraph/scip
---
-library if-proto-scip-hs
-    import: fb-haskell, deps
-    exposed-modules:
-        Proto.Scip,
-        Proto.Scip_Fields
-    hs-source-dirs: glean/lang/scip/proto
-    build-depends: proto-lens-runtime
 
 -- -----------------------------------------------------------------------------
 -- Glass services
@@ -2522,18 +2502,6 @@ test-suite glean-snapshot-codemarkup-haskell
        glean:hie-indexer,
        glean:glean
 
-test-suite glean-snapshot-rust-lsif
-    import: fb-haskell, deps, exe
-    hs-source-dirs: glean/lang/rust-lsif/tests
-    type: exitcode-stdio-1.0
-    main-is: Glean/Regression/RustLsif/Main.hs
-    ghc-options: -main-is Glean.Regression.RustLsif.Main
-    build-depends:
-        glean:regression-test-lib,
-        glean:indexers
-    if !flag(rust-tests)
-        buildable: False
-
 test-suite glean-snapshot-rust-scip
     import: fb-haskell, deps, exe
     hs-source-dirs: glean/lang/rust-scip/tests
@@ -2746,18 +2714,6 @@ test-suite glass-regression-go
         glean:indexers,
         glean:lsif
     if !flag(go-tests)
-        buildable: False
-
-test-suite glass-regression-rust-lsif
-    import: glass-regression-deps, fb-haskell, deps, exe
-    type: exitcode-stdio-1.0
-    main-is: Glean/Glass/Regression/RustLsif/Main.hs
-    ghc-options: -main-is Glean.Glass.Regression.RustLsif.Main
-    other-modules: Glean.Glass.Regression.RustLsif
-    build-depends:
-        glean:indexers,
-        glean:lsif
-    if !flag(rust-tests)
         buildable: False
 
 test-suite glass-regression-java-lsif

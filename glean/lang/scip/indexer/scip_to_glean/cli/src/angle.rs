@@ -13,9 +13,13 @@ use std::path::Path;
 // Use ahash instead of std hashmap for a slight performance gain.
 use ahash::AHashMap as HashMap;
 use anyhow::Result;
+#[cfg(feature = "facebook")]
 use proto_rust::scip::Document;
+#[cfg(feature = "facebook")]
 use proto_rust::scip::Metadata;
+#[cfg(feature = "facebook")]
 use proto_rust::scip::Occurrence;
+#[cfg(feature = "facebook")]
 use proto_rust::scip::SymbolInformation;
 use scip_symbol::Descriptor;
 use scip_symbol::ScipSymbol;
@@ -27,6 +31,14 @@ use crate::decode_scip_range;
 use crate::lsif::LanguageId;
 use crate::lsif::SymbolKind;
 use crate::output::GleanJSONOutput;
+#[cfg(not(feature = "facebook"))]
+use crate::proto::scip::Document;
+#[cfg(not(feature = "facebook"))]
+use crate::proto::scip::Metadata;
+#[cfg(not(feature = "facebook"))]
+use crate::proto::scip::Occurrence;
+#[cfg(not(feature = "facebook"))]
+use crate::proto::scip::SymbolInformation;
 
 // Key used to distinguish different fact hashmaps in Env.
 // Would probably be more efficient to just use an array of hashmaps,
@@ -248,8 +260,8 @@ impl Env {
 
         for document in info.documentation {
             let doc_id = self.next_id();
-            self.out
-                .documentation(doc_id, document.trim().to_string().into_boxed_str());
+            let doc_text: String = document.trim().to_string();
+            self.out.documentation(doc_id, doc_text.into_boxed_str());
             if let Some(sym_id) = sym_id {
                 self.out.symbol_documentation(sym_id, doc_id);
             }

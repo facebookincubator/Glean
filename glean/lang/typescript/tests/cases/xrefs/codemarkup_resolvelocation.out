@@ -3,81 +3,7 @@
   {
     "key": {
       "location": {
-        "name": "`example.ts`",
-        "file": { "key": "example.ts" },
-        "location": {
-          "range": {
-            "file": { "key": "example.ts" },
-            "lineBegin": 9,
-            "columnBegin": 1,
-            "lineEnd": 53,
-            "columnEnd": 1
-          }
-        }
-      },
-      "entity": {
-        "typescript": {
-          "defn": {
-            "key": {
-              "symbol": { "key": "scip-typescript npm . . `example.ts`/" },
-              "location": {
-                "key": {
-                  "file": { "key": "example.ts" },
-                  "range": {
-                    "lineBegin": 1,
-                    "columnBegin": 1,
-                    "lineEnd": 1,
-                    "columnEnd": 1
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "location": {
-        "name": "`example.ts`/Git",
-        "file": { "key": "example.ts" },
-        "location": {
-          "range": {
-            "file": { "key": "example.ts" },
-            "lineBegin": 14,
-            "columnBegin": 1,
-            "lineEnd": 42,
-            "columnEnd": 3
-          }
-        }
-      },
-      "entity": {
-        "typescript": {
-          "defn": {
-            "key": {
-              "symbol": { "key": "scip-typescript npm . . `example.ts`/Git#" },
-              "location": {
-                "key": {
-                  "file": { "key": "example.ts" },
-                  "range": {
-                    "lineBegin": 14,
-                    "columnBegin": 7,
-                    "lineEnd": 14,
-                    "columnEnd": 9
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "location": {
-        "name": "`example.ts`/Git#`<constructor>`()",
+        "name": "<constructor>",
         "file": { "key": "example.ts" },
         "location": {
           "range": {
@@ -116,15 +42,15 @@
   {
     "key": {
       "location": {
-        "name": "`example.ts`/Git#`<constructor>`().(dir",
+        "name": "Git",
         "file": { "key": "example.ts" },
         "location": {
           "range": {
             "file": { "key": "example.ts" },
-            "lineBegin": 15,
-            "columnBegin": 23,
-            "lineEnd": 15,
-            "columnEnd": 25
+            "lineBegin": 14,
+            "columnBegin": 1,
+            "lineEnd": 42,
+            "columnEnd": 3
           }
         }
       },
@@ -132,17 +58,15 @@
         "typescript": {
           "defn": {
             "key": {
-              "symbol": {
-                "key": "scip-typescript npm . . `example.ts`/Git#`<constructor>`().(dir)"
-              },
+              "symbol": { "key": "scip-typescript npm . . `example.ts`/Git#" },
               "location": {
                 "key": {
                   "file": { "key": "example.ts" },
                   "range": {
-                    "lineBegin": 15,
-                    "columnBegin": 23,
-                    "lineEnd": 15,
-                    "columnEnd": 25
+                    "lineBegin": 14,
+                    "columnBegin": 7,
+                    "lineEnd": 14,
+                    "columnEnd": 9
                   }
                 }
               }
@@ -155,46 +79,7 @@
   {
     "key": {
       "location": {
-        "name": "`example.ts`/Git#commit()",
-        "file": { "key": "example.ts" },
-        "location": {
-          "range": {
-            "file": { "key": "example.ts" },
-            "lineBegin": 34,
-            "columnBegin": 3,
-            "lineEnd": 41,
-            "columnEnd": 5
-          }
-        }
-      },
-      "entity": {
-        "typescript": {
-          "defn": {
-            "key": {
-              "symbol": {
-                "key": "scip-typescript npm . . `example.ts`/Git#commit()."
-              },
-              "location": {
-                "key": {
-                  "file": { "key": "example.ts" },
-                  "range": {
-                    "lineBegin": 34,
-                    "columnBegin": 3,
-                    "lineEnd": 34,
-                    "columnEnd": 8
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "location": {
-        "name": "`example.ts`/Git#commit().(author",
+        "name": "author",
         "file": { "key": "example.ts" },
         "location": {
           "range": {
@@ -233,15 +118,15 @@
   {
     "key": {
       "location": {
-        "name": "`example.ts`/Git#commit().(date",
+        "name": "commit",
         "file": { "key": "example.ts" },
         "location": {
           "range": {
             "file": { "key": "example.ts" },
             "lineBegin": 34,
-            "columnBegin": 23,
-            "lineEnd": 34,
-            "columnEnd": 26
+            "columnBegin": 3,
+            "lineEnd": 41,
+            "columnEnd": 5
           }
         }
       },
@@ -250,16 +135,16 @@
           "defn": {
             "key": {
               "symbol": {
-                "key": "scip-typescript npm . . `example.ts`/Git#commit().(date)"
+                "key": "scip-typescript npm . . `example.ts`/Git#commit()."
               },
               "location": {
                 "key": {
                   "file": { "key": "example.ts" },
                   "range": {
                     "lineBegin": 34,
-                    "columnBegin": 23,
+                    "columnBegin": 3,
                     "lineEnd": 34,
-                    "columnEnd": 26
+                    "columnEnd": 8
                   }
                 }
               }
@@ -272,46 +157,7 @@
   {
     "key": {
       "location": {
-        "name": "`example.ts`/Git#commit().(msg",
-        "file": { "key": "example.ts" },
-        "location": {
-          "range": {
-            "file": { "key": "example.ts" },
-            "lineBegin": 34,
-            "columnBegin": 10,
-            "lineEnd": 34,
-            "columnEnd": 12
-          }
-        }
-      },
-      "entity": {
-        "typescript": {
-          "defn": {
-            "key": {
-              "symbol": {
-                "key": "scip-typescript npm . . `example.ts`/Git#commit().(msg)"
-              },
-              "location": {
-                "key": {
-                  "file": { "key": "example.ts" },
-                  "range": {
-                    "lineBegin": 34,
-                    "columnBegin": 10,
-                    "lineEnd": 34,
-                    "columnEnd": 12
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "location": {
-        "name": "`example.ts`/createTempRepo()",
+        "name": "createTempRepo",
         "file": { "key": "example.ts" },
         "location": {
           "range": {
@@ -350,85 +196,7 @@
   {
     "key": {
       "location": {
-        "name": "`example.ts`/createTempRepo().typeLiteral10:git",
-        "file": { "key": "example.ts" },
-        "location": {
-          "range": {
-            "file": { "key": "example.ts" },
-            "lineBegin": 46,
-            "columnBegin": 53,
-            "lineEnd": 46,
-            "columnEnd": 55
-          }
-        }
-      },
-      "entity": {
-        "typescript": {
-          "defn": {
-            "key": {
-              "symbol": {
-                "key": "scip-typescript npm . . `example.ts`/createTempRepo().typeLiteral10:git."
-              },
-              "location": {
-                "key": {
-                  "file": { "key": "example.ts" },
-                  "range": {
-                    "lineBegin": 46,
-                    "columnBegin": 53,
-                    "lineEnd": 46,
-                    "columnEnd": 55
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "location": {
-        "name": "`example.ts`/createTempRepo().typeLiteral10:repoDir",
-        "file": { "key": "example.ts" },
-        "location": {
-          "range": {
-            "file": { "key": "example.ts" },
-            "lineBegin": 46,
-            "columnBegin": 36,
-            "lineEnd": 46,
-            "columnEnd": 42
-          }
-        }
-      },
-      "entity": {
-        "typescript": {
-          "defn": {
-            "key": {
-              "symbol": {
-                "key": "scip-typescript npm . . `example.ts`/createTempRepo().typeLiteral10:repoDir."
-              },
-              "location": {
-                "key": {
-                  "file": { "key": "example.ts" },
-                  "range": {
-                    "lineBegin": 46,
-                    "columnBegin": 36,
-                    "lineEnd": 46,
-                    "columnEnd": 42
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "location": {
-        "name": "`example.ts`/cwd0",
+        "name": "cwd0",
         "file": { "key": "example.ts" },
         "location": {
           "range": {
@@ -465,7 +233,7 @@
   {
     "key": {
       "location": {
-        "name": "`example.ts`/cwd1",
+        "name": "cwd1",
         "file": { "key": "example.ts" },
         "location": {
           "range": {
@@ -502,7 +270,7 @@
   {
     "key": {
       "location": {
-        "name": "`example.ts`/cwd2",
+        "name": "cwd2",
         "file": { "key": "example.ts" },
         "location": {
           "range": {
@@ -539,7 +307,7 @@
   {
     "key": {
       "location": {
-        "name": "`example.ts`/cwd3",
+        "name": "cwd3",
         "file": { "key": "example.ts" },
         "location": {
           "range": {
@@ -576,7 +344,7 @@
   {
     "key": {
       "location": {
-        "name": "`example.ts`/cwd4",
+        "name": "cwd4",
         "file": { "key": "example.ts" },
         "location": {
           "range": {
@@ -613,15 +381,15 @@
   {
     "key": {
       "location": {
-        "name": "`example.ts`/silent0",
+        "name": "date",
         "file": { "key": "example.ts" },
         "location": {
           "range": {
             "file": { "key": "example.ts" },
-            "lineBegin": 16,
-            "columnBegin": 51,
-            "lineEnd": 16,
-            "columnEnd": 56
+            "lineBegin": 34,
+            "columnBegin": 23,
+            "lineEnd": 34,
+            "columnEnd": 26
           }
         }
       },
@@ -630,16 +398,16 @@
           "defn": {
             "key": {
               "symbol": {
-                "key": "scip-typescript npm . . `example.ts`/silent0:"
+                "key": "scip-typescript npm . . `example.ts`/Git#commit().(date)"
               },
               "location": {
                 "key": {
                   "file": { "key": "example.ts" },
                   "range": {
-                    "lineBegin": 16,
-                    "columnBegin": 51,
-                    "lineEnd": 16,
-                    "columnEnd": 56
+                    "lineBegin": 34,
+                    "columnBegin": 23,
+                    "lineEnd": 34,
+                    "columnEnd": 26
                   }
                 }
               }
@@ -652,15 +420,15 @@
   {
     "key": {
       "location": {
-        "name": "`example.ts`/silent1",
+        "name": "dir",
         "file": { "key": "example.ts" },
         "location": {
           "range": {
             "file": { "key": "example.ts" },
-            "lineBegin": 25,
-            "columnBegin": 7,
-            "lineEnd": 25,
-            "columnEnd": 12
+            "lineBegin": 15,
+            "columnBegin": 23,
+            "lineEnd": 15,
+            "columnEnd": 25
           }
         }
       },
@@ -669,16 +437,16 @@
           "defn": {
             "key": {
               "symbol": {
-                "key": "scip-typescript npm . . `example.ts`/silent1:"
+                "key": "scip-typescript npm . . `example.ts`/Git#`<constructor>`().(dir)"
               },
               "location": {
                 "key": {
                   "file": { "key": "example.ts" },
                   "range": {
-                    "lineBegin": 25,
-                    "columnBegin": 7,
-                    "lineEnd": 25,
-                    "columnEnd": 12
+                    "lineBegin": 15,
+                    "columnBegin": 23,
+                    "lineEnd": 15,
+                    "columnEnd": 25
                   }
                 }
               }
@@ -691,15 +459,15 @@
   {
     "key": {
       "location": {
-        "name": "`example.ts`/silent2",
+        "name": "example.ts",
         "file": { "key": "example.ts" },
         "location": {
           "range": {
             "file": { "key": "example.ts" },
-            "lineBegin": 27,
-            "columnBegin": 58,
-            "lineEnd": 27,
-            "columnEnd": 63
+            "lineBegin": 9,
+            "columnBegin": 1,
+            "lineEnd": 53,
+            "columnEnd": 1
           }
         }
       },
@@ -707,17 +475,15 @@
         "typescript": {
           "defn": {
             "key": {
-              "symbol": {
-                "key": "scip-typescript npm . . `example.ts`/silent2:"
-              },
+              "symbol": { "key": "scip-typescript npm . . `example.ts`/" },
               "location": {
                 "key": {
                   "file": { "key": "example.ts" },
                   "range": {
-                    "lineBegin": 27,
-                    "columnBegin": 58,
-                    "lineEnd": 27,
-                    "columnEnd": 63
+                    "lineBegin": 1,
+                    "columnBegin": 1,
+                    "lineEnd": 1,
+                    "columnEnd": 1
                   }
                 }
               }
@@ -730,15 +496,15 @@
   {
     "key": {
       "location": {
-        "name": "`example.ts`/silent3",
+        "name": "git",
         "file": { "key": "example.ts" },
         "location": {
           "range": {
             "file": { "key": "example.ts" },
-            "lineBegin": 31,
-            "columnBegin": 7,
-            "lineEnd": 31,
-            "columnEnd": 12
+            "lineBegin": 46,
+            "columnBegin": 53,
+            "lineEnd": 46,
+            "columnEnd": 55
           }
         }
       },
@@ -747,55 +513,16 @@
           "defn": {
             "key": {
               "symbol": {
-                "key": "scip-typescript npm . . `example.ts`/silent3:"
+                "key": "scip-typescript npm . . `example.ts`/createTempRepo().typeLiteral10:git."
               },
               "location": {
                 "key": {
                   "file": { "key": "example.ts" },
                   "range": {
-                    "lineBegin": 31,
-                    "columnBegin": 7,
-                    "lineEnd": 31,
-                    "columnEnd": 12
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "location": {
-        "name": "`example.ts`/silent4",
-        "file": { "key": "example.ts" },
-        "location": {
-          "range": {
-            "file": { "key": "example.ts" },
-            "lineBegin": 35,
-            "columnBegin": 60,
-            "lineEnd": 35,
-            "columnEnd": 65
-          }
-        }
-      },
-      "entity": {
-        "typescript": {
-          "defn": {
-            "key": {
-              "symbol": {
-                "key": "scip-typescript npm . . `example.ts`/silent4:"
-              },
-              "location": {
-                "key": {
-                  "file": { "key": "example.ts" },
-                  "range": {
-                    "lineBegin": 35,
-                    "columnBegin": 60,
-                    "lineEnd": 35,
-                    "columnEnd": 65
+                    "lineBegin": 46,
+                    "columnBegin": 53,
+                    "lineEnd": 46,
+                    "columnEnd": 55
                   }
                 }
               }
@@ -944,6 +671,279 @@
                     "columnBegin": 11,
                     "lineEnd": 35,
                     "columnEnd": 16
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "location": {
+        "name": "msg",
+        "file": { "key": "example.ts" },
+        "location": {
+          "range": {
+            "file": { "key": "example.ts" },
+            "lineBegin": 34,
+            "columnBegin": 10,
+            "lineEnd": 34,
+            "columnEnd": 12
+          }
+        }
+      },
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . `example.ts`/Git#commit().(msg)"
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 34,
+                    "columnBegin": 10,
+                    "lineEnd": 34,
+                    "columnEnd": 12
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "location": {
+        "name": "repoDir",
+        "file": { "key": "example.ts" },
+        "location": {
+          "range": {
+            "file": { "key": "example.ts" },
+            "lineBegin": 46,
+            "columnBegin": 36,
+            "lineEnd": 46,
+            "columnEnd": 42
+          }
+        }
+      },
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . `example.ts`/createTempRepo().typeLiteral10:repoDir."
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 46,
+                    "columnBegin": 36,
+                    "lineEnd": 46,
+                    "columnEnd": 42
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "location": {
+        "name": "silent0",
+        "file": { "key": "example.ts" },
+        "location": {
+          "range": {
+            "file": { "key": "example.ts" },
+            "lineBegin": 16,
+            "columnBegin": 51,
+            "lineEnd": 16,
+            "columnEnd": 56
+          }
+        }
+      },
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . `example.ts`/silent0:"
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 51,
+                    "lineEnd": 16,
+                    "columnEnd": 56
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "location": {
+        "name": "silent1",
+        "file": { "key": "example.ts" },
+        "location": {
+          "range": {
+            "file": { "key": "example.ts" },
+            "lineBegin": 25,
+            "columnBegin": 7,
+            "lineEnd": 25,
+            "columnEnd": 12
+          }
+        }
+      },
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . `example.ts`/silent1:"
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 25,
+                    "columnBegin": 7,
+                    "lineEnd": 25,
+                    "columnEnd": 12
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "location": {
+        "name": "silent2",
+        "file": { "key": "example.ts" },
+        "location": {
+          "range": {
+            "file": { "key": "example.ts" },
+            "lineBegin": 27,
+            "columnBegin": 58,
+            "lineEnd": 27,
+            "columnEnd": 63
+          }
+        }
+      },
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . `example.ts`/silent2:"
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 27,
+                    "columnBegin": 58,
+                    "lineEnd": 27,
+                    "columnEnd": 63
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "location": {
+        "name": "silent3",
+        "file": { "key": "example.ts" },
+        "location": {
+          "range": {
+            "file": { "key": "example.ts" },
+            "lineBegin": 31,
+            "columnBegin": 7,
+            "lineEnd": 31,
+            "columnEnd": 12
+          }
+        }
+      },
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . `example.ts`/silent3:"
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 31,
+                    "columnBegin": 7,
+                    "lineEnd": 31,
+                    "columnEnd": 12
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "location": {
+        "name": "silent4",
+        "file": { "key": "example.ts" },
+        "location": {
+          "range": {
+            "file": { "key": "example.ts" },
+            "lineBegin": 35,
+            "columnBegin": 60,
+            "lineEnd": 35,
+            "columnEnd": 65
+          }
+        }
+      },
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "scip-typescript npm . . `example.ts`/silent4:"
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 35,
+                    "columnBegin": 60,
+                    "lineEnd": 35,
+                    "columnEnd": 65
                   }
                 }
               }

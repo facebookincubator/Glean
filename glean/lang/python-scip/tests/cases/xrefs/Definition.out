@@ -2,6 +2,38 @@
   "@generated",
   {
     "key": {
+      "symbol": { "key": "example.py/local 0" },
+      "location": {
+        "key": {
+          "file": { "key": "example.py" },
+          "range": {
+            "lineBegin": 76,
+            "columnBegin": 9,
+            "lineEnd": 76,
+            "columnEnd": 9
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.py/local 1" },
+      "location": {
+        "key": {
+          "file": { "key": "example.py" },
+          "range": {
+            "lineBegin": 82,
+            "columnBegin": 9,
+            "lineEnd": 82,
+            "columnEnd": 9
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "symbol": { "key": "scip-python python . test example/__init__:" },
       "location": {
         "key": {

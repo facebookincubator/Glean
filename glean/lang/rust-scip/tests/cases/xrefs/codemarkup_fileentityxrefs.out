@@ -5,7 +5,7 @@
       "file": { "key": "src/lib.rs" },
       "xref": {
         "target": {
-          "name": "f1_go()",
+          "name": "f1_go",
           "file": { "key": "src/lib.rs" },
           "location": {
             "range": {
@@ -54,7 +54,7 @@
       "file": { "key": "src/lib.rs" },
       "xref": {
         "target": {
-          "name": "f1_go()",
+          "name": "f1_go",
           "file": { "key": "src/lib.rs" },
           "location": {
             "range": {

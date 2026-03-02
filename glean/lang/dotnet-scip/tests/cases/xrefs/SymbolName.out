@@ -93,25 +93,25 @@
   {
     "key": {
       "symbol": { "key": "scip-dotnet nuget . . ``/" },
-      "name": { "key": "``" }
+      "name": { "key": "" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-dotnet nuget . . ``/Dog#" },
-      "name": { "key": "``/Dog" }
+      "name": { "key": "Dog" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-dotnet nuget . . ``/Dog#`.ctor`()." },
-      "name": { "key": "``/Dog#`.ctor`()" }
+      "name": { "key": ".ctor" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-dotnet nuget . . ``/ExecuteInheritance#" },
-      "name": { "key": "``/ExecuteInheritance" }
+      "name": { "key": "ExecuteInheritance" }
     }
   },
   {
@@ -119,7 +119,7 @@
       "symbol": {
         "key": "scip-dotnet nuget . . ``/ExecuteInheritance#Main()."
       },
-      "name": { "key": "``/ExecuteInheritance#Main()" }
+      "name": { "key": "Main" }
     }
   },
   {
@@ -127,49 +127,49 @@
       "symbol": {
         "key": "scip-dotnet nuget . . ``/ExecuteInheritance#Main().(args)"
       },
-      "name": { "key": "``/ExecuteInheritance#Main().(args" }
+      "name": { "key": "args" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-dotnet nuget . . ``/Human#" },
-      "name": { "key": "``/Human" }
+      "name": { "key": "Human" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-dotnet nuget . . ``/Human#`.ctor`()." },
-      "name": { "key": "``/Human#`.ctor`()" }
+      "name": { "key": ".ctor" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#" },
-      "name": { "key": "``/Mammal" }
+      "name": { "key": "Mammal" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#NumberOfLegs." },
-      "name": { "key": "``/Mammal#NumberOfLegs" }
+      "name": { "key": "NumberOfLegs" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#Specie." },
-      "name": { "key": "``/Mammal#Specie" }
+      "name": { "key": "Specie" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#`.ctor`()." },
-      "name": { "key": "``/Mammal#`.ctor`()" }
+      "name": { "key": ".ctor" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#`.ctor`(+1)." },
-      "name": { "key": "``/Mammal#`.ctor`(+1)" }
+      "name": { "key": ".ctor" }
     }
   },
   {
@@ -177,7 +177,7 @@
       "symbol": {
         "key": "scip-dotnet nuget . . ``/Mammal#`.ctor`(+1).(numberOfLegs)"
       },
-      "name": { "key": "``/Mammal#`.ctor`(+1).(numberOfLegs" }
+      "name": { "key": "numberOfLegs" }
     }
   },
   {
@@ -185,19 +185,19 @@
       "symbol": {
         "key": "scip-dotnet nuget . . ``/Mammal#`.ctor`(+1).(specie)"
       },
-      "name": { "key": "``/Mammal#`.ctor`(+1).(specie" }
+      "name": { "key": "specie" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#numberOfLegs." },
-      "name": { "key": "``/Mammal#numberOfLegs" }
+      "name": { "key": "numberOfLegs" }
     }
   },
   {
     "key": {
       "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#specie." },
-      "name": { "key": "``/Mammal#specie" }
+      "name": { "key": "specie" }
     }
   },
   {
@@ -205,7 +205,7 @@
       "symbol": {
         "key": "scip-dotnet nuget System.Console 7.0.0.0 System/Console#"
       },
-      "name": { "key": "System/Console" }
+      "name": { "key": "Console" }
     }
   },
   {
@@ -213,7 +213,7 @@
       "symbol": {
         "key": "scip-dotnet nuget System.Console 7.0.0.0 System/Console#WriteLine(+11)."
       },
-      "name": { "key": "System/Console#WriteLine(+11)" }
+      "name": { "key": "WriteLine" }
     }
   },
   {
@@ -221,7 +221,7 @@
       "symbol": {
         "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Reflection/AssemblyCompanyAttribute#`.ctor`()."
       },
-      "name": { "key": "Reflection/AssemblyCompanyAttribute#`.ctor`()" }
+      "name": { "key": ".ctor" }
     }
   },
   {
@@ -229,7 +229,7 @@
       "symbol": {
         "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Reflection/AssemblyConfigurationAttribute#`.ctor`()."
       },
-      "name": { "key": "Reflection/AssemblyConfigurationAttribute#`.ctor`()" }
+      "name": { "key": ".ctor" }
     }
   },
   {
@@ -237,7 +237,7 @@
       "symbol": {
         "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Reflection/AssemblyFileVersionAttribute#`.ctor`()."
       },
-      "name": { "key": "Reflection/AssemblyFileVersionAttribute#`.ctor`()" }
+      "name": { "key": ".ctor" }
     }
   },
   {
@@ -245,9 +245,7 @@
       "symbol": {
         "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Reflection/AssemblyInformationalVersionAttribute#`.ctor`()."
       },
-      "name": {
-        "key": "Reflection/AssemblyInformationalVersionAttribute#`.ctor`()"
-      }
+      "name": { "key": ".ctor" }
     }
   },
   {
@@ -255,7 +253,7 @@
       "symbol": {
         "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Reflection/AssemblyProductAttribute#`.ctor`()."
       },
-      "name": { "key": "Reflection/AssemblyProductAttribute#`.ctor`()" }
+      "name": { "key": ".ctor" }
     }
   },
   {
@@ -263,7 +261,7 @@
       "symbol": {
         "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Reflection/AssemblyTitleAttribute#`.ctor`()."
       },
-      "name": { "key": "Reflection/AssemblyTitleAttribute#`.ctor`()" }
+      "name": { "key": ".ctor" }
     }
   },
   {
@@ -271,7 +269,7 @@
       "symbol": {
         "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Reflection/AssemblyVersionAttribute#`.ctor`()."
       },
-      "name": { "key": "Reflection/AssemblyVersionAttribute#`.ctor`()" }
+      "name": { "key": ".ctor" }
     }
   },
   {
@@ -279,7 +277,7 @@
       "symbol": {
         "key": "scip-dotnet nuget System.Runtime 7.0.0.0 System/String#Empty."
       },
-      "name": { "key": "System/String#Empty" }
+      "name": { "key": "Empty" }
     }
   },
   {
@@ -287,9 +285,7 @@
       "symbol": {
         "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Versioning/TargetFrameworkAttribute#FrameworkDisplayName."
       },
-      "name": {
-        "key": "Versioning/TargetFrameworkAttribute#FrameworkDisplayName"
-      }
+      "name": { "key": "FrameworkDisplayName" }
     }
   },
   {
@@ -297,7 +293,7 @@
       "symbol": {
         "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Versioning/TargetFrameworkAttribute#`.ctor`()."
       },
-      "name": { "key": "Versioning/TargetFrameworkAttribute#`.ctor`()" }
+      "name": { "key": ".ctor" }
     }
   }
 ]
