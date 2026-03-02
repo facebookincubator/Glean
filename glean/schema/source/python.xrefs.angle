@@ -22,11 +22,4 @@ predicate XRefsByFile:
     xrefs: [XRef]
 }
 
-predicate XRefsByTarget:
-{
-    target: python.DeclarationLocation,
-    file: src.File,
-    spans: [src.ByteSpan]
-}
-
 }
