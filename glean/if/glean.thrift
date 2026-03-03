@@ -250,6 +250,11 @@ exception InvalidDependency {
 
 exception UnknownBatchHandle {}
 
+// Write has already been performed or enqueued
+exception BatchAlreadyProcessed {
+  1: optional string location;
+}
+
 // finish on a DB that is already broken, complete or finalizing
 exception DatabaseNotIncomplete {
   1: DatabaseStatus status;
@@ -1021,7 +1026,12 @@ service GleanService extends fb303.FacebookService {
     1: Repo repo,
     2: EnqueueBatch batch,
     3: EnqueueBatchWaitPolicy waitPolicy,
-  ) throws (1: Exception e, 2: Retry r, 3: UnknownDatabase u);
+  ) throws (
+    1: Exception e,
+    2: Retry r,
+    3: UnknownDatabase u,
+    4: BatchAlreadyProcessed b,
+  );
 
   // Get the substitution for the given handle (obtained via a previous
   // sendBatch) if no writes are outstanding for it. The server forgets the

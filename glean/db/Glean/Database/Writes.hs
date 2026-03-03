@@ -285,6 +285,12 @@ enqueueBatchDescriptor env repo enqueueBatch waitPolicy = do
       -- server should store the batch descriptor in persistent storage
       -- to make sure it will be written.
       let async = not remember
+          location = Thrift.batchDescriptor_location descriptor
+      -- Skip duplicated writes: if this location was already stored
+      -- (either in-progress or completed), don't enqueue it again.
+      alreadyStored <- Storage.isBatchDescriptorStored odbHandle location
+      when alreadyStored $ do
+        throwIO $ Thrift.BatchAlreadyProcessed (Just location)
       when async $ Storage.addBatchDescriptor odbHandle descriptor
       write <- enqueueBatchDescriptorWithResultHandling env repo queue
         odbSchema odbHandle descriptor async
