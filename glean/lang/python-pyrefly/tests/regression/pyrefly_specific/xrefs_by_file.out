@@ -1,0 +1,1546 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bar.py"
+      },
+      "xrefs": [
+        {
+          "source": { "length": 3, "start": 240 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "int" }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/another_submodule.py"
+      },
+      "xrefs": [ ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/submodule.py"
+      },
+      "xrefs": [ ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+      },
+      "xrefs": [
+        {
+          "source": { "length": 3, "start": 300 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bar.py"
+            },
+            "name": { "key": "bar" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 311 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bar.py"
+            },
+            "name": { "key": "bar.Bar" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 489 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "str" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 503 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "int" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 519 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bar.py"
+            },
+            "name": { "key": "bar.Bar" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 519 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Bar" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 550 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bar.py"
+            },
+            "name": { "key": "bar.Bar" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 550 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Bar" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 615 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "int" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 649 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "int" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 671 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Foo" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 814 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.baz.<locals>.foo" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 1274 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.baz.<locals>.foo" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 1377 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.baz.<locals>.foo" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 1502 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "int" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 1517 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "int" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 1672 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "int" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 1887 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bar.py"
+            },
+            "name": { "key": "bar.Bar" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 1887 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Bar" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 1903 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bar.py"
+            },
+            "name": { "key": "bar.Bar" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 1903 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Bar" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 2037 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "int" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 2062 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "int" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 2123 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "int" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 2157 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "int" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 2200 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bar.py"
+            },
+            "name": { "key": "bar.Bar" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 2200 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Bar" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 2226 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bar.py"
+            },
+            "name": { "key": "bar.Bar" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 2226 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Bar" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 2612 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "int" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 2626 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Foo" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 2822 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Foo" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 2946 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.foo" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 3508 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Foo" }
+          }
+        },
+        {
+          "source": { "length": 4, "start": 679 },
+          "target": { "name": { "key": "None" } }
+        },
+        {
+          "source": { "length": 4, "start": 818 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Foo.name" }
+          }
+        },
+        {
+          "source": { "length": 4, "start": 1836 },
+          "target": { "name": { "key": "None" } }
+        },
+        {
+          "source": { "length": 4, "start": 1853 },
+          "target": { "name": { "key": "None" } }
+        },
+        {
+          "source": { "length": 4, "start": 2645 },
+          "target": { "name": { "key": "None" } }
+        },
+        {
+          "source": { "length": 4, "start": 2950 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Foo.name" }
+          }
+        },
+        {
+          "source": { "length": 4, "start": 3514 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Foo.name" }
+          }
+        },
+        {
+          "source": { "length": 5, "start": 238 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing.Union" }
+          }
+        },
+        {
+          "source": { "length": 5, "start": 2194 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Union" }
+          }
+        },
+        {
+          "source": { "length": 5, "start": 2194 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing.Union" }
+          }
+        },
+        {
+          "source": { "length": 5, "start": 2598 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Union" }
+          }
+        },
+        {
+          "source": { "length": 5, "start": 2598 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing.Union" }
+          }
+        },
+        {
+          "source": { "length": 5, "start": 3532 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "str.lower" }
+          }
+        },
+        {
+          "source": { "length": 6, "start": 214 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing" }
+          }
+        },
+        {
+          "source": { "length": 6, "start": 1278 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Foo.my_bar" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 379 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 394 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 1494 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 1494 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 1509 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 1509 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2029 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2029 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2054 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2054 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2107 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2107 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2115 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2115 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2141 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2141 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2149 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2149 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2205 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2205 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2604 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2604 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2618 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 2618 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic.Generic" }
+          }
+        },
+        {
+          "source": { "length": 8, "start": 228 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing.Optional" }
+          }
+        },
+        {
+          "source": { "length": 8, "start": 541 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Optional" }
+          }
+        },
+        {
+          "source": { "length": 8, "start": 541 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing.Optional" }
+          }
+        },
+        {
+          "source": { "length": 8, "start": 590 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Optional" }
+          }
+        },
+        {
+          "source": { "length": 8, "start": 590 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing.Optional" }
+          }
+        },
+        {
+          "source": { "length": 8, "start": 1647 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Optional" }
+          }
+        },
+        {
+          "source": { "length": 8, "start": 1647 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing.Optional" }
+          }
+        },
+        {
+          "source": { "length": 8, "start": 2589 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Optional" }
+          }
+        },
+        {
+          "source": { "length": 8, "start": 2589 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing.Optional" }
+          }
+        },
+        {
+          "source": { "length": 9, "start": 266 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/submodule.py"
+            },
+            "name": { "key": "bigger_module.submodule" }
+          }
+        },
+        {
+          "source": { "length": 9, "start": 947 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.baz.<locals>.local_str" }
+          }
+        },
+        {
+          "source": { "length": 9, "start": 1199 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.baz.<locals>.local_str" }
+          }
+        },
+        {
+          "source": { "length": 9, "start": 2284 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.some_module.SomeClass" }
+          }
+        },
+        {
+          "source": { "length": 9, "start": 2284 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/some_module.py"
+            },
+            "name": { "key": "some_module.SomeClass" }
+          }
+        },
+        {
+          "source": { "length": 9, "start": 2318 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.some_module.SomeClass" }
+          }
+        },
+        {
+          "source": { "length": 9, "start": 2318 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/some_module.py"
+            },
+            "name": { "key": "some_module.SomeClass" }
+          }
+        },
+        {
+          "source": { "length": 9, "start": 2480 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/submodule.py"
+            },
+            "name": { "key": "bigger_module.submodule" }
+          }
+        },
+        {
+          "source": { "length": 9, "start": 2480 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.bigger_module.submodule" }
+          }
+        },
+        {
+          "source": { "length": 9, "start": 2490 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/submodule.py"
+            },
+            "name": { "key": "bigger_module.submodule.SomeClass" }
+          }
+        },
+        {
+          "source": { "length": 9, "start": 2490 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.bigger_module.submodule.SomeClass" }
+          }
+        },
+        {
+          "source": { "length": 9, "start": 2526 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/submodule.py"
+            },
+            "name": { "key": "bigger_module.submodule" }
+          }
+        },
+        {
+          "source": { "length": 9, "start": 2526 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.bigger_module.submodule" }
+          }
+        },
+        {
+          "source": { "length": 9, "start": 2536 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/submodule.py"
+            },
+            "name": { "key": "bigger_module.submodule.SomeClass" }
+          }
+        },
+        {
+          "source": { "length": 9, "start": 2536 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.bigger_module.submodule.SomeClass" }
+          }
+        },
+        {
+          "source": { "length": 10, "start": 823 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "str.capitalize" }
+          }
+        },
+        {
+          "source": { "length": 10, "start": 1097 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "str.capitalize" }
+          }
+        },
+        {
+          "source": { "length": 10, "start": 1209 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "str.capitalize" }
+          }
+        },
+        {
+          "source": { "length": 10, "start": 1394 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bar.py"
+            },
+            "name": { "key": "bar.Bar.bar_method" }
+          }
+        },
+        {
+          "source": { "length": 10, "start": 2381 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/another_submodule.py"
+            },
+            "name": {
+              "key": "bigger_module.another_submodule.SubmoduleClass.InnerClass"
+            }
+          }
+        },
+        {
+          "source": { "length": 10, "start": 2381 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.SubmoduleClass.InnerClass" }
+          }
+        },
+        {
+          "source": { "length": 10, "start": 2419 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/another_submodule.py"
+            },
+            "name": {
+              "key": "bigger_module.another_submodule.SubmoduleClass.InnerClass"
+            }
+          }
+        },
+        {
+          "source": { "length": 10, "start": 2419 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.SubmoduleClass.InnerClass" }
+          }
+        },
+        {
+          "source": { "length": 10, "start": 2955 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "str.capitalize" }
+          }
+        },
+        {
+          "source": { "length": 10, "start": 3066 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.global_str" }
+          }
+        },
+        {
+          "source": { "length": 10, "start": 3213 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "str.capitalize" }
+          }
+        },
+        {
+          "source": { "length": 10, "start": 3307 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.global_str" }
+          }
+        },
+        {
+          "source": { "length": 10, "start": 3318 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "str.capitalize" }
+          }
+        },
+        {
+          "source": { "length": 10, "start": 3519 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "str.capitalize" }
+          }
+        },
+        {
+          "source": { "length": 11, "start": 283 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/some_module.py"
+            },
+            "name": { "key": "some_module" }
+          }
+        },
+        {
+          "source": { "length": 11, "start": 1541 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic.Generic.test_method" }
+          }
+        },
+        {
+          "source": { "length": 11, "start": 1727 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/optional_generic.py"
+            },
+            "name": { "key": "optional_generic.OptionalGeneric.test_method" }
+          }
+        },
+        {
+          "source": { "length": 11, "start": 2272 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.some_module" }
+          }
+        },
+        {
+          "source": { "length": 11, "start": 2272 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/some_module.py"
+            },
+            "name": { "key": "some_module" }
+          }
+        },
+        {
+          "source": { "length": 11, "start": 2306 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.some_module" }
+          }
+        },
+        {
+          "source": { "length": 11, "start": 2306 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/some_module.py"
+            },
+            "name": { "key": "some_module" }
+          }
+        },
+        {
+          "source": { "length": 12, "start": 1381 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.Foo.optional_bar" }
+          }
+        },
+        {
+          "source": { "length": 12, "start": 1528 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.baz.<locals>.test_generic" }
+          }
+        },
+        {
+          "source": { "length": 13, "start": 252 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module"
+            },
+            "name": { "key": "bigger_module" }
+          }
+        },
+        {
+          "source": { "length": 13, "start": 320 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module"
+            },
+            "name": { "key": "bigger_module" }
+          }
+        },
+        {
+          "source": { "length": 13, "start": 1285 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bar.py"
+            },
+            "name": { "key": "bar.Bar.bar_attribute" }
+          }
+        },
+        {
+          "source": { "length": 13, "start": 2466 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module"
+            },
+            "name": { "key": "bigger_module" }
+          }
+        },
+        {
+          "source": { "length": 13, "start": 2466 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.bigger_module" }
+          }
+        },
+        {
+          "source": { "length": 13, "start": 2512 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module"
+            },
+            "name": { "key": "bigger_module" }
+          }
+        },
+        {
+          "source": { "length": 13, "start": 2512 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.bigger_module" }
+          }
+        },
+        {
+          "source": { "length": 14, "start": 359 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/another_submodule.py"
+            },
+            "name": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+          }
+        },
+        {
+          "source": { "length": 14, "start": 1948 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/another_submodule.py"
+            },
+            "name": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+          }
+        },
+        {
+          "source": { "length": 14, "start": 1948 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.SubmoduleClass" }
+          }
+        },
+        {
+          "source": { "length": 14, "start": 1975 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/another_submodule.py"
+            },
+            "name": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+          }
+        },
+        {
+          "source": { "length": 14, "start": 1975 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.SubmoduleClass" }
+          }
+        },
+        {
+          "source": { "length": 14, "start": 2366 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/another_submodule.py"
+            },
+            "name": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+          }
+        },
+        {
+          "source": { "length": 14, "start": 2366 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.SubmoduleClass" }
+          }
+        },
+        {
+          "source": { "length": 14, "start": 2404 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/another_submodule.py"
+            },
+            "name": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+          }
+        },
+        {
+          "source": { "length": 14, "start": 2404 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.SubmoduleClass" }
+          }
+        },
+        {
+          "source": { "length": 14, "start": 2693 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/another_submodule.py"
+            },
+            "name": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+          }
+        },
+        {
+          "source": { "length": 14, "start": 2693 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.SubmoduleClass" }
+          }
+        },
+        {
+          "source": { "length": 14, "start": 2737 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/another_submodule.py"
+            },
+            "name": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+          }
+        },
+        {
+          "source": { "length": 14, "start": 2737 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.SubmoduleClass" }
+          }
+        },
+        {
+          "source": { "length": 14, "start": 2768 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/another_submodule.py"
+            },
+            "name": { "key": "bigger_module.another_submodule.SubmoduleClass" }
+          }
+        },
+        {
+          "source": { "length": 14, "start": 2768 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.SubmoduleClass" }
+          }
+        },
+        {
+          "source": { "length": 14, "start": 2797 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.function.<locals>.inner_function" }
+          }
+        },
+        {
+          "source": { "length": 15, "start": 431 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/optional_generic.py"
+            },
+            "name": { "key": "optional_generic.OptionalGeneric" }
+          }
+        },
+        {
+          "source": { "length": 15, "start": 599 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.OptionalGeneric" }
+          }
+        },
+        {
+          "source": { "length": 15, "start": 599 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/optional_generic.py"
+            },
+            "name": { "key": "optional_generic.OptionalGeneric" }
+          }
+        },
+        {
+          "source": { "length": 15, "start": 633 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.OptionalGeneric" }
+          }
+        },
+        {
+          "source": { "length": 15, "start": 633 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/optional_generic.py"
+            },
+            "name": { "key": "optional_generic.OptionalGeneric" }
+          }
+        },
+        {
+          "source": { "length": 15, "start": 1656 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.OptionalGeneric" }
+          }
+        },
+        {
+          "source": { "length": 15, "start": 1656 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/optional_generic.py"
+            },
+            "name": { "key": "optional_generic.OptionalGeneric" }
+          }
+        },
+        {
+          "source": { "length": 16, "start": 407 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/optional_generic.py"
+            },
+            "name": { "key": "optional_generic" }
+          }
+        },
+        {
+          "source": { "length": 16, "start": 1710 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.baz.<locals>.optional_generic" }
+          }
+        },
+        {
+          "source": { "length": 17, "start": 334 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/bigger_module/another_submodule.py"
+            },
+            "name": { "key": "bigger_module.another_submodule" }
+          }
+        },
+        {
+          "source": { "length": 21, "start": 1075 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.baz.<locals>.placeholder_local_str" }
+          }
+        },
+        {
+          "source": { "length": 22, "start": 3190 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.placeholder_glocal_str" }
+          }
+        },
+        {
+          "source": { "length": 23, "start": 1680 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/foo.py"
+            },
+            "name": { "key": "foo.return_optional_generic" }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+      },
+      "xrefs": [
+        {
+          "source": { "length": 1, "start": 265 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic.T" }
+          }
+        },
+        {
+          "source": { "length": 1, "start": 285 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic.G" }
+          }
+        },
+        {
+          "source": { "length": 1, "start": 285 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing.Generic" }
+          }
+        },
+        {
+          "source": { "length": 1, "start": 287 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic.T" }
+          }
+        },
+        {
+          "source": { "length": 4, "start": 321 },
+          "target": { "name": { "key": "None" } }
+        },
+        {
+          "source": { "length": 6, "start": 214 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 228 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 242 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing.TypeVar" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 256 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/generic.py"
+            },
+            "name": { "key": "generic.TypeVar" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 256 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing.TypeVar" }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/optional_generic.py"
+      },
+      "xrefs": [
+        {
+          "source": { "length": 1, "start": 265 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/optional_generic.py"
+            },
+            "name": { "key": "optional_generic.T" }
+          }
+        },
+        {
+          "source": { "length": 1, "start": 293 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/optional_generic.py"
+            },
+            "name": { "key": "optional_generic.G" }
+          }
+        },
+        {
+          "source": { "length": 1, "start": 293 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing.Generic" }
+          }
+        },
+        {
+          "source": { "length": 1, "start": 295 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/optional_generic.py"
+            },
+            "name": { "key": "optional_generic.T" }
+          }
+        },
+        {
+          "source": { "length": 6, "start": 214 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 228 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing.Generic" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 242 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing.TypeVar" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 256 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/optional_generic.py"
+            },
+            "name": { "key": "optional_generic.TypeVar" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 256 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing.TypeVar" }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/some_module.py"
+      },
+      "xrefs": [ ]
+    }
+  }
+]
