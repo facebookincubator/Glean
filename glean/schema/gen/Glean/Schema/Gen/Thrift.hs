@@ -349,24 +349,30 @@ mkField structuredAnnots unstructuredAnnots structOrUnion i p t =
   structuredAnnotText <> allowReservedIdentifierAnnotation p
     <> showt i <> ": " <> t <> " " <> p <> unstructuredAnnotText <> ";"
   where
+  -- Collect all DeprecatedUnvalidatedAnnotations items to merge into one
+  deprecatedItems = javaDeprecatedItem ++ py3DeprecatedItem
+
+  javaDeprecatedItem
+    | "_" `Text.isSuffixOf` p = ["\"java.swift.name\": \"" <> p <> "\""]
+    | otherwise = []
+
+  py3DeprecatedItem
+    | p == "from" = ["\"py3.name\": \"from_\""]
+    | p == "type" && structOrUnion == "union"  = ["\"py3.name\": \"type_\""]
+    | p == "name" && structOrUnion == "union" = ["\"py3.name\": \"name_\""]
+    | p == "value" && structOrUnion == "union" = ["\"py3.name\": \"value_\""]
+    | otherwise = []
+
+  deprecatedAnnot
+    | null deprecatedItems = []
+    | otherwise = ["@thrift.DeprecatedUnvalidatedAnnotations{items = {" <> Text.intercalate ", " deprecatedItems <> "}}"]
+
+  allStructuredAnnots = structuredAnnots ++ deprecatedAnnot
+
   structuredAnnotText =
-    Text.concat $ map (\annot -> annot <> newline <> "  ") structuredAnnots
+    Text.concat $ map (\annot -> annot <> newline <> "  ") allStructuredAnnots
 
-  -- The java.swift codegen likes to strip underscores from the end of
-  -- names for some reason.
-  javaUnstructuredAnnot
-    | "_" `Text.isSuffixOf` p = ["java.swift.name = \"" <> p <> "\""]
-    | otherwise = []
-
-  py3UnstructuredAnnot
-    | p == "from" = ["py3.name = \"from_\""]
-    | p == "type" && structOrUnion == "union"  = ["py3.name = \"type_\""]
-    | p == "name" && structOrUnion == "union" = ["py3.name = \"name_\""]
-    | p == "value" && structOrUnion == "union" = ["py3.name = \"value_\""]
-    | otherwise = []
-
-  allUnstructuredAnnots =
-    javaUnstructuredAnnot ++ py3UnstructuredAnnot ++ unstructuredAnnots
+  allUnstructuredAnnots = unstructuredAnnots
 
   unstructuredAnnotText
     | null allUnstructuredAnnots = ""
@@ -377,11 +383,10 @@ makeField = mkField [] []
 
 makeRefField :: Text -> Int -> Name -> Text -> Text
 makeRefField = mkField
-  [ "@rust.Box" ]
-  [ "cpp.ref = \"true\""
-  , "cpp2.ref = \"true\""
-  , "swift.recursive_reference = \"true\""
+  [ "@rust.Box"
+  , "@thrift.DeprecatedUnvalidatedAnnotations{items = {\"cpp.ref\": \"true\", \"swift.recursive_reference\": \"true\"}}"
   ]
+  []
 
 genPred :: NameSpaces -> ResolvedPredicateDef -> M ([Text], [Text])
 genPred here PredicateDef{..} = do
@@ -496,17 +501,15 @@ makeEnumerated name vals = do
   return [declare]
   where
     mkEnumerator (i :: Int) val = "\n  "
+      <> py3AnnotText
       <> allowReservedIdentifierAnnotation val
-      <> val <> " = " <> showt i <> annotText
+      <> val <> " = " <> showt i
       where
-        -- I do not think we need py3.name for type to type_ here
         py3Annot
-          | val == "name" = ["py3.name = \"name_\""]
-          | val == "value" = ["py3.name = \"value_\""]
+          | val == "name" = ["@thrift.DeprecatedUnvalidatedAnnotations{items = {\"py3.name\": \"name_\"}}"]
+          | val == "value" = ["@thrift.DeprecatedUnvalidatedAnnotations{items = {\"py3.name\": \"value_\"}}"]
           | otherwise = []
-        annotText
-          | null py3Annot = ""
-          | otherwise = " (" <> Text.intercalate ", " py3Annot <> ")"
+        py3AnnotText = Text.concat $ map (\a -> a <> "\n  ") py3Annot
 
 genType :: NameSpaces -> TypeRef -> ResolvedType' s -> M [Text]
 genType here tref ty = addExtraDecls $ do
