@@ -797,7 +797,8 @@ toConstraintKind (Hack.ConstraintKind__UNKNOWN _) = Equal
 
 toParameter :: Hack.Parameter -> Parameter
 toParameter
-  (Hack.Parameter name _ inout variadic mdefaultValue _ typeInfo readOnly) =
+  (Hack.Parameter name _ inout variadic mdefaultValue _ typeInfo readOnly
+    _named) =
   let (type_, xrefs) = toTypeAndXRefs typeInfo
   in Parameter
       (toName name)

@@ -93,6 +93,7 @@ type Parameter =
     attributes : [UserAttribute],
     typeInfo : maybe TypeInfo,
     readonly : maybe ReadonlyKind,
+    named : maybe NamedKind,
   }
 
 # Type signature of function or method
@@ -130,6 +131,8 @@ type Constraint =
   }
 
 type ReadonlyKind = enum { Readonly }
+
+type NamedKind = enum { Named }
 
 # User-defined attribute
 predicate UserAttribute :
