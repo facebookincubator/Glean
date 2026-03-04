@@ -27,6 +27,7 @@ module Glean.Glass.Pretty.Hack
   , Static(..)
   , Async(..)
   , ReadOnly(..)
+  , Named(..)
   , Signature (..)
   , HackType(..)
   , ReturnType(..)
@@ -133,6 +134,7 @@ data Static = Static | NotStatic deriving Eq
 data Async = Async | NotAsync deriving Eq
 data ModuleInternal = IsInternal | NotInternal deriving Eq
 data ReadOnly = IsReadOnly | NotReadOnly deriving Eq
+data Named = IsNamed | NotNamed deriving Eq
 
 data ByteSpan = ByteSpan
   { start :: {-# UNPACK #-}!Int
@@ -146,7 +148,7 @@ data Inout = Inout
 data Variadic = Variadic
 data Parameter
   = Parameter Name HackType (Maybe Inout)
-      (Maybe Variadic) (Maybe DefaultValue) ReadOnly XRefs
+      (Maybe Variadic) (Maybe DefaultValue) ReadOnly Named XRefs
 data Variance = Contravariant | Covariant | Invariant
 data Reify = Erased | Reified | SoftReified
 data ConstraintKind = As | Equal | Super
@@ -407,9 +409,14 @@ ppType (HackType t) = pretty t
 ppReturnType :: ReturnType -> XRefs -> Doc Ann
 ppReturnType (ReturnType t) xrefs = ppTypeXRefs (HackType t) xrefs
 
+ppNamed :: Doc Ann
+ppNamed = "named"
+
 ppParameter :: Parameter -> Doc Ann
-ppParameter (Parameter name typeName inout variadic defaultValue readOnly xrefs)
+ppParameter (Parameter name typeName inout variadic defaultValue readOnly
+  isNamed xrefs)
   = nest 4 $ sep $ execWriter $ do
+    when (isNamed == IsNamed) $ tell [ppNamed]
     when (readOnly == IsReadOnly) $ tell [ppReadOnly]
     whenJust inout $ tell . ppInout
     tell [ppTypeXRefs typeName xrefs]
@@ -798,7 +805,7 @@ toConstraintKind (Hack.ConstraintKind__UNKNOWN _) = Equal
 toParameter :: Hack.Parameter -> Parameter
 toParameter
   (Hack.Parameter name _ inout variadic mdefaultValue _ typeInfo readOnly
-    _named) =
+    namedParam) =
   let (type_, xrefs) = toTypeAndXRefs typeInfo
   in Parameter
       (toName name)
@@ -807,6 +814,7 @@ toParameter
       (if variadic then Just Variadic else Nothing)
       (DefaultValue <$> mdefaultValue)
       (maybe NotReadOnly (const IsReadOnly) readOnly)
+      (maybe NotNamed (const IsNamed) namedParam)
       xrefs
 
 toName :: Hack.Name -> Name
