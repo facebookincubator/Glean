@@ -251,6 +251,8 @@ impl Env {
             return Some(LanguageId::ObjectiveC);
         } else if filepath.ends_with(".mm") {
             return Some(LanguageId::ObjectiveCpp);
+        } else if filepath.ends_with(".php") {
+            return Some(LanguageId::PHP);
         }
         None
     }
