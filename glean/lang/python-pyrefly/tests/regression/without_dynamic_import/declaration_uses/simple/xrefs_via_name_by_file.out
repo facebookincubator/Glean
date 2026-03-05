@@ -112,6 +112,10 @@
       },
       "xrefs": [
         {
+          "source": { "length": 1, "start": 278 },
+          "target": { "key": "mod_b" }
+        },
+        {
           "source": { "length": 3, "start": 291 },
           "target": { "key": "mod_b.util.Cls" }
         },
@@ -129,7 +133,7 @@
         },
         {
           "source": { "length": 4, "start": 279 },
-          "target": { "key": "util" }
+          "target": { "key": "mod_b.util" }
         },
         {
           "source": { "length": 5, "start": 230 },

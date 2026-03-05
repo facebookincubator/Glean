@@ -210,6 +210,15 @@
       },
       "xrefs": [
         {
+          "source": { "length": 1, "start": 278 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_b"
+            },
+            "name": { "key": "mod_b" }
+          }
+        },
+        {
           "source": { "length": 3, "start": 291 },
           "target": {
             "file": {
@@ -251,7 +260,7 @@
             "file": {
               "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/declaration_uses/simple/mod_b/util.py"
             },
-            "name": { "key": "util" }
+            "name": { "key": "mod_b.util" }
           }
         },
         {
