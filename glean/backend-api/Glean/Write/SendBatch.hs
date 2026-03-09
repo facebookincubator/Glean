@@ -15,7 +15,6 @@ module Glean.Write.SendBatch
   , sendBatch
   , sendJsonBatchAndWait
   , sendJsonBatch
-  , sendBatchDescriptorAndWait
   , sendBatchDescriptor
   , waitBatch
   ) where
@@ -24,6 +23,7 @@ import Control.Exception
 import Data.Default
 import qualified Data.Text as Text
 import System.Time.Extra
+import Util.Log
 
 import Glean.Backend.Types
 import qualified Glean.Types as Thrift
@@ -88,18 +88,6 @@ sendJsonBatch backend repo batches opts remember = do
       retry retry_seconds $
         sendJsonBatch backend repo batches opts remember
 
-sendBatchDescriptorAndWait
-  :: Backend be
-  => be
-  -> Thrift.Repo
-  -> Thrift.BatchDescriptor
-  -> IO Thrift.Subst
-sendBatchDescriptorAndWait backend repo descriptor = do
-  handle <- sendBatchDescriptor backend repo descriptor True
-  if Text.null handle
-    then return def
-    else waitBatch backend handle
-
 sendBatchDescriptor
   :: Backend be
   => be
@@ -116,9 +104,14 @@ sendBatchDescriptor backend repo descriptor remember = do
   case r of
     Right Thrift.EnqueueBatchResponse{..} ->
       return enqueueBatchResponse_handle
-    Left Thrift.Retry{..} ->
-      retry retry_seconds $
-        sendBatchDescriptor backend repo descriptor remember
+    Left e
+      | Just (Thrift.BatchAlreadyProcessed loc) <- fromException e -> do
+          logInfo $ "Batch already processed, skipping: " <> show loc
+          return ""
+      | Just Thrift.Retry{..} <- fromException e ->
+          retry retry_seconds $
+            sendBatchDescriptor backend repo descriptor remember
+      | otherwise -> throwIO e
 
 retry :: Double -> IO a -> IO a
 retry secs action = do

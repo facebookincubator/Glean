@@ -22,6 +22,7 @@ import Control.Exception
 import Control.Monad
 import qualified Data.ByteString as BS
 import Data.Default
+import qualified Data.Text as Text
 import System.Time.Extra (sleep)
 import Text.Printf (printf)
 
@@ -285,12 +286,23 @@ sendFromQueue backend repo settings sq = do
           JsonBatch _ json -> sendJsonBatch backend repo json Nothing True
           BatchDescriptor descriptor
             -> sendBatchDescriptor backend repo descriptor True
-        atomically $ writeTQueue (sqWaitQueue sq) Wait
-          { waitHandle = handle
-          , waitStart = start
-          , waitCallback = callback
-          , waitOriginalBatch = batch
-          }
+        if Text.null handle
+          then do
+            -- Empty handle means the batch was already processed (e.g.
+            -- BatchAlreadyProcessed). Invoke the callback immediately
+            -- with a default Subst instead of polling the server.
+            atomically $ do
+              callback $ Right def
+              releaseBatch sq 0
+            elapsed <- getElapsedTime start
+            sendQueueLog settings $ SendQueueSent 0 elapsed
+          else
+            atomically $ writeTQueue (sqWaitQueue sq) Wait
+              { waitHandle = handle
+              , waitStart = start
+              , waitCallback = callback
+              , waitOriginalBatch = batch
+              }
         return True
 
       Nothing -> return False
