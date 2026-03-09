@@ -2897,7 +2897,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
       },
-      "span": { "length": 1, "start": 650 }
+      "span": { "length": 20, "start": 646 }
     }
   },
   {
@@ -2971,7 +2971,7 @@
       "file": {
         "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/declarations/bar/quux.py"
       },
-      "span": { "length": 3, "start": 812 }
+      "span": { "length": 20, "start": 808 }
     }
   },
   {
