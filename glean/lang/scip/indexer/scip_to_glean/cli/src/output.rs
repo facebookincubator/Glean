@@ -73,6 +73,14 @@ struct SymbolAndKind {
     symbol: ScipId,
 }
 #[derive(Serialize, Clone, Eq, PartialEq, Hash)]
+#[serde(rename_all = "camelCase")]
+struct FileLines {
+    file: ScipId,
+    lengths: Vec<u64>,
+    ends_in_newline: bool,
+    has_unicode_or_tabs: bool,
+}
+#[derive(Serialize, Clone, Eq, PartialEq, Hash)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 struct Metadata {
     text_encoding: i32,
@@ -123,6 +131,7 @@ pub struct GleanJSONOutput {
     metadata: Vec<Key<Metadata>>,
     display_names: Vec<IdKey<Box<str>>>,
     display_name_symbols: Vec<Key<DisplayNameSymbol>>,
+    file_lines: Vec<Key<FileLines>>,
 }
 
 impl<I> From<I> for GleanJSONOutput
@@ -288,6 +297,22 @@ impl GleanJSONOutput {
             },
         })
     }
+    pub fn file_lines(
+        &mut self,
+        file_id: ScipId,
+        lengths: Vec<u64>,
+        ends_in_newline: bool,
+        has_unicode_or_tabs: bool,
+    ) {
+        self.file_lines.push(Key {
+            key: FileLines {
+                file: file_id,
+                lengths,
+                ends_in_newline,
+                has_unicode_or_tabs,
+            },
+        })
+    }
 
     pub fn total_facts_count(&self) -> usize {
         self.src_files.len()
@@ -307,6 +332,7 @@ impl GleanJSONOutput {
             + self.metadata.len()
             + self.display_names.len()
             + self.display_name_symbols.len()
+            + self.file_lines.len()
     }
 
     /// Consumes self, returns a list of GleanJSONOutput shards that are approximately of size `shard_size`
@@ -488,6 +514,7 @@ impl GleanJSONOutput {
         w.write_all(b"[")?;
         // Match the ordering in scipDependencyOrder
         sub(&mut w, "src.File", self.src_files, ifl)?;
+        sub(&mut w, "src.FileLines", self.file_lines, ifl)?;
         sub(&mut w, "scip.Symbol", self.symbols, ifl)?;
         sub(&mut w, "scip.LocalName", self.local_names, ifl)?;
         sub(&mut w, "scip.Documentation", self.documentation, ifl)?;

@@ -93,6 +93,33 @@ fn normalize_filepath(path: &str) -> Option<String> {
     Some(ret.to_string_lossy().to_string())
 }
 
+/// Compute src.FileLines data from raw file bytes.
+/// Returns (lengths, ends_in_newline, has_unicode_or_tabs) matching the
+/// src.FileLines Glean schema. Each entry in `lengths` is the byte length
+/// of a line including its terminating newline (if any).
+fn compute_file_lines(bytes: &[u8]) -> (Vec<u64>, bool, bool) {
+    let mut lengths = Vec::new();
+    let mut has_unicode_or_tabs = false;
+    let mut line_len: u64 = 0;
+
+    for &b in bytes {
+        line_len += 1;
+        if b == b'\n' {
+            lengths.push(line_len);
+            line_len = 0;
+        } else if b == b'\t' || (b & 0x80) != 0 {
+            has_unicode_or_tabs = true;
+        }
+    }
+
+    let ends_in_newline = line_len == 0 && !bytes.is_empty();
+    if line_len > 0 {
+        lengths.push(line_len);
+    }
+
+    (lengths, ends_in_newline, has_unicode_or_tabs)
+}
+
 impl Env {
     pub fn new() -> Self {
         Self {
@@ -153,7 +180,8 @@ impl Env {
         infer_language: bool,
         path_prefix: Option<&str>,
         strip_prefix: Option<&str>,
-        doc: Document,
+        source_root: Option<&Path>,
+        mut doc: Document,
     ) -> Result<()> {
         let mut filepath = doc.relative_path.to_owned();
         if let Some(strip_prefix) = strip_prefix {
@@ -207,6 +235,22 @@ impl Env {
         }
 
         self.out.src_file(src_file_id, filepath.clone());
+
+        // Emit src.FileLines: prefer inline document text, fall back to disk read
+        let doc_text = std::mem::take(&mut doc.text);
+        let file_bytes: Option<Vec<u8>> = if !doc_text.is_empty() {
+            Some(doc_text.into_bytes())
+        } else if let Some(source_root) = source_root {
+            std::fs::read(source_root.join(&doc.relative_path)).ok()
+        } else {
+            None
+        };
+        if let Some(bytes) = file_bytes {
+            let (lengths, ends_in_newline, has_unicode_or_tabs) = compute_file_lines(&bytes);
+            self.out
+                .file_lines(src_file_id, lengths, ends_in_newline, has_unicode_or_tabs);
+        }
+
         let lang_file_id = self.next_id();
 
         self.out.file_lang(lang_file_id, src_file_id, lang);
@@ -444,5 +488,103 @@ struct SymbolRoleSet(i32);
 impl SymbolRoleSet {
     fn has_def(&self) -> bool {
         self.0 & (1 << 0) != 0
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_compute_file_lines_empty() {
+        let (lengths, ends_in_newline, has_unicode_or_tabs) = compute_file_lines(b"");
+        assert_eq!(lengths, Vec::<u64>::new());
+        assert!(!ends_in_newline);
+        assert!(!has_unicode_or_tabs);
+    }
+
+    #[test]
+    fn test_compute_file_lines_single_newline() {
+        let (lengths, ends_in_newline, _) = compute_file_lines(b"\n");
+        assert_eq!(lengths, vec![1]);
+        assert!(ends_in_newline);
+    }
+
+    #[test]
+    fn test_compute_file_lines_single_line_with_newline() {
+        let (lengths, ends_in_newline, has_unicode_or_tabs) = compute_file_lines(b"hello\n");
+        assert_eq!(lengths, vec![6]); // 5 chars + 1 newline
+        assert!(ends_in_newline);
+        assert!(!has_unicode_or_tabs);
+    }
+
+    #[test]
+    fn test_compute_file_lines_no_trailing_newline() {
+        let (lengths, ends_in_newline, _) = compute_file_lines(b"hello");
+        assert_eq!(lengths, vec![5]);
+        assert!(!ends_in_newline);
+    }
+
+    #[test]
+    fn test_compute_file_lines_multiple_lines() {
+        let (lengths, ends_in_newline, _) =
+            compute_file_lines(b"package main\n\nfunc main() {\n}\n");
+        // "package main\n" = 13, "\n" = 1, "func main() {\n" = 14, "}\n" = 2
+        assert_eq!(lengths, vec![13, 1, 14, 2]);
+        assert!(ends_in_newline);
+    }
+
+    #[test]
+    fn test_compute_file_lines_with_tabs() {
+        let (lengths, _, has_unicode_or_tabs) = compute_file_lines(b"func() {\n\treturn\n}\n");
+        assert_eq!(lengths, vec![9, 8, 2]);
+        assert!(has_unicode_or_tabs);
+    }
+
+    #[test]
+    fn test_compute_file_lines_with_unicode() {
+        // UTF-8 encoded "é" is 2 bytes (0xC3 0xA9)
+        let (lengths, ends_in_newline, has_unicode_or_tabs) =
+            compute_file_lines("café\n".as_bytes());
+        // c(1) + a(1) + f(1) + é(2) + \n(1) = 6 bytes
+        assert_eq!(lengths, vec![6]);
+        assert!(ends_in_newline);
+        assert!(has_unicode_or_tabs);
+    }
+
+    #[test]
+    fn test_compute_file_lines_multiple_no_trailing_newline() {
+        let (lengths, ends_in_newline, _) = compute_file_lines(b"line1\nline2");
+        assert_eq!(lengths, vec![6, 5]); // "line1\n" = 6, "line2" = 5
+        assert!(!ends_in_newline);
+    }
+
+    #[test]
+    fn test_normalize_filepath_no_dots() {
+        assert_eq!(
+            normalize_filepath("foo/bar/baz.go"),
+            Some("foo/bar/baz.go".to_string())
+        );
+    }
+
+    #[test]
+    fn test_normalize_filepath_with_parent() {
+        assert_eq!(
+            normalize_filepath("foo/bar/../baz.go"),
+            Some("foo/baz.go".to_string())
+        );
+    }
+
+    #[test]
+    fn test_normalize_filepath_with_curdir() {
+        assert_eq!(
+            normalize_filepath("foo/./bar/baz.go"),
+            Some("foo/bar/baz.go".to_string())
+        );
+    }
+
+    #[test]
+    fn test_normalize_filepath_too_many_parents() {
+        assert_eq!(normalize_filepath("foo/../../baz.go"), None);
     }
 }

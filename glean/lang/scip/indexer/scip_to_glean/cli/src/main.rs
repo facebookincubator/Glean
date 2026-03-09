@@ -71,6 +71,12 @@ struct BuildJsonArgs {
 
     #[arg(
         long,
+        help = "Root directory for source files. When set, enables src.FileLines emission by reading files from disk at <source-root>/<relative-path>"
+    )]
+    source_root: Option<PathBuf>,
+
+    #[arg(
+        long,
         help = "Shards the JSON graph into subgraphs. Subgraphs will be approximately the size specified. Uses the --output argument as a directory, and writes one file per shard"
     )]
     shard: Option<usize>,
@@ -97,6 +103,7 @@ fn decode_scip_data(
     infer_language: bool,
     path_prefix: Option<&str>,
     strip_prefix: Option<&str>,
+    source_root: Option<&Path>,
 ) -> Result<()> {
     info!("Loading documents from {}", path.display());
     let scip_index = read_scip_file(path)
@@ -112,6 +119,7 @@ fn decode_scip_data(
             infer_language,
             path_prefix,
             strip_prefix,
+            source_root,
             doc,
         )?;
     }
@@ -134,6 +142,7 @@ fn build_json(args: BuildJsonArgs) -> Result<()> {
             args.infer_language,
             args.root_prefix.as_deref(),
             args.strip_prefix.as_deref(),
+            args.source_root.as_deref(),
         )?;
     }
 
@@ -226,8 +235,12 @@ fn read_scip_file(file: &Path) -> Result<Index, Error> {
 
 #[cfg(test)]
 mod tests {
+    #[cfg(feature = "facebook")]
+    use proto_rust::scip::Document;
     use tempfile::NamedTempFile;
 
+    #[cfg(not(feature = "facebook"))]
+    use super::proto::scip::Document;
     use super::*;
 
     #[test]
@@ -242,6 +255,7 @@ mod tests {
             language: None,
             root_prefix: None,
             strip_prefix: None,
+            source_root: None,
             shard: None,
         };
 
@@ -265,6 +279,7 @@ mod tests {
             language: None,
             root_prefix: None,
             strip_prefix: None,
+            source_root: None,
             shard: Some(100),
         };
 
@@ -283,5 +298,149 @@ mod tests {
         let output_json = std::fs::read_to_string(output_file_path).expect("unable to read output");
 
         assert_eq!(output_json, "[]\n");
+    }
+
+    /// Helper to create a SCIP index file with a single document
+    fn write_scip_index(scip_file: &mut impl std::io::Write, doc: Document) {
+        let mut index = Index::new();
+        index.documents.push(doc);
+        index
+            .write_to_writer(scip_file)
+            .expect("failed to write SCIP index");
+    }
+
+    /// Helper to find a predicate's facts array in the output JSON
+    fn find_predicate_facts(json: &str, predicate: &str) -> Option<serde_json::Value> {
+        let parsed: serde_json::Value =
+            serde_json::from_str(json).expect("output is not valid JSON");
+        let entries = parsed.as_array().expect("top-level should be array");
+        entries
+            .iter()
+            .find(|entry| entry["predicate"].as_str() == Some(predicate))
+            .map(|entry| entry["facts"].clone())
+    }
+
+    #[test]
+    fn test_file_lines_from_document_text() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut doc = Document::new();
+        doc.relative_path = "test.go".to_string();
+        doc.language = "go".to_string();
+        doc.text = "package main\n\nfunc main() {\n}\n".to_string();
+        write_scip_index(&mut scip_file, doc);
+
+        let args = BuildJsonArgs {
+            input: vec![scip_file.path().to_path_buf()],
+            output: output_json.path().to_path_buf(),
+            infer_language: false,
+            language: None,
+            root_prefix: None,
+            strip_prefix: None,
+            source_root: None,
+            shard: None,
+        };
+        build_json(args).expect("failure building JSON");
+
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        // Verify src.FileLines predicate is present
+        let file_lines_facts = find_predicate_facts(&output, "src.FileLines.1")
+            .expect("src.FileLines.1 predicate not found in output");
+        let facts = file_lines_facts.as_array().expect("facts should be array");
+        assert_eq!(facts.len(), 1, "expected exactly one FileLines fact");
+
+        let fact = &facts[0]["key"];
+        // "package main\n" = 13, "\n" = 1, "func main() {\n" = 14, "}\n" = 2
+        let lengths: Vec<u64> = fact["lengths"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|v| v.as_u64().unwrap())
+            .collect();
+        assert_eq!(lengths, vec![13, 1, 14, 2]);
+        assert_eq!(fact["endsInNewline"], true);
+        assert_eq!(fact["hasUnicodeOrTabs"], false);
+    }
+
+    #[test]
+    fn test_file_lines_from_source_root() {
+        let source_dir = tempfile::TempDir::new().expect("unable to create temp dir");
+        let source_file_path = source_dir.path().join("hello.go");
+        std::fs::write(&source_file_path, "package hello\n\tfmt.Println()\n")
+            .expect("failed to write source file");
+
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        // Document with no text — FileLines should come from disk via source_root
+        let mut doc = Document::new();
+        doc.relative_path = "hello.go".to_string();
+        doc.language = "go".to_string();
+        write_scip_index(&mut scip_file, doc);
+
+        let args = BuildJsonArgs {
+            input: vec![scip_file.path().to_path_buf()],
+            output: output_json.path().to_path_buf(),
+            infer_language: false,
+            language: None,
+            root_prefix: None,
+            strip_prefix: None,
+            source_root: Some(source_dir.path().to_path_buf()),
+            shard: None,
+        };
+        build_json(args).expect("failure building JSON");
+
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        let file_lines_facts = find_predicate_facts(&output, "src.FileLines.1")
+            .expect("src.FileLines.1 predicate not found in output");
+        let facts = file_lines_facts.as_array().expect("facts should be array");
+        assert_eq!(facts.len(), 1, "expected exactly one FileLines fact");
+
+        let fact = &facts[0]["key"];
+        // "package hello\n" = 14, "\tfmt.Println()\n" = 15
+        let lengths: Vec<u64> = fact["lengths"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|v| v.as_u64().unwrap())
+            .collect();
+        assert_eq!(lengths, vec![14, 15]);
+        assert_eq!(fact["endsInNewline"], true);
+        assert_eq!(fact["hasUnicodeOrTabs"], true); // has tab character
+    }
+
+    #[test]
+    fn test_no_file_lines_without_source_root_or_text() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        // Document with no text and no source_root — no FileLines should be emitted
+        let mut doc = Document::new();
+        doc.relative_path = "test.go".to_string();
+        doc.language = "go".to_string();
+        write_scip_index(&mut scip_file, doc);
+
+        let args = BuildJsonArgs {
+            input: vec![scip_file.path().to_path_buf()],
+            output: output_json.path().to_path_buf(),
+            infer_language: false,
+            language: None,
+            root_prefix: None,
+            strip_prefix: None,
+            source_root: None,
+            shard: None,
+        };
+        build_json(args).expect("failure building JSON");
+
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        // src.FileLines should NOT be present
+        assert!(
+            find_predicate_facts(&output, "src.FileLines.1").is_none(),
+            "src.FileLines should not be emitted without source_root or document text"
+        );
     }
 }
