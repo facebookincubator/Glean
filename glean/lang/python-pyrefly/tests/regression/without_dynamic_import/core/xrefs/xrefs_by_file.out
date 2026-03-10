@@ -1133,7 +1133,12 @@
         },
         {
           "source": { "length": 4, "start": 278 },
-          "target": { "name": { "key": "lib.func" } }
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py"
+            },
+            "name": { "key": "lib.func" }
+          }
         },
         {
           "source": { "length": 4, "start": 333 },
