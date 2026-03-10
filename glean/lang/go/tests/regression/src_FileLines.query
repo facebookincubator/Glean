@@ -1,0 +1,3 @@
+query: src.FileLines _
+perf: True
+transform: [gensort, []]

@@ -58,7 +58,7 @@ runIndexer params@ScipIndexerParams{..} = do
         copyFile (repoDir </> "index.scip") scipFile
         removeFile (repoDir </> "index.scip")
     bin <- resolveScipToGlean scipToGlean
-    runRustIndexer bin scipFile scipDir
+    runRustIndexer bin scipFile scipDir (Just repoDir)
 
 withDirOrTmp :: Maybe FilePath -> (FilePath -> IO a) -> IO a
 withDirOrTmp Nothing f = withSystemTempDirectory "glean-scip" f
@@ -93,14 +93,18 @@ resolveScipToGlean Nothing = do
 
 -- | Run the scip-to-glean binary
 runRustIndexer :: FilePath -> FilePath -> FilePath
-  -> IO Aeson.Value
-runRustIndexer rustIndexer scipFile tmpDir = do
+  -> Maybe FilePath -> IO Aeson.Value
+runRustIndexer rustIndexer scipFile tmpDir sourceRoot = do
   let jsonPath = tmpDir </> "index.json"
   logInfo $ printf "Using Rust SCIP converter: %s" rustIndexer
-  callProcess rustIndexer
-    [ "--input", scipFile
-    , "--infer-language"
-    , "--output", jsonPath ]
+  let baseArgs =
+        [ "--input", scipFile
+        , "--infer-language"
+        , "--output", jsonPath ]
+      args = case sourceRoot of
+        Just root -> baseArgs ++ ["--source-root", root]
+        Nothing -> baseArgs
+  callProcess rustIndexer args
   mJson <- Aeson.decodeFileStrict jsonPath
   return $
     fromMaybe (error "scip-to-glean: invalid JSON") mJson

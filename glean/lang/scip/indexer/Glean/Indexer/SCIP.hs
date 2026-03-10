@@ -65,7 +65,7 @@ indexer = Indexer {
           else error "Neither --input nor --root are scip files"
     bin <- SCIP.resolveScipToGlean scipToGlean
     val <- withSystemTempDirectory "glean-scip" $ \tmpDir ->
-      SCIP.runRustIndexer bin scipFile tmpDir
+      SCIP.runRustIndexer bin scipFile tmpDir Nothing
     sendJsonBatches backend repo "scip" val
     derive backend repo
   }

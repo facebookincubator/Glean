@@ -1,0 +1,35 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "lib1/lib1.go" },
+      "lengths": [ 13, 1, 18, 10, 2 ],
+      "endsInNewline": true,
+      "hasUnicodeOrTabs": true
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib1/lib1_test.go" },
+      "lengths": [ 13, 1, 9, 11, 2, 1, 30, 18, 26, 3, 2 ],
+      "endsInNewline": true,
+      "hasUnicodeOrTabs": true
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib2/lib2.go" },
+      "lengths": [ 13, 1, 18, 10, 2 ],
+      "endsInNewline": true,
+      "hasUnicodeOrTabs": true
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib2/lib2_test.go" },
+      "lengths": [ 13, 1, 9, 11, 2, 1, 30, 18, 26, 3, 2 ],
+      "endsInNewline": true,
+      "hasUnicodeOrTabs": true
+    }
+  }
+]
