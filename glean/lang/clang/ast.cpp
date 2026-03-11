@@ -2716,6 +2716,11 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   }
 
   bool TraverseDecl(clang::Decl* decl) {
+    // Skip declarations from modules/PCM files and continue traversing the AST
+    if (decl && decl->isFromASTFile()) {
+      return true;
+    }
+
     clang::DeclContext* context = nullptr;
 
     folly::Optional<Cxx::Declaration> gleanDecl;
