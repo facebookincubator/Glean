@@ -117,6 +117,8 @@ struct AttributeOptions {
   13: bool use_file_path_mapping = false;
   14: bool fetch_ds_mapping = false;
   15: bool fetch_global_view = false;
+  16: optional string traffic_group;
+  17: optional string product_id;
 }
 
 typedef string ServiceID (hs.newtype)
