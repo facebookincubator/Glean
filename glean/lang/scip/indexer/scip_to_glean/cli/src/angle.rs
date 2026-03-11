@@ -297,6 +297,10 @@ impl Env {
             return Some(LanguageId::ObjectiveCpp);
         } else if filepath.ends_with(".php") {
             return Some(LanguageId::PHP);
+        } else if filepath.ends_with(".rb") {
+            return Some(LanguageId::Ruby);
+        } else if filepath.ends_with(".dart") {
+            return Some(LanguageId::Dart);
         }
         None
     }
