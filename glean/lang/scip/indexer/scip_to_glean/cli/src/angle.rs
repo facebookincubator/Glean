@@ -167,11 +167,18 @@ impl Env {
             tool_args: tool_info.arguments,
             version: tool_info.version,
         });
-        self.out.metadata(
-            metadata.version.value(),
-            metadata.text_document_encoding.value(),
-            tool_info,
-        );
+
+        let version = match metadata.version.value() {
+            1 => {
+                tracing::warn!(
+                    "metadata.version:1 is not supported, using version:0. This is a known issue for scip-php"
+                );
+                0 // scip-php emits version:1, which isn't a supported ProtocolVersion; treat it as 0
+            }
+            v => v,
+        };
+        self.out
+            .metadata(version, metadata.text_document_encoding.value(), tool_info);
     }
 
     pub fn decode_scip_doc(
