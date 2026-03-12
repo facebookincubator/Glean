@@ -262,8 +262,21 @@ impl Env {
 
         self.out.file_lang(lang_file_id, src_file_id, lang);
 
+        let mut empty_occ_count = 0;
         for occ in doc.occurrences {
+            if occ.symbol.is_empty() {
+                // scip-go emits empty occurrences, skip them.
+                empty_occ_count += 1;
+                continue;
+            }
             self.decode_scip_occurrence(src_file_id, &filepath, occ)?;
+        }
+        if empty_occ_count > 0 {
+            tracing::warn!(
+                "{} scip.Occurrence skipped in file {}, due to symbol being empty",
+                empty_occ_count,
+                filepath,
+            );
         }
 
         for info in doc.symbols {
