@@ -36,7 +36,7 @@ import Glean.Typed.Binary
 import Glean.Types
 
 import qualified Data.HashMap.Strict as HashMap
-import Data.Set
+import Data.Set as Set
 
 import Test.HUnit
 import TestRunner
@@ -161,6 +161,11 @@ setSemanticsTest dbTestCase = TestList
       r <- runQuery_ env repo $ angleData @Nat
         [s| X where _ = all (X = 1); X = 0 |]
       assertEqual "unused all" r [Nat 0]
+  , TestLabel "local constraint" $ dbTestCase $ \env repo -> do
+      r <- runQuery_ env repo $ angleData @(Set Nat)
+        [s| all (X where X = 1) where X = 1|2 |]
+      assertEqual "local constraint"
+        (sort r) [Set.empty, Set.fromList [Nat 1]]
   ]
 
 setLimitTest :: Test
