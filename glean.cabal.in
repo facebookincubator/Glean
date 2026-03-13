@@ -56,7 +56,7 @@ common fb-haskell
        ghc-options: -O2
 
 common fb-cpp
-  cxx-options: -std=c++17 -Wno-nullability-completeness -fno-omit-frame-pointer
+  cxx-options: -std=c++20 -Wno-nullability-completeness -fno-omit-frame-pointer
   if !flag(clang)
      cxx-options: -fcoroutines
   if flag(asan)
@@ -202,7 +202,7 @@ common deps
         hinotify ^>= 0.4.1
 
 common hsc2hs-cpp
-    hsc2hs-options: --cc=g++ --lflag=-lstdc++ --cflag=-D__HSC2HS__=1 --cflag=-std=c++17
+    hsc2hs-options: --cc=g++ --lflag=-lstdc++ --cflag=-D__HSC2HS__=1 --cflag=-std=c++20
 
 common thrift-server
     if flag(fbthrift)
