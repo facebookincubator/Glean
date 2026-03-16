@@ -1301,6 +1301,7 @@ executable glean
         GleanCLI.Index
         GleanCLI.Query
         GleanCLI.Restore
+        GleanCLI.WaitForWrites
         GleanCLI.Write
     ghc-options: -main-is GleanCLI -with-rtsopts=-I0
     extra-libraries: stdc++
