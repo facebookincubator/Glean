@@ -153,6 +153,9 @@ class Backend a where
   -- Poll the status of a write batch
   pollBatch :: a -> Thrift.Handle -> IO Thrift.FinishResponse
 
+  -- Wait for all pending asynchronous writes to complete for the given repo
+  waitForWrites :: a -> Thrift.Repo -> IO Thrift.WaitForWritesResponse
+
   -- | Render for debugging
   displayBackend :: a -> String
 
@@ -204,6 +207,7 @@ instance Backend (Some Backend) where
   enqueueJsonBatch (Some backend) = enqueueJsonBatch backend
   enqueueBatchDescriptor (Some backend) = enqueueBatchDescriptor backend
   pollBatch (Some backend) = pollBatch backend
+  waitForWrites (Some backend) = waitForWrites backend
   displayBackend (Some backend) = displayBackend backend
   hasDatabase (Some backend) = hasDatabase backend
   schemaId (Some backend) = schemaId backend
@@ -467,4 +471,3 @@ dbShardWord Thrift.Repo{..} =
        -- SR doesn't like shards >= 0x8000000000000000
   where
   repo = Text.encodeUtf8 repo_name <> "/" <> Text.encodeUtf8 repo_hash
-

@@ -35,6 +35,7 @@ module Glean.Database.Writes
   , enqueueBatchDescriptor
   , enqueueCheckpoint
   , pollBatch
+  , pollWaitForWrites
   , writerThread
   , deleteWriteQueues
   , batchOwnedSize
@@ -296,6 +297,19 @@ enqueueBatchDescriptor env repo enqueueBatch waitPolicy = do
         odbSchema odbHandle descriptor async
       when remember $ rememberWrite env handle write
       return $ def { enqueueBatchResponse_handle = handle }
+
+-- | Check if all pending writes have completed for a repo.
+-- Returns the number of pending writes so that clients can poll
+pollWaitForWrites :: Env -> Repo -> IO Thrift.WaitForWritesResponse
+pollWaitForWrites env repo = do
+  count <- withOpenDatabase env repo $ \OpenDB{..} ->
+    case odbWriting of
+      Nothing -> return 0
+      Just writing -> atomically $ do
+        readTVar $ writeQueueCount $ wrQueue writing
+  return $ def {
+    waitForWritesResponse_pending_writes_count = fromIntegral count
+  }
 
 pollBatch :: Env -> Handle -> IO FinishResponse
 pollBatch env@Env{..} handle = do

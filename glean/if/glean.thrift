@@ -1005,6 +1005,11 @@ union CompletePredicates {
 
 struct CompletePredicatesResponse {}
 
+struct WaitForWritesResponse {
+  // The number of pending writes
+  1: i64 pending_writes_count;
+}
+
 service GleanService extends fb303.FacebookService {
   // Get the schema of a database.
   SchemaInfo getSchemaInfo(1: Repo repo, 2: GetSchemaInfo get) throws (
@@ -1074,6 +1079,13 @@ service GleanService extends fb303.FacebookService {
     1: Repo repo,
     2: CompletePredicates predicates,
   ) throws (1: Exception e, 3: Retry r, 4: UnknownDatabase u);
+
+  // Wait for all pending writes to complete for the given repo.
+  // Returns the number of pending writes.
+  WaitForWritesResponse waitForWrites(1: Repo repo) throws (
+    1: Exception e,
+    2: UnknownDatabase u,
+  );
 
   // Tell the server that the database is complete starting the finalization process.
   // Throws an exception if the database is not in incomplete state or there are pending writes.

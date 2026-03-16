@@ -138,6 +138,9 @@ instance Backend LoggingBackend where
   pollBatch (LoggingBackend env) handle =
     loggingAction (runLogCmd "pollBatch" env) (const mempty) $
       pollBatch env handle
+  waitForWrites (LoggingBackend env) repo =
+    loggingAction (runLogRepo "waitForWrites" env repo) (const mempty) $
+      waitForWrites env repo
   displayBackend (LoggingBackend b) = displayBackend b
   hasDatabase (LoggingBackend b) repo = hasDatabase b repo
   schemaId (LoggingBackend b) = schemaId b

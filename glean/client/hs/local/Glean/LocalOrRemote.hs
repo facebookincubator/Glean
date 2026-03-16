@@ -234,6 +234,7 @@ instance Backend (Some LocalOrRemote) where
   enqueueJsonBatch (Some backend) = enqueueJsonBatch backend
   enqueueBatchDescriptor (Some backend) = enqueueBatchDescriptor backend
   pollBatch (Some backend) = pollBatch backend
+  waitForWrites (Some backend) = waitForWrites backend
   displayBackend (Some backend) = displayBackend backend
   hasDatabase (Some backend) = hasDatabase backend
   schemaId (Some backend) = schemaId backend

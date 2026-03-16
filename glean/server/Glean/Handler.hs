@@ -76,6 +76,9 @@ handler State{..} req =
     Service.CompletePredicates repo preds ->
       Backend.completePredicates_ backend repo preds
 
+    Service.WaitForWrites repo ->
+      Backend.waitForWrites backend repo
+
     Service.DeriveStored repo pred ->
       Backend.deriveStored backend (const mempty) repo pred
 
