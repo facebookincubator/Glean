@@ -67,6 +67,7 @@ import GleanCLI.Query
 import GleanCLI.Types
 import GleanCLI.Utils
 import GleanCLI.Write
+import GleanCLI.WaitForWrites
 
 #if GLEAN_FACEBOOK
 import GleanCLI.Facebook
@@ -92,6 +93,7 @@ plugins :: [PluginType]
 plugins =
   [ plugin @WriteCommand
   , plugin @FinishCommand
+  , plugin @WaitForWritesCommand
   , plugin @UnfinishCommand
   , plugin @ListCommand
   , plugin @LatestDbCommand
