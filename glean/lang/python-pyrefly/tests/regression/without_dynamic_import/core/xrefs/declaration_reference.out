@@ -1666,16 +1666,6 @@
           "key": { "name": { "key": "lib.HelperClass.THelperClass" } }
         }
       },
-      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
-    }
-  },
-  {
-    "key": {
-      "source": {
-        "variable": {
-          "key": { "name": { "key": "lib.HelperClass.THelperClass" } }
-        }
-      },
       "target": {
         "imp": {
           "key": {

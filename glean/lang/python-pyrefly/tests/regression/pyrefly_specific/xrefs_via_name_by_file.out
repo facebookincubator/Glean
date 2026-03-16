@@ -655,10 +655,6 @@
       },
       "xrefs": [
         {
-          "source": { "length": 1, "start": 265 },
-          "target": { "key": "generic.T" }
-        },
-        {
           "source": { "length": 1, "start": 285 },
           "target": { "key": "generic.G" }
         },
@@ -703,10 +699,6 @@
         "key": "glean/lang/python-pyrefly/tests/regression/pyrefly_specific/optional_generic.py"
       },
       "xrefs": [
-        {
-          "source": { "length": 1, "start": 265 },
-          "target": { "key": "optional_generic.T" }
-        },
         {
           "source": { "length": 1, "start": 293 },
           "target": { "key": "optional_generic.G" }
