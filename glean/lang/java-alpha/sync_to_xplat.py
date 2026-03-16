@@ -51,7 +51,7 @@ def build_indexer_jar() -> str:
         shell_exec(f"unzip {tmp_dir_jex_path}", cwd=tmp_dir)
     except CalledProcessError as e:
         # unzip can return an exit code of 1 if one or more warning errors were encountered, but processing completed successfully anyway.
-        # Ignore this return code and assume it was successfull. Verify in fbsource.verify will fail if the indexer is broken.
+        # Ignore this return code and assume it was successful. Verify in fbsource.verify will fail if the indexer is broken.
         if e.returncode != 1:
             raise e
 
