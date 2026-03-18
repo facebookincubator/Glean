@@ -80,13 +80,21 @@ struct Slices {
     if (usetid == INVALID_USET) {
       return false;
     }
+    // AND semantics: when multiple slices cover the same UsetId (e.g.,
+    // an ownership slice and an ACL slice for the same layer), ALL
+    // covering slices must agree the UsetId is visible.
+    // For non-overlapping slices (existing behavior), this is equivalent
+    // to the old first-match semantics.
+    bool found = false;
     for (auto slice : slices_) {
       if (slice->inRange(usetid)) {
-        auto visible = slice->visible(usetid);
-        return visible;
+        found = true;
+        if (!slice->visible(usetid)) {
+          return false;
+        }
       }
     }
-    return false;
+    return found;
   }
 
   UsetId first() const {
