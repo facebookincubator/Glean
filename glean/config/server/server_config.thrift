@@ -178,6 +178,13 @@ union SchemaLocation {
   5: string indexconfig;
 }
 
+// ACL filtering policy for query-time enforcement
+struct ACLPolicy {
+  // List of repository names where ACL filtering is enabled.
+  // Empty list = disabled for all repos.
+  1: list<RepoName> enabled_repos = [];
+}
+
 // Configeration for Glean Servers
 struct Config {
   1: DatabaseRetentionPolicy retention;
@@ -338,6 +345,12 @@ struct Config {
   // Default storage backend for newly created databases. Can be overriden
   // by command-line options. See also db_create_version.
   41: optional string db_create_storage;
+
+  // ACL filtering configuration. When enabled, query results are filtered
+  // based on user's group membership. Requires both JustKnobs
+  // (code_indexing/glean/check_acls) to be enabled AND the repo to be
+  // in the enabled_repos list.
+  42: optional ACLPolicy acl_policy;
 }
 
 // The following were automatically generated and may benefit from renaming.

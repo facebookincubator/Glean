@@ -208,6 +208,13 @@ struct Batch {
 
   // The schema ID, which must match the schema ID of the DB
   7: optional SchemaId schema_id;
+
+  // ACL configuration for this batch.
+  // Maps file/directory paths to lists of ACL group ID strings.
+  // Each path maps to one or more group IDs (e.g., {"src/alpha": ["1"],
+  // "src/bravo": ["2", "3"]}).
+  // Must be provided if ACL is enabled for the database.
+  9: optional map<string, list<string>> (hs.type = "HashMap") acl_config;
 }
 
 struct Subst {
@@ -260,6 +267,14 @@ exception DatabaseNotIncomplete {
   1: DatabaseStatus status;
 }
 
+// Conflict when merging ACL configurations
+// Thrown when a batch provides an ACL mapping that conflicts with existing DB config
+exception ACLConfigConflict {
+  1: string message;
+  2: string conflicting_key;
+  3: string existing_value;
+  4: string new_value;
+}
 exception UnknownSchemaId {
   1: SchemaId schema_id;
 }
@@ -780,6 +795,7 @@ struct UserQueryResults {
 
   9: optional string type;
   // The inferred type of the query
+
 }
 
 // struct versions of exception types, needed because the
@@ -830,6 +846,9 @@ struct UserQueryClientInfo {
   // User making the query
   3: string application;
   // Name of program making the query.
+  4: optional list<string> acl_group_names;
+  // ACL group names for query-time filtering.
+  // Names are resolved to IDs server-side using the DB's name-to-ID mapping.
 }
 
 struct ListDatabases {
@@ -866,6 +885,13 @@ struct SendJsonBatch {
   // passed to finishBatch to check that the write has completed and
   // obtain the substitution.
   3: bool remember = false;
+
+  // ACL configuration for this batch.
+  // Maps file/directory paths to lists of ACL group ID strings.
+  // Each path maps to one or more group IDs (e.g., {"src/alpha": ["1"],
+  // "src/bravo": ["2", "3"]}).
+  // Must be provided if ACL is enabled for the database.
+  4: optional map<string, list<string>> (hs.type = "HashMap") acl_config;
 }
 
 struct SendJsonBatchResponse {
