@@ -123,6 +123,17 @@ fn decode_scip_data(
             doc,
         )?;
     }
+
+    if !scip_index.external_symbols.is_empty() {
+        info!(
+            "Processing {} external symbols",
+            scip_index.external_symbols.len()
+        );
+        for ext_sym in scip_index.external_symbols {
+            env.decode_external_symbol(ext_sym)?;
+        }
+    }
+
     Ok(())
 }
 
@@ -237,10 +248,18 @@ fn read_scip_file(file: &Path) -> Result<Index, Error> {
 mod tests {
     #[cfg(feature = "facebook")]
     use proto_rust::scip::Document;
+    #[cfg(feature = "facebook")]
+    use proto_rust::scip::Occurrence as ScipOccurrence;
+    #[cfg(feature = "facebook")]
+    use proto_rust::scip::SymbolInformation as ScipSymbolInformation;
     use tempfile::NamedTempFile;
 
     #[cfg(not(feature = "facebook"))]
     use super::proto::scip::Document;
+    #[cfg(not(feature = "facebook"))]
+    use super::proto::scip::Occurrence as ScipOccurrence;
+    #[cfg(not(feature = "facebook"))]
+    use super::proto::scip::SymbolInformation as ScipSymbolInformation;
     use super::*;
 
     #[test]
@@ -304,6 +323,13 @@ mod tests {
     fn write_scip_index(scip_file: &mut impl std::io::Write, doc: Document) {
         let mut index = Index::new();
         index.documents.push(doc);
+        index
+            .write_to_writer(scip_file)
+            .expect("failed to write SCIP index");
+    }
+
+    /// Helper to write a full Index (with documents and external_symbols)
+    fn write_scip_index_full(scip_file: &mut impl std::io::Write, index: Index) {
         index
             .write_to_writer(scip_file)
             .expect("failed to write SCIP index");
@@ -442,5 +468,182 @@ mod tests {
             find_predicate_facts(&output, "src.FileLines.1").is_none(),
             "src.FileLines should not be emitted without source_root or document text"
         );
+    }
+
+    #[test]
+    fn test_external_symbols_create_symbol_and_documentation() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut index = Index::new();
+
+        // Add a document with a reference to an external symbol
+        let mut doc = Document::new();
+        doc.relative_path = "test.java".to_string();
+        doc.language = "java".to_string();
+        index.documents.push(doc);
+
+        // Add an external symbol with documentation
+        let mut ext_sym = ScipSymbolInformation::new();
+        ext_sym.symbol = "semanticdb maven . . android/os/PowerManager#".to_string();
+        ext_sym.documentation = vec!["Controls the power state of the device.".to_string()];
+        ext_sym.display_name = "PowerManager".to_string();
+        index.external_symbols.push(ext_sym);
+
+        write_scip_index_full(&mut scip_file, index);
+
+        let args = BuildJsonArgs {
+            input: vec![scip_file.path().to_path_buf()],
+            output: output_json.path().to_path_buf(),
+            infer_language: false,
+            language: None,
+            root_prefix: None,
+            strip_prefix: None,
+            source_root: None,
+            shard: None,
+        };
+        build_json(args).expect("failure building JSON");
+
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        // Verify the external symbol was created
+        let symbol_facts = find_predicate_facts(&output, "scip.Symbol.1")
+            .expect("scip.Symbol.1 predicate not found");
+        let symbols = symbol_facts.as_array().expect("facts should be array");
+        let has_pm = symbols.iter().any(|f| {
+            f["key"]
+                .as_str()
+                .is_some_and(|s| s.contains("PowerManager"))
+        });
+        assert!(has_pm, "Expected PowerManager symbol fact");
+
+        // Verify documentation was attached
+        let doc_facts = find_predicate_facts(&output, "scip.Documentation.1")
+            .expect("scip.Documentation.1 predicate not found");
+        let docs = doc_facts.as_array().expect("facts should be array");
+        let has_doc = docs
+            .iter()
+            .any(|f| f["key"].as_str().is_some_and(|s| s.contains("power state")));
+        assert!(has_doc, "Expected documentation for external symbol");
+
+        // Verify display name was created
+        let dn_facts = find_predicate_facts(&output, "scip.DisplayName.1")
+            .expect("scip.DisplayName.1 predicate not found");
+        let dns = dn_facts.as_array().expect("facts should be array");
+        let has_dn = dns
+            .iter()
+            .any(|f| f["key"].as_str().is_some_and(|s| s == "PowerManager"));
+        assert!(has_dn, "Expected display name for external symbol");
+    }
+
+    #[test]
+    fn test_external_symbols_empty_symbol_skipped() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut index = Index::new();
+
+        // Add an external symbol with an empty symbol string (should be skipped)
+        let ext_sym = ScipSymbolInformation::new();
+        index.external_symbols.push(ext_sym);
+
+        write_scip_index_full(&mut scip_file, index);
+
+        let args = BuildJsonArgs {
+            input: vec![scip_file.path().to_path_buf()],
+            output: output_json.path().to_path_buf(),
+            infer_language: false,
+            language: None,
+            root_prefix: None,
+            strip_prefix: None,
+            source_root: None,
+            shard: None,
+        };
+        build_json(args).expect("failure building JSON");
+
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        // No symbols should have been created
+        assert!(
+            find_predicate_facts(&output, "scip.Symbol.1").is_none(),
+            "No symbols should be created for empty external symbol"
+        );
+    }
+
+    #[test]
+    fn test_external_symbols_dedup_with_occurrence() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut index = Index::new();
+
+        // Add a document with an occurrence referencing an external symbol
+        let mut doc = Document::new();
+        doc.relative_path = "test.java".to_string();
+        doc.language = "java".to_string();
+
+        let mut occ = ScipOccurrence::new();
+        occ.symbol = "semanticdb maven . . android/os/PowerManager#".to_string();
+        occ.range = vec![10, 5, 17]; // line 10, col 5-17
+        occ.symbol_roles = 0; // reference, not definition
+        doc.occurrences.push(occ);
+
+        index.documents.push(doc);
+
+        // Also add the same symbol as an external symbol with documentation
+        let mut ext_sym = ScipSymbolInformation::new();
+        ext_sym.symbol = "semanticdb maven . . android/os/PowerManager#".to_string();
+        ext_sym.documentation = vec!["Controls the power state.".to_string()];
+        index.external_symbols.push(ext_sym);
+
+        write_scip_index_full(&mut scip_file, index);
+
+        let args = BuildJsonArgs {
+            input: vec![scip_file.path().to_path_buf()],
+            output: output_json.path().to_path_buf(),
+            infer_language: false,
+            language: None,
+            root_prefix: None,
+            strip_prefix: None,
+            source_root: None,
+            shard: None,
+        };
+        build_json(args).expect("failure building JSON");
+
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        // The symbol should exist exactly once (deduped)
+        let symbol_facts = find_predicate_facts(&output, "scip.Symbol.1")
+            .expect("scip.Symbol.1 predicate not found");
+        let symbols = symbol_facts.as_array().expect("facts should be array");
+        let pm_count = symbols
+            .iter()
+            .filter(|f| {
+                f["key"]
+                    .as_str()
+                    .is_some_and(|s| s.contains("PowerManager"))
+            })
+            .count();
+        assert_eq!(
+            pm_count, 1,
+            "PowerManager symbol should appear exactly once"
+        );
+
+        // There should be a reference
+        let ref_facts = find_predicate_facts(&output, "scip.Reference.1")
+            .expect("scip.Reference.1 predicate not found");
+        assert!(
+            !ref_facts.as_array().unwrap().is_empty(),
+            "Expected at least one reference"
+        );
+
+        // Documentation from external_symbols should still be attached
+        let doc_facts = find_predicate_facts(&output, "scip.Documentation.1")
+            .expect("scip.Documentation.1 predicate not found");
+        let docs = doc_facts.as_array().expect("facts should be array");
+        let has_doc = docs
+            .iter()
+            .any(|f| f["key"].as_str().is_some_and(|s| s.contains("power state")));
+        assert!(has_doc, "Expected documentation from external_symbols");
     }
 }

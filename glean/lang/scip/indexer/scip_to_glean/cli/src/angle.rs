@@ -325,6 +325,56 @@ impl Env {
         None
     }
 
+    /// Process an external symbol from `Index.external_symbols`.
+    ///
+    /// Ensures the symbol fact exists (unlike `decode_scip_info` which only
+    /// attaches metadata to symbols already seen via occurrences), then
+    /// delegates to `decode_scip_info` for documentation, display names,
+    /// and relationships.
+    pub fn decode_external_symbol(&mut self, info: SymbolInformation) -> Result<()> {
+        if info.symbol.is_empty() {
+            return Ok(());
+        }
+
+        let scip_symbol = parse_scip_symbol(&info.symbol);
+
+        // External symbols are always global; skip locals.
+        let descriptors = match scip_symbol {
+            ScipSymbol::Global { descriptors, .. } => descriptors,
+            ScipSymbol::Local { .. } => return Ok(()),
+        };
+
+        // Create the symbol fact if it doesn't already exist from an occurrence.
+        let scip_symbol_str = info.symbol.clone().into_boxed_str();
+        let (symbol_id, seen_symbol) =
+            self.get_or_set_fact(StringPredicate::Symbol, scip_symbol_str.clone());
+        if !seen_symbol {
+            self.out.symbol(symbol_id, scip_symbol_str);
+
+            let local_name = descriptors
+                .last()
+                .map(|d| d.name.to_owned().into_boxed_str())
+                .unwrap_or_else(|| "".to_owned().into_boxed_str());
+            let (name_id, seen_name) =
+                self.get_or_set_fact(StringPredicate::LocalName, local_name.clone());
+            if !seen_name {
+                self.out.local_name(name_id, local_name);
+            }
+            self.out.symbol_name(symbol_id, name_id);
+
+            if let Some(last_descriptor) = descriptors.last() {
+                let kind = SymbolKind::new(last_descriptor.kind.clone());
+                if kind != SymbolKind::SkUnknown {
+                    self.out.symbol_kind(symbol_id, kind);
+                }
+            }
+        }
+
+        // Reuse decode_scip_info for metadata (docs, display name, relationships).
+        // External symbols are always global, so filepath is not used for lookup.
+        self.decode_scip_info("", info)
+    }
+
     fn decode_scip_info(&mut self, filepath: &str, info: SymbolInformation) -> Result<()> {
         let sym_id = self.get_symbol_id(&info.symbol, filepath);
 
