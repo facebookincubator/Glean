@@ -60,6 +60,13 @@ predicate QName :
     scope : Scope,
   }
 
+predicate ScopedName :
+  {
+    scope : Scope,
+    name : Name,
+  }
+  stored { S, N } where QName { N, S }
+
 # C++ operator name
 type Operator = string
 

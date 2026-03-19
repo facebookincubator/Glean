@@ -80,6 +80,7 @@ allCxxPasses =
   ,DeriveGeneric "cxx1.DeclarationToUSR"
   ,DeriveGeneric "cxx1.RecordDerived"
   ,DeriveGeneric "cxx1.ThriftToCxx"
+  ,DeriveGeneric "cxx1.ScopedName"
   -- name search
   ,DeriveGeneric "cxx1.EnumDeclarationByName"
   ,DeriveGeneric "cxx1.EnumeratorByName"
