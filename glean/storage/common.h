@@ -581,7 +581,7 @@ namespace {
 
 template <typename C>
 void putOwnerSet(
-    C& container,
+    C& /* container */,
     typename C::Writer& writer,
     UsetId id,
     SetOp op,
