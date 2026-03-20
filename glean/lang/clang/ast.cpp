@@ -1882,7 +1882,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     }
 
     static Cxx::VariableKind fieldKind(
-        ASTVisitor& visitor,
+        [[maybe_unused]] ASTVisitor& visitor,
         const clang::FieldDecl* decl) {
       folly::Optional<uint64_t> bitsize;
       if (auto size_expr = decl->getBitWidth()) {
@@ -2757,7 +2757,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         ASTVisitor& visitor_;
 
         explicit GetGleanDecl(ASTVisitor& v) : visitor_(v) {}
-        folly::Optional<Cxx::Declaration> VisitDecl(clang::Decl* d) {
+        folly::Optional<Cxx::Declaration> VisitDecl(clang::Decl*) {
           return folly::none;
         }
         folly::Optional<Cxx::Declaration> VisitCXXRecordDecl(
