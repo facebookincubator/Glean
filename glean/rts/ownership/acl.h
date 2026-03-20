@@ -11,40 +11,34 @@
 #include "glean/rts/ownership.h"
 #include "glean/rts/ownership/uset.h"
 
-#include <string>
 #include <vector>
 
 namespace facebook {
 namespace glean {
 namespace rts {
 
-/// Entry mapping a directory prefix to a list of ACL group UsetIds.
-/// All groups at the same prefix level are ORed together.
-struct ACLConfigEntry {
-  std::string prefix;
-  std::vector<UsetId> groupUsetIds;
-};
-
-/// Per-unit ACL assignment: a UnitId and its matching ACL levels.
-/// Each inner vector represents groups at one directory prefix level (ORed).
-/// The outer vector represents levels that are ANDed together.
-struct UnitACLAssignment {
-  UnitId unitId;
-  std::vector<std::vector<UsetId>> levels; // outer=AND, inner=OR
-};
+/// Build a CNF uset from ACL levels and return its promoted UsetId.
+///
+/// Each level is a list of group UsetIds (ORed together).
+/// Levels are ANDed together to form the CNF expression.
+///
+/// @param ownership  The computed ownership (usets container is modified)
+/// @param levels     ACL levels: outer=AND, inner=OR of group UsetIds
+/// @return The promoted UsetId of the resulting CNF expression
+UsetId makeACLCnf(
+    ComputedOwnership& ownership,
+    const std::vector<std::vector<UsetId>>& levels);
 
 /// Augment computed ownership with ACL constraints.
 ///
-/// For each unit that has ACL assignments, this function:
-/// 1. Creates OR(groups) for each directory level
-/// 2. ANDs all level OR-sets to get a CNF UsetId per unit
-/// 3. Walks facts_ and ANDs each fact's existing owner with the unit's CNF
+/// Walks facts_ and ANDs each fact's existing owner with the matching
+/// unit's prebuilt ACL CNF UsetId.
 ///
 /// @param ownership  The computed ownership (modified in-place)
-/// @param assignments  Per-unit ACL assignments (UnitId → levels of group IDs)
+/// @param assignments  Per-unit ACL assignments (UnitId → CNF UsetId)
 void augmentOwnershipWithACL(
     ComputedOwnership& ownership,
-    const std::vector<UnitACLAssignment>& assignments);
+    const std::vector<std::pair<UnitId, UsetId>>& assignments);
 
 } // namespace rts
 } // namespace glean

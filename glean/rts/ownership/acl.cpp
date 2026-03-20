@@ -16,37 +16,43 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
-namespace {
+UsetId makeACLCnf(
+    ComputedOwnership& ownership,
+    const std::vector<std::vector<UsetId>>& levels) {
+  auto& usets = ownership.sets_;
 
-// Create an OR-set from a list of UsetIds and add it to the Usets container.
-Uset* makeOrSet(Usets& usets, const std::vector<UsetId>& ids) {
-  CHECK(!ids.empty());
-  std::set<uint32_t> idSet(ids.begin(), ids.end());
-  auto entry = std::make_unique<Uset>(SetU32::from(idSet), Or, 1);
-  return usets.add(std::move(entry));
-}
+  std::vector<Uset*> orSets;
+  orSets.reserve(levels.size());
+  for (const auto& levelGroups : levels) {
+    if (levelGroups.empty()) {
+      continue;
+    }
+    std::set<uint32_t> idSet(levelGroups.begin(), levelGroups.end());
+    auto entry = std::make_unique<Uset>(SetU32::from(idSet), Or, 1);
+    orSets.push_back(usets.add(std::move(entry)));
+  }
 
-// Create an AND-set from a list of Uset pointers.
-// Each Uset represents one OR-level in the CNF.
-Uset* makeAndSet(Usets& usets, const std::vector<Uset*>& orSets) {
   CHECK(!orSets.empty());
+  Uset* cnf;
   if (orSets.size() == 1) {
-    return orSets[0];
+    cnf = orSets[0];
+  } else {
+    std::set<uint32_t> ids;
+    for (auto* orSet : orSets) {
+      usets.promote(orSet);
+      ids.insert(orSet->id);
+    }
+    auto entry = std::make_unique<Uset>(SetU32::from(ids), And, 1);
+    cnf = usets.add(std::move(entry));
   }
-  std::set<uint32_t> ids;
-  for (auto* orSet : orSets) {
-    usets.promote(orSet);
-    ids.insert(orSet->id);
-  }
-  auto entry = std::make_unique<Uset>(SetU32::from(ids), And, 1);
-  return usets.add(std::move(entry));
-}
 
-} // namespace
+  usets.promote(cnf);
+  return cnf->id;
+}
 
 void augmentOwnershipWithACL(
     ComputedOwnership& ownership,
-    const std::vector<UnitACLAssignment>& assignments) {
+    const std::vector<std::pair<UnitId, UsetId>>& assignments) {
   if (assignments.empty()) {
     return;
   }
@@ -56,61 +62,17 @@ void augmentOwnershipWithACL(
   auto& facts = ownership.facts_;
   const auto firstSetId = usets.getFirstId();
 
-  // Step 1: Build UnitId → ACL CNF Uset mapping
-  folly::F14FastMap<UnitId, Uset*> unitACLMap;
+  // Build UnitId → CNF UsetId mapping.
+  folly::F14FastMap<UnitId, UsetId> unitACLMap;
   unitACLMap.reserve(assignments.size());
-
-  for (const auto& assignment : assignments) {
-    if (assignment.levels.empty()) {
-      continue;
-    }
-
-    std::vector<Uset*> orSets;
-    orSets.reserve(assignment.levels.size());
-    for (const auto& levelGroups : assignment.levels) {
-      if (levelGroups.empty()) {
-        continue;
-      }
-      auto* orSet = makeOrSet(usets, levelGroups);
-      orSets.push_back(orSet);
-    }
-
-    if (orSets.empty()) {
-      continue;
-    }
-
-    Uset* cnf = makeAndSet(usets, orSets);
-    unitACLMap[assignment.unitId] = cnf;
-  }
-
-  if (unitACLMap.empty()) {
-    VLOG(1) << "augmentOwnershipWithACL: no unit ACL assignments, skipping";
-    return;
+  for (const auto& [unitId, cnfId] : assignments) {
+    unitACLMap[unitId] = cnfId;
   }
 
   VLOG(1) << "augmentOwnershipWithACL: " << unitACLMap.size()
           << " units with ACL assignments";
 
-  // Promote all ACL CNF Usets so they have IDs.
-  for (auto& [unitId, cnf] : unitACLMap) {
-    usets.promote(cnf);
-  }
-
-  // Step 2: Build UsetId → Uset* index for resolving promoted sets.
-  //
-  // After computeOwnership, ALL fact owners are promoted Usets with
-  // IDs >= firstSetId — even single-unit facts get wrapped in an OR-set
-  // and promoted. The old code checked (ownerUsetId < firstSetId) which
-  // was NEVER true, so no facts were ever augmented. We must resolve
-  // promoted sets to their leaf UnitIds to find ACL matches.
-  folly::F14FastMap<UsetId, Uset*> idToUset;
-  usets.foreach([&](Uset* entry) {
-    if (entry->promoted()) {
-      idToUset[entry->id] = entry;
-    }
-  });
-
-  // Step 3: Walk facts_ and augment ownership.
+  // Walk facts_ and augment ownership.
   // facts_ is a vector of (Id, UsetId) interval boundaries.
   size_t augmented = 0;
 
@@ -137,23 +99,22 @@ void augmentOwnershipWithACL(
     std::set<uint32_t> aclCnfIds;
 
     if (ownerUsetId < firstSetId) {
-      // Direct UnitId (rare after computeOwnership but handle it)
       auto it = unitACLMap.find(ownerUsetId);
       if (it != unitACLMap.end()) {
-        aclCnfIds.insert(it->second->id);
+        aclCnfIds.insert(it->second);
       }
     } else {
       // Promoted set — resolve and examine leaf members.
       // After computeOwnership, sets are flat OR-sets of UnitIds
       // (no nested set references), so checking immediate members
       // is sufficient.
-      auto usetIt = idToUset.find(ownerUsetId);
-      if (usetIt != idToUset.end()) {
-        usetIt->second->exp.set.foreach([&](uint32_t member) {
+      auto* ownerUset = usets.lookupById(ownerUsetId);
+      if (ownerUset) {
+        ownerUset->exp.set.foreach([&](uint32_t member) {
           if (member < firstSetId) {
             auto it = unitACLMap.find(member);
             if (it != unitACLMap.end()) {
-              aclCnfIds.insert(it->second->id);
+              aclCnfIds.insert(it->second);
             }
           }
         });
