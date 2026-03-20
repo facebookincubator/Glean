@@ -55,7 +55,7 @@ struct TestOwnership final : Ownership {
     LOG(FATAL) << "unimplemented: getUset";
   }
 
-  folly::Optional<UnitId> getUnitId(folly::ByteRange unit) override {
+  folly::Optional<UnitId> getUnitId(folly::ByteRange) override {
     LOG(FATAL) << "unimplemented: getUnitId";
   }
 
