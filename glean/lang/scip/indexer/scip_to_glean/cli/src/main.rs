@@ -108,7 +108,16 @@ fn decode_scip_data(
     info!("Loading documents from {}", path.display());
     let scip_index = read_scip_file(path)
         .with_context(|| format!("Error opening input file {}", path.display()))?;
-    info!("Loaded {} documents", scip_index.documents.len());
+    let num_docs = scip_index.documents.len();
+    info!(
+        "Loaded {} {}",
+        num_docs,
+        if num_docs == 1 {
+            "document"
+        } else {
+            "documents"
+        }
+    );
 
     if let Some(metadata) = scip_index.metadata.into_option() {
         env.decode_scip_metadata(metadata);
@@ -137,6 +146,22 @@ fn decode_scip_data(
     Ok(())
 }
 
+fn human_size(bytes: u64) -> String {
+    const KIB: f64 = 1024.0;
+    const MIB: f64 = 1024.0 * KIB;
+    const GIB: f64 = 1024.0 * MIB;
+    let bytes_f = bytes as f64;
+    if bytes_f >= GIB {
+        format!("{:.1} GiB", bytes_f / GIB)
+    } else if bytes_f >= MIB {
+        format!("{:.1} MiB", bytes_f / MIB)
+    } else if bytes_f >= KIB {
+        format!("{:.1} KiB", bytes_f / KIB)
+    } else {
+        format!("{} bytes", bytes)
+    }
+}
+
 fn build_json(args: BuildJsonArgs) -> Result<()> {
     println!("{:?}", args);
     let default_language = args
@@ -158,7 +183,12 @@ fn build_json(args: BuildJsonArgs) -> Result<()> {
     }
 
     let output_facts = env.output();
-    info!("Found {} facts total", output_facts.total_facts_count());
+    let num_facts = output_facts.total_facts_count();
+    info!(
+        "Found {} {} total",
+        num_facts,
+        if num_facts == 1 { "fact" } else { "facts" }
+    );
     let shards = if let Some(shard_size) = args.shard {
         let shards = output_facts.shard(shard_size);
         // pad the output files for correct numerical sorting
@@ -178,6 +208,7 @@ fn build_json(args: BuildJsonArgs) -> Result<()> {
     };
 
     let num_files = shards.len();
+    let mut total_bytes: u64 = 0;
     for (file, shard) in shards {
         let write = OpenOptions::new()
             .write(true)
@@ -188,8 +219,14 @@ fn build_json(args: BuildJsonArgs) -> Result<()> {
         let writer = std::io::BufWriter::new(write);
 
         shard.write(writer)?;
+        total_bytes += std::fs::metadata(&file).map(|m| m.len()).unwrap_or(0);
     }
-    info!("Wrote {} files", num_files);
+    info!(
+        "Wrote {} {} ({})",
+        num_files,
+        if num_files == 1 { "file" } else { "files" },
+        human_size(total_bytes)
+    );
 
     Ok(())
 }
