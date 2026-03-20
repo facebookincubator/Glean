@@ -43,7 +43,7 @@ inline uint64_t load<3>(unsigned char b0, const unsigned char* p) {
 }
 
 template <>
-inline uint64_t load<4>(unsigned char b0, const unsigned char* p) {
+inline uint64_t load<4>(unsigned char /* b0 */, const unsigned char* p) {
   return (folly::Endian::big(folly::loadUnaligned<uint32_t>(p)) & 0x0FFFFFFF) +
       0x204080Ul;
 }
@@ -71,14 +71,14 @@ inline uint64_t load<7>(unsigned char b0, const unsigned char* p) {
 }
 
 template <>
-inline uint64_t load<8>(unsigned char b0, const unsigned char* p) {
+inline uint64_t load<8>(unsigned char /* b0 */, const unsigned char* p) {
   return (folly::Endian::big(folly::loadUnaligned<uint64_t>(p)) &
           0xFFFFFFFFFFFFFF) +
       0x02040810204080Ul;
 }
 
 template <>
-inline uint64_t load<9>(unsigned char b0, const unsigned char* p) {
+inline uint64_t load<9>(unsigned char /* b0 */, const unsigned char* p) {
   return folly::Endian::big(folly::loadUnaligned<uint64_t>(p + 1)) +
       0x0102040810204080Ul;
 }
