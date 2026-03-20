@@ -140,7 +140,7 @@ void ContainerImpl::writeData(folly::ByteRange key, folly::ByteRange value) {
   writer.commit();
 }
 
-void ContainerImpl::optimize(bool compact) {
+void ContainerImpl::optimize(bool /* compact */) {
   Txn txn = txn_write();
   for (uint32_t i = 0; i < families.size(); i++) {
     if (!Family::family(i)->keep) {
