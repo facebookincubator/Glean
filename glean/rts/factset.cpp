@@ -385,7 +385,7 @@ std::pair<FactSet, Substitution> FactSet::rebase(
   const auto subst_end = firstFreeId();
 
   std::vector<Id> rebase_ids(distance(subst.start(), subst_end));
-  subst.with([&](Id base, const std::vector<Id>& items) {
+  subst.with([&](Id /* base */, const std::vector<Id>& items) {
     std::copy(items.begin(), items.end(), rebase_ids.begin());
   });
   MutableSubstitution localSubst(subst.start(), rebase_ids);
