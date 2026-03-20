@@ -189,7 +189,7 @@ struct ContainerImpl final : Container {
   }
 
   struct Writer {
-    Writer(ContainerImpl& c, unsigned int flags = 0) : container_(c) {}
+    explicit Writer(ContainerImpl& c) : container_(c) {}
 
     void put(const Family& f, folly::ByteRange k, folly::ByteRange v) {
       check(batch.Put(container_.family(f), slice(k), slice(v)));
