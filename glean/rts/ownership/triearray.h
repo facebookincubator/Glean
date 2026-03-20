@@ -114,7 +114,7 @@ class TrieArray {
         traverse(
             first_id.toWord(),
             last_id.toWord() - first_id.toWord() + 1,
-            [&](Tree& tree, uint64_t key, uint64_t size, size_t block) {
+            [&](Tree& tree, uint64_t /* key */, uint64_t size, size_t block) {
               if (size == block) {
                 if (const auto value = tree.value()) {
                   const auto prev = static_cast<Tree*>(value->link());
@@ -167,14 +167,16 @@ class TrieArray {
 
   template <typename F>
   void foreach(F&& f) {
-    traverse(
-        [&](Tree& tree, uint64_t key, uint64_t size, uint64_t /* block */) {
-          if (auto* value = tree.value()) {
-            if (auto new_value = f(value)) {
-              tree = Tree::value(new_value);
-            }
-          }
-        });
+    traverse([&](Tree& tree,
+                 uint64_t /* key */,
+                 uint64_t /* size */,
+                 uint64_t /* block */) {
+      if (auto* value = tree.value()) {
+        if (auto new_value = f(value)) {
+          tree = Tree::value(new_value);
+        }
+      }
+    });
   }
 
   struct Flattened {
@@ -206,24 +208,26 @@ class TrieArray {
     folly::F14FastMap<uint64_t, T*> sparse;
     std::vector<T*> vec(end - start, nullptr);
 
-    traverse(
-        [&, start](
-            const Tree& tree, uint64_t key, uint64_t size, uint64_t block) {
-          auto* value = tree.value();
-          if (value) {
-            for (uint64_t i = key; i < std::min(key + size, start); i++) {
-              sparse.insert({i, value});
-            }
-          }
-          if (key + size > start) {
-            const uint64_t left = key >= start ? key - start : 0;
-            const uint64_t right = (key + size) - start;
-            std::fill(vec.begin() + left, vec.begin() + right, value);
-          }
-          if (value) {
-            value->use(size - 1);
-          }
-        });
+    traverse([&, start](
+                 const Tree& tree,
+                 uint64_t key,
+                 uint64_t size,
+                 uint64_t /* block */) {
+      auto* value = tree.value();
+      if (value) {
+        for (uint64_t i = key; i < std::min(key + size, start); i++) {
+          sparse.insert({i, value});
+        }
+      }
+      if (key + size > start) {
+        const uint64_t left = key >= start ? key - start : 0;
+        const uint64_t right = (key + size) - start;
+        std::fill(vec.begin() + left, vec.begin() + right, value);
+      }
+      if (value) {
+        value->use(size - 1);
+      }
+    });
 
     return {std::move(sparse), std::move(vec)};
   }
