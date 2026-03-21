@@ -957,6 +957,50 @@ void glean_computed_ownership_free(ComputedOwnership* own) {
   ffi::free_(own);
 }
 
+const char* glean_computed_ownership_first_set_id(
+    ComputedOwnership* own,
+    uint32_t* result) {
+  return ffi::wrap([=] { *result = own->sets_.getFirstId(); });
+}
+
+const char* glean_make_acl_cnf(
+    ComputedOwnership* ownership,
+    const size_t* level_sizes,
+    size_t num_levels,
+    const uint32_t* group_ids,
+    uint32_t* result) {
+  return ffi::wrap([=] {
+    std::vector<std::vector<UsetId>> levels;
+    levels.reserve(num_levels);
+
+    size_t group_offset = 0;
+    for (size_t l = 0; l < num_levels; ++l) {
+      size_t nGroups = level_sizes[l];
+      std::vector<UsetId> groups(
+          group_ids + group_offset, group_ids + group_offset + nGroups);
+      levels.push_back(std::move(groups));
+      group_offset += nGroups;
+    }
+
+    *result = makeACLCnf(*ownership, levels);
+  });
+}
+
+const char* glean_augment_ownership_with_acl(
+    ComputedOwnership* ownership,
+    const uint32_t* unit_ids,
+    const uint32_t* cnf_ids,
+    size_t num_units) {
+  return ffi::wrap([=] {
+    std::vector<std::pair<UnitId, UsetId>> assignments;
+    assignments.reserve(num_units);
+    for (size_t i = 0; i < num_units; ++i) {
+      assignments.emplace_back(unit_ids[i], cnf_ids[i]);
+    }
+    augmentOwnershipWithACL(*ownership, assignments);
+  });
+}
+
 const char* glean_ownership_next_set_id(
     Ownership* ownership,
     uint32_t* result) {

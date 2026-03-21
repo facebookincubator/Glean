@@ -67,7 +67,9 @@ syncWriteJsonBatch env repo batches opts = do
         Thrift.SendJsonBatch
           { Thrift.sendJsonBatch_batches = batches
           , Thrift.sendJsonBatch_options = opts
-          , Thrift.sendJsonBatch_remember = False }
+          , Thrift.sendJsonBatch_remember = False
+          , Thrift.sendJsonBatch_acl_config = Nothing
+          }
   content <- writeJsonBatch env repo batch
   void $ syncWriteContentDatabase env repo content
 
@@ -165,6 +167,7 @@ withFactBuilder action =
     (fmap (Vector.fromList . coerce . reverse) ownerMap)
     mempty
     Nothing -- TODO: we should have a schema ID for JSON batches
+    Nothing -- acl_config
 
 
 type WriteFacts a = ReaderT FactBuilder IO a

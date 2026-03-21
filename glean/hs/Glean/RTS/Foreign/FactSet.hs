@@ -87,7 +87,8 @@ mkBatch fn = mask_ $ do
     <*> pure Nothing
     <*> pure mempty
     <*> pure mempty
-    <*> pure Nothing
+      <*> pure Nothing
+    <*> pure Nothing  -- acl_config
 
 serialize :: FactSet -> IO Thrift.Batch
 serialize facts =

@@ -14,6 +14,9 @@ module Glean.RTS.Foreign.Ownership
   , firstUsetId
   , Ownership
   , ComputedOwnership
+  , computedOwnershipFirstSetId
+  , makeACLCnf
+  , augmentWithACL
   , Slice
   , slice
   , slicedStack
@@ -363,6 +366,55 @@ unionOwnership =
       HashMap.empty
 
 -- -----------------------------------------------------------------------------
+-- ACL ownership augmentation
+
+-- | Get the first set ID from ComputedOwnership.
+-- UnitIds range from 0 to firstSetId-1.
+computedOwnershipFirstSetId :: ComputedOwnership -> IO Word32
+computedOwnershipFirstSetId own =
+  with own $ \own_ptr ->
+    invoke $ glean_computed_ownership_first_set_id own_ptr
+
+-- | Build a CNF uset from ACL levels and return its promoted UsetId.
+-- Each level is a list of group UsetIds (ORed together).
+-- Levels are ANDed together to form the CNF expression.
+makeACLCnf
+  :: ComputedOwnership
+  -> [[Word32]]  -- ^ ACL levels: outer=AND, inner=OR of group UsetIds
+  -> IO UsetId
+makeACLCnf own levels =
+  with own $ \own_ptr -> do
+    let levelSizes = map (fromIntegral . length) levels :: [CSize]
+        allGroups = concatMap (map fromIntegral) levels :: [Word32]
+    fmap UsetId $
+      withArray levelSizes $ \p_levelSizes ->
+        withArray allGroups $ \p_groupIds ->
+          invoke $ glean_make_acl_cnf
+            own_ptr
+            p_levelSizes
+            (fromIntegral (length levels))
+            p_groupIds
+
+-- | Augment computed ownership with ACL constraints.
+-- Each assignment maps a UnitId to a prebuilt ACL CNF UsetId.
+augmentWithACL
+  :: ComputedOwnership
+  -> [(Word32, UsetId)]  -- ^ (UnitId, CNF UsetId)
+  -> IO ()
+augmentWithACL _ [] = return ()
+augmentWithACL own assignments =
+  with own $ \own_ptr -> do
+    let unitIds = map fst assignments
+        cnfIds = map (coerce :: UsetId -> Word32) $ map snd assignments
+    withArray (map fromIntegral unitIds :: [Word32]) $ \p_unitIds ->
+      withArray cnfIds $ \p_cnfIds ->
+        invoke $ glean_augment_ownership_with_acl
+          own_ptr
+          p_unitIds
+          p_cnfIds
+          (fromIntegral (length assignments))
+
+-- -----------------------------------------------------------------------------
 -- FFI
 
 foreign import ccall safe glean_get_ownership_stats
@@ -479,4 +531,22 @@ foreign import ccall unsafe
    glean_sliced_stack_free :: Ptr Lookup -> IO ()
 
 foreign import ccall unsafe
-   glean_ownership_next_set_id :: Ptr Ownership -> Ptr UsetId -> IO CString
+     glean_ownership_next_set_id :: Ptr Ownership -> Ptr UsetId -> IO CString
+
+foreign import ccall unsafe glean_computed_ownership_first_set_id
+  :: Ptr ComputedOwnership -> Ptr Word32 -> IO CString
+
+foreign import ccall safe glean_make_acl_cnf
+  :: Ptr ComputedOwnership
+  -> Ptr CSize    -- level_sizes
+  -> CSize        -- num_levels
+  -> Ptr Word32   -- group_ids
+  -> Ptr Word32   -- result (UsetId)
+  -> IO CString
+
+foreign import ccall safe glean_augment_ownership_with_acl
+  :: Ptr ComputedOwnership
+  -> Ptr Word32   -- unit_ids
+  -> Ptr Word32   -- cnf_ids
+  -> CSize        -- num_units
+  -> IO CString
