@@ -126,10 +126,7 @@
       "definition": {
         "cls": {
           "key": {
-            "bases": [
-              { "key": { "name": { "key": "generic.G" } } },
-              { "key": { "name": { "key": "typing.Generic" } } }
-            ],
+            "bases": [ { "key": { "name": { "key": "typing.Generic" } } } ],
             "container": {
               "module": { "key": { "name": { "key": "generic" } } }
             },
@@ -149,10 +146,7 @@
       "definition": {
         "cls": {
           "key": {
-            "bases": [
-              { "key": { "name": { "key": "optional_generic.G" } } },
-              { "key": { "name": { "key": "typing.Generic" } } }
-            ],
+            "bases": [ { "key": { "name": { "key": "typing.Generic" } } } ],
             "container": {
               "module": { "key": { "name": { "key": "optional_generic" } } }
             },

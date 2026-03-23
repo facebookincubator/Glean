@@ -41,10 +41,7 @@
       "definition": {
         "cls": {
           "key": {
-            "bases": [
-              { "key": { "name": { "key": "abc.ABC" } } },
-              { "key": { "name": { "key": "foo.ABC" } } }
-            ],
+            "bases": [ { "key": { "name": { "key": "abc.ABC" } } } ],
             "container": { "module": { "key": { "name": { "key": "foo" } } } },
             "declaration": { "key": { "name": { "key": "foo.AbstractFoo" } } }
           }
@@ -75,10 +72,7 @@
       "definition": {
         "cls": {
           "key": {
-            "bases": [
-              { "key": { "name": { "key": "bar.Bar" } } },
-              { "key": { "name": { "key": "foo.Bar" } } }
-            ],
+            "bases": [ { "key": { "name": { "key": "bar.Bar" } } } ],
             "container": { "module": { "key": { "name": { "key": "foo" } } } },
             "declaration": { "key": { "name": { "key": "foo.FooBar" } } }
           }
