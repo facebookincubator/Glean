@@ -1,0 +1,23 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "var",
+      "entity": {
+        "python": {
+          "decl": { "variable": { "key": { "name": { "key": "all.var" } } } }
+        }
+      },
+      "location": {
+        "name": "all.var",
+        "file": {
+          "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/all.py"
+        },
+        "location": { "span": { "start": 297, "length": 9 } }
+      },
+      "kind": 14,
+      "language": 4
+    }
+  }
+]

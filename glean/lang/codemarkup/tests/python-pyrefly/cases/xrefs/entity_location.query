@@ -1,0 +1,4 @@
+query: |
+  python.DeclarationWithName { _, Decl };
+  codemarkup.EntityLocation { entity = { python = { decl = Decl } } };
+transform: [normord, []]

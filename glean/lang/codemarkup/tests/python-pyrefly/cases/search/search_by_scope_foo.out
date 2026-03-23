@@ -1,0 +1,24 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "func": { "key": { "name": { "key": "some.foo.foo" } } } }
+        }
+      },
+      "kind": 13,
+      "language": 4,
+      "location": {
+        "file": {
+          "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/search/some/foo.py"
+        },
+        "location": { "span": { "length": 28, "start": 305 } },
+        "name": "some.foo.foo"
+      },
+      "name": "foo",
+      "scope": [ "foo", "some" ],
+      "searchcase": 0
+    }
+  }
+]

@@ -1,0 +1,3 @@
+query: codemarkup.search.SearchByName { name = "old_style_class_var", kind = { just = Variable }, searchcase = Sensitive }
+perf: true
+transform: [gensort, []]

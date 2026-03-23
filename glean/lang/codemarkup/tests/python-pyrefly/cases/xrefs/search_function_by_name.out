@@ -1,0 +1,62 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "big_func",
+      "parent": { "key": { "local_name": { "key": "big_lib" } } },
+      "decl": { "key": { "name": { "key": "big_lib.big_func" } } }
+    }
+  },
+  {
+    "key": {
+      "name": "f",
+      "parent": { "key": { "local_name": { "key": "main" } } },
+      "decl": { "key": { "name": { "key": "main.f" } } }
+    }
+  },
+  {
+    "key": {
+      "name": "fn",
+      "parent": { "key": { "local_name": { "key": "all" } } },
+      "decl": { "key": { "name": { "key": "all.fn" } } }
+    }
+  },
+  {
+    "key": {
+      "name": "func_sleep",
+      "parent": { "key": { "local_name": { "key": "big_lib" } } },
+      "decl": { "key": { "name": { "key": "big_lib.func_sleep" } } }
+    }
+  },
+  {
+    "key": {
+      "name": "g",
+      "parent": { "key": { "local_name": { "key": "main" } } },
+      "decl": { "key": { "name": { "key": "main.g" } } }
+    }
+  },
+  {
+    "key": {
+      "name": "h",
+      "parent": {
+        "key": {
+          "local_name": { "key": "<locals>" },
+          "parent": {
+            "key": {
+              "local_name": { "key": "g" },
+              "parent": { "key": { "local_name": { "key": "main" } } }
+            }
+          }
+        }
+      },
+      "decl": { "key": { "name": { "key": "main.g.<locals>.h" } } }
+    }
+  },
+  {
+    "key": {
+      "name": "helper_func",
+      "parent": { "key": { "local_name": { "key": "lib" } } },
+      "decl": { "key": { "name": { "key": "lib.helper_func" } } }
+    }
+  }
+]

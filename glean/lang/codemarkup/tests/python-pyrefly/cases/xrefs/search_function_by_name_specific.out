@@ -1,0 +1,10 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "big_func",
+      "parent": { "key": { "local_name": { "key": "big_lib" } } },
+      "decl": { "key": { "name": { "key": "big_lib.big_func" } } }
+    }
+  }
+]

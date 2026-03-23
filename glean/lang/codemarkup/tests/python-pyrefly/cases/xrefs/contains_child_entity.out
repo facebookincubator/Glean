@@ -1,0 +1,471 @@
+[
+  "@generated",
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "lib.AbstractClass" } } }
+          }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.AbstractClass.abstract_method" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass.__private_method" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass._protected_method" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass.class_method" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.HelperClass.method" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.HelperClass.prop" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass.static_method" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "lib.HelperClass.class_var" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "lib.HelperClass.instance_var" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "lib.HelperClass.old_style_class_var" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "all" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "all.LocalClass" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "all" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": { "func": { "key": { "name": { "key": "all.fn" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "all" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "variable": { "key": { "name": { "key": "all.__all__" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "all" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": { "variable": { "key": { "name": { "key": "all.var" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "big_lib.big_func" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "big_lib.func_sleep" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "module": { "key": { "name": { "key": "big_lib._inner" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "module": { "key": { "name": { "key": "big_lib.relative" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "variable": { "key": { "name": { "key": "big_lib.__all__" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": {
+            "module": { "key": { "name": { "key": "big_lib._inner" } } }
+          }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "big_lib._inner.BaseClass" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "lib.AbstractClass" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.helper_func" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "main" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": { "func": { "key": { "name": { "key": "main.f" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "main" } } } }
+        }
+      },
+      "child": {
+        "python": {
+          "decl": { "func": { "key": { "name": { "key": "main.g" } } } }
+        }
+      }
+    }
+  }
+]

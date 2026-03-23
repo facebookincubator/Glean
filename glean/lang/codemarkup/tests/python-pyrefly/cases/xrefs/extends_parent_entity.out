@@ -1,0 +1,63 @@
+[
+  "@generated",
+  {
+    "key": {
+      "child": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "all.LocalClass" } } } }
+        }
+      },
+      "parent": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "big_lib._inner.BaseClass" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "lib.AbstractClass" } } }
+          }
+        }
+      },
+      "parent": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "abc.ABC" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+        }
+      },
+      "parent": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+        }
+      },
+      "parent": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,3 @@
+query: codemarkup.search.SearchByScope { name = "In9", scope = ["In6","In7","In8"], searchcase = Sensitive, language = Python, kind = { just = Class_ } }
+perf: true
+transform: [normord, []]

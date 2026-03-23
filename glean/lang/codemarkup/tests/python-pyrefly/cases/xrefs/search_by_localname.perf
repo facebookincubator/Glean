@@ -1,0 +1,22 @@
+{
+  "@generated": null,
+  "facts_searched": {
+    "python.ClassDeclaration.4": 1,
+    "python.DeclarationDefinition.4": 37,
+    "python.DeclarationLocation.4": 37,
+    "python.SearchClassByName.4": 8,
+    "python.SearchFieldByName.4": 6,
+    "python.SearchFunctionByName.4": 7,
+    "python.SearchMethodByName.4": 7,
+    "python.SearchModuleByName.4": 6,
+    "python.SearchVariableByName.4": 4
+  },
+  "full_scans": [
+    "python.SearchClassByName.4",
+    "python.SearchFieldByName.4",
+    "python.SearchFunctionByName.4",
+    "python.SearchMethodByName.4",
+    "python.SearchModuleByName.4",
+    "python.SearchVariableByName.4"
+  ]
+}

@@ -1,0 +1,17 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "old_style_class_var",
+      "parent": {
+        "key": {
+          "local_name": { "key": "HelperClass" },
+          "parent": { "key": { "local_name": { "key": "lib" } } }
+        }
+      },
+      "decl": {
+        "key": { "name": { "key": "lib.HelperClass.old_style_class_var" } }
+      }
+    }
+  }
+]

@@ -1,0 +1,4 @@
+query: |
+  python.DeclarationLocation { declaration = D};
+  codemarkup.EntityModuleName { entity = {python = {decl = D}}}
+transform: [gensort, []]

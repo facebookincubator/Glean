@@ -1,0 +1,3 @@
+query: codemarkup.search.SearchByName { name = "lib", kind = { just = Module }, searchcase = Sensitive }
+perf: true
+transform: [gensort, []]

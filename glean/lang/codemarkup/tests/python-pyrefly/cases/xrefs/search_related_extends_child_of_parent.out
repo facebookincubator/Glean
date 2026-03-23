@@ -1,0 +1,111 @@
+[
+  "@generated",
+  {
+    "key": {
+      "query": 1,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": {
+              "cls": {
+                "key": { "name": { "key": "big_lib._inner.BaseClass" } }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "big_lib._inner.BaseClass",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/big_lib/_inner.py"
+          },
+          "location": { "span": { "start": 226, "length": 25 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "all.LocalClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "all.LocalClass",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/all.py"
+          },
+          "location": { "span": { "start": 384, "length": 37 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 1,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
+          }
+        },
+        "location": {
+          "name": "lib.Parent1",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 851, "length": 23 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+          }
+        },
+        "location": {
+          "name": "lib.Child",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 903, "length": 39 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 1,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
+          }
+        },
+        "location": {
+          "name": "lib.Parent2",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 877, "length": 23 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+          }
+        },
+        "location": {
+          "name": "lib.Child",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 903, "length": 39 } }
+        }
+      },
+      "style": 0
+    }
+  }
+]

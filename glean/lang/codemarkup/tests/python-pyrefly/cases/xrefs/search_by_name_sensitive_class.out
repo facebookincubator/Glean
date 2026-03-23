@@ -1,0 +1,23 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "LocalClass",
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "all.LocalClass" } } } }
+        }
+      },
+      "location": {
+        "name": "all.LocalClass",
+        "file": {
+          "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/all.py"
+        },
+        "location": { "span": { "start": 384, "length": 37 } }
+      },
+      "kind": 6,
+      "language": 4
+    }
+  }
+]

@@ -1,0 +1,1079 @@
+[
+  "@generated",
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "lib.AbstractClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.AbstractClass",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 945, "length": 80 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "func": {
+                "key": {
+                  "name": { "key": "lib.AbstractClass.abstract_method" }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.AbstractClass.abstract_method",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 991, "length": 34 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 351, "length": 451 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "func": {
+                "key": { "name": { "key": "lib.HelperClass.__private_method" } }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass.__private_method",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 759, "length": 43 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 351, "length": 451 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "func": {
+                "key": {
+                  "name": { "key": "lib.HelperClass._protected_method" }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass._protected_method",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 709, "length": 44 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 351, "length": 451 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "func": {
+                "key": { "name": { "key": "lib.HelperClass.class_method" } }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass.class_method",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 529, "length": 47 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 351, "length": 451 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "func": { "key": { "name": { "key": "lib.HelperClass.method" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass.method",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 463, "length": 47 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 351, "length": 451 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "func": { "key": { "name": { "key": "lib.HelperClass.prop" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass.prop",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 668, "length": 35 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 351, "length": 451 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "func": {
+                "key": { "name": { "key": "lib.HelperClass.static_method" } }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass.static_method",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 596, "length": 45 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 351, "length": 451 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "variable": {
+                "key": { "name": { "key": "lib.HelperClass.class_var" } }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass.class_var",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 403, "length": 32 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 351, "length": 451 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "variable": {
+                "key": { "name": { "key": "lib.HelperClass.instance_var" } }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass.instance_var",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 440, "length": 17 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 351, "length": 451 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "variable": {
+                "key": {
+                  "name": { "key": "lib.HelperClass.old_style_class_var" }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass.old_style_class_var",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 374, "length": 23 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "all" } } } }
+          }
+        },
+        "location": {
+          "name": "all",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/all.py"
+          },
+          "location": { "span": { "start": 0, "length": 505 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "all.LocalClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "all.LocalClass",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/all.py"
+          },
+          "location": { "span": { "start": 384, "length": 37 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "all" } } } }
+          }
+        },
+        "location": {
+          "name": "all",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/all.py"
+          },
+          "location": { "span": { "start": 0, "length": 505 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": { "func": { "key": { "name": { "key": "all.fn" } } } }
+          }
+        },
+        "location": {
+          "name": "all.fn",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/all.py"
+          },
+          "location": { "span": { "start": 309, "length": 72 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "all" } } } }
+          }
+        },
+        "location": {
+          "name": "all",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/all.py"
+          },
+          "location": { "span": { "start": 0, "length": 505 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "variable": { "key": { "name": { "key": "all.__all__" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "all.__all__",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/all.py"
+          },
+          "location": { "span": { "start": 424, "length": 80 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "all" } } } }
+          }
+        },
+        "location": {
+          "name": "all",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/all.py"
+          },
+          "location": { "span": { "start": 0, "length": 505 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": { "variable": { "key": { "name": { "key": "all.var" } } } }
+          }
+        },
+        "location": {
+          "name": "all.var",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/all.py"
+          },
+          "location": { "span": { "start": 297, "length": 9 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+          }
+        },
+        "location": {
+          "name": "big_lib",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/big_lib/__init__.py"
+          },
+          "location": { "span": { "start": 0, "length": 518 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "func": { "key": { "name": { "key": "big_lib.big_func" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "big_lib.big_func",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/big_lib/__init__.py"
+          },
+          "location": { "span": { "start": 261, "length": 140 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+          }
+        },
+        "location": {
+          "name": "big_lib",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/big_lib/__init__.py"
+          },
+          "location": { "span": { "start": 0, "length": 518 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "func": { "key": { "name": { "key": "big_lib.func_sleep" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "big_lib.func_sleep",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/big_lib/__init__.py"
+          },
+          "location": { "span": { "start": 418, "length": 36 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+          }
+        },
+        "location": {
+          "name": "big_lib",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/big_lib/__init__.py"
+          },
+          "location": { "span": { "start": 0, "length": 518 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "module": { "key": { "name": { "key": "big_lib._inner" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "big_lib._inner",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/big_lib/_inner.py"
+          },
+          "location": { "span": { "start": 0, "length": 252 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+          }
+        },
+        "location": {
+          "name": "big_lib",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/big_lib/__init__.py"
+          },
+          "location": { "span": { "start": 0, "length": 518 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "module": { "key": { "name": { "key": "big_lib.relative" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "big_lib.relative",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/big_lib/relative.py"
+          },
+          "location": { "span": { "start": 0, "length": 260 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+          }
+        },
+        "location": {
+          "name": "big_lib",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/big_lib/__init__.py"
+          },
+          "location": { "span": { "start": 0, "length": 518 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "variable": { "key": { "name": { "key": "big_lib.__all__" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "big_lib.__all__",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/big_lib/__init__.py"
+          },
+          "location": { "span": { "start": 457, "length": 60 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+          }
+        },
+        "location": {
+          "name": "big_lib",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/big_lib/__init__.py"
+          },
+          "location": { "span": { "start": 0, "length": 518 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "big_lib.big_var",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/big_lib/__init__.py"
+          },
+          "location": { "span": { "start": 247, "length": 11 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": {
+              "module": { "key": { "name": { "key": "big_lib._inner" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "big_lib._inner",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/big_lib/_inner.py"
+          },
+          "location": { "span": { "start": 0, "length": 252 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "cls": {
+                "key": { "name": { "key": "big_lib._inner.BaseClass" } }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "big_lib._inner.BaseClass",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/big_lib/_inner.py"
+          },
+          "location": { "span": { "start": 226, "length": 25 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+          }
+        },
+        "location": {
+          "name": "lib",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 0, "length": 1026 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "lib.AbstractClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.AbstractClass",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 945, "length": 80 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+          }
+        },
+        "location": {
+          "name": "lib",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 0, "length": 1026 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+          }
+        },
+        "location": {
+          "name": "lib.Child",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 903, "length": 39 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+          }
+        },
+        "location": {
+          "name": "lib",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 0, "length": 1026 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 351, "length": 451 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+          }
+        },
+        "location": {
+          "name": "lib",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 0, "length": 1026 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
+          }
+        },
+        "location": {
+          "name": "lib.Parent1",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 851, "length": 23 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+          }
+        },
+        "location": {
+          "name": "lib",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 0, "length": 1026 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
+          }
+        },
+        "location": {
+          "name": "lib.Parent2",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 877, "length": 23 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+          }
+        },
+        "location": {
+          "name": "lib",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 0, "length": 1026 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "func": { "key": { "name": { "key": "lib.helper_func" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.helper_func",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/lib.py"
+          },
+          "location": { "span": { "start": 805, "length": 43 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "main" } } } }
+          }
+        },
+        "location": {
+          "name": "main",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/main.py"
+          },
+          "location": { "span": { "start": 0, "length": 581 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": { "func": { "key": { "name": { "key": "main.f" } } } }
+          }
+        },
+        "location": {
+          "name": "main.f",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/main.py"
+          },
+          "location": { "span": { "start": 321, "length": 107 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": { "module": { "key": { "name": { "key": "main" } } } }
+          }
+        },
+        "location": {
+          "name": "main",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/main.py"
+          },
+          "location": { "span": { "start": 0, "length": 581 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": { "func": { "key": { "name": { "key": "main.g" } } } }
+          }
+        },
+        "location": {
+          "name": "main.g",
+          "file": {
+            "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/main.py"
+          },
+          "location": { "span": { "start": 431, "length": 112 } }
+        }
+      },
+      "style": 0
+    }
+  }
+]
