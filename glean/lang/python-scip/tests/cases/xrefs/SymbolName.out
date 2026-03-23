@@ -186,6 +186,12 @@
   },
   {
     "key": {
+      "symbol": { "key": "scip-python python python-stdlib 3.11 random/" },
+      "name": { "key": "random" }
+    }
+  },
+  {
+    "key": {
       "symbol": {
         "key": "scip-python python python-stdlib 3.11 random/__init__:"
       },

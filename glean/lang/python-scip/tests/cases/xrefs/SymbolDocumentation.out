@@ -125,5 +125,127 @@
       "symbol": { "key": "scip-python python . test example/y." },
       "docs": { "key": "```python\u000abuiltins.int\u000a```" }
     }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 builtins/range#"
+      },
+      "docs": {
+        "key": "```python\u000aclass range(\u000a    __start: SupportsIndex,\u000a    __stop: SupportsIndex,\u000a    __step: SupportsIndex = ...,\u000a    /\u000a)\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python python-stdlib 3.11 random/" },
+      "docs": { "key": "---" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python python-stdlib 3.11 random/" },
+      "docs": { "key": "Choose a random element from a non-empty sequence." }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python python-stdlib 3.11 random/" },
+      "docs": {
+        "key": "```python\u000a(variable) choice: (seq: SupportsLenAndGetItem[_T@choice]) -> _T@choice\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 random/choice."
+      },
+      "docs": { "key": "---" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 random/choice."
+      },
+      "docs": { "key": "Choose a random element from a non-empty sequence." }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 random/choice."
+      },
+      "docs": {
+        "key": "```python\u000a(variable) choice: (seq: SupportsLenAndGetItem[_T@choice]) -> _T@choice\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 random/randint."
+      },
+      "docs": { "key": "---" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 random/randint."
+      },
+      "docs": {
+        "key": "Return random integer in range \\[a, b\\], including both end points."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 random/randint."
+      },
+      "docs": {
+        "key": "```python\u000a(variable) randint: (a: int, b: int) -> int\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/RawTurtle#write().(align)"
+      },
+      "docs": { "key": "```python\u000a(parameter) align: str\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/RawTurtle#write().(font)"
+      },
+      "docs": {
+        "key": "```python\u000a(parameter) font: tuple[str, int, str]\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/_Screen#setup().(height)"
+      },
+      "docs": {
+        "key": "```python\u000a(parameter) height: int | float\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/_Screen#setup().(width)"
+      },
+      "docs": {
+        "key": "```python\u000a(parameter) width: int | float\u000a```"
+      }
+    }
   }
 ]

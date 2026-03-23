@@ -1,10 +1,28 @@
 [
   "@generated",
   { "key": "(module) example" },
+  { "key": "---" },
+  { "key": "Choose a random element from a non-empty sequence." },
+  {
+    "key": "Return random integer in range \\[a, b\\], including both end points."
+  },
+  { "key": "```python\u000a(parameter) align: str\u000a```" },
+  { "key": "```python\u000a(parameter) font: tuple[str, int, str]\u000a```" },
+  { "key": "```python\u000a(parameter) height: int | float\u000a```" },
+  { "key": "```python\u000a(parameter) width: int | float\u000a```" },
+  {
+    "key": "```python\u000a(variable) choice: (seq: SupportsLenAndGetItem[_T@choice]) -> _T@choice\u000a```"
+  },
+  {
+    "key": "```python\u000a(variable) randint: (a: int, b: int) -> int\u000a```"
+  },
   { "key": "```python\u000abuiltins.float\u000a```" },
   { "key": "```python\u000abuiltins.int\u000a```" },
   { "key": "```python\u000abuiltins.list\u000a```" },
   { "key": "```python\u000abuiltins.str\u000a```" },
+  {
+    "key": "```python\u000aclass range(\u000a    __start: SupportsIndex,\u000a    __stop: SupportsIndex,\u000a    __step: SupportsIndex = ...,\u000a    /\u000a)\u000a```"
+  },
   { "key": "```python\u000adef godown(): # -> None:\u000a```" },
   { "key": "```python\u000adef goleft(): # -> None:\u000a```" },
   { "key": "```python\u000adef goright(): # -> None:\u000a```" },
