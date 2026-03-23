@@ -145,6 +145,12 @@
   },
   {
     "key": {
+      "symbol": { "key": "scip-python python python-stdlib 3.11 random/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
       "symbol": {
         "key": "scip-python python python-stdlib 3.11 random/choice."
       },

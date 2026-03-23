@@ -30,6 +30,7 @@
   { "key": "scip-python python . test example/y." },
   { "key": "scip-python python python-stdlib 3.11 builtins/list#append()." },
   { "key": "scip-python python python-stdlib 3.11 builtins/range#" },
+  { "key": "scip-python python python-stdlib 3.11 random/" },
   { "key": "scip-python python python-stdlib 3.11 random/__init__:" },
   { "key": "scip-python python python-stdlib 3.11 random/choice." },
   { "key": "scip-python python python-stdlib 3.11 random/randint." },
