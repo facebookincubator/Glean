@@ -243,7 +243,12 @@ instance Plugin RestoreCommand where
               then do threadDelay 1000000
                       localDatabases <- listLocalDBs
                       edbs <- traverse (locatorDb localDatabases) locators
-                      waitForRestoreToFinish (rights edbs)
+                      let (missing, found) = partitionEithers edbs
+                      if not (null missing)
+                        then die 1 $ unwords
+                          [ "error: database restore failed for"
+                          , Text.unpack (Text.intercalate ", " missing)]
+                        else waitForRestoreToFinish found
               else forM_ dbs $ \db -> case database_status db of
                 DatabaseStatus_Complete -> return ()
                 DatabaseStatus_Missing -> putStrLn $ unwords

@@ -26,6 +26,7 @@ import Data.HashSet (HashSet)
 import qualified Data.HashSet as HashSet
 import Data.Hashable (Hashable)
 import Data.Int
+import Data.IORef
 import Data.List
 import qualified Data.Map as Map
 import Data.Maybe
@@ -315,12 +316,14 @@ doRestore env@Env{..} repo meta
             case config_restore_timeout of
               Just seconds -> void . timeout (fromIntegral seconds * 1000000)
               Nothing -> id
+      failed <- newIORef False
       withStorageFor env repo meta $ \storage ->
-        maybeTimeout $ restore site storage cfg size `catch` handler storage
+        maybeTimeout $ restore site storage cfg size `catch` \exc -> do
+          handler storage exc
+          writeIORef failed True
 
-      -- NOTE: No point in adding the repo to the sinbin if there was
-      -- an exception, the handler removed it from the list of known DBs
-      return True
+      didFail <- readIORef failed
+      return (not didFail)
 
   | otherwise = do
       atomically $ notify envListener $ RestoreStarted repo
