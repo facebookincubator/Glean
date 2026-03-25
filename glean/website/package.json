@@ -54,6 +54,7 @@
   "resolutions": {
     "shelljs": "^0.8.5",
     "ansi-html": "0.0.8",
-    "qs": "^6.14.1"
+    "qs": "^6.14.1",
+    "serialize-javascript": ">=7.0.3"
   }
 }
