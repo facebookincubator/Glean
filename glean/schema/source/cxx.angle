@@ -1252,6 +1252,11 @@ predicate FunctionDeclAttribute :
   } stored
   { Decl, Attr } where cxx1.FunctionAttribute { Attr, Decl }
 
+# Declarations with extern "C" linkage specification.
+# A fact exists for a Declaration iff it was declared inside an
+# extern "C" block (or with an explicit extern "C" prefix).
+predicate ExternCDeclaration : Declaration
+
 # ObjCContainerId to Name
 predicate ObjContainerIdName :
   {
