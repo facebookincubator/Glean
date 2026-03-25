@@ -204,15 +204,17 @@ data Config = Config
 data DebugFlags = DebugFlags
   { tcDebug :: !Bool
   , queryDebug :: !Bool
+  , queryLint :: !Bool
   }
 
 instance Default DebugFlags where
-  def = DebugFlags { tcDebug = False, queryDebug = False }
+  def = DebugFlags { tcDebug = False, queryDebug = False, queryLint = False }
 
 instance Semigroup DebugFlags where
   a <> b = DebugFlags
     { tcDebug = tcDebug a || tcDebug b
     , queryDebug = queryDebug a || queryDebug b
+    , queryLint = queryLint a || queryLint b
     }
 
 instance Monoid DebugFlags where
@@ -561,6 +563,7 @@ options = do
     debugParser = do
       tcDebug <- switch (long "debug-tc")
       queryDebug <- switch (long "debug-query")
+      queryLint <- switch (long "debug-query-lint")
       return DebugFlags{..}
 
     serverConfigThriftSource = option (eitherReader ThriftSource.parse)
