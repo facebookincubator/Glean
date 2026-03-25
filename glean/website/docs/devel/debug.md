@@ -56,6 +56,7 @@ variables or command-line options. There are currently two of these:
 
 * `GLEAN_DEBUG=query` or `--debug-query`: enable logging from the query compiler
 * `GLEAN_DEBUG=tc` or `--debug-tc`: enable logging from the Angle type checker
+* `GLEAN_DEBUG=lint` or `--debug-query-lint`: enable consistency checks on the query before running; catches internal errors in the query compiler
 
 ## Debugging the C++ code
 
