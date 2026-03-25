@@ -205,5 +205,5 @@ angleErrorTests = dbTestCase $ \env repo -> do
   assertBool "angle - negation unbound" $
     case r of
       Left (BadQuery x) ->
-        "unbound variable: A" `Text.isInfixOf` x
+        "not bound anywhere: A" `Text.isInfixOf` x
       _ -> False
