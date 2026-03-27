@@ -33,22 +33,12 @@ import Glean.Query.Vars (VarSet)
 import Glean.RTS.Term as RTS
 
 -- -----------------------------------------------------------------------------
--- Fixing up MatchBind vs. MatchVar
+-- Resolving MatchBind vs. MatchVar
 
--- Substitution can mess up MatchBind and MatchVar - we might end up
--- with multiple MatchBinds for a variable, or a MatchVar before a
--- MatchBind. To fix it up all we need to do is traverse the query in
--- the correct order, keeping track of which variables are in scope,
--- and change MatchBind<->MatchVar as appropriate.
---
--- This is all somewhat suboptimal, because the typechecker has
--- already figured out MatchBind vs. MatchVar and here we mess it up
--- by substitution and then fix it again. Which begs the question: why
--- do we have MatchBind and MatchVar at all, couldn't we leave it
--- until the last minute just before code generation to figure out
--- which variables are binding occurrences?  Yes, but it's nice to be
--- able to give the user out-of-scope error messages from the
--- typechecker.  Maybe we'll change this in the future.
+-- Before the Reorder pass, MatchBind and MatchVar are the same (strictly
+-- speaking we should have just one variable form). The reorder pass resolves
+-- statement ordering so that variables are bound before their use;
+-- MatchBind indicates a variable binding and MatchVar indicates a variable use.
 
 data Scope = Scope
   { isScope :: VarSet
