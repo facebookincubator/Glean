@@ -925,7 +925,8 @@ predicate CxxNamespaceDeclarationContainsChild:
   { Decl, Child } where
     { name = NSQName } = Decl;
     Scope = cxx1.Scope { namespace_ = NSQName };
-    ( Q = cxx1.QName { name = _, scope = Scope }; # n.b. not left prefixed!
+    ( cxx1.ScopedName { Scope, N };
+      Q = cxx1.QName { N, Scope };
         (
           code.cxx.Entity { decl = { record_ = { name = Q }}}  |
           code.cxx.Entity { decl = { variable = { name = Q }}} |

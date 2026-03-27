@@ -5,11 +5,8 @@
     "cxx1.EnumDeclaration.5": 1,
     "cxx1.FunctionDeclaration.5": 42,
     "cxx1.NamespaceDeclaration.5": 7,
-    "cxx1.QName.5": 28
+    "cxx1.QName.5": 1,
+    "cxx1.ScopedName.5": 1
   },
-  "full_scans": [
-    "cxx1.FunctionDeclaration.5",
-    "cxx1.NamespaceDeclaration.5",
-    "cxx1.QName.5"
-  ]
+  "full_scans": [ "cxx1.FunctionDeclaration.5", "cxx1.NamespaceDeclaration.5" ]
 }
