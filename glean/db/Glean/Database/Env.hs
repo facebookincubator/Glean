@@ -161,6 +161,7 @@ getDebugEnv = do
   where
   add "tc" = return def { tcDebug = True }
   add "query" = return def { queryDebug = True }
+  add "lint" = return def { queryLint = True }
   add other = do
     logWarning $ "Unkonwn GLEAN_DEBUG class: " <> other
     return def
