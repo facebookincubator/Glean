@@ -305,6 +305,8 @@ F where
     Decl = Decls[..];
     Target = hack.XRefTarget { declaration = Decl };
     hack.TargetUses { target = Target, file = ReferralFile };
+    ReferralFile != F;
+    !hack.TargetNotUsedInProdBuild { target = Target, file = ReferralFile };
     hack.FilePackage { file = ReferralFile, package_ = "prod" })
 
 # Infos related to a hack module
