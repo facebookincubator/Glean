@@ -784,6 +784,19 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     static constexpr bool canHaveComments(const T*) {
       return true;
     }
+
+    static bool isExternC(const clang::FunctionDecl* decl) {
+      return decl->isExternC();
+    }
+    static bool isExternC(const clang::VarDecl* decl) {
+      return decl->isExternC();
+    }
+    static bool isExternC(const clang::Decl* decl) {
+      return decl->getLexicalDeclContext()->isExternCContext();
+    }
+    static bool isExternC(const clang::NamespaceDecl*) {
+      return false;
+    }
   };
 
   template <typename Memo, typename Decl>
@@ -1055,6 +1068,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         if (nameRange.file) {
           visitor.db.fact<Cxx::DeclarationNameSpan>(
               result->declaration(), nameRange.file->fact, nameRange.span);
+        }
+        if (DeclTraits::isExternC(decl)) {
+          visitor.db.fact<Cxx::ExternCDeclaration>(result->declaration());
         }
         if (DeclTraits::canHaveComments(decl)) {
           if (auto comment =

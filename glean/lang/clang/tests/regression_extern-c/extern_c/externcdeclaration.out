@@ -1,0 +1,452 @@
+[
+  "@generated",
+  {
+    "key": {
+      "enum_": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "DirectExternCEnum" },
+              "scope": { "global_": { } }
+            }
+          },
+          "isScoped": false,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 61,
+            "columnBegin": 12,
+            "lineEnd": 61,
+            "columnEnd": 62
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "enum_": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "ExternCEnum" },
+              "scope": { "global_": { } }
+            }
+          },
+          "isScoped": false,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 19,
+            "columnBegin": 3,
+            "lineEnd": 22,
+            "columnEnd": 3
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "enum_": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "ExternCEnum2" },
+              "scope": { "global_": { } }
+            }
+          },
+          "isScoped": false,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 34,
+            "columnBegin": 3,
+            "lineEnd": 37,
+            "columnEnd": 3
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "function_": {
+        "key": {
+          "name": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "direct_extern_c_function" } }
+              },
+              "scope": { "global_": { } }
+            }
+          },
+          "signature": {
+            "key": { "returns": { "key": "void" }, "parameters": [ ] }
+          },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 57,
+            "columnBegin": 12,
+            "lineEnd": 57,
+            "columnEnd": 42
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "function_": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": { "name": { "key": "extern_c_function" } } },
+              "scope": { "global_": { } }
+            }
+          },
+          "signature": {
+            "key": { "returns": { "key": "void" }, "parameters": [ ] }
+          },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 14,
+            "columnBegin": 3,
+            "lineEnd": 14,
+            "columnEnd": 26
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "function_": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": { "name": { "key": "extern_c_function_2" } } },
+              "scope": { "global_": { } }
+            }
+          },
+          "signature": {
+            "key": { "returns": { "key": "void" }, "parameters": [ ] }
+          },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 29,
+            "columnBegin": 3,
+            "lineEnd": 29,
+            "columnEnd": 28
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "record_": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "DirectExternCStruct" },
+              "scope": { "global_": { } }
+            }
+          },
+          "kind": { "struct_": { } },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 60,
+            "columnBegin": 12,
+            "lineEnd": 60,
+            "columnEnd": 48
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "record_": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "ExternCStruct" },
+              "scope": { "global_": { } }
+            }
+          },
+          "kind": { "struct_": { } },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 16,
+            "columnBegin": 3,
+            "lineEnd": 18,
+            "columnEnd": 3
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "record_": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "ExternCStruct2" },
+              "scope": { "global_": { } }
+            }
+          },
+          "kind": { "struct_": { } },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 31,
+            "columnBegin": 3,
+            "lineEnd": 33,
+            "columnEnd": 3
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "typeAlias": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "DirectExternCTypedef" },
+              "scope": { "global_": { } }
+            }
+          },
+          "type": { "key": "int" },
+          "kind": 0,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 59,
+            "columnBegin": 12,
+            "lineEnd": 59,
+            "columnEnd": 43
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "typeAlias": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "ExternCTypedef" },
+              "scope": { "global_": { } }
+            }
+          },
+          "type": { "key": "int" },
+          "kind": 0,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 23,
+            "columnBegin": 3,
+            "lineEnd": 23,
+            "columnEnd": 28
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "typeAlias": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "ExternCTypedef2" },
+              "scope": { "global_": { } }
+            }
+          },
+          "type": { "key": "int" },
+          "kind": 0,
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 38,
+            "columnBegin": 3,
+            "lineEnd": 38,
+            "columnEnd": 29
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "variable": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "direct_extern_c_variable" },
+              "scope": { "global_": { } }
+            }
+          },
+          "type": { "key": "int" },
+          "kind": {
+            "global_": { "kind": 0, "attribute": 0, "definition": false }
+          },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 58,
+            "columnBegin": 12,
+            "lineEnd": 58,
+            "columnEnd": 39
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "variable": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "extern_c_variable" },
+              "scope": { "global_": { } }
+            }
+          },
+          "type": { "key": "int" },
+          "kind": {
+            "global_": { "kind": 0, "attribute": 0, "definition": true }
+          },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 15,
+            "columnBegin": 3,
+            "lineEnd": 15,
+            "columnEnd": 23
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "variable": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "extern_c_variable_2" },
+              "scope": { "global_": { } }
+            }
+          },
+          "type": { "key": "int" },
+          "kind": {
+            "global_": { "kind": 0, "attribute": 0, "definition": true }
+          },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 30,
+            "columnBegin": 3,
+            "lineEnd": 30,
+            "columnEnd": 25
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "variable": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "x" },
+              "scope": {
+                "recordWithAccess": {
+                  "record": {
+                    "key": {
+                      "name": { "key": "ExternCStruct" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "access": 0
+                }
+              }
+            }
+          },
+          "type": { "key": "int" },
+          "kind": { "field": { "mutable_": false } },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 17,
+            "columnBegin": 5,
+            "lineEnd": 17,
+            "columnEnd": 9
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "variable": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "x" },
+              "scope": {
+                "recordWithAccess": {
+                  "record": {
+                    "key": {
+                      "name": { "key": "ExternCStruct2" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "access": 0
+                }
+              }
+            }
+          },
+          "type": { "key": "int" },
+          "kind": { "field": { "mutable_": false } },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 32,
+            "columnBegin": 5,
+            "lineEnd": 32,
+            "columnEnd": 9
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "variable": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "y" },
+              "scope": {
+                "recordWithAccess": {
+                  "record": {
+                    "key": {
+                      "name": { "key": "DirectExternCStruct" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "access": 0
+                }
+              }
+            }
+          },
+          "type": { "key": "int" },
+          "kind": { "field": { "mutable_": false } },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 60,
+            "columnBegin": 41,
+            "lineEnd": 60,
+            "columnEnd": 45
+          }
+        }
+      }
+    }
+  }
+]
