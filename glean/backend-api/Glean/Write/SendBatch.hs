@@ -80,7 +80,9 @@ sendJsonBatch backend repo batches opts remember = do
     Thrift.SendJsonBatch
       { Thrift.sendJsonBatch_batches = batches
       , Thrift.sendJsonBatch_options = opts
-      , Thrift.sendJsonBatch_remember = remember }
+      , Thrift.sendJsonBatch_remember = remember
+      , Thrift.sendJsonBatch_acl_config = Nothing
+      }
   case r of
     Right Thrift.SendJsonBatchResponse{..} ->
       return sendJsonBatchResponse_handle

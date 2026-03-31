@@ -208,6 +208,13 @@ struct Batch {
 
   // The schema ID, which must match the schema ID of the DB
   7: optional SchemaId schema_id;
+
+  // ACL configuration for this batch.
+  // Maps directory paths to lists of ACL group ID strings.
+  // Each path maps to one or more group IDs (e.g., {"src/alpha": ["premier"],
+  // "src/bravo": ["beta", "gamma"]}). Latter means you need ACL beta or gamma to access
+  // Must be provided if ACL is enabled for the database.
+  9: optional map<string, list<string>> (hs.type = "HashMap") acl_config;
 }
 
 struct Subst {
@@ -866,6 +873,13 @@ struct SendJsonBatch {
   // passed to finishBatch to check that the write has completed and
   // obtain the substitution.
   3: bool remember = false;
+
+  // ACL configuration for this batch request.
+  // Maps file/directory paths to lists of ACL group ID strings.
+  // Each path maps to one or more group IDs (e.g., {"src/alpha": ["1"],
+  // "src/bravo": ["2", "3"]}).
+  // Must be provided if ACL is enabled for the database.
+  4: optional map<string, list<string>> (hs.type = "HashMap") acl_config;
 }
 
 struct SendJsonBatchResponse {
