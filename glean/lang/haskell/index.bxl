@@ -48,7 +48,7 @@ def _impl(ctx):
         modifiers = ["ovr_config//third-party/ghc/constraints:9.2.4"],
     ))
 
-    facts = action_factory.declare_output("facts")
+    facts = action_factory.declare_output("facts", has_content_based_path = False)
     args = cmd_args(hie_indexer.providers()[RunInfo])
     args.add("--output", facts.as_output())
     if ctx.cli_args.schema_id:
