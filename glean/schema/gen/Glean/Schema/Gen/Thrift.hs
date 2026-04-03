@@ -75,15 +75,23 @@ genTargets slashVn info oncall =
      , "" ] ++
      concatMap genTarget (HashMap.toList info))
   where
-  genTarget (ns, (deps, nsPredicates, _)) =
+  genTarget (ns, (deps, nsPredicates, nsTypes)) =
     let
       namespace = underscored ns
+      useCppAnnotation = namespaceNeedsCpp nsPredicates nsTypes
       typesCppSplits =
         let cppSplits = min 20 (length nsPredicates) in
         ["\"types_cpp_splits=" <> showt cppSplits <> "\"" | cppSplits /= 0]
       typesRustSplits =
         let rustSplits = min 20 (length nsPredicates) in
         ["\"types_split_count=" <> showt rustSplits <> "\"" | rustSplits /= 0]
+      thriftDeps =
+        [ "\"//glean/if:glean\"" ] ++
+        depTargets ++
+        [ "\"//thrift/annotation:cpp\"" | useCppAnnotation ] ++
+        [ "\"//thrift/annotation:rust\""
+        , "\"//thrift/annotation:thrift\""
+        ]
     in
     [ "thrift_library("
     , "  name = \"" <> namespace <> "\","
@@ -104,10 +112,7 @@ genTargets slashVn info oncall =
     , "  thrift_py3_options = [\"inplace_migrate\"],"
     , "  languages = [" <> Text.intercalate ", " langs <> "],"
     , "  thrift_srcs = { \"" <> namespace <> ".thrift\" : [] },"
-    , "  deps = [" <> Text.intercalate ","
-      ( "\"//glean/if:glean\"" : depTargets ) <>
-      ", \"//thrift/annotation:rust\"" <>
-      ", \"//thrift/annotation:thrift\"],"
+    , "  deps = [" <> Text.intercalate "," thriftDeps <> "],"
     , "  hs2_deps = ["
     , "    \"//glean/angle:angle\","
     , "    \"//glean/typed:typed\","
@@ -200,6 +205,7 @@ genNamespace slashVn namespaces version
     hash namePolicy deps preddefs typedefs
  = Text.intercalate (newline <> newline) (header : pieces)
  where
+  useCppAnnotation = namespaceNeedsCpp preddefs typedefs
   someDecls = map PredicateDecl preddefs ++
     map (\TypeDef{..} -> TypeDecl typeDefRef typeDefType) typedefs
   ordered = orderDecls someDecls
@@ -237,7 +243,9 @@ genNamespace slashVn namespaces version
     , "// @" <> "nolint"
     , ""
     , "include \"glean/if/glean.thrift\""
-    , "include \"thrift/annotation/rust.thrift\""] ++
+    ] ++
+    [ "include \"thrift/annotation/cpp.thrift\"" | useCppAnnotation ] ++
+    [ "include \"thrift/annotation/rust.thrift\""] ++
     [ "include \"" <> thriftDir slashVn <> "/" <> underscored dep
         <> ".thrift\""
     | dep <- deps ] ++
@@ -384,7 +392,9 @@ makeField = mkField [] []
 makeRefField :: Text -> Int -> Name -> Text -> Text
 makeRefField = mkField
   [ "@rust.Box"
-  , "@thrift.DeprecatedUnvalidatedAnnotations{items = {\"cpp.ref\": \"true\", \"swift.recursive_reference\": \"true\"}}"
+  , "@cpp.Ref{type = cpp.RefType.Unique}"
+  , "@thrift.DeprecatedUnvalidatedAnnotations"
+    <> "{items = {\"swift.recursive_reference\": \"true\"}}"
   ]
   []
 
@@ -481,6 +491,15 @@ needsRefType t = do
       ArrayTy t -> needsRefType t
       MaybeTy t -> needsRefType t
       _ -> return False
+
+namespaceNeedsCpp :: [ResolvedPredicateDef] -> [ResolvedTypeDef] -> Bool
+namespaceNeedsCpp preddefs typedefs =
+  fst $ runM [] (mkNamePolicy preddefs typedefs) typedefs $
+    or <$> mapM predicateNeedsCpp preddefs
+  where
+    predicateNeedsCpp PredicateDef{..} =
+      (||) <$> needsRefType predicateDefKeyType
+           <*> needsRefType predicateDefValueType
 
 -- Make the thriftTy type text, and the [Text] declaration block
 define_kt ::
