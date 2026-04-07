@@ -48,9 +48,10 @@ struct SetExpr {
 };
 
 /**
- * A "unique" set stored by `Usets` below. This is a `SetU32` with a memoized
- * hash, a ref count and some administrative data used by the ownership
- * algorithms. It should probably be given a more sane interface.
+ * A ref-counted ownership set expression (`SetExpr<SetU32>`) stored
+ * uniquely by `Usets` below. Includes a memoized hash and a `UsetId`
+ * assigned on promotion (when the set becomes the ownership set of at
+ * least one fact).
  */
 struct Uset {
   explicit Uset(SetU32 s, uint32_t r = 0) : exp({Or, std::move(s)}), refs(r) {}
@@ -95,6 +96,8 @@ struct Uset {
    */
   UsetId id = INVALID_USET;
 
+  /** Whether this set has been promoted (assigned a persistent UsetId by
+   * Usets::promote()). */
   bool promoted() const {
     return id != INVALID_USET;
   }
@@ -123,7 +126,11 @@ struct Uset {
 };
 
 /**
- * Container for `Usets` which guarantees to store each set exactly once.
+ * Deduplicating store for `Uset` objects. Uses content-based hashing
+ * and equality (via F14FastSet) to guarantee each distinct set is stored
+ * exactly once. Manages `Uset` lifetimes via reference counting, and
+ * assigns persistent `UsetId`s to sets that are promoted (i.e. needed
+ * as the ownership set of at least one fact).
  */
 struct Usets {
   explicit Usets(uint32_t firstId) : firstId(firstId), nextId(firstId) {}
@@ -155,6 +162,10 @@ struct Usets {
     }
   }
 
+  /** Insert a Uset into the deduplicated store.  If an equal set already
+   *  exists, the existing one is returned and its refs are increased by
+   *  entry->refs; the caller is responsible for freeing the rejected
+   *  duplicate.  Otherwise entry is adopted and returned as-is. */
   Uset* add(Uset* entry) {
     entry->rehash();
     const auto [p, added] = usets.insert(entry);
@@ -170,6 +181,9 @@ struct Usets {
     }
   }
 
+  /** Owning variant of add(): if the set is a duplicate the
+   *  unique_ptr is left intact (caller frees); otherwise ownership
+   *  is released to the store. */
   Uset* add(std::unique_ptr<Uset> entry) {
     auto p = add(entry.get());
     if (p == entry.get()) {
@@ -178,10 +192,13 @@ struct Usets {
     return p;
   }
 
+  /** Convenience: wrap a bare SetU32 in a new Uset and add it. */
   Uset* add(SetU32 set, uint32_t refs = 0) {
     return add(std::unique_ptr<Uset>(new Uset(std::move(set), refs)));
   }
 
+  /** Find an existing Uset whose content equals entry (by hash+equality),
+   *  or return nullptr.  Does not modify ref counts. */
   Uset* lookup(Uset* entry) const {
     entry->rehash();
     auto it = usets.find(entry);
@@ -192,7 +209,10 @@ struct Usets {
     }
   }
 
-  // only when both sets have the same op
+  /** Compute the union of two Usets that share the same SetOp.
+   *  May return one of the inputs if it already subsumes the other.
+   *  The returned Uset has refs bumped by 1 (either via add() for a
+   *  new set, or use() if an existing input was reused). */
   Uset* merge(Uset* left, Uset* right) {
     SetU32 set;
     assert(left->exp.op == right->exp.op);
@@ -206,7 +226,8 @@ struct Usets {
     }
   }
 
-  // merge a SetU32 directly. Op is assumed to be Or.
+  /** Merge a bare SetU32 with a Uset (Op assumed Or).  Same return
+   *  and ref-count semantics as the two-Uset merge above. */
   Uset* merge(SetU32 left, Uset* right) {
     SetU32 set;
     assert(right->exp.op == Or);
@@ -223,10 +244,14 @@ struct Usets {
     }
   }
 
+  /** Increment a Uset's ref count (keeps it alive across drops). */
   void use(Uset* set, uint32_t refs = 1) {
     set->refs += refs;
   }
 
+  /** Decrement a Uset's ref count.  When refs reaches 0 the Uset is
+   *  removed from the store and deleted.  Must not be called on a
+   *  promoted Uset whose refs would reach 0 (asserted). */
   void drop(Uset* uset) {
     assert(uset->refs != 0);
     --uset->refs;
@@ -238,9 +263,14 @@ struct Usets {
     }
   }
 
+  /**
+   * Promote a transient set to a persistent one by assigning it a unique
+   * UsetId. No-op if already promoted.
+   */
   void promote(Uset* uset) {
     if (!uset->promoted()) {
       uset->id = nextId++;
+      // Bump the ref count so it outlives any transient users
       ++uset->refs;
       ++stats.promoted;
     }
@@ -262,16 +292,21 @@ struct Usets {
     return stats;
   }
 
+  /** The first UsetId used for promoted sets. IDs below this are
+   *  leaf UnitIds; IDs at or above it are promoted set IDs. */
   UsetId getFirstId() const {
     return firstId;
   }
 
+  /** The next UsetId that will be assigned by promote(). */
   UsetId getNextId() const {
     return nextId;
   }
 
-  // Merge another Usets into this one. The other Usets must be
-  // disjoint and using sets numbered from nextId onwards.
+  /** Merge another Usets container into this one.  The other container
+   *  must be disjoint and its firstId must equal this->nextId (i.e.
+   *  its ID range immediately follows ours).  Ownership of all sets
+   *  is transferred; `other` is left empty. */
   void append(Usets&& other) {
     CHECK_EQ(other.firstId, nextId);
     CHECK_EQ(other.nextId, nextId + other.usets.size());
@@ -285,6 +320,10 @@ struct Usets {
   }
 
   using MutableEliasFanoList = SetU32::MutableEliasFanoList;
+  /** Serialize all promoted sets to Elias-Fano encoding.  `max` is an
+   *  exclusive upper bound on every element in every set (used as the
+   *  universe size for Elias-Fano).  Returns one entry per promoted
+   *  set, in UsetId order. */
   std::vector<SetExpr<MutableEliasFanoList>> toEliasFano(UsetId max);
 
  private:
@@ -295,6 +334,19 @@ struct Usets {
 };
 
 constexpr size_t USETS_MERGE_CACHE_SIZE = 10000;
+
+/**
+ * Deferred, balanced merge engine for ownership-set propagation.
+ *
+ * Instead of merging sets one-by-one as references are discovered
+ * (O(n) sequential unions), sets are queued per fact ID and merged
+ * all at once in a balanced binary-reduction tree when the fact is
+ * finally processed. A bounded LRU cache (split into two
+ * semi-spaces) memoizes pairwise merges to avoid redundant work.
+ *
+ * Memory is bounded: when the queued data exceeds 1 GB the caller
+ * can trigger an early flush (see completeOwnership in ownership.cpp).
+ */
 struct UsetsMerge {
   struct CacheKey {
     Uset* a;
@@ -321,9 +373,16 @@ struct UsetsMerge {
     }
   };
 
-  // Very simple bounded cache with approximate LRU by dividing into
-  // semi-spaces (new,old). If new fills up, old is discarded and new is
-  // moved into old. Both semi-spaces are used for fulfilling lookups.
+  /** Bounded merge-result cache with approximate LRU.
+   *
+   *  Two semi-spaces (new, old) are used.  Inserts go into new;
+   *  when new reaches max_size, old is evicted (dropping refs on
+   *  all its keys and values) and new is rotated into old.  Both
+   *  semi-spaces are consulted on lookup.
+   *
+   *  Invariant: every Uset* stored as a key or value in either
+   *  semi-space has had usets.use() called on it, so it stays alive
+   *  until the cache entry is evicted. */
   struct Cache {
     using Map = folly::F14FastMap<CacheKey, Uset*, CacheKeyHash>;
 
@@ -344,6 +403,7 @@ struct UsetsMerge {
     size_t max_size;
     Stats stats;
 
+    /** Drop refs on all entries in old_cache and clear it. */
     void evictOldCache() {
       for (auto& [key, value] : old_cache) {
         usets.drop(key.a);
@@ -403,6 +463,9 @@ struct UsetsMerge {
   folly::F14FastMap<Id, std::vector<Uset*>> refs;
   size_t usets_count = 0;
 
+  /** Balanced binary-reduction merge of a vector of Usets.
+   *  Pairs are merged bottom-up until a single result remains.
+   *  Each intermediate merge goes through the cache. */
   Uset* mergeUsets(std::vector<Uset*>& setsToMerge) {
     CHECK(!setsToMerge.empty());
     if (setsToMerge.size() == 1) {
@@ -427,6 +490,10 @@ struct UsetsMerge {
     return setsToMerge[0];
   }
 
+  /** Merge two Usets, consulting the cache first.  On a miss the
+   *  result is inserted into the cache (bumping refs on both keys
+   *  and the value).  In either case, refs on setA and setB are
+   *  dropped (the cache or the caller now owns them). */
   Uset* merge(Uset* setA, Uset* setB) {
     CacheKey key(setA, setB);
     if (auto* cached = cache.find(key)) {
@@ -445,12 +512,19 @@ struct UsetsMerge {
  public:
   explicit UsetsMerge(Usets& usets_) : usets(usets_) {}
 
+  /** Queue `uset` for later merging into factId's ownership set.
+   *  Bumps uset's ref count to keep it alive while queued. */
   void addUset(Id factId, Uset* uset) {
     refs[factId].push_back(uset);
     usets.use(uset);
     usets_count += 1;
   }
 
+  /** Merge all queued sets for factId (plus `uset` if non-null)
+   *  into a single result via balanced reduction, then clear the
+   *  queue for factId.  The returned Uset's only ref is held by
+   *  the merge cache — the caller must use() or promote() it to
+   *  keep it alive across cache evictions. */
   Uset* addUsetAndMerge(Id factId, Uset* uset) {
     if (uset) {
       addUset(factId, uset);
@@ -464,6 +538,7 @@ struct UsetsMerge {
     return merged;
   }
 
+  /** Approximate memory footprint of the pending-merge queue. */
   size_t bytes() const {
     return refs.getAllocatedMemorySize() + usets_count * sizeof(Uset*);
   }
@@ -472,6 +547,7 @@ struct UsetsMerge {
     return cache.statistics();
   }
 
+  /** Snapshot of all fact IDs that currently have queued merges. */
   auto factIds() const {
     std::vector<Id> factIds;
     factIds.reserve(refs.size());
@@ -481,10 +557,12 @@ struct UsetsMerge {
     return factIds;
   }
 
+  /** Whether factId has any queued (not-yet-merged) sets. */
   bool contains(Id factId) {
     return refs.contains(factId);
   }
 
+  /** Drop all cached merge results and discard all pending queues. */
   void clear() {
     cache.clear();
     refs.clear();

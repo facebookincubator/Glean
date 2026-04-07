@@ -14,7 +14,6 @@
 #include <cassert>
 #include <cstring>
 #include <set>
-#include <tuple>
 #include <vector>
 
 #if __x86_64__ // AVX required

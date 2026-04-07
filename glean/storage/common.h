@@ -24,7 +24,11 @@ enum class AdminId : uint32_t {
   NEXT_ID,
   VERSION,
   STARTING_ID,
+  /** First ID allocated by this DB in the shared unit/set namespace. */
   FIRST_UNIT_ID,
+  /** Next available ID in the shared unit/set namespace (covers both
+   *  UnitIds and UsetIds). Despite the name, this is NOT just the next
+   *  unit — it is the end of the entire allocated ID range. */
   NEXT_UNIT_ID,
   ORPHAN_FACTS,
 };
@@ -59,13 +63,26 @@ struct DatabaseCommon : Database {
   DatabaseCommon(C c) : container_(std::move(c)) {};
   C container_;
 
+  /** First ID allocated by this DB in the shared unit/set namespace.
+   *  Loaded from AdminId::FIRST_UNIT_ID. */
   rts::UnitId first_unit_id;
-  rts::UsetId next_uset_id; // also next UnitId, since they share a namespace
+
+  /** Next available ID in the shared unit/set namespace. UnitIds and
+   *  UsetIds are allocated from a single contiguous uint32_t range:
+   *  [first_unit_id .. next_uset_id). Despite the name this covers
+   *  both units AND promoted sets. Persisted as AdminId::NEXT_UNIT_ID. */
+  rts::UsetId next_uset_id;
+
+  /** Per-unit batch count: ownership_unit_counters[i] is the number
+   *  of ownership batches that reference unit (first_unit_id + i).
+   *  Invariant: next_uset_id == first_unit_id + ownership_unit_counters.size()
+   *  (before any sets are stored). */
   std::vector<size_t> ownership_unit_counters;
   folly::F14FastMap<uint64_t, size_t> ownership_derived_counters;
 
-  // Cached ownership sets, only used when writing.
-  // Note: must only be accessed under the write lock
+  /** In-memory cache of promoted sets, used during writes to
+   *  deduplicate and look up existing sets. Must only be accessed
+   *  under the write lock. */
   std::unique_ptr<rts::Usets> usets_;
 
   std::vector<size_t> loadOwnershipUnitCounters();
@@ -78,6 +95,9 @@ struct DatabaseCommon : Database {
 
   folly::Optional<uint32_t> getUnitId(folly::ByteRange unit) override;
   folly::Optional<std::string> getUnit(uint32_t unit_id) override;
+  /** Returns the highest UnitId that has a name in the ownershipUnitIds
+   *  table. WARNING: this does NOT return the next available ID in the
+   *  shared namespace — use next_uset_id for that. */
   uint32_t nextUnitId();
 
   void addBatchDescriptor(BatchDescriptor batchDescriptor) override;
@@ -85,6 +105,9 @@ struct DatabaseCommon : Database {
   bool isBatchDescriptorStored(folly::ByteRange location) override;
   std::vector<BatchDescriptor> getUnprocessedBatchDescriptors() override;
 
+  /** Register ownership units and their fact-ID ranges. Assigns new
+   *  UnitIds from next_uset_id for previously unseen unit names, and
+   *  advances next_uset_id accordingly. */
   void addOwnership(const std::vector<OwnershipSet>& ownership) override;
 
   std::unique_ptr<rts::DerivedFactOwnershipIterator>
@@ -93,8 +116,14 @@ struct DatabaseCommon : Database {
   std::unique_ptr<rts::OwnershipUnitIterator> getOwnershipUnitIterator()
       override;
 
+  /** Persist the results of computeOwnership(): serializes promoted
+   *  sets to Elias-Fano, writes the fact→UsetId interval map, and
+   *  advances next_uset_id past all stored set IDs. */
   void storeOwnership(ComputedOwnership& ownership) override;
 
+  /** Persist derived-fact ownership. Rebases set IDs from the
+   *  DefineOwnership's local namespace into the DB's global namespace
+   *  via a substitution map, promoting new sets one at a time. */
   void addDefineOwnership(DefineOwnership& def) override;
 
   rts::UsetId getOwner(Id id) override;
@@ -579,6 +608,8 @@ DatabaseCommon<C>::getOwnershipUnitIterator() {
 
 namespace {
 
+/** Serialize one ownership set (op + Elias-Fano payload) into the
+ *  ownershipSets column family keyed by its UsetId. */
 template <typename C>
 void putOwnerSet(
     C& /* container */,
@@ -1091,9 +1122,8 @@ void DatabaseCommon<C>::FactOwnerCache::prepare(C& container) {
 
 namespace {
 
-//
-// Wrapper around DatabaseImpl. Doesn't hold any extra data of its own.
-//
+/** Adapter exposing a DatabaseCommon's persisted ownership data
+ *  through the Ownership interface (set lookup, iteration, etc.). */
 template <typename C>
 struct StoredOwnership : Ownership {
   explicit StoredOwnership(DatabaseCommon<C>* db) : db_(db) {}

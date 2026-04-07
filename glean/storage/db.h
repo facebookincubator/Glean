@@ -50,6 +50,10 @@ struct Container {
   /// representation version - accessing the original Container afterwards isn't
   /// allowed. If the database is being created, start is the starting fact id.
   ///
+  /// first_unit_id is the starting point of this DB's allocation range in
+  /// the shared unit/set ID namespace. For a new DB this is typically 0;
+  /// for a stacked DB it is the base DB's next_uset_id.
+  ///
   /// The base Ownership passed in (if any) must not be destructed before the
   /// Database.
   virtual std::unique_ptr<Database>
@@ -64,11 +68,12 @@ struct Database : rts::Lookup {
 
   virtual rts::PredicateStats predicateStats() const = 0;
 
+  /// A batch of fact-ID ranges owned by a single ownership unit.
   struct OwnershipSet {
     folly::ByteRange unit;
+    /// Packed inclusive intervals [lo1,hi1, lo2,hi2, …] of fact IDs
+    /// that belong to this unit.
     folly::Range<const int64_t*> ids;
-    // This is a list of intervals [x1,x2, y1,y2, ...]
-    // representing the inclusive ranges x1..x2, y1..y2, ...
   };
 
   struct BatchDescriptor {
@@ -86,21 +91,41 @@ struct Database : rts::Lookup {
 
   virtual std::vector<BatchDescriptor> getUnprocessedBatchDescriptors() = 0;
 
+  /// Register ownership units and their fact-ID ranges. Assigns new
+  /// UnitIds (from the shared namespace) for previously unseen unit names.
   virtual void addOwnership(const std::vector<OwnershipSet>& ownership) = 0;
+
+  /// Iterate over raw (unit-ID, fact-ID-ranges) pairs stored by addOwnership.
   virtual std::unique_ptr<rts::OwnershipUnitIterator>
   getOwnershipUnitIterator() = 0;
 
+  /// Persist derived-fact ownership produced by a derivation pass.
+  /// Rebases set IDs from the DefineOwnership's local namespace into the
+  /// DB's global namespace.
   virtual void addDefineOwnership(rts::DefineOwnership& def) = 0;
+
+  /// Iterate over raw derived-fact ownership entries for a given predicate.
   virtual std::unique_ptr<rts::DerivedFactOwnershipIterator>
   getDerivedFactOwnershipIterator(Pid pid) = 0;
 
   virtual folly::Optional<uint32_t> getUnitId(folly::ByteRange) = 0;
   virtual folly::Optional<std::string> getUnit(uint32_t) = 0;
 
+  /// Persist the results of computeOwnership(): serializes promoted
+  /// sets to Elias-Fano encoding and writes the fact→owner interval map.
   virtual void storeOwnership(rts::ComputedOwnership& ownership) = 0;
+
+  /// Return an Ownership handle for querying set and fact ownership at
+  /// runtime (set lookup, iteration, fact→owner resolution).
   virtual std::unique_ptr<rts::Ownership> getOwnership() = 0;
 
+  /// Enable the read-only fact-owner page cache. Call only after the DB
+  /// is finalized and prepareFactOwnerCache() has run.
   virtual void cacheOwnership() = 0;
+
+  /// Translate the factOwners interval map into the compact
+  /// factOwnerPages representation. Call once when the DB is complete,
+  /// before cacheOwnership().
   virtual void prepareFactOwnerCache() = 0;
 };
 

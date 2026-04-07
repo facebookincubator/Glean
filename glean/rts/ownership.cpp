@@ -189,11 +189,25 @@ collectUsets(uint32_t firstUsetId, TrieArray<Uset>& utrie) {
   return usets;
 }
 
-/** Transitively complete `Usets` by assigning an ownership unit to facts which
- * are transitively referenced by a fact already belonging to that unit.
+/** Propagate ownership sets transitively through fact references.
  *
- * The resulting `Usets` will contain exactly those sets (the "promoted" ones)
- * which describe the ownership of at least one fact.
+ *  Facts can only reference facts with lower IDs. We iterate in reverse
+ *  (highest ID first), so by the time we visit a fact, every higher-ID
+ *  fact that references it has already propagated its ownership set down.
+ *  The final set for a fact is the union of its own initial set (from the
+ *  trie) with the sets propagated from all its transitive referrers.
+ *
+ *  Merges are deferred via UsetsMerge: for each referenced fact we queue
+ *  the referrer's set, and merge them all at once (balanced reduction)
+ *  when the reverse iterator reaches the fact.  If the pending queue
+ *  exceeds 1 GB, an early flush merges everything queued so far.
+ *
+ *  For stacked DBs, referenced facts in the base DB (id < min_id) are
+ *  tracked in `sparse`; their final set is OR'd with the base DB's
+ *  existing owner to form (set || base_owner).
+ *
+ *  On completion, every fact whose set was materialised has been
+ *  promoted (assigned a persistent UsetId in `usets`).
  */
 FOLLY_NOINLINE void completeOwnership(
     std::vector<Uset*>& facts,
