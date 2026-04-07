@@ -17,8 +17,8 @@
   },
   "dependencies": {
     "@babel/helper-hoist-variables": "^7.24.7",
-    "@docusaurus/core": "2.1.0",
-    "@docusaurus/preset-classic": "2.1.0",
+    "@docusaurus/core": "2.4.3",
+    "@docusaurus/preset-classic": "2.4.3",
     "@mdx-js/react": "^1.6.21",
     "clsx": "^1.1.1",
     "docusaurus-plugin-internaldocs-fb": "1.8.0",
