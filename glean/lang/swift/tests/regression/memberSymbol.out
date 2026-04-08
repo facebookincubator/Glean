@@ -2669,6 +2669,30 @@
       "member": {
         "key": {
           "container": { "key": "Dictionary" },
+          "member": { "key": "makeIterator" },
+          "kind": 11
+        }
+      },
+      "ref": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 65,
+            "columnBegin": 5,
+            "lineEnd": 65,
+            "columnEnd": 16
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "member": {
+        "key": {
+          "container": { "key": "Dictionary" },
           "member": { "key": "removeAll" },
           "kind": 11
         }
@@ -2836,6 +2860,30 @@
     "key": {
       "member": {
         "key": {
+          "container": { "key": "IndexingIterator" },
+          "member": { "key": "next" },
+          "kind": 11
+        }
+      },
+      "ref": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+          },
+          "range": {
+            "lineBegin": 63,
+            "columnBegin": 7,
+            "lineEnd": 63,
+            "columnEnd": 10
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "member": {
+        "key": {
           "container": { "key": "Int" },
           "member": { "key": "" },
           "kind": 11
@@ -2851,6 +2899,30 @@
             "columnBegin": 55,
             "lineEnd": 68,
             "columnEnd": 55
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "member": {
+        "key": {
+          "container": { "key": "Iterator" },
+          "member": { "key": "next" },
+          "kind": 11
+        }
+      },
+      "ref": {
+        "key": {
+          "file": {
+            "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift"
+          },
+          "range": {
+            "lineBegin": 65,
+            "columnBegin": 5,
+            "lineEnd": 65,
+            "columnEnd": 8
           }
         }
       }
