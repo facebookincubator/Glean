@@ -96,6 +96,7 @@ module.exports = {
            },
        ],
        'Developers': [
+           'devel/debugging',
            {
                'Implementation Notes': [
                    'implementation/db',
