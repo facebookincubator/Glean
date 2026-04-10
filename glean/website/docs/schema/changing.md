@@ -70,11 +70,11 @@ following table:
 | <code>string</code> |  <code>""</code> |
 | <code>[T]</code> | <code>[]</code> |
 | <code> set T</code> | the empty set |
-| <code>{ field₁ : T₁, ..., fieldₙ : Tₙ }</code> | <code>{ field₁ = default(T₁), ..., fieldₙ = default(Tₙ) }</code> |
-| <code>{ field₁ : T₁ &#124; ... &#124; fieldₙ : Tₙ }</code> | <code>{ field₁ = default(T₁) }</code> |
+| <code>&#123; field₁ : T₁, ..., fieldₙ : Tₙ &#125;</code> | <code>&#123; field₁ = default(T₁), ..., fieldₙ = default(Tₙ) &#125;</code> |
+| <code>&#123; field₁ : T₁ &#124; ... &#124; fieldₙ : Tₙ &#125;</code> | <code>&#123; field₁ = default(T₁) &#125;</code> |
 | <code>bool</code> | <code>false</code> |
 | <code>maybe T</code> | <code>nothing</code> |
-| <code>enum { name₁ &#124; ... &#124; nameₙ }</code> | <code>name₁</code> |
+| <code>enum &#123; name₁ &#124; ... &#124; nameₙ &#125;</code> | <code>name₁</code> |
 
 
 ### What if my schema changes are incompatible?

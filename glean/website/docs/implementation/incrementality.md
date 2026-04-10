@@ -4,6 +4,8 @@ title: Incrementality
 sidebar_label: Incrementality
 ---
 
+import {SrcFile,SrcFileLink} from '@site/utils';
+
 This is a walkthrough of the most important parts of the
 implementation of incrementality, aimed at people working on Glean.
 
@@ -47,8 +49,7 @@ For indexers that produce JSON, the unit is an optional field:
 
 The `unit` here is the owner of all the facts in the `facts` array.
 
-For an example JSON file with units, see <SrcFile
-file="glean/shell/tests/owner.glean" />.
+For an example JSON file with units, see <SrcFile file="glean/shell/tests/owner.glean" />.
 
 ### Binary
 
@@ -113,8 +114,7 @@ function would lead to more sets.
 ## Visibility and slices
 
 When building an incremental DB, we will *exclude* some units from the
-base DB. This is done by building a *slice* (see <SrcFile
-file="glean/rts/ownership/slice.h"/>)
+base DB. This is done by building a *slice* (see <SrcFile file="glean/rts/ownership/slice.h"/>)
 
 * A *slice* is a set of `UsetId`
 * A `UsetId` is in the slice if
@@ -158,8 +158,7 @@ In practice we make this efficient by:
 * We only have disjunctions at this stage (conjunctions arise with
   derived facts in the next stage), so we can normalise `A || B` by
   taking the union of the sets `A` and `B`. We use an efficient
-  integer set representation with fast union (see <SrcFile
-  file="glean/rts/ownership/setu32.h"/>).
+  integer set representation with fast union (see <SrcFile file="glean/rts/ownership/setu32.h"/>).
 
 This propagation requires *O(facts)* time, and the current
 implementation also requires *O(facts)* space too.
