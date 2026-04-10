@@ -696,8 +696,8 @@
                     "size": 274
                 },
                 "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py": {
-                    "hash": "c3909637b9614fa7367226a2e331401df68850f0b536bfe986f6a0ab84e2bbc1",
-                    "size": 609
+                    "hash": "e0ff7270ee466e9f475f495120c95215a48afa4b922cbab5c42f87ccf491923e",
+                    "size": 753
                 }
             }
         },
@@ -1831,7 +1831,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 27
+                        "lineEnd": 34
                     },
                     "repository": "test"
                 }
@@ -1882,7 +1882,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 27
+                        "lineEnd": 34
                     },
                     "repository": "test"
                 }
@@ -1933,7 +1933,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 27
+                        "lineEnd": 34
                     },
                     "repository": "test"
                 }
@@ -1982,9 +1982,9 @@
                     "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 14,
-                        "lineEnd": 22
+                        "columnEnd": 19,
+                        "lineBegin": 15,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 }
@@ -2033,9 +2033,9 @@
                     "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 14,
-                        "lineEnd": 22
+                        "columnEnd": 19,
+                        "lineBegin": 15,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 }
@@ -2084,9 +2084,9 @@
                     "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 14,
-                        "lineEnd": 22
+                        "columnEnd": 19,
+                        "lineBegin": 15,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 }
@@ -2135,9 +2135,9 @@
                     "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 14,
-                        "lineEnd": 22
+                        "columnEnd": 19,
+                        "lineBegin": 15,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 }
@@ -2186,9 +2186,9 @@
                     "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 14,
-                        "lineEnd": 22
+                        "columnEnd": 19,
+                        "lineBegin": 15,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 }

@@ -33,9 +33,9 @@
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 9,
-                        "lineEnd": 17
+                        "columnEnd": 19,
+                        "lineBegin": 11,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 },
@@ -48,6 +48,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/py/lib.py/lib.HelperClass"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.Inner",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "Inner"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/lib.py/lib.HelperClass.Inner"
             },
             {
                 "kind": 7,

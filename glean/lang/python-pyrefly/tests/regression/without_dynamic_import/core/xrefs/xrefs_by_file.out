@@ -960,18 +960,25 @@
       },
       "xrefs": [
         {
-          "source": { "length": 4, "start": 542 },
+          "source": { "length": 3, "start": 681 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "int" }
+          }
+        },
+        {
+          "source": { "length": 4, "start": 587 },
           "target": { "name": { "key": "None" } }
         },
         {
-          "source": { "length": 5, "start": 253 },
+          "source": { "length": 5, "start": 267 },
           "target": {
             "file": { "key": "typing.pyi" },
             "name": { "key": "typing.Union" }
           }
         },
         {
-          "source": { "length": 5, "start": 523 },
+          "source": { "length": 5, "start": 568 },
           "target": {
             "file": {
               "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py"
@@ -980,28 +987,35 @@
           }
         },
         {
-          "source": { "length": 5, "start": 523 },
+          "source": { "length": 5, "start": 568 },
           "target": {
             "file": { "key": "typing.pyi" },
             "name": { "key": "typing.Union" }
           }
         },
         {
-          "source": { "length": 6, "start": 230 },
+          "source": { "length": 6, "start": 232 },
           "target": {
             "file": { "key": "typing.pyi" },
             "name": { "key": "typing" }
           }
         },
         {
-          "source": { "length": 7, "start": 244 },
+          "source": { "length": 6, "start": 244 },
+          "target": {
+            "file": { "key": "typing.pyi" },
+            "name": { "key": "typing" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 258 },
           "target": {
             "file": { "key": "typing.pyi" },
             "name": { "key": "typing.TypeVar" }
           }
         },
         {
-          "source": { "length": 7, "start": 265 },
+          "source": { "length": 7, "start": 279 },
           "target": {
             "file": {
               "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py"
@@ -1010,7 +1024,7 @@
           }
         },
         {
-          "source": { "length": 7, "start": 345 },
+          "source": { "length": 7, "start": 359 },
           "target": {
             "file": {
               "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py"
@@ -1019,14 +1033,14 @@
           }
         },
         {
-          "source": { "length": 7, "start": 345 },
+          "source": { "length": 7, "start": 359 },
           "target": {
             "file": { "key": "typing.pyi" },
             "name": { "key": "typing.TypeVar" }
           }
         },
         {
-          "source": { "length": 8, "start": 280 },
+          "source": { "length": 8, "start": 294 },
           "target": {
             "file": {
               "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/big_lib/__init__.py"
@@ -1035,7 +1049,7 @@
           }
         },
         {
-          "source": { "length": 11, "start": 440 },
+          "source": { "length": 11, "start": 485 },
           "target": {
             "file": {
               "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py"
@@ -1044,7 +1058,7 @@
           }
         },
         {
-          "source": { "length": 11, "start": 505 },
+          "source": { "length": 11, "start": 550 },
           "target": {
             "file": {
               "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py"
@@ -1053,7 +1067,7 @@
           }
         },
         {
-          "source": { "length": 11, "start": 529 },
+          "source": { "length": 11, "start": 574 },
           "target": {
             "file": {
               "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py"
@@ -1062,7 +1076,7 @@
           }
         },
         {
-          "source": { "length": 11, "start": 595 },
+          "source": { "length": 11, "start": 739 },
           "target": {
             "file": {
               "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py"
@@ -1071,12 +1085,21 @@
           }
         },
         {
-          "source": { "length": 12, "start": 401 },
+          "source": { "length": 12, "start": 415 },
           "target": {
             "file": {
               "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py"
             },
             "name": { "key": "lib.HelperClass.THelperClass" }
+          }
+        },
+        {
+          "source": { "length": 17, "start": 645 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py"
+            },
+            "name": { "key": "lib.HelperClass.Inner" }
           }
         }
       ]

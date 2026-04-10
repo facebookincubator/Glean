@@ -2,8 +2,10 @@
     "@generated",
     {
         "childrenContained": [
+            "test/py/lib.py/lib.HelperClass.Inner",
             "test/py/lib.py/lib.HelperClass.THelperClass",
             "test/py/lib.py/lib.HelperClass.another_method",
+            "test/py/lib.py/lib.HelperClass.dotted_annotation",
             "test/py/lib.py/lib.HelperClass.method",
             "test/py/lib.py/lib.HelperClass.value"
         ],
@@ -42,7 +44,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 22
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -61,7 +63,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 22
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -96,9 +98,9 @@
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 9,
-                        "lineEnd": 17
+                        "columnEnd": 19,
+                        "lineBegin": 11,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 },
@@ -115,9 +117,9 @@
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 9,
-                        "lineEnd": 17
+                        "columnEnd": 19,
+                        "lineBegin": 11,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 },
@@ -129,6 +131,62 @@
                             "start": 6
                         },
                         "type": "test/py/lib.py/lib.HelperClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            "test/py/lib.py/lib.HelperClass.Inner": {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "Inner"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "class Inner",
+                "sym": "test/py/lib.py/lib.HelperClass.Inner",
+                "sym_location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 6
+                        },
+                        "type": "test/py/lib.py/lib.HelperClass.Inner"
                     }
                 ],
                 "visibility": 20
@@ -153,8 +211,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 64,
-                        "lineBegin": 10,
-                        "lineEnd": 10
+                        "lineBegin": 12,
+                        "lineEnd": 12
                     },
                     "repository": "test"
                 },
@@ -172,8 +230,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 64,
-                        "lineBegin": 10,
-                        "lineEnd": 10
+                        "lineBegin": 12,
+                        "lineEnd": 12
                     },
                     "repository": "test"
                 },
@@ -209,8 +267,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 16,
-                        "lineEnd": 17
+                        "lineBegin": 21,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -228,8 +286,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 16,
-                        "lineEnd": 17
+                        "lineBegin": 21,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -241,6 +299,62 @@
                             "start": 4
                         },
                         "type": "test/py/lib.py/lib.HelperClass.another_method"
+                    }
+                ],
+                "visibility": 20
+            },
+            "test/py/lib.py/lib.HelperClass.dotted_annotation": {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 19,
+                        "lineBegin": 24,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "dotted_annotation"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def dotted_annotation(\n    self,\n    x: \"HelperClass.Inner\"\n) -> \"typing.List[int]\"",
+                "sym": "test/py/lib.py/lib.HelperClass.dotted_annotation",
+                "sym_location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 19,
+                        "lineBegin": 24,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 17,
+                            "start": 4
+                        },
+                        "type": "test/py/lib.py/lib.HelperClass.dotted_annotation"
                     }
                 ],
                 "visibility": 20
@@ -265,8 +379,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 13,
-                        "lineEnd": 14
+                        "lineBegin": 18,
+                        "lineEnd": 19
                     },
                     "repository": "test"
                 },
@@ -284,8 +398,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 13,
-                        "lineEnd": 14
+                        "lineBegin": 18,
+                        "lineEnd": 19
                     },
                     "repository": "test"
                 },
@@ -321,8 +435,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 24,
-                        "lineBegin": 11,
-                        "lineEnd": 11
+                        "lineBegin": 13,
+                        "lineEnd": 13
                     },
                     "repository": "test"
                 },
@@ -340,8 +454,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 24,
-                        "lineBegin": 11,
-                        "lineEnd": 11
+                        "lineBegin": 13,
+                        "lineEnd": 13
                     },
                     "repository": "test"
                 },

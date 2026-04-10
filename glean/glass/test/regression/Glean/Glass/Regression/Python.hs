@@ -80,7 +80,7 @@ testPythonFindReferences get = TestLabel "findReferences" $ TestList [
   "test/py/lib.HelperClass" --> [
     ("all.py",5),
     ("as.py",1),
-    ("lib.py",5),
+    ("lib.py",6),
     ("main.py",4) ],
   "test/py/lib.HelperClass.value" --> [],
   "test/py/lib.HelperClass.method" --> [],

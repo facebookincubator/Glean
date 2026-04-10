@@ -1246,7 +1246,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 22
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -1265,7 +1265,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 22
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -1300,9 +1300,9 @@
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 9,
-                        "lineEnd": 17
+                        "columnEnd": 19,
+                        "lineBegin": 11,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 },
@@ -1319,9 +1319,9 @@
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 9,
-                        "lineEnd": 17
+                        "columnEnd": 19,
+                        "lineBegin": 11,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 },
@@ -1350,6 +1350,62 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "Inner"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "class Inner",
+                "sym": "test/py/lib.py/lib.HelperClass.Inner",
+                "sym_location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 6
+                        },
+                        "type": "test/py/lib.py/lib.HelperClass.Inner"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 10,
                 "language": 7,
                 "location": {
@@ -1357,8 +1413,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 64,
-                        "lineBegin": 10,
-                        "lineEnd": 10
+                        "lineBegin": 12,
+                        "lineEnd": 12
                     },
                     "repository": "test"
                 },
@@ -1376,8 +1432,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 64,
-                        "lineBegin": 10,
-                        "lineEnd": 10
+                        "lineBegin": 12,
+                        "lineEnd": 12
                     },
                     "repository": "test"
                 },
@@ -1413,8 +1469,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 16,
-                        "lineEnd": 17
+                        "lineBegin": 21,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -1432,8 +1488,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 16,
-                        "lineEnd": 17
+                        "lineBegin": 21,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -1469,8 +1525,8 @@
                     "range": {
                         "columnBegin": 30,
                         "columnEnd": 35,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 21,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -1488,8 +1544,8 @@
                     "range": {
                         "columnBegin": 30,
                         "columnEnd": 35,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 21,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -1525,8 +1581,8 @@
                     "range": {
                         "columnBegin": 24,
                         "columnEnd": 28,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 21,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -1544,8 +1600,8 @@
                     "range": {
                         "columnBegin": 24,
                         "columnEnd": 28,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 21,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -1580,9 +1636,177 @@
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 5,
+                        "columnEnd": 19,
+                        "lineBegin": 24,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "dotted_annotation"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def dotted_annotation(\n    self,\n    x: \"HelperClass.Inner\"\n) -> \"typing.List[int]\"",
+                "sym": "test/py/lib.py/lib.HelperClass.dotted_annotation",
+                "sym_location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 19,
+                        "lineBegin": 24,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 17,
+                            "start": 4
+                        },
+                        "type": "test/py/lib.py/lib.HelperClass.dotted_annotation"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 27,
+                        "columnEnd": 31,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass.dotted_annotation.<locals>",
+                    "localName": "self"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "self",
+                "sym": "test/py/lib.py/lib.HelperClass.dotted_annotation.%3Clocals%3E.self",
+                "sym_location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 27,
+                        "columnEnd": 31,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 0
+                        },
+                        "type": "test/py/lib.py/lib.HelperClass.dotted_annotation.%3Clocals%3E.self"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 33,
+                        "columnEnd": 34,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass.dotted_annotation.<locals>",
+                    "localName": "x"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "x",
+                "sym": "test/py/lib.py/lib.HelperClass.dotted_annotation.%3Clocals%3E.x",
+                "sym_location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 33,
+                        "columnEnd": 34,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 1,
+                            "start": 0
+                        },
+                        "type": "test/py/lib.py/lib.HelperClass.dotted_annotation.%3Clocals%3E.x"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 13,
-                        "lineEnd": 14
+                        "lineBegin": 18,
+                        "lineEnd": 19
                     },
                     "repository": "test"
                 },
@@ -1600,8 +1824,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 13,
-                        "lineEnd": 14
+                        "lineBegin": 18,
+                        "lineEnd": 19
                     },
                     "repository": "test"
                 },
@@ -1637,8 +1861,8 @@
                     "range": {
                         "columnBegin": 16,
                         "columnEnd": 20,
-                        "lineBegin": 13,
-                        "lineEnd": 13
+                        "lineBegin": 18,
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 },
@@ -1656,8 +1880,8 @@
                     "range": {
                         "columnBegin": 16,
                         "columnEnd": 20,
-                        "lineBegin": 13,
-                        "lineEnd": 13
+                        "lineBegin": 18,
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 },
@@ -1693,8 +1917,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 24,
-                        "lineBegin": 11,
-                        "lineEnd": 11
+                        "lineBegin": 13,
+                        "lineEnd": 13
                     },
                     "repository": "test"
                 },
@@ -1712,8 +1936,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 24,
-                        "lineBegin": 11,
-                        "lineEnd": 11
+                        "lineBegin": 13,
+                        "lineEnd": 13
                     },
                     "repository": "test"
                 },
@@ -1756,8 +1980,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 20,
-                        "lineEnd": 21
+                        "lineBegin": 28,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 },
@@ -1775,8 +1999,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 20,
-                        "lineEnd": 21
+                        "lineBegin": 28,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 },
@@ -3175,7 +3399,7 @@
                         "columnBegin": 1,
                         "columnEnd": 1,
                         "lineBegin": 1,
-                        "lineEnd": 22
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -3196,9 +3420,9 @@
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 9,
-                        "lineEnd": 17
+                        "columnEnd": 19,
+                        "lineBegin": 11,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 },
@@ -3211,6 +3435,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/py/lib.py/lib.HelperClass"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.Inner",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "Inner"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/lib.py/lib.HelperClass.Inner"
             },
             {
                 "context": {
@@ -3227,8 +3474,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 64,
-                        "lineBegin": 10,
-                        "lineEnd": 10
+                        "lineBegin": 12,
+                        "lineEnd": 12
                     },
                     "repository": "test"
                 },
@@ -3257,8 +3504,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 16,
-                        "lineEnd": 17
+                        "lineBegin": 21,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -3280,8 +3527,8 @@
                     "range": {
                         "columnBegin": 30,
                         "columnEnd": 35,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 21,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -3303,8 +3550,8 @@
                     "range": {
                         "columnBegin": 24,
                         "columnEnd": 28,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 21,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -3332,9 +3579,85 @@
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 5,
+                        "columnEnd": 19,
+                        "lineBegin": 24,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.dotted_annotation",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "dotted_annotation"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/lib.py/lib.HelperClass.dotted_annotation"
+            },
+            {
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 27,
+                        "columnEnd": 31,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.dotted_annotation.<locals>.self",
+                "qname": {
+                    "container": "lib.HelperClass.dotted_annotation.<locals>",
+                    "localName": "self"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/lib.py/lib.HelperClass.dotted_annotation.%3Clocals%3E.self"
+            },
+            {
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 33,
+                        "columnEnd": 34,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.dotted_annotation.<locals>.x",
+                "qname": {
+                    "container": "lib.HelperClass.dotted_annotation.<locals>",
+                    "localName": "x"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/lib.py/lib.HelperClass.dotted_annotation.%3Clocals%3E.x"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "lib",
+                        "localName": "HelperClass"
+                    },
+                    "symbol": "test/py/lib.py/lib.HelperClass"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 13,
-                        "lineEnd": 14
+                        "lineBegin": 18,
+                        "lineEnd": 19
                     },
                     "repository": "test"
                 },
@@ -3356,8 +3679,8 @@
                     "range": {
                         "columnBegin": 16,
                         "columnEnd": 20,
-                        "lineBegin": 13,
-                        "lineEnd": 13
+                        "lineBegin": 18,
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 },
@@ -3386,8 +3709,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 24,
-                        "lineBegin": 11,
-                        "lineEnd": 11
+                        "lineBegin": 13,
+                        "lineEnd": 13
                     },
                     "repository": "test"
                 },
@@ -3416,8 +3739,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 20,
-                        "lineEnd": 21
+                        "lineBegin": 28,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 },

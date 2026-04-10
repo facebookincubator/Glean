@@ -78,8 +78,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 21,
-                        "lineEnd": 22
+                        "lineBegin": 25,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -97,8 +97,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 21,
-                        "lineEnd": 22
+                        "lineBegin": 25,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -154,9 +154,72 @@
                     "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
                     "range": {
                         "columnBegin": 5,
+                        "columnEnd": 19,
+                        "lineBegin": 28,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "dotted_annotation"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def dotted_annotation(\n    self,\n    x: \"HelperClass.Inner\"\n) -> \"typing.List[int]\"",
+                "sym": "test/py/glean/lib.HelperClass.dotted_annotation",
+                "sym_location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 19,
+                        "lineBegin": 28,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 17,
+                            "start": 4
+                        },
+                        "type": "test/py/glean/lib.HelperClass.dotted_annotation"
+                    },
+                    {
+                        "span": {
+                            "length": 17,
+                            "start": 41
+                        },
+                        "type": "test/py/glean/lib.HelperClass.Inner"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 18,
-                        "lineEnd": 19
+                        "lineBegin": 22,
+                        "lineEnd": 23
                     },
                     "repository": "test"
                 },
@@ -174,8 +237,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 18,
-                        "lineEnd": 19
+                        "lineBegin": 22,
+                        "lineEnd": 23
                     },
                     "repository": "test"
                 },
@@ -245,8 +308,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 21,
-                        "lineEnd": 22
+                        "lineBegin": 25,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -274,9 +337,39 @@
                     "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
                     "range": {
                         "columnBegin": 5,
+                        "columnEnd": 19,
+                        "lineBegin": 28,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.dotted_annotation",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "dotted_annotation"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/lib.HelperClass.dotted_annotation"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "lib",
+                        "localName": "HelperClass"
+                    },
+                    "symbol": "test/py/glean/lib.HelperClass"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 18,
-                        "lineEnd": 19
+                        "lineBegin": 22,
+                        "lineEnd": 23
                     },
                     "repository": "test"
                 },

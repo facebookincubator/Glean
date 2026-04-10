@@ -77,9 +77,9 @@
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 9,
-                        "lineEnd": 17
+                        "columnEnd": 19,
+                        "lineBegin": 11,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 },
@@ -96,9 +96,9 @@
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 9,
-                        "lineEnd": 17
+                        "columnEnd": 19,
+                        "lineBegin": 11,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 },
@@ -110,6 +110,62 @@
                             "start": 6
                         },
                         "type": "test/py/lib.py/lib.HelperClass"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "Inner"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "class Inner",
+                "sym": "test/py/lib.py/lib.HelperClass.Inner",
+                "sym_location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 6
+                        },
+                        "type": "test/py/lib.py/lib.HelperClass.Inner"
                     }
                 ],
                 "visibility": 20
@@ -202,9 +258,9 @@
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 9,
-                        "lineEnd": 17
+                        "columnEnd": 19,
+                        "lineBegin": 11,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 },
@@ -217,6 +273,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/py/lib.py/lib.HelperClass"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.Inner",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "Inner"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/lib.py/lib.HelperClass.Inner"
             },
             {
                 "kind": 7,

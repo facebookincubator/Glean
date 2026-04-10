@@ -303,9 +303,9 @@
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 9,
-                        "lineEnd": 17
+                        "columnEnd": 19,
+                        "lineBegin": 11,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 },
@@ -318,6 +318,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/py/lib.py/lib.HelperClass"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.Inner",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "Inner"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/lib.py/lib.HelperClass.Inner"
             },
             {
                 "context": {
@@ -334,8 +357,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 16,
-                        "lineEnd": 17
+                        "lineBegin": 21,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -363,9 +386,39 @@
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 5,
+                        "columnEnd": 19,
+                        "lineBegin": 24,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.dotted_annotation",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "dotted_annotation"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/lib.py/lib.HelperClass.dotted_annotation"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "lib",
+                        "localName": "HelperClass"
+                    },
+                    "symbol": "test/py/lib.py/lib.HelperClass"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 13,
-                        "lineEnd": 14
+                        "lineBegin": 18,
+                        "lineEnd": 19
                     },
                     "repository": "test"
                 },
@@ -394,8 +447,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 20,
-                        "lineEnd": 21
+                        "lineBegin": 28,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 },

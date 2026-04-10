@@ -6,6 +6,7 @@
 
 # flake8: noqa
 
+import typing
 from typing import TypeVar, Union
 
 from big_lib import big_func as func  # noqa
@@ -15,11 +16,17 @@ class HelperClass:
     THelperClass = TypeVar("THelperClass", bound="HelperClass")
     value: THelperClass
 
+    class Inner:
+        pass
+
     def method(self) -> "HelperClass":
         pass
 
     def another_method(self, param: "HelperClass") -> "Union[HelperClass, None]":
         pass
+
+    def dotted_annotation(self, x: "HelperClass.Inner") -> "typing.List[int]":
+        return [0]
 
 
 def helper_func():

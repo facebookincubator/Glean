@@ -48,8 +48,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 16,
-                        "lineEnd": 17
+                        "lineBegin": 21,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -77,9 +77,39 @@
                     "filepath": "lib.py",
                     "range": {
                         "columnBegin": 5,
+                        "columnEnd": 19,
+                        "lineBegin": 24,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.dotted_annotation",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "dotted_annotation"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/lib.py/lib.HelperClass.dotted_annotation"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "lib",
+                        "localName": "HelperClass"
+                    },
+                    "symbol": "test/py/lib.py/lib.HelperClass"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 13,
-                        "lineEnd": 14
+                        "lineBegin": 18,
+                        "lineEnd": 19
                     },
                     "repository": "test"
                 },

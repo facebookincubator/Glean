@@ -303,9 +303,9 @@
                     "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 14,
-                        "lineEnd": 22
+                        "columnEnd": 19,
+                        "lineBegin": 15,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 },
@@ -318,6 +318,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/py/glean/lib.HelperClass"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 19,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.Inner",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "Inner"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/lib.HelperClass.Inner"
             },
             {
                 "context": {
@@ -334,8 +357,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 21,
-                        "lineEnd": 22
+                        "lineBegin": 25,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -363,9 +386,39 @@
                     "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
                     "range": {
                         "columnBegin": 5,
+                        "columnEnd": 19,
+                        "lineBegin": 28,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.dotted_annotation",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "dotted_annotation"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/lib.HelperClass.dotted_annotation"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "lib",
+                        "localName": "HelperClass"
+                    },
+                    "symbol": "test/py/glean/lib.HelperClass"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
                         "columnEnd": 13,
-                        "lineBegin": 18,
-                        "lineEnd": 19
+                        "lineBegin": 22,
+                        "lineEnd": 23
                     },
                     "repository": "test"
                 },
@@ -394,8 +447,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 25,
-                        "lineEnd": 26
+                        "lineBegin": 32,
+                        "lineEnd": 33
                     },
                     "repository": "test"
                 },

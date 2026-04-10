@@ -33,9 +33,9 @@
                     "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 14,
-                        "lineEnd": 22
+                        "columnEnd": 19,
+                        "lineBegin": 15,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 },
@@ -48,6 +48,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/py/glean/lib.HelperClass"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 19,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.Inner",
+                "qname": {
+                    "container": "lib.HelperClass",
+                    "localName": "Inner"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/glean/lib.HelperClass.Inner"
             },
             {
                 "kind": 7,

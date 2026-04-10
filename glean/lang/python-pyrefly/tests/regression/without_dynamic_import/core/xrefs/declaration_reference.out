@@ -35,6 +35,14 @@
     "key": {
       "source": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } },
       "target": {
+        "cls": { "key": { "name": { "key": "lib.HelperClass.Inner" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } },
+      "target": {
         "imp": {
           "key": {
             "as_name": { "key": "lib.TypeVar" },
@@ -374,6 +382,18 @@
             "from_name": { "key": "typing.Union" }
           }
         }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "func": {
+          "key": { "name": { "key": "lib.HelperClass.dotted_annotation" } }
+        }
+      },
+      "target": {
+        "cls": { "key": { "name": { "key": "lib.HelperClass.Inner" } } }
       }
     }
   },
@@ -1140,6 +1160,14 @@
     "key": {
       "source": { "module": { "key": { "name": { "key": "lib" } } } },
       "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "lib" } } } },
+      "target": {
+        "cls": { "key": { "name": { "key": "lib.HelperClass.Inner" } } }
+      }
     }
   },
   {
