@@ -22,4 +22,17 @@ predicate XRefsByFile:
     xrefs: [XRef]
 }
 
+predicate XRefDeclarationsByFile:
+  {
+    file: src.File,
+    target: python.DeclarationLocation,
+    source: src.ByteSpan,
+  }
+  { File, DeclLocation, Src } where
+    XRefsByFile { File, XRefs };
+    { target = { name = TargetName, file = MaybeFile }, source = Src } = XRefs[..];
+    python.DeclarationWithName { TargetName, TargetDecl };
+    DeclLocation = python.DeclarationLocation { declaration = TargetDecl, file = TargetFile };
+    ({ just = TargetFile } = MaybeFile) | (nothing = MaybeFile);
+
 }
