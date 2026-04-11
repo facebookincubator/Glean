@@ -1,8 +1,8 @@
 #!/usr/bin/env dotslash
 
-// @generated SignedSource<<92882a623dc30b156a12c3909619cb10>>
+// @generated SignedSource<<88cae63ae04776fad27621187c6ff4f4>>
 // MSDK schedule URL: https://www.internalfb.com/intern/msdk/bump/?action=view&schedule_fbid=738319662142681
-// Sandcastle build trigger URL: https://www.internalfb.com/intern/sandcastle/job/58546795469898767/
+// Sandcastle build trigger URL: https://www.internalfb.com/intern/sandcastle/job/49539596221326249/
 
 {
     "name": "swift_glass_client",
@@ -10,19 +10,19 @@
     "build_info": {
         "config_script": "fbcode/glean/client/swift/msdk/swift_glass_client.dotslash.py",
         "commit_repo": "fbsource",
-        "commit_hash": "699470adbfbf3bf5314de3233bf59b51a4850099",
-        "commit_date": "2026-04-10 00:21:05 PDT",
-        "commit_timestamp": 1775805665,
-        "msdk_package_fbid": "1176503521138256"
+        "commit_hash": "ca77c7dd8ecc9866354cd6169d69e57b8bee7776",
+        "commit_date": "2026-04-11 00:21:53 PDT",
+        "commit_timestamp": 1775892113,
+        "msdk_package_fbid": "1619688389082958"
     },
     "signatures": {
-        "msdk": "<<crypto.managed_sdk.mac:AedJjqMEUyzcvurRm21gGCbZp-k>>"
+        "msdk": "<<crypto.managed_sdk.mac:AefpFYxZkRuZI8ujMGMu7hlpiyU>>"
     },
     "platforms": {
         "linux/aarch64": {
             "scheme": "cas",
             "use_case_id": "dotslash_msdk_prod",
-            "digest": "24fc5f8e222ad9ccfdb7298fa9beb1ff3c149bd0d1a50bc5b7fae3b7862228d8:47145085",
+            "digest": "d92c887f632210538b5d135c8d67ccf0aeaa0184b4e9ec7f9d0488b45b5ddf4a:47561112",
             "extract": {
                 "path": "swift_glass_client",
                 "decompress": "tar.zst"
@@ -42,7 +42,7 @@
         "linux/x86_64": {
             "scheme": "cas",
             "use_case_id": "dotslash_msdk_prod",
-            "digest": "4fda0d0746649702e94d6d9d05031d0e506a9e0ad89c31fd65e5beb2865c09b2:49005528",
+            "digest": "1ffd9a200a629dd874e0c76928c7f86aa9a8f5cfe3ca3f49f5bf80ec6926efb1:49485328",
             "extract": {
                 "path": "swift_glass_client",
                 "decompress": "tar.zst"
@@ -61,7 +61,7 @@
         "macos": {
             "scheme": "cas",
             "use_case_id": "dotslash_msdk_prod",
-            "digest": "f3ce6c2990a7b83fda6b6941429d5fd661e8ccf43108e0c0a42d419018d1db80:6435806",
+            "digest": "9edd416ee496eb67f613cdc37d18c16be5ff662bb60438d1ee8754847b11f822:6434777",
             "extract": {
                 "path": "swift_glass_client",
                 "decompress": "tar.zst"
@@ -80,7 +80,7 @@
         "macos/aarch64": {
             "scheme": "cas",
             "use_case_id": "dotslash_msdk_prod",
-            "digest": "14d404e6d0392ad15023441691df0deb475d1d2d021ef094385639a61409a1f7:5705306",
+            "digest": "6bd520c94cc695ece64a59160458c483935ec01fd728ab2457fd7ca36005eb6d:5704705",
             "extract": {
                 "path": "swift_glass_client",
                 "decompress": "tar.zst"
