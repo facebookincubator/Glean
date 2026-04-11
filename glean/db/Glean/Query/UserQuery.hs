@@ -74,6 +74,7 @@ import Glean.Query.Flatten
 import Glean.Query.Opt
 import Glean.Query.Reorder
 import Glean.Query.Incremental (makeIncremental)
+import Glean.Query.Lint (lintQuery)
 import Glean.RTS as RTS
 import Glean.RTS.Bytecode.Disassemble
 import qualified Glean.RTS.Bytecode.Gen.Version as Bytecode
@@ -986,6 +987,12 @@ compileAngleQuery rec ver dbSchema mode source stored debug = do
 
   reordered <- checkBadQuery id $ runExcept $ reorder dbSchema optimised
   ifDebug $ "reordered query: " <> show (displayDefault (qiQuery reordered))
+
+  when (queryLint debug) $
+    case lintQuery dbSchema reordered of
+      Left err -> throwIO $ Thrift.BadQuery $
+        Text.pack $ show $ "query lint:" <+> err
+      Right () -> return ()
 
   final <- case mode of
     NoExtraSteps -> return reordered
