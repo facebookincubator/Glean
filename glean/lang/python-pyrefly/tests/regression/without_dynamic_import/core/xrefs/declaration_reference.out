@@ -69,6 +69,19 @@
     "key": {
       "source": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } },
       "target": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "lib.typing" },
+            "from_name": { "key": "typing" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } },
+      "target": {
         "variable": {
           "key": { "name": { "key": "lib.HelperClass.THelperClass" } }
         }
@@ -392,8 +405,35 @@
           "key": { "name": { "key": "lib.HelperClass.dotted_annotation" } }
         }
       },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "func": {
+          "key": { "name": { "key": "lib.HelperClass.dotted_annotation" } }
+        }
+      },
       "target": {
         "cls": { "key": { "name": { "key": "lib.HelperClass.Inner" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "func": {
+          "key": { "name": { "key": "lib.HelperClass.dotted_annotation" } }
+        }
+      },
+      "target": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "lib.typing" },
+            "from_name": { "key": "typing" }
+          }
+        }
       }
     }
   },
@@ -1197,6 +1237,19 @@
           "key": {
             "as_name": { "key": "lib.Union" },
             "from_name": { "key": "typing.Union" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "lib" } } } },
+      "target": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "lib.typing" },
+            "from_name": { "key": "typing" }
           }
         }
       }

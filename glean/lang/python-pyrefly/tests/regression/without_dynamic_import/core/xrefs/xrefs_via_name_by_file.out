@@ -457,6 +457,14 @@
           "target": { "key": "None" }
         },
         {
+          "source": { "length": 4, "start": 676 },
+          "target": { "key": "lib.typing.List" }
+        },
+        {
+          "source": { "length": 4, "start": 676 },
+          "target": { "key": "typing.List" }
+        },
+        {
           "source": { "length": 5, "start": 267 },
           "target": { "key": "typing.Union" }
         },
@@ -469,11 +477,23 @@
           "target": { "key": "typing.Union" }
         },
         {
+          "source": { "length": 5, "start": 657 },
+          "target": { "key": "lib.HelperClass.Inner" }
+        },
+        {
           "source": { "length": 6, "start": 232 },
           "target": { "key": "typing" }
         },
         {
           "source": { "length": 6, "start": 244 },
+          "target": { "key": "typing" }
+        },
+        {
+          "source": { "length": 6, "start": 669 },
+          "target": { "key": "lib.typing" }
+        },
+        {
+          "source": { "length": 6, "start": 669 },
           "target": { "key": "typing" }
         },
         {
@@ -509,16 +529,16 @@
           "target": { "key": "lib.HelperClass" }
         },
         {
+          "source": { "length": 11, "start": 645 },
+          "target": { "key": "lib.HelperClass" }
+        },
+        {
           "source": { "length": 11, "start": 739 },
           "target": { "key": "lib.HelperClass" }
         },
         {
           "source": { "length": 12, "start": 415 },
           "target": { "key": "lib.HelperClass.THelperClass" }
-        },
-        {
-          "source": { "length": 17, "start": 645 },
-          "target": { "key": "lib.HelperClass.Inner" }
         }
       ]
     }

@@ -1798,10 +1798,24 @@
                     },
                     {
                         "span": {
-                            "length": 17,
+                            "length": 11,
                             "start": 41
                         },
+                        "type": "test/py/glean/lib.HelperClass"
+                    },
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 53
+                        },
                         "type": "test/py/glean/lib.HelperClass.Inner"
+                    },
+                    {
+                        "span": {
+                            "length": 6,
+                            "start": 66
+                        },
+                        "type": "test/py/glean/lib.typing"
                     }
                 ],
                 "visibility": 20
@@ -1917,8 +1931,15 @@
                     },
                     {
                         "span": {
-                            "length": 17,
+                            "length": 11,
                             "start": 4
+                        },
+                        "type": "test/py/glean/lib.HelperClass"
+                    },
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 16
                         },
                         "type": "test/py/glean/lib.HelperClass.Inner"
                     }

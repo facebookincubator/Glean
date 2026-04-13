@@ -80,7 +80,7 @@ testPythonFindReferences get = TestLabel "findReferences" $ TestList [
   "test/py/glean/lib.HelperClass" --> [
     ("glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/all.py",5),
     ("glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/as.py",1),
-    ("glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",4),
+    ("glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/lib.py",5),
     ("glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",4) ],
   "test/py/glean/lib.HelperClass.value" --> [],
   "test/py/glean/lib.HelperClass.method" --> [("glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py",1)],
