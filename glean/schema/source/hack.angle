@@ -470,6 +470,7 @@ predicate FunctionDefinition :
     typeParams : [TypeParameter],
     module_ : maybe ModuleMembership,
     readonlyRet : maybe ReadonlyKind,
+    isClosure : bool,
   }
 
 # Types of definitions in Hack
@@ -1162,5 +1163,47 @@ predicate SearchNamespaceByLowerCaseName:
   } stored { prim.toLower NameStr, NameStr } where
     hack.NamespaceDeclaration { name = NSQName };
     { name = Name NameStr } = NSQName
+
+predicate NonClosureDeclaration : hack.Declaration
+  D where
+    (
+      D.classConst? = _
+    ) | (
+      D.container? = _
+    ) | (
+      D.enumerator? = _
+    ) | (
+      F = D.function_?;
+      hack.FunctionDefinition { declaration = F, isClosure = false }
+    ) | (
+      D.globalConst? = _
+    ) | (
+      D.namespace_? = _
+    ) | (
+      D.method? = _
+    ) | (
+      D.property_? = _
+    ) | (
+      D.typeConst? = _
+    ) | (
+      D.typedef_? = _
+    ) | (
+      D.module? = _
+    )
+
+# Like FileDeclarations but excludes closure functions.
+# Stores individual (file, declaration) pairs rather than arrays.
+predicate FileNonClosureDeclarations :
+  {
+    file : src.File,
+    declaration : Declaration,
+  }
+  stored
+  { File, D } where
+    hack.FileDeclarations { file = File, declarations = Decls };
+    D = Decls[..];
+    hack.NonClosureDeclaration D
+
+
 
 } # end hack.angle
