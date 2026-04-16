@@ -299,6 +299,7 @@ library thrift-annotation
         thrift/annotation/gen-hs2
     exposed-modules:
         Facebook.Thrift.Annotation.Cpp.Cpp.Types
+        Facebook.Thrift.Annotation.Haskell.Haskell.Types
         Hack.Types
         Rust.Types
         Scope.Types

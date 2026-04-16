@@ -9,6 +9,7 @@
 include "glean/github/if/fb303.thrift"
 include "glean/if/facebook/auth.thrift"
 include "thrift/annotation/cpp.thrift"
+include "thrift/annotation/haskell.thrift"
 include "thrift/annotation/thrift.thrift"
 
 @thrift.AllowLegacyMissingUris
@@ -29,8 +30,10 @@ namespace py3 glean
 
 // Uniquely identifies a fact in a database
 typedef i64 Id
-typedef list<Id> (hs.type = "VectorStorable") listOfIds
-typedef map<Id, listOfIds> (hs.type = "HashMap") multimapOfIds
+@haskell.Type{name = "VectorStorable"}
+typedef list<Id> listOfIds
+@haskell.Type{name = "HashMap"}
+typedef map<Id, listOfIds> multimapOfIds
 
 const Id INVALID_ID = 0;
 const Id FIRST_FREE_ID = 1024;
@@ -46,9 +49,11 @@ typedef Identifier PredicateName
 typedef Identifier TypeName
 
 // Time points
-typedef i64 PosixEpochTime (hs.newtype)
+@haskell.Newtype
+typedef i64 PosixEpochTime
 
-typedef string (hs.type = "ByteString") bytestring
+@haskell.Type{name = "ByteString"}
+typedef string bytestring
 typedef bytestring json
 
 // Identifies a Predicate by name and version
@@ -88,16 +93,19 @@ struct Empty {}
 // with a query, so that the server knows which schema to use to
 // interpret the query.
 
-typedef string SchemaId (hs.newtype)
+@haskell.Newtype
+typedef string SchemaId
 
 // -----------------------------------------------------------------------------
 // Runtime types
 
 // Values of type 'nat'
-typedef i64 Nat (hs.newtype)
+@haskell.Newtype
+typedef i64 Nat
 
 // Values of type 'byte'
-typedef byte Byte (hs.newtype)
+@haskell.Newtype
+typedef byte Byte
 
 // -----------------------------------------------------------------------------
 // Information about databases and their status
@@ -113,7 +121,8 @@ struct SendJsonBatchOptions {
   2: optional SchemaId schema_id;
 }
 
-typedef map<string, string> (hs.type = "HashMap") DatabaseProperties
+@haskell.Type{name = "HashMap"}
+typedef map<string, string> DatabaseProperties
 
 // TODO deprecate for pruned?
 struct Stacked {
@@ -131,10 +140,11 @@ struct Pruned {
 }
 
 // Dependencies of a DB (to be extended)
+@haskell.NonEmpty
 union Dependencies {
   1: Stacked stacked; // TODO remove?
   2: Pruned pruned;
-} (hs.nonempty)
+}
 
 // -----------------------------------------------------------------------------
 // Thrift API
@@ -267,6 +277,7 @@ exception UnknownSchemaId {
   1: SchemaId schema_id;
 }
 
+@haskell.NoUnknown
 enum DatabaseStatus {
   // database is complete and available on this server:
   Complete = 0,
@@ -287,7 +298,7 @@ enum DatabaseStatus {
   Finalizing = 5,
   // database or one of its dependencies are missing:
   Missing = 6,
-} (hs.nounknown)
+}
 
 struct DatabaseBroken {
   1: string task;
@@ -366,15 +377,17 @@ struct BatchRetry {
   1: double seconds;
 }
 
+@haskell.NonEmpty
 union SendResponse {
   1: Handle handle;
   2: BatchRetry retry;
-} (hs.nonempty)
+}
 
+@haskell.NonEmpty
 union FinishResponse {
   1: Subst subst;
   2: BatchRetry retry;
-} (hs.nonempty)
+}
 
 // auth_status / auth_message report the server's verification
 // outcome for the inbound CAT(s) on every response received by the
@@ -400,10 +413,11 @@ struct UserQueryCont {
   // 9: deprecated
 }
 
+@haskell.NoUnknown
 enum QuerySyntax {
   JSON = 1, // JSON query syntax (DEPRECATED)
   ANGLE = 2, // Glean's query language
-} (hs.nounknown)
+}
 
 struct UserQueryOptions {
   1: bool no_base64_binary = false;
@@ -619,10 +633,11 @@ exception IncompleteDependencies {
   1: list<PredicateRef> incomplete;
 }
 
+@haskell.NonEmpty
 union DerivationProgress {
   1: UserQueryStats ongoing;
   2: UserQueryStats complete;
-} (hs.nonempty)
+}
 
 struct DerivationOngoing {
   1: UserQueryStats stats;
@@ -632,10 +647,11 @@ struct DerivationComplete {
   1: UserQueryStats stats;
 }
 
+@haskell.NonEmpty
 union DerivationStatus {
   1: DerivationOngoing ongoing;
   2: DerivationComplete complete;
-} (hs.nonempty)
+}
 
 struct UserQuery {
   1: string predicate; // DEPRECATED
@@ -1055,10 +1071,11 @@ struct CompleteDerivedPredicate {
   1: PredicateRef predicate;
 }
 
+@haskell.NonEmpty
 union CompletePredicates {
   1: CompleteAxiomPredicates axiom;
   2: CompleteDerivedPredicate derived;
-} (hs.nonempty)
+}
 
 struct CompletePredicatesResponse {
   // See UserQueryResults.auth_status.
@@ -1339,8 +1356,13 @@ struct PredicateAnnotation {
 }
 
 // The following were automatically generated and may benefit from renaming.
-typedef list<Fact> (hs.type = "Vector") list_Fact_2137
-typedef list<Id> (hs.type = "Vector") list_Id_2029
-typedef list<i64> (hs.type = "VectorStorable") list_i64
-typedef map<Id, list<FactDependencies>> (hs.type = "HashMap") map_Id_list_FactDependencies_964
-typedef map<UnitName, listOfIds> (hs.type = "HashMap") map_UnitName_listOfIds
+@haskell.Type{name = "Vector"}
+typedef list<Fact> list_Fact_2137
+@haskell.Type{name = "Vector"}
+typedef list<Id> list_Id_2029
+@haskell.Type{name = "VectorStorable"}
+typedef list<i64> list_i64
+@haskell.Type{name = "HashMap"}
+typedef map<Id, list<FactDependencies>> map_Id_list_FactDependencies_964
+@haskell.Type{name = "HashMap"}
+typedef map<UnitName, listOfIds> map_UnitName_listOfIds

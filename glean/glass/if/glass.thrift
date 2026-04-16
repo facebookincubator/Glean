@@ -10,6 +10,7 @@ include "glean/github/if/fb303.thrift"
 include "glean/if/facebook/auth.thrift"
 include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/hack.thrift"
+include "thrift/annotation/haskell.thrift"
 include "thrift/annotation/thrift.thrift"
 
 @thrift.AllowLegacyMissingUris
@@ -29,19 +30,24 @@ const i32 MAXIMUM_QUERY_TIME_LIMIT = 15000;
 // request types
 
 // Repositories are referred to by their SCS repo names
-typedef string RepoName (hs.newtype)
+@haskell.Newtype
+typedef string RepoName
 
 // The UTF-8 path of a file relative to the source control root
-typedef string Path (hs.newtype)
+@haskell.Newtype
+typedef string Path
 
 // Unique revision identifier (repo-wide unique id)
-typedef string Revision (hs.newtype)
+@haskell.Newtype
+typedef string Revision
 
 // USR (Symbol string from ClangD/SourceKit)
-typedef string USR (hs.newtype)
+@haskell.Newtype
+typedef string USR
 
 // USR hash (Symbol string from ClangD/Sourcekit hashed)
-typedef string USRHash (hs.newtype)
+@haskell.Newtype
+typedef string USRHash
 
 // Additional perf denominator dimensions without dedicated AttributeOptions fields.
 enum PerfDimension {
@@ -59,27 +65,35 @@ struct PerfDimensionFilter {
 // range is inclusive of end.
 struct LineRange {
   // 1-based line index
-  1: i64 lineBegin (hs.strict);
+  @haskell.Strict
+  1: i64 lineBegin;
 
   // end line index, range is inclusive
-  2: i64 lineEnd (hs.strict);
+  @haskell.Strict
+  2: i64 lineEnd;
 }
 
 // Resolved symbol range in a file, using line/column locators.
 // lines and columns are 1-indexed.
 @hack.MigrationBlockingAllowInheritance
 struct Range {
-  1: i64 lineBegin (hs.strict);
-  2: i64 columnBegin (hs.strict);
-  3: i64 lineEnd (hs.strict);
-  4: i64 columnEnd (hs.strict);
+  @haskell.Strict
+  1: i64 lineBegin;
+  @haskell.Strict
+  2: i64 columnBegin;
+  @haskell.Strict
+  3: i64 lineEnd;
+  @haskell.Strict
+  4: i64 columnEnd;
 }
 
 // Accurate byte ranges of symbols (can be resolved to Ranges)
 @hack.MigrationBlockingAllowInheritance
 struct ByteSpan {
-  1: i64 start (hs.strict);
-  2: i64 length (hs.strict);
+  @haskell.Strict
+  1: i64 start;
+  @haskell.Strict
+  2: i64 length;
 }
 
 // An universal, resolved symbol location.
@@ -92,7 +106,8 @@ struct LocationRange {
   2: Path filepath;
 
   // resolved line/column ranges in file
-  3: Range range (hs.strict);
+  @haskell.Strict
+  3: Range range;
 }
 
 // A Location associated with a specific revision
@@ -142,11 +157,14 @@ struct AttributeOptions {
   20: list<PerfDimensionFilter> perf_dimension_filters = [];
 }
 
-typedef string ServiceID (hs.newtype)
+@haskell.Newtype
+typedef string ServiceID
 
-typedef string BinaryName (hs.newtype)
+@haskell.Newtype
+typedef string BinaryName
 
-typedef string PackageName (hs.newtype)
+@haskell.Newtype
+typedef string PackageName
 
 // Client information for logging and debugging
 struct ClientInfo {
@@ -251,7 +269,8 @@ union SymbolFilter {
 }
 
 // Human-readable opaque, stable, globally unique symbol identifier
-typedef string SymbolId (hs.newtype)
+@haskell.Newtype
+typedef string SymbolId
 
 // Type of attributes associated with a symbol.
 @hack.MigrationBlockingAllowInheritance
@@ -269,7 +288,8 @@ union Attribute {
 }
 
 // Symbol attributes, keyed by attribute name
-typedef map<string, Attribute> Attributes (hs.newtype)
+@haskell.Newtype
+typedef map<string, Attribute> Attributes
 
 // For clients that can't process maps, use an assoc list for attributes
 @hack.MigrationBlockingAllowInheritance
@@ -279,7 +299,8 @@ struct KeyedAttribute {
 }
 
 // For clients that can't process maps, use an assoc list for attributes
-typedef list<KeyedAttribute> AttributeList (hs.newtype)
+@haskell.Newtype
+typedef list<KeyedAttribute> AttributeList
 
 // Reference symbols. These are use sites that point to their definition
 @hack.MigrationBlockingAllowInheritance
@@ -288,7 +309,8 @@ struct ReferenceRangeSymbolX {
   1: SymbolId sym;
 
   // local line:col spans in this file
-  2: Range range (hs.strict);
+  @haskell.Strict
+  2: Range range;
 
   // this points to the (resolved) definition site
   3: LocationRange target;
@@ -304,10 +326,12 @@ struct DefinitionSymbolX {
   1: SymbolId sym;
 
   // the line and column range of the full entity
-  2: Range range (hs.strict);
+  @haskell.Strict
+  2: Range range;
 
   // the line and column range of the entity name only
-  4: optional Range nameRange (hs.strict);
+  @haskell.Strict
+  4: optional Range nameRange;
 
   // attributes of this definition
   3: AttributeList attributes;
@@ -320,7 +344,8 @@ struct SymbolX {
   1: SymbolId sym;
 
   // the resolved local line:col spans in this file
-  2: Range range (hs.strict);
+  @haskell.Strict
+  2: Range range;
 
   // if this is a reference, it will point to its definition
   3: optional LocationRange target;
@@ -345,7 +370,8 @@ struct SymbolPath {
   2: Path filepath;
 
   // the resolved local line:col spans in this file
-  3: Range range (hs.strict);
+  @haskell.Strict
+  3: Range range;
 }
 
 // filepath to digest
@@ -406,7 +432,8 @@ struct DocumentSymbolIndex {
   2: Revision revision;
 
   // count of unique symbols in the map
-  3: i64 size (hs.strict);
+  @haskell.Strict
+  3: i64 size;
 
   // was the result truncated either by glean or glass?
   4: bool truncated;
@@ -460,7 +487,8 @@ safe exception GlassException {
 }
 
 // Type of abstract identifiers
-typedef string Name (hs.newtype)
+@haskell.Newtype
+typedef string Name
 
 // A pair of names, usually a scope or qualified name and local identifier
 @hack.MigrationBlockingAllowInheritance
@@ -852,7 +880,8 @@ struct FileIncludeLocationRequest {
 @hack.MigrationBlockingAllowInheritance
 struct FileXRefTarget {
   1: Path target; // target file only
-  2: Range range (hs.strict); // local line:col of use
+  @haskell.Strict
+  2: Range range; // local line:col of use
 }
 
 # list of struct rather than map to help out GraphQL
@@ -863,7 +892,8 @@ struct FileIncludeXRef {
 }
 
 # map of source file, to local spans and their target files only
-typedef list<FileIncludeXRef> XRefFileList (hs.newtype)
+@haskell.Newtype
+typedef list<FileIncludeXRef> XRefFileList
 
 @hack.MigrationBlockingAllowInheritance
 struct FileIncludeLocationResults {
