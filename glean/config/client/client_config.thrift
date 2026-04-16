@@ -15,6 +15,7 @@ namespace php glean
 namespace rust glean_client_config
 
 include "glean/config/service.thrift"
+include "thrift/annotation/haskell.thrift"
 include "thrift/annotation/thrift.thrift"
 
 @thrift.AllowLegacyMissingUris
@@ -23,6 +24,8 @@ package;
 // Strategy to find a Glean query server with the desired db.
 // The name 'UseShards' is a historic implementation detail: Glean query servers
 // reuse the sharding mechanism to advertise which dbs they currently serve.
+@haskell.Prefix{name = ""}
+@haskell.NoUnknown
 enum UseShards {
   // Ask for a random Glean query server
   NO_SHARDS = 0,
@@ -30,7 +33,7 @@ enum UseShards {
   USE_SHARDS = 1,
   // Ask for a specific server, falling back to arbitary server
   USE_SHARDS_AND_FALLBACK = 2,
-} (hs.prefix = "", hs.nounknown)
+}
 
 struct ClientConfig {
   1: service.Service serv = {"tier": "glean.query.prod"};

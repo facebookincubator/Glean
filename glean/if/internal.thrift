@@ -8,6 +8,7 @@
 
 include "glean/config/server/server_config.thrift"
 include "glean/if/glean.thrift"
+include "thrift/annotation/haskell.thrift"
 include "thrift/annotation/thrift.thrift"
 
 @thrift.AllowLegacyMissingUris
@@ -41,16 +42,20 @@ struct DatabaseIncomplete {}
 struct DatabaseFinalizing {}
 
 // The status of data being written into a DB
+@haskell.Prefix{name = ""}
+@haskell.NonEmpty
 union Completeness {
   1: DatabaseIncomplete incomplete;
   3: glean.DatabaseComplete complete;
   4: glean.DatabaseBroken broken;
   5: DatabaseFinalizing finalizing;
-} (hs.prefix = "", hs.nonempty)
+}
 
-typedef string StorageName (hs.newtype)
+@haskell.Newtype
+typedef string StorageName
 
 // Information about a database stored by Glean.
+@haskell.Prefix{name = ""}
 struct Meta {
   // Database version
   1: server_config.DBVersion metaVersion;
@@ -85,7 +90,7 @@ struct Meta {
 
   // Which storage backend to use.
   10: StorageName metaStorage;
-} (hs.prefix = "")
+}
 
 // ---------------------------------------------------------------------------
 // Schema index
@@ -149,4 +154,5 @@ struct SchemaIndex {
 }
 
 // The following were automatically generated and may benefit from renaming.
-typedef string (hs.type = "ByteString") string_321
+@haskell.Type{name = "ByteString"}
+typedef string string_321

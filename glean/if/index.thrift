@@ -7,6 +7,7 @@
  */
 
 include "glean/if/glean.thrift"
+include "thrift/annotation/haskell.thrift"
 include "thrift/annotation/thrift.thrift"
 
 @thrift.AllowLegacyMissingUris
@@ -44,11 +45,12 @@ struct FileMoved {
 
 struct FileDeleted {}
 
+@haskell.NonEmpty
 union FileChange {
   1: FileModified modified;
   2: FileMoved moved;
   3: FileDeleted deleted;
-} (hs.nonempty)
+}
 
 struct IndexRequest {
   1: glean.Repo repo;

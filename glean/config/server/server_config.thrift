@@ -9,6 +9,7 @@
 // Source: https://www.internalfb.com/code/configerator/[master]/source/glean/server/server_config.thrift
 // Copyright (c) Facebook, Inc. and its affiliates.
 
+include "thrift/annotation/haskell.thrift"
 include "thrift/annotation/thrift.thrift"
 
 @thrift.AllowLegacyMissingUris
@@ -25,9 +26,11 @@ namespace rust glean_server_config
 typedef string RepoName
 typedef i64 Seconds
 
-typedef i64 DBVersion (hs.newtype)
+@haskell.Newtype
+typedef i64 DBVersion
 
-typedef map<string, string> (hs.type = "HashMap") Properties
+@haskell.Type{name = "HashMap"}
+typedef map<string, string> Properties
 
 // A retention policy for local DBs, specifying when DBs get
 // automatically deleted.  The default is to never delete any DBs.
@@ -370,4 +373,5 @@ struct Config {
 }
 
 // The following were automatically generated and may benefit from renaming.
-typedef set<RepoName> (hs.type = "HashSet") set_RepoName_8170
+@haskell.Type{name = "HashSet"}
+typedef set<RepoName> set_RepoName_8170
