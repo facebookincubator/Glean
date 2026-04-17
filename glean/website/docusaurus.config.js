@@ -9,6 +9,8 @@
  */
 
 const {fbContent} = require('internaldocs-fb-helpers');
+const {isInternal} = require('docusaurus-plugin-internaldocs-fb/internal');
+const stripFbImports = require('./src/remark/stripFbImports');
 
 module.exports = {
   title: 'Glean',
@@ -109,6 +111,9 @@ module.exports = {
         docs: {
           path: './docs',
           sidebarPath: require.resolve('./sidebars.js'),
+          beforeDefaultRemarkPlugins: [
+            ...(!isInternal() ? [stripFbImports] : []),
+          ],
           editUrl: fbContent({
             internal:
               'https://www.internalfb.com/intern/diffusion/FBS/browse/master/fbcode/glean/website/',
