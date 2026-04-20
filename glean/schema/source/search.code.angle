@@ -12,7 +12,7 @@ import codemarkup.lsif
 import codemarkup.types
 import csharp
 import cxx1
-import erlang
+import erlang.1
 import fbthrift
 import flow
 import graphql
@@ -24,7 +24,7 @@ import pp1
 import python
 import search.anglelang
 import search.cxx
-import search.erlang
+import search.erlang.4
 import search.flow
 import search.hack
 import search.hs

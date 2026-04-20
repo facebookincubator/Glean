@@ -2,9 +2,9 @@
 
 schema codemarkup.erlang.2 {
 import src
-import code.erlang
+import code.erlang.1
 import codemarkup.types
-import erlang
+import erlang.1
 
 #
 # Resolving locations to entities
