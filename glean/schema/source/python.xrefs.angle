@@ -34,5 +34,21 @@ predicate XRefDeclarationsByFile:
     python.DeclarationWithName { TargetName, TargetDecl };
     DeclLocation = python.DeclarationLocation { declaration = TargetDecl, file = TargetFile };
     ({ just = TargetFile } = MaybeFile) | (nothing = MaybeFile);
+    if (
+      { imp = { from_name = FromName } } = TargetDecl;
+    ) then (
+      !(
+        { target = { name = FromName, file = OtherMaybeFile }, source = Src } = XRefs[..];
+        python.DeclarationWithName { FromName, OtherDecl };
+        python.DeclarationLocation { declaration = OtherDecl, file = OtherFile };
+        if ({ just = OtherFile } = OtherMaybeFile) then (
+          OtherFile = OtherFile
+        ) else (
+          nothing = OtherMaybeFile
+        )
+      )
+    ) else (
+      TargetDecl = TargetDecl
+    )
 
 }
