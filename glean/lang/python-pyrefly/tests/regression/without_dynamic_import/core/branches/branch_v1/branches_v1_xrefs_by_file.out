@@ -1,0 +1,217 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": {
+        "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/main.py"
+      },
+      "xrefs": [
+        {
+          "source": { "length": 3, "start": 252 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/lib.py"
+            },
+            "name": { "key": "lib" }
+          }
+        },
+        {
+          "source": { "length": 3, "start": 768 },
+          "target": {
+            "file": { "key": "builtins.pyi" },
+            "name": { "key": "str" }
+          }
+        },
+        {
+          "source": { "length": 4, "start": 600 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/main.py"
+            },
+            "name": { "key": "main.MainClass.__init__.<locals>.self" }
+          }
+        },
+        {
+          "source": { "length": 4, "start": 709 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/main.py"
+            },
+            "name": { "key": "main.MainClass.process.<locals>.self" }
+          }
+        },
+        {
+          "source": { "length": 5, "start": 297 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/utils.py"
+            },
+            "name": { "key": "utils" }
+          }
+        },
+        {
+          "source": { "length": 5, "start": 772 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/main.py"
+            },
+            "name": { "key": "main.MainClass.process.<locals>.value" }
+          }
+        },
+        {
+          "source": { "length": 6, "start": 429 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/main.py"
+            },
+            "name": { "key": "main.main_function.<locals>.helper" }
+          }
+        },
+        {
+          "source": { "length": 6, "start": 482 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/main.py"
+            },
+            "name": { "key": "main.main_function.<locals>.result" }
+          }
+        },
+        {
+          "source": { "length": 6, "start": 714 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/main.py"
+            },
+            "name": { "key": "main.MainClass.helper" }
+          }
+        },
+        {
+          "source": { "length": 9, "start": 436 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/lib.py"
+            },
+            "name": { "key": "lib.HelperClass.get_value" }
+          }
+        },
+        {
+          "source": { "length": 9, "start": 721 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/lib.py"
+            },
+            "name": { "key": "lib.HelperClass.get_value" }
+          }
+        },
+        {
+          "source": { "length": 10, "start": 501 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/main.py"
+            },
+            "name": { "key": "main.main_function.<locals>.calculated" }
+          }
+        },
+        {
+          "source": { "length": 11, "start": 280 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/lib.py"
+            },
+            "name": { "key": "lib.HelperClass" }
+          }
+        },
+        {
+          "source": { "length": 11, "start": 402 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/lib.py"
+            },
+            "name": { "key": "lib.HelperClass" }
+          }
+        },
+        {
+          "source": { "length": 11, "start": 402 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/main.py"
+            },
+            "name": { "key": "main.HelperClass" }
+          }
+        },
+        {
+          "source": { "length": 11, "start": 614 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/lib.py"
+            },
+            "name": { "key": "lib.HelperClass" }
+          }
+        },
+        {
+          "source": { "length": 11, "start": 614 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/main.py"
+            },
+            "name": { "key": "main.HelperClass" }
+          }
+        },
+        {
+          "source": { "length": 15, "start": 263 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/lib.py"
+            },
+            "name": { "key": "lib.helper_function" }
+          }
+        },
+        {
+          "source": { "length": 15, "start": 748 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/lib.py"
+            },
+            "name": { "key": "lib.helper_function" }
+          }
+        },
+        {
+          "source": { "length": 15, "start": 748 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/main.py"
+            },
+            "name": { "key": "main.helper_function" }
+          }
+        },
+        {
+          "source": { "length": 16, "start": 310 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/utils.py"
+            },
+            "name": { "key": "utils.calculate_result" }
+          }
+        },
+        {
+          "source": { "length": 16, "start": 465 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/main.py"
+            },
+            "name": { "key": "main.calculate_result" }
+          }
+        },
+        {
+          "source": { "length": 16, "start": 465 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/utils.py"
+            },
+            "name": { "key": "utils.calculate_result" }
+          }
+        }
+      ]
+    }
+  }
+]

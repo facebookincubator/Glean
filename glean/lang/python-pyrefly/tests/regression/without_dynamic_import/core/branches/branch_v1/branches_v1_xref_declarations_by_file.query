@@ -1,0 +1,2 @@
+query: python.xrefs.XRefDeclarationsByFile { file = "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v1/main.py" }
+transform: [normord, []]
