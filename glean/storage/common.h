@@ -20,9 +20,13 @@ namespace db {
 
 using namespace rts;
 
+/** Keys for the admin column family, which stores per-DB scalar metadata. */
 enum class AdminId : uint32_t {
+  /** Next fact ID to be allocated (first free ID). */
   NEXT_ID,
+  /** Schema representation version of this DB. */
   VERSION,
+  /** Lowest fact ID in this DB (first valid ID). */
   STARTING_ID,
   /** First ID allocated by this DB in the shared unit/set namespace. */
   FIRST_UNIT_ID,
@@ -30,6 +34,7 @@ enum class AdminId : uint32_t {
    *  UnitIds and UsetIds). Despite the name, this is NOT just the next
    *  unit — it is the end of the entire allocated ID range. */
   NEXT_UNIT_ID,
+  /** Number of facts with no ownership unit after storeOwnership(). */
   ORPHAN_FACTS,
 };
 

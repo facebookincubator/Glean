@@ -87,11 +87,11 @@ struct Ownership {
   virtual OwnershipStats getStats() = 0;
 };
 
-///
-// Computed ownership data stored in memory.
-// Holds data about multiple predicates.
-// Contains the canonical 'UsetId's that will be added to the database.
-//
+/**
+ * Computed ownership data stored in memory.
+ * Holds data about multiple predicates.
+ * Contains the canonical 'UsetId's that will be added to the database.
+ */
 struct ComputedOwnership {
   ComputedOwnership(Usets&& sets, std::vector<std::pair<Id, UsetId>>&& facts)
       : sets_(std::move(sets)), facts_(std::move(facts)) {}

@@ -260,6 +260,8 @@ FOLLY_NOINLINE void completeOwnership(
   UsetsMerge usetsMerge{usets};
   Stats stats{usets, usetsMerge.statistics()};
 
+  // `tracker` is a syscall callback that collects fact IDs referenced
+  // by a fact's clause into `refs`. Used by predicate->traverse() below.
   std::vector<Id> refs;
   const auto tracker = syscall([&refs](Id id, Pid) { refs.push_back(id); });
 
@@ -267,8 +269,11 @@ FOLLY_NOINLINE void completeOwnership(
     return;
   }
 
-  // Iterate over facts backwards - this ensures that we get all dependencies.
   const auto min_id = lookup.startingId();
+
+  // Resolve a fact ID to its current ownership Uset*.  Local facts
+  // (id >= min_id) live in the dense `facts` vector; base-DB facts
+  // (id < min_id) are tracked sparsely in an F14 map.
   const auto owner = [&](Id id) -> Uset*& {
     if (id < min_id) {
       return sparse[id.toWord()];
@@ -301,7 +306,8 @@ FOLLY_NOINLINE void completeOwnership(
         }
       }
 
-      // Collect all references to facts
+      // Walk the fact's clause to find all referenced fact IDs, populating
+      // `refs` via `tracker`.
       const auto* predicate = inventory.lookupPredicate(fact.type);
       assert(predicate);
       predicate->traverse(tracker, fact.clause);
@@ -309,8 +315,9 @@ FOLLY_NOINLINE void completeOwnership(
       for (const auto ref : refs) {
         usetsMerge.addUset(ref, set);
 
-        // Do the merge earlier if the used space is greater than 1 GB to free
-        // the memory
+        // Memory pressure relief: if the deferred-merge queue exceeds
+        // 1 GB, flush it now by merging all pending facts eagerly.
+        // The results are stored in owner().
         constexpr size_t ONE_GB = 1ULL << 30;
         if (usetsMerge.bytes() > ONE_GB) {
           auto factIds = usetsMerge.factIds();
@@ -331,10 +338,12 @@ FOLLY_NOINLINE void completeOwnership(
     }
   };
 
-  // We process facts in reverse order, so that we only process each fact
-  // once. We fetch the facts in parallel with processing them,
-  // which speeds up the whole process by about 2x. It should be possible
-  // to speed it up further by parallelising the processing.
+  // --- Phase 1: process local-DB facts in reverse order ---
+  //
+  // A producer thread fetches pages of facts (1M IDs each) from highest
+  // to lowest and pushes them into a bounded queue.  The consumer
+  // (this thread) pops each page and calls processFact in reverse order
+  // within it.  Double-buffering gives ~2x speedup.
 
   using FactPage = std::vector<Fact::unique_ptr>;
   auto fetchPage = [&](Id min_id, Id max_id) -> FactPage {
@@ -363,6 +372,7 @@ FOLLY_NOINLINE void completeOwnership(
   Queue queue(10);
   auto executor = folly::getGlobalCPUExecutor();
 
+  // Producer: fetch pages from highest to lowest ID
   folly::Future<folly::Unit> fetcher = folly::via(executor, [&]() {
     auto pageOf = [](Id id) -> uint64_t {
       return (id.toWord() / pageSize) * pageSize;
@@ -382,6 +392,7 @@ FOLLY_NOINLINE void completeOwnership(
     queue.blockingWrite(folly::none);
   });
 
+  // Consumer: process each page in reverse fact-ID order
   folly::Optional<FactPage> page;
   do {
     queue.blockingRead(page);
@@ -393,9 +404,12 @@ FOLLY_NOINLINE void completeOwnership(
   fetcher.wait();
   stats.dump();
 
-  // Propagate ownership sets through facts in the base DB(s), using a priority
-  // queue to process facts in descending order. Note there might be multiple
-  // entries in the queue for a given fact ID.
+  // --- Phase 2: propagate into base DB(s) ---
+  //
+  // Local facts may reference base-DB facts.  Phase 1 queued ownership
+  // sets for those via `sparse`.  Now we process them in descending ID
+  // order (max-heap), recursively following their own references deeper
+  // into the base.  Duplicates are skipped via `prev`.
   std::priority_queue<Id> order;
   for (auto [id, uset] : sparse) {
     order.push(Id::fromWord(id));
@@ -411,6 +425,7 @@ FOLLY_NOINLINE void completeOwnership(
     base_lookup->factById(id, [&](Pid type, Fact::Clause clause) {
       stats.bumpBase();
       processFact({id, type, clause});
+      // Any base-DB facts referenced by this one also need processing
       for (const auto ref : refs) {
         order.push(ref);
       }
@@ -447,6 +462,24 @@ the stacked DB to facts in the base DB(s).  The basic approach is
     a base DB.
 */
 
+/** Compute the complete ownership map for a database.
+ *
+ *  This is the top-level entry point, orchestrating three phases:
+ *
+ *  1. fillOwnership: read (unit → fact-ID-ranges) from `iter` and build
+ *     a TrieArray mapping each fact to its set of owning units.
+ *
+ *  2. collectUsets: deduplicate the trie's sets into a Usets store.
+ *
+ *  3. completeOwnership: propagate ownership transitively through fact
+ *     references, promote final sets, and handle stacked-DB merging.
+ *
+ *  The result is a ComputedOwnership containing the Usets store and a
+ *  run-length-encoded factOwners interval map (fact-ID → UsetId).
+ *
+ *  See Note [stacked incremental DBs] above for how base-DB ownership
+ *  interacts with stacked DBs.
+ */
 std::unique_ptr<ComputedOwnership> computeOwnership(
     const Inventory& inventory,
     Lookup& lookup, // the current DB, *not* stacked
