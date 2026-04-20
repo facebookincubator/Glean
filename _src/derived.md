@@ -28,7 +28,7 @@ The keyword `stored` tells Glean that the facts for this predicate will be store
 
 You can read the query as
 
-> There is a fact OutTarget {F,T} for every fact TargetOut {T,F}
+> There is a fact OutTarget \{F,T\} for every fact TargetOut \{T,F\}
 
 The query can be any arbitrary Angle query; the syntax is described in
 [Angle Guide](angle/guide.md). The only requirement is that the values
@@ -315,4 +315,3 @@ and inspect the results in the shell:
 ```
 glean shell --db-root ~/local/gleandb --db stacked/0
 ```
-
