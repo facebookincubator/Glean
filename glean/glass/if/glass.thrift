@@ -119,6 +119,7 @@ struct AttributeOptions {
   15: bool fetch_global_view = false;
   16: optional string traffic_group;
   17: optional string product_id;
+  18: bool fetch_per_line_per_strobelight_frame_data = false;
 }
 
 typedef string ServiceID (hs.newtype)
@@ -244,6 +245,7 @@ union Attribute {
   7: map<i64, string> aMapIntString;
   8: map<string, double> aMapStringDouble;
   9: map<i64, list<string>> aMapIntListString;
+  10: map<string, map<i64, double>> aMapStringMapIntDouble;
 }
 
 // Symbol attributes, keyed by attribute name
