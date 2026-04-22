@@ -109,6 +109,12 @@ predicate SearchByNameKindAndLanguage:
     ) | (
       Swift = Language;
       SwiftSearchByNameAndKind { NameStr, Kinds, Entity }
+    ) | (
+      Java = Language;
+      JavaSearchByNameAndKind { NameStr, Kinds, Entity }
+    ) | (
+      Kotlin = Language;
+      KotlinSearchByNameAndKind { NameStr, Kinds, Entity }
     )
 
 # Kind-optimized search, case insensitive.
@@ -140,6 +146,12 @@ predicate SearchByLowerCaseNameKindAndLanguage:
     ) | (
       Swift = Language;
       SwiftSearchByLowerCaseNameAndKind { NameStr, Kinds, Entity }
+    ) | (
+      Java = Language;
+      JavaSearchByLowerCaseNameAndKind { NameStr, Kinds, Entity }
+    ) | (
+      Kotlin = Language;
+      KotlinSearchByLowerCaseNameAndKind { NameStr, Kinds, Entity }
     )
 
 # scoped search
@@ -347,6 +359,61 @@ predicate SwiftSearchByLowerCaseNameAndKind:
       (codemarkup.lsif.LsifKindToKind { K, Kind }; { just = Kind })
     else nothing;
   { scip = { swift = { defn = D } } } = Entity
+
+predicate JavaSearchByNameAndKind:
+  {
+    name: string,
+    kind: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity,
+  }
+  { NameStr, Kinds, Entity } where
+  scip.SearchByNameKindLanguage { NameStr, Ks, Java, { java = { defn = D } } };
+  Kinds =
+    if (Ks = { just = K }) then
+      (codemarkup.lsif.LsifKindToKind { K, Kind }; { just = Kind })
+    else nothing;
+  { scip = { java = { defn = D } } } = Entity
+
+predicate JavaSearchByLowerCaseNameAndKind:
+ {
+    name: string,
+    kind: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity,
+ }
+ { NameStr, Kinds, Entity } where
+  scip.SearchByLowerCaseNameKindLanguage { NameStr, Ks, Java, { java = { defn = D } } };
+  Kinds =
+    if (Ks = { just = K }) then
+      (codemarkup.lsif.LsifKindToKind { K, Kind }; { just = Kind })
+    else nothing;
+  { scip = { java = { defn = D } } } = Entity
+
+predicate KotlinSearchByNameAndKind:
+  {
+    name: string,
+    kind: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity,
+  }
+  { NameStr, Kinds, Entity } where
+  scip.SearchByNameKindLanguage { NameStr, Ks, Kotlin, { kotlin = { defn = D } } };
+  Kinds =
+    if (Ks = { just = K }) then
+      (codemarkup.lsif.LsifKindToKind { K, Kind }; { just = Kind })
+    else nothing;
+  { scip = { kotlin = { defn = D } } } = Entity
+
+predicate KotlinSearchByLowerCaseNameAndKind:
+  {
+    name: string,
+    kind: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity,
+  } { NameStr, Kinds, Entity } where
+  scip.SearchByLowerCaseNameKindLanguage { NameStr, Ks, Kotlin, { kotlin = { defn = D } } };
+  Kinds =
+    if (Ks = { just = K }) then
+      (codemarkup.lsif.LsifKindToKind { K, Kind }; { just = Kind })
+    else nothing;
+  { scip = { kotlin = { defn = D } } } = Entity
 
 predicate HackSearchByNameAndKind:
   {
