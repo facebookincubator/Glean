@@ -1154,6 +1154,22 @@ const char* glean_derived_ownership_compute(
 const char* glean_get_ownership_stats(Ownership* own, OwnershipStats* result) {
   return ffi::wrap([=] { *result = own->getStats(); });
 }
+
+void glean_set_ownership_compact_threshold(uint64_t threshold) {
+  setOwnershipCompactThreshold(static_cast<size_t>(threshold));
+}
+
+uint64_t glean_get_ownership_compact_threshold() {
+  return static_cast<uint64_t>(getOwnershipCompactThreshold());
+}
+
+void glean_set_ownership_merge_cache_size(uint64_t size) {
+  setOwnershipMergeCacheSize(static_cast<size_t>(size));
+}
+
+uint64_t glean_get_ownership_merge_cache_size() {
+  return static_cast<uint64_t>(getOwnershipMergeCacheSize());
+}
 }
 } // namespace c
 } // namespace rts

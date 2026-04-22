@@ -9,6 +9,7 @@
 {-# LANGUAGE TypeApplications #-}
 module IncrementalTest (main) where
 
+import Control.Exception (finally)
 import Control.Monad
 import Data.ByteString (ByteString)
 import Data.Default
@@ -25,6 +26,12 @@ import Glean.Database.Close
 import Glean.Database.Types
 import Glean.Database.Ownership
 import Glean.Database.Test
+import Glean.RTS.Foreign.Ownership
+  ( setOwnershipCompactThreshold
+  , getOwnershipCompactThreshold
+  , setOwnershipMergeCacheSize
+  , getOwnershipMergeCacheSize
+  )
 import Glean.Derive
 import Glean.Schema.Util (parseRef)
 import qualified Glean.Schema.GleanTest as Glean.Test
@@ -36,6 +43,13 @@ import Glean.Types
 
 
 {-
+Build a graph using two predicates, Node and Edge, see test.angle:
+
+predicate Node : { label : string }
+predicate Edge : { parent : Node, child : Node }
+
+The graph is:
+
      a
     / \
    b   c
@@ -43,15 +57,15 @@ import Glean.Types
      d
 
 owners:
-  nodes:
-   A: a, b, c
-   B: b, d
-   C: c, d
+   A: a, ab, ac
+   B: b, bd
+   C: c, cd
    D: d
-  edges:
-   A: ab, ac
-   B: bd
-   C: cd
+after ownership propagation:
+   A: a, ab, ac, b, c
+   B: b, bd, d
+   C: c, cd, d
+   D: d
 -}
 mkGraph :: Env -> Repo -> IO ()
 mkGraph env repo =
@@ -82,6 +96,29 @@ incrementalDB env base inc prune = do
       } }
   return inc
 
+-- | Test ownership propagation and incremental (pruned) DB correctness.
+--
+-- Base graph built by 'mkGraph':
+--
+-- @
+--      a          owners:
+--     / \           nodes: A owns {a,b,c}, B owns {b,d},
+--    b   c                 C owns {c,d}, D owns {d}
+--     \ /           edges: A owns {a→b, a→c},
+--      d                   B owns {b→d}, C owns {c→d}
+-- @
+--
+-- Ownership propagates through references (edges reference their
+-- endpoints), so node "d" ends up owned by B|C|D.
+--
+-- The test then creates several incremental DBs that prune different
+-- units and verifies:
+--
+--  1. Exclude A  → node "a" disappears, but b's edge to d survives.
+--  2. Exclude D  → edges to "d" survive (B and C still own them).
+--  3. Exclude all → everything disappears.
+--  4. Exclude A,B then add new facts forming B→A→C (with C→D from base)
+--     → verify the new edge structure.
 incrementalTest :: [Setting] -> Test
 incrementalTest settings = TestCase $
 
@@ -756,6 +793,201 @@ deriveTest settings = TestCase $
       predicate @Glean.Test.SkipRevEdge wild
     assertEqual "derived 6" 1 (length results)
 
+{-
+Build a fact graph with 3-level reference chains and fan-in of 3,
+using Node and the chain predicates NodeRef/NodeRef2/NodeRef3.
+
+Each NodeRef has a { label, node } key so multiple NodeRefs can
+reference the same Node (the label provides key uniqueness).
+
+  Level 3   r3a(G)  r3b(H)  r3c(I)
+              |       |       |
+  Level 2   r2a(D)  r2b(E)  r2c(F)
+              |       |       |
+  Level 1   r1a(A)  r1b(B)  r1c(C)
+               \      |      /
+  Level 0          n (N)
+
+After propagation:
+  r1a: A|D|G   r1b: B|E|H   r1c: C|F|I
+  n:   N|A|B|C|D|E|F|G|H|I  (10 units)
+-}
+mkCompactionGraph :: Env -> Repo -> IO ()
+mkCompactionGraph env repo =
+  writeFactsIntoDB env repo [ Glean.Test.allPredicates ] $ do
+    n <- withUnit "N" $
+      makeFact @Glean.Test.Node (Glean.Test.Node_key "n")
+    r1a <- withUnit "A" $
+      makeFact @Glean.Test.NodeRef (Glean.Test.NodeRef_key "a" n)
+    r1b <- withUnit "B" $
+      makeFact @Glean.Test.NodeRef (Glean.Test.NodeRef_key "b" n)
+    r1c <- withUnit "C" $
+      makeFact @Glean.Test.NodeRef (Glean.Test.NodeRef_key "c" n)
+    r2a <- withUnit "D" $
+      makeFact @Glean.Test.NodeRef2 (Glean.Test.NodeRef2_key "a" r1a)
+    r2b <- withUnit "E" $
+      makeFact @Glean.Test.NodeRef2 (Glean.Test.NodeRef2_key "b" r1b)
+    r2c <- withUnit "F" $
+      makeFact @Glean.Test.NodeRef2 (Glean.Test.NodeRef2_key "c" r1c)
+    withUnit "G" $
+      makeFact_ @Glean.Test.NodeRef3 (Glean.Test.NodeRef3_key "a" r2a)
+    withUnit "H" $
+      makeFact_ @Glean.Test.NodeRef3 (Glean.Test.NodeRef3_key "b" r2b)
+    withUnit "I" $
+      makeFact_ @Glean.Test.NodeRef3 (Glean.Test.NodeRef3_key "c" r2c)
+
+-- | Collect all unit names from a (possibly nested) OwnerExpr.
+allUnits :: OwnerExpr -> [ByteString]
+allUnits (Unit u)       = [u]
+allUnits (OrOwners xs)  = concatMap allUnits xs
+allUnits (AndOwners xs) = concatMap allUnits xs
+
+-- | Run an IO action with the ownership compact threshold set to 0
+-- and the merge cache size set to 2, restoring original values
+-- afterwards. The small cache forces frequent evictions, which is
+-- needed to reproduce the original use-after-free bug with shared
+-- trie owners.
+withCompaction :: IO () -> IO ()
+withCompaction act = do
+  savedThreshold <- getOwnershipCompactThreshold
+  savedCache <- getOwnershipMergeCacheSize
+  setOwnershipCompactThreshold 0
+  setOwnershipMergeCacheSize 2
+  act `finally` do
+    setOwnershipCompactThreshold savedThreshold
+    setOwnershipMergeCacheSize savedCache
+
+-- | Exercise the UsetsMerge compact path with threshold=0 using a
+-- fact graph that has 3-level reference chains and fan-in >= 3.
+-- With threshold=0, every 'addUset' triggers 'UsetsMerge::compact'.
+--
+-- See 'mkCompactionGraph' for the graph layout and expected ownership.
+incrementalTestWithCompaction :: [Setting] -> Test
+incrementalTestWithCompaction settings = TestCase $
+  withCompaction $
+  withTestEnv settings $ \env -> do
+    let base = Repo "base" "0"
+    kickOffTestDB env base id
+    mkCompactionGraph env base
+    completeTestDB env base
+
+    -- n is at the bottom of three 3-level chains, each referencing it.
+    -- Transitive propagation gives it all 10 units:
+    -- N (own) | A,D,G (chain a) | B,E,H (chain b) | C,F,I (chain c)
+    results <- runQuery_ env base $ query $
+      predicate @Glean.Test.Node
+        (rec $ field @"label" (string "n") end)
+    case results of
+      [Glean.Test.Node fid _] -> do
+        ownerExpr <- factOwnership env base (Fid fid)
+        case ownerExpr of
+          Just expr ->
+            assertEqual "n owners (compact)"
+              ["A","B","C","D","E","F","G","H","I","N"]
+              (sort (allUnits expr))
+          Nothing -> assertFailure "n has no owner"
+      _ -> assertFailure "query for n failed"
+
+    -- Exclude G,H,I (level-3 wrappers): level-2 and below
+    -- survive via their own units.
+    inc <- incrementalDB env base
+      (Repo "base-inc" "0") ["G","H","I"]
+    completeTestDB env inc
+
+    results <- runQuery_ env inc $ query $
+      predicate @Glean.Test.Node
+        (rec $ field @"label" (string "n") end)
+    assertEqual "compact: n survives" 1 (length results)
+
+    -- Exclude all: nothing remains
+    inc <- incrementalDB env base (Repo "base-inc" "1")
+      ["A","B","C","D","E","F","G","H","I","N"]
+    completeTestDB env inc
+
+    results <- runQuery_ env inc $ query $
+      predicate @Glean.Test.Node wild
+    assertEqual "compact: all excluded" [] results
+
+{-
+Regression test for the use-after-free in the early-merge path.
+
+The crash mechanism: when Usets::merge returns one of its inputs
+(because one subsumes the other), the old early-merge code does:
+
+  result = addUsetAndMerge(factId, me)   -- result == me (same ptr)
+  usets.drop(me)                          -- drops flatten ref
+  me = result                             -- stores me back (no-op)
+
+Later, processFact reads owner(factId) = me and drops it again
+— double-drop of the same flatten ref.  This can reduce me.refs
+to 0, deleting it while other facts still hold raw pointers.
+
+The subsumption case triggers when a fact's trie owner already
+contains the queued unit.  This happens when an edge in unit A
+references a node also in unit A: {A} is queued for a node
+whose trie owner is already {A}.
+
+This test creates those conditions:
+  - Nodes and edges all in unit A (same owner, forces subsumption)
+  - Bystander nodes that are never referenced
+With threshold=0 and cache_size=2, the double-drops accumulate
+and cache evictions expose the freed memory.
+-}
+sharedOwnerCompactionTest :: [Setting] -> Test
+sharedOwnerCompactionTest settings = TestCase $
+  withCompaction $
+  withTestEnv settings $ \env -> do
+    let base = Repo "base" "0"
+    kickOffTestDB env base id
+    writeFactsIntoDB env base [ Glean.Test.allPredicates ] $ do
+      -- Bystander nodes (lower IDs, processed last, share trie owner)
+      void $ withUnit "A" $
+        makeFact @Glean.Test.Node (Glean.Test.Node_key "f1")
+      void $ withUnit "A" $
+        makeFact @Glean.Test.Node (Glean.Test.Node_key "f2")
+      void $ withUnit "A" $
+        makeFact @Glean.Test.Node (Glean.Test.Node_key "f3")
+      -- Referenced nodes and edges, ALL in unit A.
+      -- Edge in unit A referencing nodes in unit A causes {A} to be
+      -- queued for a node with trie owner {A} → subsumption.
+      x1 <- withUnit "A" $
+        makeFact @Glean.Test.Node (Glean.Test.Node_key "x1")
+      x2 <- withUnit "A" $
+        makeFact @Glean.Test.Node (Glean.Test.Node_key "x2")
+      x3 <- withUnit "A" $
+        makeFact @Glean.Test.Node (Glean.Test.Node_key "x3")
+      x4 <- withUnit "A" $
+        makeFact @Glean.Test.Node (Glean.Test.Node_key "x4")
+      x5 <- withUnit "A" $
+        makeFact @Glean.Test.Node (Glean.Test.Node_key "x5")
+      x6 <- withUnit "A" $
+        makeFact @Glean.Test.Node (Glean.Test.Node_key "x6")
+      withUnit "A" $ do
+        makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key x1 x2)
+        makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key x2 x3)
+        makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key x3 x4)
+        makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key x4 x5)
+        makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key x5 x6)
+        makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key x6 x1)
+    completeTestDB env base
+
+    results <- runQuery_ env base $ query $
+      predicate @Glean.Test.Node wild
+    assertEqual "shared owner: all nodes exist" 9 (length results)
+
+    -- Bystanders should still have owner A
+    results <- runQuery_ env base $ query $
+      predicate @Glean.Test.Node
+        (rec $ field @"label" (string "f1") end)
+    case results of
+      [Glean.Test.Node fid _] -> do
+        ownerExpr <- factOwnership env base (Fid fid)
+        case ownerExpr of
+          Just expr ->
+            assertEqual "f1 owner" ["A"] (sort (allUnits expr))
+          Nothing -> assertFailure "f1 has no owner"
+      _ -> assertFailure "query for f1 failed"
+
 restartIndexing :: [Setting] -> Test
 restartIndexing settings = TestCase $
   withTestEnv settings $ \env -> do
@@ -801,6 +1033,10 @@ backends fn =
 main_ :: IO ()
 main_ = withUnitTest $ testRunner $ TestList
   [ TestLabel "incrementalTest" $ backends incrementalTest
+  , TestLabel "incrementalTestWithCompaction" $
+      backends incrementalTestWithCompaction
+  , TestLabel "sharedOwnerCompactionTest" $
+      backends sharedOwnerCompactionTest
   , TestLabel "dupSetTest" $ backends dupSetTest
   , TestLabel "orphanTest" $ backends orphanTest
   , TestLabel "deriveTest" $ backends deriveTest

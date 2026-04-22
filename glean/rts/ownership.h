@@ -148,6 +148,11 @@ std::unique_ptr<ComputedOwnership> computeOwnership(
     Lookup* base_lookup,
     OwnershipUnitIterator* iter);
 
+void setOwnershipCompactThreshold(size_t threshold);
+size_t getOwnershipCompactThreshold();
+void setOwnershipMergeCacheSize(size_t size);
+size_t getOwnershipMergeCacheSize();
+
 } // namespace rts
 } // namespace glean
 } // namespace facebook

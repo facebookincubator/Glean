@@ -33,6 +33,28 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
+// NOLINTNEXTLINE(facebook-avoid-non-const-global-variables)
+static size_t compact_threshold = 1ULL << 30;
+
+// NOLINTNEXTLINE(facebook-avoid-non-const-global-variables)
+size_t merge_cache_size = 10000;
+
+void setOwnershipCompactThreshold(size_t threshold) {
+  compact_threshold = threshold;
+}
+
+size_t getOwnershipCompactThreshold() {
+  return compact_threshold;
+}
+
+void setOwnershipMergeCacheSize(size_t size) {
+  merge_cache_size = size;
+}
+
+size_t getOwnershipMergeCacheSize() {
+  return merge_cache_size;
+}
+
 void serializeEliasFano(binary::Output& out, const OwnerSet& set) {
   out.nat(set.size);
   out.nat(set.numLowerBits);
@@ -318,8 +340,7 @@ FOLLY_NOINLINE void completeOwnership(
         // Memory pressure relief: if the deferred-merge queue exceeds
         // 1 GB, flush it now by merging all pending facts eagerly.
         // The results are stored in owner().
-        constexpr size_t ONE_GB = 1ULL << 30;
-        if (usetsMerge.bytes() > ONE_GB) {
+        if (usetsMerge.bytes() > compact_threshold) {
           auto factIds = usetsMerge.factIds();
           for (const auto factId : factIds) {
             auto& me = owner(factId);

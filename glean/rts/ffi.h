@@ -513,6 +513,11 @@ const char* glean_derived_ownership_compute(
 
 const char* glean_get_ownership_stats(Ownership* own, OwnershipStats* result);
 
+void glean_set_ownership_compact_threshold(uint64_t threshold);
+uint64_t glean_get_ownership_compact_threshold(void);
+void glean_set_ownership_merge_cache_size(uint64_t size);
+uint64_t glean_get_ownership_merge_cache_size(void);
+
 #ifdef __cplusplus
 }
 }

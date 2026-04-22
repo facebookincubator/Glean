@@ -37,6 +37,10 @@ module Glean.RTS.Foreign.Ownership
   , FactOwnership(..)
   , substOwnership
   , unionOwnership
+  , setOwnershipCompactThreshold
+  , getOwnershipCompactThreshold
+  , setOwnershipMergeCacheSize
+  , getOwnershipMergeCacheSize
   ) where
 
 import Control.Exception
@@ -480,3 +484,27 @@ foreign import ccall unsafe
 
 foreign import ccall unsafe
    glean_ownership_next_set_id :: Ptr Ownership -> Ptr UsetId -> IO CString
+
+foreign import ccall unsafe
+   glean_set_ownership_compact_threshold :: Word64 -> IO ()
+
+foreign import ccall unsafe
+   glean_get_ownership_compact_threshold :: IO Word64
+
+setOwnershipCompactThreshold :: Word64 -> IO ()
+setOwnershipCompactThreshold = glean_set_ownership_compact_threshold
+
+getOwnershipCompactThreshold :: IO Word64
+getOwnershipCompactThreshold = glean_get_ownership_compact_threshold
+
+foreign import ccall unsafe
+   glean_set_ownership_merge_cache_size :: Word64 -> IO ()
+
+foreign import ccall unsafe
+   glean_get_ownership_merge_cache_size :: IO Word64
+
+setOwnershipMergeCacheSize :: Word64 -> IO ()
+setOwnershipMergeCacheSize = glean_set_ownership_merge_cache_size
+
+getOwnershipMergeCacheSize :: IO Word64
+getOwnershipMergeCacheSize = glean_get_ownership_merge_cache_size

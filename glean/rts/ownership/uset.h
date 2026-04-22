@@ -333,7 +333,8 @@ struct Usets {
   UsetId nextId;
 };
 
-constexpr size_t USETS_MERGE_CACHE_SIZE = 10000;
+// NOLINTNEXTLINE(facebook-avoid-non-const-global-variables)
+extern size_t merge_cache_size;
 
 /**
  * Deferred, balanced merge engine for ownership-set propagation.
@@ -455,7 +456,7 @@ struct UsetsMerge {
 
  private:
   Usets& usets;
-  Cache cache{USETS_MERGE_CACHE_SIZE, usets};
+  Cache cache{merge_cache_size, usets};
 
   // Map from fact id to the vector of corresponding usets that have to be
   // merged. A vector can contain duplicates, but it still performs better than

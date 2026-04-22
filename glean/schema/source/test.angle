@@ -284,4 +284,13 @@ predicate EmptyPred : string
 # For testing large keys
 predicate LargeKey : string
 
+# Chain predicates for testing deep ownership propagation.
+# Each level wraps a reference to the previous, with a label
+# for uniqueness (allowing e.g. two NodeRef facts to refer
+# to the same Node fact without being made equal).):
+#   Node <- NodeRef <- NodeRef2 <- NodeRef3
+predicate NodeRef : { label : string, node : Node }
+predicate NodeRef2 : { label : string, ref : NodeRef }
+predicate NodeRef3 : { label : string, ref : NodeRef2 }
+
 }
