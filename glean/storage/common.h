@@ -556,6 +556,11 @@ DatabaseCommon<C>::getDerivedFactOwnershipIterator(Pid pid) {
     }
 
     folly::Optional<DerivedFactOwnership> get() override {
+      if (!initial) {
+        iter.next();
+      } else {
+        initial = false;
+      }
       if (iter.valid()) {
         binary::Input key(iter.key());
         auto pid = key.trustedNat();
@@ -567,7 +572,6 @@ DatabaseCommon<C>::getDerivedFactOwnershipIterator(Pid pid) {
         const Id* ids = reinterpret_cast<const Id*>(val.data());
         const UsetId* owners = reinterpret_cast<const UsetId*>(
             val.data() + elts * sizeof(uint64_t));
-        iter.next();
         return rts::DerivedFactOwnership{{ids, elts}, {owners, elts}};
       } else {
         return folly::none;
@@ -575,6 +579,7 @@ DatabaseCommon<C>::getDerivedFactOwnershipIterator(Pid pid) {
     }
 
     Pid pid_;
+    bool initial = true;
     typename C::Iterator iter;
   };
 
@@ -591,11 +596,15 @@ DatabaseCommon<C>::getOwnershipUnitIterator() {
     }
 
     folly::Optional<rts::OwnershipUnit> get() override {
+      if (!initial) {
+        iter.next();
+      } else {
+        initial = false;
+      }
       if (iter.valid()) {
         binary::Input key(iter.key());
         auto unit = key.trustedNat();
         const auto val = iter.value();
-        iter.next();
         return rts::OwnershipUnit{
             static_cast<uint32_t>(unit),
             {reinterpret_cast<const OwnershipUnit::Ids*>(val.data()),
@@ -605,6 +614,7 @@ DatabaseCommon<C>::getOwnershipUnitIterator() {
       }
     }
 
+    bool initial = true;
     typename C::Iterator iter;
   };
 
