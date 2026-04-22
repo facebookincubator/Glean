@@ -97,6 +97,36 @@
             "defn": {
               "key": {
                 "symbol": {
+                  "key": "scip-go gomod . glean `glean/lang/go/tests/regression/lib1`/"
+                },
+                "location": {
+                  "key": {
+                    "file": { "key": "lib1/lib1_test.go" },
+                    "range": {
+                      "lineBegin": 1,
+                      "columnBegin": 9,
+                      "lineEnd": 1,
+                      "columnEnd": 12
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 0, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib1/lib1_test.go" },
+      "entity": {
+        "scip": {
+          "go": {
+            "defn": {
+              "key": {
+                "symbol": {
                   "key": "scip-go gomod . glean `glean/lang/go/tests/regression/lib1`/TestFoo1()."
                 },
                 "location": {
@@ -204,6 +234,36 @@
         }
       },
       "info": { "kind": 14, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib2/lib2_test.go" },
+      "entity": {
+        "scip": {
+          "go": {
+            "defn": {
+              "key": {
+                "symbol": {
+                  "key": "scip-go gomod . glean `glean/lang/go/tests/regression/lib2`/"
+                },
+                "location": {
+                  "key": {
+                    "file": { "key": "lib2/lib2_test.go" },
+                    "range": {
+                      "lineBegin": 1,
+                      "columnBegin": 9,
+                      "lineEnd": 1,
+                      "columnEnd": 12
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 0, "isAbstract": false }
     }
   },
   {

@@ -62,7 +62,7 @@ indexer = Indexer {
     val <- SCIP.runIndexer SCIP.ScipIndexerParams {
         scipBinary = scipGoBinary,
         scipArgs = \outFile ->
-           ["--module-version=glean", "--no-animation", "-o", outFile ]
+           ["--module-version=glean", "-o", outFile ]
            ++ scipExtraArgs,
         scipOutDir = Nothing,
         scipRoot = indexerRoot,

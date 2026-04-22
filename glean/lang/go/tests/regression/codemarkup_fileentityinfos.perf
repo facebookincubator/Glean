@@ -1,12 +1,12 @@
 {
   "@generated": null,
   "facts_searched": {
-    "scip.DefinitionLocation.1": 8,
+    "scip.DefinitionLocation.1": 10,
     "scip.EnclosingRange.1": 4,
     "scip.FileLanguage.1": 4,
-    "scip.FileRange.1": 8,
-    "scip.SymbolKind.1": 8,
-    "scip.SymbolName.1": 8
+    "scip.FileRange.1": 10,
+    "scip.SymbolKind.1": 10,
+    "scip.SymbolName.1": 10
   },
   "full_scans": [ "scip.FileLanguage.1" ]
 }
