@@ -1,0 +1,1096 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [],
+        "symbols": [
+            {
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "name": "example",
+                "qname": {
+                    "container": "",
+                    "localName": "example"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 23,
+                        "lineBegin": 6,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "example.AppConfig",
+                "qname": {
+                    "container": "example",
+                    "localName": "AppConfig"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.AppConfig"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 23,
+                        "lineBegin": 13,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "example.AppConfig.Nested",
+                "qname": {
+                    "container": "example.AppConfig",
+                    "localName": "Nested"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.AppConfig.Nested"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "example.AppConfig",
+                        "localName": "Nested"
+                    },
+                    "symbol": "test/py/example.py/example.AppConfig.Nested"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 23,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "example.AppConfig.Nested.value",
+                "qname": {
+                    "container": "example.AppConfig.Nested",
+                    "localName": "value"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.AppConfig.Nested.value"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "example",
+                        "localName": "AppConfig"
+                    },
+                    "symbol": "test/py/example.py/example.AppConfig"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 7,
+                        "lineEnd": 7
+                    },
+                    "repository": "test"
+                },
+                "name": "example.AppConfig.debug",
+                "qname": {
+                    "container": "example.AppConfig",
+                    "localName": "debug"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.AppConfig.debug"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "example",
+                        "localName": "AppConfig"
+                    },
+                    "symbol": "test/py/example.py/example.AppConfig"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 25,
+                        "lineBegin": 8,
+                        "lineEnd": 8
+                    },
+                    "repository": "test"
+                },
+                "name": "example.AppConfig.max_retries",
+                "qname": {
+                    "container": "example.AppConfig",
+                    "localName": "max_retries"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.AppConfig.max_retries"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "example",
+                        "localName": "AppConfig"
+                    },
+                    "symbol": "test/py/example.py/example.AppConfig"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 36,
+                        "lineBegin": 10,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": "example.AppConfig.validate",
+                "qname": {
+                    "container": "example.AppConfig",
+                    "localName": "validate"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.AppConfig.validate"
+            },
+            {
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 18,
+                        "columnEnd": 22,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "name": "example.AppConfig.validate.<locals>.self",
+                "qname": {
+                    "container": "example.AppConfig.validate.<locals>",
+                    "localName": "self"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.AppConfig.validate.%3Clocals%3E.self"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "example"
+                    },
+                    "symbol": "test/py/example.py/example"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 30,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": "example.app_name",
+                "qname": {
+                    "container": "example",
+                    "localName": "app_name"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.app_name"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "example"
+                    },
+                    "symbol": "test/py/example.py/example"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 18,
+                        "lineBegin": 17,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "example.initialize",
+                "qname": {
+                    "container": "example",
+                    "localName": "initialize"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.initialize"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "example"
+                    },
+                    "symbol": "test/py/example.py/example"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 23,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": "example.shutdown",
+                "qname": {
+                    "container": "example",
+                    "localName": "shutdown"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.shutdown"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "example"
+                    },
+                    "symbol": "test/py/example.py/example"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 17,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "repository": "test"
+                },
+                "name": "example.version",
+                "qname": {
+                    "container": "example",
+                    "localName": "version"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.version"
+            },
+            {
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "name": "helpers",
+                "qname": {
+                    "container": "",
+                    "localName": "helpers"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/helpers.py/helpers"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 28,
+                        "lineBegin": 6,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "name": "helpers.Formatter",
+                "qname": {
+                    "container": "helpers",
+                    "localName": "Formatter"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/helpers.py/helpers.Formatter"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "helpers",
+                        "localName": "Formatter"
+                    },
+                    "symbol": "test/py/helpers.py/helpers.Formatter"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 28,
+                        "lineBegin": 9,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "name": "helpers.Formatter.format_name",
+                "qname": {
+                    "container": "helpers.Formatter",
+                    "localName": "format_name"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/helpers.py/helpers.Formatter.format_name"
+            },
+            {
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 27,
+                        "columnEnd": 31,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "name": "helpers.Formatter.format_name.<locals>.name",
+                "qname": {
+                    "container": "helpers.Formatter.format_name.<locals>",
+                    "localName": "name"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/helpers.py/helpers.Formatter.format_name.%3Clocals%3E.name"
+            },
+            {
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 25,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "name": "helpers.Formatter.format_name.<locals>.self",
+                "qname": {
+                    "container": "helpers.Formatter.format_name.<locals>",
+                    "localName": "self"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/helpers.py/helpers.Formatter.format_name.%3Clocals%3E.self"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "helpers",
+                        "localName": "Formatter"
+                    },
+                    "symbol": "test/py/helpers.py/helpers.Formatter"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 26,
+                        "lineBegin": 7,
+                        "lineEnd": 7
+                    },
+                    "repository": "test"
+                },
+                "name": "helpers.Formatter.separator",
+                "qname": {
+                    "container": "helpers.Formatter",
+                    "localName": "separator"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/helpers.py/helpers.Formatter.separator"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "helpers"
+                    },
+                    "symbol": "test/py/helpers.py/helpers"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "name": "helpers.MAX_ITEMS",
+                "qname": {
+                    "container": "helpers",
+                    "localName": "MAX_ITEMS"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/helpers.py/helpers.MAX_ITEMS"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "helpers"
+                    },
+                    "symbol": "test/py/helpers.py/helpers"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 44,
+                        "lineBegin": 13,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "helpers.format_list",
+                "qname": {
+                    "container": "helpers",
+                    "localName": "format_list"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/helpers.py/helpers.format_list"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "helpers"
+                    },
+                    "symbol": "test/py/helpers.py/helpers"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 17,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "name": "helpers.identity",
+                "qname": {
+                    "container": "helpers",
+                    "localName": "identity"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/helpers.py/helpers.identity"
+            },
+            {
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "models/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 8
+                    },
+                    "repository": "test"
+                },
+                "name": "models",
+                "qname": {
+                    "container": "",
+                    "localName": "models"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "models"
+                    },
+                    "symbol": "test/py/models/models"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "models/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 32,
+                        "lineBegin": 7,
+                        "lineEnd": 7
+                    },
+                    "repository": "test"
+                },
+                "name": "models.__all__",
+                "qname": {
+                    "container": "models",
+                    "localName": "__all__"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.__all__"
+            },
+            {
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "name": "models.base",
+                "qname": {
+                    "container": "models",
+                    "localName": "base"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.base"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 6,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "models.base.BaseModel",
+                "qname": {
+                    "container": "models.base",
+                    "localName": "BaseModel"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.base.BaseModel"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models.base",
+                        "localName": "BaseModel"
+                    },
+                    "symbol": "test/py/models/models.base.BaseModel"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 25,
+                        "lineBegin": 8,
+                        "lineEnd": 8
+                    },
+                    "repository": "test"
+                },
+                "name": "models.base.BaseModel.created_at",
+                "qname": {
+                    "container": "models.base.BaseModel",
+                    "localName": "created_at"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.base.BaseModel.created_at"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models.base",
+                        "localName": "BaseModel"
+                    },
+                    "symbol": "test/py/models/models.base.BaseModel"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 13,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "models.base.BaseModel.delete",
+                "qname": {
+                    "container": "models.base.BaseModel",
+                    "localName": "delete"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.base.BaseModel.delete"
+            },
+            {
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 20,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": "models.base.BaseModel.delete.<locals>.self",
+                "qname": {
+                    "container": "models.base.BaseModel.delete.<locals>",
+                    "localName": "self"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.base.BaseModel.delete.%3Clocals%3E.self"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models.base",
+                        "localName": "BaseModel"
+                    },
+                    "symbol": "test/py/models/models.base.BaseModel"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 16,
+                        "lineBegin": 7,
+                        "lineEnd": 7
+                    },
+                    "repository": "test"
+                },
+                "name": "models.base.BaseModel.id",
+                "qname": {
+                    "container": "models.base.BaseModel",
+                    "localName": "id"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.base.BaseModel.id"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models.base",
+                        "localName": "BaseModel"
+                    },
+                    "symbol": "test/py/models/models.base.BaseModel"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 10,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": "models.base.BaseModel.save",
+                "qname": {
+                    "container": "models.base.BaseModel",
+                    "localName": "save"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.base.BaseModel.save"
+            },
+            {
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 18,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "name": "models.base.BaseModel.save.<locals>.self",
+                "qname": {
+                    "container": "models.base.BaseModel.save.<locals>",
+                    "localName": "self"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.base.BaseModel.save.%3Clocals%3E.self"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models",
+                        "localName": "base"
+                    },
+                    "symbol": "test/py/models/models.base"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 26,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": "models.base.MODEL_REGISTRY",
+                "qname": {
+                    "container": "models.base",
+                    "localName": "MODEL_REGISTRY"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.base.MODEL_REGISTRY"
+            },
+            {
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "models.user",
+                "qname": {
+                    "container": "models",
+                    "localName": "user"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.user"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models",
+                        "localName": "user"
+                    },
+                    "symbol": "test/py/models/models.user"
+                },
+                "kind": 15,
+                "language": 7,
+                "location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 32,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": "models.user.DEFAULT_USER",
+                "qname": {
+                    "container": "models.user",
+                    "localName": "DEFAULT_USER"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.user.DEFAULT_USER"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 25,
+                        "lineBegin": 7,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "name": "models.user.User",
+                "qname": {
+                    "container": "models.user",
+                    "localName": "User"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.user.User"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models.user",
+                        "localName": "User"
+                    },
+                    "symbol": "test/py/models/models.user.User"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 20,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "name": "models.user.User.email",
+                "qname": {
+                    "container": "models.user.User",
+                    "localName": "email"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.user.User.email"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models.user",
+                        "localName": "User"
+                    },
+                    "symbol": "test/py/models/models.user.User"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 25,
+                        "lineBegin": 11,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "name": "models.user.User.get_display_name",
+                "qname": {
+                    "container": "models.user.User",
+                    "localName": "get_display_name"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.user.User.get_display_name"
+            },
+            {
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 26,
+                        "columnEnd": 30,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": "models.user.User.get_display_name.<locals>.self",
+                "qname": {
+                    "container": "models.user.User.get_display_name.<locals>",
+                    "localName": "self"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.user.User.get_display_name.%3Clocals%3E.self"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models.user",
+                        "localName": "User"
+                    },
+                    "symbol": "test/py/models/models.user.User"
+                },
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 19,
+                        "lineBegin": 8,
+                        "lineEnd": 8
+                    },
+                    "repository": "test"
+                },
+                "name": "models.user.User.name",
+                "qname": {
+                    "container": "models.user.User",
+                    "localName": "name"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.user.User.name"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models",
+                        "localName": "user"
+                    },
+                    "symbol": "test/py/models/models.user"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 18,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "models.user.find_user",
+                "qname": {
+                    "container": "models.user",
+                    "localName": "find_user"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.user.find_user"
+            }
+        ]
+    }
+]

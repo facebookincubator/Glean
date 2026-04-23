@@ -1,0 +1,439 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 36,
+                        "lineBegin": 10,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "example.AppConfig",
+                    "localName": "validate"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def validate(\n    self\n) -> bool",
+                "sym": "test/py/example.py/example.AppConfig.validate",
+                "sym_location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 36,
+                        "lineBegin": 10,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 4
+                        },
+                        "type": "test/py/example.py/example.AppConfig.validate"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 28,
+                        "lineBegin": 9,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "helpers.Formatter",
+                    "localName": "format_name"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def format_name(\n    self,\n    name: str\n) -> str",
+                "sym": "test/py/helpers.py/helpers.Formatter.format_name",
+                "sym_location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 28,
+                        "lineBegin": 9,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 4
+                        },
+                        "type": "test/py/helpers.py/helpers.Formatter.format_name"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 13,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "models.base.BaseModel",
+                    "localName": "delete"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def delete(\n    self\n) -> None",
+                "sym": "test/py/models/models.base.BaseModel.delete",
+                "sym_location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 13,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 6,
+                            "start": 4
+                        },
+                        "type": "test/py/models/models.base.BaseModel.delete"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 10,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "models.base.BaseModel",
+                    "localName": "save"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def save(\n    self\n) -> None",
+                "sym": "test/py/models/models.base.BaseModel.save",
+                "sym_location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 10,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 4
+                        },
+                        "type": "test/py/models/models.base.BaseModel.save"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 25,
+                        "lineBegin": 11,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "models.user.User",
+                    "localName": "get_display_name"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def get_display_name(\n    self\n) -> str",
+                "sym": "test/py/models/models.user.User.get_display_name",
+                "sym_location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 25,
+                        "lineBegin": 11,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 16,
+                            "start": 4
+                        },
+                        "type": "test/py/models/models.user.User.get_display_name"
+                    }
+                ],
+                "visibility": 20
+            }
+        ],
+        "symbols": [
+            {
+                "context": {
+                    "qname": {
+                        "container": "example",
+                        "localName": "AppConfig"
+                    },
+                    "symbol": "test/py/example.py/example.AppConfig"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 36,
+                        "lineBegin": 10,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": "example.AppConfig.validate",
+                "qname": {
+                    "container": "example.AppConfig",
+                    "localName": "validate"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.AppConfig.validate"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "helpers",
+                        "localName": "Formatter"
+                    },
+                    "symbol": "test/py/helpers.py/helpers.Formatter"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 28,
+                        "lineBegin": 9,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "name": "helpers.Formatter.format_name",
+                "qname": {
+                    "container": "helpers.Formatter",
+                    "localName": "format_name"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/helpers.py/helpers.Formatter.format_name"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models.base",
+                        "localName": "BaseModel"
+                    },
+                    "symbol": "test/py/models/models.base.BaseModel"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 13,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "models.base.BaseModel.delete",
+                "qname": {
+                    "container": "models.base.BaseModel",
+                    "localName": "delete"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.base.BaseModel.delete"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models.base",
+                        "localName": "BaseModel"
+                    },
+                    "symbol": "test/py/models/models.base.BaseModel"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 10,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": "models.base.BaseModel.save",
+                "qname": {
+                    "container": "models.base.BaseModel",
+                    "localName": "save"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.base.BaseModel.save"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models.user",
+                        "localName": "User"
+                    },
+                    "symbol": "test/py/models/models.user.User"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 25,
+                        "lineBegin": 11,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "name": "models.user.User.get_display_name",
+                "qname": {
+                    "container": "models.user.User",
+                    "localName": "get_display_name"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.user.User.get_display_name"
+            }
+        ]
+    }
+]

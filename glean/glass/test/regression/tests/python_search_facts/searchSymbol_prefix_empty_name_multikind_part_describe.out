@@ -1,0 +1,1285 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 23,
+                        "lineBegin": 6,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "example",
+                    "localName": "AppConfig"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "class AppConfig",
+                "sym": "test/py/example.py/example.AppConfig",
+                "sym_location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 23,
+                        "lineBegin": 6,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 6
+                        },
+                        "type": "test/py/example.py/example.AppConfig"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 23,
+                        "lineBegin": 13,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "example.AppConfig",
+                    "localName": "Nested"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "class Nested",
+                "sym": "test/py/example.py/example.AppConfig.Nested",
+                "sym_location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 23,
+                        "lineBegin": 13,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 6,
+                            "start": 6
+                        },
+                        "type": "test/py/example.py/example.AppConfig.Nested"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 36,
+                        "lineBegin": 10,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "example.AppConfig",
+                    "localName": "validate"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def validate(\n    self\n) -> bool",
+                "sym": "test/py/example.py/example.AppConfig.validate",
+                "sym_location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 36,
+                        "lineBegin": 10,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 4
+                        },
+                        "type": "test/py/example.py/example.AppConfig.validate"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 18,
+                        "lineBegin": 17,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "example",
+                    "localName": "initialize"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def initialize(\n    config: AppConfig | None = None\n) -> AppConfig",
+                "sym": "test/py/example.py/example.initialize",
+                "sym_location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 18,
+                        "lineBegin": 17,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 10,
+                            "start": 4
+                        },
+                        "type": "test/py/example.py/example.initialize"
+                    },
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 28
+                        },
+                        "type": "test/py/example.py/example.AppConfig"
+                    },
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 57
+                        },
+                        "type": "test/py/example.py/example.AppConfig"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 23,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "example",
+                    "localName": "shutdown"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def shutdown() -> None",
+                "sym": "test/py/example.py/example.shutdown",
+                "sym_location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 23,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 4
+                        },
+                        "type": "test/py/example.py/example.shutdown"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 28,
+                        "lineBegin": 6,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "helpers",
+                    "localName": "Formatter"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "class Formatter",
+                "sym": "test/py/helpers.py/helpers.Formatter",
+                "sym_location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 28,
+                        "lineBegin": 6,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 6
+                        },
+                        "type": "test/py/helpers.py/helpers.Formatter"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 28,
+                        "lineBegin": 9,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "helpers.Formatter",
+                    "localName": "format_name"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def format_name(\n    self,\n    name: str\n) -> str",
+                "sym": "test/py/helpers.py/helpers.Formatter.format_name",
+                "sym_location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 28,
+                        "lineBegin": 9,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 4
+                        },
+                        "type": "test/py/helpers.py/helpers.Formatter.format_name"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 44,
+                        "lineBegin": 13,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "helpers",
+                    "localName": "format_list"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def format_list(\n    items: list\n) -> str",
+                "sym": "test/py/helpers.py/helpers.format_list",
+                "sym_location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 44,
+                        "lineBegin": 13,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 11,
+                            "start": 4
+                        },
+                        "type": "test/py/helpers.py/helpers.format_list"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 17,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "helpers",
+                    "localName": "identity"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def identity(\n    x: object\n) -> object",
+                "sym": "test/py/helpers.py/helpers.identity",
+                "sym_location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 17,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 8,
+                            "start": 4
+                        },
+                        "type": "test/py/helpers.py/helpers.identity"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 6,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "models.base",
+                    "localName": "BaseModel"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "class BaseModel",
+                "sym": "test/py/models/models.base.BaseModel",
+                "sym_location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 6,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 6
+                        },
+                        "type": "test/py/models/models.base.BaseModel"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 13,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "models.base.BaseModel",
+                    "localName": "delete"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def delete(\n    self\n) -> None",
+                "sym": "test/py/models/models.base.BaseModel.delete",
+                "sym_location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 13,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 6,
+                            "start": 4
+                        },
+                        "type": "test/py/models/models.base.BaseModel.delete"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 10,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "models.base.BaseModel",
+                    "localName": "save"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def save(\n    self\n) -> None",
+                "sym": "test/py/models/models.base.BaseModel.save",
+                "sym_location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 10,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 4
+                        },
+                        "type": "test/py/models/models.base.BaseModel.save"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 25,
+                        "lineBegin": 7,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "models.user",
+                    "localName": "User"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "class User",
+                "sym": "test/py/models/models.user.User",
+                "sym_location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 25,
+                        "lineBegin": 7,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 6
+                        },
+                        "type": "test/py/models/models.user.User"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 25,
+                        "lineBegin": 11,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "models.user.User",
+                    "localName": "get_display_name"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def get_display_name(\n    self\n) -> str",
+                "sym": "test/py/models/models.user.User.get_display_name",
+                "sym_location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 25,
+                        "lineBegin": 11,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 16,
+                            "start": 4
+                        },
+                        "type": "test/py/models/models.user.User.get_display_name"
+                    }
+                ],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 18,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "models.user",
+                    "localName": "find_user"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "def find_user(\n    user_id: int\n) -> User",
+                "sym": "test/py/models/models.user.find_user",
+                "sym_location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 18,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 4
+                        },
+                        "type": "test/py/models/models.user.find_user"
+                    },
+                    {
+                        "span": {
+                            "length": 4,
+                            "start": 37
+                        },
+                        "type": "test/py/models/models.user.User"
+                    }
+                ],
+                "visibility": 20
+            }
+        ],
+        "symbols": [
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 23,
+                        "lineBegin": 6,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "example.AppConfig",
+                "qname": {
+                    "container": "example",
+                    "localName": "AppConfig"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.AppConfig"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 23,
+                        "lineBegin": 13,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "example.AppConfig.Nested",
+                "qname": {
+                    "container": "example.AppConfig",
+                    "localName": "Nested"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.AppConfig.Nested"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "example",
+                        "localName": "AppConfig"
+                    },
+                    "symbol": "test/py/example.py/example.AppConfig"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 36,
+                        "lineBegin": 10,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": "example.AppConfig.validate",
+                "qname": {
+                    "container": "example.AppConfig",
+                    "localName": "validate"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.AppConfig.validate"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "example"
+                    },
+                    "symbol": "test/py/example.py/example"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 18,
+                        "lineBegin": 17,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "example.initialize",
+                "qname": {
+                    "container": "example",
+                    "localName": "initialize"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.initialize"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "example"
+                    },
+                    "symbol": "test/py/example.py/example"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 23,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": "example.shutdown",
+                "qname": {
+                    "container": "example",
+                    "localName": "shutdown"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.shutdown"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 28,
+                        "lineBegin": 6,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "name": "helpers.Formatter",
+                "qname": {
+                    "container": "helpers",
+                    "localName": "Formatter"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/helpers.py/helpers.Formatter"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "helpers",
+                        "localName": "Formatter"
+                    },
+                    "symbol": "test/py/helpers.py/helpers.Formatter"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 28,
+                        "lineBegin": 9,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "name": "helpers.Formatter.format_name",
+                "qname": {
+                    "container": "helpers.Formatter",
+                    "localName": "format_name"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/helpers.py/helpers.Formatter.format_name"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "helpers"
+                    },
+                    "symbol": "test/py/helpers.py/helpers"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 44,
+                        "lineBegin": 13,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "helpers.format_list",
+                "qname": {
+                    "container": "helpers",
+                    "localName": "format_list"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/helpers.py/helpers.format_list"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "helpers"
+                    },
+                    "symbol": "test/py/helpers.py/helpers"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 17,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "name": "helpers.identity",
+                "qname": {
+                    "container": "helpers",
+                    "localName": "identity"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/helpers.py/helpers.identity"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 6,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "models.base.BaseModel",
+                "qname": {
+                    "container": "models.base",
+                    "localName": "BaseModel"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.base.BaseModel"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models.base",
+                        "localName": "BaseModel"
+                    },
+                    "symbol": "test/py/models/models.base.BaseModel"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 13,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "models.base.BaseModel.delete",
+                "qname": {
+                    "container": "models.base.BaseModel",
+                    "localName": "delete"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.base.BaseModel.delete"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models.base",
+                        "localName": "BaseModel"
+                    },
+                    "symbol": "test/py/models/models.base.BaseModel"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "models/base.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 10,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": "models.base.BaseModel.save",
+                "qname": {
+                    "container": "models.base.BaseModel",
+                    "localName": "save"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.base.BaseModel.save"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 25,
+                        "lineBegin": 7,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "name": "models.user.User",
+                "qname": {
+                    "container": "models.user",
+                    "localName": "User"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.user.User"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models.user",
+                        "localName": "User"
+                    },
+                    "symbol": "test/py/models/models.user.User"
+                },
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 25,
+                        "lineBegin": 11,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "name": "models.user.User.get_display_name",
+                "qname": {
+                    "container": "models.user.User",
+                    "localName": "get_display_name"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.user.User.get_display_name"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models",
+                        "localName": "user"
+                    },
+                    "symbol": "test/py/models/models.user"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 18,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "models.user.find_user",
+                "qname": {
+                    "container": "models.user",
+                    "localName": "find_user"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.user.find_user"
+            }
+        ]
+    }
+]

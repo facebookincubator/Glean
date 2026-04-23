@@ -1,0 +1,31 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [],
+        "symbols": [
+            {
+                "kind": 5,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "name": "helpers",
+                "qname": {
+                    "container": "",
+                    "localName": "helpers"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/helpers.py/helpers"
+            }
+        ]
+    }
+]

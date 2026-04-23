@@ -1,0 +1,158 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [],
+        "symbols": [
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "example"
+                    },
+                    "symbol": "test/py/example.py/example"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 18,
+                        "lineBegin": 17,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "example.initialize",
+                "qname": {
+                    "container": "example",
+                    "localName": "initialize"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.initialize"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "example"
+                    },
+                    "symbol": "test/py/example.py/example"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "example.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 23,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": "example.shutdown",
+                "qname": {
+                    "container": "example",
+                    "localName": "shutdown"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/example.py/example.shutdown"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "helpers"
+                    },
+                    "symbol": "test/py/helpers.py/helpers"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 44,
+                        "lineBegin": 13,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "helpers.format_list",
+                "qname": {
+                    "container": "helpers",
+                    "localName": "format_list"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/helpers.py/helpers.format_list"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "helpers"
+                    },
+                    "symbol": "test/py/helpers.py/helpers"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "helpers.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 17,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "name": "helpers.identity",
+                "qname": {
+                    "container": "helpers",
+                    "localName": "identity"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/helpers.py/helpers.identity"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "models",
+                        "localName": "user"
+                    },
+                    "symbol": "test/py/models/models.user"
+                },
+                "kind": 14,
+                "language": 7,
+                "location": {
+                    "filepath": "models/user.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 18,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "models.user.find_user",
+                "qname": {
+                    "container": "models.user",
+                    "localName": "find_user"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/models/models.user.find_user"
+            }
+        ]
+    }
+]
