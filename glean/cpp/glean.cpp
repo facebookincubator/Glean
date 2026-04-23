@@ -224,6 +224,7 @@ std::pair<rts::closed_interval_set<Id>, rts::FactSet> minimalOwnership(
 void BatchBase::endUnit() {
   if (current) {
     current->finish = buffer.firstFreeId();
+
     if (current->finish > current->start) {
       auto p = minimalOwnership(
           inventory->inventory,
@@ -251,6 +252,16 @@ Id BatchBase::define(Pid ty, rts::Fact::Clause clause) {
 void BatchBase::logEnd() const {
   LOG(INFO) << "saw " << seen_units << " units, serialized "
             << total_serialized_units;
+}
+
+void BatchBase::setACLConfig(
+    std::unordered_map<std::string, std::vector<std::string>> config) {
+  aclConfig_ = std::move(config);
+}
+
+const std::unordered_map<std::string, std::vector<std::string>>&
+BatchBase::getACLConfig() const {
+  return aclConfig_;
 }
 
 } // namespace cpp

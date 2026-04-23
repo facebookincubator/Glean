@@ -1200,6 +1200,7 @@ std::unique_ptr<rts::Ownership> DatabaseCommon<C>::getOwnership() {
   container_.requireOpen();
   return std::make_unique<StoredOwnership<C>>(this);
 }
+
 } // namespace db
 } // namespace glean
 } // namespace facebook
