@@ -19,6 +19,7 @@
 #include "glean/rts/id.h"
 #include "glean/rts/lookup.h"
 #include "glean/rts/ownership.h"
+#include "glean/rts/ownership/acl.h"
 #include "glean/rts/ownership/slice.h"
 #include "glean/rts/query.h"
 #include "glean/rts/sanity.h"
@@ -955,6 +956,47 @@ void glean_ownership_free(Ownership* own) {
 
 void glean_computed_ownership_free(ComputedOwnership* own) {
   ffi::free_(own);
+}
+
+const char* glean_computed_ownership_unit_count(
+    ComputedOwnership* own,
+    uint32_t* result) {
+  return ffi::wrap([=] { *result = own->sets_.getFirstId(); });
+}
+
+const char* glean_augment_ownership_with_acl(
+    ComputedOwnership* ownership,
+    const uint32_t* unit_ids,
+    const size_t* level_counts,
+    size_t num_units,
+    const size_t* group_counts,
+    const uint32_t* group_ids) {
+  return ffi::wrap([=] {
+    std::vector<UnitACLAssignment> assignments;
+    assignments.reserve(num_units);
+
+    size_t level_offset = 0;
+    size_t group_offset = 0;
+
+    for (size_t i = 0; i < num_units; ++i) {
+      UnitACLAssignment assignment;
+      assignment.unitId = unit_ids[i];
+      assignment.levels.reserve(level_counts[i]);
+
+      for (size_t l = 0; l < level_counts[i]; ++l) {
+        size_t nGroups = group_counts[level_offset + l];
+        std::vector<UsetId> groups(
+            group_ids + group_offset, group_ids + group_offset + nGroups);
+        assignment.levels.push_back(std::move(groups));
+        group_offset += nGroups;
+      }
+      level_offset += level_counts[i];
+
+      assignments.push_back(std::move(assignment));
+    }
+
+    augmentOwnershipWithACL(*ownership, assignments);
+  });
 }
 
 const char* glean_ownership_next_set_id(
