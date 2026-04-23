@@ -9,3 +9,15 @@ type Entity =
   }
 
 }
+
+schema code.erlang.2 {
+import erlang.2
+
+type Entity =
+  {
+    decl : erlang.Declaration |
+    macro_usage : erlang.MacroUsage |
+    var_ : erlang.VarDeclaration |
+  }
+
+}
