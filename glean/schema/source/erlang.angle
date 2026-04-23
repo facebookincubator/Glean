@@ -145,3 +145,556 @@ predicate SearchByName:
     Decl = erlang.FunctionDeclaration { fqn = { name = Name } };
 
 }
+
+schema erlang.2 {
+import src
+
+predicate FunctionDeclaration :
+  {
+    fqn : Fqn,
+    app : string,
+  }
+
+predicate MacroDeclaration :
+  {
+    name : string,
+    arity : maybe nat,
+    module : string,
+    app : string,
+  }
+
+predicate RecordDeclaration :
+  {
+    name : string,
+    module : string,
+    app : string,
+  }
+
+predicate TypeDeclaration :
+  {
+    name : string,
+    arity : nat,
+    module : string,
+    app : string,
+  }
+
+predicate HeaderDeclaration :
+  {
+    name : string,
+    app : string,
+  }
+
+predicate CallbackDeclaration :
+  {
+    name : string,
+    arity : nat,
+    module : string,
+    app : string,
+  }
+
+predicate RecordFieldDeclaration :
+  {
+    record_name : string,
+    field_name : string,
+    module : string,
+    app : string,
+  }
+
+# Per-usage macro expansion and embedded links
+# content_hash = short hash of (expansion + links)
+predicate MacroUsage :
+  {
+    name : string,
+    module : string,
+    arity : maybe nat,
+    app : string,
+    expansion : maybe string,
+    links : [string],
+    content_hash : string,
+  }
+
+predicate VarDeclaration :
+  {
+    name : string,
+    module : string,
+    app : string,
+    span_start : nat,
+    type_text : maybe string,
+  }
+
+predicate DeclarationComment:
+  {
+    declaration : Declaration,
+    file : src.File,
+    span : src.ByteSpan,
+    text : maybe string,
+  }
+
+predicate FileIncludes :
+  {
+    file : src.File,
+    included : src.File,
+  }
+
+predicate ModuleDeclaration :
+  {
+    file : src.File,
+    name : string,
+    app : string,
+  }
+
+## Definition predicates
+#
+# Definitions carry metadata that is not part of symbol identity.
+# Each links to its corresponding `declaration`. This separation
+# enables lightweight entity references from cross-language schemas.
+
+predicate FunctionDefinition :
+  {
+    declaration : FunctionDeclaration,
+    exported : bool,
+    deprecated : maybe string,
+    is_on_load : bool,
+    is_nif : bool,
+    spec_text : maybe string,
+  }
+
+predicate MacroDefinition :
+  {
+    declaration : MacroDeclaration,
+    definition_text : maybe string,
+  }
+
+predicate RecordDefinition :
+  {
+    declaration : RecordDeclaration,
+    definition_text : maybe string,
+  }
+
+predicate TypeDefinition :
+  {
+    declaration : TypeDeclaration,
+    exported : bool,
+    opaque : bool,
+    definition_text : maybe string,
+  }
+
+predicate CallbackDefinition :
+  {
+    declaration : CallbackDeclaration,
+    optional_ : bool,
+  }
+
+predicate ModuleDefinition :
+  {
+    declaration : ModuleDeclaration,
+    oncall : maybe string,
+    exports : [FunctionDeclaration],
+    behaviours : [string],
+    exdoc_link: maybe string,
+    compile_options : [string],
+  }
+
+# Links an implementing function to the callback it implements.
+# Derived from ModuleDefinition.behaviours + matching function name/arity
+# to CallbackDeclaration. Requires both the behaviour module
+# and the implementing module to be indexed.
+predicate CallbackImplementation :
+  {
+    implementation : FunctionDeclaration,
+    callback : CallbackDeclaration,
+  }
+  stored { Impl, Cb } where
+  Mod = erlang.ModuleDeclaration { name = ModName };
+  erlang.ModuleDefinition { declaration = Mod, behaviours = Bs };
+  BehaviourName = Bs[..];
+  Cb = erlang.CallbackDeclaration
+    { name = CbName, arity = CbArity, module = BehaviourName };
+  Impl = erlang.FunctionDeclaration
+    { fqn = { module = ModName, name = CbName, arity = CbArity } };
+
+## Types
+
+type Declaration =
+  {
+    func : FunctionDeclaration |
+    macro_ : MacroDeclaration |
+    record_ : RecordDeclaration |
+    type_ : TypeDeclaration |
+    header_ : HeaderDeclaration |
+    callback_ : CallbackDeclaration |
+    record_field : RecordFieldDeclaration |
+    module_ : ModuleDeclaration |
+  }
+
+type Definition =
+  {
+    func : FunctionDefinition |
+    macro_ : MacroDefinition |
+    record_ : RecordDefinition |
+    type_ : TypeDefinition |
+    callback_ : CallbackDefinition |
+    module_ : ModuleDefinition |
+  }
+
+# Fully-qualified name
+type Fqn =
+  {
+    module : string,
+    name : string,
+    arity : nat,
+  }
+
+type VarXRef =
+  {
+    target_name : string,
+    target_span_start : nat,
+    sources : [src.ByteSpan],
+  }
+
+# Cross-refs to variables — separate from XRefsByFile since var xrefs are
+# local (within same function clause) and very high volume
+predicate VarXRefsByFile :
+  {
+    file : src.File,
+    xrefs : [VarXRef],
+  }
+
+type XRef =
+  {
+    target : Declaration,
+    source : src.ByteSpan,
+  }
+
+predicate XRefsByFile :
+  {
+    file : src.File,
+    xrefs : [XRef],
+  }
+
+## Location predicates
+
+# Location for all declarations
+predicate DeclarationLocation :
+  {
+    declaration : Declaration,
+    file : src.File,
+    span : src.ByteSpan,
+  }
+
+# Location for MacroUsages (separate since they are not Declarations)
+predicate MacroUsageLocation :
+  {
+    usage : MacroUsage,
+    file : src.File,
+    span : src.ByteSpan,
+  }
+
+# Location for VarDeclaration (separate since they are not Declarations)
+predicate VarLocation :
+  {
+    var_ : VarDeclaration,
+    file : src.File,
+    span : src.ByteSpan,
+  }
+
+# Bulk file index: one fact per file with all declarations.
+# Outline queries join FileDeclarations with DeclarationLocation for spans.
+predicate FileDeclarations :
+  {
+    file : src.File,
+    declarations : [Declaration],
+  }
+
+## Derived predicates
+
+# Unwrap a Definition to extract its embedded Declaration
+predicate DefinitionToDeclaration :
+  {
+    definition : Definition,
+    declaration : Declaration,
+  }
+  { Def, Decl } where
+  (
+    { func = { declaration = D } } = Def;
+    Decl = Declaration { func = D };
+  ) | (
+    { macro_ = { declaration = D } } = Def;
+    Decl = Declaration { macro_ = D };
+  ) | (
+    { record_ = { declaration = D } } = Def;
+    Decl = Declaration { record_ = D };
+  ) | (
+    { type_ = { declaration = D } } = Def;
+    Decl = Declaration { type_ = D };
+  ) | (
+    { callback_ = { declaration = D } } = Def;
+    Decl = Declaration { callback_ = D };
+  ) | (
+    { module_ = { declaration = D } } = Def;
+    Decl = Declaration { module_ = D };
+  )
+
+# All uses of a declaration in a particular file (via xrefs)
+predicate DeclarationUses :
+  {
+    declaration : Declaration,
+    file : src.File,
+    span : src.ByteSpan,
+  }
+  stored {Decl, File, Span} where
+    XRefsByFile { File, XRefs };
+    { target = Decl, source = Span } = XRefs[..];
+
+# Derived from DeclarationLocation for backward compatibility
+predicate DeclarationsByFile :
+  {
+  file : src.File,
+  span : src.ByteSpan,
+  declaration : Declaration,
+  }
+  stored {File, Span, D} where
+  DeclarationLocation { declaration = D, file = File, span = Span }
+
+# Declaration-level reference graph: S references T if an xref to T
+# falls within S's source span.
+predicate DeclarationReference :
+  {
+    target : Declaration,
+    source : Declaration
+  }
+  { target = T, source = S } where
+  DeclarationUses {declaration=T, file=F, span=LittleSpan};
+  DeclarationsByFile {declaration=S, file=F, span=BigSpan};
+  src.ByteSpanContains {byteSpan=BigSpan, contains=LittleSpan}
+
+predicate NameLowerCase :
+  {
+    nameLowercase : string,
+    name : string,
+  }
+  stored
+  { prim.toLower Str, N } where
+  (
+    erlang.FunctionDeclaration { fqn = { name = N }};
+    N = Str
+  ) | (
+    erlang.MacroDeclaration { name = N };
+    N = Str
+  ) | (
+    erlang.RecordDeclaration { name = N };
+    N = Str
+  ) | (
+    erlang.TypeDeclaration { name = N };
+    N = Str
+  ) | (
+    erlang.HeaderDeclaration { name = N };
+    N = Str
+  ) | (
+    erlang.CallbackDeclaration { name = N };
+    N = Str
+  ) | (
+    erlang.RecordFieldDeclaration { field_name = N };
+    N = Str
+  ) | (
+    erlang.ModuleDeclaration { name = N };
+    N = Str
+  )
+
+# Identifier to decl index for fast search, makes the name a prefix
+predicate SearchByName:
+  {
+    name : string, # local identifier
+    decl : Declaration
+  } stored
+  { Name, D } where
+  (
+    Decl = erlang.FunctionDeclaration { fqn = { name = Name } };
+    D = Declaration { func = Decl };
+  ) | (
+    MacroD = erlang.MacroDeclaration { name = Name };
+    D = Declaration { macro_ = MacroD };
+  ) | (
+    RecD = erlang.RecordDeclaration { name = Name };
+    D = Declaration { record_ = RecD };
+  ) | (
+    TypeD = erlang.TypeDeclaration { name = Name };
+    D = Declaration { type_ = TypeD };
+  ) | (
+    HdrD = erlang.HeaderDeclaration { name = Name };
+    D = Declaration { header_ = HdrD };
+  ) | (
+    CbD = erlang.CallbackDeclaration { name = Name };
+    D = Declaration { callback_ = CbD };
+  ) | (
+    RfD = erlang.RecordFieldDeclaration { field_name = Name };
+    D = Declaration { record_field = RfD };
+  ) | (
+    ModD = erlang.ModuleDeclaration { name = Name };
+    D = Declaration { module_ = ModD };
+  )
+
+# Per-type search predicates for unambiguous symbol ID resolution.
+
+predicate SearchFunctionByName:
+  {
+    name : string,
+    decl : FunctionDeclaration
+  } stored
+  { Name, Decl } where
+  Decl = erlang.FunctionDeclaration { fqn = { name = Name } };
+
+predicate SearchMacroByName:
+  {
+    name : string,
+    decl : MacroDeclaration
+  } stored
+  { Name, Decl } where
+  Decl = erlang.MacroDeclaration { name = Name };
+
+predicate SearchRecordByName:
+  {
+    name : string,
+    decl : RecordDeclaration
+  } stored
+  { Name, Decl } where
+  Decl = erlang.RecordDeclaration { name = Name };
+
+predicate SearchTypeByName:
+  {
+    name : string,
+    decl : TypeDeclaration
+  } stored
+  { Name, Decl } where
+  Decl = erlang.TypeDeclaration { name = Name };
+
+predicate SearchHeaderByName:
+  {
+    name : string,
+    decl : HeaderDeclaration
+  } stored
+  { Name, Decl } where
+  Decl = erlang.HeaderDeclaration { name = Name };
+
+predicate SearchCallbackByName:
+  {
+    name : string,
+    decl : CallbackDeclaration
+  } stored
+  { Name, Decl } where
+  Decl = erlang.CallbackDeclaration { name = Name };
+
+predicate SearchRecordFieldByName:
+  {
+    name : string,
+    decl : RecordFieldDeclaration
+  } stored
+  { Name, Decl } where
+  Decl = erlang.RecordFieldDeclaration { field_name = Name };
+
+predicate SearchModuleByName:
+  {
+    name : string,
+    decl : ModuleDeclaration
+  } stored
+  { Name, Decl } where
+  Decl = erlang.ModuleDeclaration { name = Name };
+
+predicate SearchMacroUsageByName:
+  {
+    name : string,
+    usage : MacroUsage
+  } stored
+  { Name, Usage } where
+  Usage = erlang.MacroUsage { name = Name };
+
+predicate SearchVarByName:
+  {
+    name : string,
+    decl : VarDeclaration
+  } stored
+  { Name, Decl } where
+  Decl = erlang.VarDeclaration { name = Name };
+
+# Per-type lowercase search predicates for case-insensitive kind-optimized search.
+
+predicate SearchFunctionByLowerCaseName:
+  {
+    name_lowercase : string,
+    decl : FunctionDeclaration
+  } stored
+  { prim.toLower Name, Decl } where
+  Decl = erlang.FunctionDeclaration { fqn = { name = Name } };
+
+predicate SearchMacroByLowerCaseName:
+  {
+    name_lowercase : string,
+    decl : MacroDeclaration
+  } stored
+  { prim.toLower Name, Decl } where
+  Decl = erlang.MacroDeclaration { name = Name };
+
+predicate SearchRecordByLowerCaseName:
+  {
+    name_lowercase : string,
+    decl : RecordDeclaration
+  } stored
+  { prim.toLower Name, Decl } where
+  Decl = erlang.RecordDeclaration { name = Name };
+
+predicate SearchTypeByLowerCaseName:
+  {
+    name_lowercase : string,
+    decl : TypeDeclaration
+  } stored
+  { prim.toLower Name, Decl } where
+  Decl = erlang.TypeDeclaration { name = Name };
+
+predicate SearchHeaderByLowerCaseName:
+  {
+    name_lowercase : string,
+    decl : HeaderDeclaration
+  } stored
+  { prim.toLower Name, Decl } where
+  Decl = erlang.HeaderDeclaration { name = Name };
+
+predicate SearchCallbackByLowerCaseName:
+  {
+    name_lowercase : string,
+    decl : CallbackDeclaration
+  } stored
+  { prim.toLower Name, Decl } where
+  Decl = erlang.CallbackDeclaration { name = Name };
+
+predicate SearchRecordFieldByLowerCaseName:
+  {
+    name_lowercase : string,
+    decl : RecordFieldDeclaration
+  } stored
+  { prim.toLower Name, Decl } where
+  Decl = erlang.RecordFieldDeclaration { field_name = Name };
+
+predicate SearchModuleByLowerCaseName:
+  {
+    name_lowercase : string,
+    decl : ModuleDeclaration
+  } stored
+  { prim.toLower Name, Decl } where
+  Decl = erlang.ModuleDeclaration { name = Name };
+
+predicate SearchMacroUsageByLowerCaseName:
+  {
+    name_lowercase : string,
+    usage : MacroUsage
+  } stored
+  { prim.toLower Name, Usage } where
+  Usage = erlang.MacroUsage { name = Name };
+
+predicate SearchVarByLowerCaseName:
+  {
+    name_lowercase : string,
+    decl : VarDeclaration
+  } stored
+  { prim.toLower Name, Decl } where
+  Decl = erlang.VarDeclaration { name = Name };
+}
