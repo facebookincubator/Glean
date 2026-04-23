@@ -210,9 +210,11 @@ using Nat = int64_t;
 using Binary = folly::ByteRange;
 using String = std::string;
 using List = std::vector<Nat>; // TODO: generalise
+using StringList = std::vector<String>;
 using Map = std::map<String, List>; // TODO: generalise
+using StringMap = std::map<String, StringList>;
 
-using Field = std::variant<Nat, Binary, Map, String>;
+using Field = std::variant<Nat, Binary, Map, String, StringMap>;
 using Object = std::vector<std::pair<uint32_t, Field>>;
 
 enum Type : uint32_t {
@@ -235,6 +237,10 @@ Type typeOf<String>() {
 }
 template <>
 Type typeOf<std::vector<Nat>>() {
+  return ListTy;
+}
+template <>
+Type typeOf<std::vector<String>>() {
   return ListTy;
 }
 
@@ -298,9 +304,15 @@ inline void put(binary::Output& out, const Object& obj) {
     } else if (std::holds_alternative<Binary>(val)) {
       field(BinaryTy, num);
       put(out, std::get<Binary>(val));
+    } else if (std::holds_alternative<String>(val)) {
+      field(StringTy, num);
+      put(out, std::get<String>(val));
     } else if (std::holds_alternative<Map>(val)) {
       field(MapTy, num);
       put(out, std::get<Map>(val));
+    } else if (std::holds_alternative<StringMap>(val)) {
+      field(MapTy, num);
+      put(out, std::get<StringMap>(val));
     }
   }
   out.fixed(uint8_t(0)); // object terminator
