@@ -104,3 +104,322 @@ predicate ErlangEntityInfo:
   erlang.DeclarationComment { Decl1, File, Span, Text };
   erlang.Declaration { func = Decl1 } = Decl
 }
+
+schema codemarkup.erlang.3 {
+import src
+import code.erlang.2
+import codemarkup.types
+import erlang.2
+
+#
+# Resolving locations to entities
+#
+
+predicate ErlangResolveLocation:
+  {
+    location: codemarkup.types.Location,
+    entity: code.erlang.Entity,
+  }
+  { { Name, File, { span = Span }, nothing }, Entity } where
+  (
+    erlang.DeclarationLocation { declaration = Declaration, file = File, span = Span };
+    (
+      { func = { fqn = {name = Name} } } = Declaration
+    ) | (
+      { macro_ = { name = Name } } = Declaration
+    ) | (
+      { record_ = { name = Name } } = Declaration
+    ) | (
+      { type_ = { name = Name } } = Declaration
+    ) | (
+      { header_ = { name = Name } } = Declaration
+    ) | (
+      { callback_ = { name = Name } } = Declaration
+    ) | (
+      { record_field = { field_name = Name } } = Declaration
+    ) | (
+      { module_ = { name = Name } } = Declaration
+    );
+    Entity = { decl = Declaration };
+  ) | (
+    erlang.MacroUsageLocation { usage = Usage, file = File, span = Span };
+    erlang.MacroUsage { name = Name } = Usage;
+    Entity = { macro_usage = Usage };
+  ) | (
+    erlang.VarLocation { var_ = Var, file = File, span = Span };
+    erlang.VarDeclaration { name = Name } = Var;
+    Entity = { var_ = Var };
+  );
+
+predicate ErlangEntityLocation:
+  {
+    entity: code.erlang.Entity,
+    location: codemarkup.types.Location,
+  }
+  { Entity, { Name, File, { span = Span }, nothing } } where
+  (
+    { decl = D } = Entity;
+    erlang.DeclarationLocation { declaration = D, file = File, span = Span };
+    (
+      { func = erlang.FunctionDeclaration { fqn = {name = Name} } } = D
+    ) | (
+      { macro_ = erlang.MacroDeclaration { name = Name } } = D
+    ) | (
+      { record_ = erlang.RecordDeclaration { name = Name } } = D
+    ) | (
+      { type_ = erlang.TypeDeclaration { name = Name } } = D
+    ) | (
+      { header_ = erlang.HeaderDeclaration { name = Name } } = D
+    ) | (
+      { callback_ = erlang.CallbackDeclaration { name = Name } } = D
+    ) | (
+      { record_field = erlang.RecordFieldDeclaration { field_name = Name } } = D
+    ) | (
+      { module_ = erlang.ModuleDeclaration { name = Name } } = D
+    );
+  ) | (
+    { macro_usage = Usage } = Entity;
+    erlang.MacroUsageLocation { usage = Usage, file = File, span = Span };
+    erlang.MacroUsage { name = Name } = Usage;
+  ) | (
+    { var_ = V } = Entity;
+    erlang.VarLocation { var_ = V, file = File, span = Span };
+    erlang.VarDeclaration { name = Name } = V;
+  );
+
+predicate ErlangFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.erlang.Entity,
+  }
+  {
+     File,
+     { target = TargetLocation, source = { span = Span } },
+     Entity
+  }
+  where
+  (
+    erlang.XRefsByFile { file = File, xrefs = XRefs };
+    { target = Decl, source = Span } = XRefs[..];
+    erlang.DeclarationLocation { declaration = Decl, file = TargetFile, span = TargetSpan };
+    (
+      { macro_ = MacroDef } = Decl;
+      erlang.MacroDeclaration { name = Name, module = MacroModule } = MacroDef;
+      erlang.MacroUsageLocation { usage = Usage, file = File, span = Span };
+      erlang.MacroUsage { name = Name, module = MacroModule } = Usage;
+      Entity = { macro_usage = Usage };
+    ) | (
+      { func = { fqn = { name = Name } } } = Decl;
+      Entity = { decl = Decl };
+    ) | (
+      { record_ = { name = Name } } = Decl;
+      Entity = { decl = Decl };
+    ) | (
+      { type_ = { name = Name } } = Decl;
+      Entity = { decl = Decl };
+    ) | (
+      { header_ = { name = Name } } = Decl;
+      Entity = { decl = Decl };
+    ) | (
+      { callback_ = { name = Name } } = Decl;
+      Entity = { decl = Decl };
+    ) | (
+      { module_ = { name = Name } } = Decl;
+      Entity = { decl = Decl };
+    ) | (
+      { record_field = { field_name = Name } } = Decl;
+      Entity = { decl = Decl };
+    );
+    { Name, TargetFile, { span = TargetSpan }, nothing } = TargetLocation;
+  ) | (
+    erlang.VarXRefsByFile { file = File, xrefs = VarXRefs };
+    VarRef = VarXRefs[..];
+    Span = VarRef.sources[..];
+    erlang.VarLocation { var_ = Var, file = File, span = TargetSpan };
+    { start = VarRef.target_span_start } = TargetSpan;
+    erlang.VarDeclaration { name = Name } = Var;
+    Entity = { var_ = Var };
+    { Name, File, { span = TargetSpan }, nothing } = TargetLocation;
+  )
+
+predicate ErlangEntityUses:
+  {
+    target: code.erlang.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  { Target, File, Span } where
+  (
+    { decl = D } = Target;
+    erlang.DeclarationUses { declaration = D, file = File, span = Span };
+  ) | (
+    { macro_usage = Usage } = Target;
+    erlang.MacroUsage { name = MacroName, module = MacroModule } = Usage;
+    MacroDef = erlang.MacroDeclaration { name = MacroName, module = MacroModule };
+    erlang.DeclarationUses {
+      declaration = erlang.Declaration { macro_ = MacroDef },
+      file = File, span = Span
+    };
+  ) | (
+    { var_ = V } = Target;
+    erlang.VarDeclaration { name = VarName } = V;
+    erlang.VarLocation { var_ = V, file = File, span = { start = DefStart } };
+    erlang.VarXRefsByFile { file = File, xrefs = VarXRefs };
+    VarRef = VarXRefs[..];
+    VarName = VarRef.target_name;
+    DefStart = VarRef.target_span_start;
+    Span = VarRef.sources[..];
+  )
+
+predicate ErlangEntityKind:
+  {
+    entity: code.erlang.Entity,
+    kind: codemarkup.types.SymbolKind,
+  }
+  { E, K } where
+  (
+    { decl = { func = D } } = E;
+    erlang.FunctionDeclaration {} = D;
+    Function = K;
+  ) | (
+    { decl = { macro_ = D } } = E;
+    erlang.MacroDeclaration {} = D;
+    Macro = K;
+  ) | (
+    { decl = { record_ = D } } = E;
+    erlang.RecordDeclaration {} = D;
+    Struct = K;
+  ) | (
+    { decl = { type_ = D } } = E;
+    erlang.TypeDeclaration {} = D;
+    Type = K;
+  ) | (
+    { decl = { header_ = D } } = E;
+    erlang.HeaderDeclaration {} = D;
+    File = K;
+  ) | (
+    { decl = { callback_ = D } } = E;
+    erlang.CallbackDeclaration {} = D;
+    Interface = K;
+  ) | (
+    { decl = { record_field = D } } = E;
+    erlang.RecordFieldDeclaration {} = D;
+    Property = K;
+  ) | (
+    { decl = { module_ = D } } = E;
+    erlang.ModuleDeclaration {} = D;
+    Module = K;
+  ) | (
+    { var_ = D } = E;
+    erlang.VarDeclaration {} = D;
+    Variable = K;
+  ) | (
+    { macro_usage = D } = E;
+    erlang.MacroUsage {} = D;
+    Macro = K;
+  )
+
+predicate ErlangEntityInfo:
+  {
+    entity: code.erlang.Entity,
+    info: codemarkup.types.SymbolInfo,
+  }
+  { E, { kind = K, isAbstract = false } } where
+  ErlangEntityKind { E, K }
+
+predicate ErlangEntityDocumentation :
+  {
+    entity : code.erlang.Entity,
+    file : src.File,
+    span : src.ByteSpan,
+    text : maybe string,
+  }
+  { Entity, File, Span, Text } where
+  (
+    { decl = Decl } = Entity;
+    erlang.DeclarationComment { declaration = Decl, file = File, span = Span, text = Text }
+  ) | (
+    { macro_usage = Usage } = Entity;
+    erlang.MacroUsage { expansion = Text } = Usage;
+    erlang.MacroUsageLocation { usage = Usage, file = File, span = Span };
+  )
+
+predicate ErlangContainsChildEntity :
+  {
+    parent: code.erlang.Entity,
+    child: code.erlang.Entity,
+  }
+  { { decl = Parent }, { decl = Child } } where
+  (
+    { record_ = erlang.RecordDeclaration { name = RecName, module = M } } = Parent;
+    Child = erlang.Declaration
+      { record_field = erlang.RecordFieldDeclaration
+        { record_name = RecName, module = M } };
+  ) | (
+    { module_ = erlang.ModuleDeclaration { file = File } } = Parent;
+    erlang.DeclarationsByFile { file = File, declaration = Child };
+    !(
+      { module_ = _ } = Child
+    );
+  )
+
+predicate ErlangContainsParentEntity :
+  {
+    child: code.erlang.Entity,
+    parent: code.erlang.Entity,
+  }
+  { { decl = Child }, { decl = Parent } } where
+  (
+    { record_field = erlang.RecordFieldDeclaration
+      { record_name = RecName, module = M } } = Child;
+    Parent = erlang.Declaration
+      { record_ = erlang.RecordDeclaration { name = RecName, module = M } };
+  ) | (
+    erlang.DeclarationLocation { declaration = Child, file = File };
+    !(
+      { module_ = _ } = Child
+    );
+    Parent = erlang.Declaration
+      { module_ = erlang.ModuleDeclaration { file = File } };
+  );
+
+predicate ErlangVisibility :
+  {
+    entity: code.erlang.Entity,
+    visibility: codemarkup.types.Visibility,
+  }
+  { { decl = Decl }, Visibility } where
+  { func = FuncDecl } = Decl;
+  erlang.FunctionDefinition { declaration = FuncDecl, exported = Exported };
+  ( if Exported
+    then (Public = Visibility)
+    else (Private = Visibility) );
+
+predicate ErlangExtendsParentEntity :
+  {
+    child: code.erlang.Entity,
+    parent: code.erlang.Entity,
+  }
+  { { decl = Child }, { decl = Parent } } where
+  (
+    { module_ = ChildMod } = Child;
+    erlang.ModuleDefinition { declaration = ChildMod, behaviours = Bs };
+    BehaviourName = Bs[..];
+    ParentMod = erlang.ModuleDeclaration { name = BehaviourName };
+    { module_ = ParentMod } = Parent;
+  ) | (
+    { func = Impl } = Child;
+    erlang.CallbackImplementation { implementation = Impl, callback = Cb };
+    { callback_ = Cb } = Parent;
+  )
+
+predicate ErlangExtendsChildEntity :
+  {
+    parent: code.erlang.Entity,
+    child: code.erlang.Entity,
+  }
+  { Parent, Child } where
+  ErlangExtendsParentEntity { child = Child, parent = Parent }
+
+}

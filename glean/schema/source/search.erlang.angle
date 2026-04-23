@@ -22,3 +22,75 @@ schema search.erlang.4 {
     E = code.erlang.Entity { decl = {func = { fqn = { module = M, name = N, arity = A } } } }
 
 }
+
+schema search.erlang.5 {
+  import code.erlang.2
+  import erlang.2
+
+  predicate SearchByName:
+    {
+      name: string,
+      entity: code.erlang.Entity,
+    } { Name, Entity } where
+    erlang.SearchByName { Name, Decl };
+    Entity = code.erlang.Entity { decl = Decl };
+
+  predicate SearchByFQN:
+    {
+      module: string,
+      name: string,
+      arity: nat,
+      entity: code.erlang.Entity,
+    } {M, N, A, E} where
+    E = code.erlang.Entity { decl = {func = { fqn = { module = M, name = N, arity = A } } } }
+
+  # Per-type search for unambiguous symbol ID resolution
+  predicate SearchByNameAndKind:
+    {
+      kind: string,
+      name: string,
+      entity: code.erlang.Entity,
+    } { Kind, Name, Entity } where
+    (
+      Kind = "func";
+      erlang.SearchFunctionByName { Name, Decl };
+      Entity = code.erlang.Entity { decl = { func = Decl } };
+    ) | (
+      Kind = "define";
+      erlang.SearchMacroByName { Name, Decl };
+      Entity = code.erlang.Entity { decl = { macro_ = Decl } };
+    ) | (
+      Kind = "record";
+      erlang.SearchRecordByName { Name, Decl };
+      Entity = code.erlang.Entity { decl = { record_ = Decl } };
+    ) | (
+      Kind = "type";
+      erlang.SearchTypeByName { Name, Decl };
+      Entity = code.erlang.Entity { decl = { type_ = Decl } };
+    ) | (
+      Kind = "module";
+      erlang.SearchModuleByName { Name, Decl };
+      Entity = code.erlang.Entity { decl = { module_ = Decl } };
+    ) | (
+      Kind = "header";
+      erlang.SearchHeaderByName { Name, Decl };
+      Entity = code.erlang.Entity { decl = { header_ = Decl } };
+    ) | (
+      Kind = "callback";
+      erlang.SearchCallbackByName { Name, Decl };
+      Entity = code.erlang.Entity { decl = { callback_ = Decl } };
+    ) | (
+      Kind = "record_field";
+      erlang.SearchRecordFieldByName { Name, Decl };
+      Entity = code.erlang.Entity { decl = { record_field = Decl } };
+    ) | (
+      Kind = "macro_usage";
+      erlang.SearchMacroUsageByName { Name, Usage };
+      Entity = code.erlang.Entity { macro_usage = Usage };
+    ) | (
+      Kind = "var";
+      erlang.SearchVarByName { Name, Decl };
+      Entity = code.erlang.Entity { var_ = Decl };
+    )
+
+}
