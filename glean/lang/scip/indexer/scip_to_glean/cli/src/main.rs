@@ -289,6 +289,8 @@ mod tests {
     use proto_rust::scip::Occurrence as ScipOccurrence;
     #[cfg(feature = "facebook")]
     use proto_rust::scip::SymbolInformation as ScipSymbolInformation;
+    #[cfg(feature = "facebook")]
+    use proto_rust::scip::symbol_information;
     use tempfile::NamedTempFile;
 
     #[cfg(not(feature = "facebook"))]
@@ -297,7 +299,45 @@ mod tests {
     use super::proto::scip::Occurrence as ScipOccurrence;
     #[cfg(not(feature = "facebook"))]
     use super::proto::scip::SymbolInformation as ScipSymbolInformation;
+    #[cfg(not(feature = "facebook"))]
+    use super::proto::scip::symbol_information;
     use super::*;
+    use crate::lsif::SymbolKind;
+
+    fn build_args(scip_path: PathBuf, output_path: PathBuf) -> BuildJsonArgs {
+        BuildJsonArgs {
+            input: vec![scip_path],
+            output: output_path,
+            infer_language: false,
+            language: None,
+            root_prefix: None,
+            strip_prefix: None,
+            source_root: None,
+            shard: None,
+        }
+    }
+
+    /// Find the kind value emitted for the symbol fact whose key string
+    /// contains `symbol_substr`.
+    fn find_kind_for_symbol(json: &str, symbol_substr: &str) -> Option<u64> {
+        let symbols = find_predicate_facts(json, "scip.Symbol.1")?;
+        let kinds = find_predicate_facts(json, "scip.SymbolKind.1")?;
+        let symbol_id = symbols.as_array()?.iter().find_map(|f| {
+            let key = f["key"].as_str()?;
+            if key.contains(symbol_substr) {
+                f["id"].as_u64()
+            } else {
+                None
+            }
+        })?;
+        kinds.as_array()?.iter().find_map(|f| {
+            if f["key"]["symbol"].as_u64() == Some(symbol_id) {
+                f["key"]["kind"].as_u64()
+            } else {
+                None
+            }
+        })
+    }
 
     #[test]
     fn test_write_blank_scip() {
@@ -682,5 +722,369 @@ mod tests {
             .iter()
             .any(|f| f["key"].as_str().is_some_and(|s| s.contains("power state")));
         assert!(has_doc, "Expected documentation from external_symbols");
+    }
+
+    /// PINS CURRENT BROKEN BEHAVIOR. A Go-style global symbol whose
+    /// `info.kind = Constant` is currently ignored — the descriptor-derived
+    /// `SkVariable` from the Term suffix `.` wins, misclassifying all Go
+    /// consts as variables. The follow-up diff that wires `info.kind` into
+    /// the ingestor flips this assertion to `SymbolKind::SkConstant`.
+    #[test]
+    fn test_symbol_kind_global_const_overrides_variable() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut index = Index::new();
+        let mut doc = Document::new();
+        doc.relative_path = "initial/toplevel_decls.go".to_string();
+        doc.language = "go".to_string();
+
+        let global_const = "scip-go gomod sg/initial 0.1.test `sg/initial`/MY_THING.";
+
+        let mut occ = ScipOccurrence::new();
+        occ.symbol = global_const.to_string();
+        occ.range = vec![3, 6, 14];
+        occ.symbol_roles = 1; // Definition
+        doc.occurrences.push(occ);
+
+        let mut info = ScipSymbolInformation::new();
+        info.symbol = global_const.to_string();
+        info.kind = symbol_information::Kind::Constant.into();
+        doc.symbols.push(info);
+
+        index.documents.push(doc);
+        write_scip_index_full(&mut scip_file, index);
+
+        build_json(build_args(
+            scip_file.path().to_path_buf(),
+            output_json.path().to_path_buf(),
+        ))
+        .expect("failure building JSON");
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        let kind = find_kind_for_symbol(&output, "MY_THING")
+            .expect("expected scip.SymbolKind for MY_THING");
+        // Current (broken) behavior: descriptor-derived SkVariable wins.
+        // After the ingestor honors info.kind, this becomes SymbolKind::SkConstant.
+        assert_eq!(
+            kind,
+            SymbolKind::SkVariable as u64,
+            "Pinning current behavior: Go const currently misclassified as SkVariable, got {kind}"
+        );
+    }
+
+    /// Without `info.kind`, a global Term-suffix symbol falls back to the
+    /// descriptor-derived `SkVariable`. Pins the existing behavior so a
+    /// future change to the override map can't silently change it.
+    #[test]
+    fn test_symbol_kind_global_term_defaults_to_variable() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut index = Index::new();
+        let mut doc = Document::new();
+        doc.relative_path = "initial/toplevel_decls.go".to_string();
+        doc.language = "go".to_string();
+
+        let global_var = "scip-go gomod sg/initial 0.1.test `sg/initial`/initFunctions.";
+
+        let mut occ = ScipOccurrence::new();
+        occ.symbol = global_var.to_string();
+        occ.range = vec![10, 4, 17];
+        occ.symbol_roles = 1; // Definition
+        doc.occurrences.push(occ);
+
+        index.documents.push(doc);
+        write_scip_index_full(&mut scip_file, index);
+
+        build_json(build_args(
+            scip_file.path().to_path_buf(),
+            output_json.path().to_path_buf(),
+        ))
+        .expect("failure building JSON");
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        let kind = find_kind_for_symbol(&output, "initFunctions")
+            .expect("expected scip.SymbolKind for initFunctions");
+        assert_eq!(
+            kind,
+            SymbolKind::SkVariable as u64,
+            "Term-suffix global without info.kind should remain SkVariable, got {kind}"
+        );
+    }
+
+    /// PINS CURRENT BROKEN BEHAVIOR. Local symbols have no descriptor-
+    /// derived kind, so the ingestor falls back to the SkVariable default
+    /// even when `info.kind = Constant` is set on the SymbolInformation.
+    /// The follow-up diff flips this assertion to `SymbolKind::SkConstant`.
+    #[test]
+    fn test_symbol_kind_local_const_override() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut index = Index::new();
+        let mut doc = Document::new();
+        doc.relative_path = "initial/toplevel_decls.go".to_string();
+        doc.language = "go".to_string();
+
+        let local_sym = "local 0";
+
+        let mut occ = ScipOccurrence::new();
+        occ.symbol = local_sym.to_string();
+        occ.range = vec![5, 8, 16];
+        occ.symbol_roles = 1; // Definition
+        doc.occurrences.push(occ);
+
+        let mut info = ScipSymbolInformation::new();
+        info.symbol = local_sym.to_string();
+        info.kind = symbol_information::Kind::Constant.into();
+        doc.symbols.push(info);
+
+        index.documents.push(doc);
+        write_scip_index_full(&mut scip_file, index);
+
+        build_json(build_args(
+            scip_file.path().to_path_buf(),
+            output_json.path().to_path_buf(),
+        ))
+        .expect("failure building JSON");
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        // Local symbols are namespaced by file path in the symbol fact key.
+        let kind = find_kind_for_symbol(&output, "local 0")
+            .expect("expected scip.SymbolKind for local symbol");
+        // Current (broken) behavior: locals always default to SkVariable.
+        // After the ingestor honors info.kind, this becomes SymbolKind::SkConstant.
+        assert_eq!(
+            kind,
+            SymbolKind::SkVariable as u64,
+            "Pinning current behavior: local with info.kind=Constant currently emitted as SkVariable, got {kind}"
+        );
+    }
+
+    /// Pin the prior behavior for locals: with no `info.kind`, the local
+    /// path falls back to its `SkVariable` default. Pairs with
+    /// `test_symbol_kind_local_const_override` so the diff between the two
+    /// shows exactly what the override mechanism changes.
+    #[test]
+    fn test_symbol_kind_local_no_info_defaults_to_variable() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut index = Index::new();
+        let mut doc = Document::new();
+        doc.relative_path = "initial/toplevel_decls.go".to_string();
+        doc.language = "go".to_string();
+
+        let local_sym = "local 0";
+
+        let mut occ = ScipOccurrence::new();
+        occ.symbol = local_sym.to_string();
+        occ.range = vec![5, 8, 16];
+        occ.symbol_roles = 1; // Definition
+        doc.occurrences.push(occ);
+
+        // No SymbolInformation entry — exercises the fallback path.
+
+        index.documents.push(doc);
+        write_scip_index_full(&mut scip_file, index);
+
+        build_json(build_args(
+            scip_file.path().to_path_buf(),
+            output_json.path().to_path_buf(),
+        ))
+        .expect("failure building JSON");
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        let kind = find_kind_for_symbol(&output, "local 0")
+            .expect("expected scip.SymbolKind for local symbol");
+        assert_eq!(
+            kind,
+            SymbolKind::SkVariable as u64,
+            "Local without info.kind should default to SkVariable, got {kind}"
+        );
+    }
+
+    /// Symmetric "before" test for globals: when `info.kind = Variable` is set
+    /// explicitly, the result still maps to `SkVariable` (same as the
+    /// descriptor would have produced). Proves the override mechanism honors
+    /// upstream agreement, not just upstream disagreement — i.e., we are
+    /// reading `info.kind` rather than only triggering when it differs from
+    /// the descriptor.
+    #[test]
+    fn test_symbol_kind_global_explicit_variable_kind() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut index = Index::new();
+        let mut doc = Document::new();
+        doc.relative_path = "initial/toplevel_decls.go".to_string();
+        doc.language = "go".to_string();
+
+        let global_var = "scip-go gomod sg/initial 0.1.test `sg/initial`/initFunctions.";
+
+        let mut occ = ScipOccurrence::new();
+        occ.symbol = global_var.to_string();
+        occ.range = vec![10, 4, 17];
+        occ.symbol_roles = 1; // Definition
+        doc.occurrences.push(occ);
+
+        let mut info = ScipSymbolInformation::new();
+        info.symbol = global_var.to_string();
+        info.kind = symbol_information::Kind::Variable.into();
+        doc.symbols.push(info);
+
+        index.documents.push(doc);
+        write_scip_index_full(&mut scip_file, index);
+
+        build_json(build_args(
+            scip_file.path().to_path_buf(),
+            output_json.path().to_path_buf(),
+        ))
+        .expect("failure building JSON");
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        let kind = find_kind_for_symbol(&output, "initFunctions")
+            .expect("expected scip.SymbolKind for initFunctions");
+        assert_eq!(
+            kind,
+            SymbolKind::SkVariable as u64,
+            "Term symbol with info.kind=Variable should be SkVariable, got {kind}"
+        );
+    }
+
+    /// Conservative-mapping boundary: an `info.kind` value the ingestor does
+    /// not map (e.g. `Function`) on a Term-suffix symbol must fall back to
+    /// the descriptor-derived kind (`SkVariable`) rather than producing
+    /// `SkUnknown` or refusing to emit a kind. Pins the design choice that
+    /// the override is *additive*, not *replacing*.
+    #[test]
+    fn test_symbol_kind_unrecognized_kind_falls_back_to_descriptor() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut index = Index::new();
+        let mut doc = Document::new();
+        doc.relative_path = "initial/toplevel_decls.go".to_string();
+        doc.language = "go".to_string();
+
+        let global_sym = "scip-go gomod sg/initial 0.1.test `sg/initial`/notMappedKind.";
+
+        let mut occ = ScipOccurrence::new();
+        occ.symbol = global_sym.to_string();
+        occ.range = vec![20, 4, 17];
+        occ.symbol_roles = 1; // Definition
+        doc.occurrences.push(occ);
+
+        let mut info = ScipSymbolInformation::new();
+        info.symbol = global_sym.to_string();
+        // `Function` is not in the conservative override map.
+        info.kind = symbol_information::Kind::Function.into();
+        doc.symbols.push(info);
+
+        index.documents.push(doc);
+        write_scip_index_full(&mut scip_file, index);
+
+        build_json(build_args(
+            scip_file.path().to_path_buf(),
+            output_json.path().to_path_buf(),
+        ))
+        .expect("failure building JSON");
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        let kind = find_kind_for_symbol(&output, "notMappedKind")
+            .expect("expected scip.SymbolKind for notMappedKind");
+        assert_eq!(
+            kind,
+            SymbolKind::SkVariable as u64,
+            "Unmapped info.kind should fall back to descriptor SkVariable, got {kind}"
+        );
+    }
+
+    /// PINS CURRENT BROKEN BEHAVIOR. External symbols with
+    /// `info.kind = Constant` currently fall to the descriptor-derived
+    /// `SkVariable` because `decode_external_symbol` does not consult
+    /// `info.kind`. The follow-up diff flips this assertion to
+    /// `SymbolKind::SkConstant`.
+    #[test]
+    fn test_symbol_kind_external_const() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut index = Index::new();
+
+        // Need at least one document so processing runs.
+        let mut doc = Document::new();
+        doc.relative_path = "test.go".to_string();
+        doc.language = "go".to_string();
+        index.documents.push(doc);
+
+        let external_const =
+            "scip-go gomod golang.org/x/example 1.0.0 `golang.org/x/example`/SomeConst.";
+        let mut ext = ScipSymbolInformation::new();
+        ext.symbol = external_const.to_string();
+        ext.kind = symbol_information::Kind::Constant.into();
+        index.external_symbols.push(ext);
+
+        write_scip_index_full(&mut scip_file, index);
+
+        build_json(build_args(
+            scip_file.path().to_path_buf(),
+            output_json.path().to_path_buf(),
+        ))
+        .expect("failure building JSON");
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        let kind = find_kind_for_symbol(&output, "SomeConst")
+            .expect("expected scip.SymbolKind for external SomeConst");
+        // Current (broken) behavior: external descriptor wins over info.kind.
+        // After the ingestor honors info.kind, this becomes SymbolKind::SkConstant.
+        assert_eq!(
+            kind,
+            SymbolKind::SkVariable as u64,
+            "Pinning current behavior: external const currently emitted as SkVariable, got {kind}"
+        );
+    }
+
+    /// Pin the prior behavior for externals: with no `info.kind`, the
+    /// external symbol path falls back to the descriptor-derived kind. Pairs
+    /// with `test_symbol_kind_external_const` so the diff between the two
+    /// shows exactly what the override mechanism changes for externals.
+    #[test]
+    fn test_symbol_kind_external_no_info_uses_descriptor() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut index = Index::new();
+
+        // Need at least one document so processing runs.
+        let mut doc = Document::new();
+        doc.relative_path = "test.go".to_string();
+        doc.language = "go".to_string();
+        index.documents.push(doc);
+
+        let external_term =
+            "scip-go gomod golang.org/x/example 1.0.0 `golang.org/x/example`/SomeTerm.";
+        let mut ext = ScipSymbolInformation::new();
+        ext.symbol = external_term.to_string();
+        // No `kind` set — exercise the fallback path.
+        index.external_symbols.push(ext);
+
+        write_scip_index_full(&mut scip_file, index);
+
+        build_json(build_args(
+            scip_file.path().to_path_buf(),
+            output_json.path().to_path_buf(),
+        ))
+        .expect("failure building JSON");
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        let kind = find_kind_for_symbol(&output, "SomeTerm")
+            .expect("expected scip.SymbolKind for external SomeTerm");
+        assert_eq!(
+            kind,
+            SymbolKind::SkVariable as u64,
+            "External Term symbol without info.kind should fall back to SkVariable, got {kind}"
+        );
     }
 }
