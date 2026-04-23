@@ -7,13 +7,13 @@ sidebar_label: Go
 import {OssOnly, FbInternalOnly} from 'internaldocs-fb-helpers';
 import {SrcFile,SrcFileLink} from '@site/utils';
 
-To index [Go](https://go.dev/) we use SourceGraph's [SCIP indexer for Go](https://github.com/sourcegraph/scip-go). [SCIP](https://about.sourcegraph.com/blog/announcing-scip) is a format for tools to share information about code.
+To index [Go](https://go.dev/) we use the [SCIP indexer for Go](https://github.com/scip-code/scip-go). [SCIP](https://about.sourcegraph.com/blog/announcing-scip) is a format for tools to share information about code.
 
 ## Prerequisites
 
 You will need:
 
-* [scip-go](https://github.com/sourcegraph/scip-go), with binary releases available for x86 Linux
+* [scip-go](https://github.com/scip-code/scip-go), with binary releases available for x86 Linux
 * [scip-to-glean](python-scip.md#installing-scip-to-glean), the SCIP-to-Glean converter
 * A recent (>1.15) [version of Go](https://go.dev/dl/)
 
