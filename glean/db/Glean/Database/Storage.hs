@@ -20,9 +20,12 @@ module Glean.Database.Storage
   ) where
 
 import Data.ByteString (ByteString)
+import qualified Data.ByteString.Lazy as LBS
 import Data.HashMap.Strict (HashMap)
 import Data.Text (Text)
 import qualified Data.Vector.Storable as VS
+import System.FilePath ((</>))
+import System.IO (Handle)
 
 import Glean.Database.Backup.Backend (Data)
 import Glean.Internal.Types (StoredSchema)
@@ -127,6 +130,23 @@ class DatabaseOps (Database s) => Storage s where
     -> FilePath  -- ^ scratch directory
     -> FilePath  -- ^ file containing the serialiased database (produced by 'backup')
     -> IO ()
+
+  -- | Restore a database from a streaming handle instead of a file.
+  -- The handle provides the serialized database content
+  -- (e.g., tar stream).
+  -- Default implementation writes to a temp file and calls
+  -- 'restore'.
+  restoreFromStream
+    :: s  -- ^ storage
+    -> ServerConfig.Config  -- ^ server config
+    -> Repo  -- ^ repo
+    -> FilePath  -- ^ scratch directory
+    -> Handle  -- ^ handle providing the serialised database
+    -> IO ()
+  restoreFromStream s cfg repo scratch h = do
+    let tmpFile = scratch </> "stream-fallback"
+    LBS.hGetContents h >>= LBS.writeFile tmpFile
+    restore s cfg repo scratch tmpFile
 
 class CanLookup db => DatabaseOps db where
   -- | Close a database

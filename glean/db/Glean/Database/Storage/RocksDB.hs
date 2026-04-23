@@ -20,9 +20,13 @@ import Foreign.C.Types
 import Foreign.ForeignPtr
 import Foreign.Ptr
 import System.Directory
+import System.IO (Handle)
 import System.IO.Temp (withTempDirectory)
 import System.FilePath
-import System.Process (readProcessWithExitCode)
+import System.Process
+  ( CreateProcess(..), StdStream(..), createProcess, proc
+  , readProcessWithExitCode, waitForProcess
+  )
 import System.Exit (ExitCode(ExitSuccess))
 
 import Util.FFI
@@ -168,33 +172,15 @@ instance Storage RocksDB where
   restore rocks _ repo scratch scratch_file =
     withTempDirectory scratch "restore" $ \scratch_restore -> do
       unTar scratch_file scratch_restore
-      -- to avoid retaining an extra copy of the DB during restore,
-      -- delete the input file now.
       removeFile scratch_file
 
-      -- If the tarfile contains "backup/.." then it is a RocksDB backup
-      -- If the tarfile contains "db/.." then it is a plain tarball of the DB
-      let scratch_restore_backup = scratch_restore </> "backup"
-      is_rocksdb_backup <- doesDirectoryExist scratch_restore_backup
-      db <-
-        if is_rocksdb_backup
-          then do
-            let scratch_db = scratch </> "db"
-            createDirectoryIfMissing True scratch_db
-            withCString scratch_db $ \p_target ->
-              withCString (scratch_restore </> "backup") $ \p_source ->
-                invoke $ glean_rocksdb_restore p_target p_source
-            return scratch_db
-          else do
-            let scratch_restore_db = scratch_restore </> "db"
-            is_copy <- doesDirectoryExist scratch_restore_db
-            if is_copy
-              then return scratch_restore_db
-              else throwIO $ userError "unrecognised backup"
+      restoreFromDir rocks repo scratch scratch_restore
 
-      let target = containerPath rocks repo
-      createDirectoryIfMissing True $ takeDirectory target
-      renameDirectory db target
+  restoreFromStream rocks _ repo scratch h =
+    withTempDirectory scratch "restore" $ \scratch_restore -> do
+      unTarFromHandle h scratch_restore
+
+      restoreFromDir rocks repo scratch scratch_restore
 
 instance DatabaseOps (Database RocksDB) where
   close (Database db) = close db
@@ -231,6 +217,41 @@ instance DatabaseOps (Database RocksDB) where
 unTar :: FilePath -> FilePath -> IO ()
 unTar scratch_file scratch_restore =
   tar ["-xf", scratch_file, "-C", scratch_restore]
+
+unTarFromHandle :: Handle -> FilePath -> IO ()
+unTarFromHandle h dir = do
+  tarPath <- findExecutable "tar"
+  case tarPath of
+    Nothing -> throwIO $ userError "Cannot find tar executable"
+    Just path -> do
+      (_, _, _, ph) <- createProcess (proc path ["-x", "-C", dir])
+        { std_in = UseHandle h }
+      ec <- waitForProcess ph
+      unless (ec == ExitSuccess) $
+        throwIO $ userError "tar -x from stream failed"
+
+restoreFromDir :: RocksDB -> Repo -> FilePath -> FilePath -> IO ()
+restoreFromDir rocks repo scratch scratch_restore = do
+  let scratch_restore_backup = scratch_restore </> "backup"
+  is_rocksdb_backup <- doesDirectoryExist scratch_restore_backup
+  db <-
+    if is_rocksdb_backup
+      then do
+        let scratch_db = scratch </> "db"
+        createDirectoryIfMissing True scratch_db
+        withCString scratch_db $ \p_target ->
+          withCString (scratch_restore </> "backup") $ \p_source ->
+            invoke $ glean_rocksdb_restore p_target p_source
+        return scratch_db
+      else do
+        let scratch_restore_db = scratch_restore </> "db"
+        is_copy <- doesDirectoryExist scratch_restore_db
+        if is_copy
+          then return scratch_restore_db
+          else throwIO $ userError "unrecognised backup"
+  let target = containerPath rocks repo
+  createDirectoryIfMissing True $ takeDirectory target
+  renameDirectory db target
 
 tar :: [String] -> IO ()
 tar args = do
