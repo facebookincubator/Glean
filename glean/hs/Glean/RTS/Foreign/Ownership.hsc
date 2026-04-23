@@ -14,6 +14,8 @@ module Glean.RTS.Foreign.Ownership
   , firstUsetId
   , Ownership
   , ComputedOwnership
+  , computedOwnershipUnitCount
+  , augmentWithACL
   , Slice
   , slice
   , slicedStack
@@ -88,7 +90,7 @@ newtype UnitId = UnitId Word32
 
 -- | Id of an ownership set
 newtype UsetId = UsetId Word32
-  deriving (Storable)
+  deriving (Storable, Show)
 
 firstUsetId :: UsetId
 firstUsetId = UsetId 0
@@ -367,6 +369,52 @@ unionOwnership =
       HashMap.empty
 
 -- -----------------------------------------------------------------------------
+-- ACL ownership augmentation
+
+computedOwnershipUnitCount :: ComputedOwnership -> IO Word32
+--- get the first UsetID of an AND-OR expr.
+--- All Usets with IDs lower than that are leaf units
+--- (concrete, single file paths)
+--- UnitIds below count represent
+--- e.g. UnitId 0  →  "fbcode/glean/rts/query.cpp"
+--- assume count is 5 then UsetId 5  →  OR(0, 2)
+--- which is a derived fact owned by both query.cpp and another file
+computedOwnershipUnitCount own =
+  with own $ \own_ptr ->
+    invoke $ glean_computed_ownership_unit_count own_ptr
+
+-- | Augment computed ownership with ACL constraints.
+-- Each unit in the assignments list has a list of ACL levels.
+-- Each level has a list of ACL group UsetIds (ORed together).
+-- Levels are ANDed together to form CNF.
+-- The resulting CNF is ANDed with each fact's existing owner.
+augmentWithACL
+  :: ComputedOwnership
+  -> [(Word32, [[Word32]])]  -- ^ (UnitId, [[group_UsetIds_per_level]])
+  -> IO ()
+augmentWithACL _ [] = return ()
+augmentWithACL own assignments =
+  with own $ \own_ptr -> do
+    let numUnits = length assignments
+        unitIds = map fst assignments
+        levelLists = map snd assignments
+        levelCounts = map (fromIntegral . length) levelLists :: [CSize]
+        allLevels = concatMap id levelLists
+        groupCounts = map (fromIntegral . length) allLevels :: [CSize]
+        allGroups = concatMap (map fromIntegral) allLevels :: [Word32]
+    withArray (map fromIntegral unitIds :: [Word32]) $ \p_unitIds ->
+      withArray levelCounts $ \p_levelCounts ->
+      withArray groupCounts $ \p_groupCounts ->
+      withArray allGroups $ \p_groupIds ->
+        invoke $ glean_augment_ownership_with_acl
+          own_ptr
+          p_unitIds
+          p_levelCounts
+          (fromIntegral numUnits)
+          p_groupCounts
+          p_groupIds
+
+-- -----------------------------------------------------------------------------
 -- FFI
 
 foreign import ccall safe glean_get_ownership_stats
@@ -479,8 +527,8 @@ foreign import ccall unsafe glean_make_sliced_stack
   -> Ptr (Ptr Lookup)
   -> IO CString
 
-foreign import ccall unsafe
-   glean_sliced_stack_free :: Ptr Lookup -> IO ()
+foreign import ccall unsafe glean_sliced_stack_free
+  :: Ptr Lookup -> IO ()
 
 foreign import ccall unsafe
    glean_ownership_next_set_id :: Ptr Ownership -> Ptr UsetId -> IO CString
@@ -508,3 +556,15 @@ setOwnershipMergeCacheSize = glean_set_ownership_merge_cache_size
 
 getOwnershipMergeCacheSize :: IO Word64
 getOwnershipMergeCacheSize = glean_get_ownership_merge_cache_size
+
+foreign import ccall unsafe glean_computed_ownership_unit_count
+  :: Ptr ComputedOwnership -> Ptr Word32 -> IO CString
+
+foreign import ccall safe glean_augment_ownership_with_acl
+  :: Ptr ComputedOwnership
+  -> Ptr Word32   -- unit_ids
+  -> Ptr CSize    -- level_counts
+  -> CSize        -- num_units
+  -> Ptr CSize    -- group_counts
+  -> Ptr Word32   -- group_ids
+  -> IO CString
