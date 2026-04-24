@@ -1087,4 +1087,113 @@ mod tests {
             "External Term symbol without info.kind should fall back to SkVariable, got {kind}"
         );
     }
+
+    /// Collect every distinct kind value emitted for the symbol fact whose key
+    /// string contains `symbol_substr`. Mirrors `find_kind_for_symbol` but
+    /// returns all kinds, sorted and deduplicated, so tests can pin cases
+    /// where the same symbol receives more than one kind value across the
+    /// pipeline.
+    fn find_all_kinds_for_symbol(json: &str, symbol_substr: &str) -> Vec<u64> {
+        let symbols =
+            find_predicate_facts(json, "scip.Symbol.1").expect("scip.Symbol.1 not found in output");
+        let kinds = find_predicate_facts(json, "scip.SymbolKind.1")
+            .expect("scip.SymbolKind.1 not found in output");
+        let symbol_id = symbols
+            .as_array()
+            .expect("symbol facts should be array")
+            .iter()
+            .find_map(|f| {
+                let key = f["key"].as_str()?;
+                if key.contains(symbol_substr) {
+                    f["id"].as_u64()
+                } else {
+                    None
+                }
+            })
+            .unwrap_or_else(|| panic!("no Symbol fact whose key contains {symbol_substr:?}"));
+        let mut out: Vec<u64> = kinds
+            .as_array()
+            .expect("symbolkind facts should be array")
+            .iter()
+            .filter_map(|f| {
+                if f["key"]["symbol"].as_u64() == Some(symbol_id) {
+                    f["key"]["kind"].as_u64()
+                } else {
+                    None
+                }
+            })
+            .collect();
+        out.sort_unstable();
+        out.dedup();
+        out
+    }
+
+    /// Pin the pre-`SymbolInformation.kind`-honoring baseline for cross-doc
+    /// constant references. Without any `kind_overrides` mechanism, every
+    /// global occurrence falls back to the descriptor-derived kind: the
+    /// `SHARED.` suffix is a term descriptor, so both the defining
+    /// occurrence in doc A and the referencing occurrence in doc B emit
+    /// `SkVariable`. The two identical `(symbol, SkVariable)` facts dedupe to
+    /// one in Glean, so the symbol gets a single `SkVariable` kind.
+    ///
+    /// `info.kind = Constant` on doc A's `SymbolInformation` entry is
+    /// ignored because `decode_scip_info` doesn't emit kind facts at this
+    /// layer. The follow-up diff (the one that introduces
+    /// `Env::kind_overrides`) makes occurrences honor `SymbolInformation.kind`
+    /// across documents, at which point this assertion flips to expect
+    /// `vec![SkConstant]`.
+    #[test]
+    fn test_symbol_kind_cross_doc_constant_pre_kind_overrides() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let global_const = "scip-rust cargo crate_a 0.0.0 `crate_a`/SHARED.";
+
+        let mut index = Index::new();
+
+        // Doc A defines SHARED and registers info.kind = Constant.
+        let mut doc_a = Document::new();
+        doc_a.relative_path = "crate_a.rs".to_string();
+        doc_a.language = "rust".to_string();
+        let mut def_occ = ScipOccurrence::new();
+        def_occ.symbol = global_const.to_string();
+        def_occ.range = vec![1, 0, 12];
+        def_occ.symbol_roles = 1; // Definition
+        doc_a.occurrences.push(def_occ);
+        let mut info = ScipSymbolInformation::new();
+        info.symbol = global_const.to_string();
+        info.kind = symbol_information::Kind::Constant.into();
+        doc_a.symbols.push(info);
+        index.documents.push(doc_a);
+
+        // Doc B only references SHARED — no SymbolInformation entry,
+        // so the descriptor heuristic is the sole source of kind here too.
+        let mut doc_b = Document::new();
+        doc_b.relative_path = "crate_b.rs".to_string();
+        doc_b.language = "rust".to_string();
+        let mut ref_occ = ScipOccurrence::new();
+        ref_occ.symbol = global_const.to_string();
+        ref_occ.range = vec![3, 4, 16];
+        ref_occ.symbol_roles = 0; // Reference
+        doc_b.occurrences.push(ref_occ);
+        index.documents.push(doc_b);
+
+        write_scip_index_full(&mut scip_file, index);
+
+        build_json(build_args(
+            scip_file.path().to_path_buf(),
+            output_json.path().to_path_buf(),
+        ))
+        .expect("failure building JSON");
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        let kinds = find_all_kinds_for_symbol(&output, "SHARED");
+        assert_eq!(
+            kinds,
+            vec![SymbolKind::SkVariable as u64],
+            "Without kind_overrides, cross-doc global emits descriptor-derived \
+             SkVariable from both occurrences; the follow-up fix flips this to \
+             vec![SkConstant] once info.kind is honored across documents"
+        );
+    }
 }
