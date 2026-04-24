@@ -411,13 +411,7 @@ impl Env {
     }
 
     fn get_symbol_id(&mut self, symbol: &String, filepath: &str) -> Option<ScipId> {
-        let scip_symbol = parse_scip_symbol(symbol);
-        let qualified_symbol = match scip_symbol {
-            ScipSymbol::Local { .. } => format!("{}/{}", filepath, symbol),
-            ScipSymbol::Global { .. } => symbol.clone(),
-        }
-        .into_boxed_str();
-
+        let qualified_symbol = qualify_scip_symbol(symbol, filepath);
         self.get_def_fact_id(StringPredicate::Symbol, &qualified_symbol)
     }
 
@@ -562,6 +556,19 @@ struct SymbolRoleSet(i32);
 impl SymbolRoleSet {
     fn has_def(&self) -> bool {
         self.0 & (1 << 0) != 0
+    }
+}
+
+/// Build the lookup key for a SCIP symbol fact. Local symbols are namespaced
+/// by their containing file (mirroring how `scip_symbol::parse_scip_symbol`
+/// distinguishes `Local` from `Global`); global symbols are used as-is.
+///
+/// Centralized here so every site that needs to look up or insert a symbol
+/// fact uses the same key shape — divergence here silently breaks lookups.
+fn qualify_scip_symbol(symbol: &str, filepath: &str) -> Box<str> {
+    match parse_scip_symbol(symbol) {
+        ScipSymbol::Local { .. } => format!("{}/{}", filepath, symbol).into_boxed_str(),
+        ScipSymbol::Global { .. } => symbol.to_owned().into_boxed_str(),
     }
 }
 
