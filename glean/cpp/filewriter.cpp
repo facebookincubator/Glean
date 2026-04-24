@@ -35,15 +35,25 @@ class FileWriter : public Sender {
     binary::Output out;
     // Serialize as facebook::glean::thrift::Batch without using fbthrift. These
     // field numbers and types must match those in glean.thrift.
-    serialize::thriftcompact::put(
-        out,
-        {
-            {1, r.first.toThrift()},
-            {2, static_cast<int64_t>(r.count)},
-            {3, folly::ByteRange(r.facts.data(), r.facts.size())},
-            {5, batch.serializeOwnership()},
-            {7, batch.getSchemaId()},
-        });
+    serialize::thriftcompact::Object fields = {
+        {1, r.first.toThrift()},
+        {2, static_cast<int64_t>(r.count)},
+        {3, folly::ByteRange(r.facts.data(), r.facts.size())},
+        {5, batch.serializeOwnership()},
+        {7, batch.getSchemaId()},
+    };
+
+    // Add ACL config fields if present
+    const auto& aclConfig = batch.getACLConfig();
+    if (!aclConfig.empty()) {
+      // Field 9: acl_config - map<string, list<string>>
+      fields.emplace_back(
+          9,
+          serialize::thriftcompact::StringMap(
+              aclConfig.begin(), aclConfig.end()));
+    }
+
+    serialize::thriftcompact::put(out, fields);
     folly::writeFile(folly::ByteRange(out.data(), out.size()), path.c_str());
   }
 

@@ -101,6 +101,8 @@ const Family Family::batchDescriptors(
     [](auto& opts) { opts.OptimizeForPointLookup(10); },
     false);
 
+// Stores locations of fact batches
+
 #ifndef GLEAN_FACEBOOK
 namespace {
 rocksdb::Status openRocksDB(
