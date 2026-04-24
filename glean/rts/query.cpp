@@ -529,6 +529,27 @@ std::unique_ptr<QueryResults> QueryExecutor::finish(
   return res;
 }
 
+// Internal entry point that constructs a QueryExecutor, configures timeouts,
+// and runs the query subroutine. Supports both fresh queries and continuations
+// (via `iters` and `restart`).
+//
+// @param inventory      Predicate inventory (schema).
+// @param facts          Fact store to query against.
+// @param ownership      Standard derived-fact ownership tracker (may be null).
+// @param sub            Compiled query subroutine.
+// @param pid            Target predicate id.
+// @param traverse       Subroutine for nested-fact expansion (may be null).
+// @param maxResults     Max result count limit, if set.
+// @param maxBytes       Max result byte limit, if set.
+// @param maxTime        Max wall-clock time in nanoseconds, if set.
+// @param maxSetSize     Max intermediate set size, if set.
+// @param depth          Nested-fact expansion mode.
+// @param expandPids     Predicate ids eligible for nested expansion.
+// @param wantStats      Whether to collect per-predicate statistics.
+// @param iters          Pre-existing iterators (non-empty when resuming from a
+//                       continuation).
+// @param restart        Saved activation state to resume (nullopt for fresh
+//                       queries).
 std::unique_ptr<QueryResults> executeQuery(
     Inventory& inventory,
     Define& facts,
@@ -631,6 +652,23 @@ void interruptRunningQueries() {
   last_interrupt = Clock::now();
 }
 
+// Resume a query from a serialized continuation produced by a previous
+// execution. Deserializes the iterator state, subroutine activation, predicate
+// id, and traverse subroutine, then delegates to the internal executeQuery.
+//
+// @param inventory        Predicate inventory (schema).
+// @param facts            Fact store to query against.
+// @param ownership        Standard derived-fact ownership tracker (may be
+// null).
+// @param maxResults       Max result count limit, if set.
+// @param maxBytes         Max result byte limit, if set.
+// @param maxTime          Max wall-clock time in nanoseconds, if set.
+// @param maxSetSize       Max intermediate set size, if set.
+// @param depth            Nested-fact expansion mode.
+// @param expandPids       Predicate ids eligible for nested expansion.
+// @param wantStats        Whether to collect per-predicate statistics.
+// @param serializedCont   Pointer to the serialized continuation blob.
+// @param serializedContLen  Length in bytes of the continuation blob.
 std::unique_ptr<QueryResults> restartQuery(
     Inventory& inventory,
     Define& facts,

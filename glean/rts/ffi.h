@@ -518,6 +518,29 @@ uint64_t glean_get_ownership_compact_threshold(void);
 void glean_set_ownership_merge_cache_size(uint64_t size);
 uint64_t glean_get_ownership_merge_cache_size(void);
 
+// Get the first UsetId that is a composite (AND/OR) set, i.e. the boundary
+// between leaf UnitIds and compound ownership expressions.
+// All UsetIds below *result are leaf units (concrete, single file paths).
+// UsetIds at or above *result are composite sets built from AND/OR of leaves.
+// Returns NULL on success, or an error string on failure.
+const char* glean_computed_ownership_unit_count(
+    ComputedOwnership* own,
+    uint32_t* result);
+
+// Augment computed ownership with ACL constraints.
+// Each unit in the assignments list has a list of ACL levels.
+// Each level has a list of ACL group UsetIds (ORed together).
+// Levels are ANDed together to form CNF.
+// The resulting CNF is ANDed with each fact's existing owner.
+// Returns NULL on success, or an error string on failure.
+const char* glean_augment_ownership_with_acl(
+    ComputedOwnership* ownership,
+    const uint32_t* unit_ids,
+    const size_t* level_counts,
+    size_t num_units,
+    const size_t* group_counts,
+    const uint32_t* group_ids);
+
 #ifdef __cplusplus
 }
 }
