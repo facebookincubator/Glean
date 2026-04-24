@@ -137,6 +137,7 @@ struct Usets {
 
   Usets(Usets&& other) noexcept : firstId(other.firstId), nextId(other.nextId) {
     std::swap(usets, other.usets);
+    std::swap(idIndex_, other.idIndex_);
     stats = other.stats;
   }
   Usets(const Usets&) = delete;
@@ -273,7 +274,15 @@ struct Usets {
       // Bump the ref count so it outlives any transient users
       ++uset->refs;
       ++stats.promoted;
+      idIndex_.push_back(uset);
     }
+  }
+
+  Uset* FOLLY_NULLABLE lookupById(UsetId id) const {
+    if (id < firstId || id >= firstId + idIndex_.size()) {
+      return nullptr;
+    }
+    return idIndex_[id - firstId];
   }
 
   size_t size() const {
@@ -316,6 +325,9 @@ struct Usets {
     });
     other.usets
         .clear(); // ownership of the underlying sets has been transferred
+    idIndex_.insert(
+        idIndex_.end(), other.idIndex_.begin(), other.idIndex_.end());
+    other.idIndex_.clear();
     nextId = other.nextId;
   }
 
@@ -328,6 +340,7 @@ struct Usets {
 
  private:
   folly::F14FastSet<Uset*, Uset::Hash, Uset::Eq> usets;
+  std::vector<Uset*> idIndex_;
   Stats stats;
   const UsetId firstId;
   UsetId nextId;

@@ -470,6 +470,9 @@ class SetU32 {
   /// Append a new value which must be >= the largest value in the set
   void append(uint32_t value);
 
+  /// Append all blocks from [start, finish)
+  void append(const_iterator start, const_iterator finish);
+
   static SetU32 from(const std::set<uint32_t>& set) {
     SetU32 setu32;
     for (auto elt : set) {
@@ -477,18 +480,9 @@ class SetU32 {
     }
     return setu32;
   }
-
-  /**
-   * Merge two sets. If `right` is a subset of `left` or vice versa, returns a
-   * pointer to the superset. Otherwise, stores the result in `result` and
-   * returns a pointer to it.
-   */
-  static const SetU32*
-  merge(SetU32& result, const SetU32& left, const SetU32& right);
-
   template <typename F>
   void foreach(F&& f) const {
-    for (auto& block : *this) {
+    for (const auto& block : *this) {
       auto id = block.hdr.id() << 8;
       switch (block.hdr.type()) {
         case SetU32::Hdr::Sparse: {
@@ -527,14 +521,16 @@ class SetU32 {
   MutableEliasFanoList toEliasFano(uint32_t upper) const;
   static SetU32 fromEliasFano(const EliasFanoList& list);
 
+  /**
+   * Merge two sets. If `right` is a subset of `left` or vice versa, returns a
+   * pointer to the superset. Otherwise, stores the result in `result` and
+   * returns a pointer to it.
+   */
+  static const SetU32*
+  merge(SetU32& result, const SetU32& left, const SetU32& right);
+
   static void dump(SetU32&);
 
- private:
-  static bool fitsSparse(uint8_t m, uint8_t n) {
-    return int(m) + n < 32;
-  }
-
-  void append(const_iterator start, const_iterator finish);
   void append(uint32_t id, Bits256 w);
 
   void appendMerge(
@@ -543,6 +539,11 @@ class SetU32 {
       const_iterator right,
       const_iterator right_end);
   void appendMerge(Block left, Block right);
+
+ private:
+  static bool fitsSparse(uint8_t m, uint8_t n) {
+    return int(m) + n < 32;
+  }
 
   std::vector<Hdr> hdrs;
   std::vector<Bits256> dense;
