@@ -410,7 +410,7 @@ impl Env {
         Ok(())
     }
 
-    fn get_symbol_id(&mut self, symbol: &String, filepath: &str) -> Option<ScipId> {
+    fn get_symbol_id(&mut self, symbol: &str, filepath: &str) -> Option<ScipId> {
         let qualified_symbol = qualify_scip_symbol(symbol, filepath);
         self.get_def_fact_id(StringPredicate::Symbol, &qualified_symbol)
     }
