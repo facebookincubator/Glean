@@ -181,15 +181,41 @@ impl Env {
             .metadata(version, metadata.text_document_encoding.value(), tool_info);
     }
 
-    pub fn decode_scip_doc(
-        &mut self,
+    /// Determine a document's language: prefer the explicit `doc.language`,
+    /// then optionally infer from the file extension, then fall back to the
+    /// caller-supplied default. The filepath used for extension matching is
+    /// `doc.relative_path` — path-prefix adjustments performed elsewhere do
+    /// not affect extensions, so they are not relevant here.
+    fn infer_lang_for_doc(
+        &self,
         default_lang: Option<LanguageId>,
         infer_language: bool,
+        doc: &Document,
+    ) -> LanguageId {
+        LanguageId::new(&doc.language)
+            .known()
+            .or_else(|| {
+                if infer_language {
+                    self.file_language_of(&doc.relative_path)
+                } else {
+                    None
+                }
+            })
+            .or(default_lang)
+            .unwrap_or_default()
+    }
+
+    /// Compute the qualified filepath for a document: apply `strip_prefix` /
+    /// `path_prefix` adjustments, then normalize `..` components for
+    /// TypeScript paths. Returns `None` when a TypeScript path cannot be
+    /// normalized (e.g., too many `..` components) so the caller can skip
+    /// the document with the same semantics as before extraction.
+    fn qualified_filepath_for_doc(
+        lang: LanguageId,
         path_prefix: Option<&str>,
         strip_prefix: Option<&str>,
-        source_root: Option<&Path>,
-        mut doc: Document,
-    ) -> Result<()> {
+        doc: &Document,
+    ) -> Option<Box<str>> {
         let mut filepath = doc.relative_path.to_owned();
         if let Some(strip_prefix) = strip_prefix {
             filepath = filepath
@@ -201,37 +227,41 @@ impl Env {
             filepath = format!("{}{}", path_prefix, filepath);
         }
 
-        // Determine language early to conditionally normalize TypeScript paths
-        let lang = LanguageId::new(&doc.language)
-            .known()
-            .or_else(|| {
-                if infer_language {
-                    self.file_language_of(&filepath)
-                } else {
-                    None
-                }
-            })
-            .or(default_lang)
-            .unwrap_or_default();
-
         // Normalize paths for TypeScript files only
         // TODO T240234639: Remove once SCIP stops returning paths with ../
         if matches!(lang, LanguageId::TypeScript | LanguageId::TypeScriptReact) {
             match normalize_filepath(&filepath) {
                 Some(normalized) => filepath = normalized,
-                None => {
-                    // Cannot normalize path properly (e.g., too many .. components)
-                    // Log error and skip this document
-                    tracing::warn!(
-                        "Cannot normalize filepath '{}', will most likely break browser clients",
-                        filepath
-                    );
-                    return Ok(());
-                }
+                // Cannot normalize path properly (e.g., too many .. components);
+                // signal to the caller to skip this document.
+                None => return None,
             }
         }
 
-        let filepath = filepath.into_boxed_str();
+        Some(filepath.into_boxed_str())
+    }
+
+    pub fn decode_scip_doc(
+        &mut self,
+        default_lang: Option<LanguageId>,
+        infer_language: bool,
+        path_prefix: Option<&str>,
+        strip_prefix: Option<&str>,
+        source_root: Option<&Path>,
+        mut doc: Document,
+    ) -> Result<()> {
+        let lang = self.infer_lang_for_doc(default_lang, infer_language, &doc);
+        let Some(filepath) =
+            Self::qualified_filepath_for_doc(lang, path_prefix, strip_prefix, &doc)
+        else {
+            // Cannot normalize path properly (e.g., too many .. components)
+            // Log error and skip this document
+            tracing::warn!(
+                "Cannot normalize filepath '{}', will most likely break browser clients",
+                doc.relative_path,
+            );
+            return Ok(());
+        };
 
         // Skip files if the same file has already been seen.
         // Note that this differs from the Haskell version, which does not have this check.
