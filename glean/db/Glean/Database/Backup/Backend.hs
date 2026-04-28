@@ -15,9 +15,11 @@ module Glean.Database.Backup.Backend
 
 import Data.HashMap.Strict (HashMap)
 import Data.Text (Text)
+import Data.Unique (newUnique, hashUnique)
 import System.Directory (removeFile)
+import System.FilePath ((</>))
 import System.IO (Handle, IOMode(ReadMode), openBinaryFile)
-import System.IO.Temp (emptySystemTempFile)
+import System.IO.Temp (getCanonicalTemporaryDirectory)
 
 import Glean.Database.Meta
 import Glean.Types (Repo)
@@ -47,7 +49,9 @@ class Site a where
   restoreStream :: a -> Repo -> IO (Handle, IO Meta)
   -- default: falls back to file-based restore
   restoreStream site repo = do
-    tmpFile <- emptySystemTempFile "glean-restore"
+    tmpDir <- getCanonicalTemporaryDirectory
+    u <- newUnique
+    let tmpFile = tmpDir </> "glean-restore" <> show (hashUnique u)
     meta <- restore site repo tmpFile
     h <- openBinaryFile tmpFile ReadMode
     return (h, removeFile tmpFile >> return meta)
