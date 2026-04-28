@@ -1836,7 +1836,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/DUMMY."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -2090,7 +2090,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/BOL_BITS."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -2098,7 +2098,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/COLUMN_BITS."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -2106,7 +2106,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/DUMMY."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -2130,7 +2130,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/LINE_BITS."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -2138,7 +2138,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/MAX_BOL."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -2146,7 +2146,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/MAX_COLUMN."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -2154,7 +2154,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/MAX_LINE."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -2592,7 +2592,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]NONE."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -2976,7 +2976,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/DUMMY."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3054,7 +3054,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/BEGINNING_OF_LINE_INCREMENT_BITS."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3062,7 +3062,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/BEGINNING_OF_LINE_INCREMENT_OFFSET."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3070,7 +3070,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/DUMMY."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3078,7 +3078,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/LINE_NUMBER_INCREMENT_BITS."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3086,7 +3086,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/LINE_NUMBER_INCREMENT_OFFSET."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3094,7 +3094,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MASK."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3102,7 +3102,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_BEGINNING_OF_LINE_INCREMENT."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3110,7 +3110,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_LINE_NUMBER_INCREMENT."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3118,7 +3118,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_START_BEGINNING_OF_LINE."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3126,7 +3126,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_START_COLUMN_NUMBER."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3134,7 +3134,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_START_LINE_NUMBER."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3142,7 +3142,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_WIDTH."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3174,7 +3174,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_BEGINNING_OF_LINE_BITS."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3182,7 +3182,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_BEGINNING_OF_LINE_OFFSET."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3190,7 +3190,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_COLUMN_NUMBER_BITS."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3198,7 +3198,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_COLUMN_NUMBER_OFFSET."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3206,7 +3206,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_LINE_NUMBER_BITS."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3214,7 +3214,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_LINE_NUMBER_OFFSET."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3222,7 +3222,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/WIDTH_BITS."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3230,7 +3230,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/WIDTH_OFFSET."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {
@@ -3768,7 +3768,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]EMPTY."
       },
-      "kind": 12
+      "kind": 13
     }
   },
   {

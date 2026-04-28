@@ -21,6 +21,8 @@ use proto_rust::scip::Metadata;
 use proto_rust::scip::Occurrence;
 #[cfg(feature = "facebook")]
 use proto_rust::scip::SymbolInformation;
+#[cfg(feature = "facebook")]
+use proto_rust::scip::symbol_information;
 use scip_symbol::Descriptor;
 use scip_symbol::ScipSymbol;
 use scip_symbol::parse_scip_symbol;
@@ -39,6 +41,8 @@ use crate::proto::scip::Metadata;
 use crate::proto::scip::Occurrence;
 #[cfg(not(feature = "facebook"))]
 use crate::proto::scip::SymbolInformation;
+#[cfg(not(feature = "facebook"))]
+use crate::proto::scip::symbol_information;
 
 // Key used to distinguish different fact hashmaps in Env.
 // Would probably be more efficient to just use an array of hashmaps,
@@ -64,6 +68,14 @@ pub struct Env {
     unique: u64,
     fact_id: HashMap<StringPredicate, HashMap<Box<str>, ScipId>>,
     out: GleanJSONOutput,
+    /// Qualified-symbol → `SymbolKind` overrides sourced from
+    /// `SymbolInformation.kind` across every document in the SCIP index.
+    /// Populated up front by `register_kind_overrides_for_doc` so that
+    /// occurrences in document B can see overrides for symbols defined in
+    /// document A — without this, references to e.g. an `impl`-side `const`
+    /// fall back to the descriptor-derived kind and the same symbol ends up
+    /// with contradictory `scip.SymbolKind` facts.
+    kind_overrides: HashMap<Box<str>, SymbolKind>,
 }
 
 /// Normalize a filepath by removing .. and . components
@@ -126,6 +138,7 @@ impl Env {
             unique: 1,
             fact_id: HashMap::new(),
             out: GleanJSONOutput::default(),
+            kind_overrides: HashMap::new(),
         }
     }
 
@@ -239,6 +252,38 @@ impl Env {
         }
 
         Some(filepath.into_boxed_str())
+    }
+
+    /// Pre-pass: register the `SymbolInformation.kind` overrides for a single
+    /// document into `self.kind_overrides`. Must be called for every document
+    /// in the SCIP index *before* any call to `decode_scip_doc`, so that
+    /// occurrences in any document can see overrides for symbols defined in
+    /// any other document. See the field doc on `Env::kind_overrides`.
+    pub fn register_kind_overrides_for_doc(
+        &mut self,
+        default_lang: Option<LanguageId>,
+        infer_language: bool,
+        path_prefix: Option<&str>,
+        strip_prefix: Option<&str>,
+        doc: &Document,
+    ) {
+        let lang = self.infer_lang_for_doc(default_lang, infer_language, doc);
+        let Some(filepath) = Self::qualified_filepath_for_doc(lang, path_prefix, strip_prefix, doc)
+        else {
+            return;
+        };
+        for info in &doc.symbols {
+            if info.symbol.is_empty() {
+                continue;
+            }
+            let Ok(scip_kind) = info.kind.enum_value() else {
+                continue;
+            };
+            if let Some(kind) = scip_kind_to_symbol_kind(scip_kind) {
+                let key = qualify_scip_symbol(&info.symbol, &filepath);
+                self.kind_overrides.insert(key, kind);
+            }
+        }
     }
 
     pub fn decode_scip_doc(
@@ -392,8 +437,16 @@ impl Env {
             }
             self.out.symbol_name(symbol_id, name_id);
 
-            if let Some(last_descriptor) = descriptors.last() {
-                let kind = SymbolKind::new(last_descriptor.kind.clone());
+            // Prefer SymbolInformation.kind if it carries a specific value;
+            // fall back to the descriptor-derived kind.
+            let kind_from_info = info
+                .kind
+                .enum_value()
+                .ok()
+                .and_then(scip_kind_to_symbol_kind);
+            let kind = kind_from_info
+                .or_else(|| descriptors.last().map(|d| SymbolKind::new(d.kind.clone())));
+            if let Some(kind) = kind {
                 if kind != SymbolKind::SkUnknown {
                     self.out.symbol_kind(symbol_id, kind);
                 }
@@ -514,10 +567,11 @@ impl Env {
         filepath: &str,
     ) {
         let qualified_symbol = format!("{}/{}", filepath, local_symbol).into_boxed_str();
+        let kind_override = self.kind_overrides.get(&qualified_symbol).copied();
         let (symbol_id, seen_symbol) =
             self.get_or_set_fact(StringPredicate::Symbol, qualified_symbol.clone());
         if !seen_symbol {
-            self.out.symbol(symbol_id, qualified_symbol);
+            self.out.symbol(symbol_id, qualified_symbol.clone());
         }
         if sym_roles.has_def() {
             self.out.definition(symbol_id, file_range_id);
@@ -533,8 +587,11 @@ impl Env {
         }
         if !seen_symbol {
             self.out.symbol_name(symbol_id, name_id);
-            // TODO: this could be any SymbolInformation.kind
-            self.out.symbol_kind(symbol_id, SymbolKind::SkVariable);
+            // Prefer SymbolInformation.kind from doc.symbols when present;
+            // otherwise the local has no descriptor-derived kind to fall back
+            // to, so default to SkVariable as before.
+            let kind = kind_override.unwrap_or(SymbolKind::SkVariable);
+            self.out.symbol_kind(symbol_id, kind);
         }
     }
 
@@ -546,10 +603,11 @@ impl Env {
         descriptors: Vec<Descriptor>,
     ) {
         let scip_symbol = scip_symbol.into_boxed_str();
+        let kind_override = self.kind_overrides.get(&scip_symbol).copied();
         let (symbol_id, seen_symbol) =
             self.get_or_set_fact(StringPredicate::Symbol, scip_symbol.clone());
         if !seen_symbol {
-            self.out.symbol(symbol_id, scip_symbol);
+            self.out.symbol(symbol_id, scip_symbol.clone());
         }
         if sym_roles.has_def() {
             self.out.definition(symbol_id, file_range_id);
@@ -572,9 +630,13 @@ impl Env {
             self.out.symbol_name(symbol_id, name_id);
         }
 
-        // Use the last descriptor's kind for the symbol kind
-        if let Some(last_descriptor) = descriptors.last() {
-            let kind = SymbolKind::new(last_descriptor.kind.clone());
+        // Prefer SymbolInformation.kind when set; fall back to the
+        // descriptor-derived kind. This is what lets us distinguish e.g. Go
+        // `const` from `var` — both share the Term descriptor suffix and would
+        // otherwise both map to SkVariable.
+        let kind =
+            kind_override.or_else(|| descriptors.last().map(|d| SymbolKind::new(d.kind.clone())));
+        if let Some(kind) = kind {
             if kind != SymbolKind::SkUnknown {
                 self.out.symbol_kind(symbol_id, kind);
             }
@@ -586,6 +648,22 @@ struct SymbolRoleSet(i32);
 impl SymbolRoleSet {
     fn has_def(&self) -> bool {
         self.0 & (1 << 0) != 0
+    }
+}
+
+/// Convert a SCIP `SymbolInformation.Kind` to the local `SymbolKind`.
+///
+/// Returns `None` for `UnspecifiedKind` so callers can fall back to the
+/// descriptor-derived kind. Mapping is intentionally conservative — only
+/// kinds that have a clear analog in the local enum are handled, the rest
+/// also fall back to the descriptor-derived heuristic.
+fn scip_kind_to_symbol_kind(kind: symbol_information::Kind) -> Option<SymbolKind> {
+    use SymbolKind::*;
+    use symbol_information::Kind;
+    match kind {
+        Kind::Variable | Kind::StaticVariable | Kind::Value => Some(SkVariable),
+        Kind::Constant => Some(SkConstant),
+        _ => None,
     }
 }
 

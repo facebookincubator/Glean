@@ -122,7 +122,24 @@ fn decode_scip_data(
     if let Some(metadata) = scip_index.metadata.into_option() {
         env.decode_scip_metadata(metadata);
     }
-    for doc in scip_index.documents {
+
+    // Pre-pass: register every document's `SymbolInformation.kind` overrides
+    // before any document is decoded. Without this, an occurrence in document
+    // B referencing a symbol whose kind lives in document A would fall back to
+    // the descriptor-derived kind, which conflicts with the authoritative kind
+    // emitted when document A is processed — yielding two contradictory
+    // `scip.SymbolKind` facts for the same symbol.
+    let documents = scip_index.documents;
+    for doc in &documents {
+        env.register_kind_overrides_for_doc(
+            default_language,
+            infer_language,
+            path_prefix,
+            strip_prefix,
+            doc,
+        );
+    }
+    for doc in documents {
         env.decode_scip_doc(
             default_language,
             infer_language,
@@ -724,11 +741,10 @@ mod tests {
         assert!(has_doc, "Expected documentation from external_symbols");
     }
 
-    /// PINS CURRENT BROKEN BEHAVIOR. A Go-style global symbol whose
-    /// `info.kind = Constant` is currently ignored — the descriptor-derived
-    /// `SkVariable` from the Term suffix `.` wins, misclassifying all Go
-    /// consts as variables. The follow-up diff that wires `info.kind` into
-    /// the ingestor flips this assertion to `SymbolKind::SkConstant`.
+    /// A Go-style global symbol whose `info.kind = Constant` is emitted as
+    /// `SkConstant`, overriding the descriptor-derived `SkVariable` that the
+    /// Term suffix `.` would otherwise produce. This is the bug that
+    /// previously caused all Go consts to be misclassified as variables.
     #[test]
     fn test_symbol_kind_global_const_overrides_variable() {
         let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
@@ -764,12 +780,10 @@ mod tests {
 
         let kind = find_kind_for_symbol(&output, "MY_THING")
             .expect("expected scip.SymbolKind for MY_THING");
-        // Current (broken) behavior: descriptor-derived SkVariable wins.
-        // After the ingestor honors info.kind, this becomes SymbolKind::SkConstant.
         assert_eq!(
             kind,
-            SymbolKind::SkVariable as u64,
-            "Pinning current behavior: Go const currently misclassified as SkVariable, got {kind}"
+            SymbolKind::SkConstant as u64,
+            "Go const should be SkConstant, got {kind}"
         );
     }
 
@@ -813,10 +827,9 @@ mod tests {
         );
     }
 
-    /// PINS CURRENT BROKEN BEHAVIOR. Local symbols have no descriptor-
-    /// derived kind, so the ingestor falls back to the SkVariable default
-    /// even when `info.kind = Constant` is set on the SymbolInformation.
-    /// The follow-up diff flips this assertion to `SymbolKind::SkConstant`.
+    /// Local symbols have no descriptor-derived kind. The kind override map
+    /// must still apply, so a local with `info.kind = Constant` becomes
+    /// SkConstant rather than the SkVariable default.
     #[test]
     fn test_symbol_kind_local_const_override() {
         let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
@@ -853,12 +866,10 @@ mod tests {
         // Local symbols are namespaced by file path in the symbol fact key.
         let kind = find_kind_for_symbol(&output, "local 0")
             .expect("expected scip.SymbolKind for local symbol");
-        // Current (broken) behavior: locals always default to SkVariable.
-        // After the ingestor honors info.kind, this becomes SymbolKind::SkConstant.
         assert_eq!(
             kind,
-            SymbolKind::SkVariable as u64,
-            "Pinning current behavior: local with info.kind=Constant currently emitted as SkVariable, got {kind}"
+            SymbolKind::SkConstant as u64,
+            "Local with info.kind=Constant should be SkConstant, got {kind}"
         );
     }
 
@@ -1001,11 +1012,9 @@ mod tests {
         );
     }
 
-    /// PINS CURRENT BROKEN BEHAVIOR. External symbols with
-    /// `info.kind = Constant` currently fall to the descriptor-derived
-    /// `SkVariable` because `decode_external_symbol` does not consult
-    /// `info.kind`. The follow-up diff flips this assertion to
-    /// `SymbolKind::SkConstant`.
+    /// External symbols (no occurrence) with `info.kind = Constant` should
+    /// be emitted as SkConstant. Covers the `decode_external_symbol` path,
+    /// which has its own kind-resolution branch separate from occurrences.
     #[test]
     fn test_symbol_kind_external_const() {
         let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
@@ -1037,12 +1046,10 @@ mod tests {
 
         let kind = find_kind_for_symbol(&output, "SomeConst")
             .expect("expected scip.SymbolKind for external SomeConst");
-        // Current (broken) behavior: external descriptor wins over info.kind.
-        // After the ingestor honors info.kind, this becomes SymbolKind::SkConstant.
         assert_eq!(
             kind,
-            SymbolKind::SkVariable as u64,
-            "Pinning current behavior: external const currently emitted as SkVariable, got {kind}"
+            SymbolKind::SkConstant as u64,
+            "External const should be SkConstant, got {kind}"
         );
     }
 
@@ -1128,22 +1135,18 @@ mod tests {
         out
     }
 
-    /// Pin the pre-`SymbolInformation.kind`-honoring baseline for cross-doc
-    /// constant references. Without any `kind_overrides` mechanism, every
-    /// global occurrence falls back to the descriptor-derived kind: the
-    /// `SHARED.` suffix is a term descriptor, so both the defining
-    /// occurrence in doc A and the referencing occurrence in doc B emit
-    /// `SkVariable`. The two identical `(symbol, SkVariable)` facts dedupe to
-    /// one in Glean, so the symbol gets a single `SkVariable` kind.
-    ///
-    /// `info.kind = Constant` on doc A's `SymbolInformation` entry is
-    /// ignored because `decode_scip_info` doesn't emit kind facts at this
-    /// layer. The follow-up diff (the one that introduces
-    /// `Env::kind_overrides`) makes occurrences honor `SymbolInformation.kind`
-    /// across documents, at which point this assertion flips to expect
-    /// `vec![SkConstant]`.
+    /// Cross-document `SymbolInformation.kind` overrides must apply uniformly:
+    /// a global symbol defined in document A with `info.kind = Constant` and
+    /// referenced from a second document B should produce a *single*
+    /// `SymbolKind` fact (`SkConstant`) for that symbol, not one fact per
+    /// document. Pre-`Env::kind_overrides`, doc B's reference fell back to the
+    /// descriptor-derived `SkVariable` and the symbol ended up with two
+    /// contradictory kind facts — see the matching pinning test that landed
+    /// in D102345695 immediately below this commit, which expects the
+    /// pre-override `vec![SkVariable]` and is flipped here to `vec![SkConstant]`
+    /// in lockstep with the implementation change.
     #[test]
-    fn test_symbol_kind_cross_doc_constant_pre_kind_overrides() {
+    fn test_symbol_kind_cross_doc_constant_uses_global_override() {
         let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
         let output_json = NamedTempFile::new().expect("unable to create temp file");
 
@@ -1166,8 +1169,9 @@ mod tests {
         doc_a.symbols.push(info);
         index.documents.push(doc_a);
 
-        // Doc B only references SHARED — no SymbolInformation entry,
-        // so the descriptor heuristic is the sole source of kind here too.
+        // Doc B only references SHARED — no SymbolInformation entry. The
+        // override must still apply to its reference because the pre-pass
+        // populated `Env::kind_overrides` from every document up front.
         let mut doc_b = Document::new();
         doc_b.relative_path = "crate_b.rs".to_string();
         doc_b.language = "rust".to_string();
@@ -1190,10 +1194,10 @@ mod tests {
         let kinds = find_all_kinds_for_symbol(&output, "SHARED");
         assert_eq!(
             kinds,
-            vec![SymbolKind::SkVariable as u64],
-            "Without kind_overrides, cross-doc global emits descriptor-derived \
-             SkVariable from both occurrences; the follow-up fix flips this to \
-             vec![SkConstant] once info.kind is honored across documents"
+            vec![SymbolKind::SkConstant as u64],
+            "Cross-doc constant should emit a single SkConstant fact: doc_b's \
+             reference must see the kind override registered from doc_a, not \
+             fall back to the descriptor-derived SkVariable."
         );
     }
 }
