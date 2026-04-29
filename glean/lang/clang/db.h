@@ -297,7 +297,7 @@ class ClangDB {
     if (opts.ObjC) {
 #else
     // From
-    // https://our.internmc.facebook.com/intern/diffusion/OMEXTLLVMPROJECT/browse/toolchain%252Fdev/clang/lib/CodeGen/CGObjCGNU.cpp?lines=431
+    // https://www.internalfb.com/intern/diffusion/OMEXTLLVMPROJECT/browse/toolchain%252Fdev/clang/lib/CodeGen/CGObjCGNU.cpp?lines=431
     /// The version of the protocol class.  Used to differentiate between ObjC1
     /// and ObjC2 protocols.  Objective-C 1 protocols can not contain optional
     /// components and can not contain declared properties.  We always emit

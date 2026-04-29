@@ -25,7 +25,7 @@ buck run //glean/lang/java:write-to-glean -- \
 ```
 
 # The Indexer
-The indexer is implemented as a Java compiler plugin. During compilation, the indexer gets access to the compiler AST, traverses it, and extracts type information relevant to the [Java glean schema](https://our.internmc.facebook.com/intern/diffusion/FBS/browse/master/fbcode/glean/schema/source/java.angle). Glean index files are written to the output jar of the library and is extracted in a post processing step and written to Glean.
+The indexer is implemented as a Java compiler plugin. During compilation, the indexer gets access to the compiler AST, traverses it, and extracts type information relevant to the [Java glean schema](https://www.internalfb.com/code/fbsource/fbcode/glean/schema/source/java.alpha.angle). Glean index files are written to the output jar of the library and is extracted in a post processing step and written to Glean.
 
 The indexer implementation resides in `fbcode/glean/lang/java`.
 - `indexer/java` contains the Indexer source. `Indexer.java` is the entry point.
