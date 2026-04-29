@@ -188,6 +188,22 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "start": 209, "length": 30 },
+      "text": "-doc \"\"\"\u000aAdds two numbers\u000a\"\"\"."
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "key": {
+          "fqn": { "module": "example", "name": "add", "arity": 2 },
+          "file": {
+            "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+          },
+          "span": { "start": 283, "length": 23 }
+        }
+      },
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
       "span": { "start": 240, "length": 42 },
       "text": "```erlang\u000a-spec add(number(), number()) -> number().\u000a```"
     }
@@ -204,8 +220,40 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "start": 308, "length": 34 },
+      "text": "-doc \"\"\"\u000aCalculates factorial\u000a\"\"\"."
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "key": {
+          "fqn": { "module": "example", "name": "factorial", "arity": 1 },
+          "file": {
+            "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+          },
+          "span": { "start": 382, "length": 71 }
+        }
+      },
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
       "span": { "start": 343, "length": 38 },
       "text": "```erlang\u000a-spec factorial(number()) -> number().\u000a```"
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "key": {
+          "fqn": { "module": "example", "name": "hello", "arity": 1 },
+          "file": {
+            "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
+          },
+          "span": { "start": 149, "length": 58 }
+        }
+      },
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "start": 85, "length": 34 },
+      "text": "-doc \"This is the hello function\"."
     }
   },
   {
