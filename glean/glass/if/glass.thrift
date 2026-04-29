@@ -453,7 +453,8 @@ struct Annotation {
 // Visibility attributes
 @hack.Attributes{
   attributes = [
-    "\GraphQLEnum('GlassVisibility')",
+    "\GraphQLEnum('XFBGlassVisibility')",
+    "\GraphQLUnprefixedNamingScheme",
     "\SelfDescriptive",
     "\Oncalls('code_indexing')",
   ],
@@ -469,7 +470,8 @@ enum Visibility {
 // nb. upper case for thrift to graphql happiness
 @hack.Attributes{
   attributes = [
-    "\GraphQLEnum('GlassModifiers')",
+    "\GraphQLEnum('XFBGlassModifiers')",
+    "\GraphQLUnprefixedNamingScheme",
     "\SelfDescriptive",
     "\Oncalls('code_indexing')",
   ],
@@ -553,7 +555,8 @@ struct SearchContext {
 // tags for symbol kinds, so clients can distinguish them
 @hack.Attributes{
   attributes = [
-    "\GraphQLEnum('GlassSymbolKind')",
+    "\GraphQLEnum('XFBGlassSymbolKind')",
+    "\GraphQLUnprefixedNamingScheme",
     "\RelayFlowEnum",
     "\SelfDescriptive",
     "\Oncalls('code_indexing')",
@@ -598,7 +601,8 @@ enum SymbolKind {
 
 @hack.Attributes{
   attributes = [
-    "\GraphQLEnum('GlassLanguage')",
+    "\GraphQLEnum('XFBGlassLanguage')",
+    "\GraphQLUnprefixedNamingScheme",
     "\RelayFlowEnum",
     "\SelfDescriptive",
     "\Oncalls('code_indexing')",
@@ -639,7 +643,8 @@ enum Language {
 // Kinds of definitions. E.g. for jump-to-declaration or jump-to-definition
 @hack.Attributes{
   attributes = [
-    "\GraphQLEnum('GlassDefinitionKind')",
+    "\GraphQLEnum('XFBGlassDefinitionKind')",
+    "\GraphQLUnprefixedNamingScheme",
     "\SelfDescriptive",
     "\Oncalls('code_indexing')",
   ],
