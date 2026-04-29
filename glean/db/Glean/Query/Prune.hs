@@ -155,12 +155,12 @@ prune hasFacts (QueryWithInfo q _ gen t) = do
           Ref . MatchExt . Typed ty . TcElementsOfSet <$> prunePat x
         TcElementsUnresolved ty' x ->
           Ref . MatchExt . Typed ty . TcElementsUnresolved ty' <$> prunePat x
-        TcQueryGen q ->
-          Ref . MatchExt . Typed ty . TcQueryGen <$> pruneTcQuery q
+        TcWhere q ->
+          Ref . MatchExt . Typed ty . TcWhere <$> pruneTcQuery q
         -- we dont' want to handle negation here because if it tries to match
         -- against things that are not in the database it should succeed.
-        TcAll query ->
-          Ref . MatchExt . Typed ty . TcAll <$> pruneTcQuery query
+        TcAll p ->
+          Ref . MatchExt . Typed ty . TcAll <$> prunePat p
         TcNegation{} -> Just pat
         TcPrimCall op xs -> Ref . MatchExt . Typed ty . TcPrimCall op
           <$> traverse prunePat xs
@@ -240,9 +240,9 @@ renumberVars gen ty q =
     TcElementsOfArray x -> TcElementsOfArray <$> renamePat x
     TcElementsOfSet x -> TcElementsOfSet <$> renamePat x
     TcElementsUnresolved ty x -> TcElementsUnresolved ty <$> renamePat x
-    TcQueryGen q -> TcQueryGen <$> renameQuery q
-    TcAll query -> TcAll <$> renameQuery query
-    TcNegation xs -> TcNegation <$> traverse renameStmt xs
+    TcWhere q -> TcWhere <$> renameQuery q
+    TcAll p -> TcAll <$> renamePat p
+    TcNegation p -> TcNegation <$> renamePat p
     TcPrimCall op xs -> TcPrimCall op <$> traverse renamePat xs
     TcIf cond then_ else_ ->
       TcIf <$> traverse renamePat cond <*> renamePat then_ <*> renamePat else_
