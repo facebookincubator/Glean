@@ -42,7 +42,7 @@ genSchemaThrift
   -> Maybe Oncall
   -> [(FilePath, Text)]
 genSchemaThrift versionDir hash version preddefs typedefs oncall =
-  (dir </> "TARGETS",
+  (dir </> "BUCK",
     genTargets slashVn declsPerNamespace oncall) :
   [ ( dir </> Text.unpack (underscored namespaces) ++ ".thrift"
     , genNamespace slashVn namespaces version

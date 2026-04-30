@@ -547,7 +547,7 @@ genSchemaOCaml
   -> [(FilePath,Text)]
 genSchemaOCaml onlySchemas _version preddefs typedefs oncall =
   ( "dune", dune modules) :
-  ( "TARGETS", genTargets deps oncall) :
+  ( "BUCK", genTargets deps oncall) :
   ( "fact_id.ml", factIdMl) :
   ( "util.ml", utilMl) :
   [ (Text.unpack (nsToFileName namespaces),

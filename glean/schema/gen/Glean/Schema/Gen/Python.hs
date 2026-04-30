@@ -33,7 +33,7 @@ genSchemaPy
   -> Maybe Oncall
   -> [(FilePath,Text)]
 genSchemaPy _version preddefs typedefs oncall =
-  ( "py" </> "TARGETS", genTargets declsPerNamespace extraImports oncall):
+  ( "py" </> "BUCK", genTargets declsPerNamespace extraImports oncall):
   ( "py" </> "glean_schema_predicate.py", -- base class shared between schemas
   Text.unlines
   [ "# \x40generated"

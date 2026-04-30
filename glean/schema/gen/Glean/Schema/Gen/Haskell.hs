@@ -32,7 +32,7 @@ genSchemaHS
   -> Maybe Oncall
   -> [(FilePath,Text)]
 genSchemaHS _version preddefs typedefs oncall =
-  ("hs" </> "TARGETS", genTargets declsPerNamespace oncall) :
+  ("hs" </> "BUCK", genTargets declsPerNamespace oncall) :
   [ ("thrift" </> Text.unpack (underscored namespaces) <> "_include" <.> "hs",
       Text.intercalate (newline <> newline)
         (header namespaces deps : doGen preds types))
