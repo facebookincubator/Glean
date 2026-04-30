@@ -456,17 +456,21 @@ predicate DeclarationsByFile :
   stored {File, Span, D} where
   DeclarationLocation { declaration = D, file = File, span = Span }
 
-# Declaration-level reference graph: S references T if an xref to T
-# falls within S's source span.
+# Declaration-to-declaration reference, keyed by source.
+predicate DeclarationTarget :
+  {
+    source : Declaration,
+    target : Declaration,
+  }
+
+# Declaration-level reference graph, keyed by target.
+# Stored derivation from DeclarationTarget.
 predicate DeclarationReference :
   {
     target : Declaration,
-    source : Declaration
+    source : Declaration,
   }
-  { target = T, source = S } where
-  DeclarationUses {declaration=T, file=F, span=LittleSpan};
-  DeclarationsByFile {declaration=S, file=F, span=BigSpan};
-  src.ByteSpanContains {byteSpan=BigSpan, contains=LittleSpan}
+  stored { T, S } where DeclarationTarget { source = S, target = T }
 
 predicate NameLowerCase :
   {
