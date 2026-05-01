@@ -18,28 +18,6 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 34, "start": 308 },
-      "text": "-doc \"\"\"\u000aCalculates factorial\u000a\"\"\"."
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "erlang": {
-          "decl": {
-            "func": {
-              "key": {
-                "file": {
-                  "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
-                },
-                "fqn": { "arity": 1, "module": "example", "name": "factorial" },
-                "span": { "length": 71, "start": 382 }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
       "span": { "length": 38, "start": 343 },
       "text": "```erlang\u000a-spec factorial(number()) -> number().\u000a```"
     }
@@ -64,50 +42,6 @@
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
       "span": { "length": 28, "start": 120 },
       "text": "```erlang\u000a-spec hello(string()) -> ok.\u000a```"
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "erlang": {
-          "decl": {
-            "func": {
-              "key": {
-                "file": {
-                  "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
-                },
-                "fqn": { "arity": 1, "module": "example", "name": "hello" },
-                "span": { "length": 58, "start": 149 }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 34, "start": 85 },
-      "text": "-doc \"This is the hello function\"."
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "erlang": {
-          "decl": {
-            "func": {
-              "key": {
-                "file": {
-                  "key": "glean/lang/erlang/tests/cases/basic/src/example.erl"
-                },
-                "fqn": { "arity": 2, "module": "example", "name": "add" },
-                "span": { "length": 23, "start": 283 }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 30, "start": 209 },
-      "text": "-doc \"\"\"\u000aAdds two numbers\u000a\"\"\"."
     }
   },
   {
