@@ -30,6 +30,7 @@ CXX_SOURCES_glean_cpp_rts = \
     glean/rts/lookup.cpp \
     glean/rts/nat.cpp \
     glean/rts/ownership.cpp \
+    glean/rts/ownership/acl.cpp \
     glean/rts/ownership/derived.cpp \
     glean/rts/ownership/setu32.cpp \
     glean/rts/ownership/slice.cpp \
