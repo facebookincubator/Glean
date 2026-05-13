@@ -5,26 +5,19 @@
 
 [Glean home](https://glean.software) | [Documentation](https://glean.software/docs/introduction)
 
-Glean is a system for working with facts about source code. You can
-use it for:
+Glean is a system for working with facts about source code, typically:
+* information per symbol like their location, type, relationship to other symbols
+* cross-references like function or method calls
+* call hierarchies, type hierarchies, etc.
+
+You can use it for:
 
 * Collecting and storing detailed information about code
   structure. Glean is designed around an efficient storage model that
   enables storing information about code at scale.
 
 * Querying information about code, to power tools and experiences from
-  online IDE features to offline code analysis.
-
-## Status
-
-Glean is pre-release software. There are many rough edges; there are
-limited language indexers available initially; the build system is not as smooth
-as we would like. However, we want to make it available for you to experiment
-with and contribute to.
-
-We'd love to hear feedback! If you run into problems or have
-suggestions please file an
-[issue](https://github.com/facebookincubator/Glean/issues).
+  online IDE features to offline code analysis. Glean uses the Angle query language.
 
 ## Language coverage
 
@@ -34,6 +27,7 @@ There is currently full support for:
 * [Hack](https://glean.software/docs/indexer/hack)
 * [Haskell](https://glean.software/docs/indexer/haskell)
 * [JavaScript/Flow](https://glean.software/docs/indexer/flow)
+* [Python](https://glean.software/docs/indexer/python)
 
 We also support the [SCIP](https://github.com/sourcegraph/scip) or [LSIF](https://lsif.dev) code indexing formats, for:
 
@@ -54,6 +48,7 @@ yet; we hope to make these available in the future:
 * Thrift
 * Buck and Bazel
 * C#
+* Swift
 
 ## License
 
@@ -73,8 +68,12 @@ with Clang or GCC.
 
 ## How to contact the Glean team
 
+We'd love to hear feedback! If you run into problems or have suggestions please file an
+[issue](https://github.com/facebookincubator/Glean/issues).
+
 - Visit [the project GitHub repo](https://github.com/facebookincubator/Glean) to view the source code, open issues or pull requests.
 - Join the [Glean Discord server](https://discord.com/channels/280033776820813825/505370075402862594/808027763868827659). You can join the server via [this invitation](https://discord.gg/w3s6X6QAHZ).
+
 ## Building
 
 See [Building Glean](https://glean.software/docs/building).
