@@ -2,13 +2,13 @@
 <html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-indexer/cxx" data-has-hydrated="false">
 <head>
 <meta charset="UTF-8">
-<meta name="generator" content="Docusaurus v3.9.2">
+<meta name="generator" content="Docusaurus v3.10.1">
 <title data-rh="true">C++ and C | Glean</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://glean.software/docs/indexer/cxx/"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="C++ and C | Glean"><meta data-rh="true" name="description" content="The C++ indexer (&quot;the clang indexer&quot;) is a wrapper over"><meta data-rh="true" property="og:description" content="The C++ indexer (&quot;the clang indexer&quot;) is a wrapper over"><link data-rh="true" rel="icon" href="/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://glean.software/docs/indexer/cxx/"><link data-rh="true" rel="alternate" href="https://glean.software/docs/indexer/cxx/" hreflang="en"><link data-rh="true" rel="alternate" href="https://glean.software/docs/indexer/cxx/" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"C++ and C","item":"https://glean.software/docs/indexer/cxx"}]}</script><link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="Glean RSS Feed">
-<link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="Glean Atom Feed"><link rel="stylesheet" href="/assets/css/styles.0e9e5b55.css">
-<script src="/assets/js/runtime~main.1984af4b.js" defer="defer"></script>
-<script src="/assets/js/main.a3df419d.js" defer="defer"></script>
+<link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="Glean Atom Feed"><link rel="stylesheet" href="/assets/css/styles.f567ed28.css">
+<script src="/assets/js/runtime~main.d3edb67f.js" defer="defer"></script>
+<script src="/assets/js/main.0fba56b7.js" defer="defer"></script>
 </head>
-<body class="navigation-with-keyboard">
+<body>
 <svg style="display: none;"><defs>
 <symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
 </defs></svg>
@@ -40,11 +40,11 @@ versions may work.</p>
 <p>which computes derived facts on the result (e.g. find-references tables).</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="to-build-the-indexer">To build the indexer:<a href="#to-build-the-indexer" class="hash-link" aria-label="Direct link to To build the indexer:" title="Direct link to To build the indexer:" translate="no">​</a></h2>
 <p>The Clang indexer is currently not on Hackage, so you have to <a class="" href="/docs/building/#building-from-the-repository">build from the repository</a>.</p>
-<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">make glean-clang</span><br></span></code></pre></div></div>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#bfc7d5"><span class="token plain">make glean-clang</span><br></div></code></pre></div></div>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="run-the-indexer">Run the indexer<a href="#run-the-indexer" class="hash-link" aria-label="Direct link to Run the indexer" title="Direct link to Run the indexer" translate="no">​</a></h2>
 <p>Ensure that you have <a class="" href="/docs/building/">built and installed Glean</a> and
 the <code>glean</code> executable is on your <code>PATH</code>.</p>
-<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">glean index cpp-cmake DIR --indexer clang-index --deriver clang-derive --db-root DB --db NAME/INSTANCE</span><br></span></code></pre></div></div>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#bfc7d5"><span class="token plain">glean index cpp-cmake DIR --indexer clang-index --deriver clang-derive --db-root DB --db NAME/INSTANCE</span><br></div></code></pre></div></div>
 <p>where</p>
 <ul>
 <li class=""><code>DB</code> is the directory you want to store your Glean DBs</li>
@@ -54,7 +54,7 @@ the <code>glean</code> executable is on your <code>PATH</code>.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="in-the-shell">In the shell<a href="#in-the-shell" class="hash-link" aria-label="Direct link to In the shell" title="Direct link to In the shell" translate="no">​</a></h2>
 <p>C++ source in cmake projects can also be indexed directly from the
 <a class="" href="/docs/shell/">Glean shell</a>:</p>
-<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">:index cpp-cmake DIR</span><br></span></code></pre></div></div>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color:#bfc7d5"><span class="token plain">:index cpp-cmake DIR</span><br></div></code></pre></div></div>
 <p>Note that clang-index and clang-derive should be built and accessible in the
 PATH variable for this to succeed, or in the build tree.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="schema">Schema<a href="#schema" class="hash-link" aria-label="Direct link to Schema" title="Direct link to Schema" translate="no">​</a></h2>
