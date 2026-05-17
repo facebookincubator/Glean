@@ -2,14 +2,12 @@
   "@generated": null,
   "facts_searched": {
     "erlang.DeclarationsByFile.2": 19,
-    "erlang.MacroUsage.2": 2,
-    "erlang.MacroUsageLocation.2": 2,
-    "erlang.VarsByFileStart.2": 25,
-    "erlang.XRefsByFile.2": 2
+    "erlang.MacroUsagesByFile.2": 2,
+    "erlang.VarsByFileStart.2": 25
   },
   "full_scans": [
     "erlang.DeclarationsByFile.2",
-    "erlang.VarsByFileStart.2",
-    "erlang.XRefsByFile.2"
+    "erlang.MacroUsagesByFile.2",
+    "erlang.VarsByFileStart.2"
   ]
 }

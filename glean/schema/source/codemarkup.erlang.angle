@@ -142,22 +142,8 @@ predicate ErlangResolveLocation:
     );
     Entity = { decl = Declaration };
   ) | (
-    erlang.XRefsByFile { file = File, xrefs = XRefs };
-    { target = Decl, source = Span } = XRefs[..];
-    { macro_ = MacroDef } = Decl;
-    erlang.MacroDeclaration {
-      name = Name,
-      arity = MacroArity,
-      module = MacroModule,
-      app = App
-    } = MacroDef;
-    erlang.MacroUsage {
-      name = Name,
-      arity = MacroArity,
-      module = MacroModule,
-      app = App
-    } = Usage;
-    erlang.MacroUsageLocation { usage = Usage, file = File, span = Span };
+    erlang.MacroUsagesByFile { file = File, span = Span, usage = Usage };
+    erlang.MacroUsage { name = Name } = Usage;
     Entity = { macro_usage = Usage };
   ) | (
     { start = Start } = Span;
@@ -224,20 +210,19 @@ predicate ErlangFileEntityXRefLocations:
     { target = Decl, source = Span } = XRefs[..];
     erlang.DeclarationLocation { declaration = Decl, file = TargetFile, span = TargetSpan };
     (
-      { macro_ = MacroDef } = Decl;
-      erlang.MacroDeclaration {
+      { macro_ = erlang.MacroDeclaration {
         name = Name,
         arity = MacroArity,
         module = MacroModule,
         app = App
-      } = MacroDef;
+      } } = Decl;
+      erlang.MacroUsagesByFile { file = File, span = Span, usage = Usage };
       erlang.MacroUsage {
         name = Name,
         arity = MacroArity,
         module = MacroModule,
         app = App
       } = Usage;
-      erlang.MacroUsageLocation { usage = Usage, file = File, span = Span };
       Entity = { macro_usage = Usage };
     ) | (
       { func = { fqn = { name = Name } } } = Decl;

@@ -402,6 +402,16 @@ predicate MacroUsageLocation :
     span : src.ByteSpan,
   }
 
+# Exact macro usage location index keyed by file/span.
+predicate MacroUsagesByFile :
+  {
+    file : src.File,
+    span : src.ByteSpan,
+    usage : MacroUsage,
+  }
+  stored { File, Span, Usage } where
+  MacroUsageLocation { usage = Usage, file = File, span = Span }
+
 # Location for VarDeclaration (separate since they are not Declarations)
 predicate VarLocation :
   {

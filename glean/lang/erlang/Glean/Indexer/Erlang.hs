@@ -99,6 +99,7 @@ indexer = Indexer {
             , "erlang.SearchModuleByLowerCaseName.2"
             , "erlang.SearchMacroUsageByLowerCaseName.2"
             , "erlang.SearchVarByLowerCaseName.2"
+            , "erlang.MacroUsagesByFile.2"
             , "erlang.VarsByFileStart.2"
             ],
           extAllowNonZeroExit = False
