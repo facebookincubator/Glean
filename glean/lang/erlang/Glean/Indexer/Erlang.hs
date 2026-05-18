@@ -74,7 +74,6 @@ indexer = Indexer {
           extDerivePredicates =
             [ "erlang.CallbackImplementation.2"
             , "erlang.DeclarationReference.2"
-            , "erlang.DeclarationUses.1"
             , "erlang.DeclarationUses.2"
             , "erlang.DeclarationsByFile.2"
             , "erlang.NameLowerCase.2"
