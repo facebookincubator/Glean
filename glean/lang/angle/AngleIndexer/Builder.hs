@@ -11,8 +11,8 @@
 module AngleIndexer.Builder (buildFacts) where
 
 
-import Data.Maybe (mapMaybe)
-import Data.List (groupBy)
+import Data.Maybe (mapMaybe, listToMaybe)
+import Data.List (groupBy, find)
 import qualified Data.ByteString.Char8 as BC
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
@@ -56,7 +56,9 @@ buildFacts ProcessedSchema{..} fileinfos = do
       toDef = lookupQualRef resolvedSchemaMap
 
   schemas <- mapM (\sSchema -> do
-    let name = sourceRefName $ schemaName sSchema
+    let sRef = schemaName sSchema
+        name = sourceRefName sRef
+        sVer = sourceRefVersion sRef
         srcSpan = schemaSrcSpan sSchema
         -- we don't have import statements in ResolvedSchema,
         -- so we get them from SourceSchema but use resolved version
@@ -64,14 +66,21 @@ buildFacts ProcessedSchema{..} fileinfos = do
           SourceImport (SourceRef n v) s -> case v of
               Just v' -> Just $ ImportDecl n v' s
               Nothing -> case HashMap.lookup n resolvedSchemaMap of
-                Just resSchema -> Just $ ImportDecl n v' s
+                Just (resSchema:_) -> Just $ ImportDecl n v' s
                   where v' = resolvedSchemaVersion resSchema
-                Nothing -> fail $ "Couldn't find resolved schema: " <> show n
+                _ -> fail $ "Couldn't find resolved schema: " <> show n
           _ -> Nothing
           ) $ schemaDecls sSchema
     rSchema <- case HashMap.lookup name resolvedSchemaMap of
-      Just rSchema -> return rSchema
-      Nothing -> fail $ "Couldn't find resolved schema" <> show name
+      Just rSchemas ->
+        let match = case sVer of
+              Just v -> find (\s -> resolvedSchemaVersion s == v) rSchemas
+              Nothing -> listToMaybe rSchemas
+        in case match of
+          Just r -> return r
+          Nothing -> fail $ "Couldn't find resolved schema "
+            <> show name <> " version " <> show sVer
+      Nothing -> fail $ "Couldn't find resolved schema " <> show name
     (file, toBs) <- case HashMap.lookup name schemaFileInfoMap of
       Just SchemaFileInfo{..} -> return (filepath sourceFileInfo, toByteSpan)
       Nothing -> fail $ "Couldn't find file info for schema " <> show name

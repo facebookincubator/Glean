@@ -25,6 +25,7 @@ module AngleIndexer.Utils
 import qualified Data.ByteString as B
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
+import Data.Maybe (listToMaybe, mapMaybe)
 
 import Control.Exception ( throwIO, ErrorCall(ErrorCall) )
 import System.FilePath
@@ -82,9 +83,10 @@ toFileInfoMap fileInfos =
   HashMap.fromList $ map (\schemaInfo ->
     (name $ sourceFileInfo schemaInfo, schemaInfo)) fileInfos
 
-toResolvedSchemaMap :: ResolvedSchemas -> HashMap.HashMap Name ResolvedSchemaRef
-toResolvedSchemaMap schemas = HashMap.fromList $ map (\schema ->
-  (resolvedSchemaName schema, schema)) $ schemasResolved schemas
+toResolvedSchemaMap
+  :: ResolvedSchemas -> HashMap.HashMap Name [ResolvedSchemaRef]
+toResolvedSchemaMap schemas = HashMap.fromListWith (++) $ map (\schema ->
+  (resolvedSchemaName schema, [schema])) $ schemasResolved schemas
 
 fromSrcSpan :: Src.FileLines_key -> B.ByteString -> (SrcSpan -> Src.ByteSpan)
 fromSrcSpan filelineskey bytestr = do
@@ -110,20 +112,22 @@ qualRefToSchemaName name = do
     [] -> name -- we assume it's a schema name only (case for import refs)
     (_:xs) -> Text.intercalate "." (reverse xs)
 
-lookupQualRef :: HashMap.HashMap Name ResolvedSchemaRef -> Ref -> Maybe Def
+lookupQualRef :: HashMap.HashMap Name [ResolvedSchemaRef] -> Ref -> Maybe Def
 lookupQualRef schemas ref = do
   let schemaName = qualRefToSchemaName $ case ref of
         Pred pref -> predicateRef_name pref
         Ty tref -> typeRef_name tref
   case HashMap.lookup schemaName schemas of
-    Just ResolvedSchema{..} -> do
-      case ref of
-          Pred pref -> case HashMap.lookup pref resolvedSchemaPredicates of
-            Just p -> Just $ PredDef p
-            Nothing ->
-              PredDef <$> HashMap.lookup pref resolvedSchemaReExportedPredicates
-          Ty tref -> case HashMap.lookup tref resolvedSchemaTypes of
-            Just t -> Just $ TyDef t
-            Nothing ->
-              TyDef <$> HashMap.lookup tref resolvedSchemaReExportedTypes
+    Just schemaVersions ->
+      listToMaybe $ mapMaybe (lookupRefInSchema ref) schemaVersions
     _ -> Nothing
+
+lookupRefInSchema :: Ref -> ResolvedSchemaRef -> Maybe Def
+lookupRefInSchema ref ResolvedSchema{..} = case ref of
+  Pred pref -> case HashMap.lookup pref resolvedSchemaPredicates of
+    Just p -> Just $ PredDef p
+    Nothing ->
+      PredDef <$> HashMap.lookup pref resolvedSchemaReExportedPredicates
+  Ty tref -> case HashMap.lookup tref resolvedSchemaTypes of
+    Just t -> Just $ TyDef t
+    Nothing -> TyDef <$> HashMap.lookup tref resolvedSchemaReExportedTypes
