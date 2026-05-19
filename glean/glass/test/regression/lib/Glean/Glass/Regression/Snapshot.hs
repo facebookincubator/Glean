@@ -15,6 +15,7 @@
 module Glean.Glass.Regression.Snapshot (
     mainGlassSnapshot,
     mainGlassSnapshotGeneric,
+    mainGlassSnapshotGenericScm,
     mainGlassSnapshotXLang,
     Output, Getter
   ) where
@@ -57,7 +58,8 @@ import qualified Glean.Glass.Handler.Symbols as Glass
 import qualified Glean.Glass.Handler.Cxx as Glass
 import Glean.Glass.Types as Glass
 import Glean.Glass.Env as Glass ( Env )
-import Glean.Glass.Regression.Util as Glass ( withTestEnv )
+import Glean.Glass.Regression.Util as Glass ( withTestEnvScm )
+import Glean.Glass.SourceControl ( SourceControl, NilSourceControl(..) )
 import qualified Glean.Regression.Snapshot.Driver as Glean
 import qualified Glean.Glass.SymbolId as Glass
 import qualified Glean.Glass.SymbolId.Cxx.Parse as Cxx
@@ -118,7 +120,7 @@ mainGlassSnapshot
   -> IO ()
 mainGlassSnapshot testName testRoot indexer extras =
   mainGlassSnapshot_ testName testRoot
-    (Glean.driverFromIndexer indexer) extras
+    (Glean.driverFromIndexer indexer) (Some NilSourceControl) extras
 
 mainGlassSnapshotGeneric
   :: String
@@ -127,19 +129,37 @@ mainGlassSnapshotGeneric
   -> (Getter -> [Test])
   -> IO ()
 mainGlassSnapshotGeneric testName testRoot driver extras =
-  mainGlassSnapshot_ testName testRoot driver extras
+  mainGlassSnapshot_ testName testRoot driver (Some NilSourceControl) extras
+
+-- | Like 'mainGlassSnapshotGeneric' but accepts a custom 'SourceControl'
+-- shim. Use this when the code under test exercises source-control
+-- queries (e.g. 'getFileContentHash' or 'getFileLineDiff') and the
+-- default 'NilSourceControl' would short-circuit the path you want to
+-- cover. For example, the PerfWeb global-view code path requires a
+-- non-Nothing 'getFileContentHash' to surface any data at all.
+mainGlassSnapshotGenericScm
+  :: String
+  -> FilePath
+  -> Glean.Driver opts
+  -> Some SourceControl
+  -> (Getter -> [Test])
+  -> IO ()
+mainGlassSnapshotGenericScm testName testRoot driver scm extras =
+  mainGlassSnapshot_ testName testRoot driver scm extras
 
 mainGlassSnapshot_
   :: String
   -> FilePath
   -> Glean.Driver opts
+  -> Some SourceControl
   -> (Getter -> [Test])
   -> IO ()
-mainGlassSnapshot_ testName testRoot driver extras = do
+mainGlassSnapshot_ testName testRoot driver scm extras = do
   qs <- findQueries testRoot
   withOutput cfgOutput $ \temp ->
-    mainTestIndexGeneric driver configParser testName $ \snapConfig _ config _ get ->
-      TestList $ testAll snapConfig config temp qs get : extras get
+    mainTestIndexGeneric driver configParser testName $
+      \snapConfig _ config _ get ->
+        TestList $ testAll snapConfig config temp scm qs get : extras get
   where
     cfgOutput = Nothing
 
@@ -156,30 +176,48 @@ mainGlassSnapshotXLang testName testRoot driver indexer = do
   qs <- findQueries testRoot
   withOutput cfgOutput $ \temp ->
     mainTestIndexXlang driver indexer testName configParser $
-      \snapConfig config get -> TestList [testAll snapConfig config temp qs get]
+      \snapConfig config get ->
+        TestList [testAll snapConfig config temp (Some NilSourceControl)
+                          qs get]
   where
     cfgOutput = Nothing
 
     withOutput (Just out) f = f out
     withOutput Nothing f = withSystemTempDirectory testName f
 
-testAll :: SnapshotConfig -> Config -> FilePath -> Map.Map String FilePath -> Getter -> Test
-testAll snapConfig config outDir queries getter = TestList
-  [ mkTest snapConfig config getter name qfile outDir
+testAll
+  :: SnapshotConfig
+  -> Config
+  -> FilePath
+  -> Some SourceControl
+  -> Map.Map String FilePath
+  -> Getter
+  -> Test
+testAll snapConfig config outDir scm queries getter = TestList
+  [ mkTest snapConfig config getter scm name qfile outDir
   | (name, qfile) <- Map.toList queries
   ]
 
-mkTest :: SnapshotConfig -> Config -> Getter -> String -> FilePath -> FilePath -> Test
-mkTest SnapshotConfig{..} Config{..} get name qfile tempDir = TestLabel name $ TestCase $ do
-  query <- parseQuery qfile
-  let actual = tempDir </> replaceExtension (takeFileName qfile) "out"
-      expected = replaceExtension qfile "out"
-  (backend, _repo) <- get
-  Glass.withTestEnv backend $ \env -> do
-    evalQuery env qfile query actual
-    case cfgReplace of
-      Just _ -> copyFile actual expected
-      Nothing -> diff actual expected cfgIgnoreMatchingLines
+mkTest
+  :: SnapshotConfig
+  -> Config
+  -> Getter
+  -> Some SourceControl
+  -> String
+  -> FilePath
+  -> FilePath
+  -> Test
+mkTest SnapshotConfig{..} Config{..} get scm name qfile tempDir =
+  TestLabel name $ TestCase $ do
+    query <- parseQuery qfile
+    let actual = tempDir </> replaceExtension (takeFileName qfile) "out"
+        expected = replaceExtension qfile "out"
+    (backend, _repo) <- get
+    Glass.withTestEnvScm backend scm $ \env -> do
+      evalQuery env qfile query actual
+      case cfgReplace of
+        Just _ -> copyFile actual expected
+        Nothing -> diff actual expected cfgIgnoreMatchingLines
 
 
 evalQuery :: Glass.Env -> FilePath -> Query -> FilePath -> IO ()
