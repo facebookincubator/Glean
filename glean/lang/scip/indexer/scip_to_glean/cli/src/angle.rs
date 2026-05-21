@@ -24,10 +24,12 @@ use proto_rust::scip::SymbolInformation;
 #[cfg(feature = "facebook")]
 use proto_rust::scip::symbol_information;
 use scip_symbol::Descriptor;
+use scip_symbol::DescriptorKind;
 use scip_symbol::ScipSymbol;
 use scip_symbol::parse_scip_symbol;
 use serde::Serialize;
 
+use crate::GleanRange;
 use crate::ToolInfo;
 use crate::decode_scip_range;
 use crate::lsif::LanguageId;
@@ -76,6 +78,7 @@ pub struct Env {
     /// fall back to the descriptor-derived kind and the same symbol ends up
     /// with contradictory `scip.SymbolKind` facts.
     kind_overrides: HashMap<Box<str>, SymbolKind>,
+    go_line_directive_maps: HashMap<ScipId, GoLineDirectiveMap>,
 }
 
 /// Normalize a filepath by removing .. and . components
@@ -132,6 +135,213 @@ fn compute_file_lines(bytes: &[u8]) -> (Vec<u64>, bool, bool) {
     (lengths, ends_in_newline, has_unicode_or_tabs)
 }
 
+#[derive(Clone)]
+struct GoLineDirectiveMap {
+    source: Vec<u8>,
+    line_starts: Vec<usize>,
+    segments: Vec<GoLineDirectiveSegment>,
+}
+
+#[derive(Clone, Copy)]
+struct GoLineDirectiveSegment {
+    physical_start_line: u64,
+    physical_end_line: u64,
+    virtual_start_line: u64,
+}
+
+impl GoLineDirectiveMap {
+    fn from_source(bytes: &[u8]) -> Option<Self> {
+        let line_starts = Self::compute_line_starts(bytes);
+        let line_count = line_starts.len().saturating_sub(1) as u64;
+        let mut segments = Vec::new();
+        let mut open_segment = None;
+
+        for physical_line in 1..=line_count {
+            let line = Self::line_text_from(bytes, &line_starts, physical_line);
+            if let Some(virtual_start_line) = parse_go_line_directive(line) {
+                let prior_segment = open_segment.take();
+                if let Some((physical_start_line, prior_virtual_start_line)) = prior_segment {
+                    if physical_start_line < physical_line {
+                        segments.push(GoLineDirectiveSegment {
+                            physical_start_line,
+                            physical_end_line: physical_line,
+                            virtual_start_line: prior_virtual_start_line,
+                        });
+                    }
+                }
+                open_segment = Some((physical_line + 1, virtual_start_line));
+            }
+        }
+
+        if let Some((physical_start_line, virtual_start_line)) = open_segment {
+            if physical_start_line <= line_count {
+                segments.push(GoLineDirectiveSegment {
+                    physical_start_line,
+                    physical_end_line: line_count + 1,
+                    virtual_start_line,
+                });
+            }
+        }
+
+        if segments.is_empty() {
+            return None;
+        }
+
+        Some(Self {
+            source: bytes.to_vec(),
+            line_starts,
+            segments,
+        })
+    }
+
+    fn compute_line_starts(bytes: &[u8]) -> Vec<usize> {
+        if bytes.is_empty() {
+            return vec![0];
+        }
+
+        let mut line_starts = vec![0];
+        line_starts.extend(bytes.iter().enumerate().filter_map(|(idx, byte)| {
+            if *byte == b'\n' && idx + 1 < bytes.len() {
+                Some(idx + 1)
+            } else {
+                None
+            }
+        }));
+        line_starts.push(bytes.len());
+        line_starts
+    }
+
+    fn remap_range(&self, range: GleanRange, symbol_hint: Option<&str>) -> GleanRange {
+        let Some(segment) = self.choose_segment(range.line_begin, symbol_hint) else {
+            return range;
+        };
+        let Some(line_begin) = segment.physical_line_for(range.line_begin) else {
+            return range;
+        };
+        let Some(line_end) = segment.physical_line_for(range.line_end) else {
+            return range;
+        };
+
+        GleanRange {
+            line_begin,
+            line_end,
+            ..range
+        }
+    }
+
+    fn choose_segment(
+        &self,
+        virtual_line: u64,
+        symbol_hint: Option<&str>,
+    ) -> Option<GoLineDirectiveSegment> {
+        let candidates: Vec<_> = self
+            .segments
+            .iter()
+            .copied()
+            .filter(|segment| segment.contains_virtual_line(virtual_line))
+            .collect();
+
+        match candidates.as_slice() {
+            [] => None,
+            [segment] => Some(*segment),
+            _ => symbol_hint.and_then(|hint| {
+                candidates.into_iter().find(|segment| {
+                    segment
+                        .physical_line_for(virtual_line)
+                        .is_some_and(|line| self.physical_line_contains(line, hint))
+                })
+            }),
+        }
+    }
+
+    fn physical_line_contains(&self, physical_line: u64, needle: &str) -> bool {
+        if needle.is_empty() {
+            return false;
+        }
+
+        std::str::from_utf8(Self::line_text_from(
+            &self.source,
+            &self.line_starts,
+            physical_line,
+        ))
+        .is_ok_and(|line| line.contains(needle))
+    }
+
+    fn line_text_from<'a>(bytes: &'a [u8], line_starts: &[usize], line: u64) -> &'a [u8] {
+        if line == 0 {
+            return &[];
+        }
+
+        let line_idx = (line - 1) as usize;
+        if line_idx + 1 >= line_starts.len() {
+            return &[];
+        }
+
+        let start = line_starts[line_idx];
+        let mut end = line_starts[line_idx + 1];
+        while end > start && matches!(bytes[end - 1], b'\n' | b'\r') {
+            end -= 1;
+        }
+        &bytes[start..end]
+    }
+}
+
+impl GoLineDirectiveSegment {
+    fn contains_virtual_line(&self, virtual_line: u64) -> bool {
+        virtual_line >= self.virtual_start_line
+            && virtual_line < self.virtual_start_line + self.physical_line_count()
+    }
+
+    fn physical_line_for(&self, virtual_line: u64) -> Option<u64> {
+        if !self.contains_virtual_line(virtual_line) {
+            return None;
+        }
+        Some(self.physical_start_line + virtual_line - self.virtual_start_line)
+    }
+
+    fn physical_line_count(&self) -> u64 {
+        self.physical_end_line - self.physical_start_line
+    }
+}
+
+fn parse_go_line_directive(line: &[u8]) -> Option<u64> {
+    let line = trim_ascii(line);
+    let directive = if let Some(rest) = line.strip_prefix(b"//line ") {
+        rest
+    } else if let Some(rest) = line.strip_prefix(b"/*line ") {
+        trim_ascii(rest).strip_suffix(b"*/")?
+    } else {
+        return None;
+    };
+
+    let directive = std::str::from_utf8(trim_ascii(directive)).ok()?;
+    let mut parts = directive.rsplit(':');
+    let last = parts.next()?;
+    let before_last = parts.next()?;
+    let line_number = if last.parse::<u64>().is_ok() && before_last.parse::<u64>().is_ok() {
+        before_last
+    } else {
+        last
+    };
+
+    let line_number = line_number.parse::<u64>().ok()?;
+    (line_number > 0).then_some(line_number)
+}
+
+fn trim_ascii(bytes: &[u8]) -> &[u8] {
+    let mut start = 0;
+    let mut end = bytes.len();
+
+    while start < end && matches!(bytes[start], b' ' | b'\t' | b'\n' | b'\r') {
+        start += 1;
+    }
+    while end > start && matches!(bytes[end - 1], b' ' | b'\t' | b'\n' | b'\r') {
+        end -= 1;
+    }
+
+    &bytes[start..end]
+}
+
 impl Env {
     pub fn new() -> Self {
         Self {
@@ -139,6 +349,7 @@ impl Env {
             fact_id: HashMap::new(),
             out: GleanJSONOutput::default(),
             kind_overrides: HashMap::new(),
+            go_line_directive_maps: HashMap::new(),
         }
     }
 
@@ -326,21 +537,21 @@ impl Env {
         // symbols.
         let (src_file_id, already_seen) =
             self.get_or_set_fact(StringPredicate::File, filepath.clone());
+        let doc_text = std::mem::take(&mut doc.text);
+        let file_bytes: Option<Vec<u8>> = if !doc_text.is_empty() {
+            Some(doc_text.into_bytes())
+        } else if let Some(source_root) = source_root {
+            std::fs::read(source_root.join(&doc.relative_path)).ok()
+        } else {
+            None
+        };
         if !already_seen {
             self.out.src_file(src_file_id, filepath.clone());
 
             // Emit src.FileLines: prefer inline document text, fall back to
             // disk read. FileLines is per-file metadata; emit it once.
-            let doc_text = std::mem::take(&mut doc.text);
-            let file_bytes: Option<Vec<u8>> = if !doc_text.is_empty() {
-                Some(doc_text.into_bytes())
-            } else if let Some(source_root) = source_root {
-                std::fs::read(source_root.join(&doc.relative_path)).ok()
-            } else {
-                None
-            };
-            if let Some(bytes) = file_bytes {
-                let (lengths, ends_in_newline, has_unicode_or_tabs) = compute_file_lines(&bytes);
+            if let Some(bytes) = file_bytes.as_deref() {
+                let (lengths, ends_in_newline, has_unicode_or_tabs) = compute_file_lines(bytes);
                 self.out
                     .file_lines(src_file_id, lengths, ends_in_newline, has_unicode_or_tabs);
             }
@@ -348,6 +559,16 @@ impl Env {
             // file_lang is also per-file metadata; emit it once.
             let lang_file_id = self.next_id();
             self.out.file_lang(lang_file_id, src_file_id, lang);
+        }
+        let has_no_go_line_directive_map = !self.go_line_directive_maps.contains_key(&src_file_id);
+        let needs_go_line_directive_map =
+            matches!(lang, LanguageId::Go) && has_no_go_line_directive_map;
+        if needs_go_line_directive_map {
+            if let Some(bytes) = file_bytes.as_deref() {
+                if let Some(map) = GoLineDirectiveMap::from_source(bytes) {
+                    self.go_line_directive_maps.insert(src_file_id, map);
+                }
+            }
         }
 
         // Occurrences and SymbolInformation are additive across same-path
@@ -529,13 +750,17 @@ impl Env {
         filepath: &str,
         occ: Occurrence,
     ) -> Result<()> {
+        let symbol = parse_scip_symbol(&occ.symbol);
+        let symbol_hint = symbol_range_hint(&symbol);
+
         let file_range_id = self.next_id();
-        self.out.file_range(
-            file_range_id,
-            file_id,
-            decode_scip_range(&occ.range)?.unwrap(),
-        );
-        match decode_scip_range(&occ.enclosing_range)? {
+        let range = self
+            .decode_range_for_file(file_id, &occ.range, symbol_hint.as_deref())?
+            .unwrap();
+        self.out.file_range(file_range_id, file_id, range);
+        let enclosing_range =
+            self.decode_range_for_file(file_id, &occ.enclosing_range, symbol_hint.as_deref())?;
+        match enclosing_range {
             None => {}
             Some(enclosing_range) => {
                 let enclosing_file_range_id = self.next_id();
@@ -549,8 +774,6 @@ impl Env {
                 );
             }
         }
-
-        let symbol = parse_scip_symbol(&occ.symbol);
 
         match symbol {
             ScipSymbol::Local { id } => {
@@ -572,6 +795,23 @@ impl Env {
         }
 
         Ok(())
+    }
+
+    fn decode_range_for_file(
+        &self,
+        file_id: ScipId,
+        range: &[i32],
+        symbol_hint: Option<&str>,
+    ) -> Result<Option<GleanRange>> {
+        let Some(range) = decode_scip_range(range)? else {
+            return Ok(None);
+        };
+
+        Ok(Some(
+            self.go_line_directive_maps
+                .get(&file_id)
+                .map_or(range.clone(), |map| map.remap_range(range, symbol_hint)),
+        ))
     }
 
     fn decode_local_occurrence(
@@ -692,6 +932,21 @@ fn qualify_scip_symbol(symbol: &str, filepath: &str) -> Box<str> {
     match parse_scip_symbol(symbol) {
         ScipSymbol::Local { .. } => format!("{}/{}", filepath, symbol).into_boxed_str(),
         ScipSymbol::Global { .. } => symbol.to_owned().into_boxed_str(),
+    }
+}
+
+fn symbol_range_hint(symbol: &ScipSymbol) -> Option<String> {
+    match symbol {
+        ScipSymbol::Local { .. } => None,
+        ScipSymbol::Global { descriptors, .. } => descriptors
+            .iter()
+            .rev()
+            .find_map(|descriptor| match &descriptor.kind {
+                DescriptorKind::Namespace | DescriptorKind::Meta => None,
+                _ => Some(descriptor.name.as_str()),
+            })
+            .filter(|name| !name.is_empty() && *name != "_")
+            .map(str::to_owned),
     }
 }
 

@@ -581,7 +581,7 @@ mod tests {
     }
 
     #[test]
-    fn test_go_line_directives_preserve_virtual_ranges_for_generated_file() {
+    fn test_go_line_directives_remap_virtual_ranges_to_physical_lines() {
         let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
         let output_json = NamedTempFile::new().expect("unable to create temp file");
 
@@ -625,8 +625,8 @@ mod tests {
 
         assert_eq!(
             sorted_file_range_line_begins(&output),
-            vec![3, 3, 3, 3],
-            "current FileRange facts preserve both symbols' virtual line 3 coordinates"
+            vec![4, 4, 9, 9],
+            "both symbols reported virtual line 3, but FileRange facts should use their physical generated.go lines"
         );
     }
 
