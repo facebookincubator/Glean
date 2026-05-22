@@ -22,6 +22,7 @@ use protobuf::Message;
 use serde::Deserialize;
 use serde::Serialize;
 use tracing::info;
+use tracing::warn;
 
 #[cfg(not(feature = "facebook"))]
 mod proto {
@@ -139,15 +140,39 @@ fn decode_scip_data(
             doc,
         );
     }
+    let mut skipped_count: usize = 0;
     for doc in documents {
-        env.decode_scip_doc(
+        let doc_path = doc.relative_path.clone();
+        match env.decode_scip_doc(
             default_language,
             infer_language,
             path_prefix,
             strip_prefix,
             source_root,
             doc,
-        )?;
+        ) {
+            Ok(()) => {}
+            Err(e) => {
+                warn!("Skipping corrupted SCIP document `{}`: {:#}", doc_path, e);
+                skipped_count += 1;
+            }
+        }
+    }
+
+    if skipped_count > 0 {
+        info!(
+            "Skipped {} of {} documents due to errors",
+            skipped_count, num_docs
+        );
+    }
+
+    if num_docs > 0 && skipped_count * 2 > num_docs {
+        return Err(anyhow!(
+            "Aborting: {} of {} documents failed (>{} %)",
+            skipped_count,
+            num_docs,
+            50
+        ));
     }
 
     if !scip_index.external_symbols.is_empty() {
@@ -1450,6 +1475,159 @@ mod tests {
             symbols, 4,
             "expected one scip.Symbol per Document, got {}",
             symbols
+        );
+    }
+
+    /// Helper to create a valid SCIP document with a single definition occurrence.
+    fn make_valid_doc(path: &str, symbol: &str) -> Document {
+        let mut doc = Document::new();
+        doc.relative_path = path.to_string();
+        doc.language = "go".to_string();
+        let mut occ = ScipOccurrence::new();
+        occ.symbol = symbol.to_string();
+        occ.range = vec![0, 0, 10]; // valid 3-element range
+        occ.symbol_roles = 1; // Definition
+        doc.occurrences.push(occ);
+        doc
+    }
+
+    /// Helper to create a corrupted SCIP document whose occurrence has an
+    /// invalid range (1 element), which triggers `Err` from `decode_scip_doc`.
+    fn make_corrupted_doc(path: &str) -> Document {
+        let mut doc = Document::new();
+        doc.relative_path = path.to_string();
+        doc.language = "go".to_string();
+        let mut occ = ScipOccurrence::new();
+        occ.symbol = "scip-go gomod pkg 1.0 `pkg`/Bad.".to_string();
+        occ.range = vec![42]; // 1 element — invalid range
+        doc.occurrences.push(occ);
+        doc
+    }
+
+    /// A single corrupted document must not abort the entire conversion.
+    /// Facts from the valid document should still be emitted.
+    #[test]
+    fn test_error_isolation_skips_corrupted_document() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut index = Index::new();
+        index.documents.push(make_valid_doc(
+            "good.go",
+            "scip-go gomod pkg 1.0 `pkg`/Good.",
+        ));
+        index.documents.push(make_corrupted_doc("bad.go"));
+
+        write_scip_index_full(&mut scip_file, index);
+
+        build_json(build_args(
+            scip_file.path().to_path_buf(),
+            output_json.path().to_path_buf(),
+        ))
+        .expect("build_json should succeed despite one corrupted document");
+
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        // The valid document's symbol should still be present.
+        let symbol_facts = find_predicate_facts(&output, "scip.Symbol.1")
+            .expect("scip.Symbol.1 not found — valid document facts were lost");
+        let symbols = symbol_facts.as_array().expect("facts should be array");
+        let has_good = symbols
+            .iter()
+            .any(|f| f["key"].as_str().is_some_and(|s| s.contains("Good")));
+        assert!(
+            has_good,
+            "Valid document's symbol should be emitted despite corrupted sibling"
+        );
+    }
+
+    /// When more than 50% of documents are corrupted, the converter should
+    /// return an error — something is fundamentally wrong with the input.
+    #[test]
+    fn test_error_isolation_fails_above_50_percent() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut index = Index::new();
+        // 1 valid, 2 corrupted → 66% failure rate
+        index
+            .documents
+            .push(make_valid_doc("good.go", "scip-go gomod pkg 1.0 `pkg`/Ok."));
+        index.documents.push(make_corrupted_doc("bad1.go"));
+        index.documents.push(make_corrupted_doc("bad2.go"));
+
+        write_scip_index_full(&mut scip_file, index);
+
+        let result = build_json(build_args(
+            scip_file.path().to_path_buf(),
+            output_json.path().to_path_buf(),
+        ));
+        assert!(
+            result.is_err(),
+            "Should fail when >50% of documents are corrupted"
+        );
+        let err_msg = format!("{}", result.unwrap_err());
+        assert!(
+            err_msg.contains("2 of 3"),
+            "Error message should report skip count: {err_msg}"
+        );
+    }
+
+    /// At exactly 50% failure rate (1 of 2), the converter should still
+    /// succeed — the threshold is strictly greater than 50%.
+    #[test]
+    fn test_error_isolation_succeeds_at_50_percent() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut index = Index::new();
+        // 1 valid, 1 corrupted → exactly 50%
+        index.documents.push(make_valid_doc(
+            "good.go",
+            "scip-go gomod pkg 1.0 `pkg`/Half.",
+        ));
+        index.documents.push(make_corrupted_doc("bad.go"));
+
+        write_scip_index_full(&mut scip_file, index);
+
+        build_json(build_args(
+            scip_file.path().to_path_buf(),
+            output_json.path().to_path_buf(),
+        ))
+        .expect("Should succeed at exactly 50% failure rate");
+    }
+
+    /// All documents valid — zero skips, no error, all facts emitted.
+    #[test]
+    fn test_error_isolation_no_errors() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut index = Index::new();
+        index
+            .documents
+            .push(make_valid_doc("a.go", "scip-go gomod pkg 1.0 `pkg`/Alpha."));
+        index
+            .documents
+            .push(make_valid_doc("b.go", "scip-go gomod pkg 1.0 `pkg`/Beta."));
+
+        write_scip_index_full(&mut scip_file, index);
+
+        build_json(build_args(
+            scip_file.path().to_path_buf(),
+            output_json.path().to_path_buf(),
+        ))
+        .expect("Should succeed with no corrupted documents");
+
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        let symbol_facts =
+            find_predicate_facts(&output, "scip.Symbol.1").expect("scip.Symbol.1 not found");
+        let symbols = symbol_facts.as_array().expect("facts should be array");
+        assert_eq!(
+            symbols.len(),
+            2,
+            "Both documents' symbols should be emitted"
         );
     }
 }
