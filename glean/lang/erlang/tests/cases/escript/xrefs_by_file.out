@@ -1,0 +1,54 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "src/example.erl" },
+      "xrefs": [
+        {
+          "target": {
+            "func": {
+              "key": {
+                "fqn": { "module": "example", "name": "main", "arity": 0 },
+                "app": "escript"
+              }
+            }
+          },
+          "source": { "start": 27, "length": 6 }
+        },
+        {
+          "target": {
+            "func": {
+              "key": {
+                "fqn": { "module": "example", "name": "helper", "arity": 0 },
+                "app": "escript"
+              }
+            }
+          },
+          "source": { "start": 48, "length": 6 }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/example.escript" },
+      "xrefs": [
+        {
+          "target": {
+            "func": {
+              "key": {
+                "fqn": {
+                  "module": "example.escript",
+                  "name": "helper",
+                  "arity": 0
+                },
+                "app": "escript"
+              }
+            }
+          },
+          "source": { "start": 61, "length": 6 }
+        }
+      ]
+    }
+  }
+]

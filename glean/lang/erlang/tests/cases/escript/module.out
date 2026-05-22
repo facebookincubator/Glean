@@ -1,0 +1,17 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "src/example.erl" },
+      "name": "example",
+      "app": "escript"
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/example.escript" },
+      "name": "example.escript",
+      "app": "escript"
+    }
+  }
+]

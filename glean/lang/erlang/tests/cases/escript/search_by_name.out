@@ -1,0 +1,87 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "example",
+      "decl": {
+        "module_": {
+          "key": {
+            "file": { "key": "src/example.erl" },
+            "name": "example",
+            "app": "escript"
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "example.escript",
+      "decl": {
+        "module_": {
+          "key": {
+            "file": { "key": "src/example.escript" },
+            "name": "example.escript",
+            "app": "escript"
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "helper",
+      "decl": {
+        "func": {
+          "key": {
+            "fqn": { "module": "example", "name": "helper", "arity": 0 },
+            "app": "escript"
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "helper",
+      "decl": {
+        "func": {
+          "key": {
+            "fqn": {
+              "module": "example.escript",
+              "name": "helper",
+              "arity": 0
+            },
+            "app": "escript"
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "main",
+      "decl": {
+        "func": {
+          "key": {
+            "fqn": { "module": "example", "name": "main", "arity": 0 },
+            "app": "escript"
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "main",
+      "decl": {
+        "func": {
+          "key": {
+            "fqn": { "module": "example.escript", "name": "main", "arity": 1 },
+            "app": "escript"
+          }
+        }
+      }
+    }
+  }
+]

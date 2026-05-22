@@ -1,0 +1,11 @@
+{
+    "apps": [
+        {
+            "name": "escript",
+            "dir": ".",
+            "src_dirs": ["src"],
+            "include_dirs": []
+        }
+    ],
+    "deps": []
+}

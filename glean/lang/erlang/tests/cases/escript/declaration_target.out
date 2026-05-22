@@ -1,0 +1,47 @@
+[
+  "@generated",
+  {
+    "key": {
+      "source": {
+        "func": {
+          "key": {
+            "fqn": { "module": "example", "name": "main", "arity": 0 },
+            "app": "escript"
+          }
+        }
+      },
+      "target": {
+        "func": {
+          "key": {
+            "fqn": { "module": "example", "name": "helper", "arity": 0 },
+            "app": "escript"
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "func": {
+          "key": {
+            "fqn": { "module": "example.escript", "name": "main", "arity": 1 },
+            "app": "escript"
+          }
+        }
+      },
+      "target": {
+        "func": {
+          "key": {
+            "fqn": {
+              "module": "example.escript",
+              "name": "helper",
+              "arity": 0
+            },
+            "app": "escript"
+          }
+        }
+      }
+    }
+  }
+]
