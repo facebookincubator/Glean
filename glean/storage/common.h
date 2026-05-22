@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <fmt/core.h>
 #include <glean/rts/ownership/uset.h>
 #include "glean/rts/binary.h"
 #include "glean/rts/timer.h"
@@ -909,7 +910,7 @@ void DatabaseCommon<C>::FactOwnerCache::enable(C& container) {
             index.resize(num);
             const UsetId* start = reinterpret_cast<const UsetId*>(val.data());
             std::copy(start, start + num, index.data());
-            VLOG(1) << folly::sformat("owner cache index: {} entries", num);
+            VLOG(1) << fmt::format("owner cache index: {} entries", num);
           })) {
     LOG(WARNING) << "cannot enable cache; missing INDEX";
     // assume this is an old DB without factOwnerPages, we'll fall back
@@ -1101,7 +1102,7 @@ void DatabaseCommon<C>::FactOwnerCache::prepare(C& container) {
     if (set == INVALID_USET && id > prev) {
       // track the number of orphaned facts
       orphaned += id - prev;
-      VLOG(2) << folly::sformat("orphaned fact(s) {}-{}", prev, id - 1);
+      VLOG(2) << fmt::format("orphaned fact(s) {}-{}", prev, id - 1);
     }
 
     binary::Input val(iter.value());

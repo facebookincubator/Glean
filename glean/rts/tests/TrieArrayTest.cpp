@@ -94,10 +94,10 @@ struct Arbitrary<Data> {
 
 TrieArray<Uset> createTrieFromData(const std::vector<UnitData>& data) {
   TrieArray<Uset> utrie;
-  LOG(INFO) << folly::sformat("data size: {}", data.size());
+  LOG(INFO) << fmt::format("data size: {}", data.size());
   for (const auto& d : data) {
     for (auto& ids : d.ids) {
-      VLOG(1) << folly::sformat("{}-{}", ids.start, ids.finish);
+      VLOG(1) << fmt::format("{}-{}", ids.start, ids.finish);
     }
     utrie.insert(
         d.ids.data(),
@@ -105,7 +105,7 @@ TrieArray<Uset> createTrieFromData(const std::vector<UnitData>& data) {
         [&](Uset* FOLLY_NULLABLE prev, uint32_t refs) {
           if (prev != nullptr) {
             assert(prev->refs > 0);
-            VLOG(1) << folly::sformat(
+            VLOG(1) << fmt::format(
                 "unit {} prev->refs {}, refs {}", d.unit, prev->refs, refs);
             if (prev->refs == refs) {
               // Do an in-place append if possible (determined via reference
@@ -121,7 +121,7 @@ TrieArray<Uset> createTrieFromData(const std::vector<UnitData>& data) {
               return entry.release();
             }
           } else {
-            VLOG(1) << folly::sformat(
+            VLOG(1) << fmt::format(
                 "unit {} prev == nullptr, refs {}", d.unit, refs);
             auto entry = std::make_unique<Uset>(SetU32(), refs);
             entry->exp.set.append(d.unit);

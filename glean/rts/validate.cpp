@@ -9,6 +9,7 @@
 #include "glean/rts/validate.h"
 #include "glean/rts/binary.h"
 
+#include <fmt/core.h>
 #include <future>
 #include <mutex>
 #include <vector>
@@ -25,7 +26,7 @@ struct Fail {
   template <class... Args>
   void operator()(std::string fmt, Args&&... args) {
     has_err.store(true);
-    rts::error(fmt, std::forward<Args>(args)...);
+    rts::error(fmt::format(fmt::runtime(fmt), std::forward<Args>(args)...));
   }
 
   operator bool() {

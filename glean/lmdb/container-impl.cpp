@@ -94,7 +94,7 @@ ContainerImpl::ContainerImpl(const std::string& path, Mode m)
   };
 
   key_size = mdb_env_get_maxkeysize(db_ptr);
-  LOG(INFO) << folly::sformat("max key size: {}", key_size);
+  LOG(INFO) << fmt::format("max key size: {}", key_size);
 
   // open each subdb. Names and flags come from Family::families
 

@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <fmt/core.h>
 #include <folly/container/F14Map.h>
 #include <glog/logging.h>
 #include "glean/rts/error.h"
@@ -196,7 +197,7 @@ class TrieArray {
           minkey_,
           maxkey_);
     }
-    VLOG(1) << folly::sformat(
+    VLOG(1) << fmt::format(
         "flatten: ({},{}) ({},{})", start, end, minkey_, maxkey_);
 
     // If there's no data in the tree, just return an empty result instead of

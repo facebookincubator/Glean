@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <folly/Format.h>
+#include <fmt/core.h>
 #include <string>
 
 namespace facebook {
@@ -17,10 +17,14 @@ namespace rts {
 
 [[noreturn]] void raiseError(const std::string& msg);
 
+[[noreturn]] inline std::string error(const std::string& msg) {
+  raiseError(msg);
+}
+
 template <class... Args>
 [[noreturn]]
-inline std::string error(folly::StringPiece fmt, Args&&... args) {
-  raiseError(folly::sformat(fmt, std::forward<Args>(args)...));
+inline std::string error(fmt::format_string<Args...> fmt, Args&&... args) {
+  raiseError(fmt::format(fmt, std::forward<Args>(args)...));
 }
 
 } // namespace rts

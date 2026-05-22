@@ -7,6 +7,7 @@
  */
 
 #include <boost/dynamic_bitset.hpp>
+#include <fmt/core.h>
 #include <algorithm>
 
 #include "glean/rts/ownership/slice.h"
@@ -36,7 +37,7 @@ std::unique_ptr<Slice> slice(
 
   auto p = iter->sizes();
   auto first = p.first, size = p.second;
-  VLOG(1) << folly::sformat(
+  VLOG(1) << fmt::format(
       "slice: first={}, size={}, base.first={}, base.end={}, units.size={}",
       first,
       size,
@@ -62,11 +63,11 @@ std::unique_ptr<Slice> slice(
     do {
       it = std::lower_bound(it, units.end(), reader.value());
       if (it == units.end() || reader.value() != *it) {
-        VLOG(5) << folly::sformat("isSubset: {} not in set", reader.value());
+        VLOG(5) << fmt::format("isSubset: {} not in set", reader.value());
         // owned by a unit not in the set
         return false;
       }
-      VLOG(5) << folly::sformat("isSubset: {} in set", reader.value());
+      VLOG(5) << fmt::format("isSubset: {} in set", reader.value());
       // reader.value() == *it; advance both
       it++;
     } while (reader.next() && reader.value() < first);
@@ -92,11 +93,10 @@ std::unique_ptr<Slice> slice(
         }
       }
       if (reader.value() == unit) {
-        VLOG(5) << folly::sformat(
-            "emptyIntersection: {} in set", reader.value());
+        VLOG(5) << fmt::format("emptyIntersection: {} in set", reader.value());
         return false;
       }
-      VLOG(5) << folly::sformat(
+      VLOG(5) << fmt::format(
           "emptyIntersection: {} not in set", reader.value());
     } while (reader.value() < first);
     return true;
@@ -116,10 +116,10 @@ std::unique_ptr<Slice> slice(
         return false;
       }
       if (base.visible(reader.value())) {
-        VLOG(5) << folly::sformat("orVisibleBase: visible({})", reader.value());
+        VLOG(5) << fmt::format("orVisibleBase: visible({})", reader.value());
         return true;
       }
-      VLOG(5) << folly::sformat("orVisibleBase: invisible({})", reader.value());
+      VLOG(5) << fmt::format("orVisibleBase: invisible({})", reader.value());
     } while (reader.next());
     return false;
   };
@@ -135,10 +135,10 @@ std::unique_ptr<Slice> slice(
     }
     do {
       if (members[reader.value() - first]) {
-        VLOG(5) << folly::sformat("orVisible: visible({})", reader.value());
+        VLOG(5) << fmt::format("orVisible: visible({})", reader.value());
         return true;
       }
-      VLOG(5) << folly::sformat("orVisible: invisible({})", reader.value());
+      VLOG(5) << fmt::format("orVisible: invisible({})", reader.value());
     } while (reader.next());
     return false;
   };
@@ -157,11 +157,10 @@ std::unique_ptr<Slice> slice(
         return true;
       }
       if (!base.visible(reader.value())) {
-        VLOG(5) << folly::sformat(
-            "andVisibleBase: invisible({})", reader.value());
+        VLOG(5) << fmt::format("andVisibleBase: invisible({})", reader.value());
         return false;
       }
-      VLOG(5) << folly::sformat("andVisibleBase: visible({})", reader.value());
+      VLOG(5) << fmt::format("andVisibleBase: visible({})", reader.value());
     } while (reader.next());
     return true;
   };
@@ -177,10 +176,10 @@ std::unique_ptr<Slice> slice(
     }
     do {
       if (!members[reader.value() - first]) {
-        VLOG(5) << folly::sformat("andVisible: invisible({})", reader.value());
+        VLOG(5) << fmt::format("andVisible: invisible({})", reader.value());
         return false;
       }
-      VLOG(5) << folly::sformat("andVisible: visible({})", reader.value());
+      VLOG(5) << fmt::format("andVisible: visible({})", reader.value());
     } while (reader.next());
     return true;
   };

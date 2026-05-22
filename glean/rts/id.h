@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <folly/Format.h>
+#include <fmt/core.h>
 #include <folly/Hash.h>
 #include <folly/container/HeterogeneousAccess.h>
 
@@ -152,22 +152,18 @@ using Id = WordId<Fid_tag>;
 } // namespace glean
 } // namespace facebook
 
-namespace folly {
+namespace fmt {
 
 template <typename T>
-class FormatValue<facebook::glean::rts::WordId<T>> {
- public:
-  facebook::glean::rts::WordId<T> id;
-
-  explicit FormatValue(facebook::glean::rts::WordId<T> i) : id(i) {}
-
-  template <class Callback>
-  void format(FormatArg& arg, Callback& cb) const {
-    return FormatValue<typename facebook::glean::rts::WordId<T>::word_type>(
-               id.toWord())
-        .format(arg, cb);
+struct formatter<facebook::glean::rts::WordId<T>> : formatter<uint64_t> {
+  auto format(facebook::glean::rts::WordId<T> id, format_context& ctx) const {
+    return formatter<uint64_t>::format(id.toWord(), ctx);
   }
 };
+
+} // namespace fmt
+
+namespace folly {
 
 template <typename T>
 struct hasher<facebook::glean::rts::WordId<T>> {

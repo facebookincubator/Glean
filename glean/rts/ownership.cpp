@@ -20,6 +20,7 @@
 #include "glean/rts/ownership/fallbackavx.h"
 #endif
 
+#include <fmt/core.h>
 #include <folly/MPMCQueue.h>
 #include <folly/container/F14Map.h>
 #include <folly/container/F14Set.h>
@@ -261,13 +262,13 @@ FOLLY_NOINLINE void completeOwnership(
     }
 
     void dump() {
-      VLOG(1) << folly::sformat(
+      VLOG(1) << fmt::format(
           "UsetsMergeCache: {} hits, {} misses, hit rate: {:.2f}%",
           mergeStats.hits,
           mergeStats.misses,
           mergeStats.hitRate());
       auto ustats = usets.statistics();
-      VLOG(1) << folly::sformat(
+      VLOG(1) << fmt::format(
           "{} of {} facts ({} visited in base DBs), {} usets, {} promoted, {} bytes, {} adds, {} dups",
           owned_facts,
           local_facts + base_facts,
@@ -402,7 +403,7 @@ FOLLY_NOINLINE void completeOwnership(
     Id last = lookup.firstFreeId() - 1;
     uint64_t first = pageOf(start);
     for (uint64_t page = pageOf(last);; page -= pageSize) {
-      VLOG(1) << folly::sformat("fetching page: {}", page);
+      VLOG(1) << fmt::format("fetching page: {}", page);
       queue.blockingWrite(fetchPage(
           (page == first) ? start : Id::fromWord(page),
           Id::fromWord(page + pageSize)));
@@ -552,7 +553,7 @@ std::unique_ptr<ComputedOwnership> computeOwnership(
   for (auto& pr : order) {
     auto id = Id::fromWord(pr.first);
     auto usetid = pr.second->id;
-    VLOG(5) << folly::sformat("sparse owner: {} -> {}", id.toWord(), usetid);
+    VLOG(5) << fmt::format("sparse owner: {} -> {}", id.toWord(), usetid);
     if (id != prev + 1 || current != usetid) {
       if (id != prev + 1) {
         factOwners.emplace_back(prev + 1, INVALID_USET);

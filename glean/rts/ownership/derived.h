@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <map>
+
 #include "glean/rts/ownership.h"
 #include "glean/rts/substitution.h"
 

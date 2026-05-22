@@ -9,6 +9,7 @@
 #include "glean/rocksdb/database-impl.h"
 #include "glean/rocksdb/container-impl.h"
 
+#include <fmt/core.h>
 #include "glean/rts/timer.h"
 
 namespace facebook {
@@ -91,7 +92,7 @@ DatabaseImpl::DatabaseImpl(
         // TODO: later this should be an error, for now we have to be
         // able to open old DBs.
       });
-  VLOG(1) << folly::sformat("first_unit_id: {}", first_unit_id);
+  VLOG(1) << fmt::format("first_unit_id: {}", first_unit_id);
 
   next_uset_id = initAdminValue(
       container_,
@@ -102,7 +103,7 @@ DatabaseImpl::DatabaseImpl(
         // TODO: later this should be an error, for now we have to be
         // able to open old DBs.
       });
-  VLOG(1) << folly::sformat("next_uset_id: {}", next_uset_id);
+  VLOG(1) << fmt::format("next_uset_id: {}", next_uset_id);
 
   db_version = initAdminValue(
       container_,

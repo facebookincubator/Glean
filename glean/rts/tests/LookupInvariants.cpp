@@ -14,6 +14,7 @@
 #include "glean/rts/fact.h"
 #include "glean/rts/lookup.h"
 
+#include <map>
 #include <ostream>
 
 using namespace facebook::hs;
