@@ -1,31 +1,8 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
-schema search.erlang.4 {
-  import code.erlang.1
-  import erlang.1
-
-  predicate SearchByName:
-    {
-      name: string,
-      entity: code.erlang.Entity,
-    } { Name, Entity } where
-    erlang.SearchByName { Name, Decl };
-    Entity = code.erlang.Entity { decl = Decl };
-
-  predicate SearchByFQN:
-    {
-      module: string,
-      name: string,
-      arity: nat,
-      entity: code.erlang.Entity,
-    } {M, N, A, E} where
-    E = code.erlang.Entity { decl = {func = { fqn = { module = M, name = N, arity = A } } } }
-
-}
-
 schema search.erlang.5 {
-  import code.erlang.2
-  import erlang.2
+  import code.erlang
+  import erlang
 
   predicate SearchByName:
     {

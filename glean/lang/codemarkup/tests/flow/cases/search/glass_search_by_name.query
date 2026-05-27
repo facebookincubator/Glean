@@ -1,11 +1,11 @@
 query: |
   X0 where
-    X0 : codemarkup.search.SearchByName.1;
-    X1 : code.Language.24;
+    X0 : codemarkup.search.SearchByName.2;
+    X1 : code.Language.25;
     X2 : maybe codemarkup.types.SymbolKind.1;
-    X1 = JavaScript : code.Language.24;
+    X1 = JavaScript : code.Language.25;
     X2 = _ : maybe codemarkup.types.SymbolKind.1;
-    X0 = codemarkup.search.SearchByName.1 {
+    X0 = codemarkup.search.SearchByName.2 {
       language = X1,
       kind = X2,
       searchcase = Sensitive,
