@@ -120,6 +120,7 @@ struct AttributeOptions {
   16: optional string traffic_group;
   17: optional string product_id;
   18: bool fetch_per_line_per_strobelight_frame_data = false;
+  19: bool use_function_cost_facts = false;
 }
 
 typedef string ServiceID (hs.newtype)
