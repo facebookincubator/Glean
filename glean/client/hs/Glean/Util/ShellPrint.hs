@@ -351,18 +351,22 @@ instance (ShellFormat DbVerbosity v)
             f ' ' = '_'
             f c = toLower c
 
+sortByCreated :: (a -> Thrift.Database) -> [a] -> [a]
+sortByCreated getDb = sortOn (Thrift.database_created_since_epoch . getDb)
+
 instance ShellFormat DbVerbosity [Thrift.Database] where
-  shellFormatText ctx opts dbs =
-    vsep $ concatMap f $ sortOn Thrift.database_created_since_epoch dbs
+  shellFormatText ctx opts dbs = vsep $ concatMap f $ sortByCreated id dbs
     where f db = [shellFormatText ctx opts db, pretty ("    "::Text)]
-  shellFormatJson ctx v dbs = J.toJSON $ map (shellFormatJson ctx v) dbs
+  shellFormatJson ctx v dbs =
+    J.toJSON $ map (shellFormatJson ctx v) $ sortByCreated id dbs
 
 instance (ShellFormat DbVerbosity v)
   => ShellFormat DbVerbosity [(Thrift.Database, [(String, v)])] where
-    shellFormatText ctx opts dbs = vsep $ concatMap f $
-      sortOn (Thrift.database_created_since_epoch . fst) dbs
+    shellFormatText ctx opts dbs =
+      vsep $ concatMap f $ sortByCreated fst dbs
       where f x = [shellFormatText ctx opts x, pretty ("    "::Text)]
-    shellFormatJson ctx v dbs = J.toJSON $ map (shellFormatJson ctx v) dbs
+    shellFormatJson ctx v dbs =
+      J.toJSON $ map (shellFormatJson ctx v) $ sortByCreated fst dbs
 
 type PredStatsList =
   [(Either Thrift.Id Thrift.PredicateRef, Thrift.PredicateStats)]
