@@ -59,7 +59,6 @@ indexer = Indexer {
           extFlavour = Json,
           extArgs =
             [ "glean"
-            , "--v2"
             , "--schema2"
             , "--multi"
             , "--project"
