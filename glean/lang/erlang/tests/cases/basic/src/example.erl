@@ -18,6 +18,7 @@ hello(Name) ->
 -doc """
 Adds two numbers
 """.
+-doc(#{since => <<"OTP 17.0">>}).
 -spec add(number(), number()) -> number().
 add(X, Y) ->
     X + Y.

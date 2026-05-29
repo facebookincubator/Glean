@@ -15,7 +15,7 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 34, "start": 569 },
+      "span": { "length": 34, "start": 603 },
       "text": "-doc \"\"\"\u000aCalculates factorial\u000a\"\"\"."
     }
   },
@@ -34,7 +34,7 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 38, "start": 604 },
+      "span": { "length": 38, "start": 638 },
       "text": "```erlang\u000a-spec factorial(number()) -> number().\u000a```"
     }
   },
@@ -53,7 +53,7 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 38, "start": 716 },
+      "span": { "length": 38, "start": 750 },
       "text": "```erlang\u000a-spec get_name(#person{}) -> string().\u000a```"
     }
   },
@@ -114,7 +114,7 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 33, "start": 887 },
+      "span": { "length": 33, "start": 921 },
       "text": "```erlang\u000a-spec old_function(term()) -> ok.\u000a```"
     }
   },
@@ -133,7 +133,7 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 31, "start": 1167 },
+      "span": { "length": 31, "start": 1201 },
       "text": "```erlang\u000a-spec on_event(config()) -> ok.\u000a```"
     }
   },
@@ -171,7 +171,7 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 42, "start": 501 },
+      "span": { "length": 42, "start": 535 },
       "text": "```erlang\u000a-spec add(number(), number()) -> number().\u000a```"
     }
   },
@@ -190,7 +190,7 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 49, "start": 796 },
+      "span": { "length": 49, "start": 830 },
       "text": "```erlang\u000a-spec set_age(#person{}, integer()) -> #person{}.\u000a```"
     }
   },
@@ -249,7 +249,7 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 7, "start": 1153 },
+      "span": { "length": 7, "start": 1187 },
       "text": "```erlang\u000a(41 + 1)\u000a```"
     }
   },
@@ -283,14 +283,14 @@
               "app": "basic",
               "module": "example",
               "name": "Age",
-              "span_start": 857,
+              "span_start": 891,
               "type_text": "Age :: number()"
             }
           }
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 3, "start": 857 },
+      "span": { "length": 3, "start": 891 },
       "text": "Age :: number()"
     }
   },
@@ -303,14 +303,14 @@
               "app": "basic",
               "module": "example",
               "name": "Age",
-              "span_start": 880,
+              "span_start": 914,
               "type_text": "Age :: number()"
             }
           }
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 3, "start": 880 },
+      "span": { "length": 3, "start": 914 },
       "text": "Age :: number()"
     }
   },
@@ -323,14 +323,14 @@
               "app": "basic",
               "module": "example",
               "name": "N",
-              "span_start": 672,
+              "span_start": 706,
               "type_text": "N :: number()"
             }
           }
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 1, "start": 672 },
+      "span": { "length": 1, "start": 706 },
       "text": "N :: number()"
     }
   },
@@ -343,14 +343,14 @@
               "app": "basic",
               "module": "example",
               "name": "N",
-              "span_start": 680,
+              "span_start": 714,
               "type_text": "N :: number()"
             }
           }
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 1, "start": 680 },
+      "span": { "length": 1, "start": 714 },
       "text": "N :: number()"
     }
   },
@@ -363,14 +363,14 @@
               "app": "basic",
               "module": "example",
               "name": "N",
-              "span_start": 693,
+              "span_start": 727,
               "type_text": "N :: number()"
             }
           }
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 1, "start": 693 },
+      "span": { "length": 1, "start": 727 },
       "text": "N :: number()"
     }
   },
@@ -383,14 +383,14 @@
               "app": "basic",
               "module": "example",
               "name": "N",
-              "span_start": 707,
+              "span_start": 741,
               "type_text": "N :: number()"
             }
           }
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 1, "start": 707 },
+      "span": { "length": 1, "start": 741 },
       "text": "N :: number()"
     }
   },
@@ -443,14 +443,14 @@
               "app": "basic",
               "module": "example",
               "name": "Name",
-              "span_start": 779,
+              "span_start": 813,
               "type_text": "Name :: erlang:string()"
             }
           }
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 4, "start": 779 },
+      "span": { "length": 4, "start": 813 },
       "text": "Name :: erlang:string()"
     }
   },
@@ -463,14 +463,14 @@
               "app": "basic",
               "module": "example",
               "name": "Name",
-              "span_start": 789,
+              "span_start": 823,
               "type_text": "Name :: erlang:string()"
             }
           }
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 4, "start": 789 },
+      "span": { "length": 4, "start": 823 },
       "text": "Name :: erlang:string()"
     }
   },
@@ -483,14 +483,14 @@
               "app": "basic",
               "module": "example",
               "name": "Name",
-              "span_start": 1036,
+              "span_start": 1070,
               "type_text": "Name :: erlang:string()"
             }
           }
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 4, "start": 1036 },
+      "span": { "length": 4, "start": 1070 },
       "text": "Name :: erlang:string()"
     }
   },
@@ -503,14 +503,14 @@
               "app": "basic",
               "module": "example",
               "name": "Name",
-              "span_start": 1067,
+              "span_start": 1101,
               "type_text": "Name :: erlang:string()"
             }
           }
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 4, "start": 1067 },
+      "span": { "length": 4, "start": 1101 },
       "text": "Name :: erlang:string()"
     }
   },
@@ -523,14 +523,14 @@
               "app": "basic",
               "module": "example",
               "name": "P",
-              "span_start": 854,
+              "span_start": 888,
               "type_text": "P :: #person{}"
             }
           }
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 1, "start": 854 },
+      "span": { "length": 1, "start": 888 },
       "text": "P :: #person{}"
     }
   },
@@ -543,14 +543,14 @@
               "app": "basic",
               "module": "example",
               "name": "P",
-              "span_start": 865,
+              "span_start": 899,
               "type_text": "P :: #person{}"
             }
           }
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 1, "start": 865 },
+      "span": { "length": 1, "start": 899 },
       "text": "P :: #person{}"
     }
   },
@@ -563,134 +563,134 @@
               "app": "basic",
               "module": "example",
               "name": "P",
+              "span_start": 1002,
+              "type_text": "P :: #person{}"
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 1, "start": 1002 },
+      "text": "P :: #person{}"
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "erlang": {
+          "var_": {
+            "key": {
+              "app": "basic",
+              "module": "example",
+              "name": "P",
+              "span_start": 1058,
+              "type_text": "P :: #person{}"
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 1, "start": 1058 },
+      "text": "P :: #person{}"
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "erlang": {
+          "var_": {
+            "key": {
+              "app": "basic",
+              "module": "example",
+              "name": "P2",
+              "span_start": 1045,
+              "type_text": "P2 :: #person{}"
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 2, "start": 1045 },
+      "text": "P2 :: #person{}"
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "erlang": {
+          "var_": {
+            "key": {
+              "app": "basic",
+              "module": "example",
+              "name": "P2",
+              "span_start": 1086,
+              "type_text": "P2 :: #person{}"
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 2, "start": 1086 },
+      "text": "P2 :: #person{}"
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "erlang": {
+          "var_": {
+            "key": {
+              "app": "basic",
+              "module": "example",
+              "name": "X",
+              "span_start": 582,
+              "type_text": "X :: number()"
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 1, "start": 582 },
+      "text": "X :: number()"
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "erlang": {
+          "var_": {
+            "key": {
+              "app": "basic",
+              "module": "example",
+              "name": "X",
+              "span_start": 595,
+              "type_text": "X :: number()"
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
+      "span": { "length": 1, "start": 595 },
+      "text": "X :: number()"
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "erlang": {
+          "var_": {
+            "key": {
+              "app": "basic",
+              "module": "example",
+              "name": "X",
               "span_start": 968,
-              "type_text": "P :: #person{}"
-            }
-          }
-        }
-      },
-      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 1, "start": 968 },
-      "text": "P :: #person{}"
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "erlang": {
-          "var_": {
-            "key": {
-              "app": "basic",
-              "module": "example",
-              "name": "P",
-              "span_start": 1024,
-              "type_text": "P :: #person{}"
-            }
-          }
-        }
-      },
-      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 1, "start": 1024 },
-      "text": "P :: #person{}"
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "erlang": {
-          "var_": {
-            "key": {
-              "app": "basic",
-              "module": "example",
-              "name": "P2",
-              "span_start": 1011,
-              "type_text": "P2 :: #person{}"
-            }
-          }
-        }
-      },
-      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 2, "start": 1011 },
-      "text": "P2 :: #person{}"
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "erlang": {
-          "var_": {
-            "key": {
-              "app": "basic",
-              "module": "example",
-              "name": "P2",
-              "span_start": 1052,
-              "type_text": "P2 :: #person{}"
-            }
-          }
-        }
-      },
-      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 2, "start": 1052 },
-      "text": "P2 :: #person{}"
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "erlang": {
-          "var_": {
-            "key": {
-              "app": "basic",
-              "module": "example",
-              "name": "X",
-              "span_start": 548,
-              "type_text": "X :: number()"
-            }
-          }
-        }
-      },
-      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 1, "start": 548 },
-      "text": "X :: number()"
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "erlang": {
-          "var_": {
-            "key": {
-              "app": "basic",
-              "module": "example",
-              "name": "X",
-              "span_start": 561,
-              "type_text": "X :: number()"
-            }
-          }
-        }
-      },
-      "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 1, "start": 561 },
-      "text": "X :: number()"
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "erlang": {
-          "var_": {
-            "key": {
-              "app": "basic",
-              "module": "example",
-              "name": "X",
-              "span_start": 934,
               "type_text": "X :: term()"
             }
           }
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 1, "start": 934 },
+      "span": { "length": 1, "start": 968 },
       "text": "X :: term()"
     }
   },
@@ -703,14 +703,14 @@
               "app": "basic",
               "module": "example",
               "name": "X",
-              "span_start": 946,
+              "span_start": 980,
               "type_text": "X :: term()"
             }
           }
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 1, "start": 946 },
+      "span": { "length": 1, "start": 980 },
       "text": "X :: term()"
     }
   },
@@ -723,14 +723,14 @@
               "app": "basic",
               "module": "example",
               "name": "Y",
-              "span_start": 551,
+              "span_start": 585,
               "type_text": "Y :: number()"
             }
           }
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 1, "start": 551 },
+      "span": { "length": 1, "start": 585 },
       "text": "Y :: number()"
     }
   },
@@ -743,14 +743,14 @@
               "app": "basic",
               "module": "example",
               "name": "Y",
-              "span_start": 565,
+              "span_start": 599,
               "type_text": "Y :: number()"
             }
           }
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 1, "start": 565 },
+      "span": { "length": 1, "start": 599 },
       "text": "Y :: number()"
     }
   },
@@ -763,14 +763,14 @@
               "app": "basic",
               "module": "example",
               "name": "_Event",
-              "span_start": 1208,
+              "span_start": 1242,
               "type_text": "_Event :: example:config()"
             }
           }
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "length": 6, "start": 1208 },
+      "span": { "length": 6, "start": 1242 },
       "text": "_Event :: example:config()"
     }
   }

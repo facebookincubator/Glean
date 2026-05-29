@@ -437,7 +437,7 @@
             "app": "basic",
             "module": "example",
             "name": "Age",
-            "span_start": 857,
+            "span_start": 891,
             "type_text": "Age :: number()"
           }
         }
@@ -453,7 +453,7 @@
             "app": "basic",
             "module": "example",
             "name": "Age",
-            "span_start": 880,
+            "span_start": 914,
             "type_text": "Age :: number()"
           }
         }
@@ -469,7 +469,7 @@
             "app": "basic",
             "module": "example",
             "name": "N",
-            "span_start": 672,
+            "span_start": 706,
             "type_text": "N :: number()"
           }
         }
@@ -485,7 +485,7 @@
             "app": "basic",
             "module": "example",
             "name": "N",
-            "span_start": 680,
+            "span_start": 714,
             "type_text": "N :: number()"
           }
         }
@@ -501,7 +501,7 @@
             "app": "basic",
             "module": "example",
             "name": "N",
-            "span_start": 693,
+            "span_start": 727,
             "type_text": "N :: number()"
           }
         }
@@ -517,7 +517,7 @@
             "app": "basic",
             "module": "example",
             "name": "N",
-            "span_start": 707,
+            "span_start": 741,
             "type_text": "N :: number()"
           }
         }
@@ -565,7 +565,7 @@
             "app": "basic",
             "module": "example",
             "name": "Name",
-            "span_start": 779,
+            "span_start": 813,
             "type_text": "Name :: erlang:string()"
           }
         }
@@ -581,7 +581,7 @@
             "app": "basic",
             "module": "example",
             "name": "Name",
-            "span_start": 789,
+            "span_start": 823,
             "type_text": "Name :: erlang:string()"
           }
         }
@@ -597,7 +597,7 @@
             "app": "basic",
             "module": "example",
             "name": "Name",
-            "span_start": 1036,
+            "span_start": 1070,
             "type_text": "Name :: erlang:string()"
           }
         }
@@ -613,7 +613,7 @@
             "app": "basic",
             "module": "example",
             "name": "Name",
-            "span_start": 1067,
+            "span_start": 1101,
             "type_text": "Name :: erlang:string()"
           }
         }
@@ -629,7 +629,7 @@
             "app": "basic",
             "module": "example",
             "name": "P",
-            "span_start": 854,
+            "span_start": 888,
             "type_text": "P :: #person{}"
           }
         }
@@ -645,7 +645,7 @@
             "app": "basic",
             "module": "example",
             "name": "P",
-            "span_start": 865,
+            "span_start": 899,
             "type_text": "P :: #person{}"
           }
         }
@@ -661,103 +661,103 @@
             "app": "basic",
             "module": "example",
             "name": "P",
+            "span_start": 1002,
+            "type_text": "P :: #person{}"
+          }
+        }
+      },
+      "info": { "isAbstract": false, "kind": 14 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "var_": {
+          "key": {
+            "app": "basic",
+            "module": "example",
+            "name": "P",
+            "span_start": 1058,
+            "type_text": "P :: #person{}"
+          }
+        }
+      },
+      "info": { "isAbstract": false, "kind": 14 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "var_": {
+          "key": {
+            "app": "basic",
+            "module": "example",
+            "name": "P2",
+            "span_start": 1045,
+            "type_text": "P2 :: #person{}"
+          }
+        }
+      },
+      "info": { "isAbstract": false, "kind": 14 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "var_": {
+          "key": {
+            "app": "basic",
+            "module": "example",
+            "name": "P2",
+            "span_start": 1086,
+            "type_text": "P2 :: #person{}"
+          }
+        }
+      },
+      "info": { "isAbstract": false, "kind": 14 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "var_": {
+          "key": {
+            "app": "basic",
+            "module": "example",
+            "name": "X",
+            "span_start": 582,
+            "type_text": "X :: number()"
+          }
+        }
+      },
+      "info": { "isAbstract": false, "kind": 14 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "var_": {
+          "key": {
+            "app": "basic",
+            "module": "example",
+            "name": "X",
+            "span_start": 595,
+            "type_text": "X :: number()"
+          }
+        }
+      },
+      "info": { "isAbstract": false, "kind": 14 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "var_": {
+          "key": {
+            "app": "basic",
+            "module": "example",
+            "name": "X",
             "span_start": 968,
-            "type_text": "P :: #person{}"
-          }
-        }
-      },
-      "info": { "isAbstract": false, "kind": 14 }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "var_": {
-          "key": {
-            "app": "basic",
-            "module": "example",
-            "name": "P",
-            "span_start": 1024,
-            "type_text": "P :: #person{}"
-          }
-        }
-      },
-      "info": { "isAbstract": false, "kind": 14 }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "var_": {
-          "key": {
-            "app": "basic",
-            "module": "example",
-            "name": "P2",
-            "span_start": 1011,
-            "type_text": "P2 :: #person{}"
-          }
-        }
-      },
-      "info": { "isAbstract": false, "kind": 14 }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "var_": {
-          "key": {
-            "app": "basic",
-            "module": "example",
-            "name": "P2",
-            "span_start": 1052,
-            "type_text": "P2 :: #person{}"
-          }
-        }
-      },
-      "info": { "isAbstract": false, "kind": 14 }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "var_": {
-          "key": {
-            "app": "basic",
-            "module": "example",
-            "name": "X",
-            "span_start": 548,
-            "type_text": "X :: number()"
-          }
-        }
-      },
-      "info": { "isAbstract": false, "kind": 14 }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "var_": {
-          "key": {
-            "app": "basic",
-            "module": "example",
-            "name": "X",
-            "span_start": 561,
-            "type_text": "X :: number()"
-          }
-        }
-      },
-      "info": { "isAbstract": false, "kind": 14 }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "var_": {
-          "key": {
-            "app": "basic",
-            "module": "example",
-            "name": "X",
-            "span_start": 934,
             "type_text": "X :: term()"
           }
         }
@@ -773,7 +773,7 @@
             "app": "basic",
             "module": "example",
             "name": "X",
-            "span_start": 946,
+            "span_start": 980,
             "type_text": "X :: term()"
           }
         }
@@ -789,7 +789,7 @@
             "app": "basic",
             "module": "example",
             "name": "Y",
-            "span_start": 551,
+            "span_start": 585,
             "type_text": "Y :: number()"
           }
         }
@@ -805,7 +805,7 @@
             "app": "basic",
             "module": "example",
             "name": "Y",
-            "span_start": 565,
+            "span_start": 599,
             "type_text": "Y :: number()"
           }
         }
@@ -821,7 +821,7 @@
             "app": "basic",
             "module": "example",
             "name": "_Event",
-            "span_start": 1208,
+            "span_start": 1242,
             "type_text": "_Event :: example:config()"
           }
         }

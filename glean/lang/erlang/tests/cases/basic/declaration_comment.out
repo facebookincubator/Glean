@@ -26,7 +26,7 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "start": 501, "length": 42 },
+      "span": { "start": 535, "length": 42 },
       "text": "```erlang\u000a-spec add(number(), number()) -> number().\u000a```"
     }
   },
@@ -41,7 +41,7 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "start": 569, "length": 34 },
+      "span": { "start": 603, "length": 34 },
       "text": "-doc \"\"\"\u000aCalculates factorial\u000a\"\"\"."
     }
   },
@@ -56,7 +56,7 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "start": 604, "length": 38 },
+      "span": { "start": 638, "length": 38 },
       "text": "```erlang\u000a-spec factorial(number()) -> number().\u000a```"
     }
   },
@@ -71,7 +71,7 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "start": 716, "length": 38 },
+      "span": { "start": 750, "length": 38 },
       "text": "```erlang\u000a-spec get_name(#person{}) -> string().\u000a```"
     }
   },
@@ -116,7 +116,7 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "start": 887, "length": 33 },
+      "span": { "start": 921, "length": 33 },
       "text": "```erlang\u000a-spec old_function(term()) -> ok.\u000a```"
     }
   },
@@ -131,7 +131,7 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "start": 1167, "length": 31 },
+      "span": { "start": 1201, "length": 31 },
       "text": "```erlang\u000a-spec on_event(config()) -> ok.\u000a```"
     }
   },
@@ -146,7 +146,7 @@
         }
       },
       "file": { "key": "glean/lang/erlang/tests/cases/basic/src/example.erl" },
-      "span": { "start": 796, "length": 49 },
+      "span": { "start": 830, "length": 49 },
       "text": "```erlang\u000a-spec set_age(#person{}, integer()) -> #person{}.\u000a```"
     }
   },
