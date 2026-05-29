@@ -162,6 +162,34 @@ withFakeCloudDBs
   -> IO ()
 withFakeCloudDBs = withTest (\_ _ -> pure ()) setupBasicCloudDBs
 
+-- | 9 complete DBs spread across 3 distinct UTC days.
+setupPerDayDBs :: FilePath -> DbSchema -> IO ()
+setupPerDayDBs dbdir schema = do
+  -- Anchor to 08:00 UTC of today so per-day grouping is deterministic
+  todayMorning <- (\t -> t { utctDayTime = 8 * 3600 }) <$> getCurrentTime
+  let age secsAgo =
+        addUTCTime (negate (fromIntegral (secsAgo :: Int))) todayMorning
+      mkDB name secsAgo n =
+        makeFakeDB schema dbdir (Repo "test" name) (age secsAgo) (complete n) id
+  -- Day 0 (most recent)
+  mkDB "0001" 1 1
+  mkDB "0002" 2 2
+  mkDB "0003" 3 3
+  -- Day 1
+  mkDB "0004" 86401 4
+  mkDB "0005" 86402 5
+  mkDB "0006" 86403 6
+  -- Day 2
+  mkDB "0007" 172801 7
+  mkDB "0008" 172802 8
+  mkDB "0009" 172803 9
+
+withPerDayDBs
+  :: (EventBaseDataplane -> NullConfigProvider -> FilePath -> FilePath
+       -> IO ())
+  -> IO ()
+withPerDayDBs = withTest setupPerDayDBs (\_ _ -> pure ())
+
 stacked :: Stacked -> Meta -> Meta
 stacked st meta = meta { metaDependencies = Just (Thrift.Dependencies_stacked st) }
 
@@ -388,6 +416,68 @@ retainAtMostTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
     [ "0001", "0002", "0006", "0007"]
     (sort $ map (repo_hash . database_repo) dbs)
 
+
+retainPerDayTest :: Test
+retainPerDayTest = TestCase $ withPerDayDBs $ \evb cfgAPI dbdir backupdir -> do
+  let cfg = dbConfig dbdir $ (serverConfig backupdir)
+        { config_retention = def
+          { databaseRetentionPolicy_default_retention = def
+            { retention_retain_per_day = Just 1 }
+          }
+        }
+  withDatabases evb cfg cfgAPI $ \env -> do
+  runDatabaseJanitor env
+  waitDel env
+  dbs <- listDBs env
+  -- retain_per_day=1 → keep the newest DB from each of the 3 days.
+  assertEqual "after"
+    [ "0001", "0004", "0007" ]
+    (sort $ map (repo_hash . database_repo) dbs)
+
+retainPerDayWithAtMostTest :: Test
+retainPerDayWithAtMostTest =
+  TestCase $ withPerDayDBs $ \evb cfgAPI dbdir backupdir -> do
+  let cfg = dbConfig dbdir $ (serverConfig backupdir)
+        { config_retention = def
+          { databaseRetentionPolicy_default_retention = def
+            { retention_retain_per_day = Just 2
+            , retention_retain_at_most = Just 4
+            }
+          }
+        }
+  withDatabases evb cfg cfgAPI $ \env -> do
+  runDatabaseJanitor env
+  waitDel env
+  dbs <- listDBs env
+  -- retain_per_day=2 keeps the 2 newest per day (6 candidates);
+  -- retain_at_most=4 caps the result to the 4 newest of those =
+  -- 2 from day 0 + 2 from day 1.
+  assertEqual "after"
+    [ "0001", "0002", "0004", "0005" ]
+    (sort $ map (repo_hash . database_repo) dbs)
+
+retainPerDayWithDeleteIfOlderTest :: Test
+retainPerDayWithDeleteIfOlderTest =
+  TestCase $ withPerDayDBs $ \evb cfgAPI dbdir backupdir -> do
+  let cfg = dbConfig dbdir $ (serverConfig backupdir)
+        { config_retention = def
+          { databaseRetentionPolicy_default_retention = def
+            { retention_retain_per_day = Just 2
+            , retention_retain_at_most = Just 4
+            , retention_delete_if_older =
+                Just $ fromIntegral $ timeSpanInSeconds $ days 1
+            }
+          }
+        }
+  withDatabases evb cfg cfgAPI $ \env -> do
+  runDatabaseJanitor env
+  waitDel env
+  dbs <- listDBs env
+  -- per_day=2 keeps top 2 per day (6 candidates across the 3 days);
+  -- delete_if_older=1 (1d) overrides the at_most=4, only the recent day's DBs are kept.
+  assertEqual "after"
+    [ "0001", "0002" ]
+    (sort $ map (repo_hash . database_repo) dbs)
 
 retainAtLeastTest :: Test
 retainAtLeastTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
@@ -954,6 +1044,9 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "deleteIncompleteDBs" deleteIncompleteDBsTest
   , TestLabel "retainAtMost" retainAtMostTest
   , TestLabel "retainAtLeast" retainAtLeastTest
+  , TestLabel "retainPerDay" retainPerDayTest
+  , TestLabel "retainPerDayWithAtMost" retainPerDayWithAtMostTest
+  , TestLabel "retainPerDayWithDeleteIfOlder" retainPerDayWithDeleteIfOlderTest
   , TestLabel "backupRestore" backupRestoreTest
   , TestLabel "openNewestDB" openNewestTest
   , TestLabel "closeIdleDBs" closeIdleDBsTest

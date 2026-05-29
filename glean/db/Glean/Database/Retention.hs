@@ -222,6 +222,7 @@ dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs dbIndex = do
     -- enforce invariant: atLeast <= atMost
     retainAtLeast = min retainAtLeast' (fromMaybe maxBound retainAtMost')
     retainAtMost  = max retainAtLeast' <$> retainAtMost'
+    retainPerDay = fmap fromIntegral retention_retain_per_day
     deleteIfOlder = fmap fromIntegral retention_delete_if_older
     deleteIncompleteIfOlder =
       fmap fromIntegral retention_delete_incomplete_if_older
@@ -242,8 +243,18 @@ dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs dbIndex = do
     isAvailable = isLocal |||> isAvailableM
     hasDependencies = not . missingDependencies dbIndex
 
+    -- when retain_per_day is set, we filter out all DBs but the most N recent ones per day.
+    dbDay = utctDay . posixEpochTimeToUTCTime . dbTime . itemMeta
+    perDay = case retainPerDay of
+      Nothing -> id
+      Just n  ->
+        concatMap (take n) .
+        groupBy (\a b -> dbDay a == dbDay b) .
+        filter (isComplete &&& hasDependencies)
+
     -- all DBs with the required/excluded properties, sorted by most recent first
     sorted =
+      perDay $
       sortOn (Down . dbTime . itemMeta) $
       filter (hasAllProperties retention_required_properties) $
       filter (not . hasAnyProperties retention_excluded_properties) $
