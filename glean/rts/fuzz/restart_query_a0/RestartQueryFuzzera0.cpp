@@ -17,16 +17,54 @@ using namespace facebook::glean::rts;
 
 namespace {
 
-struct StubDefine : Define {
+static constexpr size_t kFakeKeySize = 512;
+static unsigned char kFakeKeyBuf[kFakeKeySize] = {};
+
+struct StubFactIterator final : FactIterator {
+  Fact::Ref ref_;
+  bool consumed_ = false;
+
+  StubFactIterator(Id id, Pid type)
+      : ref_{id, type, Fact::Clause{kFakeKeyBuf, kFakeKeySize, 0}} {}
+
+  void next() override {
+    consumed_ = true;
+  }
+  Fact::Ref get(Demand) override {
+    if (consumed_)
+      return Fact::Ref::invalid();
+    return ref_;
+  }
+  std::optional<Id> lower_bound() override {
+    return std::nullopt;
+  }
+  std::optional<Id> upper_bound() override {
+    return std::nullopt;
+  }
+};
+
+struct SmartStubDefine : Define {
+  bool find_facts;
+  Id last_queried_id = Id::invalid();
+
+  explicit SmartStubDefine(bool find) : find_facts(find) {}
+
   Id idByKey(Pid, folly::ByteRange) override {
     return Id::invalid();
   }
   Pid typeById(Id) override {
     return Pid::invalid();
   }
-  bool factById(Id, std::function<void(Pid, Fact::Clause)>) override {
-    return false;
+
+  bool factById(Id id, std::function<void(Pid, Fact::Clause)> f) override {
+    if (!find_facts)
+      return false;
+    last_queried_id = id;
+    Fact::Clause clause{kFakeKeyBuf, kFakeKeySize, 0};
+    f(Pid::lowest(), clause);
+    return true;
   }
+
   Id startingId() const override {
     return Id::lowest();
   }
@@ -36,6 +74,7 @@ struct StubDefine : Define {
   Interval count(Pid) const override {
     return 0;
   }
+
   std::unique_ptr<FactIterator> enumerate(Id, Id) override {
     return std::make_unique<EmptyIterator>();
   }
@@ -43,16 +82,16 @@ struct StubDefine : Define {
     return std::make_unique<EmptyIterator>();
   }
   std::unique_ptr<FactIterator>
-  seek(Pid, folly::ByteRange, std::optional<Fact::Ref>) override {
-    return std::make_unique<EmptyIterator>();
+  seek(Pid type, folly::ByteRange, std::optional<Fact::Ref>) override {
+    return std::make_unique<StubFactIterator>(last_queried_id, type);
   }
   std::unique_ptr<FactIterator> seekWithinSection(
-      Pid,
+      Pid type,
       folly::ByteRange,
       Id,
       Id,
       std::optional<Fact::Ref>) override {
-    return std::make_unique<EmptyIterator>();
+    return std::make_unique<StubFactIterator>(last_queried_id, type);
   }
   UsetId getOwner(Id) override {
     return INVALID_USET;
@@ -65,9 +104,10 @@ struct StubDefine : Define {
 } // namespace
 
 FUZZ(RestartQuery, Fuzz) {
+  bool find_facts = f.boolean("find_facts");
   auto data = f.all_remaining_bytes();
 
-  StubDefine facts;
+  SmartStubDefine facts(find_facts);
   Inventory inventory;
   std::unordered_set<Pid, folly::hasher<Pid>> expandPids;
 
