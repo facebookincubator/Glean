@@ -104,7 +104,7 @@ query state, and we deserialize it and continue executing it.
 Roughly speaking this is achieved as follows:
 
 * The saved state of the evaluator is described by the Thrift type
-  QueryCont in glean/if/internal.thrift.  We use Thrift for
+  UserQueryCont in glean/if/glean.thrift.  We use Thrift for
   serializing and deserializing the state.
 
 * The state includes:
@@ -120,9 +120,12 @@ To make this work we have to obey a rule in the bytecode program:
 
   Don't keep any pointers in local registers across Suspend
 
-because they won't be valid when we resume. Pointers in input
-registers are fine; the contents of these will be saved and restored
-as necessary (this includes binary::Output registers).
+because they won't be valid when we resume.
+Pointers in input registers are fine:
+binary::Output registers have their contents serialized and rebuilt on resume,
+and other inputs are re-supplied by the caller.
+(Local registers, by contrast, are saved only as raw words,
+so a pointer stored there dangles on resume.)
 -}
 
 -- | Find all variables that need to be bound to a binary::Output

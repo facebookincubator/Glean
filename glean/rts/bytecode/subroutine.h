@@ -19,7 +19,10 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
-/// A bytecode subroutine which can be execute via 'execute'.
+/// A bytecode subroutine which can be executed via 'execute'.
+/// Subroutines are immutable and can be shared between multiple
+/// activations. The 'Activation' class is used to manage the state
+/// of a particular execution of a subroutine.
 struct Subroutine {
   /// Instructions
   std::vector<uint64_t> code;
@@ -68,10 +71,33 @@ struct Subroutine {
   static void get(binary::Input& in, Subroutine& s);
 
   /// A subroutine activation record which can be 'execute'd after supplying
-  /// arguments. The activation requires a pointer to a preallocated frame but
-  /// doesn't own it. This is mostly because we want to be able to avoid having
-  /// to 'malloc' the frame for each execution.
+  /// arguments, i.o.w. a class which can be used to execute a Subroutine
+  /// and track its state.
   class Activation final {
+    /*
+     * The `with` function shows how the Activation object is used:
+     * `with` allocates a buffer of size `byteSize` on the stack, and
+     * constructs an Activation object in it (placement-new). This avoids having
+     * to malloc each time. The rest of the buffer is used to store the outputs
+     * and the frame. That Activation is then passed to the supplied function,
+     * which is expected to `run` it.
+     *
+     * This means that functions in this class can access the outputs and
+     * frame by doing pointer arithmetic from `this`, see `outputs` and `frame`.
+     *
+     * Here's the layout of the buffer created in `with`:
+     *
+     * [ Activation object | outputs: binary::Output[outputs] | frame:
+     * uint64_t[inputs+locals] ]
+     *
+     * The frame is an array of 'input' and 'local' registers.
+     * - The first 'input' registers are used to provide arguments via `args()`,
+     *   while the last `sub.outputs` input registers are binary::Output*
+     *   pointers into the `outputs` section of the buffer (see `restart`).
+     * - The first 'local' registers receive copies of the subroutine constants
+     *   (see `start`) while the rest are used for the subroutine intermediate
+     *   results (see `results`).
+     */
    public:
     Activation(const Activation&) = delete;
     Activation(Activation&&) = delete;
@@ -84,7 +110,13 @@ struct Subroutine {
     /// lifetime of the activation.
     template <typename F>
     static auto with(const Subroutine& sub, void* context, F&& f) {
+      // buf is allocated on the stack to avoid a malloc.
+      // It is meant to store the Activation object, followed
+      // by the outputs and then the frame, see byteSize.
       alignas(Activation) unsigned char buf[byteSize(sub)];
+      // Guard is used to ensure that the stack-allocated Activation
+      // is destroyed when the function returns.
+      // See the ~Guard() destructor.
       struct Guard {
         Activation* ptr;
         explicit Guard(Activation* p) : ptr(p) {}
@@ -96,11 +128,13 @@ struct Subroutine {
         Guard(Guard&&) = delete;
         Guard& operator=(Guard&&) = delete;
       };
+      // Construct the Activation in the buffer, i.e. on the stack.
       Guard guard{new (buf) Activation(sub, context)};
       return std::forward<F>(f)(*guard.ptr);
     }
 
     /// Set up the activation to start executing the subroutine.
+    /// Constants are copied into the first locals registers.
     void start() {
       restart(0, sub.constants.begin(), sub.constants.end());
     }
@@ -110,6 +144,8 @@ struct Subroutine {
     template <typename Iter>
     void restart(uint64_t entry, Iter locals_begin, Iter locals_end) {
       pc = sub.code.data() + entry;
+      // The last 'sub.outputs' registers of the 'inputs' registers are
+      // binary::Output* pointers into the `outputs()` section.
       auto reg = frame() + sub.inputs - sub.outputs;
       for (auto& out : outputs()) {
         *reg++ = reinterpret_cast<uint64_t>(&out);
@@ -127,6 +163,8 @@ struct Subroutine {
     using Outputs = folly::Range<binary::Output*>;
 
     Outputs outputs() {
+      // The outputs are stored immediately after the Activation object as
+      // binary::Output objects.
       return {reinterpret_cast<binary::Output*>(this + 1), sub.outputs};
     }
 
@@ -134,7 +172,9 @@ struct Subroutine {
       return outputs()[i];
     }
 
-    /// Registers in which a subroutine returns its results
+    /// Registers in which a subroutine returns its intermediate results.
+    /// These are basically the local registers that are not already used
+    /// for constants.
     folly::Range<const uint64_t*> results() const {
       return {
           frame() + sub.inputs + sub.constants.size(),
