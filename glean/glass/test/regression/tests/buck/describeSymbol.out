@@ -27,12 +27,12 @@
         },
         "modifiers": [],
         "name": {
-            "container": ".",
+            "container": "",
             "localName": "foo"
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
-        "sym": "test/buck/t/buck_project/PATH/./foo",
+        "sym": "test/buck/t/buck_project/PATH/foo",
         "sym_location": {
             "filepath": "buck_project/TEST_TARGETS",
             "range": {

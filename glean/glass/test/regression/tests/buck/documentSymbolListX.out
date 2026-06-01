@@ -18,7 +18,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "."
+                            "aString": ""
                         },
                         "key": "symbolParent"
                     },
@@ -35,7 +35,7 @@
                     "lineBegin": 28,
                     "lineEnd": 35
                 },
-                "sym": "test/buck/t/buck_project/PATH/./bar"
+                "sym": "test/buck/t/buck_project/PATH/bar"
             },
             {
                 "attributes": [
@@ -53,7 +53,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "."
+                            "aString": ""
                         },
                         "key": "symbolParent"
                     },
@@ -70,7 +70,7 @@
                     "lineBegin": 43,
                     "lineEnd": 54
                 },
-                "sym": "test/buck/t/buck_project/PATH/./baz"
+                "sym": "test/buck/t/buck_project/PATH/baz"
             },
             {
                 "attributes": [
@@ -88,7 +88,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "."
+                            "aString": ""
                         },
                         "key": "symbolParent"
                     },
@@ -105,7 +105,7 @@
                     "lineBegin": 20,
                     "lineEnd": 26
                 },
-                "sym": "test/buck/t/buck_project/PATH/./foo"
+                "sym": "test/buck/t/buck_project/PATH/foo"
             },
             {
                 "attributes": [
@@ -123,7 +123,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "."
+                            "aString": ""
                         },
                         "key": "symbolParent"
                     },
@@ -140,7 +140,7 @@
                     "lineBegin": 10,
                     "lineEnd": 18
                 },
-                "sym": "test/buck/t/buck_project/PATH/./foobar"
+                "sym": "test/buck/t/buck_project/PATH/foobar"
             },
             {
                 "attributes": [
@@ -158,7 +158,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "."
+                            "aString": ""
                         },
                         "key": "symbolParent"
                     },
@@ -175,7 +175,7 @@
                     "lineBegin": 6,
                     "lineEnd": 8
                 },
-                "sym": "test/buck/t/buck_project/PATH/./my_thrift_lib"
+                "sym": "test/buck/t/buck_project/PATH/my_thrift_lib"
             },
             {
                 "attributes": [
@@ -193,7 +193,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "."
+                            "aString": ""
                         },
                         "key": "symbolParent"
                     },
@@ -210,7 +210,7 @@
                     "lineBegin": 37,
                     "lineEnd": 41
                 },
-                "sym": "test/buck/t/buck_project/PATH/./rust_binary"
+                "sym": "test/buck/t/buck_project/PATH/rust_binary"
             },
             {
                 "attributes": [
@@ -228,7 +228,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "."
+                            "aString": ""
                         },
                         "key": "symbolParent"
                     },
@@ -245,7 +245,7 @@
                     "lineBegin": 56,
                     "lineEnd": 56
                 },
-                "sym": "test/buck/t/buck_project/PATH/./some_thrift_lib"
+                "sym": "test/buck/t/buck_project/PATH/some_thrift_lib"
             },
             {
                 "attributes": [
@@ -263,7 +263,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "."
+                            "aString": ""
                         },
                         "key": "symbolParent"
                     },
@@ -280,7 +280,7 @@
                     "lineBegin": 58,
                     "lineEnd": 58
                 },
-                "sym": "test/buck/t/buck_project/PATH/./some_thrift_lib"
+                "sym": "test/buck/t/buck_project/PATH/some_thrift_lib"
             }
         ],
         "referenced_file_digests": {},
@@ -1060,141 +1060,6 @@
                     },
                     {
                         "attribute": {
-                            "aString": "bar"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "."
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 11
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 9,
-                    "columnEnd": 15,
-                    "lineBegin": 13,
-                    "lineEnd": 13
-                },
-                "sym": "test/buck/t/buck_project/PATH/./bar",
-                "target": {
-                    "filepath": "buck_project/TEST_TARGETS",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 28,
-                        "lineEnd": 35
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 30
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "bar"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "."
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 11
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 9,
-                    "columnEnd": 15,
-                    "lineBegin": 24,
-                    "lineEnd": 24
-                },
-                "sym": "test/buck/t/buck_project/PATH/./bar",
-                "target": {
-                    "filepath": "buck_project/TEST_TARGETS",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 28,
-                        "lineEnd": 35
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 30
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "foo"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "."
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 11
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 9,
-                    "columnEnd": 15,
-                    "lineBegin": 14,
-                    "lineEnd": 14
-                },
-                "sym": "test/buck/t/buck_project/PATH/./foo",
-                "target": {
-                    "filepath": "buck_project/TEST_TARGETS",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 20,
-                        "lineEnd": 26
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 30
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
                             "aString": "foo"
                         },
                         "key": "symbolName"
@@ -1316,6 +1181,141 @@
                         "columnEnd": 2,
                         "lineBegin": 11,
                         "lineEnd": 13
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "bar"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 15,
+                    "lineBegin": 13,
+                    "lineEnd": 13
+                },
+                "sym": "test/buck/t/buck_project/PATH/bar",
+                "target": {
+                    "filepath": "buck_project/TEST_TARGETS",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 28,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "bar"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 15,
+                    "lineBegin": 24,
+                    "lineEnd": 24
+                },
+                "sym": "test/buck/t/buck_project/PATH/bar",
+                "target": {
+                    "filepath": "buck_project/TEST_TARGETS",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 28,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 15,
+                    "lineBegin": 14,
+                    "lineEnd": 14
+                },
+                "sym": "test/buck/t/buck_project/PATH/foo",
+                "target": {
+                    "filepath": "buck_project/TEST_TARGETS",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 20,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 }

@@ -18,7 +18,7 @@
                             "aString": "foobar"
                         },
                         "symbolParent": {
-                            "aString": "."
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -27,7 +27,7 @@
                         "lineBegin": 10,
                         "lineEnd": 18
                     },
-                    "sym": "test/buck/t/buck_project/PATH/./foobar"
+                    "sym": "test/buck/t/buck_project/PATH/foobar"
                 }
             ],
             "13": [
@@ -43,7 +43,7 @@
                             "aString": "bar"
                         },
                         "symbolParent": {
-                            "aString": "."
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -52,7 +52,7 @@
                         "lineBegin": 13,
                         "lineEnd": 13
                     },
-                    "sym": "test/buck/t/buck_project/PATH/./bar",
+                    "sym": "test/buck/t/buck_project/PATH/bar",
                     "target": {
                         "filepath": "buck_project/TEST_TARGETS",
                         "range": {
@@ -78,7 +78,7 @@
                             "aString": "foo"
                         },
                         "symbolParent": {
-                            "aString": "."
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -87,7 +87,7 @@
                         "lineBegin": 14,
                         "lineEnd": 14
                     },
-                    "sym": "test/buck/t/buck_project/PATH/./foo",
+                    "sym": "test/buck/t/buck_project/PATH/foo",
                     "target": {
                         "filepath": "buck_project/TEST_TARGETS",
                         "range": {
@@ -148,7 +148,7 @@
                             "aString": "foo"
                         },
                         "symbolParent": {
-                            "aString": "."
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -157,7 +157,7 @@
                         "lineBegin": 20,
                         "lineEnd": 26
                     },
-                    "sym": "test/buck/t/buck_project/PATH/./foo"
+                    "sym": "test/buck/t/buck_project/PATH/foo"
                 }
             ],
             "23": [
@@ -208,7 +208,7 @@
                             "aString": "bar"
                         },
                         "symbolParent": {
-                            "aString": "."
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -217,7 +217,7 @@
                         "lineBegin": 24,
                         "lineEnd": 24
                     },
-                    "sym": "test/buck/t/buck_project/PATH/./bar",
+                    "sym": "test/buck/t/buck_project/PATH/bar",
                     "target": {
                         "filepath": "buck_project/TEST_TARGETS",
                         "range": {
@@ -243,7 +243,7 @@
                             "aString": "bar"
                         },
                         "symbolParent": {
-                            "aString": "."
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -252,7 +252,7 @@
                         "lineBegin": 28,
                         "lineEnd": 35
                     },
-                    "sym": "test/buck/t/buck_project/PATH/./bar"
+                    "sym": "test/buck/t/buck_project/PATH/bar"
                 }
             ],
             "30": [
@@ -371,7 +371,7 @@
                             "aString": "rust_binary"
                         },
                         "symbolParent": {
-                            "aString": "."
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -380,7 +380,7 @@
                         "lineBegin": 37,
                         "lineEnd": 41
                     },
-                    "sym": "test/buck/t/buck_project/PATH/./rust_binary"
+                    "sym": "test/buck/t/buck_project/PATH/rust_binary"
                 }
             ],
             "39": [
@@ -666,7 +666,7 @@
                             "aString": "baz"
                         },
                         "symbolParent": {
-                            "aString": "."
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -675,7 +675,7 @@
                         "lineBegin": 43,
                         "lineEnd": 54
                     },
-                    "sym": "test/buck/t/buck_project/PATH/./baz"
+                    "sym": "test/buck/t/buck_project/PATH/baz"
                 }
             ],
             "47": [
@@ -792,7 +792,7 @@
                             "aString": "some_thrift_lib"
                         },
                         "symbolParent": {
-                            "aString": "."
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -801,7 +801,7 @@
                         "lineBegin": 56,
                         "lineEnd": 56
                     },
-                    "sym": "test/buck/t/buck_project/PATH/./some_thrift_lib"
+                    "sym": "test/buck/t/buck_project/PATH/some_thrift_lib"
                 }
             ],
             "58": [
@@ -883,7 +883,7 @@
                             "aString": "some_thrift_lib"
                         },
                         "symbolParent": {
-                            "aString": "."
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -892,7 +892,7 @@
                         "lineBegin": 58,
                         "lineEnd": 58
                     },
-                    "sym": "test/buck/t/buck_project/PATH/./some_thrift_lib"
+                    "sym": "test/buck/t/buck_project/PATH/some_thrift_lib"
                 }
             ],
             "6": [
@@ -908,7 +908,7 @@
                             "aString": "my_thrift_lib"
                         },
                         "symbolParent": {
-                            "aString": "."
+                            "aString": ""
                         }
                     },
                     "range": {
@@ -917,7 +917,7 @@
                         "lineBegin": 6,
                         "lineEnd": 8
                     },
-                    "sym": "test/buck/t/buck_project/PATH/./my_thrift_lib"
+                    "sym": "test/buck/t/buck_project/PATH/my_thrift_lib"
                 }
             ],
             "63": [

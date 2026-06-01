@@ -7,52 +7,6 @@
                 "kind": 30,
                 "language": 11,
                 "location": {
-                    "filepath": "buck_project/TEST_TARGETS",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 20,
-                        "lineEnd": 26
-                    },
-                    "repository": "test"
-                },
-                "name": "foo",
-                "qname": {
-                    "container": ".",
-                    "localName": "foo"
-                },
-                "score": {
-                    "exactness": 0
-                },
-                "symbol": "test/buck/t/buck_project/PATH/./foo"
-            },
-            {
-                "kind": 30,
-                "language": 11,
-                "location": {
-                    "filepath": "buck_project/TEST_TARGETS",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 10,
-                        "lineEnd": 18
-                    },
-                    "repository": "test"
-                },
-                "name": "foobar",
-                "qname": {
-                    "container": ".",
-                    "localName": "foobar"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/buck/t/buck_project/PATH/./foobar"
-            },
-            {
-                "kind": 30,
-                "language": 11,
-                "location": {
                     "filepath": "buck_project/a/TEST_TARGETS",
                     "range": {
                         "columnBegin": 1,
@@ -117,6 +71,52 @@
                     "exactness": 0
                 },
                 "symbol": "test/buck/t/buck_project/PATH/b/foo"
+            },
+            {
+                "kind": 30,
+                "language": 11,
+                "location": {
+                    "filepath": "buck_project/TEST_TARGETS",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 20,
+                        "lineEnd": 26
+                    },
+                    "repository": "test"
+                },
+                "name": "foo",
+                "qname": {
+                    "container": "",
+                    "localName": "foo"
+                },
+                "score": {
+                    "exactness": 0
+                },
+                "symbol": "test/buck/t/buck_project/PATH/foo"
+            },
+            {
+                "kind": 30,
+                "language": 11,
+                "location": {
+                    "filepath": "buck_project/TEST_TARGETS",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "name": "foobar",
+                "qname": {
+                    "container": "",
+                    "localName": "foobar"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/buck/t/buck_project/PATH/foobar"
             }
         ]
     }
