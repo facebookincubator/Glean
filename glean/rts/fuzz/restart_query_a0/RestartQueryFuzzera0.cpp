@@ -31,8 +31,9 @@ struct StubFactIterator final : FactIterator {
     consumed_ = true;
   }
   Fact::Ref get(Demand) override {
-    if (consumed_)
+    if (consumed_) {
       return Fact::Ref::invalid();
+    }
     return ref_;
   }
   std::optional<Id> lower_bound() override {
@@ -57,8 +58,9 @@ struct SmartStubDefine : Define {
   }
 
   bool factById(Id id, std::function<void(Pid, Fact::Clause)> f) override {
-    if (!find_facts)
+    if (!find_facts) {
       return false;
+    }
     last_queried_id = id;
     Fact::Clause clause{kFakeKeyBuf, kFakeKeySize, 0};
     f(Pid::lowest(), clause);
