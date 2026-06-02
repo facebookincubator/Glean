@@ -4,6 +4,7 @@
 
 schema erlang.2 {
 import src
+import fbthrift
 
 predicate FunctionDeclaration :
   {
@@ -593,4 +594,21 @@ predicate SearchVarByLowerCaseName:
   } stored
   { prim.toLower Name, Decl } where
   Decl = erlang.VarDeclaration { name = Name };
+
+# Maps an Erlang declaration to the Thrift declaration it is generated from
+# (thrift_library .erl/.hrl codegen). Facts are written by the ELP indexer.
+# Mirrors cxx1.CxxToThrift.
+predicate ErlangToThrift:
+  {
+    from: Declaration,
+    to: fbthrift.Declaration
+  }
+
+predicate ThriftToErlang:
+  {
+    to: fbthrift.Declaration,
+    from: Declaration
+  }
+  stored { To, From }
+    where erlang.ErlangToThrift { From, To }
 }
