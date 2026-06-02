@@ -2,9 +2,11 @@
 
 schema codemarkup.erlang.3 {
 import src
+import code
 import code.erlang
 import codemarkup.types
 import erlang
+import fbthrift
 
 #
 # Resolving locations to entities
@@ -186,6 +188,31 @@ predicate ErlangEntityUses:
     DefStart = VarRef.target_span_start;
     Span = VarRef.sources[..];
   )
+
+predicate ErlangEntityIdl:
+  {
+    ent: code.erlang.Entity,
+    idlEnt: code.IdlEntity,
+  }
+  { E, I } where
+  erlang.ErlangToThrift { from = ErlDecl, to = Thrift };
+  fbthrift.DeclarationFile { Thrift, fbthrift.File F };
+  { lang = Thrift,
+    file = F,
+    entity = { just = { fbthrift = { decl = Thrift } } },
+    range = nothing } = I;
+  { decl = ErlDecl } = E
+
+predicate ErlangIdlEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  { Target, File, Span } where
+  { fbthrift = { decl = Thrift } } = Target;
+  erlang.ThriftToErlang { Thrift, ErlDecl };
+  ErlangEntityUses { { decl = ErlDecl }, File, Span }
 
 predicate ErlangEntityKind:
   {

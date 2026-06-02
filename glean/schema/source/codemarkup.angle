@@ -226,7 +226,9 @@ predicate GeneratedEntityToIdlEntity:
     (codemarkup.hack.HackEntityIdl { E, IdlEntity };
      { hack = E } = Entity) |
     (codemarkup.cxx.CxxEntityIdl { E, IdlEntity };
-     { cxx = E } = Entity)
+     { cxx = E } = Entity) |
+    (codemarkup.erlang.ErlangEntityIdl { E, IdlEntity };
+     { erlang = E } = Entity)
 
 # generic entities are either
 #  - plainEntity: regular entities within the same db as the source file
@@ -275,6 +277,10 @@ predicate FileXRefsGenericEntities: {
     )
   | ( codemarkup.erlang.ErlangFileEntityXRefLocations { File, XRef, E }
     ; { plainEntity = { xref = XRef, entity = { erlang = E } } } = GenEntity
+    )
+  | ( codemarkup.erlang.ErlangFileEntityXRefLocations { File, { source = Source }, E }
+    ; codemarkup.erlang.ErlangEntityIdl { E, IdlEntity }
+    ; { xlangEntity = { source = Source, entity = IdlEntity } } = GenEntity
     )
   | ( codemarkup.lsif.LsifFileEntityXRefLocations { File, XRef, E }
     ; { plainEntity = { xref = XRef, entity = { lsif = E } } } = GenEntity
@@ -490,6 +496,9 @@ predicate EntityReferences:
     { span = Span } = RangeSpan;
   ) | (
     codemarkup.cxx.CxxIdlEntityUses { Entity, File, Span };
+    { span = Span } = RangeSpan;
+  ) | (
+    codemarkup.erlang.ErlangIdlEntityUses { Entity, File, Span };
     { span = Span } = RangeSpan;
   );
 
