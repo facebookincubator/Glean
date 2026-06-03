@@ -232,9 +232,10 @@ runWithShards env myShards sm = do
         -- so it's possible that the DB is not in the Catalog at this point
         return ()
 
-  restores <- fmap catMaybes $ forM retentionRestore $ \Item{..} ->
+  restores <- fmap catMaybes $ forM retentionRestore $ \(Item{..}, shard) ->
     ifRestoreRepo env Nothing itemRepo $ do
       logInfo $ "Restoring: " ++ showRepo itemRepo ++
+        " (shard " ++ show shard ++ ")" ++
         " ("  ++ showNominalDiffTime (dbAge now itemMeta) ++ " old)"
       return $ Just $ Catalog.startRestoring (envCatalog env) itemRepo itemMeta
   -- register all the restoring DBs together in a single transaction,

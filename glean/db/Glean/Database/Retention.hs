@@ -41,7 +41,7 @@ import Glean.Util.TransitiveClosure
 data RetentionChanges shard = RetentionChanges
   { retentionLocal :: [(Item,shard)]
   , retentionDelete :: [Item]
-  , retentionRestore :: [Item]
+  , retentionRestore :: [(Item, shard)]
   , retentionElsewhere :: [Item]
   , localMissingDependencies :: [Item]
   , allMissingDependencies :: [Item]
@@ -104,8 +104,8 @@ retentionChanges
       , repo `notElem` map (itemRepo . fst) keepInThisNode ]
 
     fetch =
-      [ item
-      | (item@Item{..},_) <- keepInThisNode
+      [ (item, shard)
+      | (item@Item{..}, shard) <- keepInThisNode
       , itemLocality == Cloud ]
 
     elsewhere =
