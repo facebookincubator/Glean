@@ -162,7 +162,7 @@ $(BYTECODE_GEN) &: $(BYTECODE_SRCS) glean.cabal
 
 .PHONY: test
 test:: glean.cabal
-	$(CABAL) test glean:tests
+	$(CABAL) test glean:tests --test-show-details=failures
 
 SCHEMAS= \
 	anglelang \
