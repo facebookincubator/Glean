@@ -279,16 +279,19 @@ instance Site S3Site where
     let repoPath = makeRepoPath bucketBasePath repo
     deleteFile s3Client (dbPath repoPath)
 
-  restore S3Site{s3Client, bucketBasePath} repo intoPath = runResourceT $ do
-    let repoPath = makeRepoPath bucketBasePath repo
-    res <- downloadFile s3Client (dbPath repoPath)
-    case res of
-      Just (meta, repoStream)
-        | Just metaJson <- HashMap.lookup metadataKey meta -> do
-            meta <- parseMeta repo metaJson
-            runConduit $ AWS.sinkBody repoStream (sinkFile intoPath)
-            pure meta
-      _ -> throwIO . Thrift.InvalidLocator $ "locator is missing either metadata or db.tar.gz" <> (Text.pack . show) repo
+  restore S3Site{s3Client, bucketBasePath} repo scratch action =
+    restoreViaFile scratch download action
+    where
+      download intoPath = runResourceT $ do
+        let repoPath = makeRepoPath bucketBasePath repo
+        res <- downloadFile s3Client (dbPath repoPath)
+        case res of
+          Just (meta, repoStream)
+            | Just metaJson <- HashMap.lookup metadataKey meta -> do
+                meta <- parseMeta repo metaJson
+                runConduit $ AWS.sinkBody repoStream (sinkFile intoPath)
+                pure meta
+          _ -> throwIO . Thrift.InvalidLocator $ "locator is missing either metadata or db.tar.gz" <> (Text.pack . show) repo
 
   inspect S3Site{s3Client, bucketBasePath} repo = runResourceT $ do
     let repoPath = makeRepoPath bucketBasePath repo

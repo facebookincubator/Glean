@@ -14,7 +14,7 @@ import Control.Monad.IO.Class (MonadIO (..))
 import qualified Data.HashMap.Strict as HashMap
 import Data.Time (fromGregorian)
 import Data.Time.Clock
-import System.IO (hClose)
+import System.IO (hGetContents')
 import qualified System.IO.Temp as Temp
 import Test.HUnit
 
@@ -56,11 +56,12 @@ restoresTest = TestCase $ do
   withTempFileContents ("abcd" :: String) $ \path -> do
     void $ Backup.backup site testDbRepo meta Nothing path
 
-  Temp.withSystemTempFile "glean" $ \path h -> do
-    hClose h
-    meta' <- Backup.restore site testDbRepo path
+  Temp.withSystemTempDirectory "glean" $ \scratch -> do
+    (content, meta') <- Backup.restore site testDbRepo scratch $ \src ->
+      case src of
+        Backup.SourceFile path -> readFile path
+        Backup.SourceStream h -> hGetContents' h
     assertEqual "restored database meta is the same" meta' meta
-    content <- readFile path
     assertEqual "restored database content is the same" content "abcd"
 
 metadatasTest :: Test

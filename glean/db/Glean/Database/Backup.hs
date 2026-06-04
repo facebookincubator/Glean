@@ -360,17 +360,14 @@ doRestore env@Env{..} repo meta
 
     withScratchDirectory storage repo $ \scratch -> do
     say logInfo "starting"
-    say logInfo "downloading"
     let scratch_restore = scratch </> "restore"
-        scratch_file = scratch </> "file"
-    -- TODO: implement buffered downloads in Manifold client
-    void $ traceMsg envTracer GleanTraceSiteRestore $
-      Backend.restore site repo scratch_file
-    say logInfo "restoring"
     createDirectoryIfMissing True scratch_restore
-    traceMsg envTracer GleanTraceStorageRestore $
-      Storage.restore storage cfg repo scratch_restore scratch_file
-    say logInfo "adding"
+    say logInfo "downloading+untaring"
+    void $ traceMsg envTracer GleanTraceSiteRestore $
+      Backend.restore site repo scratch $ \src ->
+        traceMsg envTracer GleanTraceStorageRestore $
+          Storage.restore storage cfg repo scratch_restore src
+    say logInfo "updating catalog"
     traceMsg envTracer GleanTraceFinishRestore $
       Catalog.finishRestoring envCatalog repo
     atomically $ notify envListener $ RestoreFinished repo

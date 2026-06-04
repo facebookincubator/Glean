@@ -132,20 +132,19 @@ instance Storage LMDB where
 
   withScratchRoot rocks f = f $ lmdbRoot rocks </> ".scratch"
 
-  restore lmdb cfg repo scratch scratch_file = do
-    withTempDirectory scratch "restore" $ \scratch_restore -> do
-      let target = containerPath lmdb repo
-      createDirectoryIfMissing True $ takeDirectory target
-      if ServerConfig.config_db_lmdb_restore_unpack cfg
-        then do
-          let db = scratch_restore </> "db"
-          createDirectoryIfMissing True db
-          callProcess "unsquashfs" ["-d", db, scratch_file ]
-            -- to avoid retaining an extra copy of the DB during restore,
-            -- delete the input file now.
-          renameDirectory db target
-        else
-          renameFile scratch_file (target <.> "squashfs")
+  restore lmdb cfg repo scratch src =
+    withTempDirectory scratch "restore" $ \scratch_restore ->
+      withMaterializedFile scratch_restore src $ \file -> do
+        let target = containerPath lmdb repo
+        createDirectoryIfMissing True $ takeDirectory target
+        if ServerConfig.config_db_lmdb_restore_unpack cfg
+          then do
+            let db = scratch_restore </> "db"
+            createDirectoryIfMissing True db
+            callProcess "unsquashfs" ["-d", db, file]
+            renameDirectory db target
+          else
+            renameFile file (target <.> "squashfs")
 
 containerPath :: LMDB -> Repo -> FilePath
 containerPath LMDB{..} repo = databasePath lmdbRoot repo </> "db"

@@ -59,9 +59,12 @@ instance Site MockSite where
       Left err -> throwIO $ ErrorCall $ "can't parse props: " <> err
       Right r -> return r
 
-  restore (MockSite path) repo file = do
-    copyFile (repoPath path repo) file
-    inspect (MockSite path) repo
+  restore (MockSite path) repo scratch action =
+    restoreViaFile scratch download action
+    where
+      download file = do
+        copyFile (repoPath path repo) file
+        inspect (MockSite path) repo
 
   delete (MockSite path) repo =
     removeFile $ repoPath path repo

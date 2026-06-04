@@ -9,7 +9,9 @@
 module Glean.Database.Restore (
   restoreDatabase,
   restoreDatabaseFromSite,
-  forRestoreSitesM, ifRestoreRepo, restorable,
+  forRestoreSitesM,
+  ifRestoreRepo,
+  restorable,
 ) where
 
 import Control.Exception hiding(handle)

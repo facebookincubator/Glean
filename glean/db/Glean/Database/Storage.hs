@@ -15,16 +15,28 @@ module Glean.Database.Storage
   , DBVersion(..)
   , AxiomOwnership
   , WriteLock(..)
+  , RestoreSource(..)
+  , withMaterializedFile
   , canOpenVersion
   , currentVersion
   ) where
 
+import Control.Exception (finally)
+import Control.Monad (unless)
 import Data.ByteString (ByteString)
+import qualified Data.ByteString as BS
 import Data.HashMap.Strict (HashMap)
 import Data.Text (Text)
+import Data.Unique (hashUnique, newUnique)
 import qualified Data.Vector.Storable as VS
+import System.Directory (removePathForcibly)
+import System.FilePath ((</>))
+import System.IO (Handle, IOMode(WriteMode), withBinaryFile)
 
-import Glean.Database.Backup.Backend (Data)
+import Glean.Database.Backup.Backend
+  ( Data
+  , RestoreSource(..)
+  )
 import Glean.Internal.Types (StoredSchema)
 import Glean.RTS.Foreign.FactSet (FactSet)
 import Glean.RTS.Foreign.Inventory (Inventory)
@@ -48,6 +60,42 @@ canOpenVersion s mode version = version `elem` versions
 -- | Default current binary representation version
 currentVersion :: Storage s => s -> DBVersion
 currentVersion = maximum . writableVersions
+
+-- | Provide a real file path for a 'RestoreSource'. A 'SourceFile' is
+-- passed through unchanged. A 'SourceStream' is first written to a
+-- unique file in the scratch directory, which is removed once the
+-- continuation returns to avoid retaining an extra copy of the DB.
+withMaterializedFile
+  :: FilePath  -- ^ scratch directory
+  -> RestoreSource
+  -> (FilePath -> IO a)
+  -> IO a
+withMaterializedFile _ (SourceFile path) action = action path
+withMaterializedFile scratch (SourceStream h) action = do
+  u <- newUnique
+  let tmpFile = scratch </> "stream-fallback-" <> show (hashUnique u)
+  (hCopyToFile h tmpFile >> action tmpFile) `finally` removePathForcibly tmpFile
+
+-- | Copy a 'Handle' to a file in fixed-size chunks.
+--
+-- We deliberately avoid lazy IO ('Data.ByteString.Lazy.hGetContents'):
+-- it reads the handle on demand via 'unsafeInterleaveIO', so the copy
+-- only happens as a side effect of forcing the result, IO exceptions
+-- surface at unpredictable points, and the handle stays implicitly alive
+-- until the lazy value is fully consumed. A strict whole-handle read is
+-- also unsuitable here because the stream carries the entire serialized
+-- database (potentially tens of GB) and would be buffered in memory all
+-- at once. Chunked copying sidesteps both: it fully and eagerly consumes
+-- the handle in bounded memory.
+hCopyToFile :: Handle -> FilePath -> IO ()
+hCopyToFile h path = withBinaryFile path WriteMode go
+  where
+    chunkSize = 1024 * 1024
+    go out = do
+      chunk <- BS.hGetSome h chunkSize
+      unless (BS.null chunk) $ do
+        BS.hPut out chunk
+        go out
 
 -- Choose which schema goes into a newly created DB
 data CreateSchema
@@ -116,17 +164,19 @@ class DatabaseOps (Database s) => Storage s where
   -- to persist beyond the call and is not guaranteed to be empty.
   withScratchRoot :: s -> (FilePath -> IO a) -> IO a
 
-  -- | Restore a database. The scratch directory which can be used for
-  -- storing intermediate files is guaranteed to be empty and will be
-  -- deleted after the operation completes. The implementation may
-  -- delete the serialized database file after it has been consumed,
-  -- to reduce the number of copies of the DB on disk during a restore.
+  -- | Restore a database from a 'RestoreSource' (either a file on disk
+  -- or a stream handle piped directly from the backup site). The scratch
+  -- directory which can be used for storing intermediate files is
+  -- guaranteed to be empty and will be deleted after the operation
+  -- completes. The implementation may delete the serialized database
+  -- file after it has been consumed, to reduce the number of copies of
+  -- the DB on disk during a restore.
   restore
     :: s   -- ^ storage
     -> ServerConfig.Config  -- ^ server config
     -> Repo  -- ^ repo
     -> FilePath  -- ^ scratch directory
-    -> FilePath  -- ^ file containing the serialiased database (produced by 'backup')
+    -> RestoreSource  -- ^ source of the serialised database
     -> IO ()
 
 class CanLookup db => DatabaseOps db where
