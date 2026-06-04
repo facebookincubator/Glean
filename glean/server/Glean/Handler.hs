@@ -95,4 +95,54 @@ handler State{..} req =
 
     Service.Restore loc -> Backend.restoreDatabase backend loc
 
+    -- V2 stubs: delegate to V1 and wrap with Nothing auth fields. The
+    -- real auth-aware implementations will populate these auth fields later.
+    -- MIGRATION: cleanup with v2_migrated_clients
+    Service.ValidateSchemaV2 req -> do
+      Backend.validateSchema backend req
+      return Thrift.ValidateSchemaResult
+        { validateSchemaResult_auth_status = Nothing
+        , validateSchemaResult_auth_message = Nothing
+        }
+
+    Service.RestoreV2 loc -> do
+      Backend.restoreDatabase backend loc
+      return Thrift.RestoreResult
+        { restoreResult_auth_status = Nothing
+        , restoreResult_auth_message = Nothing
+        }
+
+    Service.PredicateStatsV2 repo Thrift.PredicateStatsOpts{..} -> do
+      stats <- Backend.predicateStats backend repo $
+        if predicateStatsOpts_excludeBase then ExcludeBase else IncludeBase
+      return Thrift.PredicateStatsResult
+        { predicateStatsResult_stats = stats
+        , predicateStatsResult_auth_status = Nothing
+        , predicateStatsResult_auth_message = Nothing
+        }
+
+    Service.SendBatchV2 cbatch -> do
+      response <- Backend.enqueueBatch backend cbatch
+      return Thrift.SendBatchResult
+        { sendBatchResult_response = response
+        , sendBatchResult_auth_status = Nothing
+        , sendBatchResult_auth_message = Nothing
+        }
+
+    Service.FinishBatchV2 handle -> do
+      response <- Backend.pollBatch backend handle
+      return Thrift.FinishBatchResult
+        { finishBatchResult_response = response
+        , finishBatchResult_auth_status = Nothing
+        , finishBatchResult_auth_message = Nothing
+        }
+
+    Service.DeriveStoredV2 repo pred -> do
+      status <- Backend.deriveStored backend (const mempty) repo pred
+      return Thrift.DeriveStoredResult
+        { deriveStoredResult_status = status
+        , deriveStoredResult_auth_status = Nothing
+        , deriveStoredResult_auth_message = Nothing
+        }
+
     SuperFacebookService c -> fb303Handler fb303State c

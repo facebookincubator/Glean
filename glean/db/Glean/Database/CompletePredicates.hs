@@ -224,7 +224,7 @@ scheduleCompletion Env{..} repo onAxiomComplete
       if
         | SkipIfComplete <- onAxiomComplete, metaAxiomComplete meta -> do
           later $ cancel async -- already done
-          return (return CompletePredicatesResponse{})
+          return (return emptyCompletePredicatesResponse)
         | FailIfNotComplete <- onAxiomComplete, not $ metaAxiomComplete meta ->
           now $ throwSTM $ Thrift.Exception "DB is not complete."
         | Broken b <- metaCompleteness meta -> do
@@ -238,11 +238,16 @@ scheduleCompletion Env{..} repo onAxiomComplete
           case inProgress of
             Just existingAsync -> do  -- in progress
               later $ cancel async
-              return $ waitFor existingAsync CompletePredicatesResponse{}
+              return $ waitFor existingAsync emptyCompletePredicatesResponse
             Nothing -> now $ do  -- start async completion
               void $ tryPutTMVar tmvar ()
               storeComputation async
-              return $ waitFor async CompletePredicatesResponse{}
+              return $ waitFor async emptyCompletePredicatesResponse
+  where
+    emptyCompletePredicatesResponse = CompletePredicatesResponse
+      { completePredicatesResponse_auth_status = Nothing
+      , completePredicatesResponse_auth_message = Nothing
+      }
 
 -- If a synchronous exception is thrown during completion, this is
 -- not recoverable, so mark the DB as broken. The exception is also

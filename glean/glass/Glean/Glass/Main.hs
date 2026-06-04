@@ -59,7 +59,8 @@ import Glean.Glass.GlassService.Service ( GlassServiceCommand(..) )
 
 import Glean.Glass.Types
   ( GlassException (GlassException, glassException_reasons),
-    GlassExceptionReason (..), RequestOptions(..))
+    GlassExceptionReason (..), RequestOptions(..),
+    FindReferenceRangesResult(..))
 import Glean.Glass.Env (Env'(tracer, sourceControl), Env)
 import Glean.Glass.Tracer ( isTracingEnabled )
 import Glean.Glass.Handler.Cxx as Cxx
@@ -175,6 +176,7 @@ getOptsFromCommand cmd = case cmd of
   DocumentSymbolListX _ opts -> opts
   DocumentSymbolIndex _ opts -> opts
   FindReferenceRanges _ opts -> opts
+  FindReferenceRangesV2 _ opts -> opts
   DescribeSymbol _ opts -> opts
   SymbolLocation _ opts -> opts
   ResolveSymbols _ opts -> opts
@@ -209,6 +211,16 @@ glassHandler env0 cmd =
 
   -- Navigating
   FindReferenceRanges r opts -> Handler.findReferenceRanges env r opts
+  -- V2 stub: delegate to V1 and wrap result with Nothing auth fields. The
+  -- real auth-aware implementation will populate these auth fields later.
+  -- MIGRATION: cleanup with v2_migrated_clients
+  FindReferenceRangesV2 r opts -> do
+    ranges <- Handler.findReferenceRanges env r opts
+    return FindReferenceRangesResult
+      { findReferenceRangesResult_ranges = ranges
+      , findReferenceRangesResult_auth_status = Nothing
+      , findReferenceRangesResult_auth_message = Nothing
+      }
 
   -- Symbol info
   DescribeSymbol r opts -> Handler.describeSymbol env r opts

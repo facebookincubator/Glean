@@ -110,7 +110,7 @@ waitForIncompleteDBs :: Config -> Assertion
 waitForIncompleteDBs = setupOutOfProcessServer 10000 $ \ph err backend -> do
   -- kick off a database
   let repo = Repo "repo" "hash"
-  KickOffResponse _ <-
+  KickOffResponse{} <-
     kickOffDatabase
       backend
       def

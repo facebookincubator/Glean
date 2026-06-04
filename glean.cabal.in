@@ -310,6 +310,16 @@ library if-fb303-hs
     build-depends:
         glean:thrift-annotation,
 
+library if-auth-hs
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    hs-source-dirs:
+        glean/if/facebook/gen-hs2
+    exposed-modules:
+        Glean.Auth.Auth.Types
+    build-depends:
+        glean:thrift-annotation,
+
 library if-glean-hs
     import: fb-haskell, fb-cpp, deps
     visibility: public
@@ -322,6 +332,7 @@ library if-glean-hs
     build-depends:
         glean:thrift-annotation,
         glean:config,
+        glean:if-auth-hs,
         glean:if-fb303-hs
 
 library if-index-hs
@@ -1440,6 +1451,7 @@ library if-glass-hs
         Glean.Glass.GlassService.Service
     build-depends:
         glean:config,
+        glean:if-auth-hs,
         glean:if-fb303-hs,
         glean:if-index-hs,
         glean:thrift-annotation,

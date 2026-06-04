@@ -828,6 +828,8 @@ toDocumentSymbolResult DocumentSymbols{..} = DocumentSymbolListXResult{..}
     documentSymbolListXResult_content_match = contentMatch
     documentSymbolListXResult_attributes = attributes
     documentSymbolListXResult_content = content
+    documentSymbolListXResult_auth_status = Nothing
+    documentSymbolListXResult_auth_message = Nothing
 
 
 
@@ -868,6 +870,8 @@ fetchDocumentSymbolIndex env latest req opts be
         documentSymbolIndex_content_match =
           documentSymbolListXResult_content_match,
         documentSymbolIndex_attributes = documentSymbolListXResult_attributes,
+        documentSymbolIndex_auth_status = Nothing,
+        documentSymbolIndex_auth_message = Nothing,
         documentSymbolIndex_content = documentSymbolListXResult_content
       }
   return ((idxResult, status, gleanDataLog, attrLog), merr1)

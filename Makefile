@@ -291,6 +291,7 @@ gen-schema :: glean.cabal cxx-libraries
 THRIFT_GLEAN= \
 	glean/github/if/fb303.thrift \
 	glean/github/if/fb303_core.thrift \
+	glean/if/facebook/auth.thrift \
 	glean/if/glean.thrift \
 	glean/config/recipes/recipes.thrift \
 	glean/config/recipes/recipes.thrift \

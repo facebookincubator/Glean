@@ -150,7 +150,9 @@ defnResToUSRSymbolDefinition mdefn repo = do
       pure (Right (USRSymbolDefinition {
         uSRSymbolDefinition_location = range,
         uSRSymbolDefinition_revision = rev,
-        uSRSymbolDefinition_sym = sym
+        uSRSymbolDefinition_sym = sym,
+        uSRSymbolDefinition_auth_status = Nothing,
+        uSRSymbolDefinition_auth_message = Nothing
       }))
 
 -- | Scrub all glean types for export to the client
@@ -173,7 +175,9 @@ processFileIncludes repo rev xmap = do
     }
   pure FileIncludeLocationResults {
     fileIncludeLocationResults_references = XRefFileList forExport,
-    fileIncludeLocationResults_revision = rev
+    fileIncludeLocationResults_revision = rev,
+    fileIncludeLocationResults_auth_status = Nothing,
+    fileIncludeLocationResults_auth_message = Nothing
   }
 
 hashUSR :: Text -> Text

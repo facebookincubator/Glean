@@ -149,7 +149,7 @@ created t = addUTCTime (negate (fromIntegral t))
 
 makeDB :: TestEnv -> UTCTime -> TestDbSpec -> IO ()
 makeDB TestEnv{testEnv = env} now (TestDbSpec repo age deps) = do
-  KickOffResponse False <- kickOffDatabase env def
+  KickOffResponse False _ _ <- kickOffDatabase env def
     { kickOff_repo = repo
     , kickOff_dependencies = deps
     }

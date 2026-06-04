@@ -244,7 +244,7 @@ runSyncQuery repo env q@(Query req) acc rvar = do
 
 loadDbSchema :: Backend a => a -> Thrift.Repo -> IO DbSchema
 loadDbSchema backend repo = do
-  Thrift.SchemaInfo schema pids _ dbSchemaIds _ _ <-
+  Thrift.SchemaInfo schema pids _ dbSchemaIds _ _ _ _ <-
     getSchemaInfo backend (Just repo) def
       { Thrift.getSchemaInfo_select = Thrift.SelectSchema_stored def }
   fromStoredSchema Nothing (StoredSchema schema pids dbSchemaIds)

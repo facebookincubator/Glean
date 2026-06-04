@@ -1183,6 +1183,8 @@ getSchemaInfo dbSchema index@SchemaIndex{..} GetSchemaInfo{..} = do
     , schemaInfo_dbSchemaIds = dbSchemaIds
     , schemaInfo_otherSchemaIds = otherSchemaIds
     , schemaInfo_derivationDependencies = derivationDependencies
+    , schemaInfo_auth_status = Nothing
+    , schemaInfo_auth_message = Nothing
     }
 
 getSchemaInfoForSchema :: SchemaIndex -> SchemaId -> DebugFlags -> IO SchemaInfo

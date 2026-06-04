@@ -48,7 +48,10 @@ listDatabases env@Env{..} Thrift.ListDatabases{..} = do
         fmap Thrift.getDatabaseResult_database $
         HashMap.union local backups
   return Thrift.ListDatabasesResult
-    { listDatabasesResult_databases = databases }
+    { listDatabasesResult_databases = databases
+    , listDatabasesResult_auth_status = Nothing
+    , listDatabasesResult_auth_message = Nothing
+    }
   where
     reposToResults = HashMap.mapWithKey
       (\repo meta -> Thrift.GetDatabaseResult
@@ -57,6 +60,8 @@ listDatabases env@Env{..} Thrift.ListDatabases{..} = do
             Nothing
             repo
             meta
+        , getDatabaseResult_auth_status = Nothing
+        , getDatabaseResult_auth_message = Nothing
         })
 
 listRestorable :: Backup.Site site => Text -> site -> IO (HashMap Repo Meta)

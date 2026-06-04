@@ -98,7 +98,9 @@ searchNeighborhood limit
         relatedNeighborhoodResult_symbolBasicDetails = basics,
         relatedNeighborhoodResult_requireExtends = map snd e,
         relatedNeighborhoodResult_requireImplements = map snd f,
-        relatedNeighborhoodResult_requireClass = map snd g
+        relatedNeighborhoodResult_requireClass = map snd g,
+        relatedNeighborhoodResult_auth_status = Nothing,
+        relatedNeighborhoodResult_auth_message = Nothing
       }
 
 -- building map of sym id -> descriptions, by first occurence

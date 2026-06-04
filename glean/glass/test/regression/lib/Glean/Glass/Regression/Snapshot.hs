@@ -355,7 +355,7 @@ instance DeterministicResponse (Either [Text] Cxx.SymbolEnv) where
 
 instance DeterministicResponse DocumentSymbolListXResult where
   det (DocumentSymbolListXResult refs defs _rev truncated digest fileMap
-      contentMatch attributes content) =
+      contentMatch attributes content authStatus authMessage) =
     DocumentSymbolListXResult (det refs) (det defs) (Revision "testhash")
       truncated
       digest
@@ -364,20 +364,24 @@ instance DeterministicResponse DocumentSymbolListXResult where
       contentMatch
       attributes
       content
+      authStatus
+      authMessage
 
 instance DeterministicResponse DocumentSymbolIndex where
   det (DocumentSymbolIndex syms _rev size truncated digest fileMap
-      contentMatch attributes content) =
+      contentMatch attributes content authStatus authMessage) =
     DocumentSymbolIndex (Map.map sort syms) (Revision "testhash") size truncated
       digest
       fileMap
       contentMatch
       attributes
       content
+      authStatus
+      authMessage
 
 instance DeterministicResponse SymbolSearchResult where
-  det (SymbolSearchResult syms deets) =
-    SymbolSearchResult (det syms) (det deets)
+  det (SymbolSearchResult syms deets authStatus authMessage) =
+    SymbolSearchResult (det syms) (det deets) authStatus authMessage
 
 instance (DeterministicResponse a, Ord a) => DeterministicResponse [a] where
   det = sort . map det
@@ -386,7 +390,8 @@ instance DeterministicResponse Range where det = id
 instance DeterministicResponse LocationRange where det = id
 instance DeterministicResponse Glass.QualifiedName where det = id
 instance DeterministicResponse SymbolLocation where
-  det (SymbolLocation loc _rev) = SymbolLocation (det loc) (Revision "testhash")
+  det (SymbolLocation loc _rev authStatus authMessage) =
+    SymbolLocation (det loc) (Revision "testhash") authStatus authMessage
 
 instance DeterministicResponse SymbolResolution where
   det (SymbolResolution qname loc rev kind lang sig) =
@@ -394,12 +399,14 @@ instance DeterministicResponse SymbolResolution where
       (det rev) kind lang sig
 
 instance DeterministicResponse SearchRelatedResult where
-  det (SearchRelatedResult xs ys) = -- to edit the desc hash
-    SearchRelatedResult (det xs) (det ys)
+  det (SearchRelatedResult xs ys authStatus authMessage) = -- to edit desc hash
+    SearchRelatedResult (det xs) (det ys) authStatus authMessage
 instance DeterministicResponse RelatedNeighborhoodResult where
-  det (RelatedNeighborhoodResult as bs cs ds es fs gs hs is js) =
+  det (RelatedNeighborhoodResult as bs cs ds es fs gs hs is js
+      authStatus authMessage) =
     RelatedNeighborhoodResult (det as) (det bs) (det cs) (det ds)
       (det es) (det fs) (det gs) (det hs) (det is) (det js)
+      authStatus authMessage
 instance DeterministicResponse RelatedSymbols where
   det = id
 instance DeterministicResponse InheritedSymbols where
@@ -447,10 +454,12 @@ instance DeterministicResponse (Map.Map Text SymbolDescription) where
 instance DeterministicResponse SymbolResult where
   det = id
 instance DeterministicResponse FileIncludeLocationResults where
-  det (FileIncludeLocationResults _rev (XRefFileList refs)) =
+  det (FileIncludeLocationResults _rev (XRefFileList refs)
+      authStatus authMessage) =
     FileIncludeLocationResults
      (Revision "testhash")
      (XRefFileList (sort (map det refs)))
+     authStatus authMessage
 instance DeterministicResponse FileIncludeXRef where
   det (FileIncludeXRef path incs) =
     FileIncludeXRef path (sort incs)
@@ -463,14 +472,15 @@ instance DeterministicResponse (Maybe SymbolResolutionFailure) where
   det (Just x) = Just (det x)
 
 instance DeterministicResponse ResolveSymbolsResult where
-  det (ResolveSymbolsResult syms) =
-    ResolveSymbolsResult (det syms)
+  det (ResolveSymbolsResult syms authStatus authMessage) =
+    ResolveSymbolsResult (det syms) authStatus authMessage
 instance DeterministicResponse ResolvedSymbol where
   det (ResolvedSymbol sym resolutions failure) =
     ResolvedSymbol (det sym) (det resolutions) (det failure)
 instance DeterministicResponse USRSymbolDefinition where
-  det (USRSymbolDefinition location sym revision) =
+  det (USRSymbolDefinition location sym revision authStatus authMessage) =
     USRSymbolDefinition (det location) (det sym) (det revision)
+      authStatus authMessage
 
 diff :: FilePath -> FilePath -> Maybe String -> IO ()
 diff outGenerated outSpec ignoreMatchingLines = do

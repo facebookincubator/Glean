@@ -111,6 +111,8 @@ describeEntity scmRevs ent SymbolResult{..} = do
   symbolDescription_contains_relation <-
     relationDescription RelationType_Contains
   symbolDescription_native_sym <- fmap Glass.NativeSymbol <$> nativeSymbol ent
+  let symbolDescription_auth_status = Nothing
+      symbolDescription_auth_message = Nothing
   pure SymbolDescription{..}
   where
     symbolDescription_sym = symbolResult_symbol

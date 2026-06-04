@@ -603,6 +603,8 @@ getLocalDatabases cat = do
             exp
             repo
             meta
+        , getDatabaseResult_auth_status = Nothing
+        , getDatabaseResult_auth_message = Nothing
         }
 
     restoring_db repo meta = Thrift.GetDatabaseResult
@@ -611,6 +613,8 @@ getLocalDatabases cat = do
           Nothing
           repo
           meta
+      , getDatabaseResult_auth_status = Nothing
+      , getDatabaseResult_auth_message = Nothing
       }
 
 getLocalDatabase :: Catalog -> Repo -> STM (Maybe Thrift.GetDatabaseResult)

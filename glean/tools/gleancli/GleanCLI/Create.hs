@@ -179,7 +179,7 @@ updateSchemaForStackedOpt = switch
 createDb :: Backend b => b -> Repo -> CreateOpts -> IO Bool
 createDb backend repo opts = do
   deps <- mapM getDependencies opts.dependencies
-  Thrift.KickOffResponse alreadyExists <-
+  Thrift.KickOffResponse alreadyExists _ _ <-
     Glean.kickOffDatabase backend def
       { kickOff_repo = repo
       , kickOff_properties = HashMap.fromList opts.properties

@@ -200,7 +200,7 @@ runDescribe sym = do
 
 runSearch :: Protocol p => RepoName -> Text -> Bool -> GlassM p [Text]
 runSearch repoName strName ignoreCase = do
-  SymbolSearchResult syms _ <- searchSymbol req def
+  SymbolSearchResult syms _ _ _ <- searchSymbol req def
   return (map textShow syms)
   where
     req = SymbolSearchRequest

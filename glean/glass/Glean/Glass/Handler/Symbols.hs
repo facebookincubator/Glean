@@ -152,7 +152,9 @@ symbolLocation env@Glass.Env{..} sym opts =
           repo_hash <- getRepoHashForLocation location scmRevs <$> Glean.haxlRepo
           return $ SymbolLocation {
             symbolLocation_location = location,
-            symbolLocation_revision = repo_hash
+            symbolLocation_revision = repo_hash,
+            symbolLocation_auth_status = Nothing,
+            symbolLocation_auth_message = Nothing
           })
 
 -- | Describe characteristics of a symbol
@@ -232,7 +234,7 @@ resolveSymbols env@Glass.Env{..} (ResolveSymbolsRequest symIds) opts = do
         pure ((resolutions, err), Nothing)
     pure (ResolvedSymbol symId resolutions err)
 
-  return $ ResolveSymbolsResult results
+  return $ ResolveSymbolsResult results Nothing Nothing
 
 
 toCodeEntityLoc ::
@@ -481,8 +483,10 @@ joinSearchResults
   -> Bool
   -> [RepoSearchResult]
   -> SymbolSearchResult
-joinSearchResults mlimit terse sorted xs = SymbolSearchResult syms $
-    if terse then [] else catMaybes descs
+joinSearchResults mlimit terse sorted xs = SymbolSearchResult syms
+    (if terse then [] else catMaybes descs)
+    Nothing
+    Nothing
   where
     uniqXs = dedupSearchResult <$> xs
     (syms,descs) = unzip $ nubOrd $ case (mlimit, sorted) of
@@ -505,8 +509,9 @@ joinSearchResults mlimit terse sorted xs = SymbolSearchResult syms $
 --
 joinLuckyResults :: [FeelingLuckyResult] -> SymbolSearchResult
 joinLuckyResults allResults = case findLucky allResults of
-    Nothing -> SymbolSearchResult [] []
-    Just (result, desc) -> SymbolSearchResult [result] (catMaybes [desc])
+    Nothing -> SymbolSearchResult [] [] Nothing Nothing
+    Just (result, desc) ->
+      SymbolSearchResult [result] (catMaybes [desc]) Nothing Nothing
   where
     -- little state machine across logical scm repos (e.g. "fbsource")
     findLucky :: [FeelingLuckyResult] -> Maybe SingleSymbol
@@ -747,6 +752,8 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
           let result = SearchRelatedResult
                 { searchRelatedResult_edges = symPairs
                 , searchRelatedResult_symbolDetails = desc
+                , searchRelatedResult_auth_status = Nothing
+                , searchRelatedResult_auth_message = Nothing
                 }
           pure (result, merr)
 

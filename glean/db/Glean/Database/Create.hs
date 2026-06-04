@@ -118,7 +118,11 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
       db <- atomically $ newDB kickOff_repo
       handle
         (\Catalog.EntryAlreadyExists{} ->
-            return $ Thrift.KickOffResponse True) $
+            return $ Thrift.KickOffResponse
+              { kickOffResponse_alreadyExists = True
+              , kickOffResponse_auth_status = Nothing
+              , kickOffResponse_auth_message = Nothing
+              }) $
         mask $ \unmask -> do
         -- FIXME: There is a tiny race here where we might fail in a weird way
         -- if kick off a DB that is being deleted after it got removed from
@@ -157,7 +161,11 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
                       })
             OpenDB{..} <- unmask $ Async.wait opener
             addSchemaIdProperty envCatalog kickOff_repo (schemaId odbSchema)
-            return $ Thrift.KickOffResponse False
+            return $ Thrift.KickOffResponse
+              { kickOffResponse_alreadyExists = False
+              , kickOffResponse_auth_status = Nothing
+              , kickOffResponse_auth_message = Nothing
+              }
   where
     addSchemaIdProperty :: Catalog.Catalog -> Repo -> SchemaId -> IO ()
     addSchemaIdProperty catalog repo hash =

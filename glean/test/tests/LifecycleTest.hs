@@ -119,7 +119,7 @@ checkActive Env{..} allow_deleting = do
 
 kickOff :: HasCallStack => Env -> Repo -> IO Bool
 kickOff env repo = do
-  KickOffResponse ex <- kickOffDatabase env def
+  KickOffResponse ex _ _ <- kickOffDatabase env def
     { kickOff_repo = repo
     }
   return ex
@@ -266,7 +266,7 @@ kickOffStacked :: Test
 kickOffStacked = TestCase $ withTEnv $ \TEnv{..} -> do
   mkDB tEnv repo1
   waitUntilComplete tEnv repo1
-  KickOffResponse ex <- kickOffDatabase tEnv def
+  KickOffResponse ex _ _ <- kickOffDatabase tEnv def
     { kickOff_repo = repo2
     , kickOff_dependencies = Just $ stacked repo1
     }

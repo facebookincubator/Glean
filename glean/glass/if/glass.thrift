@@ -7,6 +7,7 @@
  */
 
 include "glean/github/if/fb303.thrift"
+include "glean/if/facebook/auth.thrift"
 include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/hack.thrift"
 include "thrift/annotation/thrift.thrift"
@@ -88,6 +89,9 @@ struct SymbolLocation {
   1: LocationRange location;
   // the revision for which the location is defined
   2: Revision revision;
+  // See DocumentSymbolListXResult.auth_status.
+  3: optional auth.AuthStatus auth_status;
+  4: optional string auth_message;
 }
 
 struct SymbolResolution {
@@ -368,6 +372,12 @@ struct DocumentSymbolListXResult {
 
   // optional file contents, if include_content = true in the request
   9: optional string content;
+
+  // auth_status/auth_message report the server's verification
+  // outcome for the inbound CAT(s) on every response. Optional + default
+  // UNSET so legacy producers cannot fabricate authentication.
+  10: optional auth.AuthStatus auth_status;
+  11: optional string auth_message;
 }
 
 // For cursor navigation in a file, it is useful to have a line indexed
@@ -404,6 +414,10 @@ struct DocumentSymbolIndex {
 
   // optional file contents, if include_content = true in the request
   9: optional string content;
+
+  // See DocumentSymbolListXResult.auth_status.
+  10: optional auth.AuthStatus auth_status;
+  11: optional string auth_message;
 }
 
 // Generic server exception
@@ -528,6 +542,9 @@ struct SymbolDescription {
   16: list<TypeSymSpan> type_xrefs;
   17: list<SymbolComment> pretty_comments; // comment text in markdown format
   18: optional NativeSymbol native_sym;
+  // See DocumentSymbolListXResult.auth_status.
+  19: optional auth.AuthStatus auth_status;
+  20: optional string auth_message;
 }
 
 // Processed comment and original span
@@ -701,6 +718,9 @@ struct SymbolContext {
 struct SymbolSearchResult {
   1: list<SymbolResult> symbols;
   2: list<SymbolDescription> symbolDetails;
+  // See DocumentSymbolListXResult.auth_status.
+  3: optional auth.AuthStatus auth_status;
+  4: optional string auth_message;
 }
 
 // deprecated
@@ -766,6 +786,9 @@ struct RelatedSymbols {
 struct SearchRelatedResult {
   1: list<RelatedSymbols> edges;
   2: map<string, SymbolDescription> symbolDetails;
+  // See DocumentSymbolListXResult.auth_status.
+  3: optional auth.AuthStatus auth_status;
+  4: optional string auth_message;
 }
 
 // Inheritance sets: a parent by `extends` provides a set of things it contains
@@ -793,6 +816,10 @@ struct RelatedNeighborhoodResult {
   11: list<SymbolId> requireImplements;
   12: list<SymbolId> requireExtends;
   13: list<SymbolId> requireClass;
+
+  // See DocumentSymbolListXResult.auth_status.
+  14: optional auth.AuthStatus auth_status;
+  15: optional string auth_message;
 }
 
 # request xref locations (currently just #includes for C++ only)
@@ -827,6 +854,9 @@ typedef list<FileIncludeXRef> XRefFileList (hs.newtype)
 struct FileIncludeLocationResults {
   2: Revision revision; // actual revision used for results
   3: XRefFileList references;
+  // See DocumentSymbolListXResult.auth_status.
+  4: optional auth.AuthStatus auth_status;
+  5: optional string auth_message;
 }
 
 struct ResolveSymbolsRequest {
@@ -846,6 +876,9 @@ struct ResolvedSymbol {
 
 struct ResolveSymbolsResult {
   1: list<ResolvedSymbol> resolvedSymbols;
+  // See DocumentSymbolListXResult.auth_status.
+  2: optional auth.AuthStatus auth_status;
+  3: optional string auth_message;
 }
 
 // Search for symbols by string
@@ -861,6 +894,9 @@ struct USRSymbolDefinition {
   3: SymbolId sym;
   // actual revision used for results
   5: Revision revision;
+  // See DocumentSymbolListXResult.auth_status.
+  6: optional auth.AuthStatus auth_status;
+  7: optional string auth_message;
 }
 
 # Response to ClangD for the references we know about a USR. Based off of the `Ref` protobuf in clangd's remote index:
@@ -884,6 +920,17 @@ struct FileDigest {
   2: i64 size; // file size in bytes
 }
 
+// V2 wrapper for findReferenceRanges. Bare list return cannot
+// carry auth_status sibling fields, so V2 wraps it in a struct. V1
+// stays for backward compatibility.
+// MIGRATION: cleanup with v2_migrated_clients
+@hack.MigrationBlockingAllowInheritance
+struct FindReferenceRangesResult {
+  1: list<LocationRange> ranges;
+  2: optional auth.AuthStatus auth_status;
+  3: optional string auth_message;
+}
+
 // Glass symbol service
 @thrift.DeprecatedUnvalidatedAnnotations{
   items = {"sr.service_name": "glean.glass"},
@@ -902,7 +949,17 @@ service GlassService extends fb303.FacebookService {
   ) throws (1: ServerException e, 2: GlassException g);
 
   // Find any uses of a definition, resolving all locations to line/col ranges
+  // MIGRATION: remove with v2_migrated_clients
+  // DEPRECATED: Use findReferenceRangesV2 — see configerator/source/glean/v2_migrated_clients.cinc
   list<LocationRange> findReferenceRanges(
+    1: SymbolId symbol,
+    2: RequestOptions options,
+  ) throws (1: ServerException e, 2: GlassException g);
+
+  // V2 of findReferenceRanges. Bare list return cannot carry
+  // auth_status sibling fields, so V2 returns a wrapper struct.
+  // MIGRATION: cleanup with v2_migrated_clients
+  FindReferenceRangesResult findReferenceRangesV2(
     1: SymbolId symbol,
     2: RequestOptions options,
   ) throws (1: ServerException e, 2: GlassException g);

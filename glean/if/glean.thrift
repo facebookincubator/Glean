@@ -7,6 +7,7 @@
  */
 
 include "glean/github/if/fb303.thrift"
+include "glean/if/facebook/auth.thrift"
 include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/thrift.thrift"
 
@@ -380,9 +381,19 @@ union FinishResponse {
   2: BatchRetry retry;
 } (hs.nonempty)
 
-struct FinalizeResponse {}
+// auth_status / auth_message report the server's verification
+// outcome for the inbound CAT(s) on every response received by the
+// Glean CLI. Optional + default UNSET = legacy producers cannot
+// accidentally claim authentication.
+struct FinalizeResponse {
+  1: optional auth.AuthStatus auth_status;
+  2: optional string auth_message;
+}
 
-struct FinishDatabaseResponse {}
+struct FinishDatabaseResponse {
+  1: optional auth.AuthStatus auth_status;
+  2: optional string auth_message;
+}
 
 struct UserQueryCont {
   3: binary continuation;
@@ -787,6 +798,12 @@ struct UserQueryResults {
 
   9: optional string type;
   // The inferred type of the query
+
+  // auth status/message stamped by the server after verifying
+  // the inbound CAT(s). Optional so legacy producers do not fabricate
+  // an authentication claim.
+  10: optional auth.AuthStatus auth_status;
+  11: optional string auth_message;
 }
 
 // struct versions of exception types, needed because the
@@ -849,13 +866,23 @@ struct ListDatabases {
 
 struct ListDatabasesResult {
   1: list<Database> databases;
+  // See UserQueryResults.auth_status.
+  2: optional auth.AuthStatus auth_status;
+  3: optional string auth_message;
 }
 
 struct GetDatabaseResult {
   1: Database database;
+  // See UserQueryResults.auth_status.
+  2: optional auth.AuthStatus auth_status;
+  3: optional string auth_message;
 }
 
-struct DeleteDatabaseResult {}
+struct DeleteDatabaseResult {
+  // See UserQueryResults.auth_status.
+  1: optional auth.AuthStatus auth_status;
+  2: optional string auth_message;
+}
 
 struct JsonFactBatch {
   1: PredicateRef predicate;
@@ -884,6 +911,9 @@ struct SendJsonBatch {
 
 struct SendJsonBatchResponse {
   1: Handle handle;
+  // See UserQueryResults.auth_status.
+  2: optional auth.AuthStatus auth_status;
+  3: optional string auth_message;
 }
 
 enum BatchFormat {
@@ -912,6 +942,9 @@ enum EnqueueBatchWaitPolicy {
 
 struct EnqueueBatchResponse {
   1: Handle handle;
+  // See UserQueryResults.auth_status.
+  2: optional auth.AuthStatus auth_status;
+  3: optional string auth_message;
 }
 
 struct KickOff {
@@ -941,9 +974,16 @@ struct KickOff {
 
 struct KickOffResponse {
   1: bool alreadyExists;
+  // See UserQueryResults.auth_status.
+  2: optional auth.AuthStatus auth_status;
+  3: optional string auth_message;
 }
 
-struct UpdatePropertiesResponse {}
+struct UpdatePropertiesResponse {
+  // See UserQueryResults.auth_status.
+  1: optional auth.AuthStatus auth_status;
+  2: optional string auth_message;
+}
 
 struct SchemaInfo {
   // The complete source of the schema selected by GetSchemaInfo.select
@@ -969,6 +1009,10 @@ struct SchemaInfo {
 
   // The dependency relation for derived predicates
   6: map<Id, list<Id>> derivationDependencies;
+
+  // See UserQueryResults.auth_status.
+  7: optional auth.AuthStatus auth_status;
+  8: optional string auth_message;
 }
 
 union SelectSchema {
@@ -1017,11 +1061,60 @@ union CompletePredicates {
   2: CompleteDerivedPredicate derived;
 } (hs.nonempty)
 
-struct CompletePredicatesResponse {}
+struct CompletePredicatesResponse {
+  // See UserQueryResults.auth_status.
+  1: optional auth.AuthStatus auth_status;
+  2: optional string auth_message;
+}
 
 struct WaitForWritesResponse {
   // The number of pending writes
   1: i64 pending_writes_count;
+  // See UserQueryResults.auth_status.
+  2: optional auth.AuthStatus auth_status;
+  3: optional string auth_message;
+}
+
+// MIGRATION: cleanup with v2_migrated_clients
+// Wrapper result structs for the V2 RPCs. The wrapped V1 return
+// type cannot carry the AuthStatus/auth_message sibling fields
+// directly: validateSchema/restore return void (no payload to extend),
+// predicateStats returns a bare map, and sendBatch/finishBatch/
+// deriveStored return unions (sibling fields not representable on a
+// thrift union). Each wrapper preserves the original payload verbatim
+// so V1 handlers stay single-sourced.
+struct ValidateSchemaResult {
+  1: optional auth.AuthStatus auth_status;
+  2: optional string auth_message;
+}
+
+struct RestoreResult {
+  1: optional auth.AuthStatus auth_status;
+  2: optional string auth_message;
+}
+
+struct PredicateStatsResult {
+  1: map<Id, PredicateStats> stats;
+  2: optional auth.AuthStatus auth_status;
+  3: optional string auth_message;
+}
+
+struct SendBatchResult {
+  1: SendResponse response;
+  2: optional auth.AuthStatus auth_status;
+  3: optional string auth_message;
+}
+
+struct FinishBatchResult {
+  1: FinishResponse response;
+  2: optional auth.AuthStatus auth_status;
+  3: optional string auth_message;
+}
+
+struct DeriveStoredResult {
+  1: DerivationStatus status;
+  2: optional auth.AuthStatus auth_status;
+  3: optional string auth_message;
 }
 
 service GleanService extends fb303.FacebookService {
@@ -1035,10 +1128,30 @@ service GleanService extends fb303.FacebookService {
   // Check that a schema is valid, throws an exception if not.  Used
   // to verify a schema against the server before making it the
   // default.
+  // MIGRATION: remove with v2_migrated_clients
+  // DEPRECATED: Use validateSchemaV2 — see configerator/source/glean/v2_migrated_clients.cinc
   void validateSchema(1: ValidateSchema v) throws (1: Exception e);
 
+  // V2 of validateSchema. void return type cannot carry
+  // auth_status sibling fields, so V2 returns an empty wrapper struct
+  // populated with the verification outcome. V1 stays for backward
+  // compatibility.
+  // MIGRATION: cleanup with v2_migrated_clients
+  ValidateSchemaResult validateSchemaV2(1: ValidateSchema v) throws (
+    1: Exception e,
+  );
+
   // Send a batch of fact. See the comments on ComputedBatch.
+  // MIGRATION: remove with v2_migrated_clients
+  // DEPRECATED: Use sendBatchV2 — see configerator/source/glean/v2_migrated_clients.cinc
   SendResponse sendBatch(1: ComputedBatch batch) throws (1: UnknownDatabase u);
+
+  // V2 of sendBatch. SendResponse is a union and cannot
+  // carry sibling auth_status fields, so V2 wraps it in a struct.
+  // MIGRATION: cleanup with v2_migrated_clients
+  SendBatchResult sendBatchV2(1: ComputedBatch batch) throws (
+    1: UnknownDatabase u,
+  );
 
   // Enqueue batch of facts
   EnqueueBatchResponse enqueueBatch(
@@ -1055,7 +1168,15 @@ service GleanService extends fb303.FacebookService {
   // Get the substitution for the given handle (obtained via a previous
   // sendBatch) if no writes are outstanding for it. The server forgets the
   // handle after this operation.
+  // MIGRATION: remove with v2_migrated_clients
+  // DEPRECATED: Use finishBatchV2 — see configerator/source/glean/v2_migrated_clients.cinc
   FinishResponse finishBatch(1: Handle handle) throws (1: UnknownBatchHandle e);
+
+  // V2 of finishBatch. FinishResponse is a union; V2 wraps it.
+  // MIGRATION: cleanup with v2_migrated_clients
+  FinishBatchResult finishBatchV2(1: Handle handle) throws (
+    1: UnknownBatchHandle e,
+  );
 
   // Write a batch of facts in JSON format. The call will queue the
   // writes and return immediately. If the caller sets remember=true,
@@ -1131,7 +1252,17 @@ service GleanService extends fb303.FacebookService {
     2: UnknownDatabase u,
   );
 
+  // MIGRATION: remove with v2_migrated_clients
+  // DEPRECATED: Use predicateStatsV2 — see configerator/source/glean/v2_migrated_clients.cinc
   map<Id, PredicateStats> predicateStats(
+    1: Repo repo,
+    2: PredicateStatsOpts opts,
+  ) throws (1: Exception e, 2: UnknownDatabase u);
+
+  // V2 of predicateStats. Bare map return cannot carry
+  // auth_status sibling fields, so V2 returns a wrapper struct.
+  // MIGRATION: cleanup with v2_migrated_clients
+  PredicateStatsResult predicateStatsV2(
     1: Repo repo,
     2: PredicateStatsOpts opts,
   ) throws (1: Exception e, 2: UnknownDatabase u);
@@ -1147,7 +1278,14 @@ service GleanService extends fb303.FacebookService {
     2: UnknownDatabase u,
   );
 
+  // MIGRATION: remove with v2_migrated_clients
+  // DEPRECATED: Use restoreV2 — see configerator/source/glean/v2_migrated_clients.cinc
   void restore(1: string locator) throws (1: InvalidLocator e);
+
+  // V2 of restore. void return cannot carry auth_status; V2
+  // returns an empty wrapper struct.
+  // MIGRATION: cleanup with v2_migrated_clients
+  RestoreResult restoreV2(1: string locator) throws (1: InvalidLocator e);
 
   UserQueryResults userQueryFacts(1: Repo repo, 2: UserQueryFacts q) throws (
     1: Exception e,
@@ -1169,7 +1307,21 @@ service GleanService extends fb303.FacebookService {
     2: UserQueryBatch q,
   ) throws (1: Exception e, 4: UnknownDatabase u);
 
+  // MIGRATION: remove with v2_migrated_clients
+  // DEPRECATED: Use deriveStoredV2 — see configerator/source/glean/v2_migrated_clients.cinc
   DerivationStatus deriveStored(
+    1: Repo repo,
+    2: DerivePredicateQuery q,
+  ) throws (
+    1: Exception e,
+    2: NotAStoredPredicate n,
+    3: UnknownPredicate u,
+    4: IncompleteDependencies d,
+  );
+
+  // V2 of deriveStored. DerivationStatus is a union; V2 wraps it.
+  // MIGRATION: cleanup with v2_migrated_clients
+  DeriveStoredResult deriveStoredV2(
     1: Repo repo,
     2: DerivePredicateQuery q,
   ) throws (

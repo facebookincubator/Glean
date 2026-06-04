@@ -45,7 +45,10 @@ finishDatabase Env{..} repo  = do
           return oldmeta { metaCompleteness = Finalizing def }
         _ -> throwM $ DatabaseNotIncomplete $ completenessStatus oldmeta
     makeReadOnly
-    return Thrift.FinishDatabaseResponse{}
+    return Thrift.FinishDatabaseResponse
+      { finishDatabaseResponse_auth_status = Nothing
+      , finishDatabaseResponse_auth_message = Nothing
+      }
   where
     -- When a DB is complete, make it read-only to prevent further
     -- writes. It is an error to call finishDatabase
@@ -108,7 +111,10 @@ finalizeDatabase env repo = do
       Incomplete{} -> throwM $ Exception "incomplete database"
       Broken b -> throwM $ Exception $ databaseBroken_reason b
       _ -> return ()
-  return FinalizeResponse{}
+  return FinalizeResponse
+    { finalizeResponse_auth_status = Nothing
+    , finalizeResponse_auth_message = Nothing
+    }
 
 -- | Wait for finalization of a database. Use for local DBs only.
 --   Throws Exception if the database is broken or incomplete.
