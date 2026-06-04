@@ -473,6 +473,18 @@ predicate TargetCall:
     callExpr : maybe CallExpr,
   }
 
+# Projection of TargetCall that omits the heavy `arguments` field, for callers
+# that only need a target's location and authoring macro (callExpr).
+predicate TargetCallDecl :
+  {
+    locator : Locator,
+    file : src.File,
+    span : src.ByteSpan,
+    callExpr : maybe CallExpr,
+  }
+  { L, F, S, CE } where
+    buck.TargetCall { locator = L, file = F, span = S, callExpr = CE }
+
 predicate TargetCallByCallExpr :
   {
     callExpr : CallExpr,
