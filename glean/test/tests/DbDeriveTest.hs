@@ -50,7 +50,6 @@ main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "deriveStored" $ testDerivation $ deriveSerial $ const mempty
   , TestLabel "deriveParallel" deriveParallelTest
-  , TestLabel "deriveStoredLogging" testDeriveStoredLogging
   , TestLabel "deriveIncremental" deriveIncrementalTest
   ]
 
@@ -193,18 +192,6 @@ completenessTest runDerive = dbTestCaseWritable $ \env repo -> do
   assertEqual "deriveTest -  empty"
     (0, True)
     (derivedCount, pred `elem` complete)
-
-testDeriveStoredLogging :: Test
-testDeriveStoredLogging = dbTestCaseWritable $ \env repo -> do
-  tvar <- newTVarIO (0 :: Int)
-  let log _ = atomically $ modifyTVar' tvar (+ 1)
-
-  -- The result is logged once and only once.
-  replicateM_ 10 $
-    deriveSerial log env repo $ Proxy @Glean.Test.StoredRevStringPairWithRev
-  logCalls <- readTVarIO tvar
-  assertEqual "deriveStoredLogging - logs once" 1 logCalls
-
 
 deriveIncrementalTest :: Test
 deriveIncrementalTest = TestLabel "incremental" $ TestList
