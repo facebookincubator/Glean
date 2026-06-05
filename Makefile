@@ -75,6 +75,9 @@ EXTRA_GHC_OPTS ?=
 # Allow developers to locally override things
 -include settings.mk
 
+# Run recipes under bash so `set -o pipefail` works (see the test target).
+SHELL := /bin/bash
+
 MODE ?= def
 
 ifneq ($(MODE),def)
@@ -144,7 +147,7 @@ cxx-test-%: force
 
 .PHONY: glean
 glean:: glean.cabal cxx-libraries
-	$(CABAL) build glean glean-server glean-hyperlink
+	set -o pipefail; $(CABAL) build glean glean-server glean-hyperlink 2>&1 | grep -vF 'experimental feature (issue #5660)'
 
 SCIP_TO_GLEAN_DIR = glean/lang/scip/indexer/scip_to_glean
 
@@ -162,7 +165,7 @@ $(BYTECODE_GEN) &: $(BYTECODE_SRCS) glean.cabal
 
 .PHONY: test
 test:: glean.cabal
-	$(CABAL) test glean:tests --test-show-details=failures
+	set -o pipefail; $(CABAL) test glean:tests --test-show-details=failures 2>&1 | grep -vF 'experimental feature (issue #5660)'
 
 SCHEMAS= \
 	anglelang \
