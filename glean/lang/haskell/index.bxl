@@ -25,10 +25,7 @@ def _impl(ctx):
     )
 
     # Filter() above returns the unconfigured target so configure the filtered targets before analysis
-    configured_targets = [
-        ctx.configured_targets(t, modifiers = conf_modifier)
-        for t in compatible_targets
-    ]
+    configured_targets = [ctx.configured_targets(t, modifiers = conf_modifier) for t in compatible_targets]
 
     deps = [ctx.analysis(t).as_dependency() for t in configured_targets]
 
@@ -41,12 +38,14 @@ def _impl(ctx):
         },
     )
     hie_result = ctx.resolve(action_factory, hie.promise)
-    hie_files = (hie_result[DefaultInfo].default_outputs[0])
+    hie_files = hie_result[DefaultInfo].default_outputs[0]
 
-    hie_indexer = ctx.analysis(ctx.configured_targets(
-        "fbcode//glean/lang/haskell:indexer",
-        modifiers = ["ovr_config//third-party/ghc/constraints:9.2.4"],
-    ))
+    hie_indexer = ctx.analysis(
+        ctx.configured_targets(
+            "fbcode//glean/lang/haskell:indexer",
+            modifiers = ["ovr_config//third-party/ghc/constraints:9.2.4"],
+        )
+    )
 
     facts = action_factory.declare_output("facts", has_content_based_path = False)
     args = cmd_args(hie_indexer.providers()[RunInfo])

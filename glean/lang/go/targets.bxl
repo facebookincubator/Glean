@@ -8,7 +8,7 @@ load("@prelude//bxl:lazy.bxl", "batch_apply_lazy_catch_each", "partition_results
 
 def _report_errors(errors: list[bxl.Error]):
     for error in errors:
-        print(error.message)  #buildifier: disable=print
+        print(error.message)  # buildifier: disable=print
 
 # Find all targets eligible for indexing.
 def _impl_discover(ctx: bxl.Context):
