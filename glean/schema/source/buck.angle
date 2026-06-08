@@ -516,6 +516,27 @@ predicate LocatorReverseDeps :
     rdeps : [Locator],
   }
 
+# The authored macro call site that created a (possibly generated / fanned-out)
+# target. A fan-out macro (thrift_library, bento_kernel, ...) expands one
+# authored call into many differently-named targets; this maps each resolved
+# target back to the single call site an engineer would edit or delete.
+#
+# The call site is identified by its location (file + 1-based line of the
+# buck2 --stack <module> frame), which is available for every target. The
+# `authoring` locator (subdir//path:name) is OPTIONAL because not every
+# authoring macro exposes a literal `name=` argument from which a stable name
+# can be read at index time: e.g. thrift_patch_library takes
+# `thrift_library_name=` and synthesises its `gen_patch_*` target names, so it
+# has no `name=` to recover. In that case only the location is recorded -- the
+# deletable unit is still the call at (authoringFile, authoringLine).
+predicate GeneratedBy :
+  {
+    target : Locator,            # the generated / resolved target (key)
+    authoringFile : src.File,    # BUCK/TARGETS file of the authoring macro call
+    authoringLine : nat,         # 1-based line of the authoring call (--stack frame)
+    authoring : maybe Locator,   # subdir//path:name, only when the call has name=
+  }
+
 # Buck target output, indexed by file
 predicate OutTarget :
   {
