@@ -225,6 +225,7 @@ library stubs
     exposed-modules:
         Facebook.Fb303
         Facebook.Service
+        Glean.Auth
         Glean.BuildInfo
         Glean.Datasource.Scribe.Write
         Glean.Init

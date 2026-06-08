@@ -79,6 +79,11 @@ import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.ThriftService
 import Glean.Impl.ThriftService
 import Glean.Types
+-- | 'withGleanCATHeaders' attaches client-side auth headers to outbound Glean
+-- RPCs. Its implementation is selected by the build: the Meta-internal build
+-- uses @glean/facebook/Glean/Auth.hs@ (mints a CAT per request); the OSS build
+-- uses @glean/github/Glean/Auth.hs@ (a no-op).
+import Glean.Auth (withGleanCATHeaders)
 
 import Haxl.DataSource.Thrift
 import Haxl.DataSource.Glean.Common
@@ -300,15 +305,22 @@ withShard (ThriftBackend ClientConfig{..} evb serv _ _) repo act =
           else
             throwIO e
   where
-    unsharded = runThrift evb serv act
+    -- Wrap the action in 'withGleanCATHeaders' here (rather than at every
+    -- per-RPC call site in the 'Backend ThriftBackend' instance above) so
+    -- every outbound Glean RPC routed through 'Glean.Remote' carries a
+    -- freshly-minted CAT in the 'crypto_auth_tokens' transport header.
+    unsharded = runThrift evb serv (withGleanCATHeaders act)
     shard = dbShard repo
-    sharded = runThrift evb (thriftServiceWithDbShard serv (Just shard)) act
+    sharded = runThrift evb (thriftServiceWithDbShard serv (Just shard))
+                (withGleanCATHeaders act)
 
 withoutShard
   :: ThriftBackend
   -> Thrift GleanService a
   -> IO a
-withoutShard (ThriftBackend _ evb serv _ _) req = runThrift evb serv req
+withoutShard (ThriftBackend _ evb serv _ _) req =
+  -- See note on 'withShard' for why CAT-header injection happens here.
+  runThrift evb serv (withGleanCATHeaders req)
 
 clientInfo :: IO Thrift.UserQueryClientInfo
 clientInfo = do
@@ -390,7 +402,8 @@ remoteFetch (ThriftBackend config evb ts clientInfo schema) sem =
 
   forM_ (HashMap.toList $ requestByRepo requests) $ \(repo, requests) -> do
     acquireSemaphore sem
-    runThrift evb (ts' repo) $ do
+    -- See note on 'withShard' — Haxl batched fetches also flow through here.
+    runThrift evb (ts' repo) $ withGleanCATHeaders $ do
       let
         sendCob :: Maybe ChannelException -> IO ()
         sendCob Nothing = return ()
@@ -527,7 +540,7 @@ runRemoteQuery
   -> IO ()
 runRemoteQuery evb sem repo q@(Query req) ts acc rvar = do
   acquireSemaphore sem
-  runThrift evb ts $ do
+  runThrift evb ts $ withGleanCATHeaders $ do
     let
       recvCob
         :: (Response -> Either SomeException UserQueryResults)
