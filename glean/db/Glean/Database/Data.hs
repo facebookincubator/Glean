@@ -13,13 +13,28 @@ module Glean.Database.Data
   , retrieveUnits
   , storeSlices
   , retrieveSlices
+  , storeACLGroupMapping
+  , retrieveACLGroupMapping
+  , parseACLGroupMappingJson
+  , storeACLConfigHash
+  , retrieveACLConfigHash
+  , storeFirstACLID
+  , retrieveFirstACLID
+  , storePathACLConfig
+  , retrievePathACLConfig
   ) where
 
 import Data.Binary
+import qualified Data.Aeson as Aeson
 import Data.ByteString (ByteString)
 import Data.ByteString.Lazy (toStrict, fromStrict)
+import qualified Data.HashMap.Strict as HashMap
+import Data.Text (Text)
+import qualified Data.Text.Encoding as Text
 
 import Thrift.Protocol.Compact
+
+import Util.Log
 
 import Glean.Database.Exception
 import Glean.Database.Storage (DatabaseOps)
@@ -38,6 +53,22 @@ uNITS_KEY = "units"
 -- | Stores the slices for the base DBs in a stack
 sLICES_KEY :: ByteString
 sLICES_KEY = "slices"
+
+-- | ACL group name-to-UsetId mapping JSON blob key
+aCL_GROUP_MAPPING_KEY :: ByteString
+aCL_GROUP_MAPPING_KEY = "acl_group_mapping"
+
+-- | Path ACL config storage key (path -> ACL ID string)
+pATH_ACL_CONFIG_KEY :: ByteString
+pATH_ACL_CONFIG_KEY = "path_acl_config"
+
+-- | ACL config hash storage key
+aCL_CONFIG_HASH_KEY :: ByteString
+aCL_CONFIG_HASH_KEY = "acl_config_hash"
+
+-- | First ACL ID boundary key
+fIRST_ACL_ID_KEY :: ByteString
+fIRST_ACL_ID_KEY = "first_acl_id"
 
 storeSchema :: DatabaseOps db => db -> StoredSchema -> IO ()
 storeSchema db = Storage.store db sCHEMA_KEY . serializeCompact
@@ -77,3 +108,81 @@ retrieveSlices repo db = do
       Just <$> mapM deserializeSlice bytestrings
     Just (Left (_, _, msg)) -> dbError repo $ "invalid slices: " ++ msg
     Nothing -> return Nothing
+
+-- | Store the ACL group name-to-UsetId mapping as a JSON blob.
+-- Format: {"group_name": uset_id, ...} where uset_id is a number.
+storeACLGroupMapping :: DatabaseOps db => db -> ByteString -> IO ()
+storeACLGroupMapping db = Storage.store db aCL_GROUP_MAPPING_KEY
+
+-- | Retrieve the ACL group name-to-UsetId mapping JSON blob.
+retrieveACLGroupMapping :: DatabaseOps db => db -> IO (Maybe ByteString)
+retrieveACLGroupMapping db = Storage.retrieve db aCL_GROUP_MAPPING_KEY
+
+-- | Store the ACL configuration hash.
+storeACLConfigHash :: DatabaseOps db => db -> Text -> IO ()
+storeACLConfigHash db hash =
+  Storage.store db aCL_CONFIG_HASH_KEY
+    (Text.encodeUtf8 hash)
+
+-- | Retrieve the ACL configuration hash.
+-- Returns 'Nothing' if the stored bytes are not valid UTF-8
+retrieveACLConfigHash :: DatabaseOps db => db -> IO (Maybe Text)
+retrieveACLConfigHash db = do
+  mBytes <- Storage.retrieve db aCL_CONFIG_HASH_KEY
+  return $ mBytes >>= either (const Nothing) Just . Text.decodeUtf8'
+
+-- | Store the first ACL ID boundary (UsetId where ACL IDs start).
+-- This marks the boundary between regular ownership IDs and ACL IDs.
+storeFirstACLID :: DatabaseOps db => db -> UsetId -> IO ()
+storeFirstACLID db (UsetId uid) =
+  Storage.store db fIRST_ACL_ID_KEY (toStrict $ encode uid)
+
+-- | Retrieve the first ACL ID boundary.
+-- Returns 'Nothing' when no boundary is stored. If a value is stored but
+-- fails to decode, logs an error (the boundary is a security-relevant marker,
+-- so silent corruption must be surfaced to operators) and returns 'Nothing'.
+retrieveFirstACLID :: DatabaseOps db => db -> IO (Maybe UsetId)
+retrieveFirstACLID db = do
+  mBytes <- Storage.retrieve db fIRST_ACL_ID_KEY
+  case mBytes of
+    Nothing -> return Nothing
+    Just bs -> case decodeOrFail (fromStrict bs) of
+      Right (_, _, uid) -> return $ Just (UsetId uid)
+      Left (_, _, errMsg) -> do
+        logError $ "corrupted first_acl_id, ignoring boundary: " ++ errMsg
+        return Nothing
+
+-- | Store the path ACL config (path -> list of ACL group ID strings).
+-- Format: JSON object {"path1": ["id1", "id2"], "path2": ["id3"], ...}
+storePathACLConfig
+  :: DatabaseOps db
+  => db -> HashMap.HashMap Text [Text] -> IO ()
+storePathACLConfig db config =
+  Storage.store db pATH_ACL_CONFIG_KEY (toStrict (Aeson.encode config))
+
+-- | Retrieve the path ACL config (path -> list of ACL group ID strings).
+-- Returns 'Nothing' when no config is stored. If a value is stored but fails
+-- to parse as valid JSON, logs a warning (so corrupted data is not silently
+-- mistaken for an empty config) and returns 'Nothing'.
+retrievePathACLConfig
+  :: DatabaseOps db
+  => db
+  -> IO (Maybe (HashMap.HashMap Text [Text]))
+retrievePathACLConfig db = do
+  mBytes <- Storage.retrieve db pATH_ACL_CONFIG_KEY
+  case mBytes of
+    Nothing -> return Nothing
+    Just bytes -> case Aeson.decodeStrict' bytes of
+      Just config -> return (Just config)
+      Nothing -> do
+        logWarning
+          "corrupted path_acl_config, ignoring stored path ACL config"
+        return Nothing
+
+-- | Parse the ACL group mapping JSON format.
+-- Parses JSON of the form: {"group_name": unitId, ...}
+-- where unitId is an integer. Returns 'Nothing' on parse failure so callers
+-- can distinguish corrupted data from a legitimately empty mapping, rather
+-- than silently treating malformed ACL data as "no groups".
+parseACLGroupMappingJson :: ByteString -> Maybe (HashMap.HashMap Text Word32)
+parseACLGroupMappingJson = Aeson.decodeStrict'
