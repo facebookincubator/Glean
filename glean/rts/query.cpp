@@ -710,6 +710,12 @@ std::unique_ptr<QueryResults> restartQuery(
         bool found = facts.factById(id, [&](auto pid, Fact::Clause clause) {
           Fact::Ref ref{id, pid, clause};
           auto key = clause.key();
+          if (prefixSize > key.size()) {
+            error(
+                "restart iter prefixSize ({}) exceeds key size ({})",
+                prefixSize,
+                key.size());
+          }
           folly::ByteRange prefix{key.data(), key.data() + prefixSize};
           if (pid != type) {
             error("restart iter fact has wrong type");
