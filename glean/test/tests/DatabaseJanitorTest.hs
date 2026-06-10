@@ -33,6 +33,7 @@ import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Time.Clock
+import Data.Time.Calendar (fromGregorian)
 import GHC.Stack (HasCallStack)
 import System.Directory
 import System.FilePath
@@ -162,13 +163,24 @@ withFakeCloudDBs
   -> IO ()
 withFakeCloudDBs = withTest (\_ _ -> pure ()) setupBasicCloudDBs
 
+-- | Reference time for the per-day janitor tests. DB timestamps and the
+-- janitor's clock (via 'withPinnedClock') are both anchored to this instant
+-- so DB ages are deterministic: the janitor's 'delete_if_older' check
+-- compares against this clock, so setup and run must agree. Noon keeps each
+-- day's DBs clear of the UTC midnight boundary used for per-day grouping.
+perDayNow :: UTCTime
+perDayNow = UTCTime (fromGregorian 2024 1 3) (12 * 3600)
+
+-- | Pin the janitor's clock to 'perDayNow' so retention decisions are
+-- deterministic.
+withPinnedClock :: Env -> Env
+withPinnedClock env = env { envGetCurrentTime = pure perDayNow }
+
 -- | 9 complete DBs spread across 3 distinct UTC days.
 setupPerDayDBs :: FilePath -> DbSchema -> IO ()
 setupPerDayDBs dbdir schema = do
-  -- Anchor to 08:00 UTC of today so per-day grouping is deterministic
-  todayMorning <- (\t -> t { utctDayTime = 8 * 3600 }) <$> getCurrentTime
   let age secsAgo =
-        addUTCTime (negate (fromIntegral (secsAgo :: Int))) todayMorning
+        addUTCTime (negate (fromIntegral (secsAgo :: Int))) perDayNow
       mkDB name secsAgo n =
         makeFakeDB schema dbdir (Repo "test" name) (age secsAgo) (complete n) id
   -- Day 0 (most recent)
@@ -425,7 +437,8 @@ retainPerDayTest = TestCase $ withPerDayDBs $ \evb cfgAPI dbdir backupdir -> do
             { retention_retain_per_day = Just 1 }
           }
         }
-  withDatabases evb cfg cfgAPI $ \env -> do
+  withDatabases evb cfg cfgAPI $ \env0 -> do
+  let env = withPinnedClock env0
   runDatabaseJanitor env
   waitDel env
   dbs <- listDBs env
@@ -445,7 +458,8 @@ retainPerDayWithAtMostTest =
             }
           }
         }
-  withDatabases evb cfg cfgAPI $ \env -> do
+  withDatabases evb cfg cfgAPI $ \env0 -> do
+  let env = withPinnedClock env0
   runDatabaseJanitor env
   waitDel env
   dbs <- listDBs env
@@ -469,7 +483,8 @@ retainPerDayWithDeleteIfOlderTest =
             }
           }
         }
-  withDatabases evb cfg cfgAPI $ \env -> do
+  withDatabases evb cfg cfgAPI $ \env0 -> do
+  let env = withPinnedClock env0
   runDatabaseJanitor env
   waitDel env
   dbs <- listDBs env
