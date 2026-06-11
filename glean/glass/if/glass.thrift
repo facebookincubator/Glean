@@ -923,7 +923,7 @@ struct FileDigest {
 // V2 wrapper for findReferenceRanges. Bare list return cannot
 // carry auth_status sibling fields, so V2 wraps it in a struct. V1
 // stays for backward compatibility.
-// MIGRATION: cleanup with v2_migrated_clients
+// AUTH MIGRATION: keep V2; delete V1 when all clients migrate to V2 calls
 @hack.MigrationBlockingAllowInheritance
 struct FindReferenceRangesResult {
   1: list<LocationRange> ranges;
@@ -949,8 +949,8 @@ service GlassService extends fb303.FacebookService {
   ) throws (1: ServerException e, 2: GlassException g);
 
   // Find any uses of a definition, resolving all locations to line/col ranges
-  // MIGRATION: remove with v2_migrated_clients
-  // DEPRECATED: Use findReferenceRangesV2 — see configerator/source/glean/v2_migrated_clients.cinc
+  // AUTH MIGRATION: delete when all clients migrated to V2 calls
+  // DEPRECATED: Use findReferenceRangesV2
   list<LocationRange> findReferenceRanges(
     1: SymbolId symbol,
     2: RequestOptions options,
@@ -958,7 +958,7 @@ service GlassService extends fb303.FacebookService {
 
   // V2 of findReferenceRanges. Bare list return cannot carry
   // auth_status sibling fields, so V2 returns a wrapper struct.
-  // MIGRATION: cleanup with v2_migrated_clients
+  // AUTH MIGRATION: keep V2; delete V1 when all clients migrate to V2 calls
   FindReferenceRangesResult findReferenceRangesV2(
     1: SymbolId symbol,
     2: RequestOptions options,

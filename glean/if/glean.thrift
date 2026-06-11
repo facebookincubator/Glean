@@ -1075,7 +1075,7 @@ struct WaitForWritesResponse {
   3: optional string auth_message;
 }
 
-// MIGRATION: cleanup with v2_migrated_clients
+// AUTH MIGRATION: keep V2; delete V1 when all clients migrate to V2 calls
 // Wrapper result structs for the V2 RPCs. The wrapped V1 return
 // type cannot carry the AuthStatus/auth_message sibling fields
 // directly: validateSchema/restore return void (no payload to extend),
@@ -1128,27 +1128,27 @@ service GleanService extends fb303.FacebookService {
   // Check that a schema is valid, throws an exception if not.  Used
   // to verify a schema against the server before making it the
   // default.
-  // MIGRATION: remove with v2_migrated_clients
-  // DEPRECATED: Use validateSchemaV2 — see configerator/source/glean/v2_migrated_clients.cinc
+  // AUTH MIGRATION: delete when all clients migrated to V2 calls
+  // DEPRECATED: Use validateSchemaV2
   void validateSchema(1: ValidateSchema v) throws (1: Exception e);
 
   // V2 of validateSchema. void return type cannot carry
   // auth_status sibling fields, so V2 returns an empty wrapper struct
   // populated with the verification outcome. V1 stays for backward
   // compatibility.
-  // MIGRATION: cleanup with v2_migrated_clients
+  // AUTH MIGRATION: keep V2; delete V1 when all clients migrate to V2 calls
   ValidateSchemaResult validateSchemaV2(1: ValidateSchema v) throws (
     1: Exception e,
   );
 
   // Send a batch of fact. See the comments on ComputedBatch.
-  // MIGRATION: remove with v2_migrated_clients
-  // DEPRECATED: Use sendBatchV2 — see configerator/source/glean/v2_migrated_clients.cinc
+  // AUTH MIGRATION: delete when all clients migrated to V2 calls
+  // DEPRECATED: Use sendBatchV2
   SendResponse sendBatch(1: ComputedBatch batch) throws (1: UnknownDatabase u);
 
   // V2 of sendBatch. SendResponse is a union and cannot
   // carry sibling auth_status fields, so V2 wraps it in a struct.
-  // MIGRATION: cleanup with v2_migrated_clients
+  // AUTH MIGRATION: keep V2; delete V1 when all clients migrate to V2 calls
   SendBatchResult sendBatchV2(1: ComputedBatch batch) throws (
     1: UnknownDatabase u,
   );
@@ -1168,12 +1168,12 @@ service GleanService extends fb303.FacebookService {
   // Get the substitution for the given handle (obtained via a previous
   // sendBatch) if no writes are outstanding for it. The server forgets the
   // handle after this operation.
-  // MIGRATION: remove with v2_migrated_clients
-  // DEPRECATED: Use finishBatchV2 — see configerator/source/glean/v2_migrated_clients.cinc
+  // AUTH MIGRATION: delete when all clients migrated to V2 calls
+  // DEPRECATED: Use finishBatchV2
   FinishResponse finishBatch(1: Handle handle) throws (1: UnknownBatchHandle e);
 
   // V2 of finishBatch. FinishResponse is a union; V2 wraps it.
-  // MIGRATION: cleanup with v2_migrated_clients
+  // AUTH MIGRATION: keep V2; delete V1 when all clients migrate to V2 calls
   FinishBatchResult finishBatchV2(1: Handle handle) throws (
     1: UnknownBatchHandle e,
   );
@@ -1252,8 +1252,8 @@ service GleanService extends fb303.FacebookService {
     2: UnknownDatabase u,
   );
 
-  // MIGRATION: remove with v2_migrated_clients
-  // DEPRECATED: Use predicateStatsV2 — see configerator/source/glean/v2_migrated_clients.cinc
+  // AUTH MIGRATION: delete when all clients migrated to V2 calls
+  // DEPRECATED: Use predicateStatsV2
   map<Id, PredicateStats> predicateStats(
     1: Repo repo,
     2: PredicateStatsOpts opts,
@@ -1261,7 +1261,7 @@ service GleanService extends fb303.FacebookService {
 
   // V2 of predicateStats. Bare map return cannot carry
   // auth_status sibling fields, so V2 returns a wrapper struct.
-  // MIGRATION: cleanup with v2_migrated_clients
+  // AUTH MIGRATION: keep V2; delete V1 when all clients migrate to V2 calls
   PredicateStatsResult predicateStatsV2(
     1: Repo repo,
     2: PredicateStatsOpts opts,
@@ -1278,13 +1278,13 @@ service GleanService extends fb303.FacebookService {
     2: UnknownDatabase u,
   );
 
-  // MIGRATION: remove with v2_migrated_clients
-  // DEPRECATED: Use restoreV2 — see configerator/source/glean/v2_migrated_clients.cinc
+  // AUTH MIGRATION: delete when all clients migrated to V2 calls
+  // DEPRECATED: Use restoreV2
   void restore(1: string locator) throws (1: InvalidLocator e);
 
   // V2 of restore. void return cannot carry auth_status; V2
   // returns an empty wrapper struct.
-  // MIGRATION: cleanup with v2_migrated_clients
+  // AUTH MIGRATION: keep V2; delete V1 when all clients migrate to V2 calls
   RestoreResult restoreV2(1: string locator) throws (1: InvalidLocator e);
 
   UserQueryResults userQueryFacts(1: Repo repo, 2: UserQueryFacts q) throws (
@@ -1307,8 +1307,8 @@ service GleanService extends fb303.FacebookService {
     2: UserQueryBatch q,
   ) throws (1: Exception e, 4: UnknownDatabase u);
 
-  // MIGRATION: remove with v2_migrated_clients
-  // DEPRECATED: Use deriveStoredV2 — see configerator/source/glean/v2_migrated_clients.cinc
+  // AUTH MIGRATION: delete when all clients migrated to V2 calls
+  // DEPRECATED: Use deriveStoredV2
   DerivationStatus deriveStored(
     1: Repo repo,
     2: DerivePredicateQuery q,
@@ -1320,7 +1320,7 @@ service GleanService extends fb303.FacebookService {
   );
 
   // V2 of deriveStored. DerivationStatus is a union; V2 wraps it.
-  // MIGRATION: cleanup with v2_migrated_clients
+  // AUTH MIGRATION: keep V2; delete V1 when all clients migrate to V2 calls
   DeriveStoredResult deriveStoredV2(
     1: Repo repo,
     2: DerivePredicateQuery q,
