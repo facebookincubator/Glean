@@ -328,8 +328,14 @@ pollBatch env@Env{..} handle = do
             Right subst ->
               return $ Thrift.FinishResponse_subst $ Subst.serialize subst
             Left exc -> case fromException exc of
-              Just Retry{..} -> return $ Thrift.FinishResponse_retry $
-                Thrift.BatchRetry retry_seconds
+              Just Retry{..} -> do
+                -- TODO: I suspect this is dead. The counter should be able to confirm
+                addStatValueType "glean.db.write.poll_result_retry" 1 Sum
+                logWarning $
+                  "pollBatch: write returned Retry, deleting handle " <>
+                  show handle <> " retry_seconds=" <> show retry_seconds
+                return $ Thrift.FinishResponse_retry $
+                  Thrift.BatchRetry retry_seconds
               Nothing -> throwIO exc
         Nothing -> do
           timeout <- getWriteTimeout env
@@ -340,7 +346,11 @@ pollBatch env@Env{..} handle = do
                 (\w -> w { writeTimeout = timeout })
                 handle
           return $ Thrift.FinishResponse_retry $ Thrift.BatchRetry 0
-    Nothing -> throwIO Thrift.UnknownBatchHandle
+    Nothing -> do
+      addStatValueType "glean.db.write.unknown_handle" 1 Sum
+      logWarning $
+        "pollBatch: UnknownBatchHandle handle=" <> show handle
+      throwIO Thrift.UnknownBatchHandle
 
 rememberWrite
   :: Env
