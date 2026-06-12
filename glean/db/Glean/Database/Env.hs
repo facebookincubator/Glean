@@ -234,6 +234,11 @@ spawnThreads env@Env{..} = do
         void $
           setCounter "glean.db.disk.used_percentage" (100 * used `div` size)
 
+  -- envWrites accumulation gauges: confirm whether completed Substs pile up
+  -- in envWrites because clients stop polling.
+  Warden.spawn_ envWarden $ doPeriodically (minutes 10) $
+    reportEnvWritesStats env
+
 -- Todo: this needs a lot more work.
 -- * We shouldn't just cancel the janitor, we should let it finish the
 --   current job if there is one.

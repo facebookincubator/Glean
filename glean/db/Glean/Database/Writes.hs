@@ -37,6 +37,7 @@ module Glean.Database.Writes
   , pollBatch
   , pollWaitForWrites
   , writerThread
+  , reportEnvWritesStats
   , deleteWriteQueues
   , batchOwnedSize
   , batchDependenciesSize
@@ -351,6 +352,53 @@ pollBatch env@Env{..} handle = do
       logWarning $
         "pollBatch: UnknownBatchHandle handle=" <> show handle
       throwIO Thrift.UnknownBatchHandle
+
+-- | A snapshot summary of the 'envWrites' map, used to confirm whether
+-- completed 'Subst's accumulate there because clients stop polling.
+data EnvWritesStats = EnvWritesStats
+  { ewsCompletedUnpolled :: !Int
+  , ewsPending :: !Int
+  , ewsFailedUnpolled :: !Int
+  , ewsExpired :: !Int
+  }
+
+emptyEnvWritesStats :: EnvWritesStats
+emptyEnvWritesStats = EnvWritesStats
+  { ewsCompletedUnpolled = 0
+  , ewsPending = 0
+  , ewsFailedUnpolled = 0
+  , ewsExpired = 0
+  }
+
+-- | Snapshot 'envWrites' and emit gauges describing how many entries are
+-- pending, completed-but-unpolled (the leaked Substs), failed, and expired.
+reportEnvWritesStats :: Env -> IO ()
+reportEnvWritesStats Env{..} = do
+  m <- readTVarIO envWrites
+  now <- getTimePoint
+  stats <- foldM (accumWrite now) emptyEnvWritesStats (HashMap.elems m)
+  void $ setCounter "glean.db.write.envwrites.count" (HashMap.size m)
+  void $ setCounter "glean.db.write.envwrites.completed_unpolled"
+    (ewsCompletedUnpolled stats)
+  void $ setCounter "glean.db.write.envwrites.pending" (ewsPending stats)
+  void $ setCounter "glean.db.write.envwrites.failed_unpolled"
+    (ewsFailedUnpolled stats)
+  void $ setCounter "glean.db.write.envwrites.expired" (ewsExpired stats)
+ where
+  accumWrite :: TimePoint -> EnvWritesStats -> Write -> IO EnvWritesStats
+  accumWrite now stats Write{..} = do
+    let stats' = stats
+          { ewsExpired =
+              ewsExpired stats + (if writeTimeout < now then 1 else 0)
+          }
+    s <- tryReadMVar writeWait
+    return $ case s of
+      Nothing -> stats' { ewsPending = ewsPending stats' + 1 }
+      Just (Right _subst) -> stats'
+        { ewsCompletedUnpolled = ewsCompletedUnpolled stats' + 1
+        }
+      Just (Left _) -> stats'
+        { ewsFailedUnpolled = ewsFailedUnpolled stats' + 1 }
 
 rememberWrite
   :: Env
