@@ -13,6 +13,7 @@ module Glean.Handler
   ) where
 
 import Data.Maybe
+import Control.Monad (void)
 
 import Facebook.Fb303
 
@@ -29,7 +30,6 @@ data State = State
 
 handler :: State -> GleanServiceCommand a -> IO a
 handler State{..} req =
-  let backend = LoggingBackend stEnv in -- log (most) requests
   case req of
     Service.GetSchemaInfo repo req ->
       Backend.getSchemaInfo backend (Just repo) req
@@ -37,15 +37,19 @@ handler State{..} req =
     Service.GetSchemaInfoForSchema req ->
       Backend.getSchemaInfo backend Nothing req
 
-    Service.ValidateSchema req -> Backend.validateSchema backend req
+    -- AUTH MIGRATION: delete when all clients migrated to V2 calls
+    Service.ValidateSchema req -> void $ validateSchemaV2 req
 
-    Service.SendBatch cbatch -> Backend.enqueueBatch backend cbatch
+    -- AUTH MIGRATION: delete when all clients migrated to V2 calls
+    Service.SendBatch cbatch ->
+      Thrift.sendBatchResult_response <$> sendBatchV2 cbatch
 
     Service.EnqueueBatch repo batch waitPolicy
       -> Backend.enqueueBatchDescriptor backend repo batch waitPolicy
 
+    -- AUTH MIGRATION: delete when all clients migrated to V2 calls
     Service.FinishBatch handle ->
-      Backend.pollBatch backend Nothing handle
+      Thrift.finishBatchResult_response <$> finishBatchV2 handle
 
     Service.SendJsonBatch repo batch ->
       Backend.enqueueJsonBatch backend repo batch
@@ -80,12 +84,13 @@ handler State{..} req =
     Service.WaitForWrites repo ->
       Backend.waitForWrites backend repo
 
+    -- AUTH MIGRATION: delete when all clients migrated to V2 calls
     Service.DeriveStored repo pred ->
-      Backend.deriveStored backend (const mempty) repo pred
+      Thrift.deriveStoredResult_status <$> deriveStoredV2 repo pred
 
-    Service.PredicateStats repo Thrift.PredicateStatsOpts{..} ->
-      Backend.predicateStats backend repo $
-        if predicateStatsOpts_excludeBase then ExcludeBase else IncludeBase
+    -- AUTH MIGRATION: delete when all clients migrated to V2 calls
+    Service.PredicateStats repo opts ->
+      Thrift.predicateStatsResult_stats <$> predicateStatsV2 repo opts
 
     Service.ListDatabases l ->
       Backend.listDatabases backend l
@@ -94,26 +99,46 @@ handler State{..} req =
 
     Service.DeleteDatabase repo -> Backend.deleteDatabase backend repo
 
-    Service.Restore loc -> Backend.restoreDatabase backend loc
+    -- AUTH MIGRATION: delete when all clients migrated to V2 calls
+    Service.Restore loc -> void $ restoreV2 loc
 
-    -- V2 stubs: delegate to V1 and wrap with Nothing auth fields. The
-    -- real auth-aware implementations will populate these auth fields later.
-    -- MIGRATION: cleanup with v2_migrated_clients
-    Service.ValidateSchemaV2 req -> do
-      Backend.validateSchema backend req
+    -- V2 handlers hold the canonical business logic; the V1 arms above
+    -- delegate to these and unwrap the payload, so deleting V1 leaves the
+    -- logic intact. Auth fields are Nothing here; they are populated by the
+    -- dispatch-level attachAuth helper.
+    -- AUTH MIGRATION: keep these V2 arms; the V1 arms above are deleted when
+    -- all clients migrated to V2 calls.
+    Service.ValidateSchemaV2 req -> validateSchemaV2 req
+
+    Service.RestoreV2 loc -> restoreV2 loc
+
+    Service.PredicateStatsV2 repo opts -> predicateStatsV2 repo opts
+
+    Service.SendBatchV2 cbatch -> sendBatchV2 cbatch
+
+    Service.FinishBatchV2 handle -> finishBatchV2 handle
+
+    Service.DeriveStoredV2 repo pred -> deriveStoredV2 repo pred
+
+    SuperFacebookService c -> fb303Handler fb303State c
+  where
+    backend = LoggingBackend stEnv -- log (most) requests
+
+    validateSchemaV2 schema = do
+      Backend.validateSchema backend schema
       return Thrift.ValidateSchemaResult
         { validateSchemaResult_auth_status = Nothing
         , validateSchemaResult_auth_message = Nothing
         }
 
-    Service.RestoreV2 loc -> do
+    restoreV2 loc = do
       Backend.restoreDatabase backend loc
       return Thrift.RestoreResult
         { restoreResult_auth_status = Nothing
         , restoreResult_auth_message = Nothing
         }
 
-    Service.PredicateStatsV2 repo Thrift.PredicateStatsOpts{..} -> do
+    predicateStatsV2 repo Thrift.PredicateStatsOpts{..} = do
       stats <- Backend.predicateStats backend repo $
         if predicateStatsOpts_excludeBase then ExcludeBase else IncludeBase
       return Thrift.PredicateStatsResult
@@ -122,7 +147,7 @@ handler State{..} req =
         , predicateStatsResult_auth_message = Nothing
         }
 
-    Service.SendBatchV2 cbatch -> do
+    sendBatchV2 cbatch = do
       response <- Backend.enqueueBatch backend cbatch
       return Thrift.SendBatchResult
         { sendBatchResult_response = response
@@ -130,7 +155,7 @@ handler State{..} req =
         , sendBatchResult_auth_message = Nothing
         }
 
-    Service.FinishBatchV2 handle -> do
+    finishBatchV2 handle = do
       response <- Backend.pollBatch backend Nothing handle
       return Thrift.FinishBatchResult
         { finishBatchResult_response = response
@@ -138,12 +163,10 @@ handler State{..} req =
         , finishBatchResult_auth_message = Nothing
         }
 
-    Service.DeriveStoredV2 repo pred -> do
+    deriveStoredV2 repo pred = do
       status <- Backend.deriveStored backend (const mempty) repo pred
       return Thrift.DeriveStoredResult
         { deriveStoredResult_status = status
         , deriveStoredResult_auth_status = Nothing
         , deriveStoredResult_auth_message = Nothing
         }
-
-    SuperFacebookService c -> fb303Handler fb303State c
