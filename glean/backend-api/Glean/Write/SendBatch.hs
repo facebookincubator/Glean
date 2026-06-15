@@ -36,7 +36,7 @@ sendBatchAndWait
   -> IO Thrift.Subst
 sendBatchAndWait backend repo batch = do
   handle <- sendBatch backend repo batch True
-  waitBatch backend handle
+  waitBatch backend repo handle
 
 sendBatch
   :: Backend be
@@ -65,7 +65,7 @@ sendJsonBatchAndWait backend repo batches opts = do
   -- and didn't return a handle.
   if Text.null handle
     then return def
-    else waitBatch backend handle
+    else waitBatch backend repo handle
 
 sendJsonBatch
   :: Backend be
@@ -123,14 +123,15 @@ retry secs action = do
 waitBatch
   :: Backend be
   => be
+  -> Thrift.Repo
   -> Thrift.Handle
   -> IO Thrift.Subst
-waitBatch backend handle = do
-  e <- try $ pollBatch backend handle
+waitBatch backend repo handle = do
+  e <- try $ pollBatch backend (Just repo) handle
   case e of
     Left Thrift.Retry{..} ->
-      retry retry_seconds $ waitBatch backend handle
+      retry retry_seconds $ waitBatch backend repo handle
     Right r -> case r of
       Thrift.FinishResponse_subst subst -> return subst
       Thrift.FinishResponse_retry (Thrift.BatchRetry r) ->
-        retry r $ waitBatch backend handle
+        retry r $ waitBatch backend repo handle

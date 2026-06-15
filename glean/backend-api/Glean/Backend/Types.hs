@@ -150,8 +150,10 @@ class Backend a where
     -> Thrift.EnqueueBatchWaitPolicy
     -> IO Thrift.EnqueueBatchResponse
 
-  -- Poll the status of a write batch
-  pollBatch :: a -> Thrift.Handle -> IO Thrift.FinishResponse
+  -- Poll the status of a write batch. The repo is used by the remote
+  -- backend for shard routing; pass Nothing when no repo is available.
+  pollBatch
+    :: a -> Maybe Thrift.Repo -> Thrift.Handle -> IO Thrift.FinishResponse
 
   -- Wait for all pending asynchronous writes to complete for the given repo
   waitForWrites :: a -> Thrift.Repo -> IO Thrift.WaitForWritesResponse

@@ -59,8 +59,8 @@ instance Backend RetryWritesBackend where
     repo batch waitPolicy =
       retryChannelExceptions policy
         $ enqueueBatchDescriptor backend repo batch waitPolicy
-  pollBatch (RetryWritesBackend policy backend) handle =
-    retryChannelExceptions policy $ pollBatch backend handle
+  pollBatch (RetryWritesBackend policy backend) repo handle =
+    retryChannelExceptions policy $ pollBatch backend repo handle
   waitForWrites (RetryWritesBackend policy backend) repo =
     retryChannelExceptions policy $ waitForWrites backend repo
 

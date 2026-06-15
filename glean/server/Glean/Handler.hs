@@ -44,7 +44,8 @@ handler State{..} req =
     Service.EnqueueBatch repo batch waitPolicy
       -> Backend.enqueueBatchDescriptor backend repo batch waitPolicy
 
-    Service.FinishBatch handle -> Backend.pollBatch backend handle
+    Service.FinishBatch handle ->
+      Backend.pollBatch backend Nothing handle
 
     Service.SendJsonBatch repo batch ->
       Backend.enqueueJsonBatch backend repo batch
@@ -130,7 +131,7 @@ handler State{..} req =
         }
 
     Service.FinishBatchV2 handle -> do
-      response <- Backend.pollBatch backend handle
+      response <- Backend.pollBatch backend Nothing handle
       return Thrift.FinishBatchResult
         { finishBatchResult_response = response
         , finishBatchResult_auth_status = Nothing

@@ -100,7 +100,7 @@ runQueryPage be repo cont (Query query) = do
   UserQueryResults{..} <- userQuery be repo query'
   mapM_ reportUserQueryStats userQueryResults_stats
   mapM_ (vlog 1) userQueryResults_diagnostics
-  mapM_ (waitBatch be) userQueryResults_handle
+  mapM_ (waitBatch be repo) userQueryResults_handle
   let results = decodeResults userQueryResults_results decodeAsFact
   return (results, userQueryResults_continuation)
 

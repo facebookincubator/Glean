@@ -135,9 +135,9 @@ instance Backend LoggingBackend where
       (runLogRepo "enqueueBatchDescriptor" env repo)
       (const mempty) $
         enqueueBatchDescriptor env repo batch waitPolicy
-  pollBatch (LoggingBackend env) handle =
+  pollBatch (LoggingBackend env) repo handle =
     loggingAction (runLogCmd "pollBatch" env) (const mempty) $
-      pollBatch env handle
+      pollBatch env repo handle
   waitForWrites (LoggingBackend env) repo =
     loggingAction (runLogRepo "waitForWrites" env repo) (const mempty) $
       waitForWrites env repo

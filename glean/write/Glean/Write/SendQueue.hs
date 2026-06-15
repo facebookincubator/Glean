@@ -218,8 +218,9 @@ readWaitQueue sq = do
     get = Just <$> readTQueue (sqWaitQueue sq)
 
 pollFromWaitQueue
-  :: Backend.Backend e => e -> SendQueueSettings -> SendQueue -> IO ()
-pollFromWaitQueue backend settings sq = do
+  :: Backend.Backend e
+  => e -> Thrift.Repo -> SendQueueSettings -> SendQueue -> IO ()
+pollFromWaitQueue backend repo settings sq = do
   cont <- tryBracket
     (atomically $ readWaitQueue sq)
     (\r ex -> case (ex,r) of
@@ -233,7 +234,7 @@ pollFromWaitQueue backend settings sq = do
     $ \r ->
     case r of
       Just Wait{..} -> do
-        result <- try $ waitBatch backend waitHandle
+        result <- try $ waitBatch backend repo waitHandle
         let !size = batchSize waitOriginalBatch
         case result of
           Left e@Thrift.UnknownBatchHandle{} -> do
@@ -253,7 +254,7 @@ pollFromWaitQueue backend settings sq = do
 
       Nothing -> return False
 
-  when cont $ pollFromWaitQueue backend settings sq
+  when cont $ pollFromWaitQueue backend repo settings sq
 
 sendFromQueue
   :: Backend.Backend e
@@ -356,7 +357,7 @@ withSendQueue backend repo settings@SendQueueSettings{..} action =
     withStats sendQueueLogStats q $ do
       snd <$> Async.concurrently
         (Async.mapConcurrently_ id
-          $ restore (pollFromWaitQueue retryBackend settings q)
+          $ restore (pollFromWaitQueue retryBackend repo settings q)
           : replicate
               sendQueueThreads
               (restore (sendFromQueue retryBackend repo settings q)))
