@@ -6,6 +6,10 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+#if GLEAN_FACEBOOK
+{-# LANGUAGE ForeignFunctionInterface #-}
+#endif
+
 module Glean.Server (main) where
 
 import Control.Concurrent.Async (race)
@@ -33,6 +37,8 @@ import Data.Typeable (cast)
 import Network.HTTP.Client
 
 import JustKnobs (evalKnob)
+import Glean.Auth.Verify (enforcementEnabled)
+import Glean.Auth.AttachHandler (withVerifiedAuth)
 import Logger.IO
 import Glean.Facebook.Logger.Server
 import Glean.Facebook.Logger.Database
@@ -185,19 +191,46 @@ main =
 
   let state = GleanHandler.State fb303 databases
 
+#if GLEAN_FACEBOOK
+  -- Install the inbound-CAT ServiceInterceptor only when the CAT-auth pipeline
+  -- is enabled (codesearch/glean:check_acls), so it ships dark with no
+  -- per-request verification cost. Flipping the knob takes effect on restart.
+  -- The CAT surface is Meta-internal, so this is excluded from the OSS build.
+  catAuthEnabled <- enforcementEnabled
+  let serverOpts = opts
+        { ThriftServer.customModifyFn =
+            if catAuthEnabled then Just c_glean_add_cat_module else Nothing
+        }
+#else
+  let serverOpts = opts
+#endif
+
   if cfgEnableIndexing cfg
     then
       withBackgroundFacebookServiceDeferredAlive
         (GleanHandler.fb303State state)
         (handlerIndexing state getPort)
-        opts
+        serverOpts
         waitToStart
     else
       withBackgroundFacebookServiceDeferredAlive
         (GleanHandler.fb303State state)
+#if GLEAN_FACEBOOK
+        -- Stamp verified inbound-CAT auth onto responses (Meta-internal).
+        (withVerifiedAuth (GleanHandler.handler state))
+#else
         (GleanHandler.handler state)
-        opts
+#endif
+        serverOpts
         waitToStart
+
+#if GLEAN_FACEBOOK
+-- | ModifyFunction (C++ FFI) that installs the Glean CAT ServiceInterceptor on
+-- the ThriftServer (see glean/facebook/cat/GleanCat.cpp). fb303 chains this
+-- after its own TLS setup. Meta-internal: excluded from the OSS build.
+foreign import ccall "&c_glean_add_cat_module"
+  c_glean_add_cat_module :: ThriftServer.ModifyFunction
+#endif
 
 handlerIndexing
   :: GleanHandler.State
