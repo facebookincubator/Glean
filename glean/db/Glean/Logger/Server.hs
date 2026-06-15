@@ -22,6 +22,8 @@ data GleanServerLog
   | GleanServerLogAnd GleanServerLog GleanServerLog
   | SetSuccess Bool
   | SetError Text
+  | SetAuthStatus Text
+  | SetAuthMessage Text
   | SetTimeElapsed Double
   | SetAllocatedBytes Int
   | SetMethod Text
