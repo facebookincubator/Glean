@@ -143,6 +143,11 @@ setupOutOfProcessServer timeout test Config{..} = do
             [ "--db-tmp"
             , "--graceful-shutdown-wait-seconds=" <> show timeout
             , "--schema=" <> schemaDir
+            -- The inbound-CAT ServiceInterceptor, when enabled, derives its
+            -- verifier from the runtime service identity and aborts at startup
+            -- if none is set (GleanCat.cpp). Spawned test servers have no
+            -- Tupperware identity, so pin one explicitly.
+            , "--service_identity=glean__server"
             ]
         )
           { std_err = CreatePipe
