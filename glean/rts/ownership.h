@@ -31,6 +31,10 @@ void serializeEliasFano(binary::Output& out, const OwnerSet& set);
 // must remain alive as long as the OwnerSet is needed.
 OwnerSet deserializeEliasFano(binary::Input& in);
 
+/// Iterates over the ownership set expressions of a single DB, in increasing
+/// UsetId order. Each set is a UsetId paired with a SetExpr (an Or/And over
+/// the set's member elements). The sets occupy the contiguous UsetId range
+/// [first, first + count) reported by sizes().
 struct OwnershipSetIterator {
   OwnershipSetIterator() = default;
   virtual ~OwnershipSetIterator() = default;
@@ -38,7 +42,18 @@ struct OwnershipSetIterator {
   OwnershipSetIterator& operator=(const OwnershipSetIterator&) = delete;
   OwnershipSetIterator(OwnershipSetIterator&&) = delete;
   OwnershipSetIterator& operator=(OwnershipSetIterator&&) = delete;
+
+  /// Returns {first, count}: `first` is the lowest UsetId produced by this
+  /// iterator and `count` is the number of sets, so the sets cover the
+  /// range [first, first + count).
   virtual std::pair<size_t, size_t> sizes() const = 0;
+
+  /// Returns the next set as a {UsetId, SetExpr} pair and advances the
+  /// iterator. Sets are produced in increasing UsetId order. Returns
+  /// folly::none once every set has been consumed.
+  ///
+  /// The returned OwnerSet pointer refers to storage owned by the iterator
+  /// and is only valid until the next call to get().
   virtual folly::Optional<std::pair<UsetId, SetExpr<const OwnerSet*>>>
   get() = 0;
 };

@@ -20,6 +20,10 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
+/// Identifies a node in a DB's ownership DAG. Units (leaves) and sets share
+/// one UsetId space: within a DB, IDs below Usets::getFirstId() are leaf
+/// UnitIds and IDs at or above it are promoted set IDs. Across a stack of DBs
+/// the ranges are disjoint and increasing up the stack (see Usets).
 using UsetId = uint32_t;
 constexpr UsetId INVALID_USET = 0xffffffff;
 constexpr UsetId SPECIAL_USET = 0xfffffffe; // special value as a sentinel

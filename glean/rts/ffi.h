@@ -452,6 +452,19 @@ const char* glean_get_ownership_set(
 const char*
 glean_get_fact_owner(Lookup* lookup, glean_fact_id_t fact, uint32_t* uset_id);
 
+/// Compute a Slice over `ownership` for the given set of units, layered on
+/// top of the slices of the base DBs in the stack.
+///
+///   ownership       the Ownership of the DB whose Slice we are computing
+///   unit_ids        the units to include (or exclude); need not be sorted,
+///   unit_ids_size   we sort a local copy here
+///   exclude         if non-zero, `unit_ids` are excluded rather than included
+///   bases           slices of the base DBs this DB is stacked on, covering
+///   num_bases       the UsetId ranges below this DB's range
+///   result          out param: the newly computed Slice (caller owns it)
+///
+/// See slice() in slice.cpp for the visibility computation and the
+/// stacked-ownership layout.
 const char* glean_slice_compute(
     Ownership* ownership,
     uint32_t* unit_ids,
