@@ -1,2 +1,2 @@
 action: searchSymbol
-args: {"name": "pRefix", "repo_name": "test", "language": [10], "kinds": [7], "options": {"detailedResults": true, "exactMatch": true, "ignoreCase": true, "namespaceSearch": false } }
+args: {"name": "pRefix", "repo_name": "test", "language": [10], "kinds": [12], "options": {"detailedResults": true, "exactMatch": true, "ignoreCase": true, "namespaceSearch": false } }

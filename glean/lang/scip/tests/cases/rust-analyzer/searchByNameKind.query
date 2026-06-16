@@ -1,4 +1,4 @@
 
-query: scip.SearchByNameKindLanguage { name = "Prefix", kind = { just = Class_ } }
+query: scip.SearchByNameKindLanguage { name = "Prefix", kind = { just = Enum_ } }
 perf: True
 transform: [gensort, []]

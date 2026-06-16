@@ -1108,7 +1108,7 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo delta_log 0.0.0 crate/" },
-      "kind": 3
+      "kind": 1
     }
   },
   {
@@ -1116,7 +1116,7 @@
       "symbol": {
         "key": "rust-analyzer cargo delta_log 0.0.0 init_delta_logger()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -1124,7 +1124,7 @@
       "symbol": {
         "key": "rust-analyzer cargo delta_log 0.0.0 log_durations()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -1318,7 +1318,7 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 crate/" },
-      "kind": 3
+      "kind": 1
     }
   },
   {
@@ -1418,43 +1418,43 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 pop_global()." },
-      "kind": 5
+      "kind": 11
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 pretty_num()." },
-      "kind": 5
+      "kind": 11
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 print_stats()." },
-      "kind": 5
+      "kind": 11
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 push_global()." },
-      "kind": 5
+      "kind": 11
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 sample()." },
-      "kind": 5
+      "kind": 11
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure 0.0.0 sample_impl()." },
-      "kind": 5
+      "kind": 11
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo measure_ffi 0.0.0 crate/" },
-      "kind": 3
+      "kind": 1
     }
   },
   {
@@ -1462,7 +1462,7 @@
       "symbol": {
         "key": "rust-analyzer cargo measure_ffi 0.0.0 hh_measure_pop_global()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -1470,7 +1470,7 @@
       "symbol": {
         "key": "rust-analyzer cargo measure_ffi 0.0.0 hh_measure_push_global()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -1794,13 +1794,13 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 crate/" },
-      "kind": 3
+      "kind": 1
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos/" },
-      "kind": 3
+      "kind": 1
     }
   },
   {
@@ -1828,7 +1828,7 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/" },
-      "kind": 3
+      "kind": 1
     }
   },
   {
@@ -2082,7 +2082,7 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/" },
-      "kind": 3
+      "kind": 1
     }
   },
   {
@@ -2394,7 +2394,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/mask()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -2402,13 +2402,13 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/mask_by()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/" },
-      "kind": 3
+      "kind": 1
     }
   },
   {
@@ -2426,7 +2426,7 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#" },
-      "kind": 4
+      "kind": 9
     }
   },
   {
@@ -2544,7 +2544,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/compute()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -2552,7 +2552,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/do_fmt()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -2910,7 +2910,7 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/map/" },
-      "kind": 3
+      "kind": 1
     }
   },
   {
@@ -2922,7 +2922,7 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/" },
-      "kind": 3
+      "kind": 1
     }
   },
   {
@@ -2930,7 +2930,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/make_pos()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -2938,7 +2938,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -2946,7 +2946,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos_absolute()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -2954,7 +2954,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos_merge()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -2962,13 +2962,13 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos_string()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/" },
-      "kind": 3
+      "kind": 1
     }
   },
   {
@@ -3046,7 +3046,7 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/" },
-      "kind": 3
+      "kind": 1
     }
   },
   {
@@ -3462,7 +3462,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/mask()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -3470,7 +3470,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/mask_by()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -3478,7 +3478,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/"
       },
-      "kind": 3
+      "kind": 1
     }
   },
   {
@@ -3486,7 +3486,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_round_trip_through_ocaml_value_large_tiny_span()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -3494,7 +3494,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_dummy()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -3502,7 +3502,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_large()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -3510,7 +3510,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_multiline_span()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -3518,7 +3518,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_negative_span()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -3526,7 +3526,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_small()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -3534,7 +3534,7 @@
       "symbol": {
         "key": "rust-analyzer cargo rc_pos 0.0.0 with_erased_lines/"
       },
-      "kind": 3
+      "kind": 1
     }
   },
   {
@@ -3596,7 +3596,7 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#" },
-      "kind": 4
+      "kind": 9
     }
   },
   {
@@ -3704,7 +3704,7 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo relative_path 0.0.0 crate/" },
-      "kind": 3
+      "kind": 1
     }
   },
   {
@@ -3934,13 +3934,13 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo relative_path 0.0.0 map/" },
-      "kind": 3
+      "kind": 1
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo relative_path 0.0.0 tests/" },
-      "kind": 3
+      "kind": 1
     }
   },
   {
@@ -3948,7 +3948,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 tests/test_invalid_usize_prefix()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -3956,7 +3956,7 @@
       "symbol": {
         "key": "rust-analyzer cargo relative_path 0.0.0 tests/test_valid_usize_prefix()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -4124,7 +4124,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 SignCheckResponse#"
       },
-      "kind": 4
+      "kind": 9
     }
   },
   {
@@ -4176,13 +4176,13 @@
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo signed_source 0.0.0 crate/" },
-      "kind": 3
+      "kind": 1
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo signed_source 0.0.0 hash()." },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -4190,7 +4190,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 is_signed()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -4198,7 +4198,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 make_signing_token()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -4206,7 +4206,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 sign_file()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -4214,13 +4214,13 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 sign_utf8_file()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
     "key": {
       "symbol": { "key": "rust-analyzer cargo signed_source 0.0.0 test/" },
-      "kind": 3
+      "kind": 1
     }
   },
   {
@@ -4260,7 +4260,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 test/test_is_signed()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -4268,7 +4268,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 test/test_sign_utf8_file()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -4276,7 +4276,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 test/test_signing_token()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -4284,7 +4284,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 test/test_verify_signature()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {
@@ -4292,7 +4292,7 @@
       "symbol": {
         "key": "rust-analyzer cargo signed_source 0.0.0 verify_signature()."
       },
-      "kind": 5
+      "kind": 11
     }
   },
   {

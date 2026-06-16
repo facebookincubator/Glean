@@ -2,10 +2,846 @@
   "@generated",
   {
     "key": {
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)bounds" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)frame" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)setAlpha:" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)setBackgroundColor:" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)setCenter:" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@CM@UIKit@@objc(cs)UIView(im)setFrame:" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@CM@UIKit@@objc(cs)UIView(im)setMultipleTouchEnabled:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)initWithCoder:"
+      },
+      "kind": 8
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)initWithFrame:"
+      },
+      "kind": 8
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)layoutSubviews"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)addOrUpdateBallWithId:position:altitude:color:supportsUpdate:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)delegate" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)initWithCoder:"
+      },
+      "kind": 8
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)initWithFrame:"
+      },
+      "kind": 8
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)performRainbowAnimationWithId:completion:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)removeAll" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)removeBallWithId:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)setDelegate:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didDoubleTapBallId:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didDoubleTapPosition:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didLongPressBallId:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didPanBallId:position:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTapBallId:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTapPosition:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTripleTapBallId:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTripleTapPosition:"
+      },
+      "kind": 5
+    }
+  },
+  { "key": { "symbol": { "key": "c:@M@UIKit" }, "kind": 1 } },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)CALayer(im)setBorderColor:" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)CALayer(im)setBorderWidth:" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)CALayer(im)setCornerRadius:" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)CALayer(im)setMasksToBounds:" },
+      "kind": 5
+    }
+  },
+  { "key": { "symbol": { "key": "c:objc(cs)NSCoder" }, "kind": 4 } },
+  { "key": { "symbol": { "key": "c:objc(cs)UIColor" }, "kind": 4 } },
+  {
+    "key": { "symbol": { "key": "c:objc(cs)UIColor(cm)blackColor" }, "kind": 5 }
+  },
+  {
+    "key": { "symbol": { "key": "c:objc(cs)UIColor(cm)blueColor" }, "kind": 5 }
+  },
+  {
+    "key": { "symbol": { "key": "c:objc(cs)UIColor(cm)clearColor" }, "kind": 5 }
+  },
+  {
+    "key": { "symbol": { "key": "c:objc(cs)UIColor(cm)grayColor" }, "kind": 5 }
+  },
+  {
+    "key": { "symbol": { "key": "c:objc(cs)UIColor(cm)greenColor" }, "kind": 5 }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cm)lightGrayColor" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cm)orangeColor" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cm)purpleColor" },
+      "kind": 5
+    }
+  },
+  {
+    "key": { "symbol": { "key": "c:objc(cs)UIColor(cm)redColor" }, "kind": 5 }
+  },
+  {
+    "key": { "symbol": { "key": "c:objc(cs)UIColor(cm)whiteColor" }, "kind": 5 }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(cm)yellowColor" },
+      "kind": 5
+    }
+  },
+  { "key": { "symbol": { "key": "c:objc(cs)UIColor(im)CGColor" }, "kind": 5 } },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIColor(im)initWithWhite:alpha:" },
+      "kind": 8
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(cs)UIGestureRecognizer(im)initWithTarget:action:"
+      },
+      "kind": 8
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIGestureRecognizer(im)locationInView:" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(cs)UIGestureRecognizer(im)requireGestureRecognizerToFail:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIGestureRecognizer(im)state" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIGestureRecognizer(im)view" },
+      "kind": 5
+    }
+  },
+  { "key": { "symbol": { "key": "c:objc(cs)UILabel" }, "kind": 4 } },
+  {
+    "key": { "symbol": { "key": "c:objc(cs)UILabel(im)setText:" }, "kind": 5 }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UILabel(im)setTextColor:" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UILongPressGestureRecognizer" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIPanGestureRecognizer" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UITapGestureRecognizer" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(cs)UITapGestureRecognizer(im)setNumberOfTapsRequired:"
+      },
+      "kind": 5
+    }
+  },
+  { "key": { "symbol": { "key": "c:objc(cs)UIView" }, "kind": 4 } },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(cs)UIView(cm)addKeyframeWithRelativeStartTime:relativeDuration:animations:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(cs)UIView(cm)animateKeyframesWithDuration:delay:options:animations:completion:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(im)addGestureRecognizer:" },
+      "kind": 5
+    }
+  },
+  {
+    "key": { "symbol": { "key": "c:objc(cs)UIView(im)addSubview:" }, "kind": 5 }
+  },
+  { "key": { "symbol": { "key": "c:objc(cs)UIView(im)init" }, "kind": 8 } },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(im)initWithFrame:" },
+      "kind": 8
+    }
+  },
+  { "key": { "symbol": { "key": "c:objc(cs)UIView(im)layer" }, "kind": 5 } },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(im)layoutSubviews" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(im)removeFromSuperview" },
+      "kind": 5
+    }
+  },
+  {
+    "key": { "symbol": { "key": "c:objc(cs)UIView(im)setLayer:" }, "kind": 5 }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(cs)UIView(im)setNeedsLayout" },
+      "kind": 5
+    }
+  },
+  {
+    "key": { "symbol": { "key": "c:objc(cs)UIView(im)sizeToFit" }, "kind": 5 }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSCoding(im)encodeWithCoder:" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSCoding(im)initWithCoder:" },
+      "kind": 8
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)autorelease" },
+      "kind": 5
+    }
+  },
+  { "key": { "symbol": { "key": "c:objc(pl)NSObject(im)class" }, "kind": 5 } },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)conformsToProtocol:" },
+      "kind": 5
+    }
+  },
+  {
+    "key": { "symbol": { "key": "c:objc(pl)NSObject(im)isEqual:" }, "kind": 5 }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)isKindOfClass:" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)isMemberOfClass:" },
+      "kind": 5
+    }
+  },
+  {
+    "key": { "symbol": { "key": "c:objc(pl)NSObject(im)isProxy" }, "kind": 5 }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)performSelector:" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)performSelector:withObject:" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)NSObject(im)performSelector:withObject:withObject:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": { "symbol": { "key": "c:objc(pl)NSObject(im)release" }, "kind": 5 }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)respondsToSelector:" },
+      "kind": 5
+    }
+  },
+  { "key": { "symbol": { "key": "c:objc(pl)NSObject(im)retain" }, "kind": 5 } },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)NSObject(im)retainCount" },
+      "kind": 5
+    }
+  },
+  { "key": { "symbol": { "key": "c:objc(pl)NSObject(im)self" }, "kind": 5 } },
+  { "key": { "symbol": { "key": "c:objc(pl)NSObject(im)zone" }, "kind": 5 } },
+  {
+    "key": {
+      "symbol": { "key": "c:objc(pl)UIAppearance(cm)appearance" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIAppearance(cm)appearanceForTraitCollection:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIAppearance(cm)appearanceForTraitCollection:whenContainedInInstancesOfClasses:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIAppearance(cm)appearanceWhenContainedInInstancesOfClasses:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UICoordinateSpace(im)convertPoint:fromCoordinateSpace:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UICoordinateSpace(im)convertPoint:toCoordinateSpace:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UICoordinateSpace(im)convertRect:fromCoordinateSpace:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UICoordinateSpace(im)convertRect:toCoordinateSpace:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(im)didUpdateFocusInContext:withAnimationCoordinator:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(im)setNeedsFocusUpdate"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(im)shouldUpdateFocusInContext:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIFocusEnvironment(im)updateFocusIfNeeded"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIFocusItemContainer(im)focusItemsInRect:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIPopoverPresentationControllerSourceItem(im)frameInView:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UITraitChangeObservable(im)registerForTraitChanges:withAction:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UITraitChangeObservable(im)registerForTraitChanges:withHandler:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UITraitChangeObservable(im)registerForTraitChanges:withTarget:action:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UITraitChangeObservable(im)unregisterForTraitChanges:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UITraitEnvironment(im)traitCollectionDidChange:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "c:objc(pl)UIUserActivityRestoring(im)restoreUserActivityState:"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:14CoreFoundation7CGFloatV12floatLiteralACSd_tcfc" },
+      "kind": 8
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:14CoreFoundation7CGFloatV14integerLiteralACSi_tcfc"
+      },
+      "kind": 8
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:14CoreFoundation7CGFloatV1doiyA2C_ACtFZ" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:14CoreFoundation7CGFloatV1poiyA2C_ACtFZ" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:14CoreFoundation7CGFloatV1soiyA2C_ACtFZ" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC010createBallB8IfNeeded33_0B3BAAE45C5B973AC393596A4D2DE873LLyAA0adB0CSSF"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC10ballPanned33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UIPanGestureRecognizerC_tF"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC10ballTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC12canvasTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC15ballLongPressed33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo28UILongPressGestureRecognizerC_tF"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC16ballDoubleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC16ballTripleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC18canvasDoubleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A4ViewC18canvasTripleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A4ViewC5viewsSDySSAA0a4BallB0CGvg" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A4ViewC5viewsSDySSAA0a4BallB0CGvs" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A8BallViewC23performRainbowAnimationyyyycF"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC5labelSo7UILabelCvg" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC5labelSo7UILabelCvs" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC6ballIdACSS_tcfc" },
+      "kind": 8
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC6ballIdSSvg" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:9CIBCanvas0A8BallViewC6ballIdSSvs" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas0A8BallViewC6update8altitude5color14supportsUpdatey14CoreFoundation7CGFloatV_So7UIColorCSbtF"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas14kRainbowColors33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSaySo7UIColorCGvg"
+      },
+      "kind": 11
+    }
+  },
+  {
+    "key": {
       "symbol": {
         "key": "s:9CIBCanvas14kRainbowColors33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSaySo7UIColorCGvp"
       },
       "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas14kRainbowColors33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSaySo7UIColorCGvs"
+      },
+      "kind": 11
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas14kTotalDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvg"
+      },
+      "kind": 11
     }
   },
   {
@@ -19,9 +855,41 @@
   {
     "key": {
       "symbol": {
+        "key": "s:9CIBCanvas14kTotalDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvs"
+      },
+      "kind": 11
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas17kRelativeDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvg"
+      },
+      "kind": 11
+    }
+  },
+  {
+    "key": {
+      "symbol": {
         "key": "s:9CIBCanvas17kRelativeDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvp"
       },
       "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas17kRelativeDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvs"
+      },
+      "kind": 11
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas21kTotalTransformations33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSivg"
+      },
+      "kind": 11
     }
   },
   {
@@ -35,9 +903,242 @@
   {
     "key": {
       "symbol": {
+        "key": "s:9CIBCanvas21kTotalTransformations33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSivs"
+      },
+      "kind": 11
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas9kBallSize33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSo6CGSizeVvg"
+      },
+      "kind": 11
+    }
+  },
+  {
+    "key": {
+      "symbol": {
         "key": "s:9CIBCanvas9kBallSize33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSo6CGSizeVvp"
       },
       "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:9CIBCanvas9kBallSize33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSo6CGSizeVvs"
+      },
+      "kind": 11
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:SD12makeIteratorSD0B0Vyxq__GyF" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:SD17dictionaryLiteralSDyxq_Gx_q_td_tcfc" },
+      "kind": 8
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:SD8IteratorV4nextx3key_q_5valuetSgyF" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:SD9removeAll15keepingCapacityySb_tF" },
+      "kind": 5
+    }
+  },
+  { "key": { "symbol": { "key": "s:SDyq_Sgxcig" }, "kind": 5 } },
+  { "key": { "symbol": { "key": "s:SDyq_Sgxcis" }, "kind": 5 } },
+  { "key": { "symbol": { "key": "s:SL1goiySbx_xtFZ" }, "kind": 5 } },
+  { "key": { "symbol": { "key": "s:SLsE3zzloiySnyxGx_xtFZ" }, "kind": 5 } },
+  {
+    "key": {
+      "symbol": { "key": "s:SS10FoundationE6format_S2Sh_s7CVarArg_pdtcfc" },
+      "kind": 8
+    }
+  },
+  {
+    "key": { "symbol": { "key": "s:Sa12arrayLiteralSayxGxd_tcfc" }, "kind": 8 }
+  },
+  { "key": { "symbol": { "key": "s:Sa5countSivg" }, "kind": 5 } },
+  { "key": { "symbol": { "key": "s:SayxSicig" }, "kind": 5 } },
+  { "key": { "symbol": { "key": "s:Sd1doiyS2d_SdtFZ" }, "kind": 5 } },
+  { "key": { "symbol": { "key": "s:Sd1moiyS2d_SdtFZ" }, "kind": 5 } },
+  { "key": { "symbol": { "key": "s:SdySdSicfc" }, "kind": 8 } },
+  { "key": { "symbol": { "key": "s:Si1roiyS2i_SitFZ" }, "kind": 5 } },
+  {
+    "key": {
+      "symbol": { "key": "s:Slss16IndexingIteratorVyxG0B0RtzrlE04makeB0ACyF" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So30UIViewKeyframeAnimationOptionsV20allowUserInteractionABvgZ"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So30UIViewKeyframeAnimationOptionsV21calculationModeLinearABvgZ"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE1x1y5width6heightAB0B10Foundation7CGFloatV_A3Jtcfc"
+      },
+      "kind": 8
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE4minX0B10Foundation7CGFloatVvg"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE4minY0B10Foundation7CGFloatVvg"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE5width0B10Foundation7CGFloatVvg"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE6height0B10Foundation7CGFloatVvg"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGRectV12CoreGraphicsE8containsySbSo7CGPointVF"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGRectV6origin4sizeABSo7CGPointV_So6CGSizeVtcfc"
+      },
+      "kind": 8
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6CGSizeV12CoreGraphicsE5width6heightABSi_Sitcfc"
+      },
+      "kind": 8
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:So6CGSizeV5width14CoreFoundation7CGFloatVvg" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6UIViewC5UIKitE23registerForTraitChanges_6actionSo25UITraitChangeRegistration_pSayAC0H10Definition_pXpG_10ObjectiveC8SelectorVtF"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6UIViewC5UIKitE23registerForTraitChanges_6target6actionSo25UITraitChangeRegistration_pSayAC0I10Definition_pXpG_yp10ObjectiveC8SelectorVtF"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6UIViewC5UIKitE23registerForTraitChanges_7handlerSo25UITraitChangeRegistration_pSayAC0H10Definition_pXpG_yx_So0H10CollectionCtctSo0H11EnvironmentRzlF"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So6UIViewC5UIKitE25unregisterForTraitChangesyySo25UITraitChangeRegistration_pF"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:So7CGPointV12CoreGraphicsE4zeroABvgZ" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:So8NSObjectC10ObjectiveCE2eeoiySbAB_ABtFZ" },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:So8NSObjectC10ObjectiveCE4hash4intoys6HasherVz_tF"
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:s10SetAlgebraPs7ElementQz012ArrayLiteralC0RtzrlE05arrayE0xAFd_tcfc"
+      },
+      "kind": 8
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "s:s10fatalError_4file4lines5NeverOSSyXK_s12StaticStringVSutF"
+      },
+      "kind": 11
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "s:s16IndexingIteratorV4next7ElementQzSgyF" },
+      "kind": 5
     }
   }
 ]

@@ -908,18 +908,26 @@ impl SymbolRoleSet {
 
 /// Convert a SCIP `SymbolInformation.Kind` to the local `SymbolKind`.
 ///
-/// Returns `None` for `UnspecifiedKind` so callers can fall back to the
-/// descriptor-derived kind. Mapping is intentionally conservative — only
-/// kinds that have a clear analog in the local enum are handled, the rest
-/// also fall back to the descriptor-derived heuristic.
+/// This override is intentionally **narrow** due to big blast radius (all scip DBs).
+/// We should eventually onboard all Kinds here, such that:
+///   if SymbolInformation.kind is set, it will override any symbol string suffix
 fn scip_kind_to_symbol_kind(kind: symbol_information::Kind) -> Option<SymbolKind> {
     use SymbolKind::*;
     use symbol_information::Kind;
-    match kind {
-        Kind::Variable | Kind::StaticVariable | Kind::Value => Some(SkVariable),
-        Kind::Constant => Some(SkConstant),
-        _ => None,
-    }
+    Some(match kind {
+        Kind::Variable | Kind::StaticVariable | Kind::Value => SkVariable,
+        Kind::Constant => SkConstant,
+        Kind::Class => SkClass,
+        Kind::Function => SkFunction,
+        Kind::Constructor => SkConstructor,
+        Kind::Method | Kind::StaticMethod => SkMethod,
+        Kind::Module => SkModule,
+        Kind::Interface => SkInterface,
+        Kind::Enum => SkEnum,
+
+        // No override yet, defer to the descriptor-derived (symbol string suffix) kind.
+        _ => return None,
+    })
 }
 
 /// Build the lookup key for a SCIP symbol fact. Local symbols are namespaced

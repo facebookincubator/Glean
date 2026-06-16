@@ -1055,8 +1055,8 @@ mod tests {
         );
     }
 
-    /// Conservative-mapping boundary: an `info.kind` value the ingestor does
-    /// not map (e.g. `Function`) on a Term-suffix symbol must fall back to
+    /// Narrowed-mapping boundary: an `info.kind` value outside the narrowed
+    /// override set (e.g. `Macro`) on a Term-suffix symbol must fall back to
     /// the descriptor-derived kind (`SkVariable`) rather than producing
     /// `SkUnknown` or refusing to emit a kind. Pins the design choice that
     /// the override is *additive*, not *replacing*.
@@ -1080,8 +1080,9 @@ mod tests {
 
         let mut info = ScipSymbolInformation::new();
         info.symbol = global_sym.to_string();
-        // `Function` is not in the conservative override map.
-        info.kind = symbol_information::Kind::Function.into();
+        // `Macro` is outside the narrowed override set, so it is not mapped
+        // and falls through to the descriptor-derived kind.
+        info.kind = symbol_information::Kind::Macro.into();
         doc.symbols.push(info);
 
         index.documents.push(doc);

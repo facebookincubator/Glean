@@ -172,6 +172,9 @@
             "126": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -379,7 +382,7 @@
                     },
                     "sym": "test-xlang/cpp/fbobjc/NSObject/.decl",
                     "target": {
-                        "filepath": "buck-out/glean-indexer/art/fbsource/digest_50f85c75e5d76949b8623e93c88886ad0e941e94/xplat/toolchains/apple/__xcode_26.2.0_17c52-iphonesimulator-sdk_genrule-actual__/iPhoneSimulator26.2.sdk/usr/include/objc/NSObject.h",
+                        "filepath": "buck-out/glean-indexer/art/fbsource/digest_50f85c75e5d76949b8623e93c88886ad0e941e94/toolchains/apple/__xcode_26.2.0_17c52-iphonesimulator-sdk_genrule-actual__/e5e3cbbf737d97c8/iPhoneSimulator26.2.sdk/usr/include/objc/NSObject.h",
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 5,
@@ -391,6 +394,9 @@
                 },
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -446,6 +452,9 @@
                 },
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -486,6 +495,9 @@
                 },
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -508,6 +520,9 @@
             "23": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 11
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -530,6 +545,9 @@
             "27": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -562,6 +580,9 @@
             "30": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -594,6 +615,9 @@
             "33": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -626,6 +650,9 @@
             "36": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -658,6 +685,9 @@
             "39": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -690,6 +720,9 @@
             "42": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -722,6 +755,9 @@
             "48": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -780,6 +816,9 @@
                 },
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -842,6 +881,9 @@
             "57": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -864,6 +906,9 @@
             "59": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -926,6 +971,9 @@
             "63": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -986,6 +1034,9 @@
                 },
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -1018,6 +1069,9 @@
             "64": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -1080,6 +1134,9 @@
             "70": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -1138,6 +1195,9 @@
                 },
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -1236,6 +1296,9 @@
                 },
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -1298,6 +1361,9 @@
             "86": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },
@@ -1391,6 +1457,9 @@
             "95": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
                         "symbolLanguage": {
                             "aInteger": 20
                         },

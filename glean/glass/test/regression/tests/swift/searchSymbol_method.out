@@ -4,6 +4,7 @@
         "symbolDetails": [],
         "symbols": [
             {
+                "kind": 11,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -26,6 +27,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28cs%29CIBCanvasBallView%28im%29initWithCoder:"
             },
             {
+                "kind": 11,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",

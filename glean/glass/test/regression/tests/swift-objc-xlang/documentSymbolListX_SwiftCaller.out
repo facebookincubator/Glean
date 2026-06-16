@@ -6,6 +6,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "c:@M@SwiftObjc@objc(cs)SwiftCaller"
                         },
                         "key": "symbolName"
@@ -33,6 +39,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "c:@M@SwiftObjc@objc(cs)SwiftCaller(im)init"
@@ -64,6 +76,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC13useCFunctionsyyF"
                         },
                         "key": "symbolName"
@@ -91,6 +109,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC14accessPropertyyyF"
@@ -122,6 +146,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC14useClassMethodyyF"
                         },
                         "key": "symbolName"
@@ -149,6 +179,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC16callSimpleMethodyyF"
@@ -180,6 +216,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC18useStructsAndEnumsyyF"
                         },
                         "key": "symbolName"
@@ -209,6 +251,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC23processStringWithBridgeyyF"
                         },
                         "key": "symbolName"
@@ -236,6 +284,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg"
@@ -294,6 +348,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvs"
@@ -359,7 +419,7 @@
                 },
                 "sym": "test-xlang/cpp/fbobjc/NSObject/.decl",
                 "target": {
-                    "filepath": "buck-out/glean-indexer/art/fbsource/digest_50f85c75e5d76949b8623e93c88886ad0e941e94/xplat/toolchains/apple/__xcode_26.2.0_17c52-iphonesimulator-sdk_genrule-actual__/iPhoneSimulator26.2.sdk/usr/include/objc/NSObject.h",
+                    "filepath": "buck-out/glean-indexer/art/fbsource/digest_50f85c75e5d76949b8623e93c88886ad0e941e94/toolchains/apple/__xcode_26.2.0_17c52-iphonesimulator-sdk_genrule-actual__/e5e3cbbf737d97c8/iPhoneSimulator26.2.sdk/usr/include/objc/NSObject.h",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 5,
@@ -1180,6 +1240,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC13useCFunctionsyyF"
                         },
                         "key": "symbolName"
@@ -1217,6 +1283,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC14accessPropertyyyF"
@@ -1258,6 +1330,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC14useClassMethodyyF"
                         },
                         "key": "symbolName"
@@ -1295,6 +1373,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC16callSimpleMethodyyF"
@@ -1336,6 +1420,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC18useStructsAndEnumsyyF"
                         },
                         "key": "symbolName"
@@ -1373,6 +1463,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC23processStringWithBridgeyyF"
@@ -1414,6 +1510,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg"
                         },
                         "key": "symbolName"
@@ -1451,6 +1553,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg"
@@ -1492,6 +1600,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg"
                         },
                         "key": "symbolName"
@@ -1529,6 +1643,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg"
@@ -1570,6 +1690,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg"
                         },
                         "key": "symbolName"
@@ -1607,6 +1733,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvg"
@@ -1880,6 +2012,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "s:9SwiftObjc0A6CallerC6bridge33_EC0358B8BDBDC9E141C34E05E63BE117LLSo0aB6BridgeCvs"

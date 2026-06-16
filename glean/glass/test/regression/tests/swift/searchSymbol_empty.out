@@ -4,6 +4,7 @@
         "symbolDetails": [],
         "symbols": [
             {
+                "kind": 7,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -26,6 +27,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28cs%29CIBCanvasBallView"
             },
             {
+                "kind": 11,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -48,6 +50,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28cs%29CIBCanvasBallView%28im%29initWithCoder:"
             },
             {
+                "kind": 11,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -70,6 +73,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28cs%29CIBCanvasBallView%28im%29initWithFrame:"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -92,6 +96,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28cs%29CIBCanvasBallView%28im%29layoutSubviews"
             },
             {
+                "kind": 7,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -114,6 +119,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28cs%29CIBCanvasView"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -136,6 +142,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28cs%29CIBCanvasView%28im%29addOrUpdateBallWithId:position:altitude:color:supportsUpdate:"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -158,6 +165,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28cs%29CIBCanvasView%28im%29delegate"
             },
             {
+                "kind": 11,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -180,6 +188,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28cs%29CIBCanvasView%28im%29initWithCoder:"
             },
             {
+                "kind": 11,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -202,6 +211,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28cs%29CIBCanvasView%28im%29initWithFrame:"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -224,6 +234,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28cs%29CIBCanvasView%28im%29performRainbowAnimationWithId:completion:"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -246,6 +257,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28cs%29CIBCanvasView%28im%29removeAll"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -268,6 +280,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28cs%29CIBCanvasView%28im%29removeBallWithId:"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -334,6 +347,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28pl%29CIBCanvasViewDelegate"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -356,6 +370,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28pl%29CIBCanvasViewDelegate%28im%29canvasView:didDoubleTapBallId:"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -378,6 +393,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28pl%29CIBCanvasViewDelegate%28im%29canvasView:didDoubleTapPosition:"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -400,6 +416,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28pl%29CIBCanvasViewDelegate%28im%29canvasView:didLongPressBallId:"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -422,6 +439,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28pl%29CIBCanvasViewDelegate%28im%29canvasView:didPanBallId:position:"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -444,6 +462,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28pl%29CIBCanvasViewDelegate%28im%29canvasView:didTapBallId:"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -466,6 +485,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28pl%29CIBCanvasViewDelegate%28im%29canvasView:didTapPosition:"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -488,6 +508,7 @@
                 "symbol": "test/swift/c:%40M%40CIBCanvas%40objc%28pl%29CIBCanvasViewDelegate%28im%29canvasView:didTripleTapBallId:"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -884,6 +905,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A12ViewDelegateP06canvasB0_20didTripleTapPositionyAA0aB0C_So7CGPointVtFAEL_AIvp"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -928,6 +950,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A4ViewC010createBallB8IfNeeded33_0B3BAAE45C5B973AC393596A4D2DE873LLyAA0adB0CSSF6ballIdL_SSvp"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -972,6 +995,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A4ViewC10ballPanned33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UIPanGestureRecognizerC_tFAFL_AHvp"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -1038,6 +1062,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A4ViewC10removeBall6withIdySS_tF04ballF0L_SSvp"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -1192,6 +1217,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A4ViewC15addOrUpdateBall6withId8position8altitude5color08supportsE0ySS_So7CGPointV14CoreFoundation7CGFloatVSo7UIColorCSbtFAIL_Sbvp"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -1236,6 +1262,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A4ViewC15ballLongPressed33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo28UILongPressGestureRecognizerC_tFAFL_AHvp"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -1280,6 +1307,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A4ViewC16ballDoubleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -1324,6 +1352,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A4ViewC16ballTripleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -1368,6 +1397,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A4ViewC18canvasDoubleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -1500,6 +1530,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A4ViewC5frameACSo6CGRectV_tcfcADL_AFvp"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -1544,6 +1575,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A4ViewC5viewsSDySSAA0a4BallB0CGvp"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasView.swift",
@@ -1566,6 +1598,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A4ViewC5viewsSDySSAA0a4BallB0CGvs"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -1632,6 +1665,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A8BallViewC5coderACSgSo7NSCoderC_tcfcADL_AGvp"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -1676,6 +1710,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A8BallViewC5labelSo7UILabelCvp"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -1698,6 +1733,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A8BallViewC5labelSo7UILabelCvs"
             },
             {
+                "kind": 11,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -1742,6 +1778,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A8BallViewC6ballIdACSS_tcfcADL_SSvp"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -1786,6 +1823,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A8BallViewC6ballIdSSvp"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -1808,6 +1846,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A8BallViewC6ballIdSSvs"
             },
             {
+                "kind": 8,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -1896,6 +1935,7 @@
                 "symbol": "test/swift/s:9CIBCanvas0A8BallViewC6update8altitude5color14supportsUpdatey14CoreFoundation7CGFloatV_So7UIColorCSbtFAGL_Sbvp"
             },
             {
+                "kind": 14,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -1941,6 +1981,7 @@
                 "symbol": "test/swift/s:9CIBCanvas14kRainbowColors33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSaySo7UIColorCGvp"
             },
             {
+                "kind": 14,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -1963,6 +2004,7 @@
                 "symbol": "test/swift/s:9CIBCanvas14kRainbowColors33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSaySo7UIColorCGvs"
             },
             {
+                "kind": 14,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -2008,6 +2050,7 @@
                 "symbol": "test/swift/s:9CIBCanvas14kTotalDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvp"
             },
             {
+                "kind": 14,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -2030,6 +2073,7 @@
                 "symbol": "test/swift/s:9CIBCanvas14kTotalDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvs"
             },
             {
+                "kind": 14,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -2075,6 +2119,7 @@
                 "symbol": "test/swift/s:9CIBCanvas17kRelativeDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvp"
             },
             {
+                "kind": 14,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -2097,6 +2142,7 @@
                 "symbol": "test/swift/s:9CIBCanvas17kRelativeDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvs"
             },
             {
+                "kind": 14,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -2142,6 +2188,7 @@
                 "symbol": "test/swift/s:9CIBCanvas21kTotalTransformations33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSivp"
             },
             {
+                "kind": 14,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -2164,6 +2211,7 @@
                 "symbol": "test/swift/s:9CIBCanvas21kTotalTransformations33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSivs"
             },
             {
+                "kind": 14,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
@@ -2209,6 +2257,7 @@
                 "symbol": "test/swift/s:9CIBCanvas9kBallSize33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSo6CGSizeVvp"
             },
             {
+                "kind": 14,
                 "language": 20,
                 "location": {
                     "filepath": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift",
