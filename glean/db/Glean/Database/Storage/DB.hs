@@ -183,6 +183,28 @@ instance DatabaseOps DB where
         then Just <$> unsafeMallocedByteString unit_ptr unit_size
         else return Nothing
 
+  getUnitsByPrefix db prefix =
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
+    unsafeWithBytes prefix $ \prefix_ptr prefix_size -> do
+      (count, names, name_sizes, ids) <-
+        invoke $ glean_rocksdb_get_units_by_prefix
+          db_ptr prefix_ptr prefix_size
+      if count == 0
+        then return []
+        else do
+          results <- forM [0 .. count - 1] $ \i -> do
+            name_ptr <- peekElemOff names (fromIntegral i)
+            name_size <- peekElemOff name_sizes
+              (fromIntegral i)
+            name <- unsafeMallocedByteString
+              name_ptr name_size
+            uid <- peekElemOff ids (fromIntegral i)
+            return (name, UnitId uid)
+          free names
+          free name_sizes
+          free ids
+          return results
+
   addDefineOwnership db _ define =
     unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
     with define $ \define_ptr ->
@@ -324,6 +346,16 @@ foreign import ccall unsafe glean_rocksdb_get_unit
   -> UnitId
   -> Ptr (Ptr ())
   -> Ptr CSize
+  -> IO CString
+
+foreign import ccall safe glean_rocksdb_get_units_by_prefix
+  :: Ptr DB
+  -> Ptr ()
+  -> CSize
+  -> Ptr CSize
+  -> Ptr (Ptr (Ptr ()))
+  -> Ptr (Ptr CSize)
+  -> Ptr (Ptr Word32)
   -> IO CString
 
 foreign import ccall safe glean_rocksdb_store_ownership

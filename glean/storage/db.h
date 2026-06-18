@@ -110,6 +110,8 @@ struct Database : rts::Lookup {
 
   virtual folly::Optional<uint32_t> getUnitId(folly::ByteRange) = 0;
   virtual folly::Optional<std::string> getUnit(uint32_t) = 0;
+  virtual std::vector<std::pair<std::string, uint32_t>> getUnitsByPrefix(
+      folly::ByteRange prefix) = 0;
 
   /// Persist the results of computeOwnership(): serializes promoted
   /// sets to Elias-Fano encoding and writes the fact→owner interval map.

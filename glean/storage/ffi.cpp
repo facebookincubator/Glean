@@ -217,6 +217,36 @@ const char* glean_rocksdb_get_unit(
   });
 }
 
+const char* glean_rocksdb_get_units_by_prefix(
+    Database* db,
+    const void* prefix,
+    size_t prefix_size,
+    size_t* count,
+    void*** unit_names,
+    size_t** unit_name_sizes,
+    uint32_t** unit_ids) {
+  return ffi::wrap([=] {
+    auto results = db->getUnitsByPrefix(
+        folly::ByteRange(
+            reinterpret_cast<const unsigned char*>(prefix), prefix_size));
+    const auto n = results.size();
+    *count = n;
+    auto names = ffi::malloc_array<void*>(n);
+    auto sizes = ffi::malloc_array<size_t>(n);
+    auto ids = ffi::malloc_array<uint32_t>(n);
+    for (size_t i = 0; i < n; ++i) {
+      const auto& [name, uid] = results[i];
+      ids[i] = uid;
+      auto bytes = ffi::clone_bytes(name);
+      sizes[i] = bytes.size();
+      names[i] = bytes.release();
+    }
+    *unit_names = names.release();
+    *unit_name_sizes = sizes.release();
+    *unit_ids = ids.release();
+  });
+}
+
 const char* glean_rocksdb_database_predicateStats(
     Database* db,
     size_t* count,

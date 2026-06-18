@@ -9,6 +9,8 @@
 #pragma once
 
 #include <fmt/core.h>
+#include <cstring>
+
 #include <glean/rts/ownership/uset.h>
 #include "glean/rts/binary.h"
 #include "glean/rts/timer.h"
@@ -104,6 +106,8 @@ struct DatabaseCommon : Database {
   /** Returns the highest UnitId that has a name in the ownershipUnitIds
    *  table. WARNING: this does NOT return the next available ID in the
    *  shared namespace — use next_uset_id for that. */
+  std::vector<std::pair<std::string, uint32_t>> getUnitsByPrefix(
+      folly::ByteRange prefix) override;
   uint32_t nextUnitId();
 
   void addBatchDescriptor(BatchDescriptor batchDescriptor) override;
@@ -475,6 +479,26 @@ folly::Optional<std::string> DatabaseCommon<C>::getUnit(uint32_t unit_id) {
   } else {
     return folly::none;
   }
+}
+
+template <typename C>
+std::vector<std::pair<std::string, uint32_t>>
+DatabaseCommon<C>::getUnitsByPrefix(folly::ByteRange prefix) {
+  std::vector<std::pair<std::string, uint32_t>> result;
+  auto iter = container_.read(C::Family::ownershipUnits);
+  iter.seek_key(prefix);
+  while (iter.valid()) {
+    auto key = iter.key();
+    if (key.size() < prefix.size() ||
+        std::memcmp(key.data(), prefix.data(), prefix.size()) != 0) {
+      break;
+    }
+    auto name = binary::mkString(key);
+    auto uid = folly::loadUnaligned<uint32_t>(iter.value().data());
+    result.emplace_back(std::move(name), uid);
+    iter.next();
+  }
+  return result;
 }
 
 // Called once per batch inside Store.commit.

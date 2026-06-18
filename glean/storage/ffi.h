@@ -115,6 +115,15 @@ const char* glean_rocksdb_get_unit(
     void** unit,
     size_t* unit_size);
 
+const char* glean_rocksdb_get_units_by_prefix(
+    Database* db,
+    const void* prefix,
+    size_t prefix_size,
+    size_t* count,
+    void*** unit_names,
+    size_t** unit_name_sizes,
+    uint32_t** unit_ids);
+
 const char* glean_rocksdb_database_predicateStats(
     Database* db,
     size_t* count,

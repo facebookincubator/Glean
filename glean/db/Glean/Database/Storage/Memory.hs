@@ -115,6 +115,7 @@ instance DatabaseOps (Database Memory) where
   computeOwnership _ _ _ = return (error "unimplemented computeOwnership")
   getUnitId _ _ = return (error "unimplemented getUnitId")
   getUnit _ _ = return (error "unimplemented getUnit")
+  getUnitsByPrefix _ _ = return []
   storeOwnership _ _ _ = return ()  -- can't fail, otherwise we fail tests
   getOwnership _ = return Nothing
   addDefineOwnership _ _ =

@@ -31,7 +31,6 @@ import Control.Monad (when)
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe (fromMaybe, mapMaybe, catMaybes)
-import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import Data.Word
@@ -97,7 +96,7 @@ augmentOwnershipWithACL dbHandle own config = do
   -- Build per-unit ACL assignments by matching unit names against
   -- ACL config directory prefixes.
   assignments <- buildUnitAssignments
-    dbHandle unitCount (pathConfigToList config) resolveGroupUnitId
+    dbHandle (pathConfigToList config) resolveGroupUnitId
 
   logInfo $ "ACL augmentation: " ++ show (length assignments)
     ++ " units matched ACL prefixes"
@@ -126,59 +125,53 @@ lookupGroupUnitId dbHandle acl@(ACL name) = do
       logInfo $ "ACL augmentation: group unit not found: " ++ Text.unpack name
       return Nothing
 
--- | Iterate all units and build ACL assignments.
--- For each unit, match its name against ACL config directory prefixes
--- and group matches by prefix level.
+-- | Build per-unit ACL assignments using prefix scans.
+-- For each config entry, perform a RocksDB prefix scan on the
+-- ownershipUnits column family to find matching units, then
+-- group results by UnitId.
 buildUnitAssignments
   :: Storage.DatabaseOps db
   => db
-  -> Word32  -- ^ number of units
   -> [(Path, [ACL])]  -- ^ ACL config: (prefix, [group_names])
   -> (ACL -> Maybe UnitId)  -- ^ group name → UnitId resolver
   -> IO [(Word32, [[Word32]])]  -- ^ (UnitId, [[group_UnitIds_per_level]])
-buildUnitAssignments dbHandle numUnits configEntries resolveGroup
-  -- Guard against numUnits == 0: 'numUnits - 1' on a Word32 would underflow to
-  -- maxBound and iterate ~4 billion times.
-  | numUnits == 0 = return []
-  | otherwise = catMaybes <$> mapM processUnit [0 .. numUnits - 1]
-  where
-    processUnit unitId = do
-      mName <- Storage.getUnit dbHandle (UnitId unitId)
-      case mName of
-        Nothing -> return Nothing
-        Just nameBytes -> do
-          let name = Text.decodeUtf8 nameBytes
-          -- ACL group units ("acl:*") are themselves ownership units, so they
-          -- appear in this iteration. They are not source paths, so skip them
-          -- (this is expected, not an error).
-          if Text.isPrefixOf "acl:" name
-            then return Nothing
-            else do
-              -- Normalize the unit name the same way as the config prefixes
-              -- (strip the "fbcode/" repo prefix) so the two are compared on
-              -- equal footing.
-              let normName = fromMaybe name (Text.stripPrefix "fbcode/" name)
-                  matches = findMatchingLevels normName
-              return $ if null matches
-                then Nothing
-                else Just (unitId, matches)
+buildUnitAssignments dbHandle configEntries resolveGroup = do
+    allPairs <- concat <$> mapM processEntry configEntries
+    let grouped = HashMap.fromListWith (++)
+          [(uid, [gids]) | (uid, gids) <- allPairs]
+    return $ HashMap.toList grouped
+    where
+      processEntry (Path prefix, groupNames) = do
+        let groupUnitIds =
+              [ w | UnitId w <- mapMaybe resolveGroup groupNames ]
+        if null groupUnitIds
+          then return []
+          else do
+            let normPrefix = fromMaybe prefix
+                  (Text.stripPrefix "fbcode/" prefix)
+            matchingUnits <-
+              findMatchingUnits normPrefix
+            return
+              [ (uid, groupUnitIds)
+              | uid <- matchingUnits
+              ]
 
-    -- Find ACL prefix matches grouped by directory level.
-    -- Returns one group-UnitId list per matching config prefix.
-    findMatchingLevels :: Text -> [[Word32]]
-    findMatchingLevels unitName =
-      [ groupUnitIds
-      | (normPrefix, groupNames) <- normalizedEntries
-      , normPrefix == unitName
-        || Text.isPrefixOf (normPrefix <> "/") unitName
-      , let groupUnitIds = [ w | UnitId w <- mapMaybe resolveGroup groupNames ]
-      , not (null groupUnitIds)
-      ]
+      findMatchingUnits normPrefix = do
+        units1 <- scanPrefix normPrefix
+        units2 <-
+          scanPrefix ("fbcode/" <> normPrefix)
+        return $ units1 ++ units2
 
-    -- Pre-normalize config prefixes once (stripping the "fbcode/" repo prefix)
-    -- so the per-unit matching above does not repeat the work. The config has
-    -- few entries (< 100), so a linear scan per unit is acceptable.
-    normalizedEntries =
-      [ (fromMaybe prefix (Text.stripPrefix "fbcode/" prefix), groupNames)
-      | (Path prefix, groupNames) <- configEntries
-      ]
+      scanPrefix prefix = do
+        let prefixBS = Text.encodeUtf8 prefix
+            prefixSlash = prefix <> "/"
+        matches <-
+          Storage.getUnitsByPrefix dbHandle prefixBS
+        return
+          [ uid
+          | (nameBS, UnitId uid) <- matches
+          , let name = Text.decodeUtf8 nameBS
+          , not (Text.isPrefixOf "acl:" name)
+          , name == prefix
+            || Text.isPrefixOf prefixSlash name
+          ]

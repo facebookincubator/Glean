@@ -242,6 +242,8 @@ class CanLookup db => DatabaseOps db where
 
   getUnitId :: db -> ByteString -> IO (Maybe UnitId)
   getUnit :: db -> UnitId -> IO (Maybe ByteString)
+  getUnitsByPrefix
+    :: db -> ByteString -> IO [(ByteString, UnitId)]
 
   -- | Called once per batch.
   addDefineOwnership :: db -> WriteLock w -> DefineOwnership -> IO ()
@@ -298,6 +300,7 @@ instance DatabaseOps (Some DatabaseOps) where
   getOwnership (Some db) = getOwnership db
   getUnitId (Some db) = getUnitId db
   getUnit (Some db) = getUnit db
+  getUnitsByPrefix (Some db) = getUnitsByPrefix db
   addDefineOwnership (Some db) = addDefineOwnership db
   computeDerivedOwnership (Some db) = computeDerivedOwnership db
   cacheOwnership (Some db) = cacheOwnership db
