@@ -43,6 +43,18 @@ typedef string USR (hs.newtype)
 // USR hash (Symbol string from ClangD/Sourcekit hashed)
 typedef string USRHash (hs.newtype)
 
+// Additional perf denominator dimensions without dedicated AttributeOptions fields.
+enum PerfDimension {
+  DeviceModel = 6,
+  BuildBranch = 7,
+  TriggerScenario = 8,
+}
+
+struct PerfDimensionFilter {
+  1: PerfDimension dimension;
+  2: optional string value;
+}
+
 // A line range in the file to restrict the query. start should be <= end, and
 // range is inclusive of end.
 struct LineRange {
@@ -125,6 +137,9 @@ struct AttributeOptions {
   17: optional string product_id;
   18: bool fetch_per_line_per_strobelight_frame_data = false;
   19: bool use_function_cost_facts = false;
+  // Additional filters for perf denominator selection. Existing top-level fields
+  // like package_name, traffic_group, and product_id should stay on AttributeOptions.
+  20: list<PerfDimensionFilter> perf_dimension_filters = [];
 }
 
 typedef string ServiceID (hs.newtype)
