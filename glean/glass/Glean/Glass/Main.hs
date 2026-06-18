@@ -7,6 +7,9 @@
 -}
 
 {-# LANGUAGE CPP #-}
+#if GLEAN_FACEBOOK
+{-# LANGUAGE ForeignFunctionInterface #-}
+#endif
 module Glean.Glass.Main
   ( mainWith
 
@@ -66,6 +69,10 @@ import Glean.Glass.Tracer ( isTracingEnabled )
 import Glean.Glass.Handler.Cxx as Cxx
 import Glean.Glass.Tracing
   (GlassTrace(TraceCommand), GlassTraceWithId (GlassTraceWithId))
+#if GLEAN_FACEBOOK
+import Glean.Glass.Auth.AttachHandler (withVerifiedAuth)
+import JustKnobs (evalKnob)
+#endif
 
 kThriftCacheNoCache :: Text
 kThriftCacheNoCache = "nocache"
@@ -132,7 +139,22 @@ runGlass res@Glass.Env{fb303, evp} conf@Glass.Config{..} = do
         { Thrift.desiredPort = Just listenPort
         , Thrift.numWorkerThreads = numWorkerThreads
         }
+#if GLEAN_FACEBOOK
+  -- Gated behind codesearch/glass:cat_auth_kill kill-switch (default on);
+  -- the CAT surface is Meta-internal (excluded from the OSS build).
+  -- The shared interceptor derives its verifier from the server's runtime
+  -- service identity, which is glean__glass for this process.
+  catAuthKill <- evalKnob "codesearch/glass:cat_auth_kill"
+  let catAuthEnabled = catAuthKill /= Right True
+  let serverOpts = options
+        { Thrift.customModifyFn =
+            if catAuthEnabled then Just c_glean_add_cat_module else Nothing
+        }
+  runFacebookService' fb303
+    (withVerifiedAuth (glassHandler res)) assignHeaders serverOpts
+#else
   runFacebookService' fb303 (glassHandler res) assignHeaders options
+#endif
 
 assignHeaders :: GlassServiceCommand r -> Either SomeException r -> Header
 assignHeaders _ (Left e) | isRevisionNotAvailableException e =
@@ -147,6 +169,16 @@ assignHeaders _ (Left e) | isRevisionNotAvailableException e =
       GlassExceptionReason_matchingRevisionNotAvailable{} -> True
       _ -> False
 assignHeaders _ _ = []
+
+#if GLEAN_FACEBOOK
+-- | ModifyFunction (C++ FFI) that installs the shared CAT ServiceInterceptor
+-- on the ThriftServer; see glean/facebook/cat/GleanCat.cpp. The interceptor
+-- verifies inbound CATs against the server's own runtime service identity
+-- (glean__glass here), so the same entry point serves both Glean and Glass.
+-- fb303 chains this after its TLS setup.
+foreign import ccall "&c_glean_add_cat_module"
+  c_glean_add_cat_module :: Thrift.ModifyFunction
+#endif
 
 -- | Perform an operation with the latest RepoMapping
 withCurrentRepoMapping :: RequestOptions -> Glass.Env -> (Glass.Env -> IO a) -> IO a

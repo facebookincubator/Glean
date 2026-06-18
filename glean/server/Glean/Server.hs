@@ -192,10 +192,10 @@ main =
   let state = GleanHandler.State fb303 databases
 
 #if GLEAN_FACEBOOK
-  -- Install the inbound-CAT ServiceInterceptor only when the CAT-auth pipeline
-  -- is enabled (codesearch/glean:check_acls), so it ships dark with no
-  -- per-request verification cost. Flipping the knob takes effect on restart.
-  -- The CAT surface is Meta-internal, so this is excluded from the OSS build.
+  -- Install the inbound-CAT ServiceInterceptor unless killed by
+  -- codesearch/glean:cat_auth_kill. Default on; flipping the kill-switch true
+  -- disables checking and takes effect on restart. The CAT surface is
+  -- Meta-internal, so this is excluded from the OSS build.
   catAuthEnabled <- enforcementEnabled
   let serverOpts = opts
         { ThriftServer.customModifyFn =
