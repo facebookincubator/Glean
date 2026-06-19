@@ -6,6 +6,8 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE CPP #-}
+
 module Glean.Glass.Handler.Utils (
     -- * Handler wrappers: handlers should call one of these
     withRepoFile,
@@ -47,6 +49,11 @@ import Haxl.DataSource.Glean (HasRepo)
 import Util.Logger ( loggingAction )
 import Util.STM
 import qualified Logger.GleanGlass as Logger
+#if GLEAN_FACEBOOK
+import Glean.Auth.Auth.Types (AuthStatus(..))
+import Glean.Auth.Verify (VerifiedAuth(..), getRequestVerifiedAuth)
+import Thrift.Protocol (fromThriftEnum)
+#endif
 
 import qualified Glean
 import Glean.Haxl.Repos as Glean
@@ -256,10 +263,44 @@ withLog cmd env opts req action = do
         Logger.setMethod cmd <>
         logRequest req <>
         logRequest opts
+#if GLEAN_FACEBOOK
+  -- Stamp the verified inbound-CAT auth outcome (from the C++ interceptor,
+  -- read on the request thread) into the same glean_glass_server row.
+  authLogs <- glassAuthLogFields
+  loggingAction
+    (Logger.runLog (Glass.logger env) . ((requestLogs <> authLogs) <>))
+    logResult
+    action
+#else
   loggingAction
     (Logger.runLog (Glass.logger env) . (requestLogs <>))
     logResult
     action
+#endif
+
+#if GLEAN_FACEBOOK
+-- | The verified inbound-CAT auth fields for the current request, read from
+-- folly::RequestContext (stashed by the C++ interceptor on the request
+-- thread). Empty when the status is UNSET (pipeline dark). Logged as the
+-- status name (FULL/FILTERED/NONE/FAILED), not the enum integer.
+glassAuthLogFields :: IO Logger.GleanGlassLogger
+glassAuthLogFields = do
+  va <- getRequestVerifiedAuth
+  return $ case vaStatus va of
+    AuthStatus_UNSET -> mempty
+    status ->
+      Logger.setAuthStatus (glassAuthStatusName status) <>
+      Logger.setAuthMessage (vaMessage va)
+
+glassAuthStatusName :: AuthStatus -> Text
+glassAuthStatusName s = case fromThriftEnum s of
+  0 -> "UNSET"
+  1 -> "FULL"
+  2 -> "FILTERED"
+  3 -> "NONE"
+  4 -> "FAILED"
+  _ -> "UNKNOWN"
+#endif
 
 withLogDB
   :: ChosenDBs
