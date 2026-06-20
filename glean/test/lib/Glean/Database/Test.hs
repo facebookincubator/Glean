@@ -23,6 +23,7 @@ module Glean.Database.Test
   , setLMDBNoUnpack
   , enableTcDebug
   , enableQueryDebug
+  , enableQueryLint
   , enableRocksDBCache
   , withTestEnv
   , kickOffTestDB
@@ -129,6 +130,10 @@ enableQueryDebug :: Setting
 enableQueryDebug cfg = cfg
   { cfgDebug = (cfgDebug cfg) { queryDebug = True } }
 
+enableQueryLint :: Setting
+enableQueryLint cfg = cfg
+  { cfgDebug = (cfgDebug cfg) { queryLint = True } }
+
 enableRocksDBCache :: Setting
 enableRocksDBCache cfg = cfg
   { cfgServerConfig = (cfgServerConfig cfg) <&> \scfg -> scfg
@@ -146,12 +151,12 @@ withTestEnv settings action =
       \(cfgAPI :: NullConfigProvider) -> do
     let
       dbConfig = foldl' (\acc f -> f acc)
-        def
+        (enableQueryLint def
           { cfgDataStore = tmpDataStore
           , cfgSchemaLocation = Just schemaLocationFiles
           , cfgServerConfig = ThriftSource.value def
               { ServerConfig.config_db_rocksdb_cache_mb = 0 }
-          }
+          })
         settings
 
     withDatabases evb dbConfig cfgAPI action
