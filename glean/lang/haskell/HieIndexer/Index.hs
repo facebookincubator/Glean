@@ -179,6 +179,10 @@ toNamespace occ
   | GHC.isTvOcc occ = Hs.Namespace_tyvar
   | GHC.isTcOcc occ = Hs.Namespace_tycon
   | GHC.isDataOcc occ = Hs.Namespace_datacon
+#if MIN_VERSION_ghc(9,10,0)
+  -- TODO: this is definitely wrong lol
+  | GHC.isFieldOcc occ = Hs.Namespace_var_
+#endif
   | otherwise = error "toNamespace"
 
 isRecFieldRef :: RecFieldContext -> Bool
