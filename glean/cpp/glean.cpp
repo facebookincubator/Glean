@@ -9,7 +9,6 @@
 #include "glean/cpp/glean.h"
 #include <folly/gen/Base.h>
 #include <algorithm>
-#include <iterator>
 #include "glean/rts/sanity.h"
 
 namespace facebook {
