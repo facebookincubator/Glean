@@ -189,10 +189,13 @@ instance DatabaseOps DB where
       (count, names, name_sizes, ids) <-
         invoke $ glean_rocksdb_get_units_by_prefix
           db_ptr prefix_ptr prefix_size
-      if count == 0
-        then return []
-        else do
-          results <- forM [0 .. count - 1] $ \i -> do
+      -- glean_rocksdb_get_units_by_prefix always mallocs the three arrays
+      -- (even when count == 0) and hands ownership to us, so we must always
+      -- free them — not just on the non-empty path.
+      results <-
+        if count == 0
+          then return []
+          else forM [0 .. count - 1] $ \i -> do
             name_ptr <- peekElemOff names (fromIntegral i)
             name_size <- peekElemOff name_sizes
               (fromIntegral i)
@@ -200,10 +203,10 @@ instance DatabaseOps DB where
               name_ptr name_size
             uid <- peekElemOff ids (fromIntegral i)
             return (name, UnitId uid)
-          free names
-          free name_sizes
-          free ids
-          return results
+      free names
+      free name_sizes
+      free ids
+      return results
 
   addDefineOwnership db _ define =
     unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
