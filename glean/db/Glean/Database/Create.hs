@@ -161,6 +161,9 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
                       })
             OpenDB{..} <- unmask $ Async.wait opener
             addSchemaIdProperty envCatalog kickOff_repo (schemaId odbSchema)
+            -- Log ACL mode for this create operation
+            let aclMode = getACLMode allProps
+            logInfo $ inRepo kickOff_repo $ showACLMode aclMode
             return $ Thrift.KickOffResponse
               { kickOffResponse_alreadyExists = False
               , kickOffResponse_auth_status = Nothing

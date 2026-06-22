@@ -15,7 +15,6 @@ module Glean.Database.Data
   , retrieveSlices
   , storeACLGroupMapping
   , retrieveACLGroupMapping
-  , parseACLGroupMappingJson
   , storeACLConfigHash
   , retrieveACLConfigHash
   , storeFirstACLID
@@ -114,9 +113,22 @@ retrieveSlices repo db = do
 storeACLGroupMapping :: DatabaseOps db => db -> ByteString -> IO ()
 storeACLGroupMapping db = Storage.store db aCL_GROUP_MAPPING_KEY
 
--- | Retrieve the ACL group name-to-UsetId mapping JSON blob.
-retrieveACLGroupMapping :: DatabaseOps db => db -> IO (Maybe ByteString)
-retrieveACLGroupMapping db = Storage.retrieve db aCL_GROUP_MAPPING_KEY
+-- | Retrieve and parse the ACL group name-to-UsetId mapping.
+-- Returns 'Nothing' when no mapping is stored. If a value is stored but fails
+-- to parse as valid JSON, logs a warning (so corrupted data is not silently
+-- mistaken for an empty mapping) and returns 'Nothing'.
+retrieveACLGroupMapping
+  :: DatabaseOps db => db -> IO (Maybe (HashMap.HashMap Text Word32))
+retrieveACLGroupMapping db = do
+  mBytes <- Storage.retrieve db aCL_GROUP_MAPPING_KEY
+  case mBytes of
+    Nothing -> return Nothing
+    Just bytes -> case parseACLGroupMappingJson bytes of
+      Just mapping -> return (Just mapping)
+      Nothing -> do
+        logWarning
+          "corrupted acl_group_mapping, ignoring stored ACL group mapping"
+        return Nothing
 
 -- | Store the ACL configuration hash.
 storeACLConfigHash :: DatabaseOps db => db -> Text -> IO ()

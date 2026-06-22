@@ -27,18 +27,22 @@ import Control.Exception hiding(try)
 import Control.Monad.Catch (try)
 import Control.Monad.Extra
 import Data.ByteString (ByteString)
+import Data.Coerce (coerce)
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Map as Map
 import Data.IORef
+import Data.List (sort)
 import Data.Maybe
 import Data.Set (Set)
+import Data.Text (Text)
 import qualified Data.Text as Text
+import qualified Data.Text.Encoding as TextE
 import Data.Word
 import qualified Data.Set as Set
 import GHC.Stack (HasCallStack)
 
-import Util.Control.Exception (tryAll)
+import Util.Control.Exception
 import qualified Util.Control.Exception.CallStack as CallStack
 import Util.Log
 import Util.Logger
@@ -47,10 +51,14 @@ import Util.STM
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter (Locality(..))
 import Glean.Database.Data
+  ( storeSchema, retrieveSchema
+  , retrieveUnits, retrieveSlices, storeUnits, storeSlices
+  , retrieveFirstACLID
+  , retrieveACLGroupMapping )
 import Glean.Database.Exception
 import Glean.Database.Repo
 import Glean.Database.Storage as Storage
-import Glean.Database.Meta (Meta(..), ACLMode(..))
+import Glean.Database.Meta (Meta(..), getACLMode, ACLMode(..), showACLMode)
 import Glean.Database.Schema
 import Glean.Database.Schema.Types
 import Glean.Database.Types
@@ -62,13 +70,13 @@ import qualified Glean.RTS.Foreign.Lookup as Lookup
 import Glean.RTS.Foreign.Lookup (Lookup)
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
 import qualified Glean.RTS.Foreign.Ownership as Ownership
+import Glean.RTS.Foreign.Ownership (UnitId(..), UsetId(..))
 import qualified Glean.RTS.Foreign.Stacked as Stacked
 import Glean.RTS.Types (Pid(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
-import Glean.Types (Repo)
 import qualified Glean.Internal.Types as Thrift
 import qualified Glean.Types as Thrift
-import Glean.Types (PredicateStats(..))
+import Glean.Types (Repo, PredicateStats(..))
 import Glean.Util.Mutex
 import qualified Glean.Util.Observed as Observed
 import Util.Time
@@ -149,36 +157,34 @@ repoParent Env{..} repo = do
 depParent :: Thrift.Dependencies -> Repo
 depParent deps = case deps of
   Thrift.Dependencies_pruned Thrift.Pruned{..} -> pruned_base
-  Thrift.Dependencies_stacked Thrift.Stacked{..} -> Thrift.Repo stacked_name stacked_hash
+  Thrift.Dependencies_stacked Thrift.Stacked{..} ->
+    Thrift.Repo stacked_name stacked_hash
 
 withOpenDBLookup
   :: Env
   -> Repo
   -> OpenDB
+  -> [Text]  -- ^ ACL group names for the user
   -> (Boundaries -> Lookup -> IO a)
   -> IO a
-withOpenDBLookup env repo OpenDB{ odbBaseSlices = baseSlices, .. } f =
+withOpenDBLookup env repo odb@OpenDB{ odbBaseSlices = baseSlices, .. }
+    aclGroupNames f =
   Lookup.withCanLookup odbHandle $ \lookup -> do
   parent <- repoParent env repo
   case parent of
     Nothing -> do
       bounds <- flatBoundaries lookup
-      f bounds lookup
+      withFlatACLLookup env repo odb aclGroupNames lookup $ \sliced ->
+        f bounds sliced
     Just baseRepo ->
-      withOpenDatabase env baseRepo $ \OpenDB{..} -> do
-        -- stacked (sliced base lookup)
-        Lookup.withCanLookup odbHandle $ \baseLookup -> do
+      withOpenDatabase env baseRepo $ \baseOdb@OpenDB{odbHandle = baseHandle} ->
+        Lookup.withCanLookup baseHandle $ \baseLookup ->
           withOpenDBStack env baseRepo baseLookup $ \base -> do
             bounds <- stackedBoundaries base lookup
-            let slices = catMaybes baseSlices
-            if null slices
-              then Lookup.withCanLookup (Stacked.stacked base lookup)
-                (f bounds)
-              else
-                Lookup.withCanLookup
-                  (Ownership.slicedStack slices base) $ \sliced ->
-                Lookup.withCanLookup (Stacked.stacked sliced lookup)
-                  (f bounds)
+            let ownershipSlices = catMaybes baseSlices
+            withStackedACLLookup env repo odb baseRepo baseOdb aclGroupNames
+              ownershipSlices base lookup $ \stackedLookup ->
+              f bounds stackedLookup
 
 withOpenDBStack
   :: Env
@@ -211,18 +217,188 @@ readDatabase
   -> (OpenDB -> Lookup.Lookup -> IO a)
   -> IO a
 readDatabase env repo f =
-  readDatabaseWithBoundaries env repo $ \odb _ lookup ->
+  readDatabaseWithBoundaries env repo [] $ \odb _ lookup ->
   f odb lookup
 
 readDatabaseWithBoundaries
   :: Env
   -> Repo
+  -> [Text]  -- ^ ACL group names for the user
   -> (OpenDB -> Boundaries -> Lookup -> IO a)
   -> IO a
-readDatabaseWithBoundaries env repo f =
+readDatabaseWithBoundaries env repo aclGroupNames f =
   withOpenDatabase env repo $ \odb ->
-  withOpenDBLookup env repo odb $ \bounds lookup ->
+  withOpenDBLookup env repo odb aclGroupNames $ \bounds lookup ->
     f odb bounds lookup
+
+-- -----------------------------------------------------------------------------
+-- ACL Slice Construction
+
+-- | Resolve ACL group names to their unit ids in this DB. Each group is stored
+-- as an "acl:<name>" ownership unit; names that don't resolve are dropped.
+resolveAclGroupUnits
+  :: Storage.DatabaseOps db => db -> [Text] -> IO [Word32]
+resolveAclGroupUnits handle names =
+  fmap catMaybes $ forM names $ \name -> do
+    let unitName = TextE.encodeUtf8 ("acl:" <> name)
+    mId <- Storage.getUnitId handle unitName
+    return $ fmap (\(UnitId uid) -> uid) mId
+
+-- | Read a DB's ACL metadata at open time: the firstACLID boundary and the
+-- group name -> UsetId mapping. Both are DB-invariant; empty/Nothing for
+-- DBs without ACLs.
+loadAclMetadata
+  :: Storage.DatabaseOps db
+  => db
+  -> IO (Maybe UsetId, Map.Map Text UsetId)
+loadAclMetadata handle = do
+  mFirstACLID <- retrieveFirstACLID handle
+  mMapping <- retrieveACLGroupMapping handle
+  let aclMapping = case mMapping of
+        Nothing -> Map.empty
+        Just parsed -> Map.fromList
+          [ (name, UsetId uid)
+          | (name, uid) <- HashMap.toList parsed ]
+  return (mFirstACLID, aclMapping)
+
+-- | Build an ACL-aware ownership slice for a single DB layer, and pass it to
+-- a continuation. Passes Nothing if ACL filtering is not needed for this layer.
+--
+-- The slice makes file units (non-ACL units) visible by default, and ACL
+-- groups invisible unless they match the query's ACL group names.
+--
+-- We build the slice in EXCLUDE mode: the units we pass are the ACL-group
+-- units the caller is NOT a member of. Everything else (file
+-- units, and the caller's own groups) is visible by default, so a fact is
+-- hidden exactly when its ACL CNF requires a group the caller lacks.
+--
+-- The full set of ACL-group units is the contiguous range
+-- [firstACLID, firstACLID + #groups) (see registerOwnershipUnits); we
+-- subtract the caller's own groups (resolved via Storage.getUnitId) and
+-- exclude the rest.
+buildLayerACLSlice
+  :: Env
+  -> Repo
+  -> OpenDB
+  -> [Text]  -- ^ ACL group names from request
+  -> (Maybe Ownership.Slice -> IO a)
+  -> IO a
+buildLayerACLSlice _env _repo odb aclGroupNames f = do
+  case odbFirstACLID odb of
+    Nothing -> do
+      vlog 1 "[ACL-Slice] No firstACLID in DB, skipping ACL slice"
+      f Nothing
+    Just (UsetId firstACL) -> do
+      let dbAclMode = odbACLMode odb
+      let aclEnabled = dbAclMode /= ACLDisabled
+      if not aclEnabled
+        then do
+          vlog 1 "[ACL-Slice] ACL mode disabled, skipping ACL slice"
+          f Nothing
+        else do
+          -- Get ownership for this layer
+          maybeOwnership <- readTVarIO (odbOwnership odb)
+          case maybeOwnership of
+            Nothing -> do
+              vlog 1 "[ACL-Slice] No ownership data, skipping ACL slice"
+              f Nothing
+            Just ownership -> do
+              -- All ACL-group units occupy the contiguous range
+              -- [firstACLID, firstACLID + #groups) above every regular
+              -- file unit (see registerOwnershipUnits at completion).
+              let numGroups = Map.size (odbACLMapping odb)
+                  allGroups
+                    | numGroups == 0 = []
+                    | otherwise =
+                        [firstACL .. firstACL + fromIntegral numGroups - 1]
+              userGroups <- resolveAclGroupUnits (odbHandle odb) aclGroupNames
+              vlog 1 $ "[ACL-Slice] (exclude) allGroups="
+                ++ show (length allGroups)
+                ++ ", userGroups=" ++ show (length userGroups)
+              -- Exclude (in EXCLUDE mode) the ACL-group units the caller is
+              -- NOT a member of; everything else stays visible by default.
+              let userSet = Set.fromList userGroups
+                  excludeUnits = coerce
+                    (sort (filter (`Set.notMember` userSet) allGroups))
+                    :: [UnitId]
+              aclSlice <- Ownership.slice ownership [] excludeUnits True
+              vlog 1 "[ACL-Slice] Slice created successfully"
+              f (Just aclSlice)
+
+-- | Wrap a lookup with the given ownership/ACL slices, or pass it through
+-- unchanged when there are none. An empty list must NOT be handed to
+-- slicedStack: an empty Slices treats every UsetId as not-covered and hides
+-- all facts.
+withMaybeSliced
+  :: [Ownership.Slice] -> Lookup -> (Lookup -> IO a) -> IO a
+withMaybeSliced [] lk k = k lk
+withMaybeSliced slices lk k =
+  Lookup.withCanLookup (Ownership.slicedStack slices lk) k
+
+-- | Apply the ACL slice (if any) for a flat (non-stacked) database and
+-- run the continuation with the resulting (possibly sliced) lookup.
+withFlatACLLookup
+  :: Env
+  -> Repo
+  -> OpenDB
+  -> [Text]     -- ^ ACL group names for the user
+  -> Lookup     -- ^ the layer's lookup
+  -> (Lookup -> IO a)
+  -> IO a
+withFlatACLLookup env repo odb aclGroupNames lookup f =
+  buildLayerACLSlice env repo odb aclGroupNames $ \mAclSlice ->
+    withMaybeSliced (maybeToList mAclSlice) lookup f
+
+-- | Build ACL slices for all layers in a stacked DB (base layers only).
+-- Walks the DB stack recursively and builds an ACL slice for each layer
+-- that has ACL data (firstACLID). Returns the list of ACL slices.
+withStackedACLSlices
+  :: Env
+  -> Repo       -- ^ Base repo (immediate parent)
+  -> OpenDB     -- ^ Base OpenDB
+  -> [Text]     -- ^ ACL group names
+  -> ([Ownership.Slice] -> IO a)
+  -> IO a
+withStackedACLSlices env baseRepo baseOdb aclGroupNames f = do
+  -- Build ACL slice for this base layer
+  buildLayerACLSlice env baseRepo baseOdb aclGroupNames $ \mSlice -> do
+    -- Recurse to deeper layers
+    parent <- repoParent env baseRepo
+    case parent of
+      Nothing -> f (maybeToList mSlice)
+      Just parentRepo ->
+        withOpenDatabase env parentRepo $ \parentOdb ->
+          withStackedACLSlices env parentRepo parentOdb aclGroupNames
+            $ \parentSlices ->
+            f (maybeToList mSlice ++ parentSlices)
+
+-- | Apply ownership + ACL slices for a stacked database and run the
+-- continuation with the combined stacked lookup. This wires together the
+-- base ACL slices (walked over the base stack), the top-layer ACL slice,
+-- and the pre-existing ownership slices into a single sliced/stacked lookup.
+withStackedACLLookup
+  :: Env
+  -> Repo               -- ^ Top (stacked) repo
+  -> OpenDB             -- ^ Top OpenDB
+  -> Repo               -- ^ Base repo (immediate parent)
+  -> OpenDB             -- ^ Base OpenDB
+  -> [Text]             -- ^ ACL group names for the user
+  -> [Ownership.Slice]  -- ^ Ownership slices for the base stack
+  -> Lookup             -- ^ Base stack lookup
+  -> Lookup             -- ^ Top layer lookup
+  -> (Lookup -> IO a)
+  -> IO a
+withStackedACLLookup env repo odb baseRepo baseOdb aclGroupNames
+    ownershipSlices base lookup f =
+  -- Build ACL slices for base layers (walk the base stack)
+  withStackedACLSlices env baseRepo baseOdb aclGroupNames $ \baseACLSlices ->
+  -- Build ACL slice for the top layer
+  buildLayerACLSlice env repo odb aclGroupNames $ \mTopACLSlice ->
+    -- Slice each side only if it has slices (empty would hide everything),
+    -- then stack the (possibly sliced) base under the top layer.
+    withMaybeSliced (ownershipSlices ++ baseACLSlices) base $ \slicedBase ->
+    withMaybeSliced (maybeToList mTopACLSlice) lookup $ \slicedTop ->
+    Lookup.withCanLookup (Stacked.stacked slicedBase slicedTop) f
 
 newDB :: Repo -> STM DB
 newDB repo = DB repo
@@ -527,6 +703,13 @@ asyncOpenDB env@Env{..} storage db@DB{..} version mode deps
                   Just slices -> return $ map Just slices
             idle <- newTVarIO =<< getTimePoint
             ownership <- newTVarIO =<< Storage.getOwnership handle
+            -- Get database properties to check ACL mode
+            meta <- atomically $ Catalog.readMeta envCatalog dbRepo
+            let aclMode = getACLMode (metaProperties meta)
+            -- Log ACL metadata on database open
+            logInfo $ inRepo dbRepo $
+              "[Open.hs] Database opening, ACL mode: " ++ showACLMode aclMode
+            (mFirstACLID, aclMapping) <- loadAclMetadata handle
             on_success
             return OpenDB
               { odbHandle = Some handle
@@ -535,9 +718,9 @@ asyncOpenDB env@Env{..} storage db@DB{..} version mode deps
               , odbIdleSince = idle
               , odbBaseSlices = maybeSlices
               , odbOwnership = ownership
-              , odbACLMode = ACLDisabled
-              , odbACLMapping = Map.empty
-              , odbFirstACLID = Nothing
+              , odbACLMode = aclMode
+              , odbACLMapping = aclMapping
+              , odbFirstACLID = mFirstACLID
               }
           atomically $ writeTVar dbState $ Open odb
           enqueueBatchDescriptorsFromDatabase env db odb
@@ -561,7 +744,6 @@ enqueueBatchDescriptorsFromDatabase env DB{..} OpenDB{..} =
         enqueueBatchDescriptorWithResultHandling env dbRepo wrQueue
           odbSchema odbHandle descriptor True
     Nothing -> return ()
-
 
 -- | Fetch the glean.schema_id property of a DB, if it has one. This
 -- property is used to resolve queries.

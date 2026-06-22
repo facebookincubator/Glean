@@ -58,7 +58,8 @@ import Glean.Logger.Database (GleanDatabaseLogger)
 import Glean.RTS.Foreign.FactSet (FactSet)
 import Glean.RTS.Foreign.LookupCache (LookupCache)
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
-import Glean.RTS.Foreign.Ownership (Ownership, Slice, DefineOwnership, UsetId)
+import Glean.RTS.Foreign.Ownership
+  (Ownership, Slice, DefineOwnership, UsetId)
 import Glean.RTS.Foreign.Subst (Subst)
 import Glean.RTS.Types (Fid(..))
 import qualified Glean.ServerConfig.Types as ServerConfig

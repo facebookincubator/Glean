@@ -137,7 +137,10 @@ genericUserQuery
 {-# INLINE genericUserQuery #-}
 genericUserQuery env repo query enc = do
   config@ServerConfig.Config{..} <- Observed.get (envServerConfig env)
-  readDatabaseWithBoundaries env repo $ \odb bounds lookup ->
+  -- TODO: thread the caller's ACL group names through here instead of [].
+  -- With [] and ACL mode enabled, exclude-mode slicing hides all
+  -- ACL-restricted facts from user queries.
+  readDatabaseWithBoundaries env repo [] $ \odb bounds lookup ->
     maybe id limitAllocsThrow config_query_alloc_limit
       $ performUserQuery enc (odbSchema odb)
       $ userQueryImpl env odb config NoExtraSteps bounds lookup repo query

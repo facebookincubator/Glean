@@ -313,7 +313,10 @@ runDerivation
   -> Thrift.DerivePredicateQuery
   -> IO ()
 runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
-  readDatabaseWithBoundaries env repo $ \odb bounds lookup ->
+  -- TODO: thread the caller's ACL group names through here instead of [].
+  -- With [] and ACL mode enabled, exclude-mode slicing hides all
+  -- ACL-restricted facts from the derivation path.
+  readDatabaseWithBoundaries env repo [] $ \odb bounds lookup ->
     case derivePredicateQuery_parallel of
       Nothing -> deriveQuery odb bounds lookup (query (allFacts ref))
       Just par -> parallelDerivation odb bounds lookup par
