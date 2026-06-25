@@ -6,7 +6,7 @@
       "module": "example",
       "app": "basic",
       "span_start": 891,
-      "type_text": "Age :: number()"
+      "type_text": "Age :: integer()"
     }
   },
   {
@@ -15,7 +15,7 @@
       "module": "example",
       "app": "basic",
       "span_start": 914,
-      "type_text": "Age :: number()"
+      "type_text": "Age :: integer()"
     }
   },
   {
@@ -24,7 +24,7 @@
       "module": "example",
       "app": "basic",
       "span_start": 706,
-      "type_text": "N :: number()"
+      "type_text": "N :: erlang:number()"
     }
   },
   {
@@ -33,7 +33,7 @@
       "module": "example",
       "app": "basic",
       "span_start": 714,
-      "type_text": "N :: number()"
+      "type_text": "N :: erlang:number()"
     }
   },
   {
@@ -42,7 +42,7 @@
       "module": "example",
       "app": "basic",
       "span_start": 727,
-      "type_text": "N :: number()"
+      "type_text": "N :: erlang:number()"
     }
   },
   {
@@ -51,7 +51,7 @@
       "module": "example",
       "app": "basic",
       "span_start": 741,
-      "type_text": "N :: number()"
+      "type_text": "N :: erlang:number()"
     }
   },
   {
@@ -168,7 +168,7 @@
       "module": "example",
       "app": "basic",
       "span_start": 582,
-      "type_text": "X :: number()"
+      "type_text": "X :: erlang:number()"
     }
   },
   {
@@ -177,7 +177,7 @@
       "module": "example",
       "app": "basic",
       "span_start": 595,
-      "type_text": "X :: number()"
+      "type_text": "X :: erlang:number()"
     }
   },
   {
@@ -204,7 +204,7 @@
       "module": "example",
       "app": "basic",
       "span_start": 585,
-      "type_text": "Y :: number()"
+      "type_text": "Y :: erlang:number()"
     }
   },
   {
@@ -213,7 +213,7 @@
       "module": "example",
       "app": "basic",
       "span_start": 599,
-      "type_text": "Y :: number()"
+      "type_text": "Y :: erlang:number()"
     }
   },
   {
