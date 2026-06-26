@@ -6,6 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+#include "glean/rts/binary.h"
 #include "glean/rts/string.h"
 #include "security/lionhead/utils/lib_ftest/ftest.h"
 
@@ -19,6 +20,11 @@ FUZZ(ValidateUntrustedStringFuzzer45, BasicFuzz) {
   folly::ByteRange range(data.data(), data.size());
   try {
     facebook::glean::rts::validateUntrustedString(range);
+  } catch (...) {
+  }
+  try {
+    facebook::glean::binary::Output output;
+    facebook::glean::rts::demangleUntrustedString(range, output);
   } catch (...) {
   }
 }
