@@ -330,6 +330,17 @@ predicate Same :
     declaration2 : Declaration,
   }
 
+# An author-written explicit/partial template specialization and the primary
+# template it specializes. Emitted at the specialization's decl (gated on
+# TSK_ExplicitSpecialization) so it exists even when the specialization has no
+# recorded uses; lets Dead Code Bot keep a looks-dead specialization alive with
+# its referenced primary.
+predicate SpecializationOf :
+  {
+    specialization : Declaration,
+    primary : Declaration,
+  }
+
 # Definitions
 
 # Part of a namespace definition
