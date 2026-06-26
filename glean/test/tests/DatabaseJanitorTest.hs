@@ -609,7 +609,27 @@ retentionRestoreDepsTest = TestCase $
             }
           }
     withDatabases evb cfg cfgAPI $ \env -> do
-    runDatabaseJanitor env
+    runDatabaseJanitor env  -- kicks off the async restore of test2/0014
+
+    -- runDatabaseJanitor only *starts* the restore (on the backuper thread);
+    -- it does not wait for it to finish. Poll until the restored DB is
+    -- available before asserting -- otherwise listDBs races the restore and
+    -- can observe [] (and the in-flight restore is cancelled at withDatabases
+    -- teardown, surfacing AsyncCancelled). We wait specifically for 0014 so
+    -- the assertion below still verifies that no extra dependency DBs are
+    -- restored. Mirrors the wait loop in backupRestoreTest.
+    let waitForRestore = do
+          dbs <- listDBs env
+          let restored =
+                [ db | db <- dbs
+                , repo_hash (database_repo db) == "0014"
+                , database_status db == Thrift.DatabaseStatus_Complete ]
+          when (null restored) $ do
+            sleep 0.1
+            waitForRestore
+    r <- timeout (60*1000000) waitForRestore
+    assertBool "timeout waiting for test2/0014 restore" (isJust r)
+
     dbs <- listDBs env
     let repos = map database_repo dbs
     assertEqual "after" [ "0014" ] (map repo_hash repos)
