@@ -1125,6 +1125,33 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     }
   }
 
+  // Emits cxx1.SpecializationOf at the specialization's decl (not a use site),
+  // so the spec->primary edge exists even for specializations with no uses.
+  //
+  // The self-edge guard compares the *projected* Declarations (what the fact is
+  // built from via memo's GetTemplatableDecl projection), not just the raw
+  // input pointers: a specialization's memo key can in principle project onto
+  // its primary, which would otherwise yield a primary->primary self-edge that
+  // a raw-pointer (spec != primary) check would miss.
+  template <typename Memo, typename SpecDecl, typename PrimaryDecl>
+  void emitSpecializationOf(
+      Memo& memo,
+      const SpecDecl* spec,
+      const PrimaryDecl* primary) {
+    if (primary == nullptr) {
+      return;
+    }
+    if (auto s = memo(spec)) {
+      if (auto p = memo(primary)) {
+        auto specDecl = s->declaration();
+        auto primaryDecl = p->declaration();
+        if (specDecl != primaryDecl) {
+          db.fact<Cxx::SpecializationOf>(specDecl, primaryDecl);
+        }
+      }
+    }
+  }
+
   static std::vector<Cxx::Declaration> members(
       ASTVisitor& visitor,
       const clang::DeclContext* d) {
@@ -1641,6 +1668,14 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   // Clang record visitor
   bool VisitCXXRecordDecl(const clang::CXXRecordDecl* decl) {
     visitDeclaration(classDecls, decl);
+    if (const auto* spec =
+            clang::dyn_cast<clang::ClassTemplateSpecializationDecl>(decl)) {
+      if (spec->getSpecializationKind() == clang::TSK_ExplicitSpecialization) {
+        if (const auto* tpl = spec->getSpecializedTemplate()) {
+          emitSpecializationOf(classDecls, spec, tpl->getTemplatedDecl());
+        }
+      }
+    }
     return true;
   }
 
@@ -1786,6 +1821,12 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   bool VisitFunctionDecl(const clang::FunctionDecl* decl) {
     visitDeclaration(funDecls, decl);
+    if (decl->getTemplateSpecializationKind() ==
+        clang::TSK_ExplicitSpecialization) {
+      if (const auto* tpl = decl->getPrimaryTemplate()) {
+        emitSpecializationOf(funDecls, decl, tpl->getTemplatedDecl());
+      }
+    }
     return true;
   }
 
@@ -1989,6 +2030,15 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       return true;
     }
     visitDeclaration(varDecls, decl);
+    if (const auto* spec =
+            clang::dyn_cast<clang::VarTemplateSpecializationDecl>(decl)) {
+      if (decl->getTemplateSpecializationKind() ==
+          clang::TSK_ExplicitSpecialization) {
+        if (const auto* tpl = spec->getSpecializedTemplate()) {
+          emitSpecializationOf(varDecls, spec, tpl->getTemplatedDecl());
+        }
+      }
+    }
     return true;
   }
 
