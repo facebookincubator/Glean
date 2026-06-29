@@ -409,9 +409,9 @@ zonkTcTerm t = case t of
   TcFactGen pid k v sec ->
     TcFactGen pid <$> zonkTcPat k <*> zonkTcPat v <*> pure sec
   TcElementsOfArray a -> TcElementsOfArray <$> zonkTcPat a
-  TcQueryGen q -> TcQueryGen <$> zonkTcQuery q
-  TcAll q -> TcAll <$> zonkTcQuery q
-  TcNegation stmts -> TcNegation <$> mapM zonkTcStatement stmts
+  TcWhere q -> TcWhere <$> zonkTcQuery q
+  TcAll p -> TcAll <$> zonkTcPat p
+  TcNegation p -> TcNegation <$> zonkTcPat p
   TcPrimCall op args -> TcPrimCall op <$> mapM zonkTcPat args
   TcIf (Typed ty cond) th el ->
     TcIf
