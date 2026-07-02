@@ -397,7 +397,8 @@ doFinalize env@Env{..} repo =
     -- that deletes all the temporary ownership information consumed
     -- by this pass.
     meta <- atomically $ Catalog.readMeta envCatalog repo
-    when (not (metaAxiomComplete meta)) $ syncCompletePredicates env repo
+    when (not (metaAxiomComplete meta)) $
+      phase "completing predicates" $ syncCompletePredicates env repo
 
     config <- Observed.get envServerConfig
     withOpenDatabase env repo $ \OpenDB{..} -> do
@@ -407,12 +408,12 @@ doFinalize env@Env{..} repo =
         stats <- getOwnershipStats ownership
         logInfo $ "final ownership: " <> Text.unpack (showOwnershipStats stats)
       let compact = ServerConfig.config_compact_on_completion config
-      say logInfo $ if compact then "optimizing(compacting)" else "optimizing"
-      Storage.optimize odbHandle compact
-      Storage.cacheOwnership odbHandle
+      phase (if compact then "optimizing(compacting)" else "optimizing") $
+        Storage.optimize odbHandle compact
+      phase "caching ownership" $ Storage.cacheOwnership odbHandle
 
     -- update and re-merge our internal representation of the schema
-    schemaUpdated env (Just repo)
+    phase "updating schema" $ schemaUpdated env (Just repo)
 
     time <- envGetCurrentTime
     atomically $ do
@@ -446,6 +447,8 @@ doFinalize env@Env{..} repo =
     return False
   where
     say log s = log $ inRepo repo $ "finalize: " ++ s
+    phase :: String -> IO a -> IO a
+    phase label act = say logInfo label >> act
 
 -- | Back up databases forever.
 backuper :: Env -> IO ()
