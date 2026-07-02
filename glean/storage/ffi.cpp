@@ -74,6 +74,12 @@ const char* glean_rocksdb_container_backup(
   return ffi::wrap([=] { container->backup(path); });
 }
 
+const char* glean_rocksdb_container_checkpoint(
+    Container* container,
+    const char* path) {
+  return ffi::wrap([=] { container->checkpoint(path); });
+}
+
 void glean_rocksdb_container_free(Container* container) {
   ffi::free_(container);
 }

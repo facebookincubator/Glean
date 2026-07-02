@@ -10,6 +10,8 @@
 #include "glean/rocksdb/database-impl.h"
 #include "glean/rocksdb/util.h"
 
+#include <limits>
+
 #include <rocksdb/filter_policy.h>
 #include <rocksdb/slice_transform.h>
 #include <rocksdb/statistics.h>
@@ -341,6 +343,23 @@ void ContainerImpl::backup(const std::string& path) {
   bool flush{mode != Mode::ReadOnly};
   // no need to sync on backup: we're going to upload and delete it immediately
   check(backupEngine(path, false)->CreateNewBackup(db.get(), flush));
+}
+
+void ContainerImpl::checkpoint(const std::string& path) {
+  requireOpen();
+  rocksdb::Checkpoint* cp;
+  check(rocksdb::Checkpoint::Create(db.get(), &cp));
+  std::unique_ptr<rocksdb::Checkpoint> checkpoint(cp);
+  // Mirror BackupEngine's flush behaviour (see backup() above): only force a
+  // memtable flush for writable handles. A read-only handle (a Complete DB
+  // reopened in Mode::ReadOnly) has no unflushed writes to capture and cannot
+  // service a flush, so we must not request one. log_size_for_flush=0 always
+  // flushes; a non-zero threshold only flushes when the WAL exceeds it, which
+  // for a read-only handle means never. The resulting snapshot still captures
+  // all column families. The path must be absolute and must not already exist.
+  const uint64_t log_size_for_flush =
+      mode != Mode::ReadOnly ? 0 : std::numeric_limits<uint64_t>::max();
+  check(checkpoint->CreateCheckpoint(path, log_size_for_flush));
 }
 
 } // namespace impl

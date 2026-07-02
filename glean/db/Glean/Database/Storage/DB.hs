@@ -8,9 +8,10 @@
 
 -- | Generic DB operations shared by the RocksDB and LMDB backends
 module Glean.Database.Storage.DB (
-    DB(..), Container(..), withContainer
+    DB(..), Container(..), withContainer, checkpoint
   ) where
 
+import Control.Exception (bracketOnError)
 import Control.Monad
 import Data.Int
 import qualified Data.HashMap.Strict as HashMap
@@ -237,6 +238,30 @@ instance DatabaseOps DB where
       withCString path $ invoke . glean_rocksdb_container_backup s_ptr
     process path (Data 0)
 
+-- | Create an openable snapshot (a RocksDB Checkpoint) of the DB under
+-- @scratch/db@ and hand the resulting directory to @process@. Unlike
+-- 'backup' (a BackupEngine backup), the snapshot directory is itself a valid
+-- DB, so a restore can rename it into place without a second full copy.
+--
+-- The target directory must not already exist (RocksDB CreateCheckpoint
+-- requires this and stages via a sibling @db.tmp@ that it renames on
+-- success), so we do not pre-create it. An absolute path is passed to the
+-- FFI as RocksDB requires.
+checkpoint :: DB -> FilePath -> (FilePath -> Data -> IO a) -> IO a
+checkpoint db scratch process = do
+  let path = scratch </> "db"
+  absPath <- makeAbsolute path
+  -- The checkpoint is a real directory (not a temp file), so clean it up if a
+  -- later step fails. bracketOnError masks the window between creating the
+  -- snapshot and handing it to the continuation, so an async exception there
+  -- still triggers cleanup. The enclosing scratch dir is also cleaned by the
+  -- caller; this just avoids leaving an orphaned snapshot mid-operation.
+  bracketOnError
+    (withContainer db $ \s_ptr ->
+      withCString absPath $ invoke . glean_rocksdb_container_checkpoint s_ptr)
+    (\_ -> removePathForcibly path)
+    (\_ -> process path (Data 0))
+
 newtype Container = Container (Ptr Container)
   deriving(Storable)
 
@@ -254,6 +279,9 @@ foreign import ccall safe glean_rocksdb_container_close
   :: Container -> IO ()
 
 foreign import ccall safe glean_rocksdb_container_backup
+  :: Container -> CString -> IO CString
+
+foreign import ccall safe glean_rocksdb_container_checkpoint
   :: Container -> CString -> IO CString
 
 foreign import ccall unsafe glean_rocksdb_container_write_data

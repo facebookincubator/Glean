@@ -32,6 +32,7 @@ import System.Exit (ExitCode(ExitSuccess))
 
 import Util.FFI
 import Util.IO (safeRemovePathForcibly)
+import Util.Log (logInfo)
 
 import Glean.Database.Backup.Backend (Data(Data))
 import Glean.Database.Repo (databasePath)
@@ -203,12 +204,19 @@ instance DatabaseOps (Database RocksDB) where
   prepareFactOwnerCache (Database db) = prepareFactOwnerCache db
 
   backup (Database db) cfg scratch process = do
-    backup db cfg scratch $ \path _ -> do
-      let (base, dir) = splitFileName path
-      withTempFile $ \tarFile -> do
-        tar ["-cf", tarFile, "-C", base, dir]
-        size <- getFileSize tarFile
-        process tarFile (Data $ fromIntegral size)
+    let mkTar path _ = do
+          let (base, dir) = splitFileName path
+          withTempFile $ \tarFile -> do
+            tar ["-cf", tarFile, "-C", base, dir]
+            size <- getFileSize tarFile
+            process tarFile (Data $ fromIntegral size)
+    if ServerConfig.config_db_backup_use_checkpoint cfg
+      then do
+        logInfo "backup: packing as RocksDB checkpoint (db/ tarball)"
+        checkpoint db scratch mkTar
+      else do
+        logInfo "backup: packing as BackupEngine backup (backup/ tarball)"
+        backup db cfg scratch mkTar
 
 
 unTar :: FilePath -> FilePath -> IO ()

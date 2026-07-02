@@ -29,6 +29,7 @@ data BackupCommand
   = Backup
       { repo :: Repo
       , locator :: Locator
+      , useCheckpoint :: Maybe Bool
       }
 
 type Locator = Text
@@ -36,7 +37,7 @@ type Locator = Text
 instance Plugin BackupCommand where
   parseCommand =
     commandParser "backup" (progDesc "Backup a database") $
-      Backup <$> repo <*> locator
+      Backup <$> repo <*> locator <*> useCheckpoint
     where
       repo = argument (maybeReader Glean.parseRepo)
         (  metavar "NAME/HASH"
@@ -46,6 +47,19 @@ instance Plugin BackupCommand where
         (  metavar "SITE:PREFIX"
         <> help "where to backup to"
         )
+      useCheckpoint = optional $
+            flag' True
+              (  long "use-checkpoint"
+              <> help ("Produce the backup as a RocksDB Checkpoint (a db/ "
+                    <> "tarball) instead of a BackupEngine backup. Overrides "
+                    <> "config_db_backup_use_checkpoint for this run.")
+              )
+        <|> flag' False
+              (  long "no-use-checkpoint"
+              <> help ("Produce the backup as a BackupEngine backup instead of "
+                    <> "a RocksDB Checkpoint. Overrides "
+                    <> "config_db_backup_use_checkpoint for this run.")
+              )
 
   runCommand _ _ backend Backup{..} = case Glean.backendKind backend of
     Glean.BackendEnv env -> do
@@ -53,4 +67,7 @@ instance Plugin BackupCommand where
       unless ok $ exitWith (ExitFailure 1)
     _ -> die 2 "Can't backup a remote database"
 
-  serverConfigTransform _ = disableJanitor . disableAutoBackups
+  serverConfigTransform Backup{..} =
+    maybe id setBackupUseCheckpoint useCheckpoint
+    . disableJanitor
+    . disableAutoBackups

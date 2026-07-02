@@ -9,6 +9,7 @@
 module GleanCLI.Utils
   ( disableJanitor
   , disableAutoBackups
+  , setBackupUseCheckpoint
   ) where
 
 import Glean.ServerConfig.Types
@@ -22,3 +23,11 @@ disableAutoBackups config = config{
     databaseBackupPolicy_allowed = mempty
   }
 }
+
+-- | Force backups to be produced as a RocksDB Checkpoint (a @db/@ tarball) when
+-- 'True', or as a BackupEngine backup when 'False'. Mirrors the
+-- @config_db_backup_use_checkpoint@ ServerConfig flag so it can be toggled on
+-- the command line for testing without editing a config tier.
+setBackupUseCheckpoint :: Bool -> Config -> Config
+setBackupUseCheckpoint useCheckpoint config =
+  config{ config_db_backup_use_checkpoint = useCheckpoint }

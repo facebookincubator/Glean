@@ -13,6 +13,7 @@
 
 #include <rocksdb/db.h>
 #include <rocksdb/utilities/backup_engine.h>
+#include <rocksdb/utilities/checkpoint.h>
 
 namespace facebook {
 namespace glean {
@@ -156,6 +157,7 @@ struct ContainerImpl final : Container {
   void requireOpen() const;
 
   void backup(const std::string& path) override;
+  void checkpoint(const std::string& path) override;
   std::unique_ptr<Database>
       openDatabase(Id start, rts::UsetId first_unit_id, int32_t version) &&
       override;

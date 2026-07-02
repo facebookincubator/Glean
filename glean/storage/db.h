@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <stdexcept>
+
 #include "glean/rts/densemap.h"
 #include "glean/rts/factset.h"
 #include "glean/rts/lookup.h"
@@ -45,6 +47,18 @@ struct Container {
 
   /// Backup the Container to the specified directory.
   virtual void backup(const std::string& path) = 0;
+
+  /// Create an openable snapshot (a RocksDB Checkpoint) of the Container at
+  /// the specified (absolute) directory, which must not already exist. Unlike
+  /// 'backup' (a BackupEngine backup), the resulting directory is itself a
+  /// valid DB, so a restore can rename it into place without a second copy.
+  /// Only supported by storage backends that implement it; the default throws.
+  // The default unconditionally throws, but this is a virtual whose overrides
+  // (e.g. rocksdb) return normally, so it must not be marked [[noreturn]].
+  // NOLINTNEXTLINE(clang-diagnostic-missing-noreturn)
+  virtual void checkpoint(const std::string& /*path*/) {
+    throw std::runtime_error("checkpoint not supported for this storage");
+  }
 
   /// Convert the Container to a full fact Database with the given
   /// representation version - accessing the original Container afterwards isn't

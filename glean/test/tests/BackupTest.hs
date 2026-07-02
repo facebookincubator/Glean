@@ -18,7 +18,9 @@ import Data.List
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Time.Clock
+import System.Exit (ExitCode(ExitSuccess))
 import System.IO.Temp
+import System.Process (readProcessWithExitCode)
 import Test.HUnit
 
 import TestRunner
@@ -38,6 +40,7 @@ import Glean.Database.Test hiding (withTestEnv)
 import Glean.Database.Types
 import Glean.Database.Finish (finalizeWait)
 import Glean.Init
+import Glean.Repo.Text (showRepoSep)
 import Glean.ServerConfig.Types as ServerTypes
 import Glean.Types as Thrift
 import Glean.Util.ConfigProvider
@@ -59,6 +62,7 @@ withTest action =
 data TestEnv = forall site. Backup.Site site => TestEnv
   { testEnv :: Env
   , testBackup :: site
+  , testBackupDir :: FilePath
   , testUpdConfig :: (ServerTypes.Config -> ServerTypes.Config) -> IO ()
   , testEvents :: TQueue Event
   }
@@ -123,6 +127,7 @@ withTestEnv settings dbs init_server_cfg action evb cfgAPI backupdir = do
     let testEnv = TestEnv
           { testEnv = env
           , testBackup = Backup.Mock.mockSite backupdir
+          , testBackupDir = backupdir
           , testUpdConfig = update_server_cfg
           , testEvents = events
           }
@@ -318,10 +323,86 @@ backends fn =
     , lbl /= "memory" -- doesn't support ownership yet
   ]
 
+-- | List the top-level entries of a tarball.
+tarContents :: FilePath -> IO [String]
+tarContents tarFile = do
+  (ec, out, err) <- readProcessWithExitCode "tar" ["-tf", tarFile] ""
+  assertEqual ("tar -tf " <> tarFile <> ": " <> err) ExitSuccess ec
+  return (lines out)
+
+repoTar :: FilePath -> Repo -> FilePath
+repoTar dir repo = dir ++ "/" ++ showRepoSep "." repo
+
+-- | A single binary must be able to restore both the legacy BackupEngine
+-- (@backup/@) tarball and the new Checkpoint (@db/@) tarball. We produce one
+-- of each by toggling 'config_db_backup_use_checkpoint' between backups,
+-- assert their on-disk formats, then restore both.
+mixedFormatTest :: Test
+mixedFormatTest = TestCase $ withTest $ withTestEnv [] repos id
+  $ \TestEnv{..} -> do
+    expect testEvents $ expectFinalize [old, new]
+
+    -- back up "old" with checkpoint disabled -> BackupEngine (backup/) format
+    testUpdConfig $ \scfg -> scfg
+      { config_db_backup_use_checkpoint = False
+      , config_backup = (config_backup scfg)
+          { databaseBackupPolicy_allowed = HashSet.fromList ["old"] } }
+    expect testEvents $ expectBackups [old] <> want Waiting
+
+    -- back up "new" with checkpoint enabled -> Checkpoint (db/) format
+    testUpdConfig $ \scfg -> scfg
+      { config_db_backup_use_checkpoint = True
+      , config_backup = (config_backup scfg)
+          { databaseBackupPolicy_allowed = HashSet.fromList ["old", "new"] } }
+    expect testEvents $ expectBackups [new] <> want Waiting
+
+    oldEntries <- tarContents (repoTar testBackupDir old)
+    assertBool "old backup is BackupEngine (backup/) format"
+      (any ("backup/" `isPrefixOf`) oldEntries)
+    newEntries <- tarContents (repoTar testBackupDir new)
+    assertBool "new backup is Checkpoint (db/) format"
+      (any ("db/" `isPrefixOf`) newEntries)
+
+    -- delete both and restore: the same binary handles both formats
+    void $ deleteDatabase testEnv old
+    void $ deleteDatabase testEnv new
+    testUpdConfig $ \scfg -> scfg
+      { config_restore = def { databaseRestorePolicy_enabled = True } }
+    runDatabaseJanitor testEnv
+    expect testEvents $ parallel [ expectRestore [old], expectRestore [new] ]
+  where
+    old = Repo "old" "1"
+    new = Repo "new" "1"
+    repos = [ goodDb "old" "1", goodDb "new" "1" ]
+
+-- | The checkpoint flag is RocksDB-only and must be a no-op for LMDB, which
+-- keeps using its squashfs backup. A successful backup+restore round-trip
+-- with the flag set proves the checkpoint FFI is never invoked for LMDB
+-- (LMDB has no checkpoint implementation and would otherwise throw).
+checkpointLMDBNoOpTest :: Test
+checkpointLMDBNoOpTest = TestCase $ withTest $ withTestEnv
+  [setLMDBStorage, setUseCheckpoint] repos id $ \TestEnv{..} -> do
+    expect testEvents $ expectFinalize [repo]
+    testUpdConfig $ \scfg -> scfg
+      { config_backup = (config_backup scfg)
+          { databaseBackupPolicy_allowed = HashSet.fromList ["test"] } }
+    expect testEvents $ expectBackups [repo] <> want Waiting
+
+    void $ deleteDatabase testEnv repo
+    testUpdConfig $ \scfg -> scfg
+      { config_restore = def { databaseRestorePolicy_enabled = True } }
+    runDatabaseJanitor testEnv
+    expect testEvents $ expectRestore [repo]
+  where
+    repo = Repo "test" "1"
+    repos = [ goodDb "test" "1" ]
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "basicBackup" $ backends basicBackupTest
   , TestLabel "allowedTest" $ backends allowedTest
   , TestLabel "restoreOrderTest" $ backends restoreOrderTest
   , TestLabel "restoreNoDiskSpace" $ backends restoreNoDiskSpaceTest
+  , TestLabel "mixedFormat" mixedFormatTest
+  , TestLabel "checkpointLMDBNoOp" checkpointLMDBNoOpTest
   ]

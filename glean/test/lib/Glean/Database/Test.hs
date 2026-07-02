@@ -21,6 +21,7 @@ module Glean.Database.Test
   , setCompactOnCompletion
   , setMaxSetSize
   , setLMDBNoUnpack
+  , setUseCheckpoint
   , enableTcDebug
   , enableQueryDebug
   , enableRocksDBCache
@@ -120,6 +121,11 @@ setLMDBNoUnpack :: Setting
 setLMDBNoUnpack cfg = cfg
   { cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
       { ServerConfig.config_db_lmdb_restore_unpack = False } }
+
+setUseCheckpoint :: Setting
+setUseCheckpoint cfg = cfg
+  { cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
+      { ServerConfig.config_db_backup_use_checkpoint = True } }
 
 enableTcDebug :: Setting
 enableTcDebug cfg = cfg
