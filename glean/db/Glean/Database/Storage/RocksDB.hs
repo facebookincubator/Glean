@@ -191,6 +191,7 @@ instance DatabaseOps (Database RocksDB) where
     getUnprocessedBatchDescriptors db
   commit (Database db) = commit db
   addOwnership (Database db) = addOwnership db
+  registerACLUnits (Database db) = registerACLUnits db
   optimize (Database db) = optimize db
   computeOwnership (Database db) = computeOwnership db
   storeOwnership (Database db) = storeOwnership db

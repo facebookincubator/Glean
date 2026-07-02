@@ -15,13 +15,13 @@
 -- Algorithm:
 -- 1. Receive the accumulated 'PathACLConfig' (passed in as a parameter)
 -- 2. Look up, via 'Storage.getUnitId', the UnitId for each ACL group
---    (registered as "acl:<name>" units during batch writes)
+--    (registered as "acl:<name>" units just before computeOwnership)
 -- 3. For each ownership unit, match against ACL config directory prefixes
 -- 4. Build CNF per unit: for each matching directory level, OR all its
 --    groups; AND across levels
 -- 5. AND the ACL CNF with each fact's existing ownership expression
 --    (via C++ FFI)
--- 6. Return firstACLID and group→UnitId mapping for storage
+-- 6. Return the group->UnitId mapping for storage
 
 module Glean.Database.ACLOwnership
   ( augmentOwnershipWithACL
@@ -48,29 +48,24 @@ import qualified Glean.Database.Storage as Storage
 import Glean.RTS.Foreign.Ownership
   ( ComputedOwnership
   , UnitId(..)
-  , UsetId(..)
-  , computedOwnershipUnitCount
   , augmentWithACL
   )
 
 -- | Augment computed ownership with ACL constraints.
 --
--- Returns @(firstACLID, groupMapping)@ where:
--- * @firstACLID@ is the first UsetId used as an ACL boundary marker
--- * @groupMapping@ maps each group name to its UnitId (registered
---   during batch writes as "acl:<name>" ownership units)
+-- Returns @groupMapping@, mapping each group name to its UnitId. The
+-- groups were registered as "acl:<name>" ownership units just before
+-- 'Storage.computeOwnership' (see 'syncCompletePredicates').
 augmentOwnershipWithACL
   :: Storage.DatabaseOps db
   => db
   -> ComputedOwnership
   -> PathACLConfig
-  -> IO (UsetId, HashMap ACL UnitId)
+  -> IO (HashMap ACL UnitId)
 augmentOwnershipWithACL dbHandle own config = do
-  unitCount <- computedOwnershipUnitCount own
-  logInfo $ "ACL augmentation: unit count = " ++ show unitCount
-
-  -- Collect unique group names and look up their actual UnitIds.
-  -- These were registered as "acl:<name>" units during batch writes.
+  -- Collect unique group names and look up their UnitIds. The groups
+  -- were registered as "acl:<name>" units just before computeOwnership
+  -- (see syncCompletePredicates).
   let allGroupNames = getAllGroupIds config
   groupUnitIds <- catMaybes <$> mapM (lookupGroupUnitId dbHandle) allGroupNames
 
@@ -86,13 +81,6 @@ augmentOwnershipWithACL dbHandle own config = do
   let groupMapping = HashMap.fromList groupUnitIds
       resolveGroupUnitId name = HashMap.lookup name groupMapping
 
-  -- Find the minimum ACL group UnitId as the firstACLID boundary.
-  -- All UnitIds < firstACLID are regular ownership units.
-  -- All UnitIds >= firstACLID are ACL group units.
-  let aclFirstId = case [ w | (_, UnitId w) <- groupUnitIds ] of
-        [] -> UsetId unitCount
-        ids -> UsetId (minimum ids)
-
   -- Build per-unit ACL assignments by matching unit names against
   -- ACL config directory prefixes.
   assignments <- buildUnitAssignments
@@ -104,13 +92,11 @@ augmentOwnershipWithACL dbHandle own config = do
   -- Call C++ augmentation
   augmentWithACL own assignments
 
-  logInfo $ "ACL augmentation complete: firstACLID=" ++ show aclFirstId
-
-  return (aclFirstId, groupMapping)
+  return groupMapping
 
 -- | Look up the 'UnitId' for an ACL group. Each group is registered in the DB
--- as an @"acl:<name>"@ ownership unit during batch writes. Returns 'Nothing'
--- (and logs) when the group has no corresponding unit.
+-- as an @"acl:<name>"@ ownership unit just before computeOwnership. Returns
+-- 'Nothing' (and logs) when the group has no corresponding unit.
 lookupGroupUnitId
   :: Storage.DatabaseOps db
   => db

@@ -151,6 +151,22 @@ instance DatabaseOps DB where
         VS.unsafeWith facts $ \facts_ptr ->
         f (unit_ptr, unit_size, facts_ptr, fromIntegral $ VS.length facts)
 
+  registerACLUnits db _ names =
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
+    withMany nameEntry names $ \xs ->
+    let (name_ptrs, name_sizes) = unzip xs in
+    withArray name_ptrs $ \p_name_ptrs ->
+    withArray name_sizes $ \p_name_sizes -> do
+      first <- invoke $ glean_rocksdb_register_units
+        db_ptr
+        (fromIntegral $ length names)
+        p_name_ptrs
+        p_name_sizes
+      return (UnitId first)
+    where
+      nameEntry name f =
+        unsafeWithBytes name (curry f)
+
   optimize db compact = withContainer db $ \s_ptr ->
     invoke $ glean_rocksdb_container_optimize s_ptr
       (fromIntegral (fromEnum compact))
@@ -350,6 +366,14 @@ foreign import ccall safe glean_rocksdb_add_ownership
   -> Ptr CSize
   -> Ptr (Ptr Fid)
   -> Ptr CSize
+  -> IO CString
+
+foreign import ccall safe glean_rocksdb_register_units
+  :: Ptr DB
+  -> CSize
+  -> Ptr (Ptr ())
+  -> Ptr CSize
+  -> Ptr Word32
   -> IO CString
 
 foreign import ccall safe glean_rocksdb_get_ownership_unit_iterator

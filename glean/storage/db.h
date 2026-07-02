@@ -109,6 +109,13 @@ struct Database : rts::Lookup {
   /// UnitIds (from the shared namespace) for previously unseen unit names.
   virtual void addOwnership(const std::vector<OwnershipSet>& ownership) = 0;
 
+  /// Register ownership units that own no facts, allocating a UnitId for
+  /// each previously-unseen name. Returns the smallest UnitId among the
+  /// given names -- the boundary between earlier units and these. Used to
+  /// reserve UnitIds for ACL group units ("acl:<name>") at completion time.
+  virtual uint32_t registerUnits(
+      const std::vector<folly::ByteRange>& names) = 0;
+
   /// Iterate over raw (unit-ID, fact-ID-ranges) pairs stored by addOwnership.
   virtual std::unique_ptr<rts::OwnershipUnitIterator>
   getOwnershipUnitIterator() = 0;

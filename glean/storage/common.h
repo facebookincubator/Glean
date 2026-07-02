@@ -120,6 +120,31 @@ struct DatabaseCommon : Database {
    *  advances next_uset_id accordingly. */
   void addOwnership(const std::vector<OwnershipSet>& ownership) override;
 
+  /** Register name-only ownership units (no fact ranges), allocating a
+   *  UnitId for each previously-unseen name. Returns the smallest UnitId
+   *  among the given names. */
+  uint32_t registerUnits(const std::vector<folly::ByteRange>& names) override;
+
+  /** Allocate a fresh UnitId for a previously-unseen unit `name`, writing
+   *  the name<->id mappings, and increment `new_count`. The single place
+   *  that mints new UnitIds. */
+  uint32_t allocNewUnit(
+      typename C::Writer& writer,
+      folly::ByteRange name,
+      size_t& new_count);
+
+  /** After allocating `new_count` new units in `writer`, advance and
+   *  persist the shared id namespace (next_uset_id). */
+  void advanceUnitIds(typename C::Writer& writer, size_t new_count);
+
+  /** Write a single ownershipRaw row: key = (unit_id, counter), value =
+   *  the fact-id bytes (empty for a unit that owns no facts). */
+  void writeOwnershipRaw(
+      typename C::Writer& writer,
+      uint32_t unit_id,
+      size_t counter,
+      folly::ByteRange ids);
+
   std::unique_ptr<rts::DerivedFactOwnershipIterator>
   getDerivedFactOwnershipIterator(Pid pid) override;
 
@@ -501,8 +526,54 @@ DatabaseCommon<C>::getUnitsByPrefix(folly::ByteRange prefix) {
   return result;
 }
 
-// Called once per batch inside Store.commit.
-// Only function that can add new UnitIds to the DB.
+// Allocate a fresh UnitId for a previously-unseen unit `name`, writing
+// the name<->id mappings, and increment `new_count`. The single place
+// that mints new UnitIds; both addOwnership and registerUnits go through
+// it.
+template <typename C>
+uint32_t DatabaseCommon<C>::allocNewUnit(
+    typename C::Writer& writer,
+    folly::ByteRange name,
+    size_t& new_count) {
+  uint32_t unit_id = first_unit_id + ownership_unit_counters.size() + new_count;
+  writer.put(C::Family::ownershipUnits, name, bytesOf(unit_id));
+  EncodedNat key(unit_id);
+  writer.put(C::Family::ownershipUnitIds, key.byteRange(), name);
+  ++new_count;
+  return unit_id;
+}
+
+// After allocating `new_count` new units in `writer`, advance and persist
+// the shared id namespace (next_uset_id).
+template <typename C>
+void DatabaseCommon<C>::advanceUnitIds(
+    typename C::Writer& writer,
+    size_t new_count) {
+  if (new_count > 0) {
+    next_uset_id += new_count;
+    writer.put(
+        C::Family::admin,
+        bytesOf(AdminId::NEXT_UNIT_ID),
+        bytesOf(next_uset_id));
+  }
+}
+
+// Write a single ownershipRaw row: key = (unit_id, counter), value = the
+// fact-id bytes (empty for a unit that owns no facts).
+template <typename C>
+void DatabaseCommon<C>::writeOwnershipRaw(
+    typename C::Writer& writer,
+    uint32_t unit_id,
+    size_t counter,
+    folly::ByteRange ids) {
+  binary::Output key;
+  key.nat(unit_id);
+  key.nat(counter);
+  writer.put(C::Family::ownershipRaw, key.bytes(), ids);
+}
+
+// Called once per batch inside Store.commit. Registers ownership units and
+// their fact-ID ranges; new UnitIds are minted via allocNewUnit.
 // Adds to
 //   - Family::ownershipUnits
 //   - Family::ownershipUnitIds
@@ -532,33 +603,19 @@ void DatabaseCommon<C>::addOwnership(
       }
       touched.push_back(unit_id);
     } else {
-      unit_id = first_unit_id + ownership_unit_counters.size() + new_count;
-      writer.put(C::Family::ownershipUnits, set.unit, bytesOf(unit_id));
-      EncodedNat key(unit_id);
-      writer.put(C::Family::ownershipUnitIds, key.byteRange(), set.unit);
-      ++new_count;
+      unit_id = allocNewUnit(writer, set.unit, new_count);
     }
 
-    binary::Output key;
-    key.nat(unit_id);
-    key.nat(
-        unit_id < first_unit_id + ownership_unit_counters.size()
-            ? ownership_unit_counters[unit_id - first_unit_id]
-            : 0);
+    size_t counter = unit_id < first_unit_id + ownership_unit_counters.size()
+        ? ownership_unit_counters[unit_id - first_unit_id]
+        : 0;
     folly::ByteRange val(
         reinterpret_cast<const unsigned char*>(set.ids.data()),
         set.ids.size() * sizeof(int64_t));
-    writer.put(C::Family::ownershipRaw, key.bytes(), val);
+    writeOwnershipRaw(writer, unit_id, counter, val);
   }
 
-  if (new_count > 0) {
-    next_uset_id += new_count;
-
-    writer.put(
-        C::Family::admin,
-        bytesOf(AdminId::NEXT_UNIT_ID),
-        bytesOf(next_uset_id));
-  }
+  advanceUnitIds(writer, new_count);
 
   writer.commit();
 
@@ -568,6 +625,53 @@ void DatabaseCommon<C>::addOwnership(
   }
   ownership_unit_counters.insert(ownership_unit_counters.end(), new_count, 1);
   CHECK_EQ(next_uset_id, ownership_unit_counters.size() + first_unit_id);
+}
+
+// Register name-only ownership units. Mirrors addOwnership's allocation
+// for units with empty fact ranges: writes ownershipUnits /
+// ownershipUnitIds / an empty ownershipRaw row, and advances the shared
+// id namespace.
+//
+// Returns the ACL-group boundary (firstACLID): the smallest UnitId at
+// which units minted by this call begin. allocNewUnit assigns ids
+// starting from exactly first_unit_id + ownership_unit_counters.size(),
+// so that value is the boundary. Names that already exist keep their
+// previous (smaller) ids and deliberately do NOT lower the boundary --
+// otherwise the odbFirstACLID invariant (every id >= firstACLID is an
+// ACL group unit, every id below it is a regular ownership unit) would
+// be violated. Caller-side precondition: ACL group names should not have
+// been minted earlier as regular ownership units.
+template <typename C>
+uint32_t DatabaseCommon<C>::registerUnits(
+    const std::vector<folly::ByteRange>& names) {
+  container_.requireOpen();
+
+  // Captured before any allocation: the id of the first unit allocNewUnit
+  // would mint, i.e. the ACL-group boundary.
+  const uint32_t firstAclId = first_unit_id + ownership_unit_counters.size();
+
+  if (names.empty()) {
+    return firstAclId;
+  }
+
+  auto writer = container_.write();
+  size_t new_count = 0;
+
+  for (const auto& name : names) {
+    if (!getUnitId(name).hasValue()) {
+      const uint32_t unit_id = allocNewUnit(writer, name, new_count);
+      writeOwnershipRaw(writer, unit_id, 0, folly::ByteRange());
+    }
+  }
+
+  advanceUnitIds(writer, new_count);
+
+  writer.commit();
+
+  ownership_unit_counters.insert(ownership_unit_counters.end(), new_count, 1);
+  CHECK_EQ(next_uset_id, ownership_unit_counters.size() + first_unit_id);
+
+  return firstAclId;
 }
 
 template <typename C>

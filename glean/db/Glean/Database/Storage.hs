@@ -219,6 +219,14 @@ class CanLookup db => DatabaseOps db where
   -- | Add ownership data about a set of (committed) facts.
   addOwnership :: db -> WriteLock w -> AxiomOwnership -> IO ()
 
+  -- | Register the given ACL group names as units, allocating a 'UnitId' for
+  -- each previously-unseen name. These units own no facts; they exist only so
+  -- ACL groups can be referenced by UnitId in ownership augmentation. Returns
+  -- the smallest UnitId among the given names -- the boundary separating
+  -- earlier regular ownership units from ACL group units.
+  -- Used at DB completion time after all batches are written.
+  registerACLUnits :: db -> WriteLock w -> [ByteString] -> IO UnitId
+
   -- | Optimise a database for reading. This is typically done before backup.
   optimize :: db -> Bool {- compact -} -> IO ()
 
@@ -294,6 +302,7 @@ instance DatabaseOps (Some DatabaseOps) where
   getUnprocessedBatchDescriptors (Some db) = getUnprocessedBatchDescriptors db
   commit (Some db) = commit db
   addOwnership (Some db) = addOwnership db
+  registerACLUnits (Some db) = registerACLUnits db
   optimize (Some db) = optimize db
   computeOwnership (Some db) = computeOwnership db
   storeOwnership (Some db) = storeOwnership db

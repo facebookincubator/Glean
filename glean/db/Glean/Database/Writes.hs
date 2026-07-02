@@ -196,7 +196,11 @@ enqueueCheckpoint env repo io =
     atomically $ void $
       addWriteJobToQueue repo queue (envWriteQueues env) (WriteCheckpoint io)
 
-enqueueBatch :: Env -> ComputedBatch -> Maybe DefineOwnership -> IO SendResponse
+enqueueBatch
+  :: Env
+  -> ComputedBatch
+  -> Maybe DefineOwnership
+  -> IO SendResponse
 enqueueBatch env ComputedBatch{..} ownership = do
   let size = ByteString.length (batch_facts computedBatch_batch)
   traceMsg (envTracer env)
@@ -213,7 +217,7 @@ enqueueBatch env ComputedBatch{..} ownership = do
     try $ enqueueWrite env repo queue odbSchema size optSchemaId
       True (const $ pure ()) $ pure $
         (writeContentFromBatch computedBatch_batch) {
-          writeOwnership= ownership
+          writeOwnership = ownership
         }
   case r of
     -- ToDo: make sendBatch use Retry exceptions instead of results too

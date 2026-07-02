@@ -167,6 +167,7 @@ instance DatabaseOps (Database LMDB) where
     getUnprocessedBatchDescriptors db
   commit (Database db _) = commit db
   addOwnership (Database db _) = addOwnership db
+  registerACLUnits (Database db _) = registerACLUnits db
   optimize (Database db _) = optimize db
   computeOwnership (Database db _) = computeOwnership db
   storeOwnership (Database db _) = storeOwnership db

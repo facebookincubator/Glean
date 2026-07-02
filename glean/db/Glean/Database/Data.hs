@@ -15,8 +15,6 @@ module Glean.Database.Data
   , retrieveSlices
   , storeACLGroupMapping
   , retrieveACLGroupMapping
-  , storeACLConfigHash
-  , retrieveACLConfigHash
   , storeFirstACLID
   , retrieveFirstACLID
   , storePathACLConfig
@@ -29,7 +27,6 @@ import Data.ByteString (ByteString)
 import Data.ByteString.Lazy (toStrict, fromStrict)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Text (Text)
-import qualified Data.Text.Encoding as Text
 
 import Thrift.Protocol.Compact
 
@@ -60,10 +57,6 @@ aCL_GROUP_MAPPING_KEY = "acl_group_mapping"
 -- | Path ACL config storage key (path -> ACL ID string)
 pATH_ACL_CONFIG_KEY :: ByteString
 pATH_ACL_CONFIG_KEY = "path_acl_config"
-
--- | ACL config hash storage key
-aCL_CONFIG_HASH_KEY :: ByteString
-aCL_CONFIG_HASH_KEY = "acl_config_hash"
 
 -- | First ACL ID boundary key
 fIRST_ACL_ID_KEY :: ByteString
@@ -129,19 +122,6 @@ retrieveACLGroupMapping db = do
         logWarning
           "corrupted acl_group_mapping, ignoring stored ACL group mapping"
         return Nothing
-
--- | Store the ACL configuration hash.
-storeACLConfigHash :: DatabaseOps db => db -> Text -> IO ()
-storeACLConfigHash db hash =
-  Storage.store db aCL_CONFIG_HASH_KEY
-    (Text.encodeUtf8 hash)
-
--- | Retrieve the ACL configuration hash.
--- Returns 'Nothing' if the stored bytes are not valid UTF-8
-retrieveACLConfigHash :: DatabaseOps db => db -> IO (Maybe Text)
-retrieveACLConfigHash db = do
-  mBytes <- Storage.retrieve db aCL_CONFIG_HASH_KEY
-  return $ mBytes >>= either (const Nothing) Just . Text.decodeUtf8'
 
 -- | Store the first ACL ID boundary (UsetId where ACL IDs start).
 -- This marks the boundary between regular ownership IDs and ACL IDs.

@@ -109,6 +109,9 @@ instance DatabaseOps (Database Memory) where
   -- TODO: ownership
   addOwnership _ _ _ = return ()
 
+  registerACLUnits _ _ _ =
+    error "unimplemented registerACLUnits"
+
   optimize _ _ = return ()
 
   -- TODO: ownership

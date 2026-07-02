@@ -184,6 +184,23 @@ const char* glean_rocksdb_add_ownership(
   });
 }
 
+const char* glean_rocksdb_register_units(
+    Database* db,
+    size_t count,
+    const void** units,
+    const size_t* unit_sizes,
+    uint32_t* first_unit_id) {
+  return ffi::wrap([=] {
+    std::vector<folly::ByteRange> names;
+    names.reserve(count);
+    for (size_t i = 0; i < count; ++i) {
+      names.emplace_back(
+          static_cast<const unsigned char*>(units[i]), unit_sizes[i]);
+    }
+    *first_unit_id = db->registerUnits(names);
+  });
+}
+
 const char* glean_rocksdb_get_ownership_unit_iterator(
     Database* db,
     OwnershipUnitIterator** iter) {

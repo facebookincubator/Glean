@@ -15,8 +15,13 @@ import Control.Concurrent.Async
 import Control.Concurrent.MVar
 import Control.Exception
 import Control.Monad
+import qualified Data.Aeson as Aeson
+import qualified Data.ByteString as BS
+import qualified Data.ByteString.Lazy as BSL
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
+import qualified Data.Text.Encoding as Text
+import Data.Word
 import System.Timeout
 
 import Util.Control.Exception
@@ -26,15 +31,21 @@ import Util.Logger
 import Util.STM
 
 import qualified Glean.Database.Catalog as Catalog
+import qualified Glean.Database.Data as Data
 import Glean.Database.Open
+import Glean.Database.Repo (inRepo)
 import Glean.Database.Schema
 import Glean.Database.Writes (enqueueCheckpoint)
+import Glean.Database.Meta (getACLMode, showACLMode, isACLEnabled)
+import Glean.Database.AclKnobs (aclCalculateEnabled)
 import Glean.Database.Schema.Types
   ( lookupPredicateSourceRef
   , SchemaSelector(..)
   )
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Types
+import Glean.Database.ACLOwnership (augmentOwnershipWithACL)
+import Glean.Database.ACLConfig (ACL(ACL), Path(Path), getAllGroupIds)
 import Glean.Internal.Types as Thrift
 import Glean.Logger
 import Glean.Repo.Text (repoToText)
@@ -73,8 +84,80 @@ syncCompletePredicates env repo =
         readDatabase env repo $ \_ lookup -> f (Just lookup)
   maybe ($ Nothing) withBase maybeBase $ \base -> do
   withOpenDatabase env repo $ \OpenDB{..} -> do
+    meta <- atomically $ Catalog.readMeta (envCatalog env) repo
+    let dbAclEnabled = isACLEnabled (metaProperties meta)
+    calculateEnabled <- aclCalculateEnabled
+    let aclProcessingEnabled = dbAclEnabled && calculateEnabled
+
+    mAclConfig <-
+      if aclProcessingEnabled
+        then Data.retrievePathACLConfig odbHandle
+        else return Nothing
+
+    let typedPathConfig config = HashMap.fromList
+          [ (Path p, map ACL acls) | (p, acls) <- HashMap.toList config ]
+        aclGroupUnitNames config =
+          [ "acl:" <> Text.encodeUtf8 g
+          | ACL g <- getAllGroupIds (typedPathConfig config) ]
+
+    -- Register ACL group names as ACL units *before* computing
+    -- ownership. Doing this once here, after all batches are written
+    -- (waitForWrites above), rather than per batch, guarantees the ACL
+    -- units are allocated UnitIds above every regular ownership unit.
+    -- The returned id is the firstACLID boundary: every UnitId below it
+    -- is a regular ownership unit, every UnitId at or above it is an ACL
+    -- group unit. The units own no facts; the query server resolves
+    -- groups via getUnitId("acl:<name>").
+    --
+    -- For an ACL-enabled DB with no ACL groups (an empty shard, or an
+    -- all-public config) we register zero units. registerACLUnits
+    -- returns the boundary (= next free UnitId) without allocating, so we
+    -- still obtain a firstACLID. Storing it unconditionally is what makes
+    -- ACL filtering engage at query time: 'buildLayerACLSlice' skips
+    -- filtering entirely (fail-open) when firstACLID is absent.
+    mFirstACLID <-
+      if aclProcessingEnabled
+        then do
+          let names = maybe [] aclGroupUnitNames mAclConfig
+          UnitId firstId <- withWriteLock odbWriting $ \lock ->
+            Storage.registerACLUnits odbHandle lock names
+          logInfo $ "ACL augmentation: registered "
+            <> Text.pack (show (length names)) <> " ACL group units"
+          return (Just (UsetId firstId))
+        else return Nothing
+
     own <- Storage.computeOwnership odbHandle base
       (schemaInventory odbSchema)
+
+    -- ACL augmentation: AND-join ACL constraints into ownership when there
+    -- is a non-empty config; an empty/absent config has no constraints to
+    -- apply. Either way, record the firstACLID boundary and the (possibly
+    -- empty) group mapping for an ACL-enabled DB, so firstACLID is never
+    -- absent at query time (which would silently disable ACL filtering).
+    when aclProcessingEnabled $ do
+      groupMapping <- case mAclConfig of
+        Just config | not (HashMap.null config) -> do
+          logInfo $ "ACL augmentation: processing "
+            <> Text.pack (show (HashMap.size config))
+            <> " ACL config entries"
+          augmentOwnershipWithACL odbHandle own (typedPathConfig config)
+        _ -> do
+          logInfo "ACL augmentation: no ACL groups; storing empty boundary"
+          return HashMap.empty
+      forM_ mFirstACLID $ \firstACLID -> do
+        Data.storeFirstACLID odbHandle firstACLID
+        Data.storeACLGroupMapping odbHandle
+          (buildGroupMappingJson
+            (HashMap.fromList
+              [ (t, w)
+              | (ACL t, UnitId w) <- HashMap.toList groupMapping ]))
+        logInfo $ "ACL augmentation complete: firstACLID="
+          <> Text.pack (show firstACLID)
+          <> ", groups="
+          <> Text.pack (show (HashMap.size groupMapping))
+    when (dbAclEnabled && not calculateEnabled) $
+      logInfo "ACL augmentation skipped: calculate_acls knob is off"
+
     withWriteLock odbWriting $ \lock ->
       Storage.storeOwnership odbHandle lock own
     maybeOwnership <- readTVarIO odbOwnership
@@ -84,6 +167,15 @@ syncCompletePredicates env repo =
 
 completeAxiomPredicates :: Env -> Repo -> IO CompletePredicatesResponse
 completeAxiomPredicates env@Env{..} repo = do
+  -- Log raw glean.acl property and ACL mode for this complete operation
+  meta <- atomically $ Catalog.readMeta envCatalog repo
+  let aclMode = getACLMode (metaProperties meta)
+      rawAclProp = HashMap.lookup "glean.acl" (metaProperties meta)
+  vlog 1 $ Text.pack $ inRepo repo $
+    "[glean complete] raw glean.acl property: " ++
+    show rawAclProp
+  logInfo $ Text.pack $ inRepo repo $
+    "[glean complete] " ++ showACLMode aclMode
   let
     doCompletion = -- we are masked in here
       (`finally` deregister) $ do
@@ -266,3 +358,11 @@ waitFor async result = do
   case r of
     Nothing -> throwIO $ Retry 1
     Just _ -> return result
+
+-- | Build a JSON ByteString from the group→index mapping.
+-- Format: {"group_name": index, ...}
+--
+-- Uses 'Aeson.encode' so that group names containing characters which are
+-- significant in JSON (@\"@, @\\@, control characters) are correctly escaped.
+buildGroupMappingJson :: HashMap.HashMap Text.Text Word32 -> BS.ByteString
+buildGroupMappingJson = BSL.toStrict . Aeson.encode

@@ -273,7 +273,7 @@ loadAclMetadata handle = do
 -- hidden exactly when its ACL CNF requires a group the caller lacks.
 --
 -- The full set of ACL-group units is the contiguous range
--- [firstACLID, firstACLID + #groups) (see registerOwnershipUnits); we
+-- [firstACLID, firstACLID + #groups) (see registerACLUnits); we
 -- subtract the caller's own groups (resolved via Storage.getUnitId) and
 -- exclude the rest.
 buildLayerACLSlice
@@ -305,7 +305,7 @@ buildLayerACLSlice _env _repo odb aclGroupNames f = do
             Just ownership -> do
               -- All ACL-group units occupy the contiguous range
               -- [firstACLID, firstACLID + #groups) above every regular
-              -- file unit (see registerOwnershipUnits at completion).
+              -- file unit (see registerACLUnits at completion).
               let numGroups = Map.size (odbACLMapping odb)
                   allGroups
                     | numGroups == 0 = []

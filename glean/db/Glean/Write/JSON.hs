@@ -11,6 +11,7 @@
 module Glean.Write.JSON
   ( buildJsonBatch
   , syncWriteJsonBatch
+  , syncWriteJsonBatchWithACLConfig
   , writeJsonBatch
   ) where
 
@@ -25,6 +26,7 @@ import Data.Default
 import Data.IORef
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
+import Data.Int
 import Data.Maybe
 import Compat.Prettyprinter hiding ((<>))
 import Data.Text (Text)
@@ -62,13 +64,25 @@ syncWriteJsonBatch
   -> [Thrift.JsonFactBatch]
   -> Maybe Thrift.SendJsonBatchOptions
   -> IO ()
-syncWriteJsonBatch env repo batches opts = do
+syncWriteJsonBatch env repo batches opts =
+  syncWriteJsonBatchWithACLConfig env repo batches opts Nothing
+
+-- | Write JSON batch with ACL config
+syncWriteJsonBatchWithACLConfig
+  :: Env
+  -> Repo
+  -> [Thrift.JsonFactBatch]
+  -> Maybe Thrift.SendJsonBatchOptions
+  -> Maybe (HashMap Text [Text])
+    -- ^ ACL config (path -> list of ACL group ID strings)
+  -> IO ()
+syncWriteJsonBatchWithACLConfig env repo batches opts aclConfig = do
   let batch =
         Thrift.SendJsonBatch
           { Thrift.sendJsonBatch_batches = batches
           , Thrift.sendJsonBatch_options = opts
           , Thrift.sendJsonBatch_remember = False
-          , Thrift.sendJsonBatch_acl_config = Nothing
+          , Thrift.sendJsonBatch_acl_config = aclConfig
           }
   content <- writeJsonBatch env repo batch
   void $ syncWriteContentDatabase env repo content
@@ -80,8 +94,12 @@ writeJsonBatch
   -> IO WriteContent
 writeJsonBatch env repo SendJsonBatch{..} = do
   dbSchema <- withOpenDatabase env repo (return . Database.odbSchema)
-  writeContentFromBatch <$>
-    buildJsonBatch dbSchema sendJsonBatch_options sendJsonBatch_batches
+  batch <- buildJsonBatch dbSchema sendJsonBatch_options sendJsonBatch_batches
+  -- Copy ACL config from SendJsonBatch to the resulting Batch
+  let batchWithACL = batch
+        { Thrift.batch_acl_config = sendJsonBatch_acl_config
+        }
+  return $ writeContentFromBatch batchWithACL
 
 buildJsonBatch
   :: DbSchema
@@ -149,7 +167,9 @@ data FactBuilder = FactBuilder
       -- with the previous one.
   }
 
-withFactBuilder :: (FactBuilder -> IO ()) -> IO Thrift.Batch
+withFactBuilder
+  :: (FactBuilder -> IO ())
+  -> IO Thrift.Batch
 withFactBuilder action =
   withBuilder $ \facts -> do
   nextId <- newIORef firstAnonId
@@ -159,14 +179,16 @@ withFactBuilder action =
   mem <- finishBuilder facts
   ids <- readIORef idsRef
   ownerMap <- readIORef owned
+  let ownerVecs = fmap (Vector.fromList . coerce . reverse) ownerMap
   return $ Thrift.Batch
     firstAnonId
     (fromIntegral (length ids))
     mem
     (Just $ Vector.fromList $ coerce $ reverse ids)
-    (fmap (Vector.fromList . coerce . reverse) ownerMap)
+    ownerVecs
     mempty
     Nothing -- TODO: we should have a schema ID for JSON batches
+    -- TODO(T276420184): thread ACL config through the JSON withFactBuilder path
     Nothing -- acl_config
 
 

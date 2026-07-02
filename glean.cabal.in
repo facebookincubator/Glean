@@ -284,6 +284,13 @@ library defaultconfigs
         glean:config,
         glean:util
 
+library aclknobs
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    hs-source-dirs: glean/github
+    exposed-modules:
+        Glean.Database.AclKnobs
+
 library thrift-annotation
     import: fb-haskell, fb-cpp, deps
     visibility: private
@@ -609,6 +616,8 @@ library db
     cpp-options: -DOSS=1
 
     exposed-modules:
+        Glean.Database.ACLConfig
+        Glean.Database.ACLOwnership
         Glean.Database.Backup
         Glean.Database.Backup.Backend
         Glean.Database.Backup.Locator
@@ -692,6 +701,7 @@ library db
         -- only for StackedDbOpts:
         glean:backend-api,
         glean:bytecode,
+        glean:aclknobs,
         glean:config,
         glean:core,
         glean:defaultconfigs,
@@ -760,6 +770,7 @@ library write
         glean:backend-api,
         glean:core,
         glean:if-glean-hs,
+        glean:schema,
         glean:stubs,
         glean:typed,
         glean:util,

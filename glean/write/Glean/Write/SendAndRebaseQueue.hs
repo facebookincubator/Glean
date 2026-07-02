@@ -17,6 +17,8 @@ import Control.Concurrent
 import Control.Exception
 import Control.Monad
 import qualified Data.ByteString as BS
+import qualified Data.HashMap.Strict as HashMap
+import Data.Text (Text)
 import Data.Word
 
 import Util.Log
@@ -77,7 +79,9 @@ The queue looks like this:
   | cache |     | fact buffer |
   +-------+     +-------------+
 
-when a new batch is added (via writeSendAndRebaseQueue), it is added
+(The cache is srqFacts in the code that follows, and the fact buffer is
+sFacts, i.e. there's one per Sender)
+When a new batch is added (via writeSendAndRebaseQueue), it is added
 to the fact buffer:
 
                               +---------------+
@@ -161,22 +165,30 @@ sending.
 -}
 
 
--- | When the send operation fails or is completed this is called once.
-type Callback = Either SomeException () -> STM ()
+-- | Settings for a 'SendAndRebase'
+data SendAndRebaseQueueSettings = SendAndRebaseQueueSettings
+  { -- | Settings for the underlying send queue
+    sendAndRebaseQueueSendQueueSettings :: !SendQueue.SendQueueSettings
 
-data WaitSubst
-  = WaitSubstNone
-  | WaitSubstError SomeException
-  | WaitSubstSuccess Thrift.Subst
+    -- | Max memory that the fact cache should use
+  , sendAndRebaseQueueFactCacheSize :: !Int
 
-data Sender = Sender
-  { sId :: Integer
-  , sSubstVar :: TMVar WaitSubst
-  , sSent :: TVar Point
-    -- ^ Records the size and time the last batch was sent, for stats
-  , sFacts :: MVar (FactSet, [FactOwnership])
-    -- ^ [Ownership] is the ownership assignments for facts in the FactSet
-  , sCallbacks :: TQueue Callback
+    -- | Max memory that the fact buffer should use (per sender). The
+    -- purpose of this limit is to prevent the buffer from growing
+    -- without bound if the server's write queue is full. When the
+    -- buffer exceeds this limit, writers will start waiting for the
+    -- server. Note that the limit is per sender.
+  , sendAndRebaseQueueFactBufferSize :: !Int
+
+    -- | Number of senders
+  , sendAndRebaseQueueSenders :: !Int
+
+    -- | Allow facts in the batch to make reference to facts in the remote
+    -- server that may not be in the local cache.
+  , sendAndRebaseQueueAllowRemoteReferences :: Bool
+
+    -- | How to log stats. Obtain this with 'Glean.Write.Stats.new'.
+  , sendAndRebaseQueueStats :: Maybe Stats
   }
 
 data SendAndRebaseQueue = SendAndRebaseQueue
@@ -202,31 +214,170 @@ data SendAndRebaseQueue = SendAndRebaseQueue
     -- ^ Max size of fact buffer
   }
 
--- | Settings for a 'SendAndRebase'
-data SendAndRebaseQueueSettings = SendAndRebaseQueueSettings
-  { -- | Settings for the underlying send queue
-    sendAndRebaseQueueSendQueueSettings :: !SendQueue.SendQueueSettings
-
-    -- | Max memory that the fact cache should use
-  , sendAndRebaseQueueFactCacheSize :: !Int
-
-    -- | Max memory that the fact buffer should use (per sender). The
-    -- purpose of this limit is to prevent the buffer from growing
-    -- without bound if the server's write queue is full. When the
-    -- buffer exceeds this limit, writers will start waiting for the
-    -- server. Note that the limit is per sender.
-  , sendAndRebaseQueueFactBufferSize :: !Int
-
-    -- | Number of senders
-  , sendAndRebaseQueueSenders :: !Int
-
-    -- | Allow facts in the batch to make reference to facts in the remote
-    -- server that may not be in the local cache.
-  , sendAndRebaseQueueAllowRemoteReferences :: Bool
-
-    -- | How to log stats. Obatin this with 'Glean.Write.Stats.new'.
-  , sendAndRebaseQueueStats :: Maybe Stats
+-- | A Sender owns a single fact buffer and drives the flush/rebase cycle
+-- for it. Multiple Senders run concurrently (see
+-- 'sendAndRebaseQueueSenders'): they share the queue's fact cache
+-- ('srqFacts') but each accumulates its own batch independently, so writers
+-- don't contend on one buffer.
+--
+-- A Sender has at most one batch in flight at a time. 'sSubstVar' holds the
+-- outcome of that in-flight send (or 'WaitSubstNone' before the first send);
+-- the next flush waits on it so the buffer can be rebased onto the real fact
+-- IDs the server assigned before more facts are sent.
+data Sender = Sender
+  { sId :: Integer
+  , sSubstVar :: TMVar WaitSubst
+    -- ^ Outcome of the in-flight send: the server's substitution, an error,
+    -- or 'WaitSubstNone' if nothing has been sent yet
+  , sSent :: TVar Point
+    -- ^ Records the size and time the last batch was sent, for stats
+  , sFacts :: MVar (FactSet, [FactOwnership], ACLConfig)
+    -- ^ The fact buffer plus the state that travels with it: the ownership
+    -- accumulated for the next flush, and the 'ACLConfig' to propagate with
+    -- the batch.
+  , sCallbacks :: TQueue Callback
+    -- ^ Callbacks to run when the in-flight batch completes
   }
+
+-- | ACL configuration that needs to be propagated with batches
+newtype ACLConfig = ACLConfig
+  { aclConfig :: Maybe (HashMap.HashMap Text [Text])
+  }
+
+-- | An 'ACLConfig' with no configuration.
+emptyACLConfig :: ACLConfig
+emptyACLConfig = ACLConfig Nothing
+
+-- | Combine ACL configs, preferring the newer config when it is present.
+-- A 'Nothing' newer config leaves the existing config untouched.
+preferNewerACLConfig :: ACLConfig -> ACLConfig -> ACLConfig
+preferNewerACLConfig old new = ACLConfig
+  { aclConfig = case aclConfig new of
+      Nothing -> aclConfig old
+      just -> just
+  }
+
+-- | The outcome a 'Sender' is waiting for from its in-flight send: nothing
+-- sent yet, a send error, or the server's substitution.
+data WaitSubst
+  = WaitSubstNone
+  | WaitSubstError SomeException
+  | WaitSubstSuccess Thrift.Subst
+
+-- | When the send operation fails or is completed this is called once.
+type Callback = Either SomeException () -> STM ()
+
+-- | Create a 'SendAndRebaseQueue' for the given repo, run the supplied
+-- action with it, and tear it down afterwards. Sets up the underlying
+-- 'SendQueue' and a pool of 'sendAndRebaseQueueSenders' senders; on exit any
+-- in-flight batches are drained (a final blocking rebase/flush per sender).
+withSendAndRebaseQueue
+  :: Backend e
+  => e
+  -> Thrift.Repo
+  -> Inventory
+  -> SendAndRebaseQueueSettings
+  -> (SendAndRebaseQueue -> IO a)
+  -> IO a
+withSendAndRebaseQueue backend repo inventory settings action = do
+  vlog 1 $ "Allow remote refs: " <> show sendAndRebaseQueueAllowRemoteReferences
+  SendQueue.withSendQueue backend repo sendAndRebaseQueueSendQueueSettings $
+    \sendQueue -> do
+      cacheStats <- LookupCache.newStats
+      let cacheSize = fromIntegral sendAndRebaseQueueFactCacheSize
+      srq <- SendAndRebaseQueue sendQueue
+        <$> newTQueueIO
+        <*> pure inventory
+        <*> LookupCache.new cacheSize 1 cacheStats
+        <*> pure cacheStats
+        <*> pure sendAndRebaseQueueStats
+        <*> pure sendAndRebaseQueueFactBufferSize
+      bracket_ (createSenderPool srq) (deleteSenderPool srq) $
+        action srq
+    where
+      SendAndRebaseQueueSettings{..} = settings
+      createSenderPool srq =
+        forM_ senderIds $ \i -> do
+          factset <- FactSet.new baseId
+          worker <- Sender i
+            <$> newTMVarIO WaitSubstNone
+            <*> newTVarIO (error "missing sSent")
+            <*> newMVar (factset, [], emptyACLConfig)
+            <*> newTQueueIO
+          atomically $ writeTQueue (srqSenders srq) worker
+      deleteSenderPool srq =
+        forM_ senderIds $ \_i -> do
+          -- don't deadlock here in case we died leaving the queue empty
+          sender <- atomically $ tryReadTQueue (srqSenders srq)
+          forM_ sender $ senderRebaseAndFlush True srq
+      senderIds = take sendAndRebaseQueueSenders [1..]
+
+      baseId = if sendAndRebaseQueueAllowRemoteReferences
+        then firstLocalId
+        else Fid Thrift.fIRST_FREE_ID
+
+      -- Higher than Ids in the remote db to avoid remote fact references
+      -- from being mistaken for local fact references.
+      -- Lower than Ids in JSON batches to avoid references within the
+      -- batch from being mistaken for references to the local db.
+      firstLocalId = Fid (firstAnonId `div` 2)
+
+
+-- | Write a batch to the queue. Takes a free 'Sender' from the pool
+-- (blocking until one is available), hands the batch to it, and returns the
+-- sender to the pool when done. The 'Callback' fires once the batch's send
+-- has completed (or failed).
+writeSendAndRebaseQueue
+  :: SendAndRebaseQueue
+  -> Thrift.Batch
+  -> Callback
+  -> IO ()
+writeSendAndRebaseQueue srq batch callback = do
+  point <- beginTick 1
+  bracket
+    (atomically $ readTQueue $ srqSenders srq)
+    (\sender -> atomically $ writeTQueue (srqSenders srq) sender)
+    (\sender -> senderSendOrAppend srq sender batch callback point)
+
+-- | Add an incoming batch to a sender's buffer, then flush if needed.
+--
+-- The batch is rebased and de-duplicated against the cache and the existing
+-- buffer, its ownership is accumulated for the next flush, and its ACL config
+-- is merged in (newer config wins). If the buffer has grown past
+-- 'srqFactBufferSize' we flush with wait=True, applying back-pressure to the
+-- writer until the server responds.
+senderSendOrAppend
+  :: SendAndRebaseQueue
+  -> Sender
+  -> Thrift.Batch
+  -> Callback
+  -> Point
+  -> IO ()
+senderSendOrAppend srq sender batch callback latency = do
+  -- "Mutator latency" is the latency between calling writeSendAndRebaseQueue
+  -- and having a free Sender to write the batch.
+  statBump srq Stats.mutatorLatency =<< endTick latency
+  let !size = BS.length $ Thrift.batch_facts batch
+  -- Extract ACL config from incoming batch
+  let incomingACL = ACLConfig
+        { aclConfig = Thrift.batch_acl_config batch
+        }
+  newSize <-
+    -- "Mutator throughput" is how fast we are appending new facts
+    -- to the FactSet.
+    statTick srq Stats.mutatorThroughput (fromIntegral size) $ do
+      modifyMVar (sFacts sender) $ \(base, ownership, existingACL) -> do
+        (facts, owned) <-
+          rebase (srqInventory srq) batch (srqFacts srq) base
+        FactSet.append base facts
+        atomically $ writeTQueue (sCallbacks sender) callback
+        newSize <- FactSet.factMemory base
+        -- Prefer the newer ACL config when present
+        let mergedACL = preferNewerACLConfig existingACL incomingACL
+        return ((base, owned : ownership, mergedACL), newSize)
+  updateLookupCacheStats srq
+  let !wait = newSize >= srqFactBufferSize srq
+  senderRebaseAndFlush wait srq sender
 
 -- | Add a new batch to the fact buffer, de-duplicating against the
 -- buffer and the cache.
@@ -274,27 +425,19 @@ but I don't see an alternative.
 
 -}
 
--- | Send the current fact buffer to the server
-senderFlush :: SendAndRebaseQueue -> Sender -> IO ()
-senderFlush srq sender = modifyMVar_ (sFacts sender) $ \(facts, owned) -> do
-  factOnlyBatch <- FactSet.serialize facts
-  let batch = factOnlyBatch {
-        Thrift.batch_owned = ownershipUnits (unionOwnership owned) }
-  !size <- FactSet.factMemory facts
-  start <- beginTick (fromIntegral size)
-  atomically $ do
-    callbacks <- flushTQueue (sCallbacks sender)
-    SendQueue.writeSendQueue (srqSendQueue srq) batch $ \result -> do
-      case result of
-        Right subst -> putTMVar (sSubstVar sender) (WaitSubstSuccess subst)
-        Left e -> putTMVar (sSubstVar sender) (WaitSubstError e)
-      forM_ callbacks ($ void result)
-    writeTVar (sSent sender) start
-  return (facts, [])
-
--- | If the server has returned a substutition, rebase the current
--- fact buffer against it. Send the current fact buffer to the server,
--- unless we're already waiting for a substitution.
+-- | Advance the flush/rebase cycle for a sender, based on the outcome of
+-- the in-flight send held in 'sSubstVar':
+--
+--   * 'WaitSubstNone' (nothing sent yet): flush the first batch.
+--   * 'WaitSubstSuccess': rebase the fact buffer onto the real fact IDs the
+--     server assigned, rebase the accumulated ownership for the next flush,
+--     then flush again.
+--   * 'WaitSubstError': re-store the error and rethrow.
+--   * No substitution available yet (and not waiting): do nothing.
+--
+-- When 'wait' is True we block until the substitution is available; this is
+-- used to drain in-flight batches (e.g. at shutdown). Otherwise we only
+-- proceed if the substitution has already arrived.
 senderRebaseAndFlush :: Bool -> SendAndRebaseQueue -> Sender -> IO ()
 senderRebaseAndFlush wait srq sender = do
   maybeSubst <- atomically $
@@ -319,124 +462,84 @@ senderRebaseAndFlush wait srq sender = do
           logError (show e)
           atomically $ putTMVar (sSubstVar sender) (WaitSubstError e)
           throwIO e) $
-        modifyMVar_ (sFacts sender) $ \(base,owned) ->
+        modifyMVar_ (sFacts sender) $ \(base, owned, aclCfg) ->
           -- eagerly release the subst when we're done
           bracket (deserialize thriftSubst) release $ \subst -> do
             (newBase, newSubst) <-
               FactSet.rebase (srqInventory srq) subst (srqFacts srq) base
+            -- Rebase the accumulated ownership for the next flush.
             newOwned <- mapM (substOwnership newSubst) owned
-            return (newBase, newOwned)
+            return (newBase, newOwned, aclCfg)
       -- "Commit throughput" will be write throughput to the server
       start <- readTVarIO (sSent sender)
       statBump srq Stats.commitThroughput =<< endTick start
       senderFlush srq sender
     where log msg = vlog 1 $ "Sender " <> show (sId sender) <> ": " <> msg
 
+-- | Serialize the sender's current fact buffer and hand it to the
+-- underlying 'SendQueue'. The outgoing batch carries the accumulated
+-- ownership plus the current ACL config.
+--
+-- After sending, the ownership is cleared: the facts stay in the buffer and
+-- are only renamed and dropped once the substitution comes back in
+-- 'senderRebaseAndFlush', where any ownership accumulated in the meantime is
+-- rebased. The ACL config is kept as it applies to every batch for this DB.
+senderFlush :: SendAndRebaseQueue -> Sender -> IO ()
+senderFlush srq sender =
+  modifyMVar_ (sFacts sender) $ \(facts, owned, aclCfg) -> do
+  factOnlyBatch <- FactSet.serialize facts
+  let batch = factOnlyBatch
+        { Thrift.batch_owned = ownershipUnits (unionOwnership owned)
+        , Thrift.batch_acl_config = aclConfig aclCfg
+        }
+  -- Log batch details before sending
+  let numFacts = Thrift.batch_count batch
+      numOwnershipUnits = HashMap.size (Thrift.batch_owned batch)
+      hasACL = case aclConfig aclCfg of
+        Just cfg -> not (HashMap.null cfg)
+        Nothing -> False
+      aclEntries = maybe 0 HashMap.size (aclConfig aclCfg)
+  log $ "Flushing batch: facts=" ++ show numFacts ++
+        ", ownership_units=" ++ show numOwnershipUnits ++
+        ", ownership=" ++ show (length owned) ++
+        ", has_acl_config=" ++ show hasACL ++
+        (if hasACL then " (" ++ show aclEntries ++ " ACL entries)" else "")
+  !size <- FactSet.factMemory facts
+  start <- beginTick (fromIntegral size)
+  atomically $ do
+    callbacks <- flushTQueue (sCallbacks sender)
+    SendQueue.writeSendQueue (srqSendQueue srq) batch $ \result -> do
+      case result of
+        Right subst -> putTMVar (sSubstVar sender) (WaitSubstSuccess subst)
+        Left e -> putTMVar (sSubstVar sender) (WaitSubstError e)
+      forM_ callbacks ($ void result)
+    writeTVar (sSent sender) start
+  -- Clear the ownership now that it has been sent; ownership accumulated
+  -- before the substitution arrives is rebased in 'senderRebaseAndFlush'.
+  -- Keep ACL config for the next batch (it applies to all batches for this DB)
+  return (facts, [], aclCfg)
+  where log msg = vlog 1 $ "Sender " <> show (sId sender) <> ": " <> msg
+
+-- | Read and reset the LookupCache counters and report them via 'srqStats'.
+-- A no-op if stats reporting is disabled.
 updateLookupCacheStats :: SendAndRebaseQueue -> IO ()
 updateLookupCacheStats SendAndRebaseQueue{..} =
   forM_ srqStats $ \stats -> do
     statValues <- LookupCache.readStatsAndResetCounters srqCacheStats
     Stats.bump stats Stats.lookupCacheStats (countFailuresAsMisses statValues)
 
+-- | Run an action while recording a timed stat ('Stats.tick'), or just run
+-- the action unchanged if stats reporting is disabled.
 statTick :: SendAndRebaseQueue -> Bump Tick -> Word64 -> IO a -> IO a
 statTick SendAndRebaseQueue{..} bump val act =
   case srqStats of
     Nothing -> act
     Just stats -> Stats.tick stats bump val act
 
+-- | Record a one-off stat value ('Stats.bump'), or do nothing if stats
+-- reporting is disabled.
 statBump :: SendAndRebaseQueue -> Bump Tick -> Tick -> IO ()
 statBump SendAndRebaseQueue{..} bump val =
   case srqStats of
     Nothing -> return ()
     Just stats -> Stats.bump stats bump val
-
-senderSendOrAppend
-  :: SendAndRebaseQueue
-  -> Sender
-  -> Thrift.Batch
-  -> Callback
-  -> Point
-  -> IO ()
-senderSendOrAppend srq sender batch callback latency = do
-  -- "Mutator latency" is the latency between calling writeSendAndRebaseQueue
-  -- and having a free Sender to write the batch.
-  statBump srq Stats.mutatorLatency =<< endTick latency
-  let !size = BS.length $ Thrift.batch_facts batch
-  newSize <-
-    -- "Mutator throughput" is how fast we are appending new facts
-    -- to the FactSet.
-    statTick srq Stats.mutatorThroughput (fromIntegral size) $ do
-      modifyMVar (sFacts sender) $ \(base, ownership) -> do
-        (facts, owned) <- rebase (srqInventory srq) batch (srqFacts srq) base
-        FactSet.append base facts
-        atomically $ writeTQueue (sCallbacks sender) callback
-        newSize <- FactSet.factMemory base
-        return ((base, owned : ownership), newSize)
-  updateLookupCacheStats srq
-  let !wait = newSize >= srqFactBufferSize srq
-  senderRebaseAndFlush wait srq sender
-
-withSendAndRebaseQueue
-  :: Backend e
-  => e
-  -> Thrift.Repo
-  -> Inventory
-  -> SendAndRebaseQueueSettings
-  -> (SendAndRebaseQueue -> IO a)
-  -> IO a
-withSendAndRebaseQueue backend repo inventory settings action = do
-  vlog 1 $ "Allow remote refs: " <> show sendAndRebaseQueueAllowRemoteReferences
-  SendQueue.withSendQueue backend repo sendAndRebaseQueueSendQueueSettings $
-    \sendQueue -> do
-      cacheStats <- LookupCache.newStats
-      let cacheSize = fromIntegral sendAndRebaseQueueFactCacheSize
-      srq <- SendAndRebaseQueue
-        <$> pure sendQueue
-        <*> newTQueueIO
-        <*> pure inventory
-        <*> LookupCache.new cacheSize 1 cacheStats
-        <*> pure cacheStats
-        <*> pure sendAndRebaseQueueStats
-        <*> pure sendAndRebaseQueueFactBufferSize
-      bracket_ (createSenderPool srq) (deleteSenderPool srq) $
-        action srq
-    where
-      SendAndRebaseQueueSettings{..} = settings
-      createSenderPool srq =
-        forM_ senderIds $ \i -> do
-          factset <- FactSet.new baseId
-          worker <- Sender i
-            <$> newTMVarIO WaitSubstNone
-            <*> newTVarIO (error "missing sSent")
-            <*> newMVar (factset, [])
-            <*> newTQueueIO
-          atomically $ writeTQueue (srqSenders srq) worker
-      deleteSenderPool srq =
-        forM_ senderIds $ \_i -> do
-          -- don't deadlock here in case we died leaving the queue empty
-          sender <- atomically $ tryReadTQueue (srqSenders srq)
-          forM_ sender $ senderRebaseAndFlush True srq
-      senderIds = take sendAndRebaseQueueSenders [1..]
-
-      baseId = if sendAndRebaseQueueAllowRemoteReferences
-        then firstLocalId
-        else Fid Thrift.fIRST_FREE_ID
-
-      -- Higher than Ids in the remote db to avoid remote fact references
-      -- from being mistaken for local fact references.
-      -- Lower than Ids in JSON batches to avoid references within the
-      -- batch from being mistaken for references to the local db.
-      firstLocalId = Fid (firstAnonId `div` 2)
-
-
-writeSendAndRebaseQueue
-  :: SendAndRebaseQueue
-  -> Thrift.Batch
-  -> Callback
-  -> IO ()
-writeSendAndRebaseQueue srq batch callback = do
-  point <- beginTick 1
-  bracket
-    (atomically $ readTQueue $ srqSenders srq)
-    (\sender -> atomically $ writeTQueue (srqSenders srq) sender)
-    (\sender -> senderSendOrAppend srq sender batch callback point)

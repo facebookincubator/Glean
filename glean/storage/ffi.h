@@ -101,6 +101,13 @@ const char* glean_rocksdb_add_ownership(
     const int64_t** ids,
     const size_t* id_sizes);
 
+const char* glean_rocksdb_register_units(
+    Database* db,
+    size_t count,
+    const void** units,
+    const size_t* unit_sizes,
+    uint32_t* first_unit_id);
+
 const char* glean_rocksdb_get_ownership_unit_iterator(
     Database* db,
     OwnershipUnitIterator** iter);

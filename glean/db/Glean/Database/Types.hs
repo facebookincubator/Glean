@@ -122,7 +122,9 @@ data OpenDB = OpenDB
     -- ACL name-to-ID mapping for resolving group names at query time
   , odbACLMapping :: Map Text UsetId
 
-    -- Boundary between regular ownership USetIDs and ACL USetIDs
+    -- Boundary between regular ownership USetIDs and ACL USetIDs. ACL
+    -- group units occupy the contiguous range
+    -- [firstACLID, firstACLID + Map.size odbACLMapping).
   , odbFirstACLID :: Maybe UsetId
   }
 

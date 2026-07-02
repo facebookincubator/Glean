@@ -29,28 +29,14 @@ module Glean.Database.ACLConfig
   , emptyPathConfig
   , pathConfigToList
   , getAllGroupIds
-  , computePathConfigHash
 
   ) where
 
-import Data.Aeson (encode)
-import qualified Data.Aeson as Aeson
-import qualified Data.Aeson.Key as Key
-import qualified Data.Aeson.KeyMap as KeyMap
-import qualified Data.ByteString as BS
-import qualified Data.ByteString.Base16 as Base16
-import qualified Data.ByteString.Lazy as LBS
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
 import Data.Hashable (Hashable)
-import Data.List (sort, sortBy)
-import Data.Ord (comparing)
 import Data.Text (Text)
-import qualified Data.Text.Encoding as Text
-
-import qualified Crypto.Hash as Crypto
-import qualified Data.ByteArray as BA
 
 -- | A directory path used as a key in the ACL configuration.
 newtype Path = Path Text
@@ -77,22 +63,3 @@ pathConfigToList = HashMap.toList
 -- | Get all unique ACL group ID strings from the path config.
 getAllGroupIds :: PathACLConfig -> [ACL]
 getAllGroupIds = HashSet.toList . HashSet.fromList . concat . HashMap.elems
-
--- | Compute deterministic SHA-256 hash of path ACL config.
---
--- Uses canonical JSON serialization (sorted keys, sorted ACL lists,
--- compact format) for consistency across languages and implementations.
-computePathConfigHash :: PathACLConfig -> Text
-computePathConfigHash config =
-  let -- Build canonical JSON with sorted keys
-      sortedPairs = sortBy (comparing fst) $ HashMap.toList config
-      jsonObj = Aeson.Object $ KeyMap.fromList
-        [ (Key.fromText path, Aeson.toJSON (sort [ acl | ACL acl <- acls ]))
-        | (Path path, acls) <- sortedPairs
-        ]
-      canonical = LBS.toStrict $ encode jsonObj
-      -- Compute SHA-256 and convert to hex
-      digest :: Crypto.Digest Crypto.SHA256
-      digest = Crypto.hash canonical
-      hexBytes = Base16.encode (BA.convert digest :: BS.ByteString)
-  in Text.decodeUtf8 hexBytes
