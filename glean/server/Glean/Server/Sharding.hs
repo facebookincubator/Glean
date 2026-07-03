@@ -49,14 +49,28 @@ import Glean.Util.Periodic ( doPeriodically )
 import Glean.Util.ShardManager
 import Glean.Util.ThriftService (DbShard)
 import Util.Time ( seconds )
+import Foreign.C.Types (CInt(..))
 import System.Exit (die)
 import System.Posix.Signals (installHandler, sigTERM, Handler (Catch), sigINT)
 import System.Time.Extra ( showDuration, sleep, Seconds )
 import Util.Control.Exception ( swallow )
 import Util.EventBase ( EventBaseDataplane )
-import Util.Log ( vlog, logInfo )
+import Util.Log ( vlog, logInfo, flush )
 import Util.STM
   (retry, atomically, writeTVar, STM, TVar, readTVar, registerDelay)
+
+
+-- | POSIX @_exit(2)@: terminate the process immediately WITHOUT running libc
+-- atexit handlers or C++ static/global destructors.
+--
+-- NB: 'System.Posix.Process.exitImmediately' is misnamed -- despite its Haddock
+-- claiming it "calls @_exit@", the @unix@ package binds it to libc @exit@
+-- (@foreign import ccall unsafe "exit"@). @exit(3)@ DOES run atexit handlers and
+-- static destructors, which is precisely what drives folly's
+-- @SingletonVault::destroyInstances@ teardown we are trying to skip. We must
+-- bind the real @_exit@ to bypass it.
+foreign import ccall unsafe "unistd.h _exit"
+  c_exitImmediately :: CInt -> IO ()
 
 
 type PortNumber = Int
@@ -232,6 +246,26 @@ waitForTerminateSignalsAndGracefulShutdown env terminating timeout = do
           retry
 
       logInfo "Shutting down"
+
+      -- The C++ global/atexit teardown (folly's SingletonVault::destroyInstances)
+      -- can deadlock: ~IOThreadPoolExecutor for the Manifold/RemoteExecution
+      -- client joins a worker whose EventBase was already torn down earlier in the
+      -- vault unwind, so the join's futex is never signalled. folly's 300s
+      -- singleton-shutdown watchdog then turns that into a SIGABRT (core dump),
+      -- making shutdown slow and dirty. It's a race (in-flight client work at exit
+      -- makes it likely), not specific to the backup feature -- any server linking
+      -- that client stack can hit it. Our graceful shutdown is already complete
+      -- here (shards drained; Incomplete DBs backed up; RocksDB is WAL-crash-safe,
+      -- so any open DBs recover on next open), so skip the unsafe teardown
+      -- entirely: flush logs, then _exit(0). The fundamental fix (leaky singletons
+      -- for the Manifold/RE clients) is owned by those teams; this sidesteps it.
+      --
+      -- We must use the real POSIX _exit (c_exitImmediately) here, NOT
+      -- System.Posix.Process.exitImmediately: the latter is bound to libc
+      -- exit(3) in the unix package and would run the very atexit/static-dtor
+      -- teardown we are trying to avoid.
+      flush
+      c_exitImmediately 0
 
   where
     withSignalHandler sig h = bracket
