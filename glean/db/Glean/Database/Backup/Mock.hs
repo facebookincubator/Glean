@@ -66,8 +66,10 @@ instance Site MockSite where
         copyFile (repoPath path repo) file
         inspect (MockSite path) repo
 
-  delete (MockSite path) repo =
-    removeFile $ repoPath path repo
+  delete (MockSite path) repo = do
+    -- 'backup' writes both the DB file and a sidecar .props file.
+    removePathForcibly (repoPath path repo)
+    removePathForcibly (repoPath path repo <.> "props")
 
   enumerate (MockSite path) = do
     fs <- listDirectory path
