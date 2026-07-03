@@ -148,6 +148,7 @@ initEnv evb envStorage envDefaultStorage envCatalog shardManager cfg
           then EnableRecursion
           else DisableRecursion
       , envFilterAvailableDBs = cfgFilterAvailableDBs cfg
+      , envResolveAclGroups = cfgAclGroupResolver cfg
       , envTracer = cfgTracer cfg
       , envDebug = cfgDebug cfg <> debug
       , .. }

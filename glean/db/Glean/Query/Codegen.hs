@@ -10,7 +10,8 @@
 module Glean.Query.Codegen
   ( compileQuery
   , compileQueryFacts
-  , Boundaries
+  , Boundaries(..)
+  , SectionBoundaries(..)
   , flatBoundaries
   , stackedBoundaries
   , skipTrusted

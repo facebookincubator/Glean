@@ -164,7 +164,7 @@ withOpenDBLookup
   :: Env
   -> Repo
   -> OpenDB
-  -> [Text]  -- ^ ACL group names for the user
+  -> Maybe [Text]  -- ^ ACL group names, or Nothing to disable ACL filtering
   -> (Boundaries -> Lookup -> IO a)
   -> IO a
 withOpenDBLookup env repo odb@OpenDB{ odbBaseSlices = baseSlices, .. }
@@ -217,13 +217,13 @@ readDatabase
   -> (OpenDB -> Lookup.Lookup -> IO a)
   -> IO a
 readDatabase env repo f =
-  readDatabaseWithBoundaries env repo [] $ \odb _ lookup ->
+  readDatabaseWithBoundaries env repo Nothing $ \odb _ lookup ->
   f odb lookup
 
 readDatabaseWithBoundaries
   :: Env
   -> Repo
-  -> [Text]  -- ^ ACL group names for the user
+  -> Maybe [Text]  -- ^ ACL group names, or Nothing to disable ACL filtering
   -> (OpenDB -> Boundaries -> Lookup -> IO a)
   -> IO a
 readDatabaseWithBoundaries env repo aclGroupNames f =
@@ -280,28 +280,36 @@ buildLayerACLSlice
   :: Env
   -> Repo
   -> OpenDB
-  -> [Text]  -- ^ ACL group names from request
+  -> Maybe [Text]  -- ^ ACL group names, or Nothing to disable ACL filtering
   -> (Maybe Ownership.Slice -> IO a)
   -> IO a
-buildLayerACLSlice _env _repo odb aclGroupNames f = do
-  case odbFirstACLID odb of
-    Nothing -> do
-      vlog 1 "[ACL-Slice] No firstACLID in DB, skipping ACL slice"
+buildLayerACLSlice _env _repo _odb Nothing f = do
+  vlog 1 "[ACL-Slice] ACL filtering disabled, skipping ACL slice"
+  f Nothing
+buildLayerACLSlice _env repo odb (Just aclGroupNames) f
+  -- Not an ACL DB: there is nothing to filter, every fact is public. This
+  -- is the only case where dropping the slice (serving all facts) is safe.
+  | odbACLMode odb == ACLDisabled = do
+      vlog 1 "[ACL-Slice] ACL mode disabled, skipping ACL slice"
       f Nothing
-    Just (UsetId firstACL) -> do
-      let dbAclMode = odbACLMode odb
-      let aclEnabled = dbAclMode /= ACLDisabled
-      if not aclEnabled
-        then do
-          vlog 1 "[ACL-Slice] ACL mode disabled, skipping ACL slice"
-          f Nothing
-        else do
-          -- Get ownership for this layer
+  -- ACL-enforcing layer. firstACLID and ownership are established at
+  -- completion for every ACL-enabled DB (registerACLUnits + storeOwnership),
+  -- so their absence here is an inconsistent DB, not a non-ACL one. Fail
+  -- CLOSED: error out rather than silently serve unfiltered facts, which
+  -- would be an ACL bypass.
+  | otherwise =
+      case odbFirstACLID odb of
+        Nothing ->
+          dbError repo $
+            "ACL-enabled DB has no firstACLID; refusing to serve "
+              <> "unfiltered results (fail closed)"
+        Just (UsetId firstACL) -> do
           maybeOwnership <- readTVarIO (odbOwnership odb)
           case maybeOwnership of
-            Nothing -> do
-              vlog 1 "[ACL-Slice] No ownership data, skipping ACL slice"
-              f Nothing
+            Nothing ->
+              dbError repo $
+                "ACL-enabled DB has no ownership data; refusing to serve "
+                  <> "unfiltered results (fail closed)"
             Just ownership -> do
               -- All ACL-group units occupy the contiguous range
               -- [firstACLID, firstACLID + #groups) above every regular
@@ -341,7 +349,7 @@ withFlatACLLookup
   :: Env
   -> Repo
   -> OpenDB
-  -> [Text]     -- ^ ACL group names for the user
+  -> Maybe [Text] -- ^ ACL group names, or Nothing to disable ACL filtering
   -> Lookup     -- ^ the layer's lookup
   -> (Lookup -> IO a)
   -> IO a
@@ -356,7 +364,7 @@ withStackedACLSlices
   :: Env
   -> Repo       -- ^ Base repo (immediate parent)
   -> OpenDB     -- ^ Base OpenDB
-  -> [Text]     -- ^ ACL group names
+  -> Maybe [Text] -- ^ ACL group names, or Nothing to disable ACL filtering
   -> ([Ownership.Slice] -> IO a)
   -> IO a
 withStackedACLSlices env baseRepo baseOdb aclGroupNames f = do
@@ -382,7 +390,7 @@ withStackedACLLookup
   -> OpenDB             -- ^ Top OpenDB
   -> Repo               -- ^ Base repo (immediate parent)
   -> OpenDB             -- ^ Base OpenDB
-  -> [Text]             -- ^ ACL group names for the user
+  -> Maybe [Text]       -- ^ ACL group names; Nothing disables ACL filtering
   -> [Ownership.Slice]  -- ^ Ownership slices for the base stack
   -> Lookup             -- ^ Base stack lookup
   -> Lookup             -- ^ Top layer lookup

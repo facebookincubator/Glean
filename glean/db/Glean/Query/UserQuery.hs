@@ -61,6 +61,7 @@ import qualified Glean.Backend.Types as Backend
 import Glean.Schema.Types
   (RefTarget(..), LookupResult(..), NameEnv, resolveRef)
 import qualified Glean.Database.Catalog as Catalog
+import Glean.Database.AclKnobs (aclCheckEnabled)
 import Glean.Database.Schema.Types
 import Glean.Database.Open
 import qualified Glean.Database.PredicateStats as PredicateStats
@@ -137,13 +138,17 @@ genericUserQuery
 {-# INLINE genericUserQuery #-}
 genericUserQuery env repo query enc = do
   config@ServerConfig.Config{..} <- Observed.get (envServerConfig env)
-  -- TODO: thread the caller's ACL group names through here instead of [].
-  -- With [] and ACL mode enabled, exclude-mode slicing hides all
-  -- ACL-restricted facts from user queries.
-  readDatabaseWithBoundaries env repo [] $ \odb bounds lookup ->
+  checkAclsEnabled <- aclCheckEnabled
+  logInfo $ "[glean acl] codesearch/glean:check_acls = " ++
+    show checkAclsEnabled
+  aclGroupNames <- if checkAclsEnabled
+        then envResolveAclGroups env
+        else pure Nothing
+  readDatabaseWithBoundaries env repo aclGroupNames $ \odb bounds lookup ->
     maybe id limitAllocsThrow config_query_alloc_limit
-      $ performUserQuery enc (odbSchema odb)
-      $ userQueryImpl env odb config NoExtraSteps bounds lookup repo query
+      $ performUserQuery enc (odbSchema odb) $
+          userQueryImpl env odb config
+            NoExtraSteps bounds lookup repo query
 
 -- | A generic implementation of lookup queries.
 genericUserQueryFacts
@@ -156,7 +161,13 @@ genericUserQueryFacts
 {-# INLINE genericUserQueryFacts #-}
 genericUserQueryFacts env repo query enc = do
   config <- Observed.get (envServerConfig env)
-  readDatabase env repo $ \odb lookup ->
+  checkAclsEnabled <- aclCheckEnabled
+  logInfo $ "[glean acl] codesearch/glean:check_acls = " ++
+    show checkAclsEnabled
+  aclGroupNames <- if checkAclsEnabled
+        then envResolveAclGroups env
+        else pure Nothing
+  readDatabaseWithBoundaries env repo aclGroupNames $ \odb _bounds lookup ->
     performUserQuery enc (odbSchema odb) $
       userQueryFactsImpl (odbSchema odb) config lookup query
 
@@ -463,7 +474,8 @@ userQueryFactsImpl
     bracket
       (compileQueryFacts userQueryFacts_facts)
       (release . compiledQuerySub) $ \sub -> do
-        results <- executeCompiled schemaInventory Nothing stack sub limits
+        results <- executeCompiled schemaInventory
+          Nothing stack sub limits
         appliedTrans <- either (throwIO . Thrift.BadQuery) return $
           userQueryFactsTransformations trans schemaSelector schema query results
         -- use Pids in result facts to apply a suitable transformation if neded.
@@ -812,7 +824,7 @@ runQuery
         maybeOwnership <- readTVarIO (odbOwnership odb)
         forM maybeOwnership $ \ownership ->
           newDefineOwnership ownership nextId
-      else return Nothing
+        else return Nothing
 
     appliedTrans <- either (throwIO . Thrift.BadQuery) return $
       transformationsFor schema trans returnType
