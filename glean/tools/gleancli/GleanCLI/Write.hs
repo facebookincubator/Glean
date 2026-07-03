@@ -25,6 +25,7 @@ import Util.OptParse
 import Util.STM
 
 import Glean
+import qualified Glean.Remote
 import Glean.LocalOrRemote (loadDbSchema)
 import qualified Glean.LocalOrRemote as LocalOrRemote
 import Glean.Database.Schema
@@ -155,6 +156,11 @@ instance Plugin WriteCommand where
        (\_ ->
           write writeOpts)
     where
+    -- Retry transient channel exceptions so a write-server restart doesn't fail
+    -- the async descriptor sends (the queued paths already retry via the send
+    -- queue).
+    retryBackend =
+      Glean.Remote.backendRetryWrites backend Glean.Remote.defaultRetryPolicy
     write WriteOpts{..} = do
       case factsSource of
         Files writeFiles -> writeBatches writeFiles WriteOpts{..}
@@ -248,7 +254,7 @@ instance Plugin WriteCommand where
     writeBatchDescriptors locations True WriteOpts{..} = do
       stream writeMaxConcurrency (forM_ locations) $ \location -> do
         let descriptor = batchDescriptor location writeFileFormat
-        Glean.sendBatchDescriptor backend writeRepo descriptor False
+        Glean.sendBatchDescriptor retryBackend writeRepo descriptor False
         return ()
     batchFormat writeFileFormat = case writeFileFormat of
       BinaryFormat -> Thrift.BatchFormat_Binary

@@ -24,6 +24,7 @@ import Data.Time.Clock (UTCTime)
 import Options.Applicative
 
 import Glean
+import qualified Glean.Remote
 import Glean.Database.Meta (utcTimeToPosixEpochTime)
 import Glean.Types as Thrift
 import Util.Time
@@ -179,8 +180,12 @@ updateSchemaForStackedOpt = switch
 createDb :: Backend b => b -> Repo -> CreateOpts -> IO Bool
 createDb backend repo opts = do
   deps <- mapM getDependencies opts.dependencies
+  -- Retry transient channel exceptions so a write-server restart doesn't fail
+  -- the kick-off.
+  let retryBackend =
+        Glean.Remote.backendRetryWrites backend Glean.Remote.defaultRetryPolicy
   Thrift.KickOffResponse alreadyExists _ _ <-
-    Glean.kickOffDatabase backend def
+    Glean.kickOffDatabase retryBackend def
       { kickOff_repo = repo
       , kickOff_properties = HashMap.fromList opts.properties
       , kickOff_dependencies = deps

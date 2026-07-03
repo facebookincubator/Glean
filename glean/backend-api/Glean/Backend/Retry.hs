@@ -35,7 +35,8 @@ instance Backend RetryWritesBackend where
   userQueryFacts (RetryWritesBackend _ backend) = userQueryFacts backend
   userQuery (RetryWritesBackend _ backend) = userQuery backend
   userQueryBatch (RetryWritesBackend _ backend) = userQueryBatch backend
-  deriveStored (RetryWritesBackend _ backend) = deriveStored backend
+  deriveStored (RetryWritesBackend policy backend) log repo q =
+    retryChannelExceptions policy $ deriveStored backend log repo q
 
   kickOffDatabase (RetryWritesBackend policy backend) kickOff =
     retryChannelExceptions policy $ kickOffDatabase backend kickOff

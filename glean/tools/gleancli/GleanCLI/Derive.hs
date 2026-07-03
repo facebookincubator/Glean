@@ -26,6 +26,7 @@ import Util.OptParse
 import Util.Text
 
 import Glean
+import qualified Glean.Remote
 import Glean.Derive (derivePredicate)
 import Glean.Types
 
@@ -130,8 +131,10 @@ instance Plugin DeriveCommand where
       -- evaluate the nodes corresponding to the requested predicates
       mapM_ waitFor (fst <$> predicates)
     where
+      retryBackend =
+        Glean.Remote.backendRetryWrites backend Glean.Remote.defaultRetryPolicy
       deriveOne pred parallel =
-        derivePredicate backend deriveRepo
+        derivePredicate retryBackend deriveRepo
           (Just $ fromIntegral $ pageBytes derivePageOptions)
           (fromIntegral <$> pageFacts derivePageOptions)
           (parseRef pred)

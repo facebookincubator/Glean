@@ -19,8 +19,10 @@ import Util.Log
 import Glean.Types as Thrift hiding (Database)
 import Control.Concurrent (threadDelay)
 import Control.Exception (SomeException, try)
+import System.Exit (exitFailure)
 
 import Glean
+import qualified Glean.Remote
 
 data WaitForWritesCommand
   = WaitForWrites
@@ -38,11 +40,17 @@ instance Plugin WaitForWritesCommand where
   -- given repo. Polls the server until writes are done.
   runCommand _ _ backend WaitForWrites{..} = loop
     where
+      -- Retry transient channel exceptions so a write-server restart doesn't
+      -- fail the call.
+      retryBackend =
+        Glean.Remote.backendRetryWrites backend Glean.Remote.defaultRetryPolicy
       loop = do
-        result <- try $ waitForWrites backend waitForWritesRepo
+        result <- try $ waitForWrites retryBackend waitForWritesRepo
         case result of
-          Left err -> logError $
-            "wait-for-writes: " <> show (err :: SomeException)
+          Left err -> do
+            logError $
+              "wait-for-writes: " <> show (err :: SomeException)
+            exitFailure
           Right WaitForWritesResponse{..} -> do
             let count = fromIntegral
                   waitForWritesResponse_pending_writes_count

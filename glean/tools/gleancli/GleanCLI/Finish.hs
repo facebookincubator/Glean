@@ -19,6 +19,7 @@ import GleanCLI.Common
 import GleanCLI.Types
 
 import Glean
+import qualified Glean.Remote
 import Glean.LocalOrRemote
 
 data FinishCommand
@@ -51,4 +52,8 @@ finished
   => b
   -> Repo
   -> IO ()
-finished backend repo = Glean.finish backend repo
+-- | Retry transient channel exceptions so a write-server restart doesn't fail
+-- the finish (covers both the finish and write --finish commands).
+finished backend repo =
+  Glean.finish
+    (Glean.Remote.backendRetryWrites backend Glean.Remote.defaultRetryPolicy) repo

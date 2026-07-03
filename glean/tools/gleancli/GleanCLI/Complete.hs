@@ -20,6 +20,7 @@ import GleanCLI.Common
 import GleanCLI.Types
 
 import Glean
+import qualified Glean.Remote
 import qualified Glean.Types as Thrift
 
 data CompleteCommand
@@ -45,5 +46,10 @@ instance Plugin CompleteCommand where
     when (not (null completePredicates)) $
       die 1 "completing individual predicates is not supported yet"
 
-    void $ Glean.completePredicates backend completeRepo $
+    -- Retry transient channel exceptions so a write-server restart doesn't
+    -- fail the call.
+    let retryBackend =
+          Glean.Remote.backendRetryWrites backend Glean.Remote.defaultRetryPolicy
+
+    void $ Glean.completePredicates retryBackend completeRepo $
       Thrift.CompletePredicates_axiom def

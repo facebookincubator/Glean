@@ -38,6 +38,7 @@ import System.Exit (exitWith, ExitCode(..))
 import qualified Glean
 import Glean.Init
 import qualified Glean.LocalOrRemote as Glean
+import qualified Glean.Remote
 import Glean.Database.Config (cfgServerConfig)
 import qualified Glean.Database.Config as GleanDB
 import Glean.Database.Schema
@@ -404,9 +405,10 @@ instance Plugin StatusCommand where
       return Status{..}
 
   runCommand _ _ backend Status{..} = do
+    let retryBackend = Glean.Remote.backendRetryReads backend Glean.Remote.defaultRetryPolicy
     db <-
       Thrift.getDatabaseResult_database <$>
-        Glean.getDatabase backend statusRepo
+        Glean.getDatabase retryBackend statusRepo
     putShellPrintLn statusFormat $ db `withFormatOpts` DbSummarise
     when statusSetExitCode $ case exitCode db of
       ExitFailure code -> exitWith $ ExitFailure code
@@ -632,8 +634,13 @@ instance Plugin SetPropertyCommand where
           | otherwise -> Nothing
 
   runCommand _ _ backend SetProperty{..} =
-    void $ Glean.updateProperties backend setPropRepo
+    void $ Glean.updateProperties retryBackend setPropRepo
       (HashMap.fromList (rights properties)) (lefts properties)
+    where
+      -- Retry transient channel exceptions so a write-server restart doesn't
+      -- fail the call.
+      retryBackend =
+        Glean.Remote.backendRetryWrites backend Glean.Remote.defaultRetryPolicy
 
 
 data WriteSerializedInventoryCommand
