@@ -35,7 +35,20 @@ data CreateOpts = CreateOpts
   , writeRepoTime :: Maybe UTCTime
   , properties :: [(Text,Text)]
   , updateSchemaForStacked :: Bool
+  , aclMode :: Maybe ACLMode
   }
+
+-- | ACL mode for the database
+data ACLMode
+  = ACLActive      -- ^ Basic ACL support (glean.acl = "enabled")
+  | ACLEnforced    -- ^ Strict mode (error on facts without units)
+  | ACLPermissive  -- ^ Permissive mode (no directory inheritance)
+  deriving (Eq, Show)
+
+aclModeToProperty :: ACLMode -> (Text, Text)
+aclModeToProperty ACLActive = ("glean.acl", "enabled")
+aclModeToProperty ACLEnforced = ("glean.acl", "enforced")
+aclModeToProperty ACLPermissive = ("glean.acl", "permissive")
 
 parseCreateOpts :: Parser CreateOpts
 parseCreateOpts = do
@@ -43,12 +56,29 @@ parseCreateOpts = do
   dependencies <- optional dependencyOpts
   properties <- dbPropertiesOpt
   updateSchemaForStacked <- updateSchemaForStackedOpt
+  aclMode <- optional aclModeOpt
   return CreateOpts {
     writeRepoTime,
     dependencies,
     properties,
-    updateSchemaForStacked
+    updateSchemaForStacked,
+    aclMode
   }
+
+aclModeOpt :: Parser ACLMode
+aclModeOpt = option readACLMode
+  (  long "acl"
+  <> metavar "MODE"
+  <> help "ACL mode for the database: enabled, enforced, or permissive"
+  )
+  where
+    readACLMode :: ReadM ACLMode
+    readACLMode = eitherReader $ \str ->
+      case str of
+        "enabled" -> Right ACLActive
+        "enforced" -> Right ACLEnforced
+        "permissive" -> Right ACLPermissive
+        _ -> Left "--acl: expecting enabled, enforced, or permissive"
 
 repoTimeOpt :: Parser UTCTime
 repoTimeOpt = option readTime
@@ -180,6 +210,11 @@ updateSchemaForStackedOpt = switch
 createDb :: Backend b => b -> Repo -> CreateOpts -> IO Bool
 createDb backend repo opts = do
   deps <- mapM getDependencies opts.dependencies
+  let aclProperty = maybe [] (pure . aclModeToProperty) opts.aclMode
+      allProperties = HashMap.fromList (opts.properties ++ aclProperty)
+  case opts.aclMode of
+    Just mode -> putStrLn $ "[glean create] " ++ showACLModeLog mode
+    Nothing -> putStrLn "[glean create] ACL: disabled"
   -- Retry transient channel exceptions so a write-server restart doesn't fail
   -- the kick-off.
   let retryBackend =
@@ -187,10 +222,16 @@ createDb backend repo opts = do
   Thrift.KickOffResponse alreadyExists _ _ <-
     Glean.kickOffDatabase retryBackend def
       { kickOff_repo = repo
-      , kickOff_properties = HashMap.fromList opts.properties
+      , kickOff_properties = allProperties
       , kickOff_dependencies = deps
       , kickOff_repo_hash_time =
           utcTimeToPosixEpochTime <$> opts.writeRepoTime
       , kickOff_update_schema_for_stacked = opts.updateSchemaForStacked
       }
   return alreadyExists
+
+-- | Convert ACL mode to a human-readable description for CLI logging
+showACLModeLog :: ACLMode -> String
+showACLModeLog ACLActive = "ACL: active"
+showACLModeLog ACLEnforced = "ACL: enforced (strict mode)"
+showACLModeLog ACLPermissive = "ACL: permissive (no directory inheritance)"

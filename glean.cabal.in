@@ -1334,6 +1334,7 @@ executable glean
         glean:cli-types,
         glean:client-hs,
         glean:client-hs-local,
+        glean:aclknobs,
         glean:db,
         glean:if-glean-hs,
         glean:indexers,

@@ -16,6 +16,7 @@ import Options.Applicative
 
 import Util.EventBase
 import Glean.Database.Env (withDatabases)
+import qualified Glean.Database.Config as GleanDB
 import Glean.LocalOrRemote as Glean
     ( Service(..), LocalOrRemote, withBackendWithDefaultOptions )
 import Glean.Impl.ConfigProvider
@@ -41,6 +42,12 @@ class Plugin c where
   --   Only relevant when using a local DB root and setting a server config
   serverConfigTransform :: c -> (Server.Config -> Server.Config)
   serverConfigTransform _ = id
+
+  -- | Allows transforming the local database 'Config', e.g. to install an
+  --   ACL group resolver for testing. Applied via 'liftConfig', so it
+  --   no-ops against a remote backend.
+  dbConfigTransform :: c -> (GleanDB.Config -> GleanDB.Config)
+  dbConfigTransform _ = id
 
   runCommand
     :: (Glean.LocalOrRemote backend, ConfigProvider cfg)

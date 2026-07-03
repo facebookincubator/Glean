@@ -2,6 +2,7 @@
 
   $ source "$TESTDIR/setup.sh"
   Creating DB example/0
+  \[glean create\] ACL: disabled (re)
   Wrote.* (re)
 
   $ function query { "$GLEAN" --service "::1:$PORT" --minloglevel 10 shell --db "$DB" "$(echo -e $1)" ; }
@@ -9,7 +10,7 @@
   $ query ":help"
   [>] :help (re)
   Glean Shell.+ (re)
-  
+
   Commands:
     :database [<db>]                            Use database <db>
     :index <lang> <dir>                         Index source files in <dir> and create a database.
@@ -33,11 +34,11 @@
     :statistics [--topmost] [-s] [<predicate>]  Show statistics for the database. Use --topmost to only show statisticsfor the top database and -s to sort by decreasing size
     :use-schema [current|stored|<schema-id>]    Select which schema to use. Without an argument lists the available schemas
     :quit                                       Exit the shell
-  
+
   Queries:
     {1234}                    Look up a fact by its Id
     <predicate> <pat>         Query a predicate for facts matching <pat>
-  
+
   Pattern syntax:
     1234                     :: byte or nat
     "abc"                    :: string
@@ -47,9 +48,9 @@
     [ val1, val2, ..]        :: [T] prefix
     { field = val, ... }     :: record(fields), omitted fields are wild
     { field = val }          :: sum(fields)
-  
+
   Please consult the documentation for the full query syntax.
-  
+
   Examples:
     {1234}                                   fetch a fact by its Id
     pp1.Define _                             all the pp1.Define facts
@@ -77,7 +78,7 @@
   { "id": [0-9]+, "key": { "name": "Goldfish", "line": 40 } } (re)
   { "id": [0-9]+, "key": { "name": "Lizard", "line": 20 } } (re)
   { "id": [0-9]+, "key": { "name": "Pet", "line": 10 } } (re)
-  
+
   4 results, 4 facts, .*, .* bytes, .* compiled bytes (re)
 
 
@@ -89,7 +90,7 @@
     { wrong : T1, T2 }
   does not match:
     string
-       
+
   1 |  { wrong = what } : string
        ^^^^^^^^^^^^^^^^
   [1]
@@ -101,7 +102,7 @@
   [>] _ (re)
   query has ambiguous type
       type: T0
-       
+
   1 |  _
        ^
   [1]
@@ -112,7 +113,7 @@
   $ query "A -> B"
   [>] A -> B (re)
   a key/value pattern (X -> Y) cannot be used here
-       
+
   1 |  A -> B
        ^^^^^^
   [1]
@@ -123,7 +124,7 @@
   $ query "A -> B"
   [>] A -> B (re)
   a key/value pattern (X -> Y) cannot be used here
-       
+
   1 |  A -> B
        ^^^^^^
   [1]
@@ -134,7 +135,7 @@
   $ query "A B"
   [>] A B (re)
   not in scope: A
-       
+
   1 |  A B
        ^
   [1]
@@ -145,7 +146,7 @@
   $ query "A B"
   [>] A B (re)
   not in scope: A
-       
+
   1 |  A B
        ^
   [1]
@@ -156,7 +157,7 @@
   $ query "B = 1; 1 = B"
   [>] B = 1; 1 = B (re)
   the last statement should be an expression: B = 1; 1 = B
-       
+
   1 |  B = 1; 1 = B
               ^
   [1]
@@ -170,7 +171,7 @@
     nat
   does not match:
     T2[T1]
-       
+
   1 |  A = 1; B = A[..]
            ^
   [1]
@@ -184,7 +185,7 @@
     string
   does not match:
     nat
-       
+
   1 |  A = "a"; B = A : nat
            ^^^
   [1]
@@ -197,7 +198,7 @@
   unknown alt: w
       pattern: A
       expected type: { n : nat | s : nat | }
-       
+
   1 |  { w = A } : { n : nat | s : nat }
              ^
   [1]
@@ -210,7 +211,7 @@
   matching on a union type should have the form { field = pattern }
       pattern: {}
       expected type: { n : nat | s : nat | }
-       
+
   1 |  {} : { n : nat | s : nat }
        ^^
   [1]
@@ -229,7 +230,7 @@
   $ query "a = 2"
   [>] a = 2 (re)
   the last statement should be an expression: a = 2
-       
+
   1 |  a = 2
        ^
   [1]

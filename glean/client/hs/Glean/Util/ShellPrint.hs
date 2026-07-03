@@ -252,7 +252,8 @@ instance (ShellFormat DbVerbosity v)
   => ShellFormat DbVerbosity (Thrift.Database, [(String, v)]) where
     shellFormatText ctx@Context{..} opts (db, extras) = nest 2 $ vsep $
       [ annotate (statusStyle status) (shellFormatText ctx () repo)
-        <+> shellFormatText ctx () status]
+        <+> shellFormatText ctx () status
+        <> aclTag]
       ++
       [ "Source:" <+> showWhen t
       | Just t <- [Thrift.database_repo_hash_time db]
@@ -322,6 +323,24 @@ instance (ShellFormat DbVerbosity v)
         status = Thrift.database_status db
         repo = Thrift.database_repo db
         verbosity = opts
+
+        -- ACL tag display based on glean.acl property and broken status
+        -- If the DB is broken with an ACL-related error, show "broken" for ACL
+        aclTag =
+          case HashMap.lookup "glean.acl" (Thrift.database_properties db) of
+            Just mode
+              | isAclBroken -> " " <> parens ("acl:" <+> "broken")
+              | otherwise -> " " <> parens ("acl:" <+> pretty mode)
+            Nothing -> emptyDoc
+
+        -- Check if the database is broken due to ACL-related issues
+        isAclBroken = case Thrift.database_broken db of
+          Just (Thrift.DatabaseBroken _ reason) ->
+            -- Check if the broken reason mentions ACL-related column families
+            Text.isInfixOf "aclMapping" reason ||
+            Text.isInfixOf "aclOwnership" reason ||
+            Text.isInfixOf "aclFactOwners" reason
+          Nothing -> False
     shellFormatJson ctx opts (db, extras) = J.object $
       [ "repo" .= shellFormatJson ctx () repo
       , "status" .= shellFormatJson ctx () status

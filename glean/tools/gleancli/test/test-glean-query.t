@@ -2,6 +2,7 @@
 
   $ glean create --finish --db abc/0 --schema $EXAMPLE  "$EXAMPLE/facts.glean" 2>/dev/null
   Creating DB.* (re)
+  \[glean create\] ACL: disabled (re)
   Wrote.* (re)
 
   $ glean --schema $EXAMPLE query --db-name abc 'example.Class {name="Pet"}' 2>/dev/null

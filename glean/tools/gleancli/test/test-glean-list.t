@@ -3,13 +3,17 @@ Setup
 
   $ glean create --finish --db abc/0 2>/dev/null
   Creating DB.* (re)
+  \[glean create\] ACL: disabled (re)
   $ glean create --finish --db abc/1 2>/dev/null
   Creating DB.* (re)
+  \[glean create\] ACL: disabled (re)
   $ glean create --finish --db xyz/0 2>/dev/null
   Creating DB.* (re)
+  \[glean create\] ACL: disabled (re)
 
   $ glean list ab
   
+
 
 
 
@@ -23,6 +27,8 @@ Setup
     Created:.* (re)
     Completed:.* (re)
       
+
+
 
 
 
@@ -51,6 +57,8 @@ Setup
 
 
 
+
+
   $ glean list *b*/*
   abc/0 (complete)
     Created:.* (re)
@@ -60,6 +68,8 @@ Setup
     Created:.* (re)
     Completed:.* (re)
       
+
+
 
 
 

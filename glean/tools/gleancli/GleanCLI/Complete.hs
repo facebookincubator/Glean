@@ -21,11 +21,12 @@ import GleanCLI.Types
 
 import Glean
 import qualified Glean.Remote
+import Glean.Database.Meta (getACLMode, showACLMode)
 import qualified Glean.Types as Thrift
 
 data CompleteCommand
   = Complete
-      { completeRepo :: Repo
+      { completeRepo :: Thrift.Repo
       , completePredicates :: [SourceRef]
       }
 
@@ -45,6 +46,12 @@ instance Plugin CompleteCommand where
   runCommand _ _ backend Complete{..} = do
     when (not (null completePredicates)) $
       die 1 "completing individual predicates is not supported yet"
+
+    -- Log ACL mode for this complete operation
+    db <- Thrift.getDatabaseResult_database <$>
+      Glean.getDatabase backend completeRepo
+    let aclMode = getACLMode (Thrift.database_properties db)
+    putStrLn $ "[glean complete] " ++ showACLMode aclMode
 
     -- Retry transient channel exceptions so a write-server restart doesn't
     -- fail the call.

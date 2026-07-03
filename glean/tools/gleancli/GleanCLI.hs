@@ -166,7 +166,9 @@ main =
   case cfgCommand of
     PluginCommand c -> do
       cfgService' <- withRemoteBackups evb cfgService
-      withService evb cfgAPI (liftServerConfig (serverConfigTransform c) cfgService') c
+      withService evb cfgAPI
+        (liftConfig (dbConfigTransform c) $
+          liftServerConfig (serverConfigTransform c) cfgService') c
 
 withRemoteBackups :: EventBaseDataplane -> Glean.Service -> IO Glean.Service
 withRemoteBackups _evb = liftConfigIO $

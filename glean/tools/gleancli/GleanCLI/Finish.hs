@@ -21,10 +21,12 @@ import GleanCLI.Types
 import Glean
 import qualified Glean.Remote
 import Glean.LocalOrRemote
+import Glean.Database.Meta (getACLMode, showACLMode)
+import qualified Glean.Types as Thrift
 
 data FinishCommand
   = Finish
-      { finishRepo :: Repo
+      { finishRepo :: Thrift.Repo
       , allowZeroFacts :: Bool
       }
 
@@ -45,12 +47,20 @@ instance Plugin FinishCommand where
       when (null stats) $
         die 6
           "finish: Database has no facts. Use --allow-zero-facts to allow this"
+    logACLMode backend finishRepo
     finished backend finishRepo
+
+-- | Log the database's ACL mode for this finish operation.
+logACLMode :: LocalOrRemote b => b -> Thrift.Repo -> IO ()
+logACLMode backend repo = do
+  db <- Thrift.getDatabaseResult_database <$> Glean.getDatabase backend repo
+  let aclMode = getACLMode (Thrift.database_properties db)
+  putStrLn $ "[glean finish] " ++ showACLMode aclMode
 
 finished
   :: LocalOrRemote b
   => b
-  -> Repo
+  -> Thrift.Repo
   -> IO ()
 -- | Retry transient channel exceptions so a write-server restart doesn't fail
 -- the finish (covers both the finish and write --finish commands).
