@@ -14,8 +14,6 @@
 #include "glean/rts/binary.h"
 #include "glean/rts/set.h"
 
-#include <stdexcept>
-
 namespace facebook {
 namespace glean {
 namespace rts {
