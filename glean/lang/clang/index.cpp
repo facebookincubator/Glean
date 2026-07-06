@@ -77,7 +77,10 @@ DEFINE_string(root, ".", "root repository PATH");
 DEFINE_string(blank_cell_name, "", "buck cell name output as nothing");
 DEFINE_string(cwd_subdir, "", "current working subdirectory under --root");
 DEFINE_string(target_subdir, "", "clang target subdirectory under --root");
-DEFINE_string(path_prefix, "", "Path fragment to prefix src.File facts with");
+DEFINE_string(
+    path_prefix,
+    "",
+    "Path fragment to prefix src.File facts and ownership units with");
 DEFINE_string(
     repo_name,
     "",
@@ -426,10 +429,12 @@ struct SourceIndexer {
     if (FLAGS_ownership) {
       // source file paths will be absolute (see loadCompilationDatabase()) but
       // we need the unit path to be relative.
-      batch->beginUnit(
-          std::filesystem::path(source.file)
-              .lexically_relative(config.root)
-              .string());
+      auto unit =
+          std::filesystem::path(source.file).lexically_relative(config.root);
+      if (config.path_prefix.has_value()) {
+        unit = std::filesystem::path(config.path_prefix.value()) / unit;
+      }
+      batch->beginUnit(unit.string());
     }
     auto pcdb = cdb.load(source);
     auto cellLocator = locatorOf(source);
