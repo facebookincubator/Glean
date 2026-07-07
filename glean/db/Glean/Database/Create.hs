@@ -10,6 +10,7 @@
 module Glean.Database.Create (
   kickOffDatabase,
   updateProperties,
+  serverTierProperty,
 ) where
 
 import Control.Applicative
@@ -281,14 +282,20 @@ serverProperties = return (HashMap.fromList rev)
     | Text.null buildRevision = []
     | otherwise = [ ("glean.server.build_revision", buildRevision) ]
 
+-- | metaProperties key recording the raw SMC tier(s) this DB was created under
+-- (the SMC_TIERS value; normally exactly one tier).
+serverTierProperty :: Text
+serverTierProperty = "glean.server.tier"
+
 facebookServerProperties :: IO DatabaseProperties
 facebookServerProperties = do
 #if GLEAN_FACEBOOK
   twJob <- getTupperwareJob
-  return $ HashMap.fromList
-    (case twJob of
-      Nothing -> []
-      Just job -> [ ("glean.server.tw_job", job) ])
+  tiers <- getTupperwareSmcTiers
+  return $ HashMap.fromList $ catMaybes
+    [ (,) "glean.server.tw_job" <$> twJob
+    , (,) serverTierProperty <$> (Text.unwords <$> tiers)
+    ]
 #else
   return HashMap.empty
 #endif

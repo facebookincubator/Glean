@@ -171,6 +171,8 @@ struct ContainerImpl final : Container {
 
   void optimize(bool compact) override;
 
+  void flush() override;
+
   rocksdb::ColumnFamilyHandle* family(const Family& family) const;
 
   Iterator read(const Family& f) {

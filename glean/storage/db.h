@@ -45,6 +45,11 @@ struct Container {
   /// Optimise the container for reading
   virtual void optimize(bool compact) = 0;
 
+  /// Flush in-memory write buffers (memtables and WALs) to SST files
+  /// without running compaction. Cheap, unlike optimize(). Used before
+  /// backing up a still-writable (Incomplete) container on shutdown.
+  virtual void flush() = 0;
+
   /// Backup the Container to the specified directory.
   virtual void backup(const std::string& path) = 0;
 

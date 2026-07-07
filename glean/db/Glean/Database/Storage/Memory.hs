@@ -114,6 +114,8 @@ instance DatabaseOps (Database Memory) where
 
   optimize _ _ = return ()
 
+  flush _ = return ()
+
   -- TODO: ownership
   computeOwnership _ _ _ = return (error "unimplemented computeOwnership")
   getUnitId _ _ = return (error "unimplemented getUnitId")

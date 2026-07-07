@@ -57,6 +57,9 @@ retentionChanges
     -- ^ Retention policy
   -> ServerConfig.DatabaseRestorePolicy
     -- ^ Restore policy
+  -> Bool
+    -- ^ Whether to floor delete_incomplete_if_older at 72h (set when the
+    -- preemption-resilience feature is on)
   -> UTCTime
     -- ^ Current time
   -> DbIndex
@@ -70,14 +73,14 @@ retentionChanges
   -> m (RetentionChanges shard)
 
 retentionChanges
-    retentionPolicy restorePolicy
+    retentionPolicy restorePolicy floorIncomplete
     now
     index
     isAvailable
     dbToShard myShards = do
 
   keep <- computeRetentionSet
-    retentionPolicy restorePolicy now isAvailable index
+    retentionPolicy restorePolicy floorIncomplete now isAvailable index
 
   let
     itemToShard :: Item -> Maybe shard
@@ -152,6 +155,9 @@ data DbIndex = DbIndex
     -- but it is missing in the catalog.
   }
 
+-- | Build a 'DbIndex' from a list of DBs, precomputing the lookup maps and
+-- dependency function. When two items share the same 'Repo', the local one is
+-- kept in preference to a cloud copy.
 dbIndex :: [Item] -> DbIndex
 dbIndex items = DbIndex{..}
   where
@@ -179,11 +185,12 @@ computeRetentionSet
   :: forall m . Monad m
   => ServerConfig.DatabaseRetentionPolicy
   -> ServerConfig.DatabaseRestorePolicy
+  -> Bool
   -> UTCTime
   -> (Item -> m Bool)
   -> DbIndex
   -> m [Item]
-computeRetentionSet config_retention config_restore
+computeRetentionSet config_retention config_restore floorIncomplete
     time isAvailableM dbIndex@DbIndex{..} =
   transitiveClosureBy itemRepo (catMaybes . depsRestored) <$>
     concatMapM allRetention byRepoName
@@ -201,20 +208,24 @@ computeRetentionSet config_retention config_restore
       let policies = repoRetention config_retention repo
       uniqBy (comparing itemRepo) . concat <$>
         mapM (\pol ->
-          dbRetentionForRepo pol time isAvailableM dbs dbIndex) policies
+          dbRetentionForRepo floorIncomplete pol time isAvailableM dbs dbIndex)
+          policies
 
 
 -- | The target set of DBs we want usable on the disk. This is a set of
 -- DBs that satisfies the policy.
 dbRetentionForRepo
   :: Monad m
-  => ServerConfig.Retention
+  => Bool
+    -- ^ Floor delete_incomplete_if_older at 72h (preemption resilience on)
+  -> ServerConfig.Retention
   -> UTCTime
   -> (Item -> m Bool)
   -> NonEmpty Item
   -> DbIndex
   -> m [Item]
-dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs dbIndex = do
+dbRetentionForRepo
+    floorIncomplete ServerConfig.Retention{..} t isAvailableM dbs dbIndex = do
   let
     -- retention policy parameters
     retainAtLeast' = fromIntegral $ fromMaybe 0 retention_retain_at_least
@@ -224,8 +235,15 @@ dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs dbIndex = do
     retainAtMost  = max retainAtLeast' <$> retainAtMost'
     retainPerDay = fmap fromIntegral retention_retain_per_day
     deleteIfOlder = fmap fromIntegral retention_delete_if_older
+    -- When preemption resilience is on, never delete an Incomplete DB younger
+    -- than a 72h floor (an upper bound on indexing duration), so an
+    -- in-progress DB is not reaped mid-write even if a smaller value is
+    -- configured. Off: respect the configured value verbatim.
     deleteIncompleteIfOlder =
-      fmap fromIntegral retention_delete_incomplete_if_older
+      fmap incompleteAge retention_delete_incomplete_if_older
+    incompleteAge x
+      | floorIncomplete = max 259200 (fromIntegral x)
+      | otherwise = fromIntegral x
 
     f &&& g = \x -> f x && g x
     f ||| g = \x -> f x || g x

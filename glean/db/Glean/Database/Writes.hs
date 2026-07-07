@@ -157,6 +157,11 @@ writerThread env WriteQueues{..} = mask $ \restore ->
   -- This is an O(n) transaction which could be bad, but in
   -- practice the number of queues with checkpoints will be small.
   dequeueLoop requeueCheckpoints = do
+    -- On shutdown, stop pulling new jobs (park via STM retry). Best-effort
+    -- only: we don't drain. Uncaptured writes are reconstructed after restart
+    -- (descriptors re-enqueue on open; sendBatch writes are resent by client).
+    shuttingDown <- readTVar (envShuttingDown env)
+    when shuttingDown retry
     (repo, queue@WriteQueue{..}) <- readTQueue writeQueues
     maybeJob <- tryReadTQueue writeQueue
     case maybeJob of

@@ -32,11 +32,14 @@ data RetryPolicy = RetryPolicy
   , onError :: ChannelException -> Int -> Int -> Maybe Double -> IO ()
   }
 
+-- | Sized to survive a write-server restart (host move + multi-GB database
+-- download before it can serve again): 30 retries with a 60s cap
+-- (1,2,4,8,16,32 then 60s) ~= 25 min.
 defaultRetryPolicy :: RetryPolicy
 defaultRetryPolicy = RetryPolicy
-  { maxRetries = 5
+  { maxRetries = 30
   , minRetryDelay = 1
-  , maxRetryDelay = 30
+  , maxRetryDelay = 60
   , retryJitter = 0.2  -- 20%
   , onError = logRetry
   }

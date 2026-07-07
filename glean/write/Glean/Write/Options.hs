@@ -53,7 +53,7 @@ sendQueueOptions = do
   sendQueueRetry <- fmap toRetryPolicy $ O.option O.auto $
     O.long "send-retries"
     <> O.metavar "N"
-    <> O.value 20
+    <> O.value 30
     <> O.showDefault
     <> O.help "number of retries"
   return def

@@ -64,10 +64,19 @@ listDatabases env@Env{..} Thrift.ListDatabases{..} = do
         , getDatabaseResult_auth_message = Nothing
         })
 
+-- | List the databases that can be restored from a backup site. This is
+-- deliberately Complete-only: Incomplete cloud backups (written by the
+-- preemption-resilience shutdown path) must stay invisible to the janitor's
+-- restore/retention/delete index. doRestore rejects Incomplete anyway, and
+-- the incomplete startup-restore reads them via its own (Incomplete-filtered)
+-- pass instead.
 listRestorable :: Backup.Site site => Text -> site -> IO (HashMap Repo Meta)
 listRestorable prefix site =
-  HashMap.fromList <$> map adjustMeta <$> Backup.enumerate site
+  HashMap.fromList . map adjustMeta . filter isComplete
+    <$> Backup.enumerate site
   where
+    isComplete (_, meta) =
+      completenessStatus meta == Thrift.DatabaseStatus_Complete
     adjustMeta (repo, meta) =
       (repo, meta {
           metaBackup = Just $ Backup.toRepoLocator prefix site repo

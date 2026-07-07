@@ -193,6 +193,7 @@ instance DatabaseOps (Database RocksDB) where
   addOwnership (Database db) = addOwnership db
   registerACLUnits (Database db) = registerACLUnits db
   optimize (Database db) = optimize db
+  flush (Database db) = flush db
   computeOwnership (Database db) = computeOwnership db
   storeOwnership (Database db) = storeOwnership db
   getOwnership (Database db) = getOwnership db

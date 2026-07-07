@@ -230,6 +230,12 @@ class CanLookup db => DatabaseOps db where
   -- | Optimise a database for reading. This is typically done before backup.
   optimize :: db -> Bool {- compact -} -> IO ()
 
+  -- | Flush in-memory write buffers to disk without compacting. Cheap,
+  -- unlike 'optimize'. Used before backing up a still-writable (Incomplete)
+  -- database on shutdown so the backup captures a consistent, reopenable
+  -- image (including the batchDescriptors column family).
+  flush :: db -> IO ()
+
   computeOwnership
     :: db
     -> Maybe Lookup
@@ -304,6 +310,7 @@ instance DatabaseOps (Some DatabaseOps) where
   addOwnership (Some db) = addOwnership db
   registerACLUnits (Some db) = registerACLUnits db
   optimize (Some db) = optimize db
+  flush (Some db) = flush db
   computeOwnership (Some db) = computeOwnership db
   storeOwnership (Some db) = storeOwnership db
   getOwnership (Some db) = getOwnership db

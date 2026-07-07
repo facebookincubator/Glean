@@ -120,9 +120,12 @@ enqueueWrite env@Env{..} repo queue@WriteQueue{..} odbSchema size
           addStatValueType "glean.db.write.enqueued" (size `div` k) Sum
           reportQueueSizes repo queueCount queueSize newSize Nothing
   immediately $ do
-    check <- if checkQueueSize
-      then now $ checkMemoryAvailable env config size
-      else return True
+    shuttingDown <- now $ readTVar envShuttingDown
+    check <- if shuttingDown
+      then return False  -- reject new writes: client backs off and resends
+      else if checkQueueSize
+        then now $ checkMemoryAvailable env config size
+        else return True
     if check then enqueueIt else do
       latency <- now $ readTVar writeQueueLatency
       let elapsed = fromIntegral (toNanoSecs latency) / 1000000000.0

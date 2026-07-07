@@ -36,6 +36,8 @@ import Glean.Backend.Types (dbShard)
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter as Catalog
 import Glean.Database.Types ( Env(..) )
+import Glean.Database.Backup.Incomplete
+  (backupIncompleteDatabasesOnShutdown)
 #if GLEAN_FACEBOOK
 import Glean.Impl.ShardManager
 #endif
@@ -57,16 +59,16 @@ import Util.Control.Exception ( swallow )
 import Util.EventBase ( EventBaseDataplane )
 import Util.Log ( vlog, logInfo, flush )
 import Util.STM
-  (retry, atomically, writeTVar, STM, TVar, readTVar, registerDelay)
+  (retry, atomically, writeTVar, STM, readTVar, registerDelay)
 
 
 -- | POSIX @_exit(2)@: terminate the process immediately WITHOUT running libc
 -- atexit handlers or C++ static/global destructors.
 --
--- NB: 'System.Posix.Process.exitImmediately' is misnamed -- despite its Haddock
--- claiming it "calls @_exit@", the @unix@ package binds it to libc @exit@
--- (@foreign import ccall unsafe "exit"@). @exit(3)@ DOES run atexit handlers and
--- static destructors, which is precisely what drives folly's
+-- NB: 'System.Posix.Process.exitImmediately' is misnamed -- despite its
+-- Haddock claiming it "calls @_exit@", the @unix@ package binds it to libc
+-- @exit@ (@foreign import ccall unsafe "exit"@). @exit(3)@ DOES run atexit
+-- handlers and static destructors, which is precisely what drives folly's
 -- @SingletonVault::destroyInstances@ teardown we are trying to skip. We must
 -- bind the real @_exit@ to bypass it.
 foreign import ccall unsafe "unistd.h _exit"
@@ -212,10 +214,10 @@ withShardsUpdater evb cfg env delay terminating action
 
 waitForTerminateSignalsAndGracefulShutdown
   :: Env
-  -> TVar Bool -- ^ broadcast channel for initiating the timeout
   -> Seconds -- ^ amount of time to wait before forcing a shutdown
   -> IO ()
-waitForTerminateSignalsAndGracefulShutdown env terminating timeout = do
+waitForTerminateSignalsAndGracefulShutdown
+    env timeout = do
   -- To wait in Haskell-land while the server is taking requests,
   -- use an mvar that gets filled when the right signals are read
   mvar <- newEmptyMVar
@@ -226,8 +228,22 @@ waitForTerminateSignalsAndGracefulShutdown env terminating timeout = do
       takeMVar mvar
       logInfo "SIGTERM/SIGINT received"
 
-      -- stop publishing complete shards
-      atomically $ writeTVar terminating True
+      -- Single SIGTERM flag. Setting envShuttingDown both (a) stops
+      -- advertising complete shards (the shard-updater thread reads this same
+      -- flag via withShardsUpdater and switches to incompleteQueryableF) and
+      -- (b) rejects new writes / quiesces the writer threads so Incomplete DBs
+      -- can be flushed and backed up without the backlog growing. Harmless for
+      -- read/query servers (they take no writes).
+      atomically $ writeTVar (envShuttingDown env) True
+
+      -- Back up local Incomplete DBs BEFORE the shard-drain wait below: for a
+      -- write server we deliberately keep Incomplete DBs, so that loop would
+      -- otherwise never drain and would eat the grace window. Read the live
+      -- config flag here (the feature's kill-switch); a no-op for read/query
+      -- servers, which leave it false.
+      serverConfig <- Observed.get (envServerConfig env)
+      when (ServerConfig.config_backup_incomplete_on_shutdown serverConfig) $
+        backupIncompleteDatabasesOnShutdown env
 
       -- start the timeout (if any)
       timeoutElapsedSTM <- if timeout > 0
@@ -247,18 +263,21 @@ waitForTerminateSignalsAndGracefulShutdown env terminating timeout = do
 
       logInfo "Shutting down"
 
-      -- The C++ global/atexit teardown (folly's SingletonVault::destroyInstances)
-      -- can deadlock: ~IOThreadPoolExecutor for the Manifold/RemoteExecution
-      -- client joins a worker whose EventBase was already torn down earlier in the
-      -- vault unwind, so the join's futex is never signalled. folly's 300s
-      -- singleton-shutdown watchdog then turns that into a SIGABRT (core dump),
-      -- making shutdown slow and dirty. It's a race (in-flight client work at exit
-      -- makes it likely), not specific to the backup feature -- any server linking
-      -- that client stack can hit it. Our graceful shutdown is already complete
-      -- here (shards drained; Incomplete DBs backed up; RocksDB is WAL-crash-safe,
-      -- so any open DBs recover on next open), so skip the unsafe teardown
-      -- entirely: flush logs, then _exit(0). The fundamental fix (leaky singletons
-      -- for the Manifold/RE clients) is owned by those teams; this sidesteps it.
+      -- The C++ global/atexit teardown
+      -- (folly's SingletonVault::destroyInstances) can deadlock:
+      -- ~IOThreadPoolExecutor for the Manifold/RemoteExecution client joins a
+      -- worker whose EventBase was already torn down earlier in the vault
+      -- unwind, so the join's futex is never signalled. folly's 300s
+      -- singleton-shutdown watchdog then turns that into a SIGABRT (core
+      -- dump), making shutdown slow and dirty. It's a race (in-flight client
+      -- work at exit makes it likely), not specific to the backup feature --
+      -- any server linking that client stack can hit it. Our graceful shutdown
+      -- is already complete here (shards drained; Incomplete DBs backed up;
+      -- RocksDB is WAL-crash-safe, so any open DBs recover on next open), so
+      -- skip the unsafe teardown entirely: flush logs, briefly give TW log
+      -- collection a chance to observe the tail, then _exit(0). The
+      -- fundamental fix (leaky singletons for the Manifold/RE clients) is
+      -- owned by those teams; this sidesteps it.
       --
       -- We must use the real POSIX _exit (c_exitImmediately) here, NOT
       -- System.Posix.Process.exitImmediately: the latter is bound to libc

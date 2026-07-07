@@ -58,6 +58,11 @@ toRepoLocator :: Site site => Text -> site -> Repo -> Text
 toRepoLocator prefix site repo =
   toSiteLocator prefix site <> "/" <> repoToTextSep "." repo
 
+-- | Resolve the backup site for a repo name from the current backup policy.
+-- Uses the repo-specific 'backup_location' override if one is configured for
+-- @repoName@, otherwise falls back to the policy's default location. Returns
+-- the locator prefix and site, or 'Nothing' if the resolved locator names a
+-- backend that isn't configured in 'envBackupBackends'.
 getSite :: Env -> Text -> STM (Maybe (Text, Some Site))
 getSite Env{..} repoName = do
   policy <- ServerConfig.config_backup <$> Observed.get envServerConfig

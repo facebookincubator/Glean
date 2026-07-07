@@ -126,6 +126,8 @@ initEnv evb envStorage envDefaultStorage envCatalog shardManager cfg
 
     envCompletingDerived <- newTVarIO HashMap.empty
 
+    envShuttingDown <- newTVarIO False
+
     envDbSchemaCache <- newMVar HashMap.empty
 
     debug <- getDebugEnv

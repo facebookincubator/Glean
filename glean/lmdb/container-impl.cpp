@@ -149,6 +149,13 @@ void ContainerImpl::optimize(bool /* compact */) {
   }
 }
 
+void ContainerImpl::flush() {
+  requireOpen();
+  // LMDB transactions are durable on commit; force a sync of the data
+  // buffers to disk so a subsequent backup copy is fully persisted.
+  check(mdb_env_sync(db.get(), 1 /* force */));
+}
+
 std::unique_ptr<Database> ContainerImpl::openDatabase(
     Id start,
     rts::UsetId first_unit_id,

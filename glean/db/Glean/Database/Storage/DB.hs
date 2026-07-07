@@ -171,6 +171,9 @@ instance DatabaseOps DB where
     invoke $ glean_rocksdb_container_optimize s_ptr
       (fromIntegral (fromEnum compact))
 
+  flush db = withContainer db $ \s_ptr ->
+    invoke $ glean_rocksdb_container_flush s_ptr
+
   computeOwnership db base inv =
     unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
     using (invoke $ glean_rocksdb_get_ownership_unit_iterator db_ptr) $
@@ -347,6 +350,9 @@ foreign import ccall safe glean_rocksdb_get_unprocessed_batch_descriptors
 
 foreign import ccall safe glean_rocksdb_container_optimize
   :: Container -> CBool -> IO CString
+
+foreign import ccall safe glean_rocksdb_container_flush
+  :: Container -> IO CString
 
 foreign import ccall unsafe glean_rocksdb_database_container
   :: Ptr DB -> Container

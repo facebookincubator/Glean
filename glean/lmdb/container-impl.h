@@ -122,6 +122,8 @@ struct ContainerImpl final : Container {
 
   void optimize(bool compact) override;
 
+  void flush() override;
+
   MDB_dbi family(const Family& family) const;
 
   Txn txn_write() {

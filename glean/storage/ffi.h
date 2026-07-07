@@ -55,6 +55,8 @@ const char* glean_rocksdb_container_read_data(
 
 const char* glean_rocksdb_container_optimize(Container* db, bool compact);
 
+const char* glean_rocksdb_container_flush(Container* db);
+
 const char* glean_rocksdb_container_backup(Container* db, const char* path);
 
 const char* glean_rocksdb_container_checkpoint(Container* db, const char* path);

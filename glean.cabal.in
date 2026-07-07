@@ -227,6 +227,7 @@ library stubs
         Facebook.Service
         Glean.Auth
         Glean.BuildInfo
+        Glean.Database.Backup.Incomplete
         Glean.Datasource.Scribe.Write
         Glean.Init
         Glean.Server.PublishShards

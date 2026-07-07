@@ -264,6 +264,10 @@ data Env = Env
   , envCompleting :: TVar (HashMap Thrift.Repo (Async ()))
   , envCompletingDerived ::
       TVar (HashMap Thrift.Repo (HashMap PredicateId (Async ())))
+  , envShuttingDown :: TVar Bool
+      -- ^ Set on SIGTERM to reject new writes and quiesce the writer
+      -- threads while Incomplete DBs are backed up. See
+      -- 'Glean.Database.Backup.Incomplete'.
   , envReadOnly :: Bool
   , envMockWrites :: Bool
   , envStats :: Stats

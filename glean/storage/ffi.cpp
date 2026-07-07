@@ -68,6 +68,10 @@ const char* glean_rocksdb_container_optimize(
   return ffi::wrap([=] { container->optimize(compact); });
 }
 
+const char* glean_rocksdb_container_flush(Container* container) {
+  return ffi::wrap([=] { container->flush(); });
+}
+
 const char* glean_rocksdb_container_backup(
     Container* container,
     const char* path) {

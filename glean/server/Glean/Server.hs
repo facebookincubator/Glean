@@ -28,6 +28,7 @@ import qualified Thrift.Server.CppServer as ThriftServer
 #else
 import qualified Thrift.Server.HTTP as ThriftServer
 #endif
+import Util.Control.Exception (catchAll)
 import Util.EventBase
 import Util.Log
 import Util.STM
@@ -54,6 +55,7 @@ import Glean.Util.Some
 import Glean.Database.Config (Config(..))
 import Glean.Database.Env
 import Glean.Database.Types
+import Glean.Database.Backup.Incomplete (restoreIncompleteDatabasesOnStartup)
 import qualified Glean.Handler as GleanHandler
 import Glean.Impl.ConfigProvider (ConfigAPI)
 import qualified Glean.Index as Index
@@ -64,6 +66,8 @@ import Glean.Server.Sharding (
   withShardsUpdater,
   waitForTerminateSignalsAndGracefulShutdown)
 import Glean.Util.ConfigProvider
+import qualified Glean.ServerConfig.Types as ServerConfig
+import qualified Glean.Util.Observed as Observed
 
 #if ENABLE_S3
 import qualified Glean.Database.Backup.S3 as S3
@@ -102,12 +106,24 @@ main =
   in
 #endif
   withDatabases evb (cfgDBConfig cfg) configAPI $ \databases -> do
-  terminating <- newTVarIO False
-  withShardsUpdater evb cfg databases (1 :: Seconds) (readTVar terminating) $ do
+  withShardsUpdater evb cfg databases (1 :: Seconds)
+    (readTVar (envShuttingDown databases)) $ do
 
   fb303 <- newFb303 "gleandriver"
 
   logInfo "Starting server"
+
+  -- Preemption resilience (feature-gated via the live ServerConfig flag):
+  -- restore this tier's Incomplete backups (and reclaim them) BEFORE
+  -- advertising ALIVE, so the indexer's resumed writes don't land before the
+  -- partial DB is back. no_shards write servers have no shard-readiness
+  -- dependency blocking this.
+  serverConfig <- Observed.get (envServerConfig databases)
+  when (ServerConfig.config_backup_incomplete_on_shutdown serverConfig) $ do
+    logInfo "Restoring incomplete DBs before going alive"
+    restoreIncompleteDatabasesOnStartup databases `catchAll` \exc ->
+      logError $ "restore-incomplete: startup restore failed: " <> show exc
+
   portVar <- newTVarIO Nothing
 
   let
@@ -177,7 +193,6 @@ main =
        `race`
       waitForTerminateSignalsAndGracefulShutdown
                         databases
-                        terminating
                         (cfgGracefulShutdownTimeout cfg)
 
     waitToStart server = do

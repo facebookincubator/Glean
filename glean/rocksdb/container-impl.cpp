@@ -316,6 +316,25 @@ void ContainerImpl::optimize(bool compact) {
   }
 }
 
+void ContainerImpl::flush() {
+  requireOpen();
+  // Flush all column families (including batchDescriptors) to SST files so a
+  // subsequent CreateNewBackup snapshots a fully-flushed, reopenable image.
+  // Unlike optimize() this runs no CompactRange and drops no column families,
+  // so it is cheap enough to run inside the shutdown grace window. Flush every
+  // handle in a single multi-CF call so a failure on one CF doesn't leave the
+  // others unflushed.
+  std::vector<rocksdb::ColumnFamilyHandle*> handles;
+  handles.reserve(families.size());
+  for (auto handle : families) {
+    if (handle) {
+      handles.push_back(handle);
+    }
+  }
+  rocksdb::FlushOptions flush_options;
+  check(db->Flush(flush_options, handles));
+}
+
 std::unique_ptr<Database> ContainerImpl::openDatabase(
     Id start,
     rts::UsetId first_unit_id,

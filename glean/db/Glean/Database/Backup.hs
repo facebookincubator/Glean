@@ -11,6 +11,9 @@ module Glean.Database.Backup
   ( backuper
   , Event(..)
   , backupDatabase
+  , doRestoreFromSite
+  , withScratchDirectory
+  , withPackedSnapshot
   -- for testing
   , newestByRepo
   , bestRestore
@@ -226,6 +229,32 @@ hasExcludeProperty repo props policy = do
     hasProperty props (name,val) = HashMap.lookup name props == Just val
 
 
+-- | Open @repo@, select its storage, optionally flush (no compaction), pack a
+-- snapshot into a scratch directory, and run @cont@ inside 'Storage.backup'
+-- with the open handle, the packed file path, and its packed 'Data' (size).
+-- Shared by the normal (Complete) backup and the incomplete shutdown backup;
+-- each caller supplies its own logging, stats, upload 'Meta', TTL, and catalog
+-- updates.
+withPackedSnapshot
+  :: Env
+  -> Repo
+  -> Meta  -- ^ meta used to select the storage engine
+  -> Bool  -- ^ flush (no compaction) before snapshotting
+  -> (OpenDB -> FilePath -> Data -> IO a)
+  -> IO a
+withPackedSnapshot env@Env{..} repo meta doFlush cont = do
+  cfg <- Observed.get envServerConfig
+  withOpenDatabase env repo $ \odb@OpenDB{..} ->
+    withStorageFor env repo meta $ \storage -> do
+      when doFlush $ Storage.flush odbHandle
+      withScratchDirectory storage repo $ \scratch ->
+        Storage.backup odbHandle cfg scratch $ \path d ->
+          cont odb path d
+
+-- TODO(T278758573): refactor the open/select-storage/scratch/pack boilerplate
+-- below onto 'withPackedSnapshot' (as 'doIncompleteBackup' already does).
+-- Deferred because this is the production complete-backup path; do it as a
+-- separate change with the backup tests green.
 doBackup :: Site site => Env -> Repo -> Text -> site -> IO Bool
 doBackup env@Env{..} repo prefix site =
   backup `catch` \exc -> do
@@ -310,20 +339,7 @@ doRestore env@Env{..} repo meta
   <- metaCompleteness meta
   , Just (_, Some site, r_repo) <- fromRepoLocator envBackupBackends loc
   , r_repo == repo =
-    loggingAction (runLogRepo "restore" env repo) (const mempty) $ do
-      cfg@ServerConfig.Config{..} <- Observed.get envServerConfig
-      let maybeTimeout =
-            case config_restore_timeout of
-              Just seconds -> void . timeout (fromIntegral seconds * 1000000)
-              Nothing -> id
-      failed <- newIORef False
-      withStorageFor env repo meta $ \storage ->
-        maybeTimeout $ restore site storage cfg size `catch` \exc -> do
-          handler storage exc
-          writeIORef failed True
-
-      didFail <- readIORef failed
-      return (not didFail)
+    doRestoreFromSite env site repo meta size
 
   | otherwise = do
       atomically $ notify envListener $ RestoreStarted repo
@@ -336,21 +352,44 @@ doRestore env@Env{..} repo meta
   where
   say log s = log $ inRepo repo $ "restore: " ++ s
 
+-- | Restore a database from a specific 'Site'. The size (if known) is used
+-- only for the pre-download disk-space check (skipped when 'Nothing'). This is
+-- the completeness-agnostic core shared by the normal (Complete) restore and
+-- the incomplete startup-restore (see "Glean.Database.Backup.Incomplete").
+doRestoreFromSite
+  :: Site site
+  => Env -> site -> Repo -> Meta -> Maybe Int64 -> IO Bool
+doRestoreFromSite env@Env{..} site repo meta size =
+    loggingAction (runLogRepo "restore" env repo) (const mempty) $ do
+      cfg@ServerConfig.Config{..} <- Observed.get envServerConfig
+      let maybeTimeout =
+            case config_restore_timeout of
+              Just seconds -> void . timeout (fromIntegral seconds * 1000000)
+              Nothing -> id
+      failed <- newIORef False
+      withStorageFor env repo meta $ \storage ->
+        maybeTimeout $ restore storage cfg `catch` \exc -> do
+          handler storage exc
+          writeIORef failed True
+
+      didFail <- readIORef failed
+      return (not didFail)
+  where
+  say log s = log $ inRepo repo $ "restore: " ++ s
+
   restore
-    :: (Storage st, Site s)
-    => s
-    -> st
+    :: Storage st
+    => st
     -> ServerConfig.Config
-    -> Maybe Int64
     -> IO ()
-  restore site storage cfg bytes =
+  restore storage cfg =
       traceMsg envTracer (GleanTraceDownload repo) $ do
     atomically $ notify envListener $ RestoreStarted repo
     mbFreeBytes <- (Just <$> Storage.getFreeCapacity storage)
                   `catch` \(_ :: IOException) -> return Nothing
-    case (mbFreeBytes, bytes)  of
-      (Just freeBytes, Just size) -> do
-        let neededBytes = ceiling $ dbSizeDownloadFactor * fromIntegral size
+    case (mbFreeBytes, size)  of
+      (Just freeBytes, Just sz) -> do
+        let neededBytes = ceiling $ dbSizeDownloadFactor * fromIntegral sz
         when (freeBytes < neededBytes) $
           -- the catch-all exception handler will log and cancel the download
           throwIO $ ErrorCall $

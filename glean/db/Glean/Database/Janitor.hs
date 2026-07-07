@@ -193,6 +193,7 @@ runWithShards env myShards sm = do
     retentionChanges
       config_retention
       config_restore
+      config_backup_incomplete_on_shutdown
       now
       index
       itemAvailable

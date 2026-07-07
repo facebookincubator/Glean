@@ -169,6 +169,7 @@ instance DatabaseOps (Database LMDB) where
   addOwnership (Database db _) = addOwnership db
   registerACLUnits (Database db _) = registerACLUnits db
   optimize (Database db _) = optimize db
+  flush (Database db _) = flush db
   computeOwnership (Database db _) = computeOwnership db
   storeOwnership (Database db _) = storeOwnership db
   getOwnership (Database db _) = getOwnership db
