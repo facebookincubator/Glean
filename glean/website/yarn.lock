@@ -22,7 +22,7 @@
 
 "@algolia/autocomplete-core@^1.19.2":
   version "1.19.8"
-  resolved "https://registry.facebook.net/@algolia/autocomplete-core/-/autocomplete-core-1.19.8.tgz#7c84c771d28643fb00d09026c05013fb97aeea23"
+  resolved "https://registry.yarnpkg.com/@algolia/autocomplete-core/-/autocomplete-core-1.19.8.tgz#7c84c771d28643fb00d09026c05013fb97aeea23"
   integrity sha512-3YEorYg44niXcm7gkft3nXYItHd44e8tmh4D33CTszPgP0QWkaLEaFywiNyJBo7UL/mqObA/G9RYuU7R8tN1IA==
   dependencies:
     "@algolia/autocomplete-plugin-algolia-insights" "1.19.8"
@@ -37,7 +37,7 @@
 
 "@algolia/autocomplete-plugin-algolia-insights@1.19.8":
   version "1.19.8"
-  resolved "https://registry.facebook.net/@algolia/autocomplete-plugin-algolia-insights/-/autocomplete-plugin-algolia-insights-1.19.8.tgz#f60d21edbe2a42e6d4e2215430733e3f51641471"
+  resolved "https://registry.yarnpkg.com/@algolia/autocomplete-plugin-algolia-insights/-/autocomplete-plugin-algolia-insights-1.19.8.tgz#f60d21edbe2a42e6d4e2215430733e3f51641471"
   integrity sha512-ZvJWO8ZZJDpc1LNM2TTBdmQsZBLMR4rU5iNR2OYvEeFBiaf/0ESnRSSLQbryarJY4SVxtoz6A2ZtDMNM+iQEAA==
   dependencies:
     "@algolia/autocomplete-shared" "1.19.8"
@@ -49,7 +49,7 @@
 
 "@algolia/autocomplete-shared@1.19.8":
   version "1.19.8"
-  resolved "https://registry.facebook.net/@algolia/autocomplete-shared/-/autocomplete-shared-1.19.8.tgz#5d723d8bdb448efbb1b0e1c7ff94cc18e5b1dc0e"
+  resolved "https://registry.yarnpkg.com/@algolia/autocomplete-shared/-/autocomplete-shared-1.19.8.tgz#5d723d8bdb448efbb1b0e1c7ff94cc18e5b1dc0e"
   integrity sha512-h5hf2t8ejF6vlOgvLaZzQbWs5SyH2z4PAWygNAvvD/2RI29hdQ54ldUGwqVuj9Srs+n8XUKTPUqb7fvhBhQrnQ==
 
 "@algolia/client-abtesting@5.50.0":
@@ -1794,17 +1794,17 @@
 
 "@docsearch/core@4.6.3":
   version "4.6.3"
-  resolved "https://registry.facebook.net/@docsearch/core/-/core-4.6.3.tgz#9954c75c3ae28418e06f8e7537a920d6cd2bc22e"
+  resolved "https://registry.yarnpkg.com/@docsearch/core/-/core-4.6.3.tgz#9954c75c3ae28418e06f8e7537a920d6cd2bc22e"
   integrity sha512-rUOujwIpxJRgD7+kicVsI3D5sqBvdiRTquzWBpTEXZs8ZXfGbfzpus5HqumaNYTppN2HvH8E2yNuRwYdHJeOlA==
 
 "@docsearch/css@4.6.3":
   version "4.6.3"
-  resolved "https://registry.facebook.net/@docsearch/css/-/css-4.6.3.tgz#a94065af4a996dd927dc5dda383395e583dbd638"
+  resolved "https://registry.yarnpkg.com/@docsearch/css/-/css-4.6.3.tgz#a94065af4a996dd927dc5dda383395e583dbd638"
   integrity sha512-nlOwcXcsNAptQl4vlL4MA78qNJKO0Qlds5GuBjCoePgkebTXLSf8Qt1oyZ3YBshYupKXG9VRGEsk1zr23d+bzQ==
 
 "@docsearch/react@^3.9.0 || ^4.3.2":
   version "4.6.3"
-  resolved "https://registry.facebook.net/@docsearch/react/-/react-4.6.3.tgz#80df785f9c5e484c960b914a22ea2a3e4c7210ad"
+  resolved "https://registry.yarnpkg.com/@docsearch/react/-/react-4.6.3.tgz#80df785f9c5e484c960b914a22ea2a3e4c7210ad"
   integrity sha512-Bg2wdDsoQVlNCcEKuEJAU04tvHCqgx8rIu+uIoM4pRtcx3TBKJuXutJik3LTA8LRc9YEyHkrYUrmcC0D7BYf+g==
   dependencies:
     "@algolia/autocomplete-core" "1.19.2"
@@ -1813,7 +1813,7 @@
 
 "@docusaurus/babel@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/babel/-/babel-3.10.1.tgz#2f714f682117658ba43d308e9b35b6a73a105227"
+  resolved "https://registry.yarnpkg.com/@docusaurus/babel/-/babel-3.10.1.tgz#2f714f682117658ba43d308e9b35b6a73a105227"
   integrity sha512-DZzFO1K3v/GoEt1fx1DiYHF4en+PuhtQf1AkQJa5zu3CoeKSpr5cpQRUlz3jr0m44wyzmSXu9bVpfir+N4+8bg==
   dependencies:
     "@babel/core" "^7.25.9"
@@ -1833,7 +1833,7 @@
 
 "@docusaurus/bundler@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/bundler/-/bundler-3.10.1.tgz#82fa5079f3787a67502e25f82d37d05ec5de0cc3"
+  resolved "https://registry.yarnpkg.com/@docusaurus/bundler/-/bundler-3.10.1.tgz#82fa5079f3787a67502e25f82d37d05ec5de0cc3"
   integrity sha512-HIqQPvbqnnQRe4NsBd1774KRarjXqS6wHsWELtyuSs1gCfvixJO2jUGH/OEBtr1Gvzpw+ze5CjGMvSJ8UE1KUw==
   dependencies:
     "@babel/core" "^7.25.9"
@@ -1863,7 +1863,7 @@
 
 "@docusaurus/core@3.10.1", "@docusaurus/core@^3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/core/-/core-3.10.1.tgz#3f8bdb97451b4df14f2a3b39ab0186366fbf8fbe"
+  resolved "https://registry.yarnpkg.com/@docusaurus/core/-/core-3.10.1.tgz#3f8bdb97451b4df14f2a3b39ab0186366fbf8fbe"
   integrity sha512-3pf2fXXw0eVk8WnC3T4LIigRDupcpvngpKo9Vy7mYyBhuddc0klDUuZAIfzMoK6z05pdlk6EFC/vBSX43+1O5w==
   dependencies:
     "@docusaurus/babel" "3.10.1"
@@ -1911,7 +1911,7 @@
 
 "@docusaurus/cssnano-preset@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/cssnano-preset/-/cssnano-preset-3.10.1.tgz#4b6bafeca8bb9423364d2fd6683c28e2f85a4665"
+  resolved "https://registry.yarnpkg.com/@docusaurus/cssnano-preset/-/cssnano-preset-3.10.1.tgz#4b6bafeca8bb9423364d2fd6683c28e2f85a4665"
   integrity sha512-eNfHGcTKCSq6xmcavAkX3RRclHaE2xRCMParlDXLdXVP01/a2e/jKXMj/0ULnLFQSNwwuI62L0Ge8J+nZsR7UQ==
   dependencies:
     cssnano-preset-advanced "^6.1.2"
@@ -1921,7 +1921,7 @@
 
 "@docusaurus/logger@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/logger/-/logger-3.10.1.tgz#34c964e32e18f120e30f80171a38cfefe72cfb4b"
+  resolved "https://registry.yarnpkg.com/@docusaurus/logger/-/logger-3.10.1.tgz#34c964e32e18f120e30f80171a38cfefe72cfb4b"
   integrity sha512-oPjNFnfJsRCkePVjkGrxWGq4MvJKRQT0r9jOP0eRBTZ7Wr9FAbzdP/Gjs0I2Ss6YRkPoEgygKG112OkE6skvJw==
   dependencies:
     chalk "^4.1.2"
@@ -1929,7 +1929,7 @@
 
 "@docusaurus/mdx-loader@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/mdx-loader/-/mdx-loader-3.10.1.tgz#050ae9bc614158a4ec07a628aa75fa9ae90d7e82"
+  resolved "https://registry.yarnpkg.com/@docusaurus/mdx-loader/-/mdx-loader-3.10.1.tgz#050ae9bc614158a4ec07a628aa75fa9ae90d7e82"
   integrity sha512-GRmeb/wQ+iXRrFwcHBfgQhrJxGElgCsoTWZYDhccjsZVne1p8MK/EpQVIloXttz76TCe78kKD5AEG9n1xc1oxQ==
   dependencies:
     "@docusaurus/logger" "3.10.1"
@@ -1959,7 +1959,7 @@
 
 "@docusaurus/module-type-aliases@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/module-type-aliases/-/module-type-aliases-3.10.1.tgz#22d39177c296786eb6e0d940699cd590cc93ca77"
+  resolved "https://registry.yarnpkg.com/@docusaurus/module-type-aliases/-/module-type-aliases-3.10.1.tgz#22d39177c296786eb6e0d940699cd590cc93ca77"
   integrity sha512-YoOZKUdGlp8xSYhuAkGdSo5Ydkbq4V4eK3sD8v0a2hloxCWdQbNBhkc+Ko9QyjpESc0BYcIGM5iHVAy5hdFV6w==
   dependencies:
     "@docusaurus/types" "3.10.1"
@@ -1972,7 +1972,7 @@
 
 "@docusaurus/plugin-content-blog@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/plugin-content-blog/-/plugin-content-blog-3.10.1.tgz#0bd8de700ccbd8e95d920df2613304ef59abe72b"
+  resolved "https://registry.yarnpkg.com/@docusaurus/plugin-content-blog/-/plugin-content-blog-3.10.1.tgz#0bd8de700ccbd8e95d920df2613304ef59abe72b"
   integrity sha512-mmkgE6Q2+K74tnkou7tXlpDLvoCU/qkSa2GSQ3XUiHWvcebCoDQzS670RR3tO8PmaWlIyWWISYWzZLuMfxunRA==
   dependencies:
     "@docusaurus/core" "3.10.1"
@@ -1997,7 +1997,7 @@
 
 "@docusaurus/plugin-content-docs@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/plugin-content-docs/-/plugin-content-docs-3.10.1.tgz#261e0e982e4a937c05b462e3c5729374f433b752"
+  resolved "https://registry.yarnpkg.com/@docusaurus/plugin-content-docs/-/plugin-content-docs-3.10.1.tgz#261e0e982e4a937c05b462e3c5729374f433b752"
   integrity sha512-2jRVrtzjf8LClGTHQlwlwuD3wQXRx3WEoF7XUarJ8Ou+0onV+SLtejsyfY9JLpfUh9hPhXM4pbBGkyAY4Bi3HQ==
   dependencies:
     "@docusaurus/core" "3.10.1"
@@ -2021,7 +2021,7 @@
 
 "@docusaurus/plugin-content-pages@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/plugin-content-pages/-/plugin-content-pages-3.10.1.tgz#8c6ffc2079ed0262548ecc4df1dea6add6aa9673"
+  resolved "https://registry.yarnpkg.com/@docusaurus/plugin-content-pages/-/plugin-content-pages-3.10.1.tgz#8c6ffc2079ed0262548ecc4df1dea6add6aa9673"
   integrity sha512-huJpaRPMl42nsFwuCXvV8bVDj2MazuwRJIUylI/RSlmZeJssVoZXeCjVf1y+1Drtpa9SKcdGn8yoJ76IRJijtw==
   dependencies:
     "@docusaurus/core" "3.10.1"
@@ -2035,7 +2035,7 @@
 
 "@docusaurus/plugin-css-cascade-layers@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/plugin-css-cascade-layers/-/plugin-css-cascade-layers-3.10.1.tgz#440578d95cbe1a6120936fa83df868d2626cd1d8"
+  resolved "https://registry.yarnpkg.com/@docusaurus/plugin-css-cascade-layers/-/plugin-css-cascade-layers-3.10.1.tgz#440578d95cbe1a6120936fa83df868d2626cd1d8"
   integrity sha512-r//fn+MNHkE1wCof8T29VAQezt1enGCpsFxoziBbvLgBM4JfXN2P3rxrBaavHmvLvm7lYkpJeitcDthwnmWCTw==
   dependencies:
     "@docusaurus/core" "3.10.1"
@@ -2046,7 +2046,7 @@
 
 "@docusaurus/plugin-debug@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/plugin-debug/-/plugin-debug-3.10.1.tgz#b8b7b24d9a7d185fd8a56a030f90145d3bfd8239"
+  resolved "https://registry.yarnpkg.com/@docusaurus/plugin-debug/-/plugin-debug-3.10.1.tgz#b8b7b24d9a7d185fd8a56a030f90145d3bfd8239"
   integrity sha512-9KqOpKNfAyqGZykRb9LhIT/vyRF6sm/ykhjj/39JvaJahDS+jZJE0Z1Wfz9q3DUNDTMNN0Q7u/kk4rKKU+IJuA==
   dependencies:
     "@docusaurus/core" "3.10.1"
@@ -2058,7 +2058,7 @@
 
 "@docusaurus/plugin-google-analytics@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/plugin-google-analytics/-/plugin-google-analytics-3.10.1.tgz#ac15afc77386e0352edb8a1698d993aa5de36ffc"
+  resolved "https://registry.yarnpkg.com/@docusaurus/plugin-google-analytics/-/plugin-google-analytics-3.10.1.tgz#ac15afc77386e0352edb8a1698d993aa5de36ffc"
   integrity sha512-8o0P1KtmgdYQHH+oInitPpRWI0Of5XednAX4+DMhQNSmGSRNrsEEHg1ebv35m9AgRClfAytCJ5jA9KvcASTyuA==
   dependencies:
     "@docusaurus/core" "3.10.1"
@@ -2068,7 +2068,7 @@
 
 "@docusaurus/plugin-google-gtag@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/plugin-google-gtag/-/plugin-google-gtag-3.10.1.tgz#0482b83b9bc411aa99a432be2b39d2e53a00e2e0"
+  resolved "https://registry.yarnpkg.com/@docusaurus/plugin-google-gtag/-/plugin-google-gtag-3.10.1.tgz#0482b83b9bc411aa99a432be2b39d2e53a00e2e0"
   integrity sha512-pu3xIUo5o/zCMLfUY9BO5KOwSH0zIsAGyFRPvXHayFSA5XIhCU/SFuB0g0ZNjFn9niZLCaNvoeAuOGFJZq0fdw==
   dependencies:
     "@docusaurus/core" "3.10.1"
@@ -2079,7 +2079,7 @@
 
 "@docusaurus/plugin-google-tag-manager@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/plugin-google-tag-manager/-/plugin-google-tag-manager-3.10.1.tgz#eaf5765d6f82b4fb661d92a793d1883f9d1ec106"
+  resolved "https://registry.yarnpkg.com/@docusaurus/plugin-google-tag-manager/-/plugin-google-tag-manager-3.10.1.tgz#eaf5765d6f82b4fb661d92a793d1883f9d1ec106"
   integrity sha512-f6fyGHiCm7kJHBtAisGQS5oNBnpnMTYQZxDXeVrnw/3zWU+LMA22pr6UHGYkBKDbN+qPC5QHG3NuOfzQLq3+Lw==
   dependencies:
     "@docusaurus/core" "3.10.1"
@@ -2089,7 +2089,7 @@
 
 "@docusaurus/plugin-sitemap@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/plugin-sitemap/-/plugin-sitemap-3.10.1.tgz#66a6974bb2fd1b9d8f5cb0f3c5ecd2201c118565"
+  resolved "https://registry.yarnpkg.com/@docusaurus/plugin-sitemap/-/plugin-sitemap-3.10.1.tgz#66a6974bb2fd1b9d8f5cb0f3c5ecd2201c118565"
   integrity sha512-C26MbmmqgdjkDq1htaZ3aD7LzEDKFWXfpyQpt0EOUThuq5nV77zDaedV20yHcVo9p+3ey9aZ4pbHA0D3QcZTzg==
   dependencies:
     "@docusaurus/core" "3.10.1"
@@ -2104,7 +2104,7 @@
 
 "@docusaurus/plugin-svgr@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/plugin-svgr/-/plugin-svgr-3.10.1.tgz#c217c24d6d23fd2bc6f54d44c040635b49d6b36e"
+  resolved "https://registry.yarnpkg.com/@docusaurus/plugin-svgr/-/plugin-svgr-3.10.1.tgz#c217c24d6d23fd2bc6f54d44c040635b49d6b36e"
   integrity sha512-6SFxsmjWFkVLDmBUvFK6i72QjUwqyQFe4Ovz+SUJophJjOyVG3ZZG5IQpBC/kX/Gfv1yWeU9nWauH6F6Q7QX/Q==
   dependencies:
     "@docusaurus/core" "3.10.1"
@@ -2118,7 +2118,7 @@
 
 "@docusaurus/preset-classic@^3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/preset-classic/-/preset-classic-3.10.1.tgz#faf330d96aedc9083a59bec09d966ae4dfc8b2fb"
+  resolved "https://registry.yarnpkg.com/@docusaurus/preset-classic/-/preset-classic-3.10.1.tgz#faf330d96aedc9083a59bec09d966ae4dfc8b2fb"
   integrity sha512-YO/FL8v1zmbxoTso6mjMz/RDjhaTJxb1UpFFTDdY5847LLDCeyYiYlrhyTbgN1RIN3xnkLKZ9Lj1x8hUzI4JOg==
   dependencies:
     "@docusaurus/core" "3.10.1"
@@ -2139,7 +2139,7 @@
 
 "@docusaurus/theme-classic@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/theme-classic/-/theme-classic-3.10.1.tgz#deed8cf73cc0f56113e53775cbb3b168c3c61566"
+  resolved "https://registry.yarnpkg.com/@docusaurus/theme-classic/-/theme-classic-3.10.1.tgz#deed8cf73cc0f56113e53775cbb3b168c3c61566"
   integrity sha512-VU1RK0qb2pab0si4r7HFK37cYco8VzqLj3u1PspVipSr/z/GPVKHO4/HXbnePqHoWDk8urjyGSeatH0NIMBM1A==
   dependencies:
     "@docusaurus/core" "3.10.1"
@@ -2171,7 +2171,7 @@
 
 "@docusaurus/theme-common@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/theme-common/-/theme-common-3.10.1.tgz#cbfec82b1b107be5c229811ed9caae14a501361c"
+  resolved "https://registry.yarnpkg.com/@docusaurus/theme-common/-/theme-common-3.10.1.tgz#cbfec82b1b107be5c229811ed9caae14a501361c"
   integrity sha512-0YtmIeoNo1fIw65LO8+/1dPgmDV86UmhMkow37gzjytuiCSQm9xob6PJy0L4kuQEMTLfUOGvkXvZr7GPrHquMA==
   dependencies:
     "@docusaurus/mdx-loader" "3.10.1"
@@ -2189,7 +2189,7 @@
 
 "@docusaurus/theme-search-algolia@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/theme-search-algolia/-/theme-search-algolia-3.10.1.tgz#6f422058711629ce8d7c2f17e1e54efa075c626e"
+  resolved "https://registry.yarnpkg.com/@docusaurus/theme-search-algolia/-/theme-search-algolia-3.10.1.tgz#6f422058711629ce8d7c2f17e1e54efa075c626e"
   integrity sha512-OTaARARVZj2GvkJQjB+1jOIxntRaXea+G+fMsNqrZBAU1O1vJKDW22R7kECOHW27oJCLFN9HKaZeRrfAUyviug==
   dependencies:
     "@algolia/autocomplete-core" "^1.19.2"
@@ -2212,7 +2212,7 @@
 
 "@docusaurus/theme-translations@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/theme-translations/-/theme-translations-3.10.1.tgz#c3119a015652290eea560ca45ac775963d6eb75b"
+  resolved "https://registry.yarnpkg.com/@docusaurus/theme-translations/-/theme-translations-3.10.1.tgz#c3119a015652290eea560ca45ac775963d6eb75b"
   integrity sha512-cLMyaKivjBVWKMJuWqyFVVgtqe8DPJNPkog0bn8W1MDVAKcPdxRFycBfC1We1RaNp7Rdk513bmtW78RR6OBxBw==
   dependencies:
     fs-extra "^11.1.1"
@@ -2220,7 +2220,7 @@
 
 "@docusaurus/types@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/types/-/types-3.10.1.tgz#d42837938ae43ca2be0ca47e63e00476b5eb94be"
+  resolved "https://registry.yarnpkg.com/@docusaurus/types/-/types-3.10.1.tgz#d42837938ae43ca2be0ca47e63e00476b5eb94be"
   integrity sha512-XYMK8k1szDCFMw2V+Xyen0g7Kee1sP3dtFnl7vkGkZOkeAJ/oPDQPL8iz4HBKOo/cwU8QeV6onVjMqtP+tFzsw==
   dependencies:
     "@mdx-js/mdx" "^3.0.0"
@@ -2236,7 +2236,7 @@
 
 "@docusaurus/utils-common@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/utils-common/-/utils-common-3.10.1.tgz#6350b4898691e765de750f90eade0e0fa7902d99"
+  resolved "https://registry.yarnpkg.com/@docusaurus/utils-common/-/utils-common-3.10.1.tgz#6350b4898691e765de750f90eade0e0fa7902d99"
   integrity sha512-5mFSgEADtnFxFH7RLw02QA5MpU5JVUCj0MPeIvi/aF4Fi45tQRIuTwXoXDqJ+1VfQJuYJGz3SI63wmGz4HvXzA==
   dependencies:
     "@docusaurus/types" "3.10.1"
@@ -2244,7 +2244,7 @@
 
 "@docusaurus/utils-validation@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/utils-validation/-/utils-validation-3.10.1.tgz#ddbcce997a5506424cdd16abf6845cc51692acae"
+  resolved "https://registry.yarnpkg.com/@docusaurus/utils-validation/-/utils-validation-3.10.1.tgz#ddbcce997a5506424cdd16abf6845cc51692acae"
   integrity sha512-cRv1X69jwaWv47waglllgZVWzeBFLhl53XT/XED/83BerVBTC5FTP8WTcVl8Z6sZOegDSwitu/wpCSPCDOT6lg==
   dependencies:
     "@docusaurus/logger" "3.10.1"
@@ -2258,7 +2258,7 @@
 
 "@docusaurus/utils@3.10.1":
   version "3.10.1"
-  resolved "https://registry.facebook.net/@docusaurus/utils/-/utils-3.10.1.tgz#535968caa2c9bff69f997a081b98b95b3c5d3785"
+  resolved "https://registry.yarnpkg.com/@docusaurus/utils/-/utils-3.10.1.tgz#535968caa2c9bff69f997a081b98b95b3c5d3785"
   integrity sha512-3ojeJry9xBYdJO6qoyyzqeJFSJBVx2mXhyDzSdjwL2+URFQMf+h25gG38iswGImicK0ELjTd1EL2xzk8hf3QPw==
   dependencies:
     "@docusaurus/logger" "3.10.1"
@@ -3290,7 +3290,7 @@
 
 "@types/gtag.js@^0.0.20":
   version "0.0.20"
-  resolved "https://registry.facebook.net/@types/gtag.js/-/gtag.js-0.0.20.tgz#e47edabb4ed5ecac90a079275958e6c929d7c08a"
+  resolved "https://registry.yarnpkg.com/@types/gtag.js/-/gtag.js-0.0.20.tgz#e47edabb4ed5ecac90a079275958e6c929d7c08a"
   integrity sha512-wwAbk3SA2QeU67unN7zPxjEHmPmlXwZXZvQEpbEUQuMCRGgKyE1m6XDuTUA9b6pCGb/GqJmdfMOY5LuDjJSbbg==
 
 "@types/hast@^2.0.0":
@@ -3934,7 +3934,7 @@ ansi-styles@^6.1.0:
 
 ansis@^3.2.0:
   version "3.17.0"
-  resolved "https://registry.facebook.net/ansis/-/ansis-3.17.0.tgz#fa8d9c2a93fe7d1177e0c17f9eeb562a58a832d7"
+  resolved "https://registry.yarnpkg.com/ansis/-/ansis-3.17.0.tgz#fa8d9c2a93fe7d1177e0c17f9eeb562a58a832d7"
   integrity sha512-0qWUglt9JEqLFr3w1I1pbrChn1grhaiAR2ocX1PP/flRmxgtwTzPFFFnfIlD6aMOLQZgSuCRlidD70lvx8yhzg==
 
 anymatch@~3.1.2:
@@ -4916,7 +4916,7 @@ cookie@>=0.7.0, cookie@^0.7.1:
 
 copy-text-to-clipboard@^3.2.0:
   version "3.2.2"
-  resolved "https://registry.facebook.net/copy-text-to-clipboard/-/copy-text-to-clipboard-3.2.2.tgz#99bc79db3f2d355ec33a08d573aff6804491ddb9"
+  resolved "https://registry.yarnpkg.com/copy-text-to-clipboard/-/copy-text-to-clipboard-3.2.2.tgz#99bc79db3f2d355ec33a08d573aff6804491ddb9"
   integrity sha512-T6SqyLd1iLuqPA90J5N4cTalrtovCySh58iiZDGJ6FGznbclKh4UI+FGacQSgFzwKG77W7XT5gwbVEbd9cIH1A==
 
 copy-webpack-plugin@^11.0.0:
@@ -6534,7 +6534,7 @@ events@^3.2.0:
 
 execa@^5.1.1:
   version "5.1.1"
-  resolved "https://registry.facebook.net/execa/-/execa-5.1.1.tgz#f80ad9cbf4298f7bd1d4c9555c21e93741c411dd"
+  resolved "https://registry.yarnpkg.com/execa/-/execa-5.1.1.tgz#f80ad9cbf4298f7bd1d4c9555c21e93741c411dd"
   integrity sha512-8uSpZZocAZRBAPIEINJj3Lo9HyGitllczc27Eh5YYojjMFMn8yHMDMaUHE2Jqfq05D/wucwI4JGURyXt1vchyg==
   dependencies:
     cross-spawn "^7.0.3"
@@ -11420,7 +11420,7 @@ react-live@^2.2.3:
 
 react-loadable-ssr-addon-v5-slorber@^1.0.3:
   version "1.0.3"
-  resolved "https://registry.facebook.net/react-loadable-ssr-addon-v5-slorber/-/react-loadable-ssr-addon-v5-slorber-1.0.3.tgz#bb3791bf481222c63a5bc6b96ee23f68cb5614b9"
+  resolved "https://registry.yarnpkg.com/react-loadable-ssr-addon-v5-slorber/-/react-loadable-ssr-addon-v5-slorber-1.0.3.tgz#bb3791bf481222c63a5bc6b96ee23f68cb5614b9"
   integrity sha512-GXfh9VLwB5ERaCsU6RULh7tkemeX15aNh6wuMEBtfdyMa7fFG8TXrhXlx1SoEK2Ty/l6XIkzzYIQmyaWW3JgdQ==
   dependencies:
     "@babel/runtime" "^7.10.3"
@@ -12232,7 +12232,7 @@ serialize-javascript@>=7.0.3, serialize-javascript@^6.0.0, serialize-javascript@
 
 serve-handler@^6.1.7:
   version "6.1.7"
-  resolved "https://registry.facebook.net/serve-handler/-/serve-handler-6.1.7.tgz#e9bb864e87ee71e8dab874cde44d146b77e3fb78"
+  resolved "https://registry.yarnpkg.com/serve-handler/-/serve-handler-6.1.7.tgz#e9bb864e87ee71e8dab874cde44d146b77e3fb78"
   integrity sha512-CinAq1xWb0vR3twAv9evEU8cNWkXCb9kd5ePAHUKJBkOsUpR1wt/CvGdeca7vqumL1U5cSaeVQ6zZMxiJ3yWsg==
   dependencies:
     bytes "3.0.0"
@@ -13833,7 +13833,7 @@ webpack@^5.88.1, webpack@^5.95.0:
 
 webpackbar@^7.0.0:
   version "7.0.0"
-  resolved "https://registry.facebook.net/webpackbar/-/webpackbar-7.0.0.tgz#7228d32881af2392381b6514499ddea73cdf218a"
+  resolved "https://registry.yarnpkg.com/webpackbar/-/webpackbar-7.0.0.tgz#7228d32881af2392381b6514499ddea73cdf218a"
   integrity sha512-aS9soqSO2iCHgqHoCrj4LbfGQUboDCYJPSFOAchEK+9psIjNrfSWW4Y0YEz67MKURNvMmfo0ycOg9d/+OOf9/Q==
   dependencies:
     ansis "^3.2.0"
