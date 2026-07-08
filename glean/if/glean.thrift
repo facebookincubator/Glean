@@ -1341,7 +1341,5 @@ struct PredicateAnnotation {
 typedef list<Fact> (hs.type = "Vector") list_Fact_2137
 typedef list<Id> (hs.type = "Vector") list_Id_2029
 typedef list<i64> (hs.type = "VectorStorable") list_i64
-typedef map<Id, list<FactDependencies>> (
-  hs.type = "HashMap",
-) map_Id_list_FactDependencies_964
+typedef map<Id, list<FactDependencies>> (hs.type = "HashMap") map_Id_list_FactDependencies_964
 typedef map<UnitName, listOfIds> (hs.type = "HashMap") map_UnitName_listOfIds
