@@ -18,7 +18,7 @@ import Control.Monad
 import Control.Monad.Extra
 import qualified Data.HashMap.Strict as HashMap
 import Data.List
-import Data.List.Extra (nubOrdOn)
+import Data.List.Extra (nubOrdOn, takeEnd)
 import Data.List.NonEmpty (NonEmpty(..))
 import qualified Data.List.NonEmpty as NonEmpty
 import Data.Maybe
@@ -261,12 +261,12 @@ dbRetentionForRepo
     isAvailable = isLocal |||> isAvailableM
     hasDependencies = not . missingDependencies dbIndex
 
-    -- when retain_per_day is set, we filter out all DBs but the most N recent ones per day.
+    -- when retain_per_day is set, we filter out all DBs but the N oldest ones per day.
     dbDay = utctDay . posixEpochTimeToUTCTime . dbTime . itemMeta
     perDay = case retainPerDay of
       Nothing -> id
       Just n  ->
-        concatMap (take n) .
+        concatMap (takeEnd n) .
         groupBy (\a b -> dbDay a == dbDay b) .
         filter (isComplete &&& hasDependencies)
 

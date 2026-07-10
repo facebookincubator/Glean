@@ -442,9 +442,9 @@ retainPerDayTest = TestCase $ withPerDayDBs $ \evb cfgAPI dbdir backupdir -> do
   runDatabaseJanitor env
   waitDel env
   dbs <- listDBs env
-  -- retain_per_day=1 → keep the newest DB from each of the 3 days.
+  -- retain_per_day=1 → keep the oldest DB from each of the 3 days.
   assertEqual "after"
-    [ "0001", "0004", "0007" ]
+    [ "0003", "0006", "0009" ]
     (sort $ map (repo_hash . database_repo) dbs)
 
 retainPerDayWithAtMostTest :: Test
@@ -463,11 +463,11 @@ retainPerDayWithAtMostTest =
   runDatabaseJanitor env
   waitDel env
   dbs <- listDBs env
-  -- retain_per_day=2 keeps the 2 newest per day (6 candidates);
+  -- retain_per_day=2 keeps the 2 oldest per day (6 candidates);
   -- retain_at_most=4 caps the result to the 4 newest of those =
   -- 2 from day 0 + 2 from day 1.
   assertEqual "after"
-    [ "0001", "0002", "0004", "0005" ]
+    [ "0002", "0003", "0005", "0006" ]
     (sort $ map (repo_hash . database_repo) dbs)
 
 retainPerDayWithDeleteIfOlderTest :: Test
@@ -488,10 +488,10 @@ retainPerDayWithDeleteIfOlderTest =
   runDatabaseJanitor env
   waitDel env
   dbs <- listDBs env
-  -- per_day=2 keeps top 2 per day (6 candidates across the 3 days);
+  -- per_day=2 keeps the 2 oldest per day (6 candidates across the 3 days);
   -- delete_if_older=1 (1d) overrides the at_most=4, only the recent day's DBs are kept.
   assertEqual "after"
-    [ "0001", "0002" ]
+    [ "0002", "0003" ]
     (sort $ map (repo_hash . database_repo) dbs)
 
 retainAtLeastTest :: Test
