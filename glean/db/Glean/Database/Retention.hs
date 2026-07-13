@@ -273,7 +273,7 @@ dbRetentionForRepo
     -- all DBs with the required/excluded properties, sorted by most recent first
     sorted =
       perDay $
-      sortOn (Down . dbTime . itemMeta) $
+      sortOn (\i -> (Down (dbTime (itemMeta i)), itemRepo i)) $
       filter (hasAllProperties retention_required_properties) $
       filter (not . hasAnyProperties retention_excluded_properties) $
       NonEmpty.toList dbs
