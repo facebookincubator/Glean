@@ -30,9 +30,24 @@ data Driver opts = Driver
   { driverIndexer :: Indexer opts
       -- ^ test data generator, for a given test group
   , driverGroups :: opts -> [Group]
-      -- ^ groups - Test will be executed once for each group, with
+      -- ^ groups - the Test will be executed once for each group, with
       -- 'testGroup' set appropriately. If empty, test will be
-      -- executed once with 'testGroup' set to "".
+      -- executed once with 'testGroup' set to "". The golden output
+      -- can be different for each group: the first group in the list
+      -- uses @.out@, the second and subsequent groups use @.out.group@
+      -- if the output differs from the contents of @.out@.
+  , driverOutSuffix :: Maybe String
+      -- ^ If set, the extension for golden outputs is
+      -- @.out.suffix[.group]@ instead of @.out[.group]@. This can be
+      -- used if the test needs different outputs depending on some
+      -- aspect of the environment such as the compiler/indexer
+      -- version.
+      --
+      -- NOTE: when a test uses `driverOutSuffix` and has multiple
+      -- output files, when regenerating the outputs with `--replace`
+      -- it will be necessary to run the test in all its different
+      -- ways to regenerate all the outputs.
+      --
   , driverTransforms :: Transforms
       -- ^ Additional query result transformers.
   , driverCreateDatabase :: CreateDatabase opts
@@ -58,6 +73,7 @@ driverFromIndexer :: Indexer opts -> Driver opts
 driverFromIndexer indexer = Driver
   { driverIndexer = indexer
   , driverGroups = const []
+  , driverOutSuffix = Nothing
   , driverTransforms = mempty
   , driverCreateDatabase = defaultCreateDatabase
   }
