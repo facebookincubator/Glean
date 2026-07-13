@@ -139,8 +139,6 @@ genericUserQuery
 genericUserQuery env repo query enc = do
   config@ServerConfig.Config{..} <- Observed.get (envServerConfig env)
   checkAclsEnabled <- aclCheckEnabled
-  logInfo $ "[glean acl] codesearch/glean:check_acls = " ++
-    show checkAclsEnabled
   aclGroupNames <- if checkAclsEnabled
         then envResolveAclGroups env
         else pure Nothing
