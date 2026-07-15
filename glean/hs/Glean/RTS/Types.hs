@@ -143,6 +143,7 @@ eqType version a b = case (a,b) of
   (NatTy, NatTy) -> True
   (StringTy, StringTy) -> True
   (ArrayTy a, ArrayTy b) -> eqType version a b
+  (SetTy a, SetTy b) -> eqType version a b
   (RecordTy as, RecordTy bs) ->
     let isTuple = all (Text.isInfixOf "tuplefield"  . fieldDefName)
         -- previous to version 7 records were always compared structurally
