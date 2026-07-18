@@ -92,7 +92,7 @@ genNamespace namespaces version
     , " *"
     , " * \x40generated"
     , " * Regenerate with glean/schema/gen/Glean/Schema/Gen/Rust.hs"
-    , " *  buck2 run glean/schema/gen:gen-schema -- --dir glean/schema/source --rust pyrefly/pyrefly/lib/report/glean"
+    , " *  buck2 run glean/schema/gen:gen-schema -- --dir glean/schema/source --rust pyrefly/crates/pyrefly_glean_schema/src/report/glean"
     , " */"
     , ""
     , "#![allow(warnings)]"
