@@ -20,23 +20,7 @@ predicate ErlangResolveLocation:
   { { Name, File, { span = Span }, nothing }, Entity } where
   (
     erlang.DeclarationsByFile { file = File, span = Span, declaration = Declaration };
-    (
-      { func = { fqn = {name = Name} } } = Declaration
-    ) | (
-      { macro_ = { name = Name } } = Declaration
-    ) | (
-      { record_ = { name = Name } } = Declaration
-    ) | (
-      { type_ = { name = Name } } = Declaration
-    ) | (
-      { header_ = { name = Name } } = Declaration
-    ) | (
-      { callback_ = { name = Name } } = Declaration
-    ) | (
-      { record_field = { field_name = Name } } = Declaration
-    ) | (
-      { module_ = { name = Name } } = Declaration
-    );
+    ErlangDeclarationName { Declaration, Name };
     Entity = { decl = Declaration };
   ) | (
     erlang.MacroUsagesByFile { file = File, span = Span, usage = Usage };
@@ -63,23 +47,7 @@ predicate ErlangEntityLocation:
   (
     { decl = D } = Entity;
     erlang.DeclarationLocation { declaration = D, file = File, span = Span };
-    (
-      { func = erlang.FunctionDeclaration { fqn = {name = Name} } } = D
-    ) | (
-      { macro_ = erlang.MacroDeclaration { name = Name } } = D
-    ) | (
-      { record_ = erlang.RecordDeclaration { name = Name } } = D
-    ) | (
-      { type_ = erlang.TypeDeclaration { name = Name } } = D
-    ) | (
-      { header_ = erlang.HeaderDeclaration { name = Name } } = D
-    ) | (
-      { callback_ = erlang.CallbackDeclaration { name = Name } } = D
-    ) | (
-      { record_field = erlang.RecordFieldDeclaration { field_name = Name } } = D
-    ) | (
-      { module_ = erlang.ModuleDeclaration { name = Name } } = D
-    );
+    ErlangDeclarationName { D, Name };
   ) | (
     { macro_usage = Usage } = Entity;
     erlang.MacroUsageLocation { usage = Usage, file = File, span = Span };
@@ -88,6 +56,45 @@ predicate ErlangEntityLocation:
     { var_ = V } = Entity;
     erlang.VarLocation { var_ = V, file = File, span = Span };
     erlang.VarDeclaration { name = Name } = V;
+  ) | (
+    # Thrift-generated Erlang without an emitted DeclarationLocation:
+    # surface the canonical thrift-side file at start-of-file. Suppressed
+    # when a DeclarationLocation exists (checked-in codegen) so the .erl
+    # remains the go-to-def target; users can hop to the thrift via
+    # ErlangEntityIdl.
+    { decl = D } = Entity;
+    erlang.ErlangToThrift { from = D, to = Thrift };
+    !(erlang.DeclarationLocation { declaration = D });
+    fbthrift.DeclarationFile { Thrift, fbthrift.File File };
+    Span = { start = 0, length = 0 };
+    ErlangDeclarationName { D, Name };
+  );
+
+# Extract the identifier name from any `erlang.Declaration` variant.
+# `record_field` uses `field_name` rather than `name`; every other variant
+# has a `name` field on its inner declaration.
+predicate ErlangDeclarationName:
+  {
+    decl: erlang.Declaration,
+    name: string,
+  }
+  { D, Name } where
+  (
+    { func = erlang.FunctionDeclaration { fqn = { name = Name } } } = D
+  ) | (
+    { macro_ = erlang.MacroDeclaration { name = Name } } = D
+  ) | (
+    { record_ = erlang.RecordDeclaration { name = Name } } = D
+  ) | (
+    { type_ = erlang.TypeDeclaration { name = Name } } = D
+  ) | (
+    { header_ = erlang.HeaderDeclaration { name = Name } } = D
+  ) | (
+    { callback_ = erlang.CallbackDeclaration { name = Name } } = D
+  ) | (
+    { record_field = erlang.RecordFieldDeclaration { field_name = Name } } = D
+  ) | (
+    { module_ = erlang.ModuleDeclaration { name = Name } } = D
   );
 
 predicate ErlangFileEntityXRefLocations:
@@ -158,6 +165,20 @@ predicate ErlangFileEntityXRefLocations:
     };
     Entity = { var_ = Var };
     { Name, File, { span = TargetSpan }, nothing } = TargetLocation;
+  ) | (
+    # Thrift-generated target without an emitted DeclarationLocation:
+    # surface the target as the canonical thrift source file. Suppressed
+    # when a DeclarationLocation exists (checked-in codegen) so xref
+    # targets resolve to the .erl.
+    erlang.XRefsByFile { file = File, xrefs = XRefs };
+    { target = Decl, source = Span } = XRefs[..];
+    erlang.ErlangToThrift { from = Decl, to = Thrift };
+    !(erlang.DeclarationLocation { declaration = Decl });
+    fbthrift.DeclarationFile { Thrift, fbthrift.File TargetFile };
+    TargetSpan = { start = 0, length = 0 };
+    ErlangDeclarationName { Decl, Name };
+    Entity = { decl = Decl };
+    { Name, TargetFile, { span = TargetSpan }, nothing } = TargetLocation;
   )
 
 predicate ErlangEntityUses:
