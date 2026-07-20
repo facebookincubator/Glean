@@ -32,7 +32,7 @@ import qualified Glean.Database.Catalog as Catalog
 import qualified Glean.Database.Data as Data
 import Glean.Database.Open
 import Glean.Database.Exception
-import Glean.Database.Meta (getACLMode, showACLMode, isACLEnabled)
+import Glean.Database.Meta (isACLEnabled)
 import Glean.Database.AclKnobs (aclStoreEnabled)
 import Glean.Database.Repo
 import qualified Glean.Database.Storage as Storage
@@ -207,10 +207,6 @@ writeDatabase env repo WriteContent{..} latency =
   readDatabase env repo $ \odb lookup -> do
     writing <- checkWritable repo odb
     checkComplete env repo writeBatch
-    -- Log ACL mode for this write operation based on database property
-    meta <- atomically $ Catalog.readMeta (envCatalog env) repo
-    let aclMode = getACLMode (metaProperties meta)
-    logInfo $ inRepo repo $ "[glean write] " ++ showACLMode aclMode
     Stats.bump (envStats env) Stats.mutatorLatency =<< endTick latency
     let !size = batchSize writeBatch
 
