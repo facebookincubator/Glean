@@ -1,0 +1,9 @@
+{application, xlang_thrift,
+ [{description, "Erlang<->Thrift bridge test fixtures for the Glean indexer"},
+  {vsn, "1.0.0"},
+  {registered, []},
+  {applications, [kernel, stdlib]},
+  {env, []},
+  {modules, []},
+  {licenses, []},
+  {links, []}]}.

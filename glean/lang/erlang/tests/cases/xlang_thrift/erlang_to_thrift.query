@@ -1,0 +1,3 @@
+query: erlang.ErlangToThrift _
+perf: True
+transform: [gensort, []]

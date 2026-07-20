@@ -1,0 +1,355 @@
+[
+  "@generated",
+  {
+    "key": {
+      "from": {
+        "func": {
+          "key": {
+            "fqn": {
+              "module": "thrift_xlang_types",
+              "name": "const_max_retries",
+              "arity": 0
+            },
+            "app": "xlang_thrift"
+          }
+        }
+      },
+      "to": {
+        "constant": {
+          "key": {
+            "name": {
+              "key": {
+                "file": {
+                  "key": {
+                    "key": "fbcode/glean/lang/erlang/tests/cases/xlang_thrift/example.thrift"
+                  }
+                },
+                "name": { "key": "MAX_RETRIES" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "from": {
+        "func": {
+          "key": {
+            "fqn": { "module": "trpc_xlang_calc", "name": "add", "arity": 1 },
+            "app": "xlang_thrift"
+          }
+        }
+      },
+      "to": {
+        "function_": {
+          "key": {
+            "service_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "key": "fbcode/glean/lang/erlang/tests/cases/xlang_thrift/example.thrift"
+                      }
+                    },
+                    "name": { "key": "Calculator" }
+                  }
+                }
+              }
+            },
+            "name": { "key": "add" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "from": {
+        "module_": {
+          "key": {
+            "file": { "key": "src/trpc_xlang_calc.erl" },
+            "name": "trpc_xlang_calc",
+            "app": "xlang_thrift"
+          }
+        }
+      },
+      "to": {
+        "service_": {
+          "key": {
+            "name": {
+              "key": {
+                "file": {
+                  "key": {
+                    "key": "fbcode/glean/lang/erlang/tests/cases/xlang_thrift/example.thrift"
+                  }
+                },
+                "name": { "key": "Calculator" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "from": {
+        "record_field": {
+          "key": {
+            "record_name": "config_error",
+            "field_name": "reason",
+            "module": "xlang_thrift_types.hrl",
+            "app": "xlang_thrift"
+          }
+        }
+      },
+      "to": {
+        "field": {
+          "key": {
+            "qname": {
+              "key": {
+                "file": {
+                  "key": {
+                    "key": "fbcode/glean/lang/erlang/tests/cases/xlang_thrift/example.thrift"
+                  }
+                },
+                "name": { "key": "ConfigError" }
+              }
+            },
+            "kind": 2,
+            "name": { "key": "reason" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "from": {
+        "record_field": {
+          "key": {
+            "record_name": "server_config",
+            "field_name": "host",
+            "module": "xlang_thrift_types.hrl",
+            "app": "xlang_thrift"
+          }
+        }
+      },
+      "to": {
+        "field": {
+          "key": {
+            "qname": {
+              "key": {
+                "file": {
+                  "key": {
+                    "key": "fbcode/glean/lang/erlang/tests/cases/xlang_thrift/example.thrift"
+                  }
+                },
+                "name": { "key": "ServerConfig" }
+              }
+            },
+            "kind": 0,
+            "name": { "key": "host" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "from": {
+        "record_field": {
+          "key": {
+            "record_name": "server_config",
+            "field_name": "max_retries",
+            "module": "xlang_thrift_types.hrl",
+            "app": "xlang_thrift"
+          }
+        }
+      },
+      "to": {
+        "field": {
+          "key": {
+            "qname": {
+              "key": {
+                "file": {
+                  "key": {
+                    "key": "fbcode/glean/lang/erlang/tests/cases/xlang_thrift/example.thrift"
+                  }
+                },
+                "name": { "key": "ServerConfig" }
+              }
+            },
+            "kind": 0,
+            "name": { "key": "maxRetries" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "from": {
+        "type_": {
+          "key": {
+            "name": "color",
+            "arity": 0,
+            "module": "thrift_xlang_types",
+            "app": "xlang_thrift"
+          }
+        }
+      },
+      "to": {
+        "named": {
+          "key": {
+            "name": {
+              "name": {
+                "key": {
+                  "file": {
+                    "key": {
+                      "key": "fbcode/glean/lang/erlang/tests/cases/xlang_thrift/example.thrift"
+                    }
+                  },
+                  "name": { "key": "Color" }
+                }
+              },
+              "kind": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "from": {
+        "type_": {
+          "key": {
+            "name": "not_found",
+            "arity": 0,
+            "module": "thrift_xlang_types",
+            "app": "xlang_thrift"
+          }
+        }
+      },
+      "to": {
+        "exception_": {
+          "key": {
+            "name": {
+              "key": {
+                "file": {
+                  "key": {
+                    "key": "fbcode/glean/lang/erlang/tests/cases/xlang_thrift/example.thrift"
+                  }
+                },
+                "name": { "key": "NotFound" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "from": {
+        "type_": {
+          "key": {
+            "name": "point",
+            "arity": 0,
+            "module": "thrift_xlang_types",
+            "app": "xlang_thrift"
+          }
+        }
+      },
+      "to": {
+        "named": {
+          "key": {
+            "name": {
+              "name": {
+                "key": {
+                  "file": {
+                    "key": {
+                      "key": "fbcode/glean/lang/erlang/tests/cases/xlang_thrift/example.thrift"
+                    }
+                  },
+                  "name": { "key": "Point" }
+                }
+              },
+              "kind": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "from": {
+        "type_": {
+          "key": {
+            "name": "shape",
+            "arity": 0,
+            "module": "thrift_xlang_types",
+            "app": "xlang_thrift"
+          }
+        }
+      },
+      "to": {
+        "named": {
+          "key": {
+            "name": {
+              "name": {
+                "key": {
+                  "file": {
+                    "key": {
+                      "key": "fbcode/glean/lang/erlang/tests/cases/xlang_thrift/example.thrift"
+                    }
+                  },
+                  "name": { "key": "Shape" }
+                }
+              },
+              "kind": 3
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "from": {
+        "type_": {
+          "key": {
+            "name": "timestamp",
+            "arity": 0,
+            "module": "thrift_xlang_types",
+            "app": "xlang_thrift"
+          }
+        }
+      },
+      "to": {
+        "named": {
+          "key": {
+            "name": {
+              "name": {
+                "key": {
+                  "file": {
+                    "key": {
+                      "key": "fbcode/glean/lang/erlang/tests/cases/xlang_thrift/example.thrift"
+                    }
+                  },
+                  "name": { "key": "Timestamp" }
+                }
+              },
+              "kind": 0
+            }
+          }
+        }
+      }
+    }
+  }
+]

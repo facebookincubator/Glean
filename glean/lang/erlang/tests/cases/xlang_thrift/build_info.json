@@ -1,0 +1,11 @@
+{
+    "apps": [
+        {
+            "name": "xlang_thrift",
+            "dir": ".",
+            "src_dirs": ["src"],
+            "include_dirs": ["include"]
+        }
+    ],
+    "deps": []
+}
