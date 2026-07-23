@@ -950,7 +950,12 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
           {"enum", Fbthrift::NamedKind::enum_},
           {"union", Fbthrift::NamedKind::union_},
           {"typedef", Fbthrift::NamedKind::typedef_}};
-      Fbthrift::NamedKind named_kind = kind_map.at(kind);
+      auto kind_it = kind_map.find(kind);
+      if (kind_it == kind_map.end()) {
+        throw ThriftDecodingException(
+            "Unexpected kind in Thrift json annotation: " + kind);
+      }
+      Fbthrift::NamedKind named_kind = kind_it->second;
       Fbthrift::NamedType named_type{qual_name, named_kind};
       auto named_decl = visitor.db.fact<Fbthrift::NamedDecl>(named_type);
       return {
@@ -1093,7 +1098,13 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
                     comment_str, thrift_regex, &json_annotation)) {
               try {
                 auto json = folly::parseJson(json_annotation);
-                genThriftFacts(visitor, decl, result, json);
+                // Annotations tagged with an "idl" belong to a non-Thrift
+                // codegen (e.g. Ligen emits `Glean{"idl":"ligen",...}`) and are
+                // indexed by their own pipeline; the Thrift decoder can't
+                // interpret them yet, so skip them
+                if (json.get_ptr("idl") == nullptr) {
+                  genThriftFacts(visitor, decl, result, json);
+                }
               } catch (const folly::json::parse_error&) {
                 LOG(WARNING)
                     << "Couldn't parse Thrift json annotation: " << comment_str;
