@@ -59,7 +59,6 @@ indexer = Indexer {
           extFlavour = Json,
           extArgs =
             [ "glean"
-            , "--schema2"
             , "--multi"
             , "--project"
             , fromMaybe "${TEST_ROOT}" elpProjectPath
