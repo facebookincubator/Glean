@@ -9,3 +9,4 @@
 // This is a test file: see output regeneration instruction in TARGETS files
 
 include "lib.thrift"
+package "meta.com/glean/test"

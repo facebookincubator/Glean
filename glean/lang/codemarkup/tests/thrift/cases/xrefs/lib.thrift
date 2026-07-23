@@ -7,6 +7,7 @@
  */
 
 // This is a test file: see output regeneration instruction in TARGETS files
+package "meta.com/glean/test"
 
 namespace hs Glean
 namespace hack GleanGlass

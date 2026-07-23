@@ -6,6 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+package "meta.com/glean/test/clang"
+
 union ResponseCard {
   1: string static_card;
 }
