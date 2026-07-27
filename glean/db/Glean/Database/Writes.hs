@@ -140,7 +140,13 @@ writerThread env WriteQueues{..} = mask $ \restore ->
   handler restore action = do
     r <- tryAll (restore action)
     case r of
-      Left e -> do logError (show e); return ()
+      Left e
+        -- A queued write fails with UnknownDatabase when its DB was deleted
+        -- before it was dequeued (the write is dropped, see writeDatabase).
+        -- This is expected, so don't log an error for every dropped batch; the
+        -- drop is still counted via glean.db.write.failed.
+        | Just Thrift.UnknownDatabase{} <- fromException e -> return ()
+        | otherwise -> do logError (show e); return ()
       Right () -> return ()
 
   dequeue = atomically $ dequeueLoop (pure ())
