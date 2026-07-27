@@ -183,9 +183,12 @@ writerThread env WriteQueues{..} = mask $ \restore ->
               then do requeue; return (Just (job, repo, queue))
               else do unGetTQueue writeQueue job; dequeueLoop requeue
 
-  execute (Just (WriteJob{..}, repo, _)) = do
-    writeContent <- writeContentIO
-    writeDatabase env repo writeContent writeStart
+  execute (Just (WriteJob{..}, repo, _)) =
+    -- Pass the materializer, not the materialized content: writeDatabase runs
+    -- writeContentIO only after confirming the DB still exists and is
+    -- writable, so a queued write to a deleted DB is dropped without
+    -- downloading or decoding its batch.
+    writeDatabase env repo writeContentIO writeStart
   execute (Just (WriteCheckpoint io, _, _)) = do io; return Subst.empty
   execute _ = return Subst.empty
 

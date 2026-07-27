@@ -71,7 +71,7 @@ syncWriteDatabase env repo batch =
 syncWriteContentDatabase :: Env -> Repo -> WriteContent -> IO Subst
 syncWriteContentDatabase env repo content = do
   tick <- beginTick 1
-  writeDatabase env repo content tick
+  writeDatabase env repo (pure content) tick
 
 makeDefineOwnership
   :: Env
@@ -200,12 +200,18 @@ accumulateBatchACLConfig env repo odbHandle Thrift.Batch{..} = do
 writeDatabase
   :: Env
   -> Repo
-  -> WriteContent
+  -> IO WriteContent
+     -- ^ Materialize the batch. This may be expensive (a batch descriptor
+     -- downloads the batch from remote storage), so it is run only after
+     -- 'readDatabase' has confirmed the DB is open and writable. A queued
+     -- write to a DB that was deleted before it was dequeued then fails fast
+     -- in 'readDatabase' ('UnknownDatabase') without paying that cost.
   -> Point
   -> IO Subst
-writeDatabase env repo WriteContent{..} latency =
+writeDatabase env repo materializeContent latency =
   readDatabase env repo $ \odb lookup -> do
     writing <- checkWritable repo odb
+    WriteContent{..} <- materializeContent
     checkComplete env repo writeBatch
     Stats.bump (envStats env) Stats.mutatorLatency =<< endTick latency
     let !size = batchSize writeBatch
