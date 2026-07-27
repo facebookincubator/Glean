@@ -270,10 +270,19 @@ dbRetentionForRepo
         groupBy (\a b -> dbDay a == dbDay b) .
         filter (isComplete &&& hasDependencies)
 
-    -- all DBs with the required/excluded properties, sorted by most recent first
+    -- all DBs with the required/excluded properties, sorted by most recent
+    -- first. DBs sharing a dbTime (e.g. multiple schema-id builds of the same
+    -- repo revision) are ordered oldest-completed last, so that retain_per_day
+    -- and retain_at_most keep the earliest-completed build. That build is
+    -- normally the first one restored, which avoids restoring one build and
+    -- then evicting it for a same-revision sibling that merely sorts higher by
+    -- repo hash.
     sorted =
       perDay $
-      sortOn (\i -> (Down (dbTime (itemMeta i)), itemRepo i)) $
+      sortOn (\i ->
+        ( Down (dbTime (itemMeta i))
+        , Down (dbCompletedOrCreated (itemMeta i))
+        , itemRepo i )) $
       filter (hasAllProperties retention_required_properties) $
       filter (not . hasAnyProperties retention_excluded_properties) $
       NonEmpty.toList dbs

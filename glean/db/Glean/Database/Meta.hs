@@ -16,6 +16,7 @@ module Glean.Database.Meta
   , completenessStatus
   , dbAge
   , dbTime
+  , dbCompletedOrCreated
   , metaToThriftDatabase
   , metaToProps
   , metaFromProps
@@ -99,6 +100,14 @@ dbAge now meta = now `diffUTCTime` posixEpochTimeToUTCTime (metaCreated meta)
 -- | We sort DBs by metaRepoHashTime if available, or otherwise metaCreated
 dbTime :: Meta -> PosixEpochTime
 dbTime meta = fromMaybe (metaCreated meta) (metaRepoHashTime meta)
+
+-- | The time indexing completed, or the creation time for DBs that are not
+-- complete. Used as a stable tiebreaker between DBs that share a 'dbTime',
+-- e.g. multiple schema-id builds of the same repo revision.
+dbCompletedOrCreated :: Meta -> PosixEpochTime
+dbCompletedOrCreated meta = case metaCompleteness meta of
+  Complete DatabaseComplete{databaseComplete_time = t} -> t
+  _ -> metaCreated meta
 
 metaToThriftDatabase
   :: DatabaseStatus
