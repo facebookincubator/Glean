@@ -1,0 +1,23 @@
+[
+  "@generated",
+  {
+    "key": {
+      "source": {
+        "func": {
+          "key": {
+            "fqn": { "module": "caller", "name": "send", "arity": 3 },
+            "app": "app_a"
+          }
+        }
+      },
+      "target": {
+        "func": {
+          "key": {
+            "fqn": { "module": "trpc_dep_service", "name": "call", "arity": 3 },
+            "app": "dep_app"
+          }
+        }
+      }
+    }
+  }
+]

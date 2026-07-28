@@ -1,0 +1,36 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "app_a/src/caller.erl" },
+      "xrefs": [
+        {
+          "target": {
+            "func": {
+              "key": {
+                "fqn": { "module": "caller", "name": "send", "arity": 3 },
+                "app": "app_a"
+              }
+            }
+          },
+          "source": { "start": 27, "length": 6 }
+        },
+        {
+          "target": {
+            "func": {
+              "key": {
+                "fqn": {
+                  "module": "trpc_dep_service",
+                  "name": "call",
+                  "arity": 3
+                },
+                "app": "dep_app"
+              }
+            }
+          },
+          "source": { "start": 76, "length": 21 }
+        }
+      ]
+    }
+  }
+]
