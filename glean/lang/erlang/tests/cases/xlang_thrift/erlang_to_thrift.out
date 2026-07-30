@@ -68,6 +68,109 @@
   {
     "key": {
       "from": {
+        "func": {
+          "key": {
+            "fqn": {
+              "module": "trpc_xlang_calc",
+              "name": "async_sub",
+              "arity": 2
+            },
+            "app": "xlang_thrift"
+          }
+        }
+      },
+      "to": {
+        "function_": {
+          "key": {
+            "service_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "key": "fbcode/glean/lang/erlang/tests/cases/xlang_thrift/example.thrift"
+                      }
+                    },
+                    "name": { "key": "Calculator" }
+                  }
+                }
+              }
+            },
+            "name": { "key": "sub" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "from": {
+        "func": {
+          "key": {
+            "fqn": { "module": "trpc_xlang_calc", "name": "sub", "arity": 2 },
+            "app": "xlang_thrift"
+          }
+        }
+      },
+      "to": {
+        "function_": {
+          "key": {
+            "service_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "key": "fbcode/glean/lang/erlang/tests/cases/xlang_thrift/example.thrift"
+                      }
+                    },
+                    "name": { "key": "Calculator" }
+                  }
+                }
+              }
+            },
+            "name": { "key": "sub" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "from": {
+        "func": {
+          "key": {
+            "fqn": { "module": "trpc_xlang_calc", "name": "sub", "arity": 3 },
+            "app": "xlang_thrift"
+          }
+        }
+      },
+      "to": {
+        "function_": {
+          "key": {
+            "service_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "key": "fbcode/glean/lang/erlang/tests/cases/xlang_thrift/example.thrift"
+                      }
+                    },
+                    "name": { "key": "Calculator" }
+                  }
+                }
+              }
+            },
+            "name": { "key": "sub" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "from": {
         "module_": {
           "key": {
             "file": { "key": "src/trpc_xlang_calc.erl" },
