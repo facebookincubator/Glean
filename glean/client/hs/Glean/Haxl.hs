@@ -10,6 +10,7 @@
 module Glean.Haxl
   ( runHaxl
   , runHaxlWithWrites
+  , runHaxlWithRetry
   , initHaxlEnv
   , Haxl
   , haxlRepo
@@ -51,6 +52,7 @@ import Glean.Backend.Types
 import Glean.Query.Thrift
 import Glean.Types
 import Glean.Typed
+import Glean.Util.RetryChannelException (RetryPolicy, retryChannelExceptions)
 
 #ifdef GLEAN_FACEBOOK
 #define MIN_VERSION_haxl(a,b,c) 1
@@ -89,6 +91,18 @@ runHaxlWithWrites
 runHaxlWithWrites backend u h = do
   e <- initHaxlEnv backend u
   second flatten <$> Haxl.runHaxlWithWrites e h
+
+-- | Like 'runHaxl', but retries the whole computation on 'ChannelException'
+-- according to the given 'RetryPolicy'.
+runHaxlWithRetry
+  :: Backend b
+  => RetryPolicy
+  -> b
+  -> u
+  -> GenHaxl u (HaxlWrite w) a
+  -> IO a
+runHaxlWithRetry policy backend u h =
+  retryChannelExceptions policy $ runHaxl backend u h
 
 -- | if the Fact has a key, return it, otherwise fetch it with 'getKey'
 keyOf

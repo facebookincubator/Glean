@@ -103,6 +103,7 @@ module Glean
   , Haxl
   , runHaxl
   , runHaxlWithWrites
+  , runHaxlWithRetry
   , haxlRepo
   , search
   , search_
