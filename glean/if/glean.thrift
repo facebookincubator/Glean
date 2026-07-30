@@ -38,7 +38,7 @@ const Id FIRST_FREE_ID = 1024;
 // Used to identify versions of a predicate (TODO: merge with schema.thrift)
 typedef i32 Version
 
-// An identifer is a string of [A-Za-z][A-Za-z0-9_.]*
+// An identifier is a string of [A-Za-z][A-Za-z0-9_.]*
 // Identifiers cannot use certain reserved words (see schema validator)
 typedef string Identifier
 
@@ -1309,6 +1309,7 @@ service GleanService extends fb303.FacebookService {
 
   // AUTH MIGRATION: delete when all clients migrated to V2 calls
   // DEPRECATED: Use deriveStoredV2
+  @thrift.Priority{level = thrift.RpcPriority.HIGH}
   DerivationStatus deriveStored(
     1: Repo repo,
     2: DerivePredicateQuery q,
@@ -1321,6 +1322,7 @@ service GleanService extends fb303.FacebookService {
 
   // V2 of deriveStored. DerivationStatus is a union; V2 wraps it.
   // AUTH MIGRATION: keep V2; delete V1 when all clients migrate to V2 calls
+  @thrift.Priority{level = thrift.RpcPriority.HIGH}
   DeriveStoredResult deriveStoredV2(
     1: Repo repo,
     2: DerivePredicateQuery q,

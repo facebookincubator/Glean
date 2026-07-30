@@ -25,6 +25,7 @@ import Facebook.Service
 import Fb303Core.Types
 #ifdef FBTHRIFT
 import qualified Thrift.Server.CppServer as ThriftServer
+import Thrift.Protocol.RpcOptions.Types (Priority(High))
 #else
 import qualified Thrift.Server.HTTP as ThriftServer
 #endif
@@ -198,8 +199,16 @@ main =
     waitToStart server = do
       success <- waitForAlive server
       when success waitForTerminate
-    opts = ThriftServer.defaultOptions {
-      ThriftServer.desiredPort = cfgPort cfg }
+    -- Give the HIGH-priority derive methods (deriveStored/deriveStoredV2) their
+    -- own worker pool so they don't queue behind NORMAL-priority writes such as
+    -- sendBatch. Priority pools are a CppServer-only feature, so the override
+    -- is compiled out of the HTTP build.
+    opts = ThriftServer.defaultOptions
+      { ThriftServer.desiredPort = cfgPort cfg
+#ifdef FBTHRIFT
+      , ThriftServer.cpuPriorityPoolSizes = [(High, 10)]
+#endif
+      }
 
     getPort =
       fromMaybe (error "server hasn't started yet") <$> readTVarIO portVar
