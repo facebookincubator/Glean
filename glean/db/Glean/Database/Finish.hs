@@ -31,8 +31,10 @@ import Glean.Util.Observed as Observed
 
 -- | Tell the server that the database is complete
 -- starting the finalization process.
--- Throws an exception if the database is not incomplete
--- or there are pending writes.
+-- Finishing a database that is already finalizing or complete is a no-op
+-- (the subsequent finalize step waits for it to reach Complete). Throws an
+-- exception if the database is in any other non-incomplete state (e.g.
+-- broken) or there are pending writes.
 finishDatabase :: Env -> Repo -> IO Thrift.FinishDatabaseResponse
 finishDatabase Env{..} repo  = do
   atomically $ do
@@ -43,6 +45,12 @@ finishDatabase Env{..} repo  = do
       case completenessStatus oldmeta of
         DatabaseStatus_Incomplete ->
           return oldmeta { metaCompleteness = Finalizing def }
+        -- Idempotent: finishing a database that is already finalizing or
+        -- complete is a no-op rather than an error. A finalizing database is
+        -- still running (or has run) the finish work; the subsequent finalize
+        -- step waits for it to reach Complete (or surfaces Broken).
+        DatabaseStatus_Finalizing -> return oldmeta
+        DatabaseStatus_Complete -> return oldmeta
         _ -> throwM $ DatabaseNotIncomplete $ completenessStatus oldmeta
     makeReadOnly
     return Thrift.FinishDatabaseResponse
