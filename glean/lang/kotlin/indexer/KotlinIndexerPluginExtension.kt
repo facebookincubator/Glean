@@ -21,7 +21,7 @@ import org.jetbrains.kotlin.resolve.jvm.extensions.AnalysisHandlerExtension
 
 /** Kotlin Indexer compiler plugin. Used to create Kotlin glean index */
 @Suppress(
-    "AnalysisHandlerExtension"
+    "AnalysisHandlerExtension",
 ) /* This transformer can be disabled and the code will still build; codemods/indexers can do that. */
 class KotlinIndexerPluginExtension(
     private val outputDir: String,
