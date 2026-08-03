@@ -753,13 +753,23 @@ impl Env {
         let symbol = parse_scip_symbol(&occ.symbol);
         let symbol_hint = symbol_range_hint(&symbol);
 
+        // Prefer the typed range (single_line_range / multi_line_range), falling
+        // back to the deprecated flat `range`; both are normalized to the [i32]
+        // shape decode_scip_range understands. An indexer that sets only the typed
+        // range leaves `range` empty, which used to make the `.unwrap()` here panic.
+        let occ_range = occurrence_range(&occ);
+        let Some(range) =
+            self.decode_range_for_file(file_id, &occ_range, symbol_hint.as_deref())?
+        else {
+            // Neither a flat `range` nor a typed range: skip this occurrence rather
+            // than aborting the whole index.
+            return Ok(());
+        };
         let file_range_id = self.next_id();
-        let range = self
-            .decode_range_for_file(file_id, &occ.range, symbol_hint.as_deref())?
-            .unwrap();
         self.out.file_range(file_range_id, file_id, range);
+        let occ_enclosing_range = occurrence_enclosing_range(&occ);
         let enclosing_range =
-            self.decode_range_for_file(file_id, &occ.enclosing_range, symbol_hint.as_deref())?;
+            self.decode_range_for_file(file_id, &occ_enclosing_range, symbol_hint.as_deref())?;
         match enclosing_range {
             None => {}
             Some(enclosing_range) => {
@@ -955,6 +965,36 @@ fn symbol_range_hint(symbol: &ScipSymbol) -> Option<String> {
             })
             .filter(|name| !name.is_empty() && *name != "_")
             .map(str::to_owned),
+    }
+}
+
+/// Returns the occurrence's source range as the flat `[i32]` encoding that
+/// `decode_scip_range` understands. Prefers the typed range (`single_line_range`
+/// / `multi_line_range`) over the deprecated `range` field, per the SCIP schema;
+/// returns an empty vec when the occurrence has neither.
+fn occurrence_range(occ: &Occurrence) -> Vec<i32> {
+    if occ.has_single_line_range() {
+        let r = occ.single_line_range();
+        vec![r.line, r.start_character, r.end_character]
+    } else if occ.has_multi_line_range() {
+        let r = occ.multi_line_range();
+        vec![r.start_line, r.start_character, r.end_line, r.end_character]
+    } else {
+        occ.range.clone()
+    }
+}
+
+/// Like `occurrence_range`, but for the enclosing range: prefers the
+/// `typed_enclosing_range` oneof, else the deprecated `enclosing_range` field.
+fn occurrence_enclosing_range(occ: &Occurrence) -> Vec<i32> {
+    if occ.has_single_line_enclosing_range() {
+        let r = occ.single_line_enclosing_range();
+        vec![r.line, r.start_character, r.end_character]
+    } else if occ.has_multi_line_enclosing_range() {
+        let r = occ.multi_line_enclosing_range();
+        vec![r.start_line, r.start_character, r.end_line, r.end_character]
+    } else {
+        occ.enclosing_range.clone()
     }
 }
 

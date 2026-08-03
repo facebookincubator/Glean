@@ -328,7 +328,11 @@ mod tests {
     #[cfg(feature = "facebook")]
     use proto_rust::scip::Document;
     #[cfg(feature = "facebook")]
+    use proto_rust::scip::MultiLineRange;
+    #[cfg(feature = "facebook")]
     use proto_rust::scip::Occurrence as ScipOccurrence;
+    #[cfg(feature = "facebook")]
+    use proto_rust::scip::SingleLineRange;
     #[cfg(feature = "facebook")]
     use proto_rust::scip::SymbolInformation as ScipSymbolInformation;
     #[cfg(feature = "facebook")]
@@ -338,7 +342,11 @@ mod tests {
     #[cfg(not(feature = "facebook"))]
     use super::proto::scip::Document;
     #[cfg(not(feature = "facebook"))]
+    use super::proto::scip::MultiLineRange;
+    #[cfg(not(feature = "facebook"))]
     use super::proto::scip::Occurrence as ScipOccurrence;
+    #[cfg(not(feature = "facebook"))]
+    use super::proto::scip::SingleLineRange;
     #[cfg(not(feature = "facebook"))]
     use super::proto::scip::SymbolInformation as ScipSymbolInformation;
     #[cfg(not(feature = "facebook"))]
@@ -652,6 +660,65 @@ mod tests {
             sorted_file_range_line_begins(&output),
             vec![4, 4, 9, 9],
             "both symbols reported virtual line 3, but FileRange facts should use their physical generated.go lines"
+        );
+    }
+
+    #[test]
+    fn test_typed_range_decoded_when_flat_range_empty() {
+        // A newer indexer sets only the typed range (single_line_range /
+        // multi_line_range) and leaves the deprecated flat `range` empty. The
+        // encoder must decode the typed form instead of panicking.
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut doc = Document::new();
+        doc.relative_path = "typed.go".to_string();
+        doc.language = "go".to_string();
+        doc.text = [
+            "package p\n",          // line 0
+            "\n",                   // line 1
+            "var singleLine = 0\n", // line 2
+            "var multiLine = 0\n",  // line 3
+        ]
+        .concat();
+
+        // Occurrence carrying ONLY a single-line typed range (empty `range`).
+        let mut single = ScipOccurrence::new();
+        single.symbol = "scip-go gomod . . `p`/singleLine.".to_string();
+        single.symbol_roles = 1; // Definition
+        let mut slr = SingleLineRange::new();
+        slr.line = 2;
+        slr.start_character = 4;
+        slr.end_character = 14;
+        single.set_single_line_range(slr);
+        doc.occurrences.push(single);
+
+        // Occurrence carrying ONLY a multi-line typed range (empty `range`).
+        let mut multi = ScipOccurrence::new();
+        multi.symbol = "scip-go gomod . . `p`/multiLine.".to_string();
+        multi.symbol_roles = 1; // Definition
+        let mut mlr = MultiLineRange::new();
+        mlr.start_line = 3;
+        mlr.start_character = 4;
+        mlr.end_line = 3;
+        mlr.end_character = 13;
+        multi.set_multi_line_range(mlr);
+        doc.occurrences.push(multi);
+
+        write_scip_index(&mut scip_file, doc);
+        build_json(build_args(
+            scip_file.path().to_path_buf(),
+            output_json.path().to_path_buf(),
+        ))
+        .expect("failure building JSON");
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        // decode_scip_range converts 0-based SCIP lines to 1-based, so the typed
+        // ranges on lines 2 and 3 must yield FileRange facts at lineBegin 3 and 4.
+        assert_eq!(
+            sorted_file_range_line_begins(&output),
+            vec![3, 4],
+            "typed single_line_range/multi_line_range must decode to FileRange facts even with an empty deprecated `range`"
         );
     }
 
