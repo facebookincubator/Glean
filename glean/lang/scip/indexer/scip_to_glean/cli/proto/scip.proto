@@ -733,6 +733,41 @@ message Occurrence {
   //           ^^^^^^^^^^^^^ enclosing_range
   // ```
   repeated int32 enclosing_range = 7;
+
+  // Typed alternative to the deprecated `range` field above. New producers SHOULD
+  // set `typed_range` and SHOULD NOT set `range`; when both are present,
+  // `typed_range` takes precedence. Backported from upstream sourcegraph/scip
+  // (matching its field numbers 8/9) so this schema can represent indexers that
+  // have migrated to typed ranges (e.g. current scip-go / scip-typescript).
+  oneof typed_range {
+    SingleLineRange single_line_range = 8;
+    MultiLineRange multi_line_range = 9;
+  }
+
+  // Typed alternative to the deprecated `enclosing_range` field above, mirroring
+  // `typed_range`. Backported from upstream sourcegraph/scip (field numbers 10/11).
+  oneof typed_enclosing_range {
+    SingleLineRange single_line_enclosing_range = 10;
+    MultiLineRange multi_line_enclosing_range = 11;
+  }
+}
+
+// SingleLineRange is a half-open [start, end) range within a single line.
+// Line/character are 0-based. Backported from upstream sourcegraph/scip.
+message SingleLineRange {
+  int32 line = 1;
+  int32 start_character = 2;
+  int32 end_character = 3;
+}
+
+// MultiLineRange is a half-open [start, end) range spanning multiple lines.
+// Producers SHOULD use SingleLineRange when start_line == end_line. Backported
+// from upstream sourcegraph/scip.
+message MultiLineRange {
+  int32 start_line = 1;
+  int32 start_character = 2;
+  int32 end_line = 3;
+  int32 end_character = 4;
 }
 
 // Represents a diagnostic, such as a compiler error or warning, which should be
