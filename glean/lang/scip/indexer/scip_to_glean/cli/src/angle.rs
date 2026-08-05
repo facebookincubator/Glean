@@ -632,6 +632,15 @@ impl Env {
             return Some(LanguageId::Ruby);
         } else if filepath.ends_with(".dart") {
             return Some(LanguageId::Dart);
+        } else if filepath.ends_with(".pm")
+            || filepath.ends_with(".pl")
+            || filepath.ends_with(".PL")
+        {
+            // `.pl` is shared with Prolog, but `LanguageId` has no Prolog variant so no
+            // correct labelling is lost. `.t`, `.pod` and `.xs` are deliberately left
+            // unmapped: `.t` is widely used outside Perl, `.pod` is documentation rather
+            // than source, and `.xs` bodies are C.
+            return Some(LanguageId::Perl);
         }
         None
     }
@@ -1093,5 +1102,59 @@ mod tests {
     #[test]
     fn test_normalize_filepath_too_many_parents() {
         assert_eq!(normalize_filepath("foo/../../baz.go"), None);
+    }
+
+    #[test]
+    fn test_file_language_of_perl() {
+        let env = Env::new();
+        assert!(
+            matches!(
+                env.file_language_of("lib/Foo/Bar.pm"),
+                Some(LanguageId::Perl)
+            ),
+            "`.pm` is a Perl module"
+        );
+        assert!(
+            matches!(
+                env.file_language_of("bin/deploy.pl"),
+                Some(LanguageId::Perl)
+            ),
+            "`.pl` is a Perl script"
+        );
+        assert!(
+            matches!(env.file_language_of("Makefile.PL"), Some(LanguageId::Perl)),
+            "`.PL` is a Perl build script"
+        );
+    }
+
+    #[test]
+    fn test_file_language_of_perl_adjacent_extensions_unmapped() {
+        let env = Env::new();
+        assert!(
+            env.file_language_of("t/basic.t").is_none(),
+            "`.t` is not Perl-specific"
+        );
+        assert!(
+            env.file_language_of("lib/Foo.pod").is_none(),
+            "`.pod` is documentation, not source"
+        );
+        assert!(
+            env.file_language_of("Foo.xs").is_none(),
+            "`.xs` bodies are C"
+        );
+    }
+
+    #[test]
+    fn test_file_language_of_unaffected_by_perl_arm() {
+        let env = Env::new();
+        assert!(matches!(
+            env.file_language_of("main.rs"),
+            Some(LanguageId::Rust)
+        ));
+        assert!(matches!(
+            env.file_language_of("main.py"),
+            Some(LanguageId::Python)
+        ));
+        assert!(env.file_language_of("README.md").is_none());
     }
 }
