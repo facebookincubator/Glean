@@ -11,6 +11,7 @@ module Glean.Database.Backup
   ( backuper
   , Event(..)
   , backupDatabase
+  , backupAllowed
   , doRestoreFromSite
   , withScratchDirectory
   , withPackedSnapshot
@@ -139,9 +140,8 @@ getTodo env@Env{..} sinbin = getFinalize <|> getRestore <|> getBackup
 
     getBackup = do
       policy <- ServerConfig.config_backup <$> Observed.get envServerConfig
-      let allowedRepoNames = databaseBackupPolicy_allowed policy
       dbs <- Catalog.list envCatalog [Local] $ do
-        repoNameV `inF` allowedRepoNames
+        filterF (backupAllowed policy . itemRepo)
         statusV .==. DatabaseStatus_Complete
         backedUpV .==. False
         latest
@@ -161,6 +161,13 @@ getTodo env@Env{..} sinbin = getFinalize <|> getRestore <|> getBackup
       repoV `notInF` sinbin
       sortF createdV Descending
       limitF 1
+
+-- | Whether the backup policy allows uploading @repo@. Also used by the
+-- incomplete-shutdown path ("Glean.Database.Backup.Incomplete"), which uploads
+-- stack bases outside the regular backuper, so the two cannot diverge.
+backupAllowed :: DatabaseBackupPolicy -> Repo -> Bool
+backupAllowed policy repo =
+  repo_name repo `HashSet.member` databaseBackupPolicy_allowed policy
 
 newestByRepo :: Filter ()
 newestByRepo = groupF repoNameV $ do

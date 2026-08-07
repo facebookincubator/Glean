@@ -25,6 +25,7 @@ module Glean.Database.Catalog.Filter
   , (.==.)
   , inF
   , notInF
+  , filterF
   , groupF
   , sortF
   , limitF
@@ -115,8 +116,9 @@ runFilter (Filter m) = S.execState m
 modify :: ([Item] -> [Item]) -> Filter ()
 modify = Filter . S.modify'
 
-filter_ :: (Item -> Bool) -> Filter ()
-filter_ = modify . filter
+-- | Require that an item satisfies an arbitrary predicate
+filterF :: (Item -> Bool) -> Filter ()
+filterF = modify . filter
 
 everythingF :: Filter ()
 everythingF = return ()
@@ -134,15 +136,15 @@ incompleteQueryableF =
 
 -- | Require that a field has a specific value
 (.==.) :: Eq a => Value a -> a -> Filter ()
-Value f .==. x = filter_ $ \q -> f q == x
+Value f .==. x = filterF $ \q -> f q == x
 
 -- | Require that a field's value is in a set
 inF :: (Eq a, Hashable a) => Value a -> HashSet a -> Filter ()
-inF (Value f) xs = filter_ $ \q -> f q `HashSet.member` xs
+inF (Value f) xs = filterF $ \q -> f q `HashSet.member` xs
 
 -- | Require that a field's value is not in a set
 notInF :: (Eq a, Hashable a) => Value a -> HashSet a -> Filter ()
-notInF (Value f) xs = filter_ $ \q -> not $ f q `HashSet.member` xs
+notInF (Value f) xs = filterF $ \q -> not $ f q `HashSet.member` xs
 
 -- | Group the data by a field and apply the clauses to each group separately
 groupF :: (Eq a, Hashable a) => Value a -> Filter () -> Filter ()

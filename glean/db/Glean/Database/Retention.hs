@@ -8,6 +8,7 @@
 
 module Glean.Database.Retention (
     dbIndex, DbIndex(..),
+    repoStack,
     retentionChanges,
     RetentionChanges(..),
     repoRetention,
