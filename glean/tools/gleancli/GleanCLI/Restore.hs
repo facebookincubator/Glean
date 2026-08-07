@@ -240,15 +240,7 @@ instance Plugin RestoreCommand where
           waitForRestoreToFinish dbs = do
             let isRestoring = (DatabaseStatus_Restoring ==) . database_status
             if any isRestoring dbs
-              then do threadDelay 1000000
-                      localDatabases <- listLocalDBs
-                      edbs <- traverse (locatorDb localDatabases) locators
-                      let (missing, found) = partitionEithers edbs
-                      if not (null missing)
-                        then die 1 $ unwords
-                          [ "error: database restore failed for"
-                          , Text.unpack (Text.intercalate ", " missing)]
-                        else waitForRestoreToFinish found
+              then pollUntilListed missingLocatorPollLimit
               else forM_ dbs $ \db -> case database_status db of
                 DatabaseStatus_Complete -> return ()
                 DatabaseStatus_Missing -> putStrLn $ unwords
@@ -259,6 +251,29 @@ instance Plugin RestoreCommand where
                   ] -- TODO: List missing dependencies
                 status ->
                   die 1 $ "error: unexpected database status: " <> show status
+
+          -- A restore that is finishing is briefly absent from
+          -- 'listDatabases': 'Catalog.finishRestoring' parks the repo in
+          -- 'entriesEphemeral' while it writes the local metadata store, and
+          -- 'Catalog.list' enumerates only Local, Restoring and Cloud. So a
+          -- locator that has just gone missing means either "mid-transition,
+          -- about to succeed" or "restore aborted"; only a sustained absence
+          -- distinguishes the second.
+          missingLocatorPollLimit :: Int
+          missingLocatorPollLimit = 10
+
+          pollUntilListed pollsLeft = do
+            threadDelay 1000000
+            localDatabases <- listLocalDBs
+            edbs <- traverse (locatorDb localDatabases) locators
+            let (missing, found) = partitionEithers edbs
+            if not (null missing)
+              then if pollsLeft > 0
+                then pollUntilListed (pollsLeft - 1)
+                else die 1 $ unwords
+                  [ "error: database restore failed for"
+                  , Text.unpack (Text.intercalate ", " missing)]
+              else waitForRestoreToFinish found
 
           listLocalDBs = Glean.listDatabasesResult_databases <$>
             Glean.listDatabases backend Glean.ListDatabases
