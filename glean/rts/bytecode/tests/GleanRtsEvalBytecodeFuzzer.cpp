@@ -86,7 +86,6 @@ constexpr size_t kMaxCodeWords = 512;
 constexpr size_t kMaxConstants = 32;
 constexpr size_t kMaxLiterals = 16;
 constexpr size_t kMaxLiteralLen = 128;
-constexpr uint32_t kMaxInputs = 32;
 constexpr uint32_t kMaxOutputs = 8;
 constexpr uint32_t kMaxLocals = 32;
 constexpr uint32_t kMaxCallerArgs = 24; // inputs - outputs
