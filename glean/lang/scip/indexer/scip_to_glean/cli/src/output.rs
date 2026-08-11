@@ -543,6 +543,10 @@ impl GleanJSONOutput {
         )?;
         w.write_all(b"]\n")?;
 
+        // A buffered writer would otherwise flush on drop, which discards the
+        // error, so a failed final write would look like success.
+        w.flush()?;
+
         Ok(())
     }
 }

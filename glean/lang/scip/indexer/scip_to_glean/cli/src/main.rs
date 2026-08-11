@@ -261,7 +261,7 @@ fn build_json(args: BuildJsonArgs) -> Result<()> {
         let writer = std::io::BufWriter::new(write);
 
         shard.write(writer)?;
-        total_bytes += std::fs::metadata(&file).map(|m| m.len()).unwrap_or(0);
+        total_bytes += std::fs::metadata(&file)?.len();
     }
     info!(
         "Wrote {} {} ({})",
