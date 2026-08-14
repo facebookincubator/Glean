@@ -1,0 +1,41 @@
+load("@prelude//configurations:constraint_alias.bzl", "constraint_with_aliases")
+load("@prelude//utils:source_listing.bzl", "source_listing")
+
+oncall("build_infra")
+
+source_listing()
+
+# Used by open source projects to support `prelude//`
+
+constraint_with_aliases(
+    name = "os",
+    aliases = {
+        "android": "android",
+        "freebsd": "freebsd",
+        "iphoneos": "iphoneos",
+        "linux": "linux",
+        "macos": "macos",
+        "none": "none",
+        "wasi": "wasi",
+        "watchos": "watchos",
+        "windows": "windows",
+    },
+    default = "unspecified",
+    values = [
+        "linux",
+        "macos",
+        "windows",
+        "android",
+        "iphoneos",
+        "tvos",
+        "watchos",
+        "freebsd",
+        "fuchsia",
+        "illumos",
+        "netbsd",
+        "wasi",
+        "none",
+        "unspecified",
+    ],
+    visibility = ["PUBLIC"],
+)

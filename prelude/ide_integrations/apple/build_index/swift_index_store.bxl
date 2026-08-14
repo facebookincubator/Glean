@@ -1,0 +1,75 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+#
+# This source code is dual-licensed under either the MIT license found in the
+# LICENSE-MIT file in the root directory of this source tree or the Apache
+# License, Version 2.0 found in the LICENSE-APACHE file in the root directory
+# of this source tree. You may select, at your option, one of the
+# above-listed licenses.
+
+load("@prelude//bxl:lazy.bxl", "batch_apply_lazy")
+load("@prelude//cxx:index_store.bzl", "IndexStoreInfo", "merge_index_store")
+
+MERGE_TOOL_TARGET = "prelude//apple/tools/index:merge_index_store"
+
+# Magic number here. There is a trade off here:
+# more buckets -> fewer index stores in each bucket -> more duplication -> more materializion time but less time to wait from RE to merge bucket
+# less buckets -> more index stores in each bucket -> less duplication -> less materialization time but more time to wait from RE to merge bucket
+BUCKET_COUNT = 20
+
+def _hash_bucket_index_stores(index_stores: list[Artifact]) -> dict[int, list[Artifact]]:
+    buckets_to_artifacts = {}
+    for index_store in index_stores:
+        hash_value = hash(index_store.short_path)
+        bucket = hash_value % BUCKET_COUNT
+        if bucket not in buckets_to_artifacts:
+            buckets_to_artifacts[bucket] = []
+        buckets_to_artifacts[bucket].append(index_store)
+    return buckets_to_artifacts
+
+def _main(ctx: bxl.Context):
+    targets = ctx.cli_args.target
+    subtarget = getattr(ctx.cli_args, "subtarget", "full-swift-index-store")
+    configured_nodes = batch_apply_lazy(ctx, ctx.lazy.configured_target_node, targets)
+    analysis_results = batch_apply_lazy(ctx, ctx.lazy.analysis, configured_nodes)
+
+    index_stores = []
+    for analysis_res in analysis_results:
+        if IndexStoreInfo not in analysis_res.providers():
+            continue
+        index_store_info = analysis_res.providers()[IndexStoreInfo]
+        if subtarget == "swift-index-store":
+            # Only get the Swift index store for this target (not transitive dependencies)
+            index_stores.append(index_store_info.swift_tset.value)
+        elif subtarget == "swift-index-store-1deps":
+            # Get the Swift index store for this target and its immediate dependencies
+            index_stores.append(index_store_info.swift_tset.value)
+            for child in index_store_info.swift_tset.children:
+                index_stores.append(child.value)
+        else:
+            # Default behavior: get all Swift index stores including transitive dependencies
+            index_stores.extend(list(index_store_info.swift_tset.traverse()))
+
+    merge_tool_target = ctx.unconfigured_sub_targets(MERGE_TOOL_TARGET)
+    bxl_actions = ctx.bxl_actions(
+        exec_deps = [merge_tool_target],
+    )
+
+    merge_tool = bxl_actions.exec_deps[merge_tool_target][RunInfo]
+
+    buckets_to_artifacts = _hash_bucket_index_stores(index_stores)
+
+    for bucket, index_stores in buckets_to_artifacts.items():
+        if not index_stores:
+            continue
+        merged_buck_index_store = merge_index_store(bxl_actions.actions, merge_tool, index_stores, "merge_bucket/{}/index_store".format(bucket))
+
+        merged = ctx.output.ensure(merged_buck_index_store).abs_path()
+        ctx.output.stream(merged, wait_on = [merged])
+
+main = bxl_main(
+    impl = _main,
+    cli_args = {
+        "subtarget": cli_args.option(cli_args.string()),
+        "target": cli_args.list(cli_args.string()),
+    },
+)
