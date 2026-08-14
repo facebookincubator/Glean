@@ -1,0 +1,11 @@
+load("@prelude//http_archive:exec_deps.bzl", "http_archive_exec_deps")
+load("@prelude//utils:source_listing.bzl", "source_listing")
+
+oncall("build_infra")
+
+source_listing()
+
+http_archive_exec_deps(
+    name = "exec_deps",
+    visibility = ["PUBLIC"],
+)

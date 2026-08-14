@@ -1,0 +1,203 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+#
+# This source code is dual-licensed under either the MIT license found in the
+# LICENSE-MIT file in the root directory of this source tree or the Apache
+# License, Version 2.0 found in the LICENSE-APACHE file in the root directory
+# of this source tree. You may select, at your option, one of the
+# above-listed licenses.
+
+load("get_vs_settings.bxl", "get_basic_vs_settings")
+load("utils.bxl", "basename", "gen_guid", "get_project_file_path", "log_debug", "sanitize")
+
+def _gen_entry(project_type_guid, project_name, project_filepath, project_guid):
+    return """Project("{project_type_guid}") = "{project_name}", "{project_filepath}", "{project_guid}"
+EndProject""".format(
+        project_type_guid = project_type_guid,
+        project_name = project_name,
+        project_filepath = project_filepath,
+        project_guid = project_guid,
+    )
+
+def _gen_folder(folder_path, guid):
+    project_name = basename(folder_path)
+
+    # Imagine you have `foo//bar:bar` and `foo//:bar`.  This means that underneath `foo`, you will have
+    # both a Solution Folder called `bar`, as well as a project called `bar`.  Visual Studio doesn't
+    # allow this, so we disambiguate folders from projects by surrounding folder names with parens.
+    # While we could try to be smart and only do this when we detect a collision, what happens then is
+    # that we would end up with solution folders, some with parens and some without parens, and it would
+    # break the sorting of child items when there is a long list of solution folders.  For example, you
+    # might end up with:
+    #    (bar)
+    #    (xyz)
+    #    bar
+    project_name = "(" + project_name + ")"
+
+    # List of project type GUIDs https://github.com/JamesW75/visual-studio-project-type-guid
+    project_type_guid_folder = "{2150E333-8FDC-42A3-9474-1A3956D46DE8}"
+
+    return _gen_entry(
+        project_type_guid_folder,
+        project_name,
+        project_name,
+        guid,
+    )
+
+def _gen_project(target, vs_settings):
+    project_name = sanitize(target.label.name)
+
+    # List of project type GUIDs https://github.com/JamesW75/visual-studio-project-type-guid
+    project_type_guid_cpp = "{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}"
+
+    return _gen_entry(
+        project_type_guid_cpp,
+        project_name,
+        get_project_file_path(target.label, ".vcxproj").replace("/", "\\"),
+        vs_settings["Globals"]["ProjectGuid"],
+    )
+
+# For each target/project, generate intermediate folder entries if they haven't and the target/project itself,
+# as well as mappings of item => folder for solution nested projects structure.
+def _gen_target(target, vs_settings, existing_folders, nested_projects):
+    entries = []
+
+    # It's possible to have `foo//:target` and `bar//:target`.  It's not sufficient to simply use the package
+    # name, because if you do that then you will get a name collision in the above scenario.
+    folders = [target.label.cell]
+    if target.label.package:
+        folders += target.label.package.split("/")
+
+    folder_prev = None
+    for i in range(len(folders)):
+        folder = "/".join(folders[0 : i + 1])
+        folder_guid = gen_guid(folder)
+        if folder_prev:
+            nested_projects[folder_guid] = existing_folders[folder_prev]
+        if folder not in existing_folders:
+            entries.append(_gen_folder(folder, folder_guid))
+            existing_folders[folder] = folder_guid
+        folder_prev = folder
+    nested_projects[vs_settings["Globals"]["ProjectGuid"]] = existing_folders[folder_prev]
+
+    entries.append(_gen_project(target, vs_settings))
+    return "\n".join(entries)
+
+def _gen_nested_projects(nested_projects):
+    return "\n".join(["\t\t{} = {}".format(child, parent) for (child, parent) in nested_projects.items()])
+
+def _gen_solution_configuration_platform(project_configuration):
+    return "\t\t{configuration}|{platform} = {configuration}|{platform}".format(
+        configuration = project_configuration["Configuration"],
+        platform = project_configuration["Platform"],
+    )
+
+def _gen_project_configuration_platforms(target_node, vs_settings, explicit_targets):
+    configs = []
+    guid = vs_settings["Globals"]["ProjectGuid"]
+    for config in vs_settings["ProjectConfigurations"]:
+        config_name = config["Configuration"] + "|" + config["Platform"]
+        configs.append(
+            "\t\t{guid}.{config_name}.ActiveCfg = {config_name}".format(
+                guid = guid,
+                config_name = config_name,
+            )
+        )
+        if target_node.label.raw_target() in explicit_targets:
+            configs.append(
+                "\t\t{guid}.{config_name}.Build.0 = {config_name}".format(
+                    guid = guid,
+                    config_name = config_name,
+                )
+            )
+    return "\n".join(configs)
+
+def _set_startup_target(targets, vs_settings_list, startup_target_label: TargetLabel):
+    targets_labels = [target.label.raw_target() for target in targets]
+    if startup_target_label in targets_labels:
+        startup_target_index = targets_labels.index(startup_target_label)
+        targets[0], targets[startup_target_index] = targets[startup_target_index], targets[0]
+        vs_settings_list[0], vs_settings_list[startup_target_index] = vs_settings_list[startup_target_index], vs_settings_list[0]
+    else:
+        warning(
+            "Startup target couldn't be located: {}. Please check passed in targets list, `--recursive_target_types`, `--target_exclude_pattern` and `--target_exclude_pattern`.".format(
+                startup_target_label
+            )
+        )
+
+# In buck dependency tree, duplicate targets can exist with exact same label but different
+# configurations. While VS doesn't like duplicate project names (prompting with message: The
+# solution already contains an item named 'xxx'). Besides, there is not much value in showing
+# multiple projects for the same target but with slightly different configuration. Ideally, this
+# could be more efficient trimming those duplicates while building dependency trees, but it's more
+# risky of getting missing target nodes while traversaling the dependency tree after trimming.
+def _dedup_targets(targets, vs_settings_list):
+    deduped_targets = []
+    deduped_vs_settings_list = []
+    seen_raw_targets = set()
+    for i in range(len(targets)):
+        raw_target = targets[i].label.raw_target()
+        if raw_target not in seen_raw_targets:
+            seen_raw_targets.add(raw_target)
+            deduped_targets.append(targets[i])
+            deduped_vs_settings_list.append(vs_settings_list[i])
+    return deduped_targets, deduped_vs_settings_list
+
+def gen_sln(targets, vs_settings_list, explicit_targets, startup_target_label: TargetLabel, bxl_ctx):
+    log_debug("# Generating sln for {}", startup_target_label, bxl_ctx = bxl_ctx)
+    if len(targets) != len(vs_settings_list):
+        fail("targets and vs_settings_list are expected to be length.")
+
+    _set_startup_target(targets, vs_settings_list, startup_target_label)
+    targets, vs_settings_list = _dedup_targets(targets, vs_settings_list)
+    existing_folders = {}  # folder path => folder guid
+    nested_projects = {}  # project guid => parent guid
+
+    # Ideally this should have some amount of uniqueness built in, but it isn't clear what a good algorithm for doing this would be
+    solution_guid = gen_guid("Buck2 vsgo solution file")
+    sln_content = """Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17
+MinimumVisualStudioVersion = 10.0.40219.1
+{projects}
+Global
+\tGlobalSection(SolutionConfigurationPlatforms) = preSolution
+{solution_configuration_platforms}
+\tEndGlobalSection
+\tGlobalSection(ProjectConfigurationPlatforms) = postSolution
+{project_configuration_platforms}
+\tEndGlobalSection
+\tGlobalSection(SolutionProperties) = preSolution
+\t\tHideSolutionNode = FALSE
+\tEndGlobalSection
+\tGlobalSection(NestedProjects) = preSolution
+{nested_projects}
+\tEndGlobalSection
+\tGlobalSection(ExtensibilityGlobals) = postSolution
+\t\tSolutionGuid = {solution_guid}
+\tEndGlobalSection
+EndGlobal""".format(
+        projects = "\n".join([_gen_target(t, s, existing_folders, nested_projects) for (t, s) in zip(targets, vs_settings_list)]),
+        solution_configuration_platforms = "\n".join([_gen_solution_configuration_platform(config) for config in vs_settings_list[-1]["ProjectConfigurations"]]),
+        project_configuration_platforms = "\n".join([_gen_project_configuration_platforms(t, s, explicit_targets) for (t, s) in zip(targets, vs_settings_list)]),
+        nested_projects = _gen_nested_projects(nested_projects),
+        solution_guid = solution_guid,
+    )
+
+    return sln_content
+
+def _main(bxl_ctx):
+    target_label = bxl_ctx.cli_args.target
+    target_node = bxl_ctx.configured_targets(target_label, modifiers = bxl_ctx.modifiers)
+
+    basic_vs_settings = get_basic_vs_settings(target_node, bxl_ctx.cli_args)
+    sln_content = gen_sln([target_node], [basic_vs_settings], [target_label], target_node.label, bxl_ctx)
+    bxl_ctx.output.print(sln_content)
+
+main = bxl_main(
+    impl = _main,
+    cli_args = {
+        "log_level": cli_args.int(default = 30),
+        "mode_files": cli_args.list(cli_args.string(), default = ["fbsource//arvr/mode/win/dev"]),
+        "target": cli_args.target_label(),
+    },
+)

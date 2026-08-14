@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# {argcomplete_hint}
+
+BASE_DIR={base_dir}
+DIR={base_dir}
+
+# Older macOS date versions may not support the %N nanoseconds format.
+if [[ $(uname) == "Darwin" ]]
+then
+    if DATE_OUTPUT=$(/bin/date +%s.%N 2>/dev/null) &&
+        [[ "$DATE_OUTPUT" =~ ^[0-9]+\.[0-9]{{9}}$ ]]
+    then
+        export PAR_LAUNCH_TIMESTAMP=$DATE_OUTPUT
+    else
+        export PAR_LAUNCH_TIMESTAMP=$(/bin/date +%s.000000000)
+    fi
+else
+    export PAR_LAUNCH_TIMESTAMP=$(date +%s.%N)
+fi
+if [ -n "${{{lib_path_env}+SET}}" ]; then
+    export FB_SAVED_{lib_path_env}=${lib_path_env}
+fi
+export {lib_path_env}={ld_library_path}
+if [ -n "${{PYTHONPATH+SET}}" ]; then
+    export FB_SAVED_PYTHONPATH=$PYTHONPATH
+fi
+
+# The following expands to ":PAR_APPEND_PYTHONPATH" when $PAR_APPEND_PYTHONPATH is set
+# This is important: we don't want a trailing colon in $PYTHONPATH.
+export PYTHONPATH=$BASE_DIR${{PAR_APPEND_PYTHONPATH:+:$PAR_APPEND_PYTHONPATH}}
+if [ -n "${{PYTHONHOME+SET}}" ]; then
+    export FB_SAVED_PYTHONHOME=$PYTHONHOME
+fi
+if [ -n "${{{lib_preload_env}+SET}}" ]; then
+    export FB_SAVED_{lib_preload_env}=${lib_preload_env}
+fi
+unset PYTHONHOME
+export FB_PAR_MAIN_MODULE="{main_module}"
+export FB_PAR_MAIN_FUNCTION="{main_function}"
+export FB_PAR_MAIN_RUNNER_MODULE="{main_runner_module}"
+export FB_PAR_MAIN_RUNNER_FUNCTION="{main_runner_function}"
+export FB_PAR_RUNTIME_FILES=$BASE_DIR
+: ${{FB_LPAR_INVOKED_NAME:="$0"}}
+export FB_LPAR_INVOKED_NAME
+# This environment variable is immediately unset on startup but will also appear
+# in e.g. `multiprocessing` workers, and so serves as an audit trail back to
+# the originating PAR (and can be read via e.g. `/proc/<pid>/environ`).
+export PAR_INVOKED_NAME_TAG="$FB_LPAR_INVOKED_NAME"
+{ld_preload}
+{env}
+exec {cmd} "$@"
