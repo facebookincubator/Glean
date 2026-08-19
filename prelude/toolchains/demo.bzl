@@ -72,6 +72,7 @@ def system_demo_toolchains():
 
     system_cxx_toolchain(
         name = "cxx",
+        linker = "g++",
         visibility = ["PUBLIC"],
     )
 

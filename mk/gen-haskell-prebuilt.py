@@ -2,21 +2,27 @@
 """
 Generate haskell_prebuilt_library() rules for Cabal dependencies.
 
-Uses 'ghc-pkg field --ipid' to resolve each package by its exact unit ID
-(with resolved absolute paths), then creates:
+Uses 'ghc-pkg field --ipid' to resolve each package by its exact unit ID,
+then generates:
 
   third-party/haskell/
-    db/       GHC package database with absolute-path conf files
-    libs/     Symlinks to .a files
-    BUCK      haskell_prebuilt_library() rules
+    store-db/    Filtered GHC package DB for cabal-store packages
+                 (conf files symlinked from cabal store; recached here)
+    BUCK         haskell_prebuilt_library() rules
+
+Global GHC packages (base, parsec, etc.) are served via:
+  third-party/haskell/ghc-9.4.8  ->  ~/.ghcup/ghc/9.4.8   (repo symlink)
+
+Store packages are served via:
+  third-party/haskell/cabal-store ->  ~/.cabal/store/ghc-9.4.8  (repo symlink)
 
 Run from the Glean repository root.
 """
 
 import os
 import re
-import subprocess
 import shutil
+import subprocess
 import sys
 
 # ---------------------------------------------------------------------------
@@ -27,46 +33,56 @@ GHC_VERSION = "9.4.8"
 GHC_PKG = os.path.expanduser(f"~/.ghcup/ghc/{GHC_VERSION}/bin/ghc-pkg")
 GLEAN_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-GLOBAL_DB = os.path.expanduser(
+GLOBAL_DB  = os.path.expanduser(
     f"~/.ghcup/ghc/{GHC_VERSION}/lib/ghc-{GHC_VERSION}/lib/package.conf.d"
 )
-STORE_DB = os.path.expanduser(f"~/.cabal/store/ghc-{GHC_VERSION}/package.db")
-INPLACE_DB = os.path.join(
-    GLEAN_ROOT, f"dist-newstyle/packagedb/ghc-{GHC_VERSION}"
-)
-ALL_DBS = [GLOBAL_DB, STORE_DB, INPLACE_DB]
+STORE_DB   = os.path.expanduser(f"~/.cabal/store/ghc-{GHC_VERSION}/package.db")
+INPLACE_DB = os.path.join(GLEAN_ROOT, f"dist-newstyle/packagedb/ghc-{GHC_VERSION}")
+ALL_DBS    = [GLOBAL_DB, STORE_DB, INPLACE_DB]
 
-TARGET_DIR = os.path.join(GLEAN_ROOT, "third-party/haskell")
-TARGET_DB  = os.path.join(TARGET_DIR, "db")
-TARGET_LIBS = os.path.join(TARGET_DIR, "libs")
+TARGET_DIR    = os.path.join(GLEAN_ROOT, "third-party/haskell")
+TARGET_STORE_DB = os.path.join(TARGET_DIR, "store-db")
 
-# Packages built as buck2 haskell_library targets (not prebuilt).
-# Maps package name -> buck2 target label.
+# Repo-relative db paths (relative to TARGET_DIR) used in BUCK rules
+GLOBAL_DB_REL = f"ghc-{GHC_VERSION}/lib/ghc-{GHC_VERSION}/lib/package.conf.d"
+STORE_DB_REL  = "store-db"
+
+# Absolute roots for translating absolute paths -> repo-relative
+GLOBAL_ROOT_ABS = os.path.realpath(os.path.expanduser(f"~/.ghcup/ghc/{GHC_VERSION}"))
+STORE_ROOT_ABS  = os.path.realpath(os.path.expanduser(f"~/.cabal/store/ghc-{GHC_VERSION}"))
+GLOBAL_ROOT_REL = f"ghc-{GHC_VERSION}"
+STORE_ROOT_REL  = "cabal-store"
+
 BUCK2_PACKAGES = {
-    "mangle": "//hsthrift/common/mangle:mangle",
+    "mangle":   "//hsthrift/common/mangle:mangle",
+    "fb-stubs": "//hsthrift/common/github:fb-stubs",
 }
+SKIP_PACKAGES  = {"folly-clib"}
 
-# Packages to skip entirely.
-SKIP_PACKAGES = {"folly-clib", "fb-stubs"}
+INFO_FIELDS = "name,version,id,library-dirs,dynamic-library-dirs,hs-libraries,depends"
 
-# Fields we request from ghc-pkg for building conf files and BUCK rules.
-INFO_FIELDS = (
-    "name,version,id,"
-    "exposed-modules,hidden-modules,"
-    "import-dirs,library-dirs,dynamic-library-dirs,"
-    "hs-libraries,extra-libraries,include-dirs,"
-    "ld-options,depends"
-)
+# ---------------------------------------------------------------------------
+# Path helpers
+# ---------------------------------------------------------------------------
+
+def abs_to_rel(abs_path):
+    """Convert absolute path under GHC or cabal-store to repo-relative (via symlinks)."""
+    p = os.path.realpath(abs_path)
+    if p.startswith(GLOBAL_ROOT_ABS + "/"):
+        return GLOBAL_ROOT_REL + "/" + p[len(GLOBAL_ROOT_ABS) + 1:]
+    if p.startswith(STORE_ROOT_ABS + "/"):
+        return STORE_ROOT_REL + "/" + p[len(STORE_ROOT_ABS) + 1:]
+    return None
+
+def is_global_pkg(uid):
+    """GHC global packages have plain name-version IDs (no hash suffix)."""
+    return not re.search(r'-[0-9a-f]{20,}$', uid)
 
 # ---------------------------------------------------------------------------
 # ghc-pkg helpers
 # ---------------------------------------------------------------------------
 
 def pkg_info(unit_id, db):
-    """
-    Query ghc-pkg field --ipid for a specific unit ID in one database.
-    Returns a dict with resolved absolute paths, or None if not found.
-    """
     result = subprocess.run(
         [GHC_PKG, "--package-db", db, "field", "--ipid", unit_id, INFO_FIELDS],
         capture_output=True, text=True
@@ -76,7 +92,6 @@ def pkg_info(unit_id, db):
     return parse_fields(result.stdout, unit_id)
 
 def find_pkg(unit_id):
-    """Try all databases; return (info_dict, db_path) or None."""
     for db in ALL_DBS:
         if not os.path.isdir(db):
             continue
@@ -86,11 +101,9 @@ def find_pkg(unit_id):
     return None
 
 def parse_fields(text, unit_id):
-    """Parse multi-line 'ghc-pkg field' output into a dict."""
     result = {}
     current_key = None
     current_lines = []
-
     for line in text.splitlines():
         m = re.match(r'^([\w-]+):\s*(.*)', line)
         if m:
@@ -98,12 +111,10 @@ def parse_fields(text, unit_id):
                 result[current_key] = " ".join(current_lines).strip()
             current_key = m.group(1)
             current_lines = [m.group(2)]
-        elif line and (line[0] == ' ' or line[0] == '\t') and current_key:
+        elif line and (line[0] in ' \t') and current_key:
             current_lines.append(line.strip())
-
     if current_key:
         result[current_key] = " ".join(current_lines).strip()
-
     result.setdefault('id', unit_id)
     return result
 
@@ -112,23 +123,16 @@ def parse_fields(text, unit_id):
 # ---------------------------------------------------------------------------
 
 def pkg_name(unit_id):
-    """Extract base package name from a unit ID."""
     m = re.match(r'^([A-Za-z][A-Za-z0-9_-]*?)-\d', unit_id)
     return m.group(1) if m else unit_id
 
-def collect_packages(root_unit_ids):
-    """
-    Walk the dependency graph from root_unit_ids.
-    Returns dict of unit_id -> (info, db_path) | None.
-    """
+def collect_packages(root_ids):
     visited = {}
-    queue = list(root_unit_ids)
-
+    queue = list(root_ids)
     while queue:
         uid = queue.pop()
         if uid in visited:
             continue
-
         name = pkg_name(uid)
         if name in SKIP_PACKAGES or uid.endswith('-inplace'):
             visited[uid] = None
@@ -136,192 +140,103 @@ def collect_packages(root_unit_ids):
         if name in BUCK2_PACKAGES:
             visited[uid] = None
             continue
-
         found = find_pkg(uid)
         if found is None:
             print(f"  WARNING: not found: {uid}", file=sys.stderr)
             visited[uid] = None
             continue
-
         info, db = found
         visited[uid] = (info, db)
-
-        for dep_uid in info.get('depends', '').split():
-            if dep_uid and dep_uid not in visited:
-                queue.append(dep_uid)
-
+        for dep in info.get('depends', '').split():
+            if dep and dep not in visited:
+                queue.append(dep)
     return visited
 
 def get_root_dep_ids():
-    """Read dep IDs from the fb-util and mangle inplace conf files."""
     root = set()
-    for conf_name in ['fb-util-0.2.0.1-inplace.conf', 'mangle-0.1.0.1-inplace.conf']:
-        path = os.path.join(INPLACE_DB, conf_name)
-        if not os.path.exists(path):
-            print(f"WARNING: {path} not found - run 'cabal build fb-util mangle' first",
+
+    # Read deps from inplace library confs
+    for conf_name in ['fb-util-0.2.0.1-inplace.conf',
+                      'mangle-0.1.0.1-inplace.conf',
+                      'fb-stubs-0.1.0.1-inplace.conf']:
+        conf_path = os.path.join(INPLACE_DB, conf_name)
+        if not os.path.exists(conf_path):
+            print(f"WARNING: {conf_path} not found - run 'cabal build fb-util mangle' first",
                   file=sys.stderr)
             continue
-        with open(path) as f:
+        with open(conf_path) as f:
             content = f.read()
         m = re.search(r'^depends:\s*(.*?)(?=^\S|\Z)', content, re.MULTILINE | re.DOTALL)
         if m:
             for uid in m.group(1).split():
                 root.add(uid)
+
+    # Also pull in deps from test suites (from cabal's plan.json)
+    import json
+    plan_path = os.path.join(GLEAN_ROOT, "dist-newstyle/cache/plan.json")
+    if os.path.exists(plan_path):
+        with open(plan_path) as f:
+            plan = json.load(f)
+        for c in plan['install-plan']:
+            pkg = c.get('pkg-name', '')
+            comp = c.get('component-name', '')
+            if pkg in ('fb-util', 'fb-stubs') and comp.startswith('test:'):
+                for uid in c.get('depends', []):
+                    if not uid.endswith('-inplace'):
+                        root.add(uid)
+
     return root
 
+
 # ---------------------------------------------------------------------------
-# Package database with absolute-path conf files
+# Filtered store DB
 # ---------------------------------------------------------------------------
 
-def is_global_pkg(uid):
-    """GHC ships global packages with plain name-version IDs (no hash suffix)."""
-    return not re.search(r'-[0-9a-f]{20,}$', uid)
-
-def write_conf_file(uid, info, path):
+def setup_store_db(packages):
     """
-    Write a minimal GHC package conf file with absolute paths.
-    Using absolute paths avoids any ${pkgroot} expansion issues.
+    Create store-db/ with symlinks to .conf files for our exact store packages,
+    then recache so ghc-pkg can use it.
     """
-    full_id = info.get('id', uid).strip()
-    lines = [
-        f"name: {info.get('name', '')}",
-        f"version: {info.get('version', '')}",
-        f"visibility: public",
-        f"id: {full_id}",
-        f"key: {full_id}",
-        f"license: BSD-3-Clause",
-        f"exposed: True",
-    ]
+    if os.path.exists(TARGET_STORE_DB):
+        shutil.rmtree(TARGET_STORE_DB)
+    os.makedirs(TARGET_STORE_DB)
 
-    for field in ('exposed-modules', 'hidden-modules'):
-        val = info.get(field, '').strip()
-        if val:
-            lines.append(f"{field}: {val}")
-
-    for field in ('import-dirs', 'library-dirs', 'dynamic-library-dirs',
-                  'hs-libraries', 'extra-libraries', 'include-dirs'):
-        val = info.get(field, '').strip()
-        lines.append(f"{field}: {val}")
-
-    # ld-options may span multiple words; preserve as-is
-    ld_opts = info.get('ld-options', '').strip()
-    if ld_opts:
-        lines.append(f"ld-options: {ld_opts}")
-
-    # depends: one line per dep
-    depends = info.get('depends', '').split()
-    if depends:
-        lines.append("depends:")
-        for dep in depends:
-            lines.append(f"    {dep}")
-    else:
-        lines.append("depends:")
-
-    lines.append("")
-    with open(path, 'w') as f:
-        f.write("\n".join(lines))
-
-def setup_db(packages):
-    """Create third-party/haskell/db/ with absolute-path conf files."""
-    if os.path.exists(TARGET_DB):
-        shutil.rmtree(TARGET_DB)
-    os.makedirs(TARGET_DB)
-
+    count = 0
     for uid, val in packages.items():
-        if val is None:
+        if val is None or is_global_pkg(uid):
             continue
-        info, _db = val
-        conf_path = os.path.join(TARGET_DB, f"{uid}.conf")
-        write_conf_file(uid, info, conf_path)
-
-    # Build the package cache
-    subprocess.run(
-        [GHC_PKG, "--package-db", TARGET_DB, "recache"],
-        check=True
-    )
-    count = sum(1 for v in packages.values() if v is not None)
-    print(f"  Wrote {count} conf files + recached")
-
-# ---------------------------------------------------------------------------
-# Library symlinks
-# ---------------------------------------------------------------------------
-
-TARGET_SHARED_LIBS = os.path.join(TARGET_DIR, "shared-libs")
-
-def setup_lib_symlinks(packages):
-    """Create symlinks to .a and .so files."""
-    for d in (TARGET_LIBS, TARGET_SHARED_LIBS):
-        if os.path.exists(d):
-            shutil.rmtree(d)
-        os.makedirs(d)
-
-    lib_map = {}     # uid -> [static symlink_name, ...]
-    shared_map = {}  # uid -> {soname: symlink_name}
-    used_static = set()
-    used_shared = set()
-    GHC_VER = GHC_VERSION
-
-    for uid, val in sorted(packages.items()):
-        if val is None:
-            lib_map[uid] = []
-            shared_map[uid] = {}
+        info, db = val
+        if db != STORE_DB:
             continue
+        # Symlink the .conf file from the real store DB
+        src  = os.path.join(STORE_DB, f"{uid}.conf")
+        dest = os.path.join(TARGET_STORE_DB, f"{uid}.conf")
+        if os.path.exists(src):
+            os.symlink(src, dest)
+            count += 1
+        else:
+            print(f"  WARNING: no .conf for {uid} in store", file=sys.stderr)
 
-        info, _db = val
-        lib_dirs     = info.get('library-dirs', '').split()
-        dyn_lib_dirs = info.get('dynamic-library-dirs', '').split() or lib_dirs
-        hs_libs      = info.get('hs-libraries', '').split()
-
-        static_links = []
-        so_links = {}
-
-        for lib_stem in hs_libs:
-            # Static .a
-            filename = f"lib{lib_stem}.a"
-            for lib_dir in lib_dirs:
-                src = os.path.join(lib_dir, filename)
-                if os.path.exists(src):
-                    link_name = filename
-                    if link_name in used_static:
-                        link_name = f"{uid}_{filename}"
-                    os.symlink(src, os.path.join(TARGET_LIBS, link_name))
-                    used_static.add(link_name)
-                    static_links.append(link_name)
-                    break
-            else:
-                print(f"  WARNING: .a not found for {lib_stem} in {lib_dirs}",
-                      file=sys.stderr)
-
-            # Dynamic .so
-            so_filename = f"lib{lib_stem}-ghc{GHC_VER}.so"
-            search_dirs = list(dict.fromkeys(dyn_lib_dirs + lib_dirs))  # unique, dyn first
-            for lib_dir in search_dirs:
-                src = os.path.join(lib_dir, so_filename)
-                if os.path.exists(src):
-                    link_name = so_filename
-                    if link_name in used_shared:
-                        link_name = f"{uid}_{so_filename}"
-                    os.symlink(src, os.path.join(TARGET_SHARED_LIBS, link_name))
-                    used_shared.add(link_name)
-                    so_links[so_filename] = link_name  # soname -> symlink path
-                    break
-
-        lib_map[uid] = static_links
-        shared_map[uid] = so_links
-
-    return lib_map, shared_map
+    subprocess.run([GHC_PKG, "--package-db", TARGET_STORE_DB, "recache"], check=True)
+    print(f"  Symlinked {count} store .conf files + recached")
 
 # ---------------------------------------------------------------------------
 # BUCK file
 # ---------------------------------------------------------------------------
 
-def generate_buck_file(packages, lib_map, shared_map):
-    # Build uid -> rule_name mapping using actual Haskell package name from info
+def db_rel_for(uid, db_path):
+    if is_global_pkg(uid):
+        return GLOBAL_DB_REL
+    if db_path == STORE_DB:
+        return STORE_DB_REL
+    return None
+
+def generate_buck_file(packages):
     uid_to_rule = {}
     for uid, val in packages.items():
         if val is None:
             continue
-        info, _db = val
+        info, _ = val
         uid_to_rule[uid] = info.get('name', pkg_name(uid))
 
     lines = [
@@ -334,12 +249,40 @@ def generate_buck_file(packages, lib_map, shared_map):
         if val is None:
             continue
 
-        info, _db = val
+        info, db_path = val
+        db_rel = db_rel_for(uid, db_path)
+        if db_rel is None:
+            continue
+
         target  = uid_to_rule[uid]
         version = info.get('version', '')
         full_id = info.get('id', uid).strip()
-        libs    = lib_map.get(uid, [])
-        so_map  = shared_map.get(uid, {})
+
+        lib_dirs     = info.get('library-dirs', '').split()
+        dyn_lib_dirs = info.get('dynamic-library-dirs', '').split() or lib_dirs
+        hs_libs      = info.get('hs-libraries', '').split()
+
+        static_libs = []
+        shared_libs = {}
+        for stem in hs_libs:
+            for d in lib_dirs:
+                src = os.path.join(d, f"lib{stem}.a")
+                if os.path.exists(src):
+                    rel = abs_to_rel(src)
+                    if rel:
+                        static_libs.append(rel)
+                    break
+            else:
+                print(f"  WARNING: .a not found for {stem}", file=sys.stderr)
+
+            soname = f"lib{stem}-ghc{GHC_VERSION}.so"
+            for d in list(dict.fromkeys(dyn_lib_dirs + lib_dirs)):
+                src = os.path.join(d, soname)
+                if os.path.exists(src):
+                    rel = abs_to_rel(src)
+                    if rel:
+                        shared_libs[soname] = rel
+                    break
 
         dep_targets = []
         for dep_uid in info.get('depends', '').split():
@@ -355,18 +298,18 @@ def generate_buck_file(packages, lib_map, shared_map):
         lines.append(f'    name = {target!r},')
         lines.append(f'    version = {version!r},')
         lines.append(f'    id = {full_id!r},')
-        lines.append(f'    db = "db",')
-        if libs:
+        lines.append(f'    db = {db_rel!r},')
+        if static_libs:
             lines.append('    static_libs = [')
-            for lib in libs:
-                lines.append(f'        "libs/{lib}",')
+            for p in static_libs:
+                lines.append(f'        {p!r},')
             lines.append('    ],')
         else:
             lines.append('    static_libs = [],')
-        if so_map:
+        if shared_libs:
             lines.append('    shared_libs = {')
-            for soname, link in sorted(so_map.items()):
-                lines.append(f'        {soname!r}: "shared-libs/{link}",')
+            for soname, p in sorted(shared_libs.items()):
+                lines.append(f'        {soname!r}: {p!r},')
             lines.append('    },')
         else:
             lines.append('    shared_libs = {},')
@@ -384,7 +327,8 @@ def generate_buck_file(packages, lib_map, shared_map):
     buck_path = os.path.join(TARGET_DIR, 'BUCK')
     with open(buck_path, 'w') as f:
         f.write('\n'.join(lines) + '\n')
-    count = sum(1 for v in packages.values() if v is not None)
+    count = sum(1 for uid, v in packages.items()
+                if v is not None and db_rel_for(uid, v[1]) is not None)
     print(f"  Generated {buck_path} ({count} rules)")
 
 # ---------------------------------------------------------------------------
@@ -392,7 +336,11 @@ def generate_buck_file(packages, lib_map, shared_map):
 # ---------------------------------------------------------------------------
 
 def main():
-    os.makedirs(TARGET_DIR, exist_ok=True)
+    for rel in [GLOBAL_ROOT_REL, STORE_ROOT_REL]:
+        link = os.path.join(TARGET_DIR, rel)
+        if not os.path.islink(link):
+            print(f"ERROR: missing symlink {link}", file=sys.stderr)
+            sys.exit(1)
 
     print("Reading root dep IDs...")
     root_ids = get_root_dep_ids()
@@ -404,17 +352,11 @@ def main():
     skipped = len(packages) - found
     print(f"  {found} resolved, {skipped} skipped/buck2")
 
-    print("Building package database...")
-    setup_db(packages)
-
-    print("Creating library symlinks...")
-    lib_map, shared_map = setup_lib_symlinks(packages)
-    static_count = sum(len(v) for v in lib_map.values())
-    shared_count = sum(len(v) for v in shared_map.values())
-    print(f"  {static_count} .a symlinks, {shared_count} .so symlinks")
+    print("Building filtered store-db...")
+    setup_store_db(packages)
 
     print("Generating BUCK file...")
-    generate_buck_file(packages, lib_map, shared_map)
+    generate_buck_file(packages)
 
     print("Done.")
 
