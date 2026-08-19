@@ -7,13 +7,12 @@
 #   - the fb-haskell extension set (from the `fb-haskell` common stanza in
 #     glean.cabal.in) enabled by default, so individual rules don't need to
 #     repeat it.
-#   - hsc2hs: any `.hsc` file in `srcs` is automatically preprocessed. The
-#     include path passed to hsc2hs is the target's own package directory
-#     plus the package directory of each dep; anything else (e.g. a
-#     dependency's headers that live under a subdirectory, or one that isn't
-#     a direct dep) can be added via `hsc_includes`.
+#   - hsc2hs: any `.hsc` file in `srcs` is automatically preprocessed, with
+#     include paths derived from `deps` (see mk/hsc2hs.bzl) - so a `.hsc`
+#     file that needs a C++ dependency's headers just needs that dependency
+#     listed in `deps`, same as any other buck2 target.
 
-load("//mk:hsc2hs.bzl", "hsc2hs_genrule")
+load("//mk:hsc2hs.bzl", "hsc2hs")
 
 # Packages implicitly needed by every Haskell target.
 AUTO_PACKAGES = ["base", "rts"]
@@ -51,39 +50,19 @@ def _package_deps(packages):
     all_pkgs = {p: None for p in (AUTO_PACKAGES + packages)}
     return [("//third-party/haskell:" + p) for p in sorted(all_pkgs.keys())]
 
-def _dep_package_dir(dep):
-    # "//foo/bar:baz" -> "foo/bar"; deps not in this repo (there are none
-    # today) or relative deps (":baz") are skipped.
-    if not dep.startswith("//") or ":" not in dep:
-        return None
-    return dep[2:dep.index(":")]
-
-def _hsc_include_dirs(deps, hsc_includes):
-    dirs = {package_name(): None}
-    for d in deps:
-        pkg = _dep_package_dir(d)
-        if pkg:
-            dirs[pkg] = None
-    for d in hsc_includes:
-        dirs[d] = None
-    return dirs.keys()
-
-def _resolve_srcs(name, srcs, deps, hsc_includes):
-    includes = None
+def _resolve_srcs(name, srcs, deps):
     resolved = []
     for src in srcs:
         if not src.endswith(".hsc"):
             resolved.append(src)
             continue
-        if includes == None:
-            includes = _hsc_include_dirs(deps, hsc_includes)
         out = src[:-len(".hsc")] + ".hs"
         rule_name = name + "-hsc-" + out.replace("/", "_")
-        hsc2hs_genrule(
+        hsc2hs(
             name = rule_name,
             hsc_file = src,
             out = out,
-            includes = includes,
+            deps = deps,
         )
         resolved.append(":" + rule_name)
     return resolved
@@ -94,13 +73,13 @@ def haskell_library(
         packages = [],
         deps = [],
         compiler_flags = [],
-        hsc_includes = [],
         **kwargs):
+    all_deps = deps + _package_deps(packages)
     native.haskell_library(
         name = name,
-        srcs = _resolve_srcs(name, srcs, deps, hsc_includes),
+        srcs = _resolve_srcs(name, srcs, all_deps),
         compiler_flags = FB_HASKELL_EXTENSIONS + compiler_flags,
-        deps = deps + _package_deps(packages),
+        deps = all_deps,
         **kwargs
     )
 
@@ -110,12 +89,12 @@ def haskell_binary(
         packages = [],
         deps = [],
         compiler_flags = [],
-        hsc_includes = [],
         **kwargs):
+    all_deps = deps + _package_deps(packages)
     native.haskell_binary(
         name = name,
-        srcs = _resolve_srcs(name, srcs, deps, hsc_includes),
+        srcs = _resolve_srcs(name, srcs, all_deps),
         compiler_flags = FB_HASKELL_EXTENSIONS + compiler_flags,
-        deps = deps + _package_deps(packages),
+        deps = all_deps,
         **kwargs
     )
