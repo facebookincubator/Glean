@@ -41,6 +41,11 @@ class IsThriftService t where
   mkThriftService :: Service -> ThriftServiceOptions -> Maybe (t s)
   -- | Request a node with a specific Db
   thriftServiceWithDbShard :: t s -> Maybe DbShard -> t s
+  -- | Tag outbound connections with a ServiceRouter @client_id@ for
+  -- per-caller attribution. Default is a no-op for services that don't
+  -- support it.
+  thriftServiceWithClientId :: t s -> Maybe Text -> t s
+  thriftServiceWithClientId ts _ = ts
   runThrift :: EventBaseDataplane -> t s -> Thrift s a -> IO a
   getSelection :: EventBaseDataplane -> t s -> Int -> IO [(HostName,PortNumber)]
 

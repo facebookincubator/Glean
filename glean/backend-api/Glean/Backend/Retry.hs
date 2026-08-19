@@ -70,6 +70,8 @@ instance Backend RetryWritesBackend where
   schemaId (RetryWritesBackend _ backend) = schemaId backend
   usingShards (RetryWritesBackend _ backend) = usingShards backend
   initGlobalState (RetryWritesBackend _ backend) = initGlobalState backend
+  backendWithClientId cid (RetryWritesBackend policy backend) =
+    RetryWritesBackend policy (backendWithClientId cid backend)
 
 data RetryReadsBackend = RetryReadsBackend RetryPolicy (Some Backend)
 
@@ -123,3 +125,5 @@ instance Backend RetryReadsBackend where
   schemaId (RetryReadsBackend _ backend) = schemaId backend
   usingShards (RetryReadsBackend _ backend) = usingShards backend
   initGlobalState (RetryReadsBackend _ backend) = initGlobalState backend
+  backendWithClientId cid (RetryReadsBackend policy backend) =
+    RetryReadsBackend policy (backendWithClientId cid backend)

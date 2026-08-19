@@ -110,6 +110,10 @@ data Env' trace = Env
   , cfgapi :: ConfigAPI
   , logger :: Logger
   , gleanBackend :: Some Glean.Backend
+  , gleanClientIdPrefix :: Text
+    -- ^ The process's own ServiceRouter identity (its first SMC tier, e.g.
+    -- @glean.glass@), resolved once at startup: the prefix of the per-caller
+    -- Glean @client_id@.
   , fb303 :: Fb303State
   , latestGleanRepos :: TVar GleanDBInfo
   , snapshotBackend :: Some SnapshotBackend

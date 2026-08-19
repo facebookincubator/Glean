@@ -285,6 +285,11 @@ instance Backend ThriftBackend where
 
   initGlobalState = initRemoteGlobalState
 
+  backendWithClientId cid tb = tb
+    { thriftBackendService =
+        thriftServiceWithClientId (thriftBackendService tb) (Just cid)
+    }
+
 
 withShard
   :: ThriftBackend

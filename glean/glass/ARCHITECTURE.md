@@ -77,6 +77,46 @@ Shared request helpers:
 
 These helpers standardize request parsing, DB selection policy, error handling behavior, and handler execution.
 
+### Per-caller Glean attribution (`client_id`)
+
+`glassHandler` derives a per-caller ServiceRouter `client_id` for each request
+and stamps it onto that request's Glean backend (via `backendWithClientId`),
+alongside the existing `setCallerInfo` on `sourceControl`. The token extends the
+process's own SR identity (e.g. `glean.glass`) as `<sr_default>~<caller>`.
+
+The caller half is the `client_id` ServiceRouter stamped on the *inbound*
+request, falling back to `RequestOptions.client_info.application` when the
+caller sent none. hsthrift does not surface inbound transport headers to
+Haskell handlers, so the inbound `client_id` comes from
+`Thrift.Server.ClientId.getInboundClientId`: `HaskellAsyncProcessor` publishes
+`Cpp2RequestContext::clientId()` for the duration of its synchronous callback
+into Haskell, and this reads it back. That is why `withGleanClientId` is the
+outermost wrapper in `glassHandler` — the value is only live on the request
+thread, for the span of the handler call. Using `Cpp2RequestContext::clientId()`
+means Glass forwards the same identity RIM would attribute the call to at the
+Glass tier, and it covers both ways SR sends the id (the `client_id` transport
+header, and `RequestRpcMetadata` on re-used connections).
+
+Note this deliberately does *not* use a Thrift `ServiceInterceptor`, which is
+how the inbound-CAT surface reaches Haskell: interceptors are driven from the
+generated-code request path that `HaskellAsyncProcessor` bypasses, so their
+`onRequest` never runs on a Haskell server.
+
+`~` is the separator because real caller tokens are buck targets
+(`fbcode:glean/glass/facebook/cli:glass`) and Hack method names (`Foo::genBar`)
+that already contain `:` and `/`; the separator is folded out of both halves so
+the token always splits into exactly two parts, whatever the caller sends or SR
+defaults to. When neither source yields a caller, Glass leaves ServiceRouter's
+default `client_id` in place — the bare `glean.glass` SMC tier — rather than
+overriding it with a less specific token.
+Because the tagged `gleanBackend` is threaded into every handler, all outbound
+request-path Glean RPCs carry the caller's `client_id` connection config,
+letting the Glean read tier attribute and (later) fair-share cost per real
+client instead of seeing all Glass traffic as a single `glean.glass` client.
+(The default `glean.glass` itself is not set by Glass code: ServiceRouter fills
+it in from the process's first SMC tier — see
+`fbcode/tupperware/config/glean/glass/glass.tw`.)
+
 ## 4. Glean DB Selection (“best/closest DB”)
 
 This is one of Glass’s key logic layers.

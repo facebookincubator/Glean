@@ -178,6 +178,12 @@ class Backend a where
   -- | Initialise the Haxl state for this Backend.
   initGlobalState :: a -> IO (Haxl.State GleanGet, Haxl.State GleanQuery)
 
+  -- | Tag outbound RPCs with a ServiceRouter @client_id@ for per-caller
+  -- attribution on the server. Default is a no-op so backends that don't
+  -- talk to a remote server (or don't support it) are unaffected.
+  backendWithClientId :: Text -> a -> a
+  backendWithClientId _ b = b
+
 
 -- | The exception includes the length of time from start to error
 type LogDerivationResult =
@@ -215,6 +221,7 @@ instance Backend (Some Backend) where
   schemaId (Some backend) = schemaId backend
   usingShards (Some backend) = usingShards backend
   initGlobalState (Some backend) = initGlobalState backend
+  backendWithClientId cid (Some b) = Some (backendWithClientId cid b)
 
 -- -----------------------------------------------------------------------------
 -- Functionality built on Backend

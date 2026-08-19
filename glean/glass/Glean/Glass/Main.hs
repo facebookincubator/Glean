@@ -17,7 +17,9 @@ module Glean.Glass.Main
   , withEnv
   ) where
 
+import Control.Applicative ((<|>))
 import Control.Concurrent (myThreadId)
+import Control.Monad (guard)
 import Control.Trace (traceMsg, (>$<))
 import Data.Default (def)
 import Data.Hashable (hash)
@@ -29,6 +31,7 @@ import TextShow
 import Thrift.Channel (Header)
 import Thrift.Protocol.ApplicationException.Types as Thrift
 #ifdef FBTHRIFT
+import Thrift.Server.ClientId (getInboundClientId)
 import qualified Thrift.Server.CppServer as Thrift
 #else
 import qualified Thrift.Server.HTTP as Thrift
@@ -39,6 +42,7 @@ import Logger.IO (withLogger)
 
 import Control.Exception (SomeException, fromException, throwIO)
 import Data.Text (Text)
+import qualified Data.Text as Text
 import Data.Text.Encoding (encodeUtf8)
 import Options.Applicative (Parser)
 
@@ -63,14 +67,17 @@ import Glean.Glass.GlassService.Service ( GlassServiceCommand(..) )
 import Glean.Glass.Types
   ( GlassException (GlassException, glassException_reasons),
     GlassExceptionReason (..), RequestOptions(..),
+    ClientInfo(..),
     FindReferenceRangesResult(..))
-import Glean.Glass.Env (Env'(tracer, sourceControl), Env)
+import Glean.Glass.Env
+  (Env'(tracer, sourceControl, gleanBackend, gleanClientIdPrefix), Env)
 import Glean.Glass.Tracer ( isTracingEnabled )
 import Glean.Glass.Handler.Cxx as Cxx
 import Glean.Glass.Tracing
   (GlassTrace(TraceCommand), GlassTraceWithId (GlassTraceWithId))
 #if GLEAN_FACEBOOK
 import Glean.Glass.Auth.AttachHandler (withVerifiedAuth)
+import Glean.Impl.SrClientId (getSrDefaultClientId)
 import JustKnobs (evalKnob)
 #endif
 
@@ -114,6 +121,7 @@ withEnv Glass.Config{..} gleanDB f =
     (if isRemote gleanService then listDatabasesRetry else Nothing) refreshFreq
     $ \latestGleanRepos -> do
       repoMapping <- getRepoMapping def
+      gleanClientIdPrefix <- srDefaultClientId
       f Glass.Env
         { gleanBackend = Some backend
         , gleanDB = gleanDB
@@ -224,13 +232,14 @@ getOptsFromCommand cmd = case cmd of
 --
 glassHandler :: Glass.Env' GlassTraceWithId -> GlassServiceCommand r -> IO r
 glassHandler env0 cmd =
-  Glass.withAllocationLimit env0 $
-  withRequestTracing env0 $ \env1 ->
-  withCurrentRepoMapping opts env1 $ \env2 ->
-  let env = env2
+  withGleanClientId opts env0 $ \env1 ->
+  Glass.withAllocationLimit env1 $
+  withRequestTracing env1 $ \env2 ->
+  withCurrentRepoMapping opts env2 $ \env3 ->
+  let env = env3
         { sourceControl =
             setCallerInfo (requestOptions_client_info opts)
-              (sourceControl env2)
+              (sourceControl env3)
         }
   in
   tracing env $
@@ -293,3 +302,65 @@ glassHandler env0 cmd =
     clientTimeoutMs =
       -- TODO get the client timeout from the Thrift request
       30 * 1000000
+
+-- | Tag the request's Glean backend with a per-caller ServiceRouter
+-- @client_id@ (see 'gleanClientId').
+--
+-- Outermost wrapper in 'glassHandler': hsthrift publishes the inbound
+-- @client_id@ only for the span of the handler call, on the request thread.
+withGleanClientId
+  :: RequestOptions -> Glass.Env' trace -> (Glass.Env' trace -> IO a) -> IO a
+withGleanClientId opts env fn = do
+  inbound <- inboundClientId
+  case gleanClientId prefix inbound (requestOptions_client_info opts) of
+    Nothing -> fn env
+    Just cid -> fn env
+      { gleanBackend = Glean.backendWithClientId cid (gleanBackend env) }
+  where prefix = gleanClientIdPrefix env
+
+-- | The @client_id@ ServiceRouter stamped on the inbound request, or empty
+-- when there is none to read.
+inboundClientId :: IO Text
+#ifdef FBTHRIFT
+inboundClientId = getInboundClientId
+#else
+inboundClientId = pure Text.empty
+#endif
+
+-- | ServiceRouter's own default @client_id@ for this process. Empty without
+-- ServiceRouter, which disables the override entirely (see 'gleanClientId').
+srDefaultClientId :: IO Text
+#if GLEAN_FACEBOOK
+srDefaultClientId = getSrDefaultClientId
+#else
+srDefaultClientId = pure Text.empty
+#endif
+
+-- | The Glean @client_id@ for this request as @\<sr_default\>~\<caller\>@, or
+-- 'Nothing' to leave ServiceRouter's default in place.
+--
+-- Prefers the inbound @client_id@ over @client_info.application@: it is what
+-- RIM keys on (both read @Cpp2RequestContext::clientId()@), while
+-- @application@ is caller-declared and need not agree. @application@ is the
+-- fallback, since the inbound id is empty for a tail of real callers.
+--
+-- The prefix must be 'getSrDefaultClientId' rather than the SMC tier — the
+-- tier is only one branch of SR's fallback chain
+-- (@servicerouter/common/DefaultClientId.cpp@).
+--
+-- @~@ occurs in no caller token Glass sees; @:@ and @/@ both occur in real
+-- ones (buck targets, Hack method names).
+gleanClientId :: Text -> Text -> Maybe ClientInfo -> Maybe Text
+gleanClientId prefix inbound mClientInfo = do
+  -- No SR default to extend: send nothing rather than invent a root.
+  guard (not (Text.null prefix))
+  caller <- nonEmpty inbound <|> (nonEmpty =<< application)
+  -- Fold the separator out of both halves so the token always splits into
+  -- exactly two parts, whatever the caller sends or SR defaults to.
+  pure (foldSeparator prefix <> separator <> foldSeparator caller)
+  where
+    application = clientInfo_application =<< mClientInfo
+    nonEmpty t = if Text.null t then Nothing else Just t
+    foldSeparator = Text.replace separator "_"
+    separator :: Text
+    separator = "~"
