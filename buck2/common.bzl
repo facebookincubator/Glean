@@ -11,7 +11,10 @@
 #     include paths derived from `deps` (see buck2/hsc2hs.bzl) - so a `.hsc`
 #     file that needs a C++ dependency's headers just needs that dependency
 #     listed in `deps`, same as any other buck2 target.
+#   - alex/happy: any `.x`/`.y` file in `srcs` is automatically run through
+#     the corresponding tool (see buck2/alex_happy.bzl).
 
+load("//buck2:alex_happy.bzl", "alex", "happy")
 load("//buck2:hsc2hs.bzl", "hsc2hs")
 
 # Packages implicitly needed by every Haskell target.
@@ -51,22 +54,38 @@ def _package_deps(packages):
     all_pkgs = {p: None for p in (AUTO_PACKAGES + packages)}
     return [("//third-party/haskell:" + p) for p in sorted(all_pkgs.keys())]
 
-def _resolve_srcs(name, srcs, deps):
-    resolved = []
-    for src in srcs:
-        if not src.endswith(".hsc"):
-            resolved.append(src)
-            continue
-        out = src[:-len(".hsc")] + ".hs"
+def _resolve_src(name, path, src, deps):
+    # `path` is the module-derived path srcs is keyed by (e.g. what its
+    # module name maps to); `src` is the actual file, which may differ from
+    # `path` for a source living outside its module's directory layout (see
+    # the dict form of `srcs`, below).
+    if src.endswith(".hsc"):
+        out = path[:-len(".hsc")] + ".hs"
         rule_name = name + "-hsc-" + out.replace("/", "_")
-        hsc2hs(
-            name = rule_name,
-            hsc_file = src,
-            out = out,
-            deps = deps,
-        )
-        resolved.append(":" + rule_name)
-    return resolved
+        hsc2hs(name = rule_name, hsc_file = src, out = out, deps = deps)
+        return ":" + rule_name
+    elif src.endswith(".x"):
+        out = path[:-len(".x")] + ".hs"
+        rule_name = name + "-alex-" + out.replace("/", "_")
+        alex(name = rule_name, src = src, out = out)
+        return ":" + rule_name
+    elif src.endswith(".y"):
+        out = path[:-len(".y")] + ".hs"
+        rule_name = name + "-happy-" + out.replace("/", "_")
+        happy(name = rule_name, src = src, out = out)
+        return ":" + rule_name
+    else:
+        return src
+
+# `srcs` is usually a list, where each file's own path (relative to this
+# BUCK package) determines its module name. A dict `{modulePath: file}` is
+# also accepted for the rare case where a source doesn't live at the path
+# its module name implies (e.g. a shared `plugins/` directory holding
+# modules that belong under the main package's namespace).
+def _resolve_srcs(name, srcs, deps):
+    if type(srcs) == type({}):
+        return {path: _resolve_src(name, path, src, deps) for path, src in srcs.items()}
+    return [_resolve_src(name, src, src, deps) for src in srcs]
 
 def haskell_library(
         name,
