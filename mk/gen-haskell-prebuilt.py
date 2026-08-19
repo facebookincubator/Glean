@@ -59,7 +59,7 @@ BUCK2_PACKAGES = {
 }
 SKIP_PACKAGES  = {"folly-clib"}
 
-INFO_FIELDS = "name,version,id,library-dirs,dynamic-library-dirs,hs-libraries,depends"
+INFO_FIELDS = "name,version,id,library-dirs,dynamic-library-dirs,hs-libraries,depends,include-dirs"
 
 # ---------------------------------------------------------------------------
 # Path helpers
@@ -284,6 +284,12 @@ def generate_buck_file(packages):
                         shared_libs[soname] = rel
                     break
 
+        header_dirs = []
+        for d in info.get('include-dirs', '').split():
+            rel = abs_to_rel(d)
+            if rel:
+                header_dirs.append(rel)
+
         dep_targets = []
         for dep_uid in info.get('depends', '').split():
             dep_name = pkg_name(dep_uid)
@@ -313,6 +319,11 @@ def generate_buck_file(packages):
             lines.append('    },')
         else:
             lines.append('    shared_libs = {},')
+        if header_dirs:
+            lines.append('    cxx_header_dirs = [')
+            for p in header_dirs:
+                lines.append(f'        {p!r},')
+            lines.append('    ],')
         if dep_targets:
             lines.append('    deps = [')
             for t in sorted(set(dep_targets)):
