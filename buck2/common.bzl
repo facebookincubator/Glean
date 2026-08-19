@@ -8,17 +8,18 @@
 #     glean.cabal.in) enabled by default, so individual rules don't need to
 #     repeat it.
 #   - hsc2hs: any `.hsc` file in `srcs` is automatically preprocessed, with
-#     include paths derived from `deps` (see mk/hsc2hs.bzl) - so a `.hsc`
+#     include paths derived from `deps` (see buck2/hsc2hs.bzl) - so a `.hsc`
 #     file that needs a C++ dependency's headers just needs that dependency
 #     listed in `deps`, same as any other buck2 target.
 
-load("//mk:hsc2hs.bzl", "hsc2hs")
+load("//buck2:hsc2hs.bzl", "hsc2hs")
 
 # Packages implicitly needed by every Haskell target.
 AUTO_PACKAGES = ["base", "rts"]
 
 # Extensions enabled by the `fb-haskell` common stanza in glean.cabal.in.
 FB_HASKELL_EXTENSIONS = [
+    "-XHaskell2010",
     "-XBangPatterns",
     "-XBinaryLiterals",
     "-XDataKinds",
