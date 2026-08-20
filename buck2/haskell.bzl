@@ -48,6 +48,7 @@ FB_HASKELL_EXTENSIONS = [
     "-XLambdaCase",
     "-XMultiParamTypeClasses",
     "-XMultiWayIf",
+    "-XNamedFieldPuns",
     "-XNoMonomorphismRestriction",
     "-XOverloadedStrings",
     "-XPatternSynonyms",
@@ -59,6 +60,7 @@ FB_HASKELL_EXTENSIONS = [
     "-XTypeFamilies",
     "-XTypeSynonymInstances",
     "-XNondecreasingIndentation",
+    "-XTypeOperators",
 ]
 
 def _package_deps(packages):
@@ -79,7 +81,7 @@ def hs_module_path(path):
             return path[:-len(ext)] + ".hs"
     return path
 
-def _resolve_src(name, path, src, deps):
+def _resolve_src(name, path, src, deps, hsc_flags):
     # `path` is the module-derived path this source should end up at (e.g.
     # what its module name maps to); `src` is the actual file, which may
     # differ from `path` for a source living outside its module's directory
@@ -90,7 +92,7 @@ def _resolve_src(name, path, src, deps):
     out = hs_module_path(path)
     if src.endswith(".hsc"):
         rule_name = name + "-hsc-" + out.replace("/", "_")
-        hsc2hs(name = rule_name, hsc_file = src, out = out, deps = deps)
+        hsc2hs(name = rule_name, hsc_file = src, out = out, deps = deps, extra_flags = hsc_flags)
         return ":" + rule_name
     elif src.endswith(".x"):
         rule_name = name + "-alex-" + out.replace("/", "_")
@@ -132,9 +134,9 @@ def _resolve_src(name, path, src, deps):
 # modules that belong under the main package's namespace) - internally
 # resolved to a plain list (see _resolve_src) since dict-form srcs on the
 # native rule is deprecated.
-def _resolve_srcs(name, srcs, deps):
+def _resolve_srcs(name, srcs, deps, hsc_flags):
     items = srcs.items() if type(srcs) == type({}) else [(src, src) for src in srcs]
-    return [_resolve_src(name, path, src, deps) for path, src in items]
+    return [_resolve_src(name, path, src, deps, hsc_flags) for path, src in items]
 
 def haskell_library(
         name,
@@ -143,11 +145,15 @@ def haskell_library(
         deps = [],
         compiler_flags = [],
         fb_haskell = True,
+        # Extra -C-style flags for every .hsc file in `srcs` (see
+        # hsc2hs.bzl's `extra_flags`) - the buck2 equivalent of Cabal's
+        # per-library `hsc2hs-options` field.
+        hsc_flags = [],
         **kwargs):
     all_deps = deps + _package_deps(packages)
     native.haskell_library(
         name = name,
-        srcs = _resolve_srcs(name, srcs, all_deps),
+        srcs = _resolve_srcs(name, srcs, all_deps, hsc_flags),
         compiler_flags = (FB_HASKELL_EXTENSIONS + compiler_flags) if fb_haskell else compiler_flags,
         deps = all_deps,
         **kwargs
@@ -160,11 +166,12 @@ def haskell_binary(
         deps = [],
         compiler_flags = [],
         fb_haskell = True,
+        hsc_flags = [],
         **kwargs):
     all_deps = deps + _package_deps(packages)
     native.haskell_binary(
         name = name,
-        srcs = _resolve_srcs(name, srcs, all_deps),
+        srcs = _resolve_srcs(name, srcs, all_deps, hsc_flags),
         compiler_flags = (FB_HASKELL_EXTENSIONS + compiler_flags) if fb_haskell else compiler_flags,
         deps = all_deps,
         **kwargs

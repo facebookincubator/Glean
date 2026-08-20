@@ -1,0 +1,20 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+# Cabal's `indexers` library includes this module (Glean.Indexer.Hack)
+# among its 18 - see glean/index/BUCK's comment for the split rationale.
+# (Glean.Indexer.HackWithDeriver and the deriver/ subtree are separate
+# Cabal components, not part of `indexers` - out of scope here.)
+haskell_library(
+    name = "hack-indexer",
+    srcs = [
+        "Glean/Indexer/Hack.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//glean/index:indexer-core",
+    ],
+    packages = [
+        "optparse-applicative",
+    ],
+    visibility = ["PUBLIC"],
+)

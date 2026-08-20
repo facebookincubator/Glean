@@ -1,0 +1,81 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+# Cabal's `core` library (glean.cabal.in): the Haskell interface to
+# //glean/rts:rts. Glean/RTS/Foreign/Ownership.hsc and Query.hsc are the
+# only real .hsc files (everything else here is plain Foreign/FFI .hs, same
+# as most of fb-util's own FFI modules) - both include glean/rts headers
+# directly (glean/rts/ownership.h, query.h, ffi.h), which is why rts is a
+# dep here (its public_include_directories propagates into the hsc2hs step -
+# see hsc2hs.bzl). -DOSS=1 (hsc_flags, matching Cabal's per-library
+# `hsc2hs-options: --cflag=-DOSS=1`) is needed because glean/rts/query.h
+# itself has an `#ifdef OSS` block (see glean/rts/BUCK's own comment for
+# why) - hsc2hs's intermediate C compile needs to see the same value the
+# main //glean/rts:rts compile does, or it'll try to pull in the
+# Meta-internal branch instead.
+
+haskell_library(
+    name = "core",
+    hsc_flags = ["-C", "-DOSS=1"],
+    srcs = [
+        "Glean/FFI.hs",
+        "Glean/Repo/Text.hs",
+        "Glean/RTS.hs",
+        "Glean/RTS/Builder.hs",
+        "Glean/RTS/Bytecode/Code.hs",
+        "Glean/RTS/Bytecode/Disassemble.hs",
+        "Glean/RTS/Bytecode/Gen/Instruction.hs",
+        "Glean/RTS/Bytecode/Gen/Issue.hs",
+        "Glean/RTS/Bytecode/Gen/Version.hs",
+        "Glean/RTS/Bytecode/Supply.hs",
+        "Glean/RTS/Constants.hs",
+        "Glean/RTS/Foreign/Benchmarking.hs",
+        "Glean/RTS/Foreign/Bytecode.hs",
+        "Glean/RTS/Foreign/Define.hs",
+        "Glean/RTS/Foreign/FactSet.hs",
+        "Glean/RTS/Foreign/Inventory.hs",
+        "Glean/RTS/Foreign/JSON.hs",
+        "Glean/RTS/Foreign/LookupCache.hs",
+        "Glean/RTS/Foreign/Lookup.hs",
+        "Glean/RTS/Foreign/Ownership.hsc",
+        "Glean/RTS/Foreign/Query.hsc",
+        "Glean/RTS/Foreign/Stacked.hs",
+        "Glean/RTS/Foreign/Stats.hs",
+        "Glean/RTS/Foreign/Subst.hs",
+        "Glean/RTS/Foreign/Thrift.hs",
+        "Glean/RTS/Foreign/Typecheck.hs",
+        "Glean/RTS/Set.hs",
+        "Glean/RTS/Term.hs",
+        "Glean/RTS/Traverse.hs",
+        "Glean/RTS/Typecheck.hs",
+        "Glean/RTS/Types.hs",
+        "Glean/Write/Stats.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//glean/angle:angle",
+        "//glean/bytecode:bytecode",
+        "//glean/config:config",
+        "//glean/github:defaultconfigs",
+        "//glean/github:stubs",
+        "//glean/if:if-glean-hs",
+        "//glean/if:if-internal-hs",
+        "//glean/rts:rts",
+        "//glean/util:util",
+    ],
+    packages = [
+        "bytestring",
+        "clock",
+        "containers",
+        "contravariant",
+        "data-default",
+        "deepseq",
+        "exceptions",
+        "hashable",
+        "text",
+        "text-show",
+        "transformers",
+        "unordered-containers",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)

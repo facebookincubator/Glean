@@ -1,0 +1,74 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+# Cabal's `util` library (glean.cabal.in). Glean.Impl.ThriftService has
+# `#ifdef FBTHRIFT ... #else ... #endif`; since we never define FBTHRIFT
+# (buck2 doesn't support that flag - see buck2.md TODO), the #else branch is
+# what actually compiles here, which needs Thrift.Channel.HTTP
+# (//hsthrift/http:thrift-http) rather than the fbthrift-only
+# Thrift.Channel.HeaderChannel (hsthrift/cpp-channel, not migrated - and
+# out of scope, since it's fbthrift-based).
+haskell_library(
+    name = "util",
+    srcs = [
+        "Glean/Impl/ThriftService.hs",
+        "Glean/Impl/ConfigProvider.hs",
+        "Glean/Impl/TestConfigProvider.hs",
+        "Glean/Impl/MemoryReader.hs",
+        "Glean/Util/Bisect.hs",
+        "Glean/Util/ConfigProvider.hs",
+        "Glean/Util/Disk.hs",
+        "Glean/Util/IO.hs",
+        "Glean/Util/Metric.hs",
+        "Glean/Util/Mutex.hs",
+        "Glean/Util/Observed.hs",
+        "Glean/Util/Periodic.hs",
+        "Glean/Util/Process.hs",
+        "Glean/Util/RetryRecvTimeout.hs",
+        "Glean/Util/RetryChannelException.hs",
+        "Glean/Util/Service.hs",
+        "Glean/Util/ShardManager.hs",
+        "Glean/Util/Some.hs",
+        "Glean/Util/ThriftService.hs",
+        "Glean/Util/ThriftSource.hs",
+        "Glean/Util/Throttle.hs",
+        "Glean/Util/TransitiveClosure.hs",
+        "Glean/Util/Trace.hs",
+        "Glean/Util/ValueBuffer.hs",
+        "Glean/Util/Vector.hs",
+        "Glean/Util/Warden.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//hsthrift/http:thrift-http",
+        "//hsthrift/lib:thrift-lib",
+        "//glean/config:config",
+        "//glean/github:stubs",
+        "//glean/if:if-glean-hs",
+    ],
+    packages = [
+        "async",
+        "bytestring",
+        "clock",
+        "containers",
+        "data-default",
+        "directory",
+        "extra",
+        "filepath",
+        "hashable",
+        "hinotify",
+        "network",
+        "network-uri",
+        "optparse-applicative",
+        "primitive",
+        "process",
+        "random",
+        "temporary",
+        "text",
+        "transformers",
+        "unix",
+        "unordered-containers",
+        "utf8-string",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)

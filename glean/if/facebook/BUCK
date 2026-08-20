@@ -1,0 +1,29 @@
+load("//buck2:thrift.bzl", "thrift_haskell_library")
+
+# Cabal's `if-auth-hs` library (glean.cabal.in).
+thrift_haskell_library(
+    name = "if-auth-hs",
+    thrift_files = {
+        "auth.thrift": ["Glean/Auth/Auth/Types.hs"],
+    },
+    thrift_flags = ["-I", "."],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//hsthrift/lib:thrift-lib",
+        "//thrift/annotation:thrift-annotation",
+    ],
+    packages = [
+        "aeson",
+        "bytestring",
+        "containers",
+        "data-default",
+        "deepseq",
+        "ghc-prim",
+        "hashable",
+        "STMonadTrans",
+        "text",
+        "unordered-containers",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)

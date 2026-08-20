@@ -1,0 +1,34 @@
+load("//buck2:thrift.bzl", "thrift_haskell_library")
+
+# Cabal's `config` library (glean.cabal.in): only service/client/server
+# config, not recipes or glass repomapping (those aren't part of the `config`
+# library's exposed-modules in glean.cabal.in, even though they live under
+# this same directory tree).
+thrift_haskell_library(
+    name = "config",
+    thrift_files = {
+        "service.thrift": ["Glean/Service/Types.hs"],
+        "client/client_config.thrift": ["Glean/ClientConfig/Types.hs"],
+        "server/server_config.thrift": ["Glean/ServerConfig/Types.hs"],
+    },
+    thrift_flags = ["-I", "."],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//hsthrift/lib:thrift-lib",
+        "//thrift/annotation:thrift-annotation",
+    ],
+    packages = [
+        "aeson",
+        "bytestring",
+        "containers",
+        "data-default",
+        "deepseq",
+        "ghc-prim",
+        "hashable",
+        "STMonadTrans",
+        "text",
+        "unordered-containers",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)

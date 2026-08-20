@@ -1,0 +1,73 @@
+load("//buck2:haskell.bzl", "haskell_binary", "haskell_library")
+
+# Cabal's `bytecode` library (glean.cabal.in).
+haskell_library(
+    name = "bytecode",
+    srcs = [
+        "Glean/Bytecode/Types.hs",
+        "Glean/Bytecode/Decode.hs",
+        "Glean/Bytecode/SysCalls.hs",
+    ],
+    packages = [
+        "mtl",
+        "text",
+        "transformers",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Cabal's `bytecode-instruction` library (glean.cabal.in): the instruction
+# set itself, as a Haskell value - consumed by the gen-bytecode-hs/-cpp
+# generators below, not by hand-written code directly.
+haskell_library(
+    name = "bytecode-instruction",
+    srcs = {
+        "Glean/Bytecode/Generate/Instruction.hs": "def/Glean/Bytecode/Generate/Instruction.hs",
+    },
+    deps = [":bytecode"],
+    packages = [
+        "text",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Cabal's `gen-bytecode-hs` executable: generates
+# Glean.RTS.Bytecode.Gen.{Instruction,Issue,Version} for glean:core - see
+# the gen-bytecode genrule() below, which actually runs it.
+haskell_binary(
+    name = "gen-bytecode-hs",
+    srcs = {
+        "Glean/Bytecode/Generate/Haskell.hs": "gen/Glean/Bytecode/Generate/Haskell.hs",
+    },
+    main = "Glean.Bytecode.Generate.Haskell",
+    deps = [
+        ":bytecode",
+        ":bytecode-instruction",
+    ],
+    packages = [
+        "directory",
+        "filepath",
+        "text",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Runs gen-bytecode-hs, producing the 3 files glean:core's srcs expect at
+# Glean/RTS/Bytecode/Gen/{Instruction,Issue,Version}.hs, each addressable as
+# its own sub-target (e.g. `":gen-bytecode[Instruction.hs]"`) via genrule()'s
+# named `outs`, same `[key]` convention thrift_compile() uses for its own
+# per-file outputs. gen-bytecode-hs's own CLI always writes exactly these
+# three files under `--install_dir=$OUT` (Glean/Bytecode/Generate/Haskell.hs)
+# - byte-for-byte identical to the pre-existing checked-in
+# glean/hs/Glean/RTS/Bytecode/Gen/*.hs (from a prior `make gen-bytecode`),
+# confirmed with a direct `buck2 run` + diff.
+genrule(
+    name = "gen-bytecode",
+    cmd = "$(exe :gen-bytecode-hs) --install_dir=$OUT",
+    outs = {
+        "Instruction.hs": ["Glean/RTS/Bytecode/Gen/Instruction.hs"],
+        "Issue.hs": ["Glean/RTS/Bytecode/Gen/Issue.hs"],
+        "Version.hs": ["Glean/RTS/Bytecode/Gen/Version.hs"],
+    },
+    visibility = ["PUBLIC"],
+)

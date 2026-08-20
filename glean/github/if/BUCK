@@ -1,0 +1,30 @@
+load("//buck2:thrift.bzl", "thrift_haskell_library")
+
+# Cabal's `if-fb303-hs` library (glean.cabal.in).
+thrift_haskell_library(
+    name = "if-fb303-hs",
+    thrift_files = {
+        "fb303_core.thrift": ["Fb303Core/Types.hs", "Fb303Core/BaseService/Client.hs", "Fb303Core/BaseService/Service.hs"],
+        "fb303.thrift": ["Fb303/Types.hs", "Fb303/FacebookService/Client.hs", "Fb303/FacebookService/Service.hs"],
+    },
+    thrift_flags = ["-I", "."],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//hsthrift/lib:thrift-lib",
+        "//thrift/annotation:thrift-annotation",
+    ],
+    packages = [
+        "aeson",
+        "bytestring",
+        "containers",
+        "data-default",
+        "deepseq",
+        "ghc-prim",
+        "hashable",
+        "STMonadTrans",
+        "text",
+        "unordered-containers",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)

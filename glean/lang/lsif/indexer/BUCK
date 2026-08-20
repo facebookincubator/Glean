@@ -1,0 +1,25 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+# Cabal's `indexers` library includes this module (Glean.Indexer.LSIF) among
+# its 18 - split into its own buck2 target since it lives in a different
+# hs-source-dir than the rest (see glean/index/BUCK's comment for the full
+# split rationale). Depended on by glean/lang/java-lsif's indexer.
+haskell_library(
+    name = "lsif-indexer",
+    srcs = [
+        "Glean/Indexer/LSIF.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//glean/client/hs:client-hs",
+        "//glean/index:indexer-core",
+        "//glean/lang/lsif:lsif",
+        "//glean/lib:lib-derive",
+    ],
+    packages = [
+        "directory",
+        "optparse-applicative",
+        "text",
+    ],
+    visibility = ["PUBLIC"],
+)

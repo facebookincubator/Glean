@@ -1,0 +1,30 @@
+# Cabal's `rocksdb` library (glean.cabal.in): storage backend on top of
+# //glean/storage:storage and //glean/rts:rts. -fno-rtti matches Cabal's
+# cxx-options exactly (RocksDB's own headers are commonly built/used
+# without RTTI). container-impl.cpp's `#ifdef GLEAN_FACEBOOK` branch
+# (a real Meta-internal rocksdb wrapper, glean/facebook/rocksdb/rocksdb.h -
+# doesn't exist in this checkout) is excluded since we never define
+# GLEAN_FACEBOOK, same idea as -DOSS=1 elsewhere but a different macro.
+cxx_library(
+    name = "rocksdb",
+    srcs = [
+        "container-impl.cpp",
+        "database-impl.cpp",
+        "ffi.cpp",
+        "rocksdb.cpp",
+    ],
+    compiler_flags = ["-std=c++20", "-march=haswell", "-DOSS=1", "-fno-rtti"],
+    include_directories = ["../.."],
+    public_include_directories = ["../.."],
+    exported_linker_flags = [
+        "-lrocksdb",
+    ],
+    preferred_linkage = "static",
+    deps = [
+        "//hsthrift/common/util:fb-util-cxx",
+        "//hsthrift/folly-clib:folly-clib",
+        "//glean/rts:rts",
+        "//glean/storage:storage",
+    ],
+    visibility = ["PUBLIC"],
+)

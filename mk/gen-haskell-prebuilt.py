@@ -140,7 +140,16 @@ def collect_packages(root_ids):
         if uid in visited:
             continue
         name = pkg_name(uid)
-        if name in SKIP_PACKAGES or uid.endswith('-inplace'):
+        # A simple package's inplace unit-id is "<pkg>-<ver>-inplace"; a
+        # named-sublibrary one (e.g. glean.cabal.in's `library stubs`) is
+        # "<pkg>-<ver>-inplace-<sublib>" - neither is a real installed
+        # package buck2 can reference by store path, so both need
+        # excluding here, not just the bare "-inplace" suffix. Walking the
+        # roots for glean's own internal libraries (to discover their
+        # *external* transitive deps - see get_root_dep_ids) surfaces
+        # exactly this case: `stubs` depends on other glean sublibraries
+        # like `if-glean-hs`, whose unit-id is "...-inplace-if-glean-hs".
+        if name in SKIP_PACKAGES or '-inplace' in uid:
             visited[uid] = None
             continue
         if name in BUCK2_PACKAGES:
@@ -161,13 +170,58 @@ def collect_packages(root_ids):
 def get_root_dep_ids():
     root = set()
 
-    # Read deps from inplace library confs
+    # Read deps from inplace library confs. The glean-0.2.0.0-inplace-*.conf
+    # entries cover every internal library glean.cabal.in defines (db, core,
+    # util, indexers, ...) - listed explicitly (rather than globbed) so a
+    # missing one shows up as the WARNING below instead of silently leaving
+    # a package's deps unfrozen.
     for conf_name in ['fb-util-0.2.0.1-inplace.conf',
                       'mangle-0.1.0.1-inplace.conf',
                       'fb-stubs-0.1.0.1-inplace.conf',
                       'thrift-compiler-0.3.0.0-inplace.conf',
                       'thrift-lib-0.2.0.0-inplace.conf',
-                      'thrift-http-0.3.0.0-inplace.conf']:
+                      'thrift-http-0.3.0.0-inplace.conf',
+                      'glean-0.2.0.0-inplace-aclknobs.conf',
+                      'glean-0.2.0.0-inplace-angle.conf',
+                      'glean-0.2.0.0-inplace-backend-api.conf',
+                      'glean-0.2.0.0-inplace-backend-local.conf',
+                      'glean-0.2.0.0-inplace-bytecode.conf',
+                      'glean-0.2.0.0-inplace-client-cpp.conf',
+                      'glean-0.2.0.0-inplace-client-hs.conf',
+                      'glean-0.2.0.0-inplace-client-hs-local.conf',
+                      'glean-0.2.0.0-inplace-cli-types.conf',
+                      'glean-0.2.0.0-inplace-config.conf',
+                      'glean-0.2.0.0-inplace-core.conf',
+                      'glean-0.2.0.0-inplace-db-backup-s3.conf',
+                      'glean-0.2.0.0-inplace-db.conf',
+                      'glean-0.2.0.0-inplace-defaultconfigs.conf',
+                      'glean-0.2.0.0-inplace-glass-lib.conf',
+                      'glean-0.2.0.0-inplace-handler.conf',
+                      'glean-0.2.0.0-inplace-haxl-datasource.conf',
+                      'glean-0.2.0.0-inplace-if-auth-hs.conf',
+                      'glean-0.2.0.0-inplace-if-fb303-hs.conf',
+                      'glean-0.2.0.0-inplace-if-glass-hs.conf',
+                      'glean-0.2.0.0-inplace-if-glean-hs.conf',
+                      'glean-0.2.0.0-inplace-if-index-hs.conf',
+                      'glean-0.2.0.0-inplace-if-internal-hs.conf',
+                      'glean-0.2.0.0-inplace-indexers.conf',
+                      'glean-0.2.0.0-inplace-interprocess.conf',
+                      'glean-0.2.0.0-inplace-lib.conf',
+                      'glean-0.2.0.0-inplace-lib-derive.conf',
+                      'glean-0.2.0.0-inplace-lmdb.conf',
+                      'glean-0.2.0.0-inplace-logger.conf',
+                      'glean-0.2.0.0-inplace-lsif.conf',
+                      'glean-0.2.0.0-inplace-rocksdb.conf',
+                      'glean-0.2.0.0-inplace-rts.conf',
+                      'glean-0.2.0.0-inplace-schema.conf',
+                      'glean-0.2.0.0-inplace-scip.conf',
+                      'glean-0.2.0.0-inplace-shell-lib.conf',
+                      'glean-0.2.0.0-inplace-storage.conf',
+                      'glean-0.2.0.0-inplace-stubs.conf',
+                      'glean-0.2.0.0-inplace-thrift-annotation.conf',
+                      'glean-0.2.0.0-inplace-typed.conf',
+                      'glean-0.2.0.0-inplace-util.conf',
+                      'glean-0.2.0.0-inplace-write.conf']:
         conf_path = os.path.join(INPLACE_DB, conf_name)
         if not os.path.exists(conf_path):
             print(f"WARNING: {conf_path} not found - run 'cabal build fb-util mangle' first",
@@ -180,7 +234,11 @@ def get_root_dep_ids():
             for uid in m.group(1).split():
                 root.add(uid)
 
-    # Also pull in deps from test suites (from cabal's plan.json)
+    # Also pull in deps from test suites and executables that don't have
+    # their own package-db .conf to read `depends:` from the way a library
+    # does (from cabal's plan.json instead) - e.g. glean's gen-schema and
+    # glean executables, whose own deps (fuzzy, Glob, ...) aren't reachable
+    # through any library's `depends:` field.
     import json
     plan_path = os.path.join(GLEAN_ROOT, "dist-newstyle/cache/plan.json")
     if os.path.exists(plan_path):
@@ -189,9 +247,13 @@ def get_root_dep_ids():
         for c in plan['install-plan']:
             pkg = c.get('pkg-name', '')
             comp = c.get('component-name', '')
-            if pkg in ('fb-util', 'fb-stubs') and comp.startswith('test:'):
+            wanted = (
+                (pkg in ('fb-util', 'fb-stubs') and comp.startswith('test:')) or
+                (pkg == 'glean' and comp in ('exe:gen-schema', 'exe:glean'))
+            )
+            if wanted:
                 for uid in c.get('depends', []):
-                    if not uid.endswith('-inplace'):
+                    if '-inplace' not in uid:
                         root.add(uid)
 
     return root

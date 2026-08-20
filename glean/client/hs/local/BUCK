@@ -1,0 +1,27 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+# Cabal's `client-hs-local` library (glean.cabal.in): client API that
+# supports either local or remote DBs.
+haskell_library(
+    name = "client-hs-local",
+    srcs = [
+        "Glean/LocalOrRemote.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//glean/backend-local:backend-local",
+        "//glean/hs:core",
+        "//glean/client/hs:client-hs",
+        "//glean/db:db",
+        "//glean/github:defaultconfigs",
+        "//glean/if:if-glean-hs",
+        "//glean/util:util",
+    ],
+    packages = [
+        "bytestring",
+        "data-default",
+        "extra",
+        "optparse-applicative",
+    ],
+    visibility = ["PUBLIC"],
+)

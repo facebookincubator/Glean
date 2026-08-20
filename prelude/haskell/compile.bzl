@@ -119,7 +119,7 @@ def get_packages_info(ctx: AnalysisContext, link_style: LinkStyle, specify_pkg_v
         transitive_deps = libs,
     )
 
-def compile_args(ctx: AnalysisContext, link_style: LinkStyle, enable_profiling: bool, pkgname = None, suffix: str = "") -> CompileArgsInfo:
+def compile_args(ctx: AnalysisContext, link_style: LinkStyle, enable_profiling: bool, pkgname = None, suffix: str = "", native_shared_libs_dir: [Artifact, None] = None) -> CompileArgsInfo:
     haskell_toolchain = ctx.attrs._haskell_toolchain[HaskellToolchainInfo]
 
     compile_cmd = cmd_args()
@@ -205,6 +205,21 @@ def compile_args(ctx: AnalysisContext, link_style: LinkStyle, enable_profiling: 
 
     producing_indices = "-fwrite-ide-info" in ctx.attrs.compiler_flags
 
+    if native_shared_libs_dir != None:
+        # Template Haskell splices run *during* this compile action (not at
+        # final-link time), and GHC resolves them by dlopen()-ing the actual
+        # shared objects of every package involved - including, transitively,
+        # any native (cxx_library) shared libraries a Haskell dependency
+        # dynamically links against. The dynamic loader needs to find those
+        # on its own search path right now, in this sandboxed process, or
+        # dlopen fails with "cannot open shared object file" even though the
+        # eventual link of this target would have resolved them fine via an
+        # rpath. Pointing LD_LIBRARY_PATH at the same merged symlink tree
+        # used for the final binary's rpath (see haskell_binary_impl /
+        # _build_haskell_lib) covers this without needing to know in advance
+        # which dependency, if any, actually uses Template Haskell.
+        compile_args.add(cmd_args(hidden = native_shared_libs_dir))
+
     return CompileArgsInfo(
         result = CompileResultInfo(
             objects = objects,
@@ -218,11 +233,11 @@ def compile_args(ctx: AnalysisContext, link_style: LinkStyle, enable_profiling: 
     )
 
 # Compile all the context's sources.
-def compile(ctx: AnalysisContext, link_style: LinkStyle, enable_profiling: bool, pkgname: str | None = None) -> CompileResultInfo:
+def compile(ctx: AnalysisContext, link_style: LinkStyle, enable_profiling: bool, pkgname: str | None = None, native_shared_libs_dir: [Artifact, None] = None) -> CompileResultInfo:
     haskell_toolchain = ctx.attrs._haskell_toolchain[HaskellToolchainInfo]
     compile_cmd = cmd_args(haskell_toolchain.compiler)
 
-    args = compile_args(ctx, link_style, enable_profiling, pkgname)
+    args = compile_args(ctx, link_style, enable_profiling, pkgname, native_shared_libs_dir = native_shared_libs_dir)
 
     compile_cmd.add(args.args_for_cmd)
 
@@ -252,6 +267,7 @@ def compile(ctx: AnalysisContext, link_style: LinkStyle, enable_profiling: bool,
         # TODO: enable this for GHC 9.4 which tracks file changes using hashes
         # not timestamps.
         # no_outputs_cleanup = True,
+        env = {"LD_LIBRARY_PATH": cmd_args(native_shared_libs_dir)} if native_shared_libs_dir != None else {},
     )
 
     return args.result

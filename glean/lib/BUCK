@@ -1,0 +1,19 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+# Cabal's `lib-derive` library (glean.cabal.in).
+haskell_library(
+    name = "lib-derive",
+    srcs = [
+        "Glean/Derive.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//glean/client/hs:client-hs",
+        "//glean/if:if-glean-hs",
+    ],
+    packages = [
+        "data-default",
+        "text",
+    ],
+    visibility = ["PUBLIC"],
+)
