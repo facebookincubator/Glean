@@ -10,7 +10,6 @@ cxx_library(
         "cpp/write.cpp",
     ],
     compiler_flags = ["-std=c++20", "-march=haswell"],
-    preferred_linkage = "static",
     deps = [
         "//hsthrift/folly-clib:folly-clib",
     ],

@@ -13,6 +13,5 @@ cxx_library(
     compiler_flags = ["-march=haswell", "-DMDB_MAXKEYSIZE=0"],
     include_directories = ["."],
     public_include_directories = ["."],
-    preferred_linkage = "static",
     visibility = ["PUBLIC"],
 )
