@@ -773,7 +773,6 @@ library write
         glean:backend-api,
         glean:core,
         glean:if-glean-hs,
-        glean:schema,
         glean:stubs,
         glean:typed,
         glean:util,
