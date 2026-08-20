@@ -19,7 +19,6 @@ cxx_library(
     exported_linker_flags = [
         "-lrocksdb",
     ],
-    preferred_linkage = "static",
     deps = [
         "//hsthrift/common/util:fb-util-cxx",
         "//hsthrift/folly-clib:folly-clib",

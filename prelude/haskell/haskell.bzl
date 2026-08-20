@@ -1159,18 +1159,74 @@ def haskell_binary_impl(ctx: AnalysisContext) -> list[Provider]:
             allow_args = True,
         )
     )
-    ctx.actions.run(link, category = "haskell_link")
 
+    symlink_dir = None
     if link_style == LinkStyle("shared") or link_group_info != None:
+        # Built *before* the link action below (not after, as this used to
+        # be) so its real, build-time-valid path can be passed to the linker
+        # as `-rpath-link` right now - see the comment on that flag below for
+        # why this reordering is load-bearing, not cosmetic.
         sos_dir = "__{}__shared_libs_symlink_tree".format(ctx.attrs.name)
-        rpath_ref = get_rpath_origin(get_cxx_toolchain_info(ctx).linker_info.type)
-        rpath_ldflag = "-Wl,{}/{}".format(rpath_ref, sos_dir)
-        link.add("-optl", "-Wl,-rpath", "-optl", rpath_ldflag)
         symlink_dir = create_shlib_symlink_tree(
             actions = ctx.actions,
             out = sos_dir,
             shared_libs = sos,
         )
+        rpath_ref = get_rpath_origin(get_cxx_toolchain_info(ctx).linker_info.type)
+        rpath_ldflag = "-Wl,{}/{}".format(rpath_ref, sos_dir)
+
+        # `--disable-new-dtags`: without it, GNU ld's default emits the
+        # modern DT_RUNPATH tag for `-rpath`, which the dynamic loader only
+        # consults when resolving *this object's own* direct NEEDED entries
+        # - it is deliberately not inherited by anything loaded as a result
+        # of it. That's invisible for a single-hop native shared dependency
+        # (executable -> core.so -> rts.so: core.so's own link already
+        # embeds a direct reference to rts.so, so the executable's runpath
+        # is never even needed for that hop) but breaks a multi-hop chain
+        # like executable -> db.so -> rocksdb.so -> storage.so: none of
+        # db.so/rocksdb.so carry any rpath of their own (nothing in this
+        # migration's cxx_library()/haskell_library() link steps sets one),
+        # so once the executable's own DT_RUNPATH resolves db.so, nothing
+        # is left to tell the loader where storage.so lives when resolving
+        # *rocksdb.so's* NEEDED entries - "cannot open shared object file"
+        # at process startup despite the .so genuinely being right there in
+        # the symlink tree that got built. The legacy DT_RPATH tag doesn't
+        # have this limitation: the loader folds every RPATH it encounters
+        # into one global search list used for the *whole* transitive
+        # resolution, not just the object that carries it - exactly what a
+        # dependency chain of arbitrary depth needs, without requiring every
+        # library along the way to separately carry its own rpath.
+        link.add("-optl", "-Wl,--disable-new-dtags")
+        link.add("-optl", "-Wl,-rpath", "-optl", rpath_ldflag)
+
+        # `-rpath` (above) only takes effect once the *finished binary* runs
+        # - it's a token ($ORIGIN/...) baked into the ELF's DT_RUNPATH,
+        # meaningless to the linker invoked *right now* to produce that
+        # binary, since there's no running process yet for $ORIGIN to refer
+        # to. That's invisible for a single-hop shared dependency (e.g. this
+        # binary -> rts.so directly): buck2's normal cxx linking machinery
+        # already emits a direct, real `-L<dir> -l<name>` for anything in
+        # `nlis` above, which the build-time linker can resolve on its own.
+        # It breaks down for a *multi-hop* native shared-library chain (e.g.
+        # this binary -> db.so -> rocksdb.so -> storage.so, where storage
+        # is only ever a dependency-of-a-dependency, never listed directly
+        # in any Haskell target's own `deps`): the linker, while resolving
+        # rocksdb.so's own DT_NEEDED entry on storage.so to check whether it
+        # actually provides the symbols db.so's own code references, has no
+        # real, existing-right-now path to look in, and conservatively
+        # reports those symbols undefined rather than assuming they'd
+        # resolve at runtime. `-rpath-link` is the link-time-only counterpart
+        # to `-rpath`: same directory, but as a real path valid *now*, purely
+        # a search hint for the linker's own transitive-NEEDED resolution -
+        # it doesn't get embedded in the output at all. Passing both this and
+        # the $ORIGIN-relative `-rpath` fixes multi-hop native shared
+        # dependencies generally, without needing to know in advance whether
+        # any given target's dependency graph actually has one.
+        link.add("-optl", cmd_args("-Wl,-rpath-link,", symlink_dir, delimiter = ""))
+
+    ctx.actions.run(link, category = "haskell_link")
+
+    if symlink_dir != None:
         run = cmd_args(output, hidden = symlink_dir)
     else:
         run = cmd_args(output)
