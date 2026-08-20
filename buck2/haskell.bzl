@@ -16,6 +16,10 @@
 #     listed in `deps`, same as any other buck2 target.
 #   - alex/happy: any `.x`/`.y` file in `srcs` is automatically run through
 #     the corresponding tool (see buck2/alex_happy.bzl).
+#   - a source living somewhere other than its module name implies (e.g. a
+#     shared `plugins/` directory) is relocated with export_file() rather
+#     than passed via the dict form of `srcs`, which is deprecated - see
+#     `srcs` given as a dict below.
 #
 # Note on -threaded: it only needs to reach the final link (it selects which
 # RTS to link against), not the per-module compile step, so pass it via
@@ -76,10 +80,13 @@ def hs_module_path(path):
     return path
 
 def _resolve_src(name, path, src, deps):
-    # `path` is the module-derived path srcs is keyed by (e.g. what its
-    # module name maps to); `src` is the actual file, which may differ from
-    # `path` for a source living outside its module's directory layout (see
-    # the dict form of `srcs`, below).
+    # `path` is the module-derived path this source should end up at (e.g.
+    # what its module name maps to); `src` is the actual file, which may
+    # differ from `path` for a source living outside its module's directory
+    # layout (see the dict form of `srcs`, below). Whatever we return here
+    # always ends up in a plain *list* passed to the native rule - srcs as a
+    # dict is deprecated - so every branch must produce an artifact whose
+    # own path already matches `path`.
     out = hs_module_path(path)
     if src.endswith(".hsc"):
         rule_name = name + "-hsc-" + out.replace("/", "_")
@@ -93,18 +100,41 @@ def _resolve_src(name, path, src, deps):
         rule_name = name + "-happy-" + out.replace("/", "_")
         happy(name = rule_name, src = src, out = out)
         return ":" + rule_name
-    else:
+    elif path == src or src.endswith("[" + path + "]"):
+        # Already at the right path: either a real file living exactly
+        # there, or a sub-target reference (e.g. from thrift_compile() via
+        # thrift_haskell_library()/thrift_haskell_binary() in thrift.bzl)
+        # whose bracketed key already equals `path` - its own artifact's
+        # short_path is already correct, so relocating it again would just
+        # be a redundant copy.
         return src
+    else:
+        # A real (already-.hs) source that doesn't live at its module path -
+        # relocate it with export_file() (the same ctx.actions.copy_file()
+        # primitive export_file.bzl itself uses), so the native rule always
+        # sees a correctly-pathed source. This is what makes a module
+        # registered correctly in the package db even when nothing in this
+        # target imports it directly (i.e. it's only consumed by a *different*
+        # target depending on this one) - confirmed empirically: a plain
+        # (non-relocated) src with the wrong derived path still compiles
+        # within its own target (GHC resolves same-target imports from the
+        # sources' own `module X where` headers, not buck2's bookkeeping),
+        # but a cross-target `import` of it fails, since haskell_library()
+        # registers the *derived* path as the exposed module name.
+        rule_name = name + "-mv-" + path.replace("/", "_")
+        native.export_file(name = rule_name, src = src, out = path)
+        return ":" + rule_name
 
 # `srcs` is usually a list, where each file's own path (relative to this
 # BUCK package) determines its module name. A dict `{modulePath: file}` is
 # also accepted for the rare case where a source doesn't live at the path
 # its module name implies (e.g. a shared `plugins/` directory holding
-# modules that belong under the main package's namespace).
+# modules that belong under the main package's namespace) - internally
+# resolved to a plain list (see _resolve_src) since dict-form srcs on the
+# native rule is deprecated.
 def _resolve_srcs(name, srcs, deps):
-    if type(srcs) == type({}):
-        return {path: _resolve_src(name, path, src, deps) for path, src in srcs.items()}
-    return [_resolve_src(name, src, src, deps) for src in srcs]
+    items = srcs.items() if type(srcs) == type({}) else [(src, src) for src in srcs]
+    return [_resolve_src(name, path, src, deps) for path, src in items]
 
 def haskell_library(
         name,

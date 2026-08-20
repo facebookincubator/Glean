@@ -7,24 +7,36 @@
 #
 # The compiler can emit more than one output file per input (e.g. separate
 # Types.hs/Service.hs/Client.hs for a .thrift file that defines a service),
-# and the exact set depends on the input's contents, so this produces a
-# directory rather than enumerating files. `outs`, if given, additionally
-# exposes known files within that directory as sub-targets (via
-# Artifact.project), so a caller who already knows what a given .thrift file
-# generates can reference them directly as sources - e.g. for
-# `if/Foo.thrift` generating a single `gen-hs2/Foo/Types.hs`:
+# and the exact set depends on the input's contents, so it always writes
+# into a directory (`gen-hs2/...` by default) rather than a fixed file.
+# `outs`, if given, additionally names known files within that directory
+# (as plain module paths, e.g. "Foo/Types.hs" - not gen-hs2-prefixed) and
+# exposes each as its own correctly-pathed sub-target artifact (via
+# ctx.actions.copy_file() - the same primitive export_file.bzl uses), so a
+# caller who already knows what a .thrift file generates can put them
+# directly into a haskell_library()'s plain srcs *list*:
 #
 #   thrift_compile(
 #       name = "gen-foo",
 #       thrift_file = "if/Foo.thrift",
-#       outs = ["gen-hs2/Foo/Types.hs"],
+#       outs = ["Foo/Types.hs"],
 #   )
 #   haskell_library(
-#       srcs = {"Foo/Types.hs": ":gen-foo[gen-hs2/Foo/Types.hs]"},
+#       srcs = [":gen-foo[Foo/Types.hs]"],
 #       ...
 #   )
+#
+# This isn't just a style choice: haskell_library() derives each module's
+# name (for the package db, so cross-target `import`s of it resolve) from
+# its source artifact's own path - a bare copy of the whole gen-hs2/
+# directory would derive "gen.gen-hs2.Foo.Types" instead of "Foo.Types".
 
-load("//buck2:haskell.bzl", "haskell_binary", "haskell_library", "hs_module_path")
+load("//buck2:haskell.bzl", "haskell_binary", "haskell_library")
+
+# thrift-compiler's default --gen-prefix; every caller in this repo relies
+# on the default, so `outs` entries are resolved as GEN_PREFIX + "/" + out
+# within the raw output directory.
+_GEN_PREFIX = "gen-hs2"
 
 # thrift-compiler resolves *every* relative filename it's given - the main
 # input included, not just `include` statements inside it - against
@@ -57,8 +69,11 @@ def _thrift_compile_impl(ctx: AnalysisContext) -> list[Provider]:
     ctx.actions.run(cmd, category = "thrift_compile")
 
     sub_targets = {
-        rel_path: [DefaultInfo(default_output = out.project(rel_path))]
-        for rel_path in ctx.attrs.outs
+        clean_path: [DefaultInfo(default_output = ctx.actions.copy_file(
+            clean_path,
+            out.project(_GEN_PREFIX + "/" + clean_path),
+        ))]
+        for clean_path in ctx.attrs.outs
     }
     return [DefaultInfo(default_output = out, sub_targets = sub_targets)]
 
@@ -101,11 +116,13 @@ def _thrift_stem(thrift_file):
 #       ...
 #   )
 #
-# is equivalent to declaring a thrift_compile() per .thrift file (with
-# outs = ["gen-hs2/" + f for f in ...]) and adding
-# {"Foo/Types.hs": ":<gen-target>[gen-hs2/Foo/Types.hs]", ...} to srcs by
-# hand, as hsthrift/lib/BUCK originally did for gen-rpc-options/
-# gen-application-exception.
+# is equivalent to declaring a thrift_compile() per .thrift file and adding
+# {"Foo/Types.hs": ":<gen-target>[Foo/Types.hs]", ...} to srcs by hand, as
+# hsthrift/lib/BUCK originally did for gen-rpc-options/gen-application-
+# exception. This dict is only ever consumed by haskell_library()/
+# haskell_binary() (buck2/haskell.bzl), which resolves it (and any dict a
+# caller passes via `srcs` here) down to the plain list the native rule
+# needs - see the comment there for why (srcs as a dict is deprecated).
 #
 # thrift_flags applies to every entry in thrift_files (--hs is automatic,
 # don't include it); a .thrift file needing different flags entirely (e.g.
@@ -113,24 +130,18 @@ def _thrift_stem(thrift_file):
 # just be appended to thrift_flags) can replace them via
 # thrift_file_flags = {"if/Foo.thrift": ["--use-int", "-I", "other/dir"]}.
 def _thrift_srcs(name, thrift_files, thrift_flags, thrift_file_flags, srcs):
-    # A plain srcs list relies on haskell_library()/haskell_binary()
-    # deriving each entry's module path from the file itself (stripping
-    # .hsc/.x/.y as needed); replicate that here so merging in the
-    # generated entries below doesn't change what a caller's existing
-    # (non-thrift) srcs list resolves to.
-    all_srcs = {hs_module_path(s): s for s in srcs} if type(srcs) != type({}) else dict(srcs)
+    all_srcs = dict(srcs) if type(srcs) == type({}) else {s: s for s in srcs}
 
     for thrift_file, outs in thrift_files.items():
         gen_name = name + "-thrift-" + _thrift_stem(thrift_file)
-        gen_outs = ["gen-hs2/" + o for o in outs]
         thrift_compile(
             name = gen_name,
             thrift_file = thrift_file,
             flags = thrift_file_flags.get(thrift_file, thrift_flags),
-            outs = gen_outs,
+            outs = outs,
         )
-        for out, gen_out in zip(outs, gen_outs):
-            all_srcs[out] = ":{}[{}]".format(gen_name, gen_out)
+        for out in outs:
+            all_srcs[out] = ":{}[{}]".format(gen_name, out)
 
     return all_srcs
 
