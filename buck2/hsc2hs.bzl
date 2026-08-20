@@ -4,10 +4,14 @@
 # reuse the same CPreprocessorInfo providers that real cxx_library() compiles
 # use, so anything a C++ dependency exports via `public_include_directories`
 # (or, for a haskell_prebuilt_library(), `cxx_header_dirs` - see
-# mk/gen-haskell-prebuilt.py) is picked up automatically, with no hardcoded
-# paths or GHC version numbers here.
+# mk/gen-haskell-prebuilt.py) is picked up automatically. The C++ compiler
+# and the hsc2hs binary itself both come from the cxx/haskell toolchains
+# (toolchains/BUCK, toolchains/haskell.bzl) rather than being hardcoded here.
 
+load("@prelude//cxx:cxx_context.bzl", "get_cxx_toolchain_info")
 load("@prelude//cxx:preprocessor.bzl", "cxx_inherited_preprocessor_infos", "cxx_merge_cpreprocessors")
+load("@prelude//decls/toolchains_common.bzl", "toolchains_common")
+load("@prelude//haskell:toolchain.bzl", "HaskellToolchainInfo")
 
 # hsc2hs understands "-Idir" natively (and uses it for its own dependency
 # scanning), but anything else meant for the C compiler - e.g. "-isystem
@@ -38,9 +42,21 @@ def _hsc2hs_impl(ctx: AnalysisContext) -> list[Provider]:
     pp_infos = cxx_inherited_preprocessor_infos(ctx.attrs.deps)
     merged = cxx_merge_cpreprocessors(ctx.actions, [], pp_infos)
 
+    # hsc2hs ships with GHC itself (as hsc2hs-<version>, e.g. hsc2hs-9.4.8),
+    # not as a separately built/versioned tool, so there's no dedicated
+    # toolchain field for it (unlike ALEX/HAPPY in third-party/haskell/
+    # tools.bzl, which really are separate Cabal packages) - derive the
+    # version from the haskell toolchain's own compiler name instead
+    # (toolchains/BUCK sets compiler = "ghc-9.4.8" to match the Cabal build).
+    ghc_compiler = ctx.attrs._haskell_toolchain[HaskellToolchainInfo].compiler
+    ghc_version = ghc_compiler[len("ghc-"):] if ghc_compiler.startswith("ghc-") else ghc_compiler
+    hsc2hs_tool = "hsc2hs-" + ghc_version
+
+    cxx_compiler = get_cxx_toolchain_info(ctx).cxx_compiler_info.compiler
+
     cmd = cmd_args(
-        "hsc2hs-9.4.8",
-        "--cc=clang++",
+        hsc2hs_tool,
+        cmd_args("--cc=", cxx_compiler, delimiter = ""),
         "-C",
         "-std=c++20",
         # cpp/HsStructDefines.h defines HS_STRUCT as `struct` (public by
@@ -49,6 +65,12 @@ def _hsc2hs_impl(ctx: AnalysisContext) -> list[Provider]:
         # without a blanket -fno-access-control.
         "-C",
         "-D__HSC2HS__=1",
+        # Extra -C-style C-compiler flags, e.g. -D for a Cabal-generated
+        # MIN_VERSION_<pkg> macro a .hsc file's own CPP relies on (Cabal
+        # synthesizes these from a library's build-depends via
+        # cabal_macros.h; buck2 has no equivalent, so a caller needing one
+        # passes it explicitly - see haskell_library()'s hsc_flags).
+        ctx.attrs.extra_flags,
         # The hsc file's own package dir, so `#include "foo.h"`/`<foo.h>`
         # against a local (non-exported) header resolves, same as it would
         # when compiling a sibling cxx_library() source in this package.
@@ -69,7 +91,10 @@ hsc2hs = rule(
     impl = _hsc2hs_impl,
     attrs = {
         "deps": attrs.list(attrs.dep(), default = []),
+        "extra_flags": attrs.list(attrs.string(), default = []),
         "hsc_file": attrs.source(),
         "out": attrs.string(),
+        "_cxx_toolchain": toolchains_common.cxx(),
+        "_haskell_toolchain": toolchains_common.haskell(),
     },
 )
