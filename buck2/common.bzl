@@ -54,23 +54,35 @@ def _package_deps(packages):
     all_pkgs = {p: None for p in (AUTO_PACKAGES + packages)}
     return [("//third-party/haskell:" + p) for p in sorted(all_pkgs.keys())]
 
+# The .hs path a source's module lives at once preprocessed: `path`
+# unchanged unless it still carries a raw preprocessor extension (true for
+# `srcs` given as a list, where `path == src`, or an explicit identity entry
+# in the dict form), in which case that extension is stripped and replaced
+# with .hs. Exported for callers (e.g. thrift_haskell_library() in
+# thrift.bzl) that need to compute the same key haskell_library()/
+# haskell_binary() would derive from a plain `srcs` list, to merge
+# additional dict entries into it without breaking that derivation.
+def hs_module_path(path):
+    for ext in (".hsc", ".x", ".y"):
+        if path.endswith(ext):
+            return path[:-len(ext)] + ".hs"
+    return path
+
 def _resolve_src(name, path, src, deps):
     # `path` is the module-derived path srcs is keyed by (e.g. what its
     # module name maps to); `src` is the actual file, which may differ from
     # `path` for a source living outside its module's directory layout (see
     # the dict form of `srcs`, below).
+    out = hs_module_path(path)
     if src.endswith(".hsc"):
-        out = path[:-len(".hsc")] + ".hs"
         rule_name = name + "-hsc-" + out.replace("/", "_")
         hsc2hs(name = rule_name, hsc_file = src, out = out, deps = deps)
         return ":" + rule_name
     elif src.endswith(".x"):
-        out = path[:-len(".x")] + ".hs"
         rule_name = name + "-alex-" + out.replace("/", "_")
         alex(name = rule_name, src = src, out = out)
         return ":" + rule_name
     elif src.endswith(".y"):
-        out = path[:-len(".y")] + ".hs"
         rule_name = name + "-happy-" + out.replace("/", "_")
         happy(name = rule_name, src = src, out = out)
         return ":" + rule_name

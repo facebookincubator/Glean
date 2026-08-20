@@ -24,6 +24,8 @@
 #       ...
 #   )
 
+load("//buck2:common.bzl", "haskell_library", "hs_module_path")
+
 def _thrift_compile_impl(ctx: AnalysisContext) -> list[Provider]:
     out = ctx.actions.declare_output(ctx.attrs.out, dir = True)
     cmd = cmd_args(
@@ -55,3 +57,52 @@ thrift_compile = rule(
         "thrift_file": attrs.source(),
     },
 )
+
+def _thrift_stem(thrift_file):
+    base = thrift_file.split("/")[-1]
+    return base[:-len(".thrift")] if base.endswith(".thrift") else base
+
+# haskell_library(), but its .thrift dependencies (and the thrift_compile()
+# targets for them) are declared inline instead of by hand. `thrift_files`
+# maps each .thrift file to the list of Haskell files it generates (module
+# paths, same as any other srcs entry - not gen-hs2-prefixed):
+#
+#   thrift_haskell_library(
+#       name = "foo",
+#       thrift_files = {
+#           "if/Foo.thrift": ["Foo/Types.hs", "Foo/Service.hs"],
+#       },
+#       srcs = ["Handwritten.hs"],
+#       ...
+#   )
+#
+# is equivalent to declaring a thrift_compile() per .thrift file (with
+# outs = ["gen-hs2/" + f for f in ...]) and adding
+# {"Foo/Types.hs": ":<gen-target>[gen-hs2/Foo/Types.hs]", ...} to srcs by
+# hand, as hsthrift/lib/BUCK originally did for gen-rpc-options/
+# gen-application-exception.
+def thrift_haskell_library(
+        name,
+        thrift_files = {},
+        thrift_flags = ["--hs"],
+        srcs = [],
+        **kwargs):
+    # A plain srcs list relies on haskell_library() deriving each entry's
+    # module path from the file itself (stripping .hsc/.x/.y as needed);
+    # replicate that here so merging in the generated entries below doesn't
+    # change what a caller's existing (non-thrift) srcs list resolves to.
+    all_srcs = {hs_module_path(s): s for s in srcs} if type(srcs) != type({}) else dict(srcs)
+
+    for thrift_file, outs in thrift_files.items():
+        gen_name = name + "-thrift-" + _thrift_stem(thrift_file)
+        gen_outs = ["gen-hs2/" + o for o in outs]
+        thrift_compile(
+            name = gen_name,
+            thrift_file = thrift_file,
+            flags = thrift_flags,
+            outs = gen_outs,
+        )
+        for out, gen_out in zip(outs, gen_outs):
+            all_srcs[out] = ":{}[{}]".format(gen_name, gen_out)
+
+    haskell_library(name = name, srcs = all_srcs, **kwargs)
