@@ -49,6 +49,9 @@ def _thrift_compile_impl(ctx: AnalysisContext) -> list[Provider]:
         ctx.attrs.compiler[RunInfo],
         ctx.attrs.thrift_file,
         out.as_output(),
+        # Every consumer here wants Haskell output, so --hs is unconditional
+        # rather than something every caller has to remember to pass.
+        "--hs",
         ctx.attrs.flags,
     )
     ctx.actions.run(cmd, category = "thrift_compile")
@@ -59,15 +62,16 @@ def _thrift_compile_impl(ctx: AnalysisContext) -> list[Provider]:
     }
     return [DefaultInfo(default_output = out, sub_targets = sub_targets)]
 
-# `flags` defaults to ["--hs"] (generate Haskell); pass e.g. ["--hs",
-# "--use-int"] to match a Makefile invocation that adds extra flags. `out`
-# names the output directory; the compiler writes into `out/gen-hs2/...`
-# (or wherever `--gen-prefix` in `flags` says) by default.
+# `flags` are extra thrift-compiler flags beyond --hs (which is always
+# added - see _thrift_compile_impl) - e.g. ["--use-int"], or ["-I", DIR] to
+# resolve `include` statements in the file. `out` names the output
+# directory; the compiler writes into `out/gen-hs2/...` (or wherever
+# `--gen-prefix` in `flags` says) by default.
 thrift_compile = rule(
     impl = _thrift_compile_impl,
     attrs = {
         "compiler": attrs.exec_dep(providers = [RunInfo], default = "//hsthrift/compiler:thrift-compiler"),
-        "flags": attrs.list(attrs.string(), default = ["--hs"]),
+        "flags": attrs.list(attrs.string(), default = []),
         "out": attrs.string(default = "gen"),
         "outs": attrs.list(attrs.string(), default = []),
         "thrift_file": attrs.source(),
@@ -102,13 +106,15 @@ def _thrift_stem(thrift_file):
 # hand, as hsthrift/lib/BUCK originally did for gen-rpc-options/
 # gen-application-exception.
 #
-# thrift_flags applies to every entry in thrift_files by default; a .thrift
-# file needing something else (e.g. --use-int) can override it via
-# thrift_file_flags = {"if/Foo.thrift": ["--hs", "--use-int"]}.
+# thrift_flags applies to every entry in thrift_files (--hs is automatic,
+# don't include it); a .thrift file needing different flags entirely (e.g.
+# a different -I - thrift-compiler rejects a repeated -I, so this can't
+# just be appended to thrift_flags) can replace them via
+# thrift_file_flags = {"if/Foo.thrift": ["--use-int", "-I", "other/dir"]}.
 def thrift_haskell_library(
         name,
         thrift_files = {},
-        thrift_flags = ["--hs"],
+        thrift_flags = [],
         thrift_file_flags = {},
         srcs = [],
         **kwargs):
