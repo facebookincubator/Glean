@@ -74,10 +74,13 @@ CXX_FLAGS_glean_cpp_lmdb = -DOSS=1
 
 CXX_SOURCES_glean_cpp_client = \
     glean/cpp/filewriter.cpp \
-    glean/cpp/glean.cpp \
+    glean/cpp/glean.cpp
+CXX_FLAGS_glean_cpp_client = -DOSS=1
+
+CXX_SOURCES_glean_cpp_interprocess = \
     glean/interprocess/cpp/worklist.cpp \
     glean/interprocess/cpp/counters.cpp
-CXX_FLAGS_glean_cpp_client = -DOSS=1
+CXX_FLAGS_glean_cpp_interprocess = -DOSS=1
 
 CXX_SOURCES_glean_client_hs = \
     glean/client/hs/cpp/write.cpp

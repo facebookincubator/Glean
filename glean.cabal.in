@@ -859,11 +859,26 @@ library client-cpp
         glean/cpp/filewriter.h
         glean/cpp/sender.h
         glean/cpp/glean.h
+        glean/schema/cpp/schema.h
+    build-depends:
+        glean:rts
+
+-- Split out of client-cpp so that glean:interprocess (needed by
+-- glean:indexers, for parallelising glean-clang's indexing work) doesn't
+-- have to depend on glean:client-cpp - and, transitively, on
+-- glean/schema/cpp/schema.h (from gen-schema) - just to get
+-- glean/interprocess/cpp's worklist/counters FFI, which is otherwise
+-- unrelated to client-cpp's glean/cpp/{filewriter,glean}.cpp.
+library interprocess-cpp
+    import: fb-haskell, fb-cpp, deps, folly
+    visibility: public
+    CXX_LIB_glean_cpp_interprocess
+    include-dirs: .
+    install-includes:
         glean/interprocess/cpp/counters.h
         glean/interprocess/cpp/counters_ffi.h
         glean/interprocess/cpp/worklist.h
         glean/interprocess/cpp/worklist_ffi.h
-        glean/schema/cpp/schema.h
     build-depends:
         glean:rts
 
@@ -875,7 +890,7 @@ library interprocess
         Glean.Interprocess.Counters
         Glean.Interprocess.Worklist
     build-depends:
-        glean:client-cpp
+        glean:interprocess-cpp
 
 library schema
     import: fb-haskell, fb-cpp, deps
