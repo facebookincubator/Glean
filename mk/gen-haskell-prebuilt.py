@@ -166,7 +166,8 @@ def get_root_dep_ids():
                       'mangle-0.1.0.1-inplace.conf',
                       'fb-stubs-0.1.0.1-inplace.conf',
                       'thrift-compiler-0.3.0.0-inplace.conf',
-                      'thrift-lib-0.2.0.0-inplace.conf']:
+                      'thrift-lib-0.2.0.0-inplace.conf',
+                      'thrift-http-0.3.0.0-inplace.conf']:
         conf_path = os.path.join(INPLACE_DB, conf_name)
         if not os.path.exists(conf_path):
             print(f"WARNING: {conf_path} not found - run 'cabal build fb-util mangle' first",
