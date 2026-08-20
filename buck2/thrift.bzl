@@ -26,14 +26,30 @@
 
 load("//buck2:common.bzl", "haskell_library", "hs_module_path")
 
+# thrift-compiler resolves *every* relative filename it's given - the main
+# input included, not just `include` statements inside it - against
+# --include-dir (see Thrift.Compiler.parseThriftFileE: `baseDir </> path`,
+# and FilePath.(</>) only ignores baseDir when `path` is already absolute).
+# A buck2 source artifact renders as a path already relative to the repo
+# root, so passing it straight through alongside a relative --include-dir
+# gets that dir prepended twice. Route the main input through `$(pwd)` at
+# runtime (the action's cwd is the repo root) so it's genuinely absolute -
+# (</>) then ignores --include-dir for it, while `include` statements
+# inside the file (plain relative text baked into the source) still
+# resolve correctly against the relative --include-dir as before.
+_RUN_SCRIPT = 'exec "$1" "${@:4}" "$(pwd)/$2" -o "$3"'
+
 def _thrift_compile_impl(ctx: AnalysisContext) -> list[Provider]:
     out = ctx.actions.declare_output(ctx.attrs.out, dir = True)
     cmd = cmd_args(
+        "bash",
+        "-c",
+        _RUN_SCRIPT,
+        "bash",
         ctx.attrs.compiler[RunInfo],
-        ctx.attrs.flags,
         ctx.attrs.thrift_file,
-        "-o",
         out.as_output(),
+        ctx.attrs.flags,
     )
     ctx.actions.run(cmd, category = "thrift_compile")
 
@@ -59,7 +75,11 @@ thrift_compile = rule(
 )
 
 def _thrift_stem(thrift_file):
-    base = thrift_file.split("/")[-1]
+    # thrift_file may be a plain path ("if/Foo.thrift") or a target label
+    # referencing an exported file in another package
+    # ("//other/pkg:Foo.thrift") - strip both a leading "//pkg:" and any
+    # directory components to get a name usable as (part of) a target name.
+    base = thrift_file.split(":")[-1].split("/")[-1]
     return base[:-len(".thrift")] if base.endswith(".thrift") else base
 
 # haskell_library(), but its .thrift dependencies (and the thrift_compile()
@@ -81,10 +101,15 @@ def _thrift_stem(thrift_file):
 # {"Foo/Types.hs": ":<gen-target>[gen-hs2/Foo/Types.hs]", ...} to srcs by
 # hand, as hsthrift/lib/BUCK originally did for gen-rpc-options/
 # gen-application-exception.
+#
+# thrift_flags applies to every entry in thrift_files by default; a .thrift
+# file needing something else (e.g. --use-int) can override it via
+# thrift_file_flags = {"if/Foo.thrift": ["--hs", "--use-int"]}.
 def thrift_haskell_library(
         name,
         thrift_files = {},
         thrift_flags = ["--hs"],
+        thrift_file_flags = {},
         srcs = [],
         **kwargs):
     # A plain srcs list relies on haskell_library() deriving each entry's
@@ -99,7 +124,7 @@ def thrift_haskell_library(
         thrift_compile(
             name = gen_name,
             thrift_file = thrift_file,
-            flags = thrift_flags,
+            flags = thrift_file_flags.get(thrift_file, thrift_flags),
             outs = gen_outs,
         )
         for out, gen_out in zip(outs, gen_outs):
