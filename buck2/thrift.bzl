@@ -24,7 +24,7 @@
 #       ...
 #   )
 
-load("//buck2:common.bzl", "haskell_library", "hs_module_path")
+load("//buck2:haskell.bzl", "haskell_binary", "haskell_library", "hs_module_path")
 
 # thrift-compiler resolves *every* relative filename it's given - the main
 # input included, not just `include` statements inside it - against
@@ -86,10 +86,11 @@ def _thrift_stem(thrift_file):
     base = thrift_file.split(":")[-1].split("/")[-1]
     return base[:-len(".thrift")] if base.endswith(".thrift") else base
 
-# haskell_library(), but its .thrift dependencies (and the thrift_compile()
-# targets for them) are declared inline instead of by hand. `thrift_files`
-# maps each .thrift file to the list of Haskell files it generates (module
-# paths, same as any other srcs entry - not gen-hs2-prefixed):
+# haskell_library()/haskell_binary(), but their .thrift dependencies (and
+# the thrift_compile() targets for them) are declared inline instead of by
+# hand. `thrift_files` maps each .thrift file to the list of Haskell files
+# it generates (module paths, same as any other srcs entry - not
+# gen-hs2-prefixed):
 #
 #   thrift_haskell_library(
 #       name = "foo",
@@ -111,17 +112,12 @@ def _thrift_stem(thrift_file):
 # a different -I - thrift-compiler rejects a repeated -I, so this can't
 # just be appended to thrift_flags) can replace them via
 # thrift_file_flags = {"if/Foo.thrift": ["--use-int", "-I", "other/dir"]}.
-def thrift_haskell_library(
-        name,
-        thrift_files = {},
-        thrift_flags = [],
-        thrift_file_flags = {},
-        srcs = [],
-        **kwargs):
-    # A plain srcs list relies on haskell_library() deriving each entry's
-    # module path from the file itself (stripping .hsc/.x/.y as needed);
-    # replicate that here so merging in the generated entries below doesn't
-    # change what a caller's existing (non-thrift) srcs list resolves to.
+def _thrift_srcs(name, thrift_files, thrift_flags, thrift_file_flags, srcs):
+    # A plain srcs list relies on haskell_library()/haskell_binary()
+    # deriving each entry's module path from the file itself (stripping
+    # .hsc/.x/.y as needed); replicate that here so merging in the
+    # generated entries below doesn't change what a caller's existing
+    # (non-thrift) srcs list resolves to.
     all_srcs = {hs_module_path(s): s for s in srcs} if type(srcs) != type({}) else dict(srcs)
 
     for thrift_file, outs in thrift_files.items():
@@ -136,4 +132,24 @@ def thrift_haskell_library(
         for out, gen_out in zip(outs, gen_outs):
             all_srcs[out] = ":{}[{}]".format(gen_name, gen_out)
 
+    return all_srcs
+
+def thrift_haskell_library(
+        name,
+        thrift_files = {},
+        thrift_flags = [],
+        thrift_file_flags = {},
+        srcs = [],
+        **kwargs):
+    all_srcs = _thrift_srcs(name, thrift_files, thrift_flags, thrift_file_flags, srcs)
     haskell_library(name = name, srcs = all_srcs, **kwargs)
+
+def thrift_haskell_binary(
+        name,
+        thrift_files = {},
+        thrift_flags = [],
+        thrift_file_flags = {},
+        srcs = [],
+        **kwargs):
+    all_srcs = _thrift_srcs(name, thrift_files, thrift_flags, thrift_file_flags, srcs)
+    haskell_binary(name = name, srcs = all_srcs, **kwargs)
