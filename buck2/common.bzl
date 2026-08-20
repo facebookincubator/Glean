@@ -6,13 +6,20 @@
 #   - a standard set of packages (base, rts) added to every target.
 #   - the fb-haskell extension set (from the `fb-haskell` common stanza in
 #     glean.cabal.in) enabled by default, so individual rules don't need to
-#     repeat it.
+#     repeat it. Pass fb_haskell = False for a package that doesn't import
+#     that common stanza (e.g. mangle, which declares its own minimal
+#     default-extensions) - compiler_flags is then used as-is instead of
+#     appended to FB_HASKELL_EXTENSIONS.
 #   - hsc2hs: any `.hsc` file in `srcs` is automatically preprocessed, with
 #     include paths derived from `deps` (see buck2/hsc2hs.bzl) - so a `.hsc`
 #     file that needs a C++ dependency's headers just needs that dependency
 #     listed in `deps`, same as any other buck2 target.
 #   - alex/happy: any `.x`/`.y` file in `srcs` is automatically run through
 #     the corresponding tool (see buck2/alex_happy.bzl).
+#
+# Note on -threaded: it only needs to reach the final link (it selects which
+# RTS to link against), not the per-module compile step, so pass it via
+# linker_flags on haskell_binary(), not compiler_flags.
 
 load("//buck2:alex_happy.bzl", "alex", "happy")
 load("//buck2:hsc2hs.bzl", "hsc2hs")
@@ -105,12 +112,13 @@ def haskell_library(
         packages = [],
         deps = [],
         compiler_flags = [],
+        fb_haskell = True,
         **kwargs):
     all_deps = deps + _package_deps(packages)
     native.haskell_library(
         name = name,
         srcs = _resolve_srcs(name, srcs, all_deps),
-        compiler_flags = FB_HASKELL_EXTENSIONS + compiler_flags,
+        compiler_flags = (FB_HASKELL_EXTENSIONS + compiler_flags) if fb_haskell else compiler_flags,
         deps = all_deps,
         **kwargs
     )
@@ -121,12 +129,13 @@ def haskell_binary(
         packages = [],
         deps = [],
         compiler_flags = [],
+        fb_haskell = True,
         **kwargs):
     all_deps = deps + _package_deps(packages)
     native.haskell_binary(
         name = name,
         srcs = _resolve_srcs(name, srcs, all_deps),
-        compiler_flags = FB_HASKELL_EXTENSIONS + compiler_flags,
+        compiler_flags = (FB_HASKELL_EXTENSIONS + compiler_flags) if fb_haskell else compiler_flags,
         deps = all_deps,
         **kwargs
     )
