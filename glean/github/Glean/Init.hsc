@@ -141,8 +141,8 @@ fbhelper = abortOption showHelpText $ mconcat
   , hidden
   ]
   where
-#if MIN_VERSION_optparse_applicative(0,16,0)
+##if MIN_VERSION_optparse_applicative(0,16,0)
   showHelpText = ShowHelpText Nothing
-#else
+##else
   showHelpText = ShowHelpText
-#endif
+##endif
