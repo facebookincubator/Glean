@@ -1,0 +1,20 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+# Cabal's `handler` library (glean.cabal.in).
+haskell_library(
+    name = "handler",
+    srcs = [
+        "Glean/Handler.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//glean/backend-local:backend-local",
+        "//glean/client/hs:client-hs",
+        "//glean/github/if:if-fb303-hs",
+        "//glean/if:if-glean-hs",
+        "//glean/github:stubs",
+        "//glean/db:db",
+        "//glean/config:config",
+    ],
+    visibility = ["PUBLIC"],
+)

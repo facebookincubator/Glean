@@ -1,0 +1,71 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+# Cabal's `client-hs` library (glean.cabal.in) mixes a C++ source
+# (cpp/write.cpp) directly into the Haskell library stanza; buck2 has no
+# equivalent, so it's split into its own cxx_library() here, same pattern
+# as fb-util-cxx/fb-util.
+cxx_library(
+    name = "client-hs-cxx",
+    srcs = [
+        "cpp/write.cpp",
+    ],
+    compiler_flags = ["-std=c++20", "-march=haswell"],
+    preferred_linkage = "static",
+    deps = [
+        "//hsthrift/folly-clib:folly-clib",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Main client API; supports only remote DBs. Does NOT depend on glean:db or
+# glean:backend-local (see glean.cabal.in).
+haskell_library(
+    name = "client-hs",
+    srcs = [
+        "Glean.hs",
+        "Glean/Angle.hs",
+        "Glean/Write.hs",
+        "Glean/Haxl.hs",
+        "Glean/Remote.hs",
+        "Glean/Repo.hs",
+        "Glean/Haxl/Repos.hs",
+        "Glean/Util/ShellPrint.hs",
+    ],
+    deps = [
+        ":client-hs-cxx",
+        "//hsthrift/common/mangle:mangle",
+        "//hsthrift/common/util:fb-util",
+        "//hsthrift/haxl:thrift-haxl",
+        "//hsthrift/lib:thrift-lib",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/config:config",
+        "//glean/hs:core",
+        "//glean/github:defaultconfigs",
+        "//glean/haxl:haxl-datasource",
+        "//glean/if:if-glean-hs",
+        "//glean/github:stubs",
+        "//glean/typed:typed",
+        "//glean/util:util",
+        "//glean/write:write",
+    ],
+    packages = [
+        "aeson",
+        "aeson-pretty",
+        "bytestring",
+        "containers",
+        "data-default",
+        "extra",
+        "haxl",
+        "optparse-applicative",
+        "prettyprinter-ansi-terminal",
+        "process",
+        "process-extras",
+        "template-haskell",
+        "text",
+        "time",
+        "unordered-containers",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)

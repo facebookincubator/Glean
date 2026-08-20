@@ -1,0 +1,38 @@
+load("//buck2:thrift.bzl", "thrift_haskell_library")
+
+# Cabal's `thrift-annotation` library (glean.cabal.in): the standard Thrift
+# annotation IDLs, generated to Haskell. cpp/haskell/hack/rust/thrift.thrift
+# all `include "thrift/annotation/scope.thrift"` (and cpp/haskell also
+# thrift.thrift) by full repo-root-relative path, so thrift_flags needs
+# `-I .` (cwd is the repo root - see buck2/thrift.bzl) rather than the
+# package-relative `-I <dir>` hsthrift/lib uses for its own local includes.
+thrift_haskell_library(
+    name = "thrift-annotation",
+    thrift_files = {
+        "scope.thrift": ["Scope/Types.hs"],
+        "thrift.thrift": ["Facebook/Thrift/Annotation/Thrift/Thrift/Types.hs"],
+        "haskell.thrift": ["Facebook/Thrift/Annotation/Haskell/Haskell/Types.hs"],
+        "cpp.thrift": ["Facebook/Thrift/Annotation/Cpp/Cpp/Types.hs"],
+        "hack.thrift": ["Hack/Types.hs"],
+        "rust.thrift": ["Rust/Types.hs"],
+    },
+    thrift_flags = ["-I", "."],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//hsthrift/lib:thrift-lib",
+    ],
+    packages = [
+        "aeson",
+        "bytestring",
+        "containers",
+        "data-default",
+        "deepseq",
+        "ghc-prim",
+        "hashable",
+        "STMonadTrans",
+        "text",
+        "unordered-containers",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)

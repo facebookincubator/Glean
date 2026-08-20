@@ -1,0 +1,54 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+# Cabal's `indexers` library (glean.cabal.in) bundles 18 modules across many
+# directories into one Cabal component; buck2 splits it into a constellation
+# of targets instead (one per hs-source-dir, matching buck2's own package
+# boundaries) rather than trying to force everything into one directory's
+# BUCK file:
+#   - //glean/index:indexer-core (this target): Glean.Indexer +
+#     Glean.Indexer.External - the shared typeclass/registry framework and
+#     the "external indexer" driver every language module needs.
+#   - //glean/lang/<language>:<language>-indexer (14 targets, one per
+#     language directory): each just Glean.Indexer.<Language>, depending on
+#     indexer-core.
+#   - //glean/index/list:indexers: Glean.Indexer.List, the final aggregator
+#     that imports every language indexer plus indexer-core - this is the
+#     one that plays the role of Cabal's `indexers` (any downstream
+#     consumer needs both it and indexer-core, since buck2 packages don't
+#     auto-reexport their own deps' modules the way Cabal's single-library
+#     model did for free).
+# This split exists purely because indexer-core and the language modules
+# would otherwise form a dependency cycle if forced into one target
+# (External.hs, needed by every language module, itself needs
+# Glean.Indexer) - splitting it out breaks the cycle with no change in
+# what's actually exposed to a consumer that depends on all the pieces.
+haskell_library(
+    name = "indexer-core",
+    srcs = [
+        "Glean/Indexer.hs",
+        "Glean/Indexer/External.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//hsthrift/http:thrift-http",
+        "//glean/client/hs:client-hs",
+        "//glean/client/hs/local:client-hs-local",
+        "//glean/lib:lib-derive",
+        "//glean/server:handler",
+        "//glean/github/if:if-fb303-hs",
+        "//glean/github:stubs",
+        "//glean/util:util",
+    ],
+    packages = [
+        "aeson",
+        "extra",
+        "directory",
+        "filepath",
+        "process",
+        "temporary",
+        "text",
+        "optparse-applicative",
+        "unordered-containers",
+    ],
+    visibility = ["PUBLIC"],
+)

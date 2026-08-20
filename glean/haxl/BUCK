@@ -1,0 +1,25 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+# Cabal's `haxl-datasource` library (glean.cabal.in).
+haskell_library(
+    name = "haxl-datasource",
+    srcs = [
+        "Haxl/DataSource/Glean.hs",
+        "Haxl/DataSource/Glean/Common.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//glean/backend-api:backend-api",
+        "//glean/config:config",
+        "//glean/hs:core",
+        "//glean/if:if-glean-hs",
+        "//glean/typed:typed",
+        "//glean/util:util",
+    ],
+    packages = [
+        "hashable",
+        "haxl",
+        "unordered-containers",
+    ],
+    visibility = ["PUBLIC"],
+)

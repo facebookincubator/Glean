@@ -1,0 +1,91 @@
+load("//buck2:thrift.bzl", "thrift_haskell_library")
+
+# Cabal's `if-glean-hs` library (glean.cabal.in).
+thrift_haskell_library(
+    name = "if-glean-hs",
+    thrift_files = {
+        "glean.thrift": ["Glean/Types.hs", "Glean/GleanService/Client.hs", "Glean/GleanService/Service.hs"],
+    },
+    thrift_flags = ["-I", "."],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//hsthrift/lib:thrift-lib",
+        "//glean/config:config",
+        "//glean/github/if:if-fb303-hs",
+        "//glean/if/facebook:if-auth-hs",
+        "//thrift/annotation:thrift-annotation",
+    ],
+    packages = [
+        "aeson",
+        "bytestring",
+        "containers",
+        "data-default",
+        "deepseq",
+        "ghc-prim",
+        "hashable",
+        "STMonadTrans",
+        "text",
+        "unordered-containers",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Cabal's `if-index-hs` library (glean.cabal.in).
+thrift_haskell_library(
+    name = "if-index-hs",
+    thrift_files = {
+        "index.thrift": ["Glean/Index/Types.hs", "Glean/Index/GleanIndexingService/Client.hs", "Glean/Index/GleanIndexingService/Service.hs"],
+    },
+    thrift_flags = ["-I", "."],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//hsthrift/lib:thrift-lib",
+        ":if-glean-hs",
+        "//thrift/annotation:thrift-annotation",
+    ],
+    packages = [
+        "aeson",
+        "bytestring",
+        "containers",
+        "data-default",
+        "deepseq",
+        "ghc-prim",
+        "hashable",
+        "STMonadTrans",
+        "text",
+        "unordered-containers",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Cabal's `if-internal-hs` library (glean.cabal.in).
+thrift_haskell_library(
+    name = "if-internal-hs",
+    thrift_files = {
+        "internal.thrift": ["Glean/Internal/Types.hs"],
+    },
+    thrift_flags = ["-I", "."],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//hsthrift/lib:thrift-lib",
+        "//glean/config:config",
+        ":if-glean-hs",
+        "//thrift/annotation:thrift-annotation",
+    ],
+    packages = [
+        "aeson",
+        "bytestring",
+        "containers",
+        "data-default",
+        "deepseq",
+        "ghc-prim",
+        "hashable",
+        "STMonadTrans",
+        "text",
+        "unordered-containers",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)

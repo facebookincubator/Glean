@@ -1,0 +1,65 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+
+# Cabal's `glean` executable (glean.cabal.in) - the final target of this
+# whole migration. `#if GLEAN_FACEBOOK` (GleanCLI.Facebook, Manifold/XDB
+# backup, JustKnobs) and `#if ENABLE_S3` (Glean.Database.Backup.S3) blocks
+# are excluded, matching every other GLEAN_FACEBOOK-gated piece in this
+# migration - neither macro is ever defined.
+haskell_binary(
+    name = "glean",
+    main = "GleanCLI",
+    linker_flags = ["-with-rtsopts=-I0"],
+    srcs = [
+        "GleanCLI.hs",
+        "GleanCLI/Backup.hs",
+        "GleanCLI/Common.hs",
+        "GleanCLI/Complete.hs",
+        "GleanCLI/Create.hs",
+        "GleanCLI/Derive.hs",
+        "GleanCLI/Finish.hs",
+        "GleanCLI/Merge.hs",
+        "GleanCLI/Index.hs",
+        "GleanCLI/Query.hs",
+        "GleanCLI/Restore.hs",
+        "GleanCLI/WaitForWrites.hs",
+        "GleanCLI/Write.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//hsthrift/lib:thrift-lib",
+        "//glean/tools/gleancli/plugin:cli-types",
+        "//glean/client/hs:client-hs",
+        "//glean/client/hs/local:client-hs-local",
+        "//glean/github:aclknobs",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/index:indexer-core",
+        "//glean/index/list:indexers",
+        "//glean/shell:shell-lib",
+        "//glean/github:stubs",
+        "//glean/config:config",
+        "//glean/hs:core",
+        "//glean/lib:lib-derive",
+        "//glean/util:util",
+        "//glean/write:write",
+    ],
+    packages = [
+        "aeson",
+        "async",
+        "bytestring",
+        "containers",
+        "data-default",
+        "directory",
+        "extra",
+        "filepath",
+        "Glob",
+        "json",
+        "process",
+        "safe-exceptions",
+        "split",
+        "text",
+        "time",
+        "unordered-containers",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,24 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+# Cabal's `backend-local` library (glean.cabal.in): the Backend instance for
+# local (non-remote) DBs.
+haskell_library(
+    name = "backend-local",
+    srcs = [
+        "Glean/Backend/Local.hs",
+        "Glean/Backend/Logging.hs",
+        "Glean/Dump.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/haxl:haxl-datasource",
+        "//glean/if:if-glean-hs",
+        "//glean/if:if-internal-hs",
+        "//glean/util:util",
+    ],
+    visibility = ["PUBLIC"],
+)

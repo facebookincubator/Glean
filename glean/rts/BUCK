@@ -1,0 +1,101 @@
+# Cabal's `rts` library (glean.cabal.in): the C++17 runtime - fact storage,
+# binary encoding, bytecode VM, ownership tracking, query execution (see
+# CLAUDE.md). Pure C++, no Haskell exposed-modules at all; glean:core (the
+# Haskell interface to this) reaches it entirely via hsc2hs + FFI.
+#
+# -DOSS=1 matches Cabal's cxx-options/cc-options for this library exactly:
+# several rts headers/sources have `#ifdef OSS ... #else ... #endif` picking
+# between a plain `<cpp/HsStruct.h>`-style include (OSS, resolved via
+# fb-util-cxx's public_include_directories) and an internal Meta-only
+# `<common/hs/util/cpp/HsStruct.h>` path that doesn't exist in this
+# checkout - so -DOSS=1 isn't just matching Cabal's flags, it's required for
+# the sources to even find their headers here.
+#
+# include_directories/public_include_directories = ["../.."] makes
+# "glean/rts/foo.h"-style includes (repo-root-relative, matching Cabal's
+# `include-dirs: .` - "." relative to glean.cabal at the repo root) resolve
+# correctly from this package two directories down; public_include_
+# directories propagates this to glean:core's hsc2hs step too, the same way
+# fb-util-cxx's "." propagates to any dependent's hsc2hs.
+cxx_library(
+    name = "rts",
+    srcs = [
+        "binary.cpp",
+        "benchmarking/factblock.cpp",
+        "benchmarking/ffi.cpp",
+        "bytecode/subroutine.cpp",
+        "cache.cpp",
+        "define.cpp",
+        "error.cpp",
+        "fact.cpp",
+        "factset.cpp",
+        "ffi.cpp",
+        "inventory.cpp",
+        "json.cpp",
+        "lookup.cpp",
+        "nat.cpp",
+        "ownership.cpp",
+        "ownership/acl.cpp",
+        "ownership/derived.cpp",
+        "ownership/setu32.cpp",
+        "ownership/slice.cpp",
+        "ownership/uset.cpp",
+        "prim.cpp",
+        "query.cpp",
+        "sanity.cpp",
+        "set.cpp",
+        "stats.cpp",
+        "string.cpp",
+        "substitution.cpp",
+        "thrift.cpp",
+        "timer.cpp",
+        "validate.cpp",
+    ],
+    compiler_flags = ["-std=c++20", "-march=haswell", "-DOSS=1"],
+    include_directories = ["../.."],
+    public_include_directories = ["../.."],
+    # -lunwind, -latomic and -lglog all already come transitively via
+    # folly-clib's own exported_linker_flags (hsthrift/folly-clib/BUCK) -
+    # only the libraries folly-clib doesn't already export are listed here.
+    exported_linker_flags = [
+        "-licuuc",
+        "-licudata",
+        "-lgflags",
+        "-lxxhash",
+    ],
+    # "shared", not "static": every Haskell library in this migration that
+    # (transitively) depends on rts becomes its own separate .so, and the
+    # final `glean` executable dynamically loads all of them together (see
+    # __glean__shared_libs_symlink_tree/RPATH). With `static` linkage here,
+    # each of those .so's independently pulled its own copy of whatever
+    # folly-clib .o files it needed (ordinary static-archive member
+    # selection, no link_whole involved) - harmless for most code, but fatal
+    # for translation units with process-global static state: folly's
+    # Hazptr.cpp registers a gflags flag (`folly_hazptr_use_executor`) in a
+    # file-scope initializer, so two .so's both embedding a copy of it
+    # crashes at process startup with a duplicate flag registration error
+    # ("...is being linked both statically and dynamically into this
+    # executable"). Making rts itself a single shared object means every
+    # Haskell .so links against *one* rts.so (and therefore one copy of the
+    # folly-clib code rts pulls in) instead of baking in its own.
+    #
+    # This exposed a second, independent bug: Template Haskell splices (e.g.
+    # Mangle.TH, used by glean:client-hs's Glean/Write.hs) run *during*
+    # compilation and need to dlopen their dependencies' shared objects right
+    # then, including transitively-linked native ones like this - but
+    # buck2's prelude (prelude/haskell/compile.bzl, prelude/haskell/
+    # haskell.bzl) only set up a shared-lib search path (rpath/symlink tree)
+    # for the *final* link of a haskell_binary, not for the intermediate
+    # per-library compile step. Fixed directly in the vendored prelude here
+    # (see compile.bzl's `native_shared_libs_dir` param and haskell.bzl's
+    # `_native_shared_libs_dir` helper): the compile action now gets an
+    # LD_LIBRARY_PATH pointing at a merged symlink tree of every native
+    # shared lib reachable through deps, mirroring what the final-link rpath
+    # already does.
+    preferred_linkage = "shared",
+    deps = [
+        "//hsthrift/common/util:fb-util-cxx",
+        "//hsthrift/folly-clib:folly-clib",
+    ],
+    visibility = ["PUBLIC"],
+)

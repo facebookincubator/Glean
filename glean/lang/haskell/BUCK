@@ -1,0 +1,23 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+# Cabal's `indexers` library includes this module (Glean.Indexer.Haskell)
+# among its 18 - see glean/index/BUCK's comment for the split rationale.
+# (HieIndexer/* are a separate standalone executable, not part of
+# `indexers`.)
+haskell_library(
+    name = "haskell-indexer",
+    srcs = [
+        "Glean/Indexer/Haskell.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//glean/index:indexer-core",
+    ],
+    packages = [
+        "directory",
+        "filepath",
+        "optparse-applicative",
+        "process",
+    ],
+    visibility = ["PUBLIC"],
+)

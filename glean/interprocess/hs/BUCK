@@ -1,0 +1,20 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+# Cabal's `interprocess` library (glean.cabal.in): FFI wrappers around
+# //glean/interprocess/cpp:interprocess-cpp (split from client-cpp - see
+# that BUCK file's comment).
+haskell_library(
+    name = "interprocess",
+    srcs = [
+        "Glean/Interprocess/Counters.hs",
+        "Glean/Interprocess/Worklist.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//glean/interprocess/cpp:interprocess-cpp",
+    ],
+    packages = [
+        "temporary",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,46 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+
+# Cabal's `gen-schema` executable (glean.cabal.in): reads
+# glean/schema/source/*.angle and generates glean/schema/thrift/*.thrift,
+# glean/schema/hs/*.hs and glean/lang/clang/schema.h (see Makefile's
+# `gen-schema` target). Building the executable itself doesn't need any of
+# that output - it's the thing that *produces* it.
+haskell_binary(
+    name = "gen-schema",
+    main = "Glean.Schema.Gen.Main",
+    srcs = [
+        "Glean/Schema/Gen/Main.hs",
+        "Glean/Schema/Gen/HackJson.hs",
+        "Glean/Schema/Gen/Utils.hs",
+        "Glean/Schema/Gen/Cpp.hs",
+        "Glean/Schema/Gen/Haskell.hs",
+        "Glean/Schema/Gen/OCaml.hs",
+        "Glean/Schema/Gen/Python.hs",
+        "Glean/Schema/Gen/Rust.hs",
+        "Glean/Schema/Gen/Thrift.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//hsthrift/lib:thrift-lib",
+        "//glean/angle:angle",
+        "//glean/hs:core",
+        "//glean/config:config",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/if:if-internal-hs",
+    ],
+    packages = [
+        "aeson",
+        "aeson-pretty",
+        "bytestring",
+        "containers",
+        "data-default",
+        "extra",
+        "fuzzy",
+        "hashable",
+        "text",
+        "text-show",
+        "unordered-containers",
+    ],
+    visibility = ["PUBLIC"],
+)

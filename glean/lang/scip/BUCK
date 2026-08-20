@@ -1,0 +1,20 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+# Cabal's `scip` library (glean.cabal.in).
+haskell_library(
+    name = "scip",
+    srcs = [
+        "Glean/SCIP/Driver.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+    ],
+    packages = [
+        "aeson",
+        "directory",
+        "filepath",
+        "process",
+        "temporary",
+    ],
+    visibility = ["PUBLIC"],
+)

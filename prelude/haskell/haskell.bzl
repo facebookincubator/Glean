@@ -508,6 +508,30 @@ def _get_haskell_shared_library_name_linker_flags(linker_type: LinkerType, sonam
     else:
         fail("Unknown linker type '{}'.".format(linker_type))
 
+# A merged symlink tree of every native (cxx_library) shared library reached
+# through this target's deps, named by SONAME - the same shape as the tree
+# haskell_binary_impl builds for its own final-link rpath (see
+# create_shlib_symlink_tree's other call site below), but built here so it
+# can be handed to compile() as well: Template Haskell splices dlopen their
+# dependencies' shared objects *during* compilation, not just at final link,
+# so the compile action's sandbox needs the same search path. Returns None
+# when there's nothing to add, so callers can skip the LD_LIBRARY_PATH
+# plumbing entirely for targets with no shared native deps. Called once per
+# target (not once per link_style/profiling variant compiled) since it maps
+# to a single declared symlink-tree output.
+def _native_shared_libs_dir(actions: AnalysisActions, name: str, shared_library_infos: list[SharedLibraryInfo]) -> [Artifact, None]:
+    if not shared_library_infos:
+        return None
+    shlib_info = merge_shared_libraries(actions, deps = shared_library_infos)
+    sos = traverse_shared_library_info(shlib_info, transformation_provider = None)
+    if not sos:
+        return None
+    return create_shlib_symlink_tree(
+        actions = actions,
+        out = "__{}__th_shared_libs_symlink_tree".format(name),
+        shared_libs = sos,
+    )
+
 def _build_haskell_lib(
     ctx,
     libname: str,
@@ -516,6 +540,9 @@ def _build_haskell_lib(
     nlis: list[MergedLinkInfo],  # native link infos from all deps
     link_style: LinkStyle,
     enable_profiling: bool,
+    # Precomputed once per target (not per link_style/profiling variant - see
+    # call site) since it maps to a single declared symlink-tree output.
+    native_shared_libs_dir: [Artifact, None],
     # The non-profiling artifacts are also needed to build the package for
     # profiling, so it should be passed when `enable_profiling` is True.
     non_profiling_hlib: [HaskellLibBuildOutput, None] = None,
@@ -533,6 +560,7 @@ def _build_haskell_lib(
         link_style,
         enable_profiling = enable_profiling,
         pkgname = pkgname,
+        native_shared_libs_dir = native_shared_libs_dir,
     )
     solibs = {}
     artifact_suffix = get_artifact_suffix(link_style, enable_profiling)
@@ -693,6 +721,8 @@ def haskell_library_impl(ctx: AnalysisContext) -> list[Provider]:
     libname = repr(ctx.label.path).replace("//", "_").replace("/", "_") + "_" + ctx.label.name
     pkgname = libname.replace("_", "-")
 
+    native_shared_libs_dir = _native_shared_libs_dir(ctx.actions, libname, shared_library_infos)
+
     # The non-profiling library is also needed to build the package with
     # profiling enabled, so we need to keep track of it for each link style.
     non_profiling_hlib = {}
@@ -711,6 +741,7 @@ def haskell_library_impl(ctx: AnalysisContext) -> list[Provider]:
                 nlis = nlis,
                 link_style = link_style,
                 enable_profiling = enable_profiling,
+                native_shared_libs_dir = native_shared_libs_dir,
                 non_profiling_hlib = non_profiling_hlib.get(link_style),
             )
             if not enable_profiling:
@@ -936,6 +967,7 @@ def haskell_binary_impl(ctx: AnalysisContext) -> list[Provider]:
         ctx,
         link_style,
         enable_profiling = enable_profiling,
+        native_shared_libs_dir = _native_shared_libs_dir(ctx.actions, ctx.attrs.name, attr_deps_shared_library_infos(ctx)),
     )
 
     haskell_toolchain = ctx.attrs._haskell_toolchain[HaskellToolchainInfo]

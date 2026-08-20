@@ -1,0 +1,35 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+# Cabal's `write` library (glean.cabal.in): client-side fact writing. Does
+# NOT depend on glean:db or glean:schema (see glean.cabal.in - the schema
+# dep was removed as genuinely unused, confirmed with a real
+# `cabal build glean:lib:write`).
+haskell_library(
+    name = "write",
+    srcs = [
+        "Glean/Write/Async.hs",
+        "Glean/Write/Options.hs",
+        "Glean/Write/SendQueue.hs",
+        "Glean/Write/SendAndRebaseQueue.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//hsthrift/lib:thrift-lib",
+        "//glean/backend-api:backend-api",
+        "//glean/hs:core",
+        "//glean/if:if-glean-hs",
+        "//glean/github:stubs",
+        "//glean/typed:typed",
+        "//glean/util:util",
+    ],
+    packages = [
+        "async",
+        "bytestring",
+        "data-default",
+        "extra",
+        "optparse-applicative",
+        "text",
+        "unordered-containers",
+    ],
+    visibility = ["PUBLIC"],
+)
