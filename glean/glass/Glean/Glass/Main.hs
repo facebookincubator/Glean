@@ -41,6 +41,7 @@ import Util.Log.Text ( logInfo )
 import Logger.IO (withLogger)
 
 import Control.Exception (SomeException, fromException, throwIO)
+import Data.ByteString (ByteString)
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Text.Encoding (encodeUtf8)
@@ -56,6 +57,7 @@ import Glean.Util.ConfigProvider
 import Glean.Util.Some ( Some(Some) )
 
 import Glean.Glass.RepoMapping -- site-specific
+import Glean.Glass.ErrorClassification (srErrorName)
 import qualified Glean.Glass.Env as Glass
 import Glean.Glass.Repos (withLatestRepos)
 import Glean.Glass.SourceControl (setCallerInfo)
@@ -83,6 +85,12 @@ import JustKnobs (evalKnob)
 
 kThriftCacheNoCache :: Text
 kThriftCacheNoCache = "nocache"
+
+-- | hsthrift's undeclared-exception name header. ServiceRouter looks the value
+-- up in @appErrorsMap@ to decide fatal/markdown, so overriding it here is how
+-- Glass classifies its own failures.
+kUex :: ByteString
+kUex = "uex"
 
 -- | Ok, go.
 mainWith
@@ -164,19 +172,23 @@ runGlass res@Glass.Env{fb303, evp} conf@Glass.Config{..} = do
   runFacebookService' fb303 (glassHandler res) assignHeaders options
 #endif
 
+-- | @postProcess@ hook for 'runFacebookService''. These headers are appended
+-- after the ones hsthrift derives from the escaping exception, and
+-- @HaskellProcessor@ sets rather than adds them, so 'kUex' here wins.
 assignHeaders :: GlassServiceCommand r -> Either SomeException r -> Header
-assignHeaders _ (Left e) | isRevisionNotAvailableException e =
-  [ (encodeUtf8 kThriftCacheNoCache, "1")]
+assignHeaders _ (Right _) = []
+assignHeaders _ (Left e) =
+  [ (encodeUtf8 kThriftCacheNoCache, "1") | isRevisionNotAvailableException ] ++
+  [ (kUex, name) | Just name <- [srErrorName e] ]
   where
-    isRevisionNotAvailableException e = case fromException e of
+    isRevisionNotAvailableException = case fromException e of
       Just GlassException{glassException_reasons} ->
         all isRevisionNotAvailable glassException_reasons
       _ -> False
-    isRevisionNotAvailable e = case e of
+    isRevisionNotAvailable r = case r of
       GlassExceptionReason_exactRevisionNotAvailable{} -> True
       GlassExceptionReason_matchingRevisionNotAvailable{} -> True
       _ -> False
-assignHeaders _ _ = []
 
 #if GLEAN_FACEBOOK
 -- | ModifyFunction (C++ FFI) that installs the shared CAT ServiceInterceptor

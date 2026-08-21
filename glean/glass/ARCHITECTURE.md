@@ -117,6 +117,41 @@ client instead of seeing all Glass traffic as a single `glean.glass` client.
 it in from the process's first SMC tier — see
 `fbcode/tupperware/config/glean/glass/glass.tw`.)
 
+### Error classification for ServiceRouter (`uex`)
+
+`assignHeaders` is the `postProcess` hook passed to `runFacebookService'`. For a
+failed request it asks
+[`srErrorName`](Glean/Glass/ErrorClassification.hs) for a name and, when there
+is one, emits it as the `uex` response header. ServiceRouter looks `uex` up in
+`appErrorsMap` in glean.glass's routing config
+(`configerator/raw_configs/fbrpcclient/configs/glean.glass/glean.glass`) and
+takes the fatal/markdown/retry policy from there.
+
+This exists because hsthrift cannot distinguish undeclared exceptions on its
+own: `handlerWrapper` sets `uex` to `show (typeOf ex)` *after* the generated
+`respWriter'` has replaced the original exception with a fresh
+`Thrift.ApplicationException`, so every undeclared failure reaches
+ServiceRouter as the single name `ApplicationException`. ServiceRouter then
+applies `kUndeclaredAppErrorConfig` — `logFatal = true` **and**
+`markdown = true`. In practice most of those failures are downstream Glean
+throttles and queue timeouts, so before this change a Glean-side throttle both
+polluted Glass's server-fatal SLI and marked down healthy Glass hosts.
+
+The override works because `postProcess` headers are appended last in
+`handlerWrapper` and `HaskellProcessor.cpp` applies them with `setHeader`,
+which overwrites. `ex` and `uexw` are deliberately left alone, so the
+wire-level record still says "undeclared application exception"; only
+ServiceRouter's classification policy changes, and no client sees a different
+response.
+
+`srErrorName` recovers the downstream cause by string-matching the
+`(REASON)` token that `TServiceRouterException::getExceptionMsg` puts at the
+front of its message. That is unavoidable today: hsthrift's cpp-channel
+stringifies the whole `folly::exception_wrapper` into a `ChannelException Text`
+and drops the response headers, so the error code never reaches Haskell. Only
+the enum name is matched, never the prose after it. An unrecognised reason
+returns `Nothing`, which keeps ServiceRouter's default behaviour.
+
 ## 4. Glean DB Selection (“best/closest DB”)
 
 This is one of Glass’s key logic layers.
