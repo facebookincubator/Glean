@@ -1,3 +1,5 @@
+load("//buck2:cxx.bzl", "cxx_library")
+
 # Cabal's `storage` library (glean.cabal.in): thin storage-backend
 # abstraction sitting on top of //glean/rts:rts. Same shape/reasoning as
 # glean/rts/BUCK (repo-root-relative includes, -DOSS=1 for the same

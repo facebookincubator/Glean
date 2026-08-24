@@ -1,3 +1,5 @@
+load("//buck2:cxx.bzl", "cxx_library")
+
 # Cabal's `rts` library (glean.cabal.in): the Glean runtime - fact storage,
 # binary encoding, bytecode VM, ownership tracking, query execution (see
 # CLAUDE.md). Pure C++, no Haskell exposed-modules at all; glean:core (the

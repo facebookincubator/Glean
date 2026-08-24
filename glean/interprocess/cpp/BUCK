@@ -1,3 +1,5 @@
+load("//buck2:cxx.bzl", "cxx_library")
+
 # Cabal's `interprocess-cpp` library (glean.cabal.in): split out of
 # `client-cpp` (Simon's request) specifically so glean:interprocess (needed
 # by glean:indexers, for parallelising glean-clang's indexing work) doesn't
