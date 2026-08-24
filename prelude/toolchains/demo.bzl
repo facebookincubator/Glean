@@ -102,13 +102,6 @@ def system_demo_toolchains():
         visibility = ["PUBLIC"],
     )
 
-    system_haskell_toolchain(
-        name = "haskell",
-        compiler = "ghc-9.4.8",
-        packager = "ghc-pkg-9.4.8",
-        visibility = ["PUBLIC"],
-    )
-
     javacd_toolchain(
         name = "java",
         java = ":java_tool",
