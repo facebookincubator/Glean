@@ -1,3 +1,5 @@
+load("//buck2:cxx.bzl", "cxx_library")
+
 # lmdb-clib.cabal: a vendored copy of the LMDB C library (mdb.c, midl.c),
 # built directly rather than linked against the system liblmdb - same
 # "vendor the C source, control the exact version" approach

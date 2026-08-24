@@ -67,6 +67,57 @@ def _package_deps(packages):
     all_pkgs = {p: None for p in (AUTO_PACKAGES + packages)}
     return [("//third-party/haskell:" + p) for p in sorted(all_pkgs.keys())]
 
+# Build modes (buck2.md TODO "we should support different build modes"),
+# selected via `buck2 build ... -m root//buck2/constraints:opt` (`dev` is
+# the default - see the root PACKAGE file). `dev` matches this migration's
+# original, only behaviour (shared libs, no optimisation - fast to
+# rebuild); `opt` is what an actual deployed `glean` binary wants (a single
+# static binary, optimised). Centralized here rather than passed by each
+# BUCK file, the same reasoning as FB_HASKELL_EXTENSIONS above - one place
+# to change, automatically applied to every haskell_library()/
+# haskell_binary() in the tree.
+_BUILD_MODE_LINK_STYLE = select({
+    "root//buck2/constraints:opt": "static",
+    "DEFAULT": "shared",
+})
+
+# GHC's `-O` (Cabal's own default build has no explicit -O0/-O1/-O2
+# anywhere in glean.cabal.in, so `dev` matches that; `opt` turns on GHC's
+# standard optimisation level), plus `-fexternal-interpreter` - needed only
+# in `opt` mode, and only for modules that (transitively) import Mangle.TH
+# (fb-util, client-hs, stubs), but harmless and simplest applied uniformly
+# here rather than tracked per-target.
+#
+# Why it's needed at all: running a Template Haskell splice means GHC has
+# to *execute* the spliced code (here, the `mangle` function from
+# hsthrift/common/mangle) at compile time. By default GHC does this with
+# its own internal interpreter, embedded in the `ghc` process itself, which
+# loads code via GHC's private RTS linker (rts/Linker.c) - and this GHC
+# build is itself dynamically linked (`ghc --info` shows "GHC Dynamic:
+# YES"), which means that internal interpreter can *only* load packages
+# that were also built the dynamic way (not a property of Template Haskell
+# itself - it's specific to how this GHC binary was built). Since `opt`
+# mode builds everything `link_style = "static"`, mangle has no dynamic
+# interface, and the splice fails outright ("Failed to load dynamic
+# interface file for Mangle.TH"). Reached for `-dynamic-too` on mangle
+# first (dual-compiling mangle so it has both), but that pays a real
+# compile-time cost persistently for a mode meant to be the fast, optimised
+# path. `-fexternal-interpreter` fixes it at the actual root instead: it
+# moves splice execution out of the (dynamically-linked) `ghc` process into
+# a *separate* `iserv` process - and GHC ships a plain, non-dynamic
+# `ghc-iserv` binary specifically for this (confirmed present in this
+# toolchain, alongside `ghc-iserv-dyn`), which isn't bound by the "must be
+# dynamic" constraint at all and loads mangle's ordinary, statically-built
+# `.o` directly. Verified directly against GHC (no buck2 involved): a
+# minimal Mangle.TH-alike package built purely statically, spliced from a
+# consumer, fails with the dynamic-interface error without this flag and
+# succeeds cleanly with it - confirming this is the actual mechanism, not
+# a workaround for a buck2-specific gap.
+_BUILD_MODE_HASKELL_FLAGS = select({
+    "root//buck2/constraints:opt": ["-O", "-fexternal-interpreter"],
+    "DEFAULT": [],
+})
+
 # The .hs path a source's module lives at once preprocessed: `path`
 # unchanged unless it still carries a raw preprocessor extension (true for
 # `srcs` given as a list, where `path == src`, or an explicit identity entry
@@ -150,11 +201,18 @@ def haskell_library(
         # per-library `hsc2hs-options` field.
         hsc_flags = [],
         **kwargs):
+    # No `link_style` here - unlike haskell_binary(), haskell_library()
+    # doesn't take one at all: a library builds whichever output styles its
+    # `preferred_linkage` calls for (both, by default), and it's entirely
+    # the *consumer* doing the linking (ultimately some haskell_binary())
+    # that picks which one to actually use. The build-mode link_style only
+    # needs to be set once, there.
     all_deps = deps + _package_deps(packages)
+    all_compiler_flags = (FB_HASKELL_EXTENSIONS + compiler_flags) if fb_haskell else compiler_flags
     native.haskell_library(
         name = name,
         srcs = _resolve_srcs(name, srcs, all_deps, hsc_flags),
-        compiler_flags = (FB_HASKELL_EXTENSIONS + compiler_flags) if fb_haskell else compiler_flags,
+        compiler_flags = all_compiler_flags + _BUILD_MODE_HASKELL_FLAGS,
         deps = all_deps,
         **kwargs
     )
@@ -169,10 +227,12 @@ def haskell_binary(
         hsc_flags = [],
         **kwargs):
     all_deps = deps + _package_deps(packages)
+    all_compiler_flags = (FB_HASKELL_EXTENSIONS + compiler_flags) if fb_haskell else compiler_flags
+    kwargs.setdefault("link_style", _BUILD_MODE_LINK_STYLE)
     native.haskell_binary(
         name = name,
         srcs = _resolve_srcs(name, srcs, all_deps, hsc_flags),
-        compiler_flags = (FB_HASKELL_EXTENSIONS + compiler_flags) if fb_haskell else compiler_flags,
+        compiler_flags = all_compiler_flags + _BUILD_MODE_HASKELL_FLAGS,
         deps = all_deps,
         **kwargs
     )

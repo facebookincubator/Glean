@@ -1,0 +1,21 @@
+# The build-mode axis (buck2.md TODO: "we should support different build
+# modes"): `dev` (default - shared libs, no optimisation, fast iteration) and
+# `opt` (static binary, optimised: -O for Haskell, -O3 for C++). Selected via
+# `buck2 build ... -m //buck2/constraints:opt`; `dev` is the default, set as
+# a PACKAGE-level cfg modifier at the repo root (see ../../PACKAGE).
+constraint_setting(
+    name = "build_mode",
+    visibility = ["PUBLIC"],
+)
+
+constraint_value(
+    name = "dev",
+    constraint_setting = ":build_mode",
+    visibility = ["PUBLIC"],
+)
+
+constraint_value(
+    name = "opt",
+    constraint_setting = ":build_mode",
+    visibility = ["PUBLIC"],
+)

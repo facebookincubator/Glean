@@ -1,3 +1,5 @@
+load("//buck2:cxx.bzl", "cxx_library")
+
 # Cabal's `lmdb` library (glean.cabal.in): storage backend on top of
 # //glean/storage:storage, //glean/rts:rts and the vendored
 # //glean/lmdb-clib:lmdb-clib (for lmdb.h/mdb.c/midl.c - see that BUCK

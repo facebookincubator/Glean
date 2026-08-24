@@ -1,3 +1,5 @@
+load("//buck2:cxx.bzl", "cxx_library")
+
 # Cabal's `rocksdb` library (glean.cabal.in): storage backend on top of
 # //glean/storage:storage and //glean/rts:rts. -fno-rtti matches Cabal's
 # cxx-options exactly (RocksDB's own headers are commonly built/used
