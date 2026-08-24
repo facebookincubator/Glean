@@ -1,5 +1,15 @@
 load("@prelude//toolchains:demo.bzl", "system_demo_toolchains")
+load("@toolchains//haskell.bzl", "haskell_toolchain")
 
-# All the default toolchains, suitable for a quick demo or early prototyping.
-# Most real projects should copy/paste the implementation to configure them.
+# Defaults for other toolchains
 system_demo_toolchains()
+
+haskell_toolchain(
+    name = "haskell",
+    compiler = "ghc-9.4.8",
+    packager = "ghc-pkg-9.4.8",
+    haddock = "haddock",
+    compiler_flags = ["-O"],
+    linker_flags = [],
+    visibility = ["PUBLIC"],
+)
