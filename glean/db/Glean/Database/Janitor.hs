@@ -308,6 +308,13 @@ runWithShards env myShards sm = do
           itemLocality == Local
           && completenessStatus itemMeta == Thrift.DatabaseStatus_Complete)
         repoKeep
+      publishCounter (prefix <> ".disk_used_bytes") $
+        fromIntegral $ sum
+          [ bytes
+          | Item{itemLocality = Local, itemMeta} <- repoKeep
+          , Complete DatabaseComplete{databaseComplete_bytes = Just bytes} <-
+              [metaCompleteness itemMeta]
+          ]
       publishCounter (prefix <> ".restoring") $
         length restores +
         length (NonEmpty.filter (\Item{..} -> itemLocality == Restoring)

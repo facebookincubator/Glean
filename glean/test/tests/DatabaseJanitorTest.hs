@@ -1022,6 +1022,15 @@ ageCountersClearTest = TestCase $ do
     assertBool "glean.db.test.age cleared"
       $ not (HashMap.member "glean.db.test.age" counters)
 
+diskUsedBytesCounterTest :: Test
+diskUsedBytesCounterTest = TestCase $
+  ageCountersTestEx
+    (SomeShardManager $ shardByRepoHash (pure $ Just ["0001"]))
+    $ \_ _ -> do
+      counters <- getCounters
+      assertEqual "glean.db.test.disk_used_bytes" (Just 1) $
+        HashMap.lookup "glean.db.test.disk_used_bytes" counters
+
 stuckTest :: Test
 stuckTest = TestCase $ withFakeCloudDBs $ \evb cfgAPI dbdir backupdir -> do
   let cfg = dbConfig dbdir $ (serverConfig backupdir)
@@ -1096,6 +1105,7 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "ageCountersForAllNewestDBs" ageCountersCompleteTest
   , TestLabel "ageCountersForOnlyNewestDBs" ageCountersOnlyNewestTest
   , TestLabel "ageCountersClear" ageCountersClearTest
+  , TestLabel "diskUsedBytesCounter" diskUsedBytesCounterTest
   , TestLabel "stuck" stuckTest
   , TestLabel "requiredPropsTest" requiredPropsTest
   , TestLabel "retentionRestoreDepsTest" retentionRestoreDepsTest
