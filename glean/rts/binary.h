@@ -284,7 +284,7 @@ struct Output {
   }
 
   Output(Output&& other) noexcept {
-    std::memcpy(this, &other, sizeof(Output));
+    std::memcpy(static_cast<void*>(this), &other, sizeof(Output));
     other.markEmpty();
   }
 
@@ -315,7 +315,7 @@ struct Output {
   Output& operator=(Output&& other) noexcept {
     if (this != &other) {
       dealloc();
-      std::memcpy(this, &other, sizeof(Output));
+      std::memcpy(static_cast<void*>(this), &other, sizeof(Output));
       other.markEmpty();
     }
     return *this;
