@@ -1488,6 +1488,7 @@ library glass-lib
         Glean.Glass.Describe
         Glean.Glass.Digest
         Glean.Glass.Env
+        Glean.Glass.ErrorClassification
         Glean.Glass.Handler.Symbols
         Glean.Glass.Handler.Documents
         Glean.Glass.Handler.Cxx
