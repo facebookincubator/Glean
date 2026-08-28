@@ -106,6 +106,7 @@ load(
     "LinkArgs",
     "LinkInfo",
     "LinkInfos",
+    "LinkOrdering",
     "LinkStyle",
     "LinkedObject",
     "MergedLinkInfo",
@@ -1149,7 +1150,26 @@ def haskell_binary_impl(ctx: AnalysisContext) -> list[Provider]:
             transformation_spec_context = None,
         )
 
-    link_args.add(cmd_args(unpack_link_args(infos), prepend = "-optl"))
+    # `link_ordering = "topological"`, not the default `"preorder"`: this
+    # migration hands raw static-archive paths straight to the linker
+    # (unlike a plain Cabal/GHC `-package`-based link, which computes
+    # correct archive order itself from the package DB). buck2's own
+    # LinkOrdering docs (prelude/linking/link_info.bzl) describe exactly
+    # what a single left-to-right `ld` pass needs here: "topological sort,
+    # such that nodes are listed after all nodes that have them as
+    # descendants" - i.e. a shared descendant (e.g. `primitive`, needed by
+    # both `fb-util` and `vector`, two independent direct deps of the same
+    # binary) is positioned after *every* consumer that needs it, not just
+    # whichever one's subtree the default preorder-with-first-occurrence-
+    # wins traversal happens to reach first (which, for two *independent*
+    # siblings that share a transitive dependency, has no way to know the
+    # *other* sibling needs it too - producing "undefined reference" even
+    # though the defining archive is genuinely present on the command
+    # line, just too early for the second consumer). This is a real,
+    # first-class ordering mode already implemented in buck2's own tset
+    # machinery - not a workaround - haskell_binary_impl here just never
+    # requested it, always taking the `unpack_link_args` default.
+    link_args.add(cmd_args(unpack_link_args(infos, link_ordering = LinkOrdering("topological")), prepend = "-optl"))
 
     link.add(
         at_argfile(
