@@ -1,0 +1,46 @@
+# Copyright (c) Meta, Inc. and affiliates.
+
+# Rust safety facts, layered on the generic SCIP index in the same database.
+# SCIP is language-neutral and cannot represent Rust's safety semantics.
+schema rust.1 {
+
+import scip
+import src
+
+# A function or method declared `unsafe fn`. This is the syntactic property,
+# not "unsafe to call": #[target_feature] functions need an unsafe context at
+# the call site without being declared unsafe, and are excluded here.
+#
+# No span: scip.Definition gives the name token, scip.EnclosingRange the item.
+predicate UnsafeFn:
+  {
+    symbol: scip.Symbol,
+  }
+
+predicate UnsafeTrait:
+  {
+    symbol: scip.Symbol,
+  }
+
+predicate UnsafeImpl:
+  {
+    symbol: scip.Symbol,
+    trait_symbol: scip.Symbol,
+  }
+
+# An explicit `unsafe { ... }` block. Anonymous -- an expression has no SCIP
+# symbol -- so it carries its own location.
+#
+# Spans are byte offsets, matching rust-analyzer's TextRange; scip ranges are
+# 1-indexed line/column, so join through src.FileLines.
+#
+# Macro-expanded blocks report the macro invocation span, so several facts may
+# share one span.
+predicate UnsafeBlock:
+  {
+    file: src.File,
+    span: src.ByteSpan,
+    enclosing_symbol: scip.Symbol,
+  }
+
+}
