@@ -83,39 +83,38 @@ _BUILD_MODE_LINK_STYLE = select({
 
 # GHC's `-O` (Cabal's own default build has no explicit -O0/-O1/-O2
 # anywhere in glean.cabal.in, so `dev` matches that; `opt` turns on GHC's
-# standard optimisation level), plus `-fexternal-interpreter` - needed only
-# in `opt` mode, and only for modules that (transitively) import Mangle.TH
-# (fb-util, client-hs, stubs), but harmless and simplest applied uniformly
-# here rather than tracked per-target.
-#
-# Why it's needed at all: running a Template Haskell splice means GHC has
-# to *execute* the spliced code (here, the `mangle` function from
-# hsthrift/common/mangle) at compile time. By default GHC does this with
-# its own internal interpreter, embedded in the `ghc` process itself, which
-# loads code via GHC's private RTS linker (rts/Linker.c) - and this GHC
-# build is itself dynamically linked (`ghc --info` shows "GHC Dynamic:
-# YES"), which means that internal interpreter can *only* load packages
-# that were also built the dynamic way (not a property of Template Haskell
-# itself - it's specific to how this GHC binary was built). Since `opt`
-# mode builds everything `link_style = "static"`, mangle has no dynamic
-# interface, and the splice fails outright ("Failed to load dynamic
-# interface file for Mangle.TH"). Reached for `-dynamic-too` on mangle
-# first (dual-compiling mangle so it has both), but that pays a real
-# compile-time cost persistently for a mode meant to be the fast, optimised
-# path. `-fexternal-interpreter` fixes it at the actual root instead: it
-# moves splice execution out of the (dynamically-linked) `ghc` process into
-# a *separate* `iserv` process - and GHC ships a plain, non-dynamic
-# `ghc-iserv` binary specifically for this (confirmed present in this
-# toolchain, alongside `ghc-iserv-dyn`), which isn't bound by the "must be
-# dynamic" constraint at all and loads mangle's ordinary, statically-built
-# `.o` directly. Verified directly against GHC (no buck2 involved): a
-# minimal Mangle.TH-alike package built purely statically, spliced from a
-# consumer, fails with the dynamic-interface error without this flag and
-# succeeds cleanly with it - confirming this is the actual mechanism, not
-# a workaround for a buck2-specific gap.
+# standard optimisation level).
 _BUILD_MODE_HASKELL_FLAGS = select({
-    "root//buck2/constraints:opt": ["-O", "-fexternal-interpreter"],
+    "root//buck2/constraints:opt": ["-O"],
     "DEFAULT": [],
+})
+
+# `opt` mode builds everything `link_style = "static"`, but Template
+# Haskell splices still need every package loadable the *dynamic* way:
+# this GHC's own `ghc` binary is dynamically linked (`ghc --info` shows
+# "GHC Dynamic: YES"), and its internal splice interpreter can only load
+# packages that were also built the dynamic way - not a property of
+# Template Haskell itself, just how this GHC binary happens to be built.
+# Tried `-fexternal-interpreter` first (runs splices in a separate,
+# non-dynamic `ghc-iserv` process instead), but that has two hard problems
+# of its own, confirmed via direct GHC repros with no buck2 involved:
+# `ghc-iserv`'s internal object loader can't handle the ELF TLS
+# relocations modern C++ (e.g. folly) generates, and it eagerly loads
+# *every* exposed package's native closure for the whole `ghc --make`
+# session the moment any one splice needs it, not just that splice's own
+# transitive deps. Using real dynamic linking instead (matching what Cabal
+# already does) sidesteps both: a `.so`'s native deps resolve automatically
+# via `DT_NEEDED`, and the OS dynamic linker (unlike GHC's internal one)
+# handles every relocation type. See `dynamic_too` in
+# `prelude/haskell/haskell.bzl` for the actual mechanism - in `opt` mode
+# every haskell_library() builds its static archive and shared library
+# together from a single `-dynamic-too` compile (rather than two
+# independent ones, which would silently redo the dynamic-way codegen
+# twice for no reason), and its package `.conf` advertises
+# `dynamic-library-dirs:` pointing at the result.
+_BUILD_MODE_DYNAMIC_TOO = select({
+    "root//buck2/constraints:opt": True,
+    "DEFAULT": False,
 })
 
 # The .hs path a source's module lives at once preprocessed: `path`
@@ -209,6 +208,7 @@ def haskell_library(
     # needs to be set once, there.
     all_deps = deps + _package_deps(packages)
     all_compiler_flags = (FB_HASKELL_EXTENSIONS + compiler_flags) if fb_haskell else compiler_flags
+    kwargs.setdefault("dynamic_too", _BUILD_MODE_DYNAMIC_TOO)
     native.haskell_library(
         name = name,
         srcs = _resolve_srcs(name, srcs, all_deps, hsc_flags),

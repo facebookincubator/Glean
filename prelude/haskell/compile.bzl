@@ -119,7 +119,7 @@ def get_packages_info(ctx: AnalysisContext, link_style: LinkStyle, specify_pkg_v
         transitive_deps = libs,
     )
 
-def compile_args(ctx: AnalysisContext, link_style: LinkStyle, enable_profiling: bool, pkgname = None, suffix: str = "", native_shared_libs_dir: [Artifact, None] = None) -> CompileArgsInfo:
+def compile_args(ctx: AnalysisContext, link_style: LinkStyle, enable_profiling: bool, pkgname = None, suffix: str = "", native_shared_libs_dir: [Artifact, None] = None, dynamic_too: bool = False) -> CompileArgsInfo:
     haskell_toolchain = ctx.attrs._haskell_toolchain[HaskellToolchainInfo]
 
     compile_cmd = cmd_args()
@@ -140,6 +140,21 @@ def compile_args(ctx: AnalysisContext, link_style: LinkStyle, enable_profiling: 
         compile_args.add("-dynamic", "-fPIC")
     elif link_style == LinkStyle("static_pic"):
         compile_args.add("-fPIC", "-fexternal-dynamic-refs")
+
+    if dynamic_too:
+        # Produces .dyn_o/.dyn_hi alongside this compile's ordinary .o/.hi,
+        # in the same -odir/-hidir (the only way to get both from GHC in
+        # --make mode - there's no flag to write them to different
+        # directories). GHC guarantees these are consistent with the
+        # primary .o/.hi, since they come from the same compile pass and
+        # share its frontend work - unlike reusing an *independently*
+        # compiled "shared" variant's interfaces would be, which carries no
+        # such guarantee. See haskell.bzl's use of this (building a
+        # library's static archive and shared library from a single
+        # -dynamic-too compile instead of two independent ones) for why
+        # this matters enough to ask for explicitly rather than just
+        # tolerating two compiles.
+        compile_args.add("-dynamic-too")
 
     osuf, hisuf = output_extensions(link_style, enable_profiling)
     compile_args.add("-osuf", osuf, "-hisuf", hisuf)
@@ -233,11 +248,11 @@ def compile_args(ctx: AnalysisContext, link_style: LinkStyle, enable_profiling: 
     )
 
 # Compile all the context's sources.
-def compile(ctx: AnalysisContext, link_style: LinkStyle, enable_profiling: bool, pkgname: str | None = None, native_shared_libs_dir: [Artifact, None] = None) -> CompileResultInfo:
+def compile(ctx: AnalysisContext, link_style: LinkStyle, enable_profiling: bool, pkgname: str | None = None, native_shared_libs_dir: [Artifact, None] = None, dynamic_too: bool = False) -> CompileResultInfo:
     haskell_toolchain = ctx.attrs._haskell_toolchain[HaskellToolchainInfo]
     compile_cmd = cmd_args(haskell_toolchain.compiler)
 
-    args = compile_args(ctx, link_style, enable_profiling, pkgname, native_shared_libs_dir = native_shared_libs_dir)
+    args = compile_args(ctx, link_style, enable_profiling, pkgname, native_shared_libs_dir = native_shared_libs_dir, dynamic_too = dynamic_too)
 
     compile_cmd.add(args.args_for_cmd)
 

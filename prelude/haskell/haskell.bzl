@@ -412,8 +412,29 @@ def _make_package(
     hi: dict[bool, Artifact],
     lib: dict[bool, Artifact],
     enable_profiling: bool,
+    # Overrides which link_style's artifact-suffix convention `hi`'s
+    # directory name is computed from - only needed when `hi` wasn't built
+    # for `link_style` itself (see _build_haskell_lib's shared-via-
+    # dynamic-too derivation, where a "shared" package's interfaces
+    # actually live in the *static* compile's "hi-static", written there by
+    # -dynamic-too alongside the plain .hi this "shared" package reads).
+    # Defaults to `link_style`, matching every other, non-derived caller.
+    hi_link_style: [LinkStyle, None] = None,
+    # This same target's own "shared" variant (built alongside any other
+    # link style whenever Linkage allows it - see haskell_library_impl).
+    # Referenced here (for non-shared link styles) via `dynamic-library-dirs:`
+    # so that GHC's internal interpreter can load this package the dynamic
+    # way for a Template Haskell splice, even when this specific conf is
+    # for a statically-linked consumer. GHC's `--make` driver dual-compiles
+    # *every* module in a compilation unit the moment any one of them uses
+    # TemplateHaskell (confirmed empirically - it needs a dynamic way for
+    # every import reached that way, not just modules a splice actually
+    # touches), so every package needs to be discoverable this way, not
+    # just ones that use TH themselves.
+    own_shared_lib: [Artifact, None] = None,
 ) -> Artifact:
     artifact_suffix = get_artifact_suffix(link_style, enable_profiling)
+    hi_link_style = hi_link_style if hi_link_style != None else link_style
 
     # Don't expose boot sources, as they're only meant to be used for compiling.
     modules = [src_to_module_name(x) for x, _ in srcs_to_pairs(ctx.attrs.srcs) if is_haskell_src(x)]
@@ -423,11 +444,11 @@ def _make_package(
         # following this logic (https://fburl.com/code/3gmobm5x) and will fail.
         libname += "_p"
 
-    def mk_artifact_dir(dir_prefix: str, profiled: bool) -> str:
-        art_suff = get_artifact_suffix(link_style, profiled)
+    def mk_artifact_dir(dir_prefix: str, profiled: bool, for_style: LinkStyle = link_style) -> str:
+        art_suff = get_artifact_suffix(for_style, profiled)
         return '"${pkgroot}/' + dir_prefix + "-" + art_suff + '"'
 
-    import_dirs = [mk_artifact_dir("hi", profiled) for profiled in hi.keys()]
+    import_dirs = [mk_artifact_dir("hi", profiled, hi_link_style) for profiled in hi.keys()]
     library_dirs = [mk_artifact_dir("lib", profiled) for profiled in hi.keys()]
 
     conf = [
@@ -442,6 +463,8 @@ def _make_package(
         "extra-libraries: " + libname,
         "depends: " + ", ".join([lib.id for lib in hlis]),
     ]
+    if own_shared_lib != None:
+        conf.append('dynamic-library-dirs:"${pkgroot}/lib-shared"')
     pkg_conf = ctx.actions.write("pkg-" + artifact_suffix + ".conf", conf, has_content_based_path = False)
 
     db = ctx.actions.declare_output("db-" + artifact_suffix, has_content_based_path = False)
@@ -482,7 +505,7 @@ def _make_package(
                 use_cache_arg,
             ],
             # needs hi, because ghc-pkg checks that the .hi files exist
-            hidden = hi.values() + lib.values(),
+            hidden = hi.values() + lib.values() + ([own_shared_lib] if own_shared_lib != None else []),
         ),
         category = "haskell_package_" + artifact_suffix.replace("-", "_"),
         env = {"GHC_PACKAGE_PATH": ghc_package_path} if db_deps else {},
@@ -533,6 +556,61 @@ def _native_shared_libs_dir(actions: AnalysisActions, name: str, shared_library_
         shared_libs = sos,
     )
 
+# Links a Haskell shared library from a set of already-compiled object
+# files. Factored out of _build_haskell_lib's own "shared" branch so the
+# same link command can be reused for a shared library *derived* from a
+# static compile's `-dynamic-too` byproduct (see build_shared_too below),
+# not just one built from its own independent compile.
+def _link_haskell_shared_lib(
+        ctx,
+        haskell_toolchain,
+        linker_info,
+        nlis: list[MergedLinkInfo],
+        libfile: str,
+        lib_short_path: str,
+        objfiles,
+        hidden,
+        category: str) -> (Artifact, LinkedObject, LinkInfos):
+    lib = ctx.actions.declare_output(lib_short_path, has_content_based_path = False)
+    link = cmd_args(
+        [haskell_toolchain.linker]
+        + [haskell_toolchain.linker_flags]
+        + [ctx.attrs.linker_flags]
+        + ["-o", lib.as_output()]
+        + [
+            "-package-env=-",
+            get_shared_library_flags(linker_info.type),
+            "-dynamic",
+            cmd_args(
+                _get_haskell_shared_library_name_linker_flags(linker_info.type, libfile),
+                prepend = "-optl",
+            ),
+        ]
+        + [objfiles],
+        hidden = hidden,
+    )
+
+    infos = get_link_args_for_strategy(
+        ctx.actions,
+        ctx.label,
+        linker_info,
+        nlis,
+        to_link_strategy(LinkStyle("shared")),
+        prefer_stripped = False,
+        transformation_spec_context = None,
+    )
+    link.add(cmd_args(unpack_link_args(infos), prepend = "-optl"))
+    ctx.actions.run(
+        link,
+        category = category,
+    )
+
+    return (
+        lib,
+        LinkedObject(output = lib, unstripped_output = lib),
+        LinkInfos(default = LinkInfo(linkables = [SharedLibLinkable(lib = lib)])),
+    )
+
 def _build_haskell_lib(
     ctx,
     libname: str,
@@ -547,13 +625,24 @@ def _build_haskell_lib(
     # The non-profiling artifacts are also needed to build the package for
     # profiling, so it should be passed when `enable_profiling` is True.
     non_profiling_hlib: [HaskellLibBuildOutput, None] = None,
-) -> HaskellLibBuildOutput:
+    # When True (only meaningful when link_style != "shared", and never
+    # combined with enable_profiling - shared doesn't support profiling),
+    # additionally derive a "shared" sibling from this same compile's
+    # `-dynamic-too` byproduct (its .dyn_o/.dyn_hi are guaranteed
+    # consistent with this compile's own .o/.hi, since they come from the
+    # same compile pass), instead of haskell_library_impl building "shared"
+    # independently. Returned as the second element of the result tuple
+    # (None when not requested).
+    build_shared_too: bool = False,
+) -> (HaskellLibBuildOutput, [HaskellLibBuildOutput, None]):
     linker_info = ctx.attrs._cxx_toolchain[CxxToolchainInfo].linker_info
 
     # Link the objects into a library
     haskell_toolchain = ctx.attrs._haskell_toolchain[HaskellToolchainInfo]
 
     osuf, _hisuf = output_extensions(link_style, enable_profiling)
+
+    dynamic_too = build_shared_too and link_style != LinkStyle("shared")
 
     # Compile the sources
     compiled = compile(
@@ -562,6 +651,7 @@ def _build_haskell_lib(
         enable_profiling = enable_profiling,
         pkgname = pkgname,
         native_shared_libs_dir = native_shared_libs_dir,
+        dynamic_too = dynamic_too,
     )
     solibs = {}
     artifact_suffix = get_artifact_suffix(link_style, enable_profiling)
@@ -584,45 +674,19 @@ def _build_haskell_lib(
     objfiles = _srcs_to_objfiles(ctx, compiled.objects, osuf)
 
     if link_style == LinkStyle("shared"):
-        lib = ctx.actions.declare_output(lib_short_path, has_content_based_path = False)
-        link = cmd_args(
-            [haskell_toolchain.linker]
-            + [haskell_toolchain.linker_flags]
-            + [ctx.attrs.linker_flags]
-            + ["-o", lib.as_output()]
-            + [
-                "-package-env=-",
-                get_shared_library_flags(linker_info.type),
-                "-dynamic",
-                cmd_args(
-                    _get_haskell_shared_library_name_linker_flags(linker_info.type, libfile),
-                    prepend = "-optl",
-                ),
-            ]
-            + [objfiles],
-            hidden = compiled.stubs,
-        )
-
-        infos = get_link_args_for_strategy(
-            ctx.actions,
-            ctx.label,
+        lib, solib, link_infos = _link_haskell_shared_lib(
+            ctx,
+            haskell_toolchain,
             linker_info,
             nlis,
-            to_link_strategy(link_style),
-            prefer_stripped = False,
-            transformation_spec_context = None,
+            libfile,
+            lib_short_path,
+            objfiles,
+            compiled.stubs,
+            "haskell_link" + artifact_suffix.replace("-", "_"),
         )
-        link.add(cmd_args(unpack_link_args(infos), prepend = "-optl"))
-        ctx.actions.run(
-            link,
-            category = "haskell_link" + artifact_suffix.replace("-", "_"),
-        )
-
-        solibs[libfile] = LinkedObject(output = lib, unstripped_output = lib)
+        solibs[libfile] = solib
         libs = [lib]
-        link_infos = LinkInfos(
-            default = LinkInfo(linkables = [SharedLibLinkable(lib = lib)]),
-        )
 
     else:  # static flavours
         # TODO: avoid making an archive for a single object, like cxx does
@@ -667,6 +731,69 @@ def _build_haskell_lib(
         all_libs = libs
         stub_dirs = [compiled.stubs]
 
+    # Derive the shared library from this compile's own -dynamic-too
+    # byproduct - its .dyn_o objects and .dyn_hi interfaces - rather than
+    # compiling "shared" independently (see build_shared_too's docstring
+    # above for why that's safe and this is worthwhile). Done *before* this
+    # package's own _make_package call below, since that call needs the
+    # resulting artifact too (own_shared_lib, for `dynamic-library-dirs:` -
+    # this package's own conf is what *other* packages doing Template
+    # Haskell will actually load).
+    own_shared_lib = None
+    shared_output = None
+    if dynamic_too:
+        shared_libfile = "lib" + libname + dynamic_lib_suffix
+        shared_lib_short_path = paths.join("lib-shared", shared_libfile)
+        dyn_objfiles = _srcs_to_objfiles(ctx, compiled.objects, "dyn_o")
+        shared_lib, shared_solib, shared_link_infos = _link_haskell_shared_lib(
+            ctx,
+            haskell_toolchain,
+            linker_info,
+            nlis,
+            shared_libfile,
+            shared_lib_short_path,
+            dyn_objfiles,
+            compiled.stubs,
+            "haskell_link_shared_derived",
+        )
+        own_shared_lib = shared_lib
+
+        # GHC's -dynamic-too guarantees the .dyn_hi it writes alongside
+        # this compile's own .hi is fully consistent with it (same compile
+        # pass, same frontend work) - so a "shared" consumer can safely use
+        # this same `compiled.hi` directory too. It contains both .hi and
+        # .dyn_hi; a plain `-hisuf hi` reader (which is what a "shared"
+        # package's own db expects) only ever looks for the former.
+        shared_db = _make_package(
+            ctx,
+            LinkStyle("shared"),
+            pkgname,
+            libname,
+            uniq_infos,
+            {False: compiled.hi},
+            {False: shared_lib},
+            enable_profiling = False,
+            hi_link_style = link_style,
+        )
+        shared_hlib = HaskellLibraryInfo(
+            name = pkgname,
+            db = shared_db,
+            id = pkgname,
+            import_dirs = {False: compiled.hi},
+            stub_dirs = [compiled.stubs],
+            libs = [shared_lib],
+            version = "1.0.0",
+            is_prebuilt = False,
+            profiling_enabled = False,
+        )
+        shared_output = HaskellLibBuildOutput(
+            hlib = shared_hlib,
+            solibs = {shared_libfile: shared_solib},
+            link_infos = shared_link_infos,
+            compiled = compiled,
+            libs = [shared_lib],
+        )
+
     db = _make_package(
         ctx,
         link_style,
@@ -676,6 +803,7 @@ def _build_haskell_lib(
         import_artifacts,
         library_artifacts,
         enable_profiling = enable_profiling,
+        own_shared_lib = own_shared_lib,
     )
 
     hlib = HaskellLibraryInfo(
@@ -690,13 +818,15 @@ def _build_haskell_lib(
         profiling_enabled = enable_profiling,
     )
 
-    return HaskellLibBuildOutput(
+    main_output = HaskellLibBuildOutput(
         hlib = hlib,
         solibs = solibs,
         link_infos = link_infos,
         compiled = compiled,
         libs = libs,
     )
+
+    return (main_output, shared_output)
 
 def haskell_library_impl(ctx: AnalysisContext) -> list[Provider]:
     preferred_linkage = _attr_preferred_linkage(ctx)
@@ -724,6 +854,64 @@ def haskell_library_impl(ctx: AnalysisContext) -> list[Provider]:
 
     native_shared_libs_dir = _native_shared_libs_dir(ctx.actions, libname, shared_library_infos)
 
+    link_styles = [legacy_output_style_to_link_style(o) for o in get_output_styles_for_linkage(preferred_linkage)]
+
+    # See build_shared_too on _build_haskell_lib: when set (opt mode - see
+    # buck2/haskell.bzl), and this Linkage wants both a static and a shared
+    # output style, build them together from one -dynamic-too compile
+    # instead of two independent ones. Only meaningful when both exist.
+    build_shared_too = (
+        getattr(ctx.attrs, "dynamic_too", False) and
+        LinkStyle("static") in link_styles and
+        LinkStyle("shared") in link_styles
+    )
+
+    # Records one built variant's outputs into this function's accumulating
+    # dicts - factored out so the "shared" variant derived alongside
+    # "static" (see below) is recorded the same way a normally-built one
+    # would be, without duplicating this bookkeeping.
+    def record(link_style: LinkStyle, enable_profiling: bool, hlib_build_out: HaskellLibBuildOutput):
+        hlib = hlib_build_out.hlib
+        solibs.update(hlib_build_out.solibs)
+        compiled = hlib_build_out.compiled
+        libs = hlib_build_out.libs
+
+        if enable_profiling:
+            prof_hlib_infos[link_style] = hlib
+            prof_hlink_infos[link_style] = ctx.actions.tset(
+                HaskellLibraryInfoTSet,
+                value = hlib,
+                children = [li.prof_info[link_style] for li in hlis],
+            )
+            prof_link_infos[link_style] = hlib_build_out.link_infos
+        else:
+            hlib_infos[link_style] = hlib
+            hlink_infos[link_style] = ctx.actions.tset(
+                HaskellLibraryInfoTSet,
+                value = hlib,
+                children = [li.info[link_style] for li in hlis],
+            )
+            link_infos[link_style] = hlib_build_out.link_infos
+
+        # Build the indices and create subtargets only once, with profiling
+        # enabled or disabled based on what was set in the library's
+        # target.
+        if ctx.attrs.enable_profiling == enable_profiling:
+            if compiled.producing_indices:
+                tset = derive_indexing_tset(
+                    ctx.actions,
+                    link_style,
+                    compiled.hi,
+                    attr_deps(ctx),
+                )
+                indexing_tsets[link_style] = tset
+
+            sub_targets[link_style.value.replace("_", "-")] = [
+                DefaultInfo(
+                    default_outputs = libs,
+                )
+            ]
+
     # The non-profiling library is also needed to build the package with
     # profiling enabled, so we need to keep track of it for each link style.
     non_profiling_hlib = {}
@@ -734,7 +922,12 @@ def haskell_library_impl(ctx: AnalysisContext) -> list[Provider]:
                 # Profiling isn't support with dynamic linking
                 continue
 
-            hlib_build_out = _build_haskell_lib(
+            if build_shared_too and link_style == LinkStyle("shared"):
+                # Derived below, alongside "static" - see the
+                # build_shared_too branch of this same iteration.
+                continue
+
+            hlib_build_out, derived_shared = _build_haskell_lib(
                 ctx,
                 libname,
                 pkgname,
@@ -744,50 +937,16 @@ def haskell_library_impl(ctx: AnalysisContext) -> list[Provider]:
                 enable_profiling = enable_profiling,
                 native_shared_libs_dir = native_shared_libs_dir,
                 non_profiling_hlib = non_profiling_hlib.get(link_style),
+                build_shared_too = (build_shared_too and link_style == LinkStyle("static") and not enable_profiling),
             )
             if not enable_profiling:
                 non_profiling_hlib[link_style] = hlib_build_out
 
-            hlib = hlib_build_out.hlib
-            solibs.update(hlib_build_out.solibs)
-            compiled = hlib_build_out.compiled
-            libs = hlib_build_out.libs
+            record(link_style, enable_profiling, hlib_build_out)
 
-            if enable_profiling:
-                prof_hlib_infos[link_style] = hlib
-                prof_hlink_infos[link_style] = ctx.actions.tset(
-                    HaskellLibraryInfoTSet,
-                    value = hlib,
-                    children = [li.prof_info[link_style] for li in hlis],
-                )
-                prof_link_infos[link_style] = hlib_build_out.link_infos
-            else:
-                hlib_infos[link_style] = hlib
-                hlink_infos[link_style] = ctx.actions.tset(
-                    HaskellLibraryInfoTSet,
-                    value = hlib,
-                    children = [li.info[link_style] for li in hlis],
-                )
-                link_infos[link_style] = hlib_build_out.link_infos
-
-            # Build the indices and create subtargets only once, with profiling
-            # enabled or disabled based on what was set in the library's
-            # target.
-            if ctx.attrs.enable_profiling == enable_profiling:
-                if compiled.producing_indices:
-                    tset = derive_indexing_tset(
-                        ctx.actions,
-                        link_style,
-                        compiled.hi,
-                        attr_deps(ctx),
-                    )
-                    indexing_tsets[link_style] = tset
-
-                sub_targets[link_style.value.replace("_", "-")] = [
-                    DefaultInfo(
-                        default_outputs = libs,
-                    )
-                ]
+            if derived_shared != None:
+                non_profiling_hlib[LinkStyle("shared")] = derived_shared
+                record(LinkStyle("shared"), False, derived_shared)
 
     pic_behavior = ctx.attrs._cxx_toolchain[CxxToolchainInfo].pic_behavior
     link_style = cxx_toolchain_link_style(ctx)
