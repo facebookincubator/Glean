@@ -29,6 +29,7 @@ import Data.IntSet (IntSet)
 import qualified Data.IntMap as IntMap
 import Data.IntMap (IntMap)
 import Data.List.NonEmpty (NonEmpty)
+import Data.Maybe
 
 import Glean.Display
 import Glean.Query.Codegen.Types
@@ -185,29 +186,28 @@ reWildGenerator used gen = case gen of
   PrimCall op args ty ->
     PrimCall op (map (reWild used) args) ty
 
-reWildStatement :: VarMap -> CgStatement -> CgStatement
+reWildStatement :: VarMap -> CgStatement -> Maybe CgStatement
 reWildStatement used (CgStatement lhs rhs) =
-  CgStatement (reWild used lhs) (reWildGenerator used rhs)
-reWildStatement used s@(CgAllStatement (Var ty n x) expr stmts) =
+  Just $ CgStatement (reWild used lhs) (reWildGenerator used rhs)
+reWildStatement used (CgAllStatement (Var ty n x) expr stmts) =
   case IntMap.lookup n used of
-    Nothing -> error $
-      "reWildStatement: var " <> show n <>
-      " not in scope in " <> show (displayVerbose s) <>
-      "\nVarMap: " <> show used
+    Nothing ->
+      -- the variable isn't used, so the statement has no effect
+      Nothing
     Just new ->
-      CgAllStatement
+      Just $ CgAllStatement
         (Var ty new x) (reWild used expr)
-        (map (reWildStatement used) stmts)
+        (mapMaybe (reWildStatement used) stmts)
 reWildStatement used (CgNegation stmts) =
-  CgNegation (map (reWildStatement used) stmts)
+  Just $ CgNegation (mapMaybe (reWildStatement used) stmts)
 reWildStatement used (CgDisjunction stmtss) =
-  CgDisjunction (map (map (reWildStatement used)) stmtss)
+  Just $ CgDisjunction (map (mapMaybe (reWildStatement used)) stmtss)
 reWildStatement used (CgConditional cond then_ else_) =
-  CgConditional
-    (map (reWildStatement used) cond)
-    (map (reWildStatement used) then_)
-    (map (reWildStatement used) else_)
+  Just $ CgConditional
+    (mapMaybe (reWildStatement used) cond)
+    (mapMaybe (reWildStatement used) then_)
+    (mapMaybe (reWildStatement used) else_)
 
 reWildQuery :: VarMap -> CgQuery -> CgQuery
 reWildQuery used (CgQuery head stmts) =
-  CgQuery (reWild used head) (map (reWildStatement used) stmts)
+  CgQuery (reWild used head) (mapMaybe (reWildStatement used) stmts)

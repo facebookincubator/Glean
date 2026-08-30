@@ -157,6 +157,10 @@ setSemanticsTest dbTestCase = TestList
       [set] <- runQuery_ env repo $ angleData @(Set Glean.Test.Predicate)
         [s| all (glean.test.Predicate _) |]
       assertEqual "angle - set matching" 4 (size set)
+  , TestLabel "unused all" $ dbTestCase $ \env repo -> do
+      r <- runQuery_ env repo $ angleData @Nat
+        [s| X where _ = all (X = 1); X = 0 |]
+      assertEqual "unused all" r [Nat 0]
   ]
 
 setLimitTest :: Test
