@@ -1,4 +1,4 @@
-load("//buck2:haskell.bzl", "haskell_library")
+load("//buck2:haskell.bzl", "haskell_binary", "haskell_library")
 
 # Cabal's `handler` library (glean.cabal.in).
 haskell_library(
@@ -15,6 +15,51 @@ haskell_library(
         "//glean/github:stubs",
         "//glean/db:db",
         "//glean/config:config",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Cabal's `glean-server` executable (glean.cabal.in): `#if GLEAN_FACEBOOK`
+# (auth, tracing, Manifold backups, JustKnobs, ...) and `#if ENABLE_S3`
+# (Glean.Database.Backup.S3, gated behind the `s3-support` flag - default
+# True under plain Cabal, but this migration never defines either macro,
+# matching every other GLEAN_FACEBOOK/ENABLE_S3-gated piece elsewhere) are
+# both excluded. Cabal's own `other-modules:` recompiles Glean/Handler.hs
+# directly into this executable rather than depending on the `handler`
+# library above - genuinely two separate compiles of the same file, same
+# shape as `lib`/`lib-derive` sharing `glean/lib` elsewhere in this
+# migration - so this mirrors that rather than linking against `:handler`.
+haskell_binary(
+    name = "glean-server",
+    main = "Glean.Server",
+    # Server.hs/Sharding.hs use bare `#if GLEAN_FACEBOOK` with no per-file
+    # `{-# LANGUAGE CPP #-}` pragma - Cabal supplies it via this
+    # executable's own `default-extensions: CPP`.
+    compiler_flags = ["-XCPP"],
+    srcs = [
+        "Glean/Handler.hs",
+        "Glean/Server.hs",
+        "Glean/Server/Config.hs",
+        "Glean/Server/Sharding.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//hsthrift/http:thrift-http",
+        "//glean/backend-api:backend-api",
+        "//glean/backend-local:backend-local",
+        "//glean/client/hs:client-hs",
+        "//glean/github/if:if-fb303-hs",
+        "//glean/if:if-glean-hs",
+        "//glean/if:if-index-hs",
+        "//glean/github:stubs",
+        "//glean/config:config",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/util:util",
+    ],
+    packages = [
+        "haskeline",
+        "json",
     ],
     visibility = ["PUBLIC"],
 )
