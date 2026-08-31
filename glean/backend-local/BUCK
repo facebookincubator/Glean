@@ -1,7 +1,6 @@
 load("//buck2:haskell.bzl", "haskell_library")
 
-# Cabal's `backend-local` library (glean.cabal.in): the Backend instance for
-# local (non-remote) DBs.
+# Cabal's `backend-local` library (glean.cabal.in).
 haskell_library(
     name = "backend-local",
     srcs = [

@@ -1,0 +1,33 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+
+# Cabal's `angle-test-angle` test-suite (glean.cabal.in): `common test` +
+# `common angle-test`.
+haskell_binary(
+    name = "angle-test-angle",
+    main = "Angle.AngleTest",
+    srcs = [
+        "Angle/AngleTest.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//glean/github:stubs",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/typed:typed",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/schema/thrift:builtin",
+        "//glean/schema/thrift:sys",
+        "//glean/schema/thrift:cxx1",
+        "//glean/schema/thrift:glean_test",
+    ],
+    packages = [
+        "data-default",
+        "HUnit",
+        "text",
+    ],
+    visibility = ["PUBLIC"],
+)
