@@ -1,3 +1,4 @@
+load("//buck2:gen_schema.bzl", "gen_schema")
 load("//buck2:haskell.bzl", "haskell_binary")
 
 # Cabal's `gen-schema` executable (glean.cabal.in): reads
@@ -42,5 +43,14 @@ haskell_binary(
         "text-show",
         "unordered-containers",
     ],
+    visibility = ["PUBLIC"],
+)
+
+# Actually running gen-schema against glean/schema/source/*.angle, producing
+# glean/schema/{thrift,hs}/* and glean/lang/clang/schema.h as buck2 build
+# artifacts (see gen_schema.bzl) rather than relying on the checked-in
+# copies a prior `make gen-schema` (Cabal) run left in the tree.
+gen_schema(
+    name = "output",
     visibility = ["PUBLIC"],
 )

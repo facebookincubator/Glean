@@ -17,3 +17,64 @@ haskell_library(
     ],
     visibility = ["PUBLIC"],
 )
+
+# Cabal's `lib` library (glean.cabal.in): a second, unrelated library that
+# happens to share `lib-derive`'s hs-source-dir (glean/lib).
+haskell_library(
+    name = "lib",
+    srcs = [
+        "Glean/Util/CxxXRef.hs",
+        "Glean/Util/Declarations.hs",
+        "Glean/Util/Range.hs",
+        "Glean/Util/ToAngle.hs",
+        "Glean/Util/XRefs.hs",
+        "Glean/Util/Same.hs",
+        "Glean/Util/ShowSchemaId.hs",
+        "Glean/Write/SimpleAsync.hs",
+        "Glean/Util/PredMap.hs",
+        "Glean/Util/PredSet.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//glean/client/hs:client-hs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/util:util",
+        # Glean.Schema.*.Types modules this library's own source files
+        # actually import (see buck2.md's "gen-schema" entry for why this
+        # migration builds one small library per schema namespace, rather
+        # than the single "schema" Cabal names all of them within).
+        "//glean/schema/thrift:anglelang",
+        "//glean/schema/thrift:builtin",
+        "//glean/schema/thrift:code",
+        "//glean/schema/thrift:code_anglelang",
+        "//glean/schema/thrift:code_buck",
+        "//glean/schema/thrift:code_cxx",
+        "//glean/schema/thrift:code_fbthrift",
+        "//glean/schema/thrift:code_flow",
+        "//glean/schema/thrift:code_graphql",
+        "//glean/schema/thrift:code_hack",
+        "//glean/schema/thrift:code_hs",
+        "//glean/schema/thrift:code_pp",
+        "//glean/schema/thrift:code_python",
+        "//glean/schema/thrift:csharp",
+        "//glean/schema/thrift:cxx1",
+        "//glean/schema/thrift:erlang",
+        "//glean/schema/thrift:fbthrift",
+        "//glean/schema/thrift:flow",
+        "//glean/schema/thrift:graphql",
+        "//glean/schema/thrift:hack",
+        "//glean/schema/thrift:java_alpha",
+        "//glean/schema/thrift:kotlin_alpha",
+        "//glean/schema/thrift:lsif",
+        "//glean/schema/thrift:pp1",
+        "//glean/schema/thrift:python",
+        "//glean/schema/thrift:scip",
+        "//glean/schema/thrift:src",
+    ],
+    packages = [
+        "split",
+    ],
+    visibility = ["PUBLIC"],
+)
