@@ -809,6 +809,28 @@ haskell_binary(
 )
 
 haskell_binary(
+    name = "timeout",
+    main = "TimeoutTest",
+    srcs = [
+        "TimeoutTest.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/bench:bench-lib",
+        "//glean/schema/thrift:glean_test",
+    ],
+    packages = [
+        "HUnit",
+        "data-default",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_binary(
     name = "storage-rocksdb",
     main = "StorageRocksDBTest",
     srcs = [

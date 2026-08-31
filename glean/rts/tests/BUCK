@@ -1,0 +1,15 @@
+load("//buck2:cxx.bzl", "cxx_library")
+
+# LookupInvariants.cpp (glean.cabal.in's `lookup` test-suite cxx-sources):
+# FFI helper the Haskell LookupTest.hs calls into.
+cxx_library(
+    name = "lookup-invariants-cxx",
+    srcs = ["LookupInvariants.cpp"],
+    compiler_flags = ["-std=c++20", "-march=haswell", "-DOSS=1"],
+    deps = [
+        "//hsthrift/common/util:fb-util-cxx",
+        "//hsthrift/folly-clib:folly-clib",
+        "//glean/rts:rts",
+    ],
+    visibility = ["PUBLIC"],
+)

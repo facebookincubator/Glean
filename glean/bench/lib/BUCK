@@ -1,0 +1,16 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+# Cabal's `bench-util` library (glean.cabal.in).
+haskell_library(
+    name = "bench-util",
+    srcs = [
+        "Glean/Util/Benchmark.hs",
+    ],
+    deps = [
+        "//glean/github:stubs",
+    ],
+    packages = [
+        "criterion",
+    ],
+    visibility = ["PUBLIC"],
+)
