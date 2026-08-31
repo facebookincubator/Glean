@@ -114,6 +114,7 @@ haskell_library(
         "//glean/github:stubs",
         "//glean/rocksdb:rocksdb",
         "//glean/lmdb:lmdb",
+        "//glean/storage:storage",
     ],
     packages = [
         "aeson",

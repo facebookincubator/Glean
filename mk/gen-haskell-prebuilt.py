@@ -249,7 +249,7 @@ def get_root_dep_ids():
             comp = c.get('component-name', '')
             wanted = (
                 (pkg in ('fb-util', 'fb-stubs') and comp.startswith('test:')) or
-                (pkg == 'glean' and comp in ('exe:gen-schema', 'exe:glean'))
+                (pkg == 'glean' and (comp in ('exe:gen-schema', 'exe:glean') or comp.startswith('test:')))
             )
             if wanted:
                 for uid in c.get('depends', []):
