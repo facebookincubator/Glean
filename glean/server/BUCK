@@ -1,5 +1,33 @@
 load("//buck2:haskell.bzl", "haskell_binary", "haskell_library")
 
+# Glean/Server/Config.hs and Glean/Server/Sharding.hs aren't their own
+# Cabal library - `executable glean-server` compiles them as its own
+# `other-modules:`, and `test-suite publish-shards` (glean/test/tests)
+# reaches them via combined hs-source-dirs and recompiles them a second
+# time. Rather than mirroring that duplication (the way `Glean/Handler.hs`
+# below does, matching `lib`/`lib-derive`'s split), factor them into a
+# real library both consumers link against instead - one compile, and
+# `publish-shards` gets a normal cross-package dependency rather than
+# needing these two files exposed as raw sources.
+haskell_library(
+    name = "sharding",
+    srcs = [
+        "Glean/Server/Config.hs",
+        "Glean/Server/Sharding.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//glean/backend-api:backend-api",
+        "//glean/backend-local:backend-local",
+        "//glean/config:config",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/github:stubs",
+        "//glean/util:util",
+    ],
+    visibility = ["PUBLIC"],
+)
+
 # Cabal's `handler` library (glean.cabal.in).
 haskell_library(
     name = "handler",
@@ -29,23 +57,22 @@ haskell_library(
 # library above - genuinely two separate compiles of the same file, same
 # shape as `lib`/`lib-derive` sharing `glean/lib` elsewhere in this
 # migration - so this mirrors that rather than linking against `:handler`.
+# Server/Config.hs and Server/Sharding.hs, by contrast, are factored into
+# `:sharding` above instead of being mirrored the same way.
 haskell_binary(
     name = "glean-server",
     main = "Glean.Server",
-    # Server.hs/Sharding.hs use bare `#if GLEAN_FACEBOOK` with no per-file
+    # Server.hs uses bare `#if GLEAN_FACEBOOK` with no per-file
     # `{-# LANGUAGE CPP #-}` pragma - Cabal supplies it via this
     # executable's own `default-extensions: CPP`.
     compiler_flags = ["-XCPP"],
     srcs = [
         "Glean/Handler.hs",
         "Glean/Server.hs",
-        "Glean/Server/Config.hs",
-        "Glean/Server/Sharding.hs",
     ],
     deps = [
         "//hsthrift/common/util:fb-util",
         "//hsthrift/http:thrift-http",
-        "//glean/backend-api:backend-api",
         "//glean/backend-local:backend-local",
         "//glean/client/hs:client-hs",
         "//glean/github/if:if-fb303-hs",
@@ -56,6 +83,7 @@ haskell_binary(
         "//glean/hs:core",
         "//glean/db:db",
         "//glean/util:util",
+        ":sharding",
     ],
     packages = [
         "haskeline",

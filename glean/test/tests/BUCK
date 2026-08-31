@@ -777,6 +777,38 @@ haskell_binary(
 )
 
 haskell_binary(
+    name = "publish-shards",
+    main = "PublishShardsTest",
+    # Cabal's `publish-shards` test-suite (glean.cabal.in): `common test`'s
+    # hs-source-dirs (glean/test/tests) plus its own `hs-source-dirs:
+    # glean/server` - the glean/server half comes from a real dependency
+    # on `//glean/server:sharding` instead (see that BUCK file).
+    srcs = [
+        "PublishShardsTest.hs",
+        "DatabaseJanitorTest.hs",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/backend-api:backend-api",
+        "//glean/backend-local:backend-local",
+        "//glean/config:config",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/if:if-internal-hs",
+        "//glean/github:stubs",
+        "//glean/util:util",
+        "//glean/server:sharding",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_binary(
     name = "storage-rocksdb",
     main = "StorageRocksDBTest",
     srcs = [
