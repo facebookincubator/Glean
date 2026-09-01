@@ -250,7 +250,10 @@ def get_root_dep_ids():
             wanted = (
                 (pkg in ('fb-util', 'fb-stubs') and comp.startswith('test:')) or
                 (pkg == 'glean' and (
-                    comp in ('exe:gen-schema', 'exe:glean', 'lib:bench-lib', 'lib:bench-util') or
+                    comp in (
+                        'exe:gen-schema', 'exe:glean', 'exe:hie-indexer',
+                        'lib:bench-lib', 'lib:bench-util', 'lib:regression-test-lib',
+                    ) or
                     comp.startswith('test:')
                 ))
             )
