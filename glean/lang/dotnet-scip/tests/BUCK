@@ -1,0 +1,15 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+
+# Cabal's `glean-snapshot-dotnet-scip` test-suite (glean.cabal.in).
+haskell_binary(
+    name = "glean-snapshot-dotnet-scip",
+    main = "Glean.Regression.DotnetScip.Main",
+    srcs = [
+        "Glean/Regression/DotnetScip/Main.hs",
+    ],
+    deps = [
+        "//glean/lang/dotnet-scip:dotnet-scip-indexer",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    visibility = ["PUBLIC"],
+)

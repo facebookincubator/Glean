@@ -1,0 +1,15 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+
+# Cabal's `glean-snapshot-go` test-suite (glean.cabal.in).
+haskell_binary(
+    name = "glean-snapshot-go",
+    main = "Glean.Regression.Go.Main",
+    srcs = [
+        "Glean/Regression/Go/Main.hs",
+    ],
+    deps = [
+        "//glean/lang/go:go-indexer",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    visibility = ["PUBLIC"],
+)

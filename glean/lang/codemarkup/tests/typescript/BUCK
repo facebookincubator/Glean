@@ -1,0 +1,15 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+
+# Cabal's `glean-snapshot-typescript` test-suite (glean.cabal.in).
+haskell_binary(
+    name = "glean-snapshot-typescript",
+    main = "Glean.Regression.TypeScript.Main",
+    srcs = [
+        "Glean/Regression/TypeScript/Main.hs",
+    ],
+    deps = [
+        "//glean/lang/typescript:typescript-indexer",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    visibility = ["PUBLIC"],
+)
