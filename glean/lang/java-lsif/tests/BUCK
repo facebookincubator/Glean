@@ -1,0 +1,15 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+
+# Cabal's `glean-snapshot-java-lsif` test-suite (glean.cabal.in).
+haskell_binary(
+    name = "glean-snapshot-java-lsif",
+    main = "Glean.Regression.JavaLsif.Main",
+    srcs = [
+        "Glean/Regression/JavaLsif/Main.hs",
+    ],
+    deps = [
+        "//glean/lang/java-lsif:java-lsif-indexer",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    visibility = ["PUBLIC"],
+)

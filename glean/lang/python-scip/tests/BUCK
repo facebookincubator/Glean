@@ -1,0 +1,15 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+
+# Cabal's `glean-snapshot-python-scip` test-suite (glean.cabal.in).
+haskell_binary(
+    name = "glean-snapshot-python-scip",
+    main = "Glean.Regression.PythonScip.Main",
+    srcs = [
+        "Glean/Regression/PythonScip/Main.hs",
+    ],
+    deps = [
+        "//glean/lang/python-scip:python-scip-indexer",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    visibility = ["PUBLIC"],
+)

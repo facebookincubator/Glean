@@ -1,0 +1,15 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+
+# Cabal's `glean-snapshot-hack` test-suite (glean.cabal.in).
+haskell_binary(
+    name = "glean-snapshot-hack",
+    main = "Glean.Regression.Hack.Main",
+    srcs = [
+        "Glean/Regression/Hack/Main.hs",
+    ],
+    deps = [
+        "//glean/lang/hack:hack-indexer",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    visibility = ["PUBLIC"],
+)

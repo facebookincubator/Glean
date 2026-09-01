@@ -1,0 +1,23 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+
+# Cabal's `glean-snapshot-haskell` test-suite (glean.cabal.in): needs
+# `hie-indexer` (//glean/lang/haskell:hie-indexer) and `glean`
+# (//glean/tools/gleancli:glean) on PATH at runtime - Cabal's
+# `build-tool-depends:` puts them there automatically under `cabal test`;
+# here they need to be built and put on PATH by hand before running this
+# binary directly.
+haskell_binary(
+    name = "glean-snapshot-haskell",
+    main = "Main",
+    srcs = [
+        "Main.hs",
+    ],
+    deps = [
+        "//glean/lang/haskell:haskell-indexer",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    packages = [
+        "text",
+    ],
+    visibility = ["PUBLIC"],
+)

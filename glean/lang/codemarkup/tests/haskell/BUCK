@@ -1,0 +1,18 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+
+# Cabal's `glean-snapshot-codemarkup-haskell` test-suite (glean.cabal.in):
+# needs `hie-indexer` (//glean/lang/haskell:hie-indexer) and `glean`
+# (//glean/tools/gleancli:glean) on PATH at runtime - see
+# glean/lang/haskell/tests/BUCK's comment.
+haskell_binary(
+    name = "glean-snapshot-codemarkup-haskell",
+    main = "Main",
+    srcs = [
+        "Main.hs",
+    ],
+    deps = [
+        "//glean/lang/haskell:haskell-indexer",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    visibility = ["PUBLIC"],
+)
