@@ -90,3 +90,18 @@ haskell_library(
     ],
     visibility = ["PUBLIC"],
 )
+
+# Cabal's `logger` library (glean.cabal.in) - private, also hs-source-dirs:
+# glean/github, same shape as `defaultconfigs` above.
+haskell_library(
+    name = "logger",
+    srcs = [
+        "Logger/IO.hs",
+        "Logger/GleanGlass.hs",
+        "Logger/GleanGlassErrors.hs",
+    ],
+    deps = [
+        "//glean/util:util",
+    ],
+    visibility = ["PUBLIC"],
+)
