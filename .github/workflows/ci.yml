@@ -178,6 +178,9 @@ jobs:
       - name: Disable some tests
         run: echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS -f-hack-tests" >> "$GITHUB_ENV"
 
+      # Overrides the default in cabal.project. Kept per-matrix-entry so a
+      # single configuration can be held back on an older index when it needs
+      # to be, as the clang build was when this was introduced.
       - name: Setup index-state
         run: echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS --index-state=${{ matrix.index-state }}" >>"$GITHUB_ENV"
 

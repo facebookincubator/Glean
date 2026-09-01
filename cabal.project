@@ -17,6 +17,13 @@ packages:
 optional-packages:
     hsthrift/folly-clib/folly-clib.cabal
 
+-- Default Hackage snapshot to resolve against, so an unrelated upload cannot
+-- turn a build red on its own. GitHub CI overrides this per matrix entry via
+-- --index-state (see .github/workflows/ci.yml); everything without an explicit
+-- override -- the internal getdeps CI, the aarch64 workflow, the Dockerfile and
+-- local builds -- inherits this value. Keep it in sync with ci.yml's default.
+index-state: 2025-04-14T00:00:00Z
+
 tests: True
 
 -- necessary to use a haskeline <0.8 with GHCs that ship with base >= 4.14
