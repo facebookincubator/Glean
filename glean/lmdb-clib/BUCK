@@ -8,11 +8,14 @@ load("//buck2:cxx.bzl", "cxx_library")
 # 511 bytes to ~2kB via the local PAGEBASE tweak in lmdb.h.
 cxx_library(
     name = "lmdb-clib",
+    # Genuine C, not C++ - gcc hard errors on -std=c++20 against a .c file,
+    # so opt out of the wrapper's default (see buck2/cxx.bzl).
+    cxx_std = False,
     srcs = [
         "mdb.c",
         "midl.c",
     ],
-    compiler_flags = ["-march=haswell", "-DMDB_MAXKEYSIZE=0"],
+    compiler_flags = ["-DMDB_MAXKEYSIZE=0"],
     include_directories = ["."],
     public_include_directories = ["."],
     visibility = ["PUBLIC"],

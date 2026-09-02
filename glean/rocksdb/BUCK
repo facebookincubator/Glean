@@ -15,7 +15,7 @@ cxx_library(
         "ffi.cpp",
         "rocksdb.cpp",
     ],
-    compiler_flags = ["-std=c++20", "-march=haswell", "-DOSS=1", "-fno-rtti"],
+    compiler_flags = ["-DOSS=1", "-fno-rtti"],
     include_directories = ["../.."],
     public_include_directories = ["../.."],
     exported_linker_flags = [

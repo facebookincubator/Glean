@@ -12,7 +12,7 @@ cxx_library(
         "ffi.cpp",
         "glean_lmdb.cpp",
     ],
-    compiler_flags = ["-std=c++20", "-march=haswell", "-DOSS=1"],
+    compiler_flags = ["-DOSS=1"],
     include_directories = ["../.."],
     public_include_directories = ["../.."],
     deps = [
