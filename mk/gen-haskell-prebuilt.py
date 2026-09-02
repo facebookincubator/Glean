@@ -19,6 +19,7 @@ Store packages are served via:
 Run from the Glean repository root.
 """
 
+import json
 import os
 import re
 import shutil
@@ -52,12 +53,6 @@ GLOBAL_ROOT_ABS = os.path.realpath(os.path.expanduser(f"~/.ghcup/ghc/{GHC_VERSIO
 STORE_ROOT_ABS  = os.path.realpath(os.path.expanduser(f"~/.cabal/store/ghc-{GHC_VERSION}"))
 GLOBAL_ROOT_REL = f"ghc-{GHC_VERSION}"
 STORE_ROOT_REL  = "cabal-store"
-
-BUCK2_PACKAGES = {
-    "mangle":   "//hsthrift/common/mangle:mangle",
-    "fb-stubs": "//hsthrift/common/github:fb-stubs",
-}
-SKIP_PACKAGES  = {"folly-clib"}
 
 # Build tools that, unlike hsc2hs, don't ship with GHC - they're ordinary
 # Cabal packages. We ask Cabal to build them and tell us where, rather than
@@ -143,16 +138,15 @@ def collect_packages(root_ids):
         # A simple package's inplace unit-id is "<pkg>-<ver>-inplace"; a
         # named-sublibrary one (e.g. glean.cabal.in's `library stubs`) is
         # "<pkg>-<ver>-inplace-<sublib>" - neither is a real installed
-        # package buck2 can reference by store path, so both need
-        # excluding here, not just the bare "-inplace" suffix. Walking the
-        # roots for glean's own internal libraries (to discover their
-        # *external* transitive deps - see get_root_dep_ids) surfaces
-        # exactly this case: `stubs` depends on other glean sublibraries
-        # like `if-glean-hs`, whose unit-id is "...-inplace-if-glean-hs".
-        if name in SKIP_PACKAGES or '-inplace' in uid:
-            visited[uid] = None
-            continue
-        if name in BUCK2_PACKAGES:
+        # package buck2 can reference by store path (it's one of this
+        # project's own local packages, built directly by buck2 rather
+        # than vendored as a vendored prebuilt). get_root_dep_ids() should
+        # never hand this walk a local id as a *root* (it filters using
+        # plan.json's own local/external split), and no genuinely external
+        # package's own `depends:` should ever reference one either - this
+        # check is a cheap, generic backstop for both, not something that
+        # should ordinarily fire.
+        if '-inplace' in uid:
             visited[uid] = None
             continue
         found = find_pkg(uid)
@@ -168,117 +162,52 @@ def collect_packages(root_ids):
     return visited
 
 def get_root_dep_ids():
-    root = set()
+    """Every package ID any local component depends on, that isn't itself
+    a local component - i.e. every genuinely external (Hackage/system)
+    package this project's own code needs, anywhere in the project,
+    regardless of which package or component declares the dependency.
 
-    # Read deps from inplace library confs. The glean-0.2.0.0-inplace-*.conf
-    # entries cover every internal library glean.cabal.in defines (db, core,
-    # util, indexers, ...) - listed explicitly (rather than globbed) so a
-    # missing one shows up as the WARNING below instead of silently leaving
-    # a package's deps unfrozen.
-    for conf_name in ['fb-util-0.2.0.1-inplace.conf',
-                      'mangle-0.1.0.1-inplace.conf',
-                      'fb-stubs-0.1.0.1-inplace.conf',
-                      'thrift-compiler-0.3.0.0-inplace.conf',
-                      'thrift-lib-0.2.0.0-inplace.conf',
-                      'thrift-http-0.3.0.0-inplace.conf',
-                      'glean-0.2.0.0-inplace-aclknobs.conf',
-                      'glean-0.2.0.0-inplace-angle.conf',
-                      'glean-0.2.0.0-inplace-backend-api.conf',
-                      'glean-0.2.0.0-inplace-backend-local.conf',
-                      'glean-0.2.0.0-inplace-bytecode.conf',
-                      'glean-0.2.0.0-inplace-client-cpp.conf',
-                      'glean-0.2.0.0-inplace-client-hs.conf',
-                      'glean-0.2.0.0-inplace-client-hs-local.conf',
-                      'glean-0.2.0.0-inplace-cli-types.conf',
-                      'glean-0.2.0.0-inplace-config.conf',
-                      'glean-0.2.0.0-inplace-core.conf',
-                      'glean-0.2.0.0-inplace-db-backup-s3.conf',
-                      'glean-0.2.0.0-inplace-db.conf',
-                      'glean-0.2.0.0-inplace-defaultconfigs.conf',
-                      'glean-0.2.0.0-inplace-glass-lib.conf',
-                      'glean-0.2.0.0-inplace-handler.conf',
-                      'glean-0.2.0.0-inplace-haxl-datasource.conf',
-                      'glean-0.2.0.0-inplace-if-auth-hs.conf',
-                      'glean-0.2.0.0-inplace-if-fb303-hs.conf',
-                      'glean-0.2.0.0-inplace-if-glass-hs.conf',
-                      'glean-0.2.0.0-inplace-if-glean-hs.conf',
-                      'glean-0.2.0.0-inplace-if-index-hs.conf',
-                      'glean-0.2.0.0-inplace-if-internal-hs.conf',
-                      'glean-0.2.0.0-inplace-indexers.conf',
-                      'glean-0.2.0.0-inplace-interprocess.conf',
-                      'glean-0.2.0.0-inplace-lib.conf',
-                      'glean-0.2.0.0-inplace-lib-derive.conf',
-                      'glean-0.2.0.0-inplace-lmdb.conf',
-                      'glean-0.2.0.0-inplace-logger.conf',
-                      'glean-0.2.0.0-inplace-lsif.conf',
-                      'glean-0.2.0.0-inplace-rocksdb.conf',
-                      'glean-0.2.0.0-inplace-rts.conf',
-                      'glean-0.2.0.0-inplace-schema.conf',
-                      'glean-0.2.0.0-inplace-scip.conf',
-                      'glean-0.2.0.0-inplace-shell-lib.conf',
-                      'glean-0.2.0.0-inplace-storage.conf',
-                      'glean-0.2.0.0-inplace-stubs.conf',
-                      'glean-0.2.0.0-inplace-thrift-annotation.conf',
-                      'glean-0.2.0.0-inplace-typed.conf',
-                      'glean-0.2.0.0-inplace-util.conf',
-                      'glean-0.2.0.0-inplace-write.conf']:
-        conf_path = os.path.join(INPLACE_DB, conf_name)
-        if not os.path.exists(conf_path):
-            print(f"WARNING: {conf_path} not found - run 'cabal build fb-util mangle' first",
-                  file=sys.stderr)
-            continue
-        with open(conf_path) as f:
-            content = f.read()
-        m = re.search(r'^depends:\s*(.*?)(?=^\S|\Z)', content, re.MULTILINE | re.DOTALL)
-        if m:
-            for uid in m.group(1).split():
-                root.add(uid)
+    Derived entirely from Cabal's own `dist-newstyle/cache/plan.json`,
+    which `cabal build all --only-dependencies` populates with a
+    `style: "local"` entry for *every* component of *every* package
+    listed in `cabal.project` (library, executable and test-suite alike -
+    this project's `tests: True` is what pulls test-suites in too) -
+    without ever actually building any of them (dependency *resolution*
+    is a static solve over each package's own `build-depends:` field,
+    independent of compilation - see buck2.md's "explore a build
+    reconfigured around Cabal" entry for how this was confirmed
+    empirically). This is why nothing project-specific needs to be
+    hand-maintained here any more: no per-package .conf filename list, no
+    wanted-component allowlist, no manual roots for a package (like
+    glean-clang's `clang-derive-lib`) that only *some* other local
+    component happens to need - every local component's own `depends:`
+    is walked, uniformly.
 
-    # Also pull in deps from test suites and executables that don't have
-    # their own package-db .conf to read `depends:` from the way a library
-    # does (from cabal's plan.json instead) - e.g. glean's gen-schema and
-    # glean executables, whose own deps (fuzzy, Glob, ...) aren't reachable
-    # through any library's `depends:` field.
-    import json
+    (One thing this genuinely can't discover: extra C-library flags from
+    a component's `pkgconfig-depends:` - e.g. `rts`'s icu-uc/gflags or
+    glean-clang's LLVM linkage - since those only get computed when Cabal
+    runs a package's *real* configure step, which `--only-dependencies`
+    skips for every local component. That's a separate, narrower problem
+    from root-dependency discovery, needing its own solution.)
+    """
     plan_path = os.path.join(GLEAN_ROOT, "dist-newstyle/cache/plan.json")
-    if os.path.exists(plan_path):
-        with open(plan_path) as f:
-            plan = json.load(f)
-        for c in plan['install-plan']:
-            pkg = c.get('pkg-name', '')
-            comp = c.get('component-name', '')
-            wanted = (
-                (pkg in ('fb-util', 'fb-stubs') and comp.startswith('test:')) or
-                (pkg == 'glean' and (
-                    comp in (
-                        'exe:gen-schema', 'exe:glean', 'exe:hie-indexer',
-                        'lib:bench-lib', 'lib:bench-util', 'lib:regression-test-lib',
-                    ) or
-                    comp.startswith('test:')
-                )) or
-                # glean-lsp (glean/lsp/glean-lsp.cabal): its own package in
-                # the same cabal.project (unlike glean-clang.cabal, this one
-                # is `build-type: Simple` with no Custom-Setup conflict, so
-                # it resolves cleanly through the normal solver) - pulls in
-                # a handful of packages (lsp, text-rope, Diff, unliftio,
-                # unliftio-core) nothing else in this tree needs.
-                (pkg == 'glean-lsp' and comp == 'exe:glean-lsp')
-            )
-            if wanted:
-                for uid in c.get('depends', []):
-                    if '-inplace' not in uid:
-                        root.add(uid)
+    if not os.path.exists(plan_path):
+        print(f"ERROR: {plan_path} not found - run "
+              f"'cabal build all --only-dependencies' first", file=sys.stderr)
+        sys.exit(1)
+    with open(plan_path) as f:
+        plan = json.load(f)
 
-    # glean-clang.cabal (glean/lang/clang) is a wholly separate Cabal
-    # package from glean.cabal.in's own project (its Custom Setup detects
-    # LLVM/clang - see that file's own comment) - it has no plan.json or
-    # inplace .conf here to read deps from, since it's never actually been
-    # built via Cabal in this checkout. `ghc-compact` is a GHC boot
-    # package `clang-derive-lib` depends on directly; nothing in
-    # glean.cabal.in's own project happens to need it, so it's never
-    # otherwise discovered as a root.
-    root.add('ghc-compact-0.1.0.0')
+    install_plan = plan['install-plan']
+    local_ids = {c['id'] for c in install_plan if c.get('style') == 'local'}
 
+    root = set()
+    for c in install_plan:
+        if c.get('style') != 'local':
+            continue
+        for uid in c.get('depends', []):
+            if uid not in local_ids:
+                root.add(uid)
     return root
 
 
@@ -427,12 +356,7 @@ def generate_buck_file(packages):
 
         dep_targets = []
         for dep_uid in info.get('depends', '').split():
-            dep_name = pkg_name(dep_uid)
-            if dep_name in SKIP_PACKAGES:
-                continue
-            if dep_name in BUCK2_PACKAGES:
-                dep_targets.append(BUCK2_PACKAGES[dep_name])
-            elif dep_uid in uid_to_rule:
+            if dep_uid in uid_to_rule:
                 dep_targets.append(f":{uid_to_rule[dep_uid]}")
 
         lines.append('haskell_prebuilt_library(')
@@ -496,7 +420,7 @@ def main():
     packages = collect_packages(root_ids)
     found   = sum(1 for v in packages.values() if v is not None)
     skipped = len(packages) - found
-    print(f"  {found} resolved, {skipped} skipped/buck2")
+    print(f"  {found} resolved, {skipped} skipped (local or not found)")
 
     print("Building filtered store-db...")
     setup_store_db(packages)
