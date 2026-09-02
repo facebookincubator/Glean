@@ -1,4 +1,4 @@
-load("//buck2:haskell.bzl", "haskell_binary")
+load("//buck2:haskell.bzl", "haskell_binary", "haskell_test")
 
 # Cabal's `glean/test/tests` test-suites (glean.cabal.in's `common test`/
 # `common angle-test` stanzas) - one haskell_binary() per test-suite, each
@@ -7,7 +7,7 @@ load("//buck2:haskell.bzl", "haskell_binary")
 # test-suites needing whole not-yet-built subtrees (hack-derive-test,
 # backup-s3, timeout, publish-shards) are deliberately left for later.
 
-haskell_binary(
+haskell_test(
     name = "angle-test-angle",
     main = "Angle.AngleTest",
     srcs = [
