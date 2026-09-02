@@ -13,12 +13,21 @@ load("//buck2:cxx.bzl", "cxx_library")
 # checkout - so -DOSS=1 isn't just matching Cabal's flags, it's required for
 # the sources to even find their headers here.
 #
-# include_directories/public_include_directories = ["../.."] makes
+# `exported_headers` lists every header this library owns so
 # "glean/rts/foo.h"-style includes (repo-root-relative, matching Cabal's
 # `include-dirs: .` - "." relative to glean.cabal at the repo root) resolve
-# correctly from this package two directories down; public_include_
-# directories propagates this to glean:core's hsc2hs step too, the same way
-# fb-util-cxx's "." propagates to any dependent's hsc2hs.
+# correctly - no `include_directories`/`public_include_directories` needed
+# at all: a target's `header_namespace` defaults to its own buck2 package
+# path (`ctx.label.package`, here "glean/rts" - see prelude/cxx/headers.bzl
+# cxx_attr_header_namespace), so a plain relative header name like
+# "ownership/derived.h" is automatically exposed at the virtual path
+# "glean/rts/ownership/derived.h", exactly matching the source. This is
+# more precise than the old blanket `-I<repo root>` (which handed every
+# `.cpp` action here read access to every header in the whole tree,
+# whether it used it or not) - now each dependent only sees exactly the
+# headers this library actually exports, and adding a new one here means
+# updating this list, not silently picking up whatever else happens to
+# live under the same `-I`.
 cxx_library(
     name = "rts",
     srcs = [
@@ -53,9 +62,51 @@ cxx_library(
         "timer.cpp",
         "validate.cpp",
     ],
+    exported_headers = [
+        "acl/acl_provider.h",
+        "acl/json_acl_provider.h",
+        "benchmarking/factblock.h",
+        "benchmarking/ffi.h",
+        "binary.h",
+        "bytecode/subroutine.h",
+        "bytecode/syscall.h",
+        "cache.h",
+        "define.h",
+        "densemap.h",
+        "error.h",
+        "fact.h",
+        "factset.h",
+        "ffi.h",
+        "id.h",
+        "inventory.h",
+        "json.h",
+        "lookup.h",
+        "nat.h",
+        "ondemand.h",
+        "ownership.h",
+        "ownership/acl.h",
+        "ownership/derived.h",
+        "ownership/fallbackavx.h",
+        "ownership/pool.h",
+        "ownership/setu32.h",
+        "ownership/slice.h",
+        "ownership/triearray.h",
+        "ownership/uset.h",
+        "prim.h",
+        "query.h",
+        "sanity.h",
+        "serialize.h",
+        "set.h",
+        "stacked.h",
+        "stats.h",
+        "store.h",
+        "string.h",
+        "substitution.h",
+        "thrift.h",
+        "timer.h",
+        "validate.h",
+    ],
     compiler_flags = ["-DOSS=1"],
-    include_directories = ["../.."],
-    public_include_directories = ["../.."],
     # -lunwind, -latomic and -lglog all already come transitively via
     # folly-clib's own exported_linker_flags (hsthrift/folly-clib/BUCK) -
     # only the libraries folly-clib doesn't already export are listed here.
@@ -64,6 +115,19 @@ cxx_library(
         "-licudata",
         "-lgflags",
         "-lxxhash",
+    ],
+    # bytecode-cpp is `exported_deps`, not `deps`: rts's own exported
+    # inventory.h pulls in bytecode/subroutine.h, which pulls in
+    # glean/bytecode/instruction.h - so anything depending on rts to get
+    # inventory.h transitively needs bytecode-cpp's headers too, not just
+    # rts's own. A dependency's `exported_headers` only reach *that
+    # dependency's own direct* dependents by default - `exported_deps` is
+    # what re-exports them one hop further, to rts's own dependents too
+    # (found by client-cpp/storage/rocksdb/lmdb all failing on
+    # "glean/bytecode/instruction.h" specifically, while rts's own
+    # `glean/rts/*.h` headers - one hop closer - resolved fine).
+    exported_deps = [
+        "//glean/bytecode:bytecode-cpp",
     ],
     deps = [
         "//hsthrift/common/util:fb-util-cxx",

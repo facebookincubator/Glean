@@ -4,19 +4,24 @@ load("//buck2:cxx.bzl", "cxx_library")
 # and sending fact batches), split from glean/interprocess/cpp's own
 # worklist/counters FFI (see glean/interprocess/cpp/BUCK's comment) so
 # that split doesn't drag schema.h into things that don't need it.
-# `include_directories`/`public_include_directories` = ["../.."] (not
-# "."): these sources `#include "glean/cpp/glean.h"` etc. by full
-# repo-root-relative path (matching Cabal's own `include-dirs: .` -
-# repo-root-relative, same as glean/rts/BUCK's own established reasoning).
+# `exported_headers` (not `include_directories`/`public_include_
+# directories` = ["../.."]) - see glean/rts/BUCK's comment for why: these
+# sources `#include "glean/cpp/glean.h"` etc. by full repo-root-relative
+# path (matching Cabal's own `include-dirs: .`), and a plain relative
+# header name here is exposed under this package's own path
+# ("glean/cpp/...") by default, matching exactly.
 cxx_library(
     name = "client-cpp",
     srcs = [
         "filewriter.cpp",
         "glean.cpp",
     ],
+    exported_headers = [
+        "filewriter.h",
+        "glean.h",
+        "sender.h",
+    ],
     compiler_flags = ["-DOSS=1"],
-    include_directories = ["../.."],
-    public_include_directories = ["../.."],
     deps = [
         "//hsthrift/common/util:fb-util-cxx",
         "//hsthrift/folly-clib:folly-clib",

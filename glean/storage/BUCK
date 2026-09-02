@@ -11,9 +11,13 @@ cxx_library(
         "ffi.cpp",
         "stats.cpp",
     ],
+    exported_headers = [
+        "common.h",
+        "db.h",
+        "ffi.h",
+        "stats.h",
+    ],
     compiler_flags = ["-DOSS=1"],
-    include_directories = ["../.."],
-    public_include_directories = ["../.."],
     deps = [
         "//hsthrift/common/util:fb-util-cxx",
         "//hsthrift/folly-clib:folly-clib",

@@ -1,4 +1,19 @@
+load("//buck2:cxx.bzl", "cxx_library")
 load("//buck2:haskell.bzl", "haskell_binary", "haskell_library")
+
+# Header-only: glean/rts/bytecode/subroutine.{h,cpp} (glean:rts) includes
+# these two by their repo-root-relative path. `header_namespace` defaults
+# to this package's own path ("glean/bytecode"), so a plain relative
+# `exported_headers` list is enough to expose them there - same mechanism
+# glean/rts/BUCK uses for its own headers.
+cxx_library(
+    name = "bytecode-cpp",
+    exported_headers = [
+        "evaluate.h",
+        "instruction.h",
+    ],
+    visibility = ["PUBLIC"],
+)
 
 # Cabal's `bytecode` library (glean.cabal.in).
 haskell_library(

@@ -14,9 +14,13 @@ cxx_library(
         "worklist.cpp",
         "counters.cpp",
     ],
+    exported_headers = [
+        "counters.h",
+        "counters_ffi.h",
+        "worklist.h",
+        "worklist_ffi.h",
+    ],
     compiler_flags = ["-DOSS=1"],
-    include_directories = ["../../.."],
-    public_include_directories = ["../../.."],
     deps = [
         "//hsthrift/common/util:fb-util-cxx",
         "//hsthrift/folly-clib:folly-clib",
