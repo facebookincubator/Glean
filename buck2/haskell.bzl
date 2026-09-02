@@ -279,10 +279,11 @@ def haskell_binary(
 # locale alias needing no locale-generation step, so it's available
 # without depending on whatever locales happen to be installed.
 def haskell_test(name, test_args = [], test_env = {}, **kwargs):
-    haskell_binary(name = name, **kwargs)
+    bin = name + "-bin"
+    haskell_binary(name = bin, **kwargs)
     native.sh_test(
-        name = name + "-test",
-        test = ":" + name,
+        name = name,
+        test = ":" + bin,
         args = test_args,
         env = {"LANG": "C.UTF-8"} | test_env,
     )
