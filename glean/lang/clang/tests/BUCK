@@ -1,4 +1,13 @@
-load("//buck2:haskell.bzl", "haskell_binary")
+load("//buck2:haskell.bzl", "haskell_binary", "haskell_test")
+
+# `--indexer=$(exe ...)` on the *-test targets below points each suite
+# directly at this package's own clang-index build, rather than relying on
+# `clang-index` being on `$PATH` (Glean.Indexer.Cpp's `withExe` falls back
+# to a `$PATH` search when `-indexer` isn't given) - more hermetic under
+# `buck2 test`, and the same fix removes the need to manually prepend
+# clang-index's output dir onto `$PATH` the way this migration's own
+# by-hand verification runs have had to (see buck2.md).
+_INDEXER_TEST_ARGS = ["--indexer=$(exe //glean/lang/clang:clang-index)"]
 
 # Cabal's 6 `clang-test-*` test-suites (glean.cabal.in): `common test`-free
 # (these use plain `fb-haskell, fb-cpp, deps, exe`), sharing hs-source-dirs
@@ -45,7 +54,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "clang-test-derivefamilies",
     main = "Glean.Clang.DeriveFamilies",
     srcs = {
@@ -56,6 +65,7 @@ haskell_binary(
     },
     deps = _DERIVE_DEPS,
     packages = _COMMON_PACKAGES,
+    test_args = _INDEXER_TEST_ARGS,
     visibility = ["PUBLIC"],
 )
 

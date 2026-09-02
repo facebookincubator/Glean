@@ -248,3 +248,41 @@ def haskell_binary(
         linker_flags = ["-threaded", "-rtsopts"] + linker_flags,
         **kwargs
     )
+
+# Cabal's test-suites (glean.cabal.in) are all `type: exitcode-stdio-1.0` -
+# a plain executable, exit code is the result - so `buck2 test` support
+# needs nothing Haskell-specific: this builds the exact same
+# haskell_binary() `name` would (so `buck2 run :name` is unaffected), plus
+# a same-named `:name-test` native.sh_test() wrapping it, which is enough
+# for `buck2 test :name-test` to work with zero .buckconfig changes (see
+# buck2.md's "buck test" entry for why a plain sh_test() wrapper was
+# chosen over writing a bespoke rule - a custom rule would still need this
+# same two-target shape under the hood, since a rule can't invoke another
+# rule's impl inline, so it would just mean re-implementing sh_test's own
+# ExternalRunnerTestInfo wiring ourselves for no functional gain).
+#
+# `test_args`/`test_env` cover the one real wrinkle: a test-suite that
+# shells out to another buck2-built tool (e.g. glean-clang's clang-index)
+# needs that tool's location passed in explicitly via a `$(exe ...)`
+# string-parameter macro, rather than relying on it being on `$PATH` -
+# more hermetic than this migration's own earlier practice of manually
+# prepending PATH by hand to reproduce these runs (see buck2.md).
+#
+# `LANG` defaults to a UTF-8 locale: unlike `buck2 run` (which inherits
+# the caller's shell environment, `LANG` included), `buck2 test` runs
+# actions in a sanitized environment with no `LANG` at all - so GHC's
+# `hGetContents`/`readFile` fall back to the POSIX/ASCII encoding and
+# choke on any non-ASCII byte in a test fixture (found via
+# thrift-compiler-tests, whose fixtures include non-ASCII comments:
+# "hGetContents: invalid argument (cannot decode byte sequence starting
+# from 226)" - 226 = 0xE2, a UTF-8 lead byte). `C.UTF-8` is a glibc
+# locale alias needing no locale-generation step, so it's available
+# without depending on whatever locales happen to be installed.
+def haskell_test(name, test_args = [], test_env = {}, **kwargs):
+    haskell_binary(name = name, **kwargs)
+    native.sh_test(
+        name = name + "-test",
+        test = ":" + name,
+        args = test_args,
+        env = {"LANG": "C.UTF-8"} | test_env,
+    )
