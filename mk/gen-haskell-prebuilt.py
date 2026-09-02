@@ -255,7 +255,14 @@ def get_root_dep_ids():
                         'lib:bench-lib', 'lib:bench-util', 'lib:regression-test-lib',
                     ) or
                     comp.startswith('test:')
-                ))
+                )) or
+                # glean-lsp (glean/lsp/glean-lsp.cabal): its own package in
+                # the same cabal.project (unlike glean-clang.cabal, this one
+                # is `build-type: Simple` with no Custom-Setup conflict, so
+                # it resolves cleanly through the normal solver) - pulls in
+                # a handful of packages (lsp, text-rope, Diff, unliftio,
+                # unliftio-core) nothing else in this tree needs.
+                (pkg == 'glean-lsp' and comp == 'exe:glean-lsp')
             )
             if wanted:
                 for uid in c.get('depends', []):

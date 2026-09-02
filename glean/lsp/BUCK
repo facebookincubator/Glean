@@ -1,0 +1,63 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+
+# Cabal's `glean-lsp` executable (glean/lsp/glean-lsp.cabal) - a wholly
+# separate Cabal package from glean.cabal.in's own project (like
+# glean-clang.cabal), but listed in the same root `cabal.project` and
+# `build-type: Simple` (no Custom-Setup conflict), so - unlike
+# glean-clang - it resolves cleanly through the ordinary solver. Its own
+# 5 extra Hackage deps (lsp, text-rope, Diff, unliftio, unliftio-core)
+# needed a `cabal build --only-dependencies exe:glean-lsp` run and a new
+# `(pkg == 'glean-lsp' and comp == 'exe:glean-lsp')` root in
+# mk/gen-haskell-prebuilt.py's get_root_dep_ids() - nothing in
+# glean.cabal.in's own project happens to need any of them (see buck2.md).
+#
+# This package's own `common fb-haskell` (glean-lsp.cabal) is
+# buck2/haskell.bzl's FB_HASKELL_EXTENSIONS plus 5 more extensions
+# (DisambiguateRecordFields, OverloadedRecordDot, NoFieldSelectors,
+# DuplicateRecordFields, ImportQualifiedPost) - passed as `compiler_flags`
+# (appended after FB_HASKELL_EXTENSIONS by the default `fb_haskell = True`)
+# rather than needing `fb_haskell = False` and repeating the whole list.
+haskell_binary(
+    name = "glean-lsp",
+    main = "Glean.LSP",
+    srcs = [
+        "Data/ConcurrentCache.hs",
+        "Data/Path.hs",
+        "Data/RangeMap.hs",
+        "Glean/LSP.hs",
+        "Glean/LSP/Diff.hs",
+    ],
+    compiler_flags = [
+        "-XDisambiguateRecordFields",
+        "-XOverloadedRecordDot",
+        "-XNoFieldSelectors",
+        "-XDuplicateRecordFields",
+        "-XImportQualifiedPost",
+    ],
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//hsthrift/lib:thrift-lib",
+        "//glean/glass:glass-lib",
+        "//glean/glass/if:if-glass-hs",
+        "//glean/util:util",
+    ],
+    packages = [
+        "Diff",
+        "aeson",
+        "containers",
+        "data-default",
+        "directory",
+        "exceptions",
+        "filepath",
+        "hashable",
+        "lsp",
+        "optparse-applicative",
+        "text",
+        "text-rope",
+        "transformers",
+        "unliftio",
+        "unliftio-core",
+        "unordered-containers",
+    ],
+    visibility = ["PUBLIC"],
+)
