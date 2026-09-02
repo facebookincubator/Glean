@@ -1,0 +1,174 @@
+load("//buck2:haskell.bzl", "haskell_library", "haskell_test")
+
+# Cabal's `glass-regression` library (glean.cabal.in): shared snapshot-test
+# driver for every `glass-regression-*` test-suite below. `hs-source-dirs:
+# glean/glass/test/regression/lib` has no BUCK file of its own, so it's
+# part of this same package - srcs below are given relative to this
+# package's own root ("glean/glass/test/regression"), hence the "lib/"
+# prefix.
+haskell_library(
+    name = "glass-regression",
+    srcs = {
+        "Glean/Glass/Regression/Snapshot.hs": "lib/Glean/Glass/Regression/Snapshot.hs",
+        "Glean/Glass/Regression/Tests.hs": "lib/Glean/Glass/Regression/Tests.hs",
+        "Glean/Glass/Regression/Util.hs": "lib/Glean/Glass/Regression/Util.hs",
+    },
+    deps = [
+        "//hsthrift/common/util:fb-util",
+        "//hsthrift/lib:thrift-lib",
+        "//glean/client/hs:client-hs",
+        "//glean/client/hs/local:client-hs-local",
+        "//glean/glass:glass-lib",
+        "//glean/glass/if:if-glass-hs",
+        "//glean/index:indexer-core",
+        "//glean/index/list:indexers",
+        "//glean/github:logger",
+        "//glean/github:stubs",
+        "//glean/test/regression:regression-test-lib",
+        "//glean/util:util",
+    ],
+    packages = [
+        "HUnit",
+        "aeson",
+        "aeson-pretty",
+        "bytestring",
+        "containers",
+        "data-default",
+        "directory",
+        "extra",
+        "filepath",
+        "haxl",
+        "optparse-applicative",
+        "process",
+        "temporary",
+        "text",
+        "yaml",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Cabal's `glass-regression-cpp` test-suite: needs `flag(clang-tests)` -
+# buildable here since glean-clang (LLVM 15) is. `Glean/Clang/Test.hs`/
+# `Test/DerivePass.hs` come from //glean/lang/clang/tests (see that
+# BUCK's own comment on the two export_file() targets) - same duplication
+# Cabal itself uses (this stanza's own `other-modules:` lists them too).
+haskell_test(
+    name = "glass-regression-cpp",
+    main = "Glean.Glass.Regression.Cpp.Github",
+    srcs = {
+        "Glean/Glass/Regression/Cpp.hs": "Glean/Glass/Regression/Cpp.hs",
+        "Glean/Glass/Regression/Cpp/Github.hs": "Glean/Glass/Regression/Cpp/Github.hs",
+        "Glean/Clang/Test.hs": "//glean/lang/clang/tests:test-hs",
+        "Glean/Clang/Test/DerivePass.hs": "//glean/lang/clang/tests:test-derivepass-hs",
+    },
+    deps = [
+        ":glass-regression",
+        "//glean/client/hs:client-hs",
+        "//glean/glass/if:if-glass-hs",
+        "//glean/index:indexer-core",
+        "//glean/lang/clang:clang-derive-lib",
+        "//glean/lang/clang:clang-indexer",
+        "//glean/lib:lib",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    packages = [
+        "HUnit",
+        "aeson",
+        "text",
+    ],
+    test_args = ["--indexer=$(exe //glean/lang/clang:clang-index)"],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "glass-regression-flow",
+    main = "Glean.Glass.Regression.Flow.Main",
+    srcs = [
+        "Glean/Glass/Regression/Flow.hs",
+        "Glean/Glass/Regression/Flow/Main.hs",
+    ],
+    deps = [
+        ":glass-regression",
+        "//glean/lang/flow:flow-indexer",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "glass-regression-hack",
+    main = "Glean.Glass.Regression.Hack.Main",
+    srcs = [
+        "Glean/Glass/Regression/Hack.hs",
+        "Glean/Glass/Regression/Hack/Main.hs",
+    ],
+    deps = [
+        ":glass-regression",
+        "//glean/lang/hack:hack-indexer",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Needs `--hie-indexer`/a matching GHC the same way glean-snapshot-haskell
+# does - see glean/lang/haskell/tests/BUCK's comment for the full
+# explanation (same GHC-version issue, same fix).
+haskell_test(
+    name = "glass-regression-haskell",
+    main = "Glean.Glass.Regression.Haskell.Main",
+    srcs = [
+        "Glean/Glass/Regression/Haskell.hs",
+        "Glean/Glass/Regression/Haskell/Main.hs",
+    ],
+    deps = [
+        ":glass-regression",
+        "//glean/lang/haskell:haskell-indexer",
+    ],
+    test_args = [
+        "--hie-indexer=$(exe //glean/lang/haskell:hie-indexer)",
+    ],
+    test_env = {
+        "PATH": "third-party/haskell/ghc-9.4.8/bin:/usr/bin:/bin",
+    },
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "glass-regression-typescript",
+    main = "Glean.Glass.Regression.TypeScript.Main",
+    srcs = [
+        "Glean/Glass/Regression/TypeScript.hs",
+        "Glean/Glass/Regression/TypeScript/Main.hs",
+    ],
+    deps = [
+        ":glass-regression",
+        "//glean/lang/typescript:typescript-indexer",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "glass-regression-go",
+    main = "Glean.Glass.Regression.Go.Main",
+    srcs = [
+        "Glean/Glass/Regression/Go.hs",
+        "Glean/Glass/Regression/Go/Main.hs",
+    ],
+    deps = [
+        ":glass-regression",
+        "//glean/lang/go:go-indexer",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "glass-regression-java-lsif",
+    main = "Glean.Glass.Regression.JavaLsif.Main",
+    srcs = [
+        "Glean/Glass/Regression/JavaLsif.hs",
+        "Glean/Glass/Regression/JavaLsif/Main.hs",
+    ],
+    deps = [
+        ":glass-regression",
+        "//glean/lang/java-lsif:java-lsif-indexer",
+    ],
+    visibility = ["PUBLIC"],
+)
