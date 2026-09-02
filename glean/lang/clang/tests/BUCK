@@ -1,4 +1,4 @@
-load("//buck2:haskell.bzl", "haskell_binary", "haskell_test")
+load("//buck2:haskell.bzl", "haskell_test")
 
 # `--indexer=$(exe ...)` on the *-test targets below points each suite
 # directly at this package's own clang-index build, rather than relying on
@@ -41,7 +41,7 @@ _COMMON_PACKAGES = [
     "unordered-containers",
 ]
 
-haskell_binary(
+haskell_test(
     name = "clang-test-regression",
     main = "Glean.Clang.Regression",
     srcs = {
@@ -51,6 +51,7 @@ haskell_binary(
     },
     deps = _COMMON_DEPS,
     packages = _COMMON_PACKAGES,
+    test_args = _INDEXER_TEST_ARGS,
     visibility = ["PUBLIC"],
 )
 
@@ -69,7 +70,7 @@ haskell_test(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "clang-test-deriveattributes",
     main = "Glean.Clang.DeriveAttrs",
     srcs = {
@@ -80,10 +81,11 @@ haskell_binary(
     },
     deps = _DERIVE_DEPS,
     packages = _COMMON_PACKAGES,
+    test_args = _INDEXER_TEST_ARGS,
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "clang-test-derivefuncalls",
     main = "Glean.Clang.DeriveFunCalls",
     srcs = {
@@ -94,10 +96,11 @@ haskell_binary(
     },
     deps = _DERIVE_DEPS,
     packages = _COMMON_PACKAGES,
+    test_args = _INDEXER_TEST_ARGS,
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "clang-test-deriveobjcinherit",
     main = "Glean.Clang.DeriveObjCInheritance",
     srcs = {
@@ -108,10 +111,11 @@ haskell_binary(
     },
     deps = _DERIVE_DEPS,
     packages = _COMMON_PACKAGES,
+    test_args = _INDEXER_TEST_ARGS,
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "clang-test-codemarkup",
     main = "Glean.Clang.CodeMarkup",
     srcs = {
@@ -122,5 +126,31 @@ haskell_binary(
     },
     deps = _DERIVE_DEPS,
     packages = _COMMON_PACKAGES,
+    test_args = _INDEXER_TEST_ARGS,
+    visibility = ["PUBLIC"],
+)
+
+# Exported so //glean/glass/test/regression:glass-regression-cpp (a
+# different buck2 package) can embed the same two files, matching Cabal's
+# own model exactly: glass-regression-cpp's own stanza (glean.cabal.in)
+# lists `Glean.Clang.Test`/`Glean.Clang.Test.DerivePass` as `other-modules`
+# too, recompiled fresh there rather than shared via a library, the same
+# duplication already used across all 6 `clang-test-*` targets above.
+# buck2 (unlike Cabal) requires a file to belong to exactly one package,
+# so it can't just be listed as a raw `srcs` path from the other package -
+# `export_file()` re-exposes it as a target these two consumers can
+# reference directly (`_resolve_src` in buck2/haskell.bzl already treats
+# a dict `srcs` value that isn't a local path as something to relocate via
+# `export_file()`, and `export_file()`'s own `src` attr accepts a
+# cross-package dependency just as well as a local file).
+native.export_file(
+    name = "test-hs",
+    src = "Glean/Clang/Test.hs",
+    visibility = ["PUBLIC"],
+)
+
+native.export_file(
+    name = "test-derivepass-hs",
+    src = "Glean/Clang/Test/DerivePass.hs",
     visibility = ["PUBLIC"],
 )
