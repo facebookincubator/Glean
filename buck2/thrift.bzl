@@ -31,7 +31,7 @@
 # its source artifact's own path - a bare copy of the whole gen-hs2/
 # directory would derive "gen.gen-hs2.Foo.Types" instead of "Foo.Types".
 
-load("//buck2:haskell.bzl", "haskell_binary", "haskell_library")
+load("//buck2:haskell.bzl", "haskell_binary", "haskell_library", "haskell_test")
 
 # thrift-compiler's default --gen-prefix; every caller in this repo relies
 # on the default, so `outs` entries are resolved as GEN_PREFIX + "/" + out
@@ -164,3 +164,16 @@ def thrift_haskell_binary(
         **kwargs):
     all_srcs = _thrift_srcs(name, thrift_files, thrift_flags, thrift_file_flags, srcs)
     haskell_binary(name = name, srcs = all_srcs, **kwargs)
+
+# Same as thrift_haskell_binary(), but for a test-suite (haskell_test()
+# instead of haskell_binary()) - hsthrift/tests/thrift-tests.cabal's own
+# test-suites all generate their fixtures from a .thrift file this way.
+def thrift_haskell_test(
+        name,
+        thrift_files = {},
+        thrift_flags = [],
+        thrift_file_flags = {},
+        srcs = [],
+        **kwargs):
+    all_srcs = _thrift_srcs(name, thrift_files, thrift_flags, thrift_file_flags, srcs)
+    haskell_test(name = name, srcs = all_srcs, **kwargs)

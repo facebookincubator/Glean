@@ -1,7 +1,7 @@
-load("//buck2:haskell.bzl", "haskell_binary")
+load("//buck2:haskell.bzl", "haskell_test")
 
 # Cabal's `glean-snapshot-go` test-suite (glean.cabal.in).
-haskell_binary(
+haskell_test(
     name = "glean-snapshot-go",
     main = "Glean.Regression.Go.Main",
     srcs = [

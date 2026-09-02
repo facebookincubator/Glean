@@ -1,7 +1,7 @@
-load("//buck2:haskell.bzl", "haskell_binary")
+load("//buck2:haskell.bzl", "haskell_test")
 
 # Cabal's `glean-snapshot-lsif` test-suite (glean.cabal.in).
-haskell_binary(
+haskell_test(
     name = "glean-snapshot-lsif",
     main = "Glean.Regression.Lsif.Main",
     srcs = [

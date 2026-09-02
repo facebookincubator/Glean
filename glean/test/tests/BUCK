@@ -1,4 +1,4 @@
-load("//buck2:haskell.bzl", "haskell_binary", "haskell_test")
+load("//buck2:haskell.bzl", "haskell_test")
 
 # Cabal's `glean/test/tests` test-suites (glean.cabal.in's `common test`/
 # `common angle-test` stanzas) - one haskell_binary() per test-suite, each
@@ -35,7 +35,7 @@ haskell_test(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "angle-test-error",
     main = "Angle.ErrorTest",
     srcs = [
@@ -61,7 +61,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "angle-test-nested",
     main = "Angle.NestedTest",
     srcs = [
@@ -87,7 +87,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "angle-test-derived",
     main = "Angle.DerivedTest",
     srcs = [
@@ -112,7 +112,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "angle-test-set",
     main = "Angle.SetTest",
     srcs = [
@@ -137,7 +137,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "angle-test-stored",
     main = "Angle.StoredTest",
     srcs = [
@@ -162,7 +162,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "angle-test-array",
     main = "Angle.ArrayTest",
     srcs = [
@@ -187,7 +187,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "angle-test-rec-expansion",
     main = "Angle.RecExpansionTest",
     srcs = [
@@ -212,7 +212,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "angle-test-data",
     main = "Angle.DataTest",
     srcs = [
@@ -236,7 +236,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "angle-test-opt",
     main = "Angle.OptTest",
     srcs = [
@@ -262,7 +262,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "angle-test-misc",
     main = "Angle.MiscTest",
     srcs = [
@@ -288,7 +288,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "api",
     main = "ApiTest",
     srcs = [
@@ -311,7 +311,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "cppexception",
     main = "CppCatchTest",
     srcs = [
@@ -335,7 +335,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "jsonwrite",
     main = "JSONWriteTest",
     srcs = [
@@ -363,7 +363,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "rtstest",
     main = "RTSTest",
     srcs = [
@@ -388,7 +388,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "rts-json",
     main = "RTSJSONTest",
     srcs = [
@@ -409,7 +409,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "dbjanitor",
     main = "DatabaseJanitorTest",
     srcs = [
@@ -433,7 +433,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "dbderive",
     main = "DbDeriveTest",
     srcs = [
@@ -460,7 +460,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "backup",
     main = "BackupTest",
     srcs = [
@@ -486,7 +486,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "catalog",
     main = "CatalogTest",
     srcs = [
@@ -511,7 +511,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "lifecycle",
     main = "LifecycleTest",
     srcs = [
@@ -537,7 +537,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "shard",
     main = "TestShard",
     srcs = [
@@ -558,7 +558,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "dbproperties",
     main = "DbPropertiesTest",
     srcs = [
@@ -580,7 +580,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "parser",
     main = "ParserTest",
     srcs = [
@@ -599,7 +599,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "schematest",
     main = "Schema.Basic",
     srcs = [
@@ -628,7 +628,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "schemaevolves",
     main = "Schema.Evolves",
     srcs = [
@@ -656,7 +656,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "schemamulti",
     main = "Schema.Multi",
     srcs = [
@@ -684,7 +684,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "inventory",
     main = "InventoryTest",
     srcs = [
@@ -705,7 +705,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "continuation",
     main = "ContinuationTest",
     srcs = [
@@ -727,7 +727,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "lookup",
     main = "LookupTest",
     srcs = [
@@ -748,7 +748,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "incremental",
     main = "IncrementalTest",
     srcs = [
@@ -776,7 +776,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "publish-shards",
     main = "PublishShardsTest",
     # Cabal's `publish-shards` test-suite (glean.cabal.in): `common test`'s
@@ -808,7 +808,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "timeout",
     main = "TimeoutTest",
     srcs = [
@@ -830,7 +830,7 @@ haskell_binary(
     visibility = ["PUBLIC"],
 )
 
-haskell_binary(
+haskell_test(
     name = "storage-rocksdb",
     main = "StorageRocksDBTest",
     srcs = [
