@@ -121,10 +121,10 @@ _BUILD_MODE_DYNAMIC_TOO = select({
 # unchanged unless it still carries a raw preprocessor extension (true for
 # `srcs` given as a list, where `path == src`, or an explicit identity entry
 # in the dict form), in which case that extension is stripped and replaced
-# with .hs. Exported for callers (e.g. thrift_haskell_library() in
-# thrift.bzl) that need to compute the same key haskell_library()/
-# haskell_binary() would derive from a plain `srcs` list, to merge
-# additional dict entries into it without breaking that derivation.
+# with .hs. Exported for callers (e.g. thrift_library() in thrift.bzl)
+# that need to compute the same key haskell_library()/haskell_binary()
+# would derive from a plain `srcs` list, to merge additional dict entries
+# into it without breaking that derivation.
 def hs_module_path(path):
     for ext in (".hsc", ".x", ".y"):
         if path.endswith(ext):
@@ -155,8 +155,8 @@ def _resolve_src(name, path, src, deps, hsc_flags):
     elif path == src or src.endswith("[" + path + "]"):
         # Already at the right path: either a real file living exactly
         # there, or a sub-target reference (e.g. from thrift_compile() via
-        # thrift_haskell_library()/thrift_haskell_binary() in thrift.bzl)
-        # whose bracketed key already equals `path` - its own artifact's
+        # thrift_library() in thrift.bzl) whose bracketed key already
+        # equals `path` - its own artifact's
         # short_path is already correct, so relocating it again would just
         # be a redundant copy.
         return src
