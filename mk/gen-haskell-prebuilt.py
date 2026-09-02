@@ -262,6 +262,16 @@ def get_root_dep_ids():
                     if '-inplace' not in uid:
                         root.add(uid)
 
+    # glean-clang.cabal (glean/lang/clang) is a wholly separate Cabal
+    # package from glean.cabal.in's own project (its Custom Setup detects
+    # LLVM/clang - see that file's own comment) - it has no plan.json or
+    # inplace .conf here to read deps from, since it's never actually been
+    # built via Cabal in this checkout. `ghc-compact` is a GHC boot
+    # package `clang-derive-lib` depends on directly; nothing in
+    # glean.cabal.in's own project happens to need it, so it's never
+    # otherwise discovered as a root.
+    root.add('ghc-compact-0.1.0.0')
+
     return root
 
 

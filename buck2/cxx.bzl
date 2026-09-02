@@ -42,3 +42,16 @@ def cxx_library(name, compiler_flags = [], cxx_std = True, **kwargs):
         compiler_flags = std_flags + compiler_flags + _BUILD_MODE_CXX_FLAGS + _HASWELL_FLAGS,
         **kwargs
     )
+
+# Same centralized flags for cxx_binary() - so far only glean-clang's
+# `clang-index` (a genuine plain C++ executable, not Haskell-with-C++-
+# sources) needs this, but the flags themselves are identical to
+# cxx_library()'s, so it's a duplicate of this wrapper rather than a
+# hand-rolled select() at the one call site.
+def cxx_binary(name, compiler_flags = [], cxx_std = True, **kwargs):
+    std_flags = ["-std=c++20"] if cxx_std else []
+    native.cxx_binary(
+        name = name,
+        compiler_flags = std_flags + compiler_flags + _BUILD_MODE_CXX_FLAGS + _HASWELL_FLAGS,
+        **kwargs
+    )

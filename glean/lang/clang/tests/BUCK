@@ -1,0 +1,116 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+
+# Cabal's 6 `clang-test-*` test-suites (glean.cabal.in): `common test`-free
+# (these use plain `fb-haskell, fb-cpp, deps, exe`), sharing hs-source-dirs
+# glean/lang/clang/tests and glean/lang/clang/tests/github (the latter has
+# no BUCK file of its own, so it's part of this same package). The
+# `github/Glean/Clang/*.hs` files declare `module Glean.Clang.X` (no
+# `github.` prefix), so their module-name-derived object path doesn't
+# match their on-disk path - `srcs` as a dict remaps them, same mechanism
+# buck2/haskell.bzl's own doc comment describes for a source living
+# somewhere other than its module name implies. (No `def` here for the
+# obvious per-target helper - BUCK files, unlike `.bzl` ones, don't allow
+# function definitions.)
+_COMMON_DEPS = [
+    "//hsthrift/common/util:fb-util",
+    "//glean/index:indexer-core",
+    "//glean/lang/clang:clang-indexer",
+    "//glean/lib:lib",
+    "//glean/test/regression:regression-test-lib",
+]
+
+_DERIVE_DEPS = _COMMON_DEPS + [
+    "//glean/if:if-glean-hs",
+    "//glean/client/hs:client-hs",
+    "//glean/hs:core",
+    "//glean/lang/clang:clang-derive-lib",
+]
+
+_COMMON_PACKAGES = [
+    "aeson",
+    "json",
+    "unordered-containers",
+]
+
+haskell_binary(
+    name = "clang-test-regression",
+    main = "Glean.Clang.Regression",
+    srcs = {
+        "Glean/Clang/Test.hs": "Glean/Clang/Test.hs",
+        "Glean/Clang/Regression.hs": "github/Glean/Clang/Regression.hs",
+        "Glean/Regression/Driver/Clang.hs": "Glean/Regression/Driver/Clang.hs",
+    },
+    deps = _COMMON_DEPS,
+    packages = _COMMON_PACKAGES,
+    visibility = ["PUBLIC"],
+)
+
+haskell_binary(
+    name = "clang-test-derivefamilies",
+    main = "Glean.Clang.DeriveFamilies",
+    srcs = {
+        "Glean/Clang/Test.hs": "Glean/Clang/Test.hs",
+        "Glean/Clang/DeriveFamilies.hs": "github/Glean/Clang/DeriveFamilies.hs",
+        "Glean/Clang/Test/DerivePass.hs": "Glean/Clang/Test/DerivePass.hs",
+        "Glean/Regression/Driver/DeriveDeclFamilies.hs": "Glean/Regression/Driver/DeriveDeclFamilies.hs",
+    },
+    deps = _DERIVE_DEPS,
+    packages = _COMMON_PACKAGES,
+    visibility = ["PUBLIC"],
+)
+
+haskell_binary(
+    name = "clang-test-deriveattributes",
+    main = "Glean.Clang.DeriveAttrs",
+    srcs = {
+        "Glean/Clang/Test.hs": "Glean/Clang/Test.hs",
+        "Glean/Clang/DeriveAttrs.hs": "github/Glean/Clang/DeriveAttrs.hs",
+        "Glean/Clang/Test/DerivePass.hs": "Glean/Clang/Test/DerivePass.hs",
+        "Glean/Regression/Driver/DeriveFunctionDeclAttribute.hs": "Glean/Regression/Driver/DeriveFunctionDeclAttribute.hs",
+    },
+    deps = _DERIVE_DEPS,
+    packages = _COMMON_PACKAGES,
+    visibility = ["PUBLIC"],
+)
+
+haskell_binary(
+    name = "clang-test-derivefuncalls",
+    main = "Glean.Clang.DeriveFunCalls",
+    srcs = {
+        "Glean/Clang/Test.hs": "Glean/Clang/Test.hs",
+        "Glean/Clang/DeriveFunCalls.hs": "github/Glean/Clang/DeriveFunCalls.hs",
+        "Glean/Clang/Test/DerivePass.hs": "Glean/Clang/Test/DerivePass.hs",
+        "Glean/Regression/Driver/DeriveFunctionCalls.hs": "Glean/Regression/Driver/DeriveFunctionCalls.hs",
+    },
+    deps = _DERIVE_DEPS,
+    packages = _COMMON_PACKAGES,
+    visibility = ["PUBLIC"],
+)
+
+haskell_binary(
+    name = "clang-test-deriveobjcinherit",
+    main = "Glean.Clang.DeriveObjCInheritance",
+    srcs = {
+        "Glean/Clang/Test.hs": "Glean/Clang/Test.hs",
+        "Glean/Clang/DeriveObjCInheritance.hs": "github/Glean/Clang/DeriveObjCInheritance.hs",
+        "Glean/Clang/Test/DerivePass.hs": "Glean/Clang/Test/DerivePass.hs",
+        "Glean/Regression/Driver/DeriveObjcInheritance.hs": "Glean/Regression/Driver/DeriveObjcInheritance.hs",
+    },
+    deps = _DERIVE_DEPS,
+    packages = _COMMON_PACKAGES,
+    visibility = ["PUBLIC"],
+)
+
+haskell_binary(
+    name = "clang-test-codemarkup",
+    main = "Glean.Clang.CodeMarkup",
+    srcs = {
+        "Glean/Clang/Test.hs": "Glean/Clang/Test.hs",
+        "Glean/Clang/CodeMarkup.hs": "github/Glean/Clang/CodeMarkup.hs",
+        "Glean/Clang/Test/DerivePass.hs": "Glean/Clang/Test/DerivePass.hs",
+        "Glean/Regression/Driver/DeriveForCodemarkup.hs": "Glean/Regression/Driver/DeriveForCodemarkup.hs",
+    },
+    deps = _DERIVE_DEPS,
+    packages = _COMMON_PACKAGES,
+    visibility = ["PUBLIC"],
+)
