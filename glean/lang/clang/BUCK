@@ -62,7 +62,6 @@ cxx_binary(
         # get a genuine absolute system include path onto the command line.
         "-I" + _LLVM_INCLUDE,
     ],
-    include_directories = ["../.."],
     linker_flags = [
         "-L" + _LLVM_LIBDIR,
         "-lclang-cpp",
@@ -82,6 +81,10 @@ cxx_binary(
         # counters) - a real, pre-existing gap in the Cabal package
         # itself, not something this migration introduced.
         "//glean/interprocess/cpp:interprocess-cpp",
+        # db.h's unconditional (not `#if GLEAN_FACEBOOK`-guarded)
+        # `#include "glean/schema/cpp/schema.h"` - see //:schema-cpp-header
+        # for why this lives at the repo root rather than in this package.
+        "//:schema-cpp-header",
     ],
     visibility = ["PUBLIC"],
 )

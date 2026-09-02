@@ -12,9 +12,16 @@ cxx_library(
         "ffi.cpp",
         "glean_lmdb.cpp",
     ],
+    # `headers` not `exported_headers`: nothing outside this package
+    # includes these, unlike glean/rts's or glean/storage's headers.
+    headers = [
+        "container-impl.h",
+        "database-impl.h",
+        "ffi.h",
+        "glean_lmdb.h",
+        "util.h",
+    ],
     compiler_flags = ["-DOSS=1"],
-    include_directories = ["../.."],
-    public_include_directories = ["../.."],
     deps = [
         "//hsthrift/common/util:fb-util-cxx",
         "//hsthrift/folly-clib:folly-clib",

@@ -2,12 +2,14 @@
 #
 # The include paths passed to hsc2hs are derived entirely from `deps`: we
 # reuse the same CPreprocessorInfo providers that real cxx_library() compiles
-# use, so anything a C++ dependency exports via `public_include_directories`
-# (or, for a haskell_prebuilt_library(), `cxx_header_dirs` - see
-# mk/gen-haskell-prebuilt.py) is picked up automatically. The C++ compiler
-# and the hsc2hs binary itself both come from the cxx/haskell toolchains
-# (toolchains/BUCK, toolchains/haskell.bzl) rather than being hardcoded here.
+# use, so anything a C++ dependency exports via `public_include_directories`,
+# `exported_headers` (see buck2/cxx.bzl), or (for a haskell_prebuilt_
+# library()) `cxx_header_dirs` (see mk/gen-haskell-prebuilt.py) is picked up
+# automatically. The C++ compiler and the hsc2hs binary itself both come
+# from the cxx/haskell toolchains (toolchains/BUCK, toolchains/haskell.bzl)
+# rather than being hardcoded here.
 
+load("@prelude//:paths.bzl", "paths")
 load("@prelude//cxx:cxx_context.bzl", "get_cxx_toolchain_info")
 load("@prelude//cxx:preprocessor.bzl", "cxx_inherited_preprocessor_infos", "cxx_merge_cpreprocessors")
 load("@prelude//decls/toolchains_common.bzl", "toolchains_common")
@@ -36,6 +38,27 @@ def _hsc2hs_include_args(pp_info):
                     skip = True
     return args
 
+# A C++ dep that exposes its headers via `headers`/`exported_headers`
+# (see buck2/cxx.bzl) rather than `include_directories`/`public_include_
+# directories` doesn't put anything in `record.include_dirs` at all - the
+# generated symlink-tree include path lives inside the opaque `record.args`
+# cmd_args instead (built by the prelude's own `get_exported_preprocessor_
+# args`), which `_hsc2hs_include_args` above has no way to pick apart from
+# everything else in there. Rather than reverse-engineer that cmd_args,
+# rebuild an equivalent tree ourselves directly from `record.headers` (a
+# plain, non-opaque `list[CHeader]` - name/namespace/artifact), which is
+# exactly the same header set the real cxx_library() compile would see.
+def _hsc2hs_headers_dir(ctx, pp_info):
+    headers = {}
+    for records in pp_info.set.traverse():
+        for record in records:
+            for h in record.headers:
+                key = paths.join(h.namespace, h.name) if h.namespace else h.name
+                headers[key] = h.artifact
+    if not headers:
+        return None
+    return ctx.actions.symlinked_dir("hsc2hs-headers", headers)
+
 def _hsc2hs_impl(ctx: AnalysisContext) -> list[Provider]:
     out = ctx.actions.declare_output(ctx.attrs.out)
 
@@ -53,6 +76,8 @@ def _hsc2hs_impl(ctx: AnalysisContext) -> list[Provider]:
     hsc2hs_tool = "hsc2hs-" + ghc_version
 
     cxx_compiler = get_cxx_toolchain_info(ctx).cxx_compiler_info.compiler
+
+    headers_dir = _hsc2hs_headers_dir(ctx, merged)
 
     cmd = cmd_args(
         hsc2hs_tool,
@@ -76,6 +101,7 @@ def _hsc2hs_impl(ctx: AnalysisContext) -> list[Provider]:
         # when compiling a sibling cxx_library() source in this package.
         "-I" + ctx.label.package,
         _hsc2hs_include_args(merged),
+        cmd_args(headers_dir, format = "-I{}") if headers_dir else [],
         "-o",
         out.as_output(),
         ctx.attrs.hsc_file,
