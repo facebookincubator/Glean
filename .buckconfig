@@ -1,7 +1,7 @@
 [cells]
   root = .
-  prelude = prelude
-  toolchains = toolchains
+  prelude = buck2/prelude
+  toolchains = buck2/toolchains
   none = none
   fbcode_macros = buck2/fbcode_macros
 
