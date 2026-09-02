@@ -7,7 +7,14 @@
 # `languages` entry (py/py3/rust/cpp2/java-swift) and every option specific
 # to them (thrift_rust_options, thrift_cpp2_options, ...) is silently
 # ignored - accepted only via **_kwargs so the real file loads unmodified.
-load("@root//buck2:thrift.bzl", "thrift_haskell_library")
+# Aliased: this file defines its own `thrift_library()` (matching
+# @fbcode_macros's API, for the unmodified gen-schema BUCK files below to
+# load) - genuinely unrelated to buck2/thrift.bzl's own `thrift_library()`
+# (a srcs-dict helper for haskell_library()/haskell_binary()/haskell_test()
+# - see buck2.md's "thrift_library() unification" entry), which just
+# happens to share the name. Aliasing avoids the clash.
+load("@root//buck2:haskell.bzl", "haskell_library")
+load("@root//buck2:thrift.bzl", hs_thrift_srcs = "thrift_library")
 load(":util.bzl", "translate_deps")
 
 def _camel(stem):
@@ -31,10 +38,13 @@ def thrift_library(
     # mismatches (see buck2.md).
     out = "Glean/Schema/{}/Types.hs".format(_camel(stem))
 
-    thrift_haskell_library(
+    haskell_library(
         name = name,
-        thrift_files = {thrift_file: [out]},
-        thrift_flags = ["-I", "."],
+        srcs = hs_thrift_srcs(
+            name = name,
+            thrift_files = {thrift_file: [out]},
+            thrift_flags = ["-I", "."],
+        ),
         deps = translate_deps(deps + hs2_deps) + [
             # Not in any deps/hs2_deps list gen-schema emits, but the
             # generated Types.hs genuinely imports Thrift.Binary.Parser/

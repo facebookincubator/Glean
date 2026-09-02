@@ -1,12 +1,15 @@
-load("//buck2:thrift.bzl", "thrift_haskell_library")
-
+load("//buck2:haskell.bzl", "haskell_library")
+load("//buck2:thrift.bzl", "thrift_library")
 # Cabal's `if-glean-hs` library (glean.cabal.in).
-thrift_haskell_library(
+haskell_library(
     name = "if-glean-hs",
-    thrift_files = {
+    srcs = thrift_library(
+        name = "if-glean-hs",
+        thrift_files = {
         "glean.thrift": ["Glean/Types.hs", "Glean/GleanService/Client.hs", "Glean/GleanService/Service.hs"],
     },
-    thrift_flags = ["-I", "."],
+        thrift_flags = ["-I", "."],
+    ),
     deps = [
         "//hsthrift/common/util:fb-util",
         "//hsthrift/lib:thrift-lib",
@@ -32,12 +35,15 @@ thrift_haskell_library(
 )
 
 # Cabal's `if-index-hs` library (glean.cabal.in).
-thrift_haskell_library(
+haskell_library(
     name = "if-index-hs",
-    thrift_files = {
+    srcs = thrift_library(
+        name = "if-index-hs",
+        thrift_files = {
         "index.thrift": ["Glean/Index/Types.hs", "Glean/Index/GleanIndexingService/Client.hs", "Glean/Index/GleanIndexingService/Service.hs"],
     },
-    thrift_flags = ["-I", "."],
+        thrift_flags = ["-I", "."],
+    ),
     deps = [
         "//hsthrift/common/util:fb-util",
         "//hsthrift/lib:thrift-lib",
@@ -61,12 +67,15 @@ thrift_haskell_library(
 )
 
 # Cabal's `if-internal-hs` library (glean.cabal.in).
-thrift_haskell_library(
+haskell_library(
     name = "if-internal-hs",
-    thrift_files = {
+    srcs = thrift_library(
+        name = "if-internal-hs",
+        thrift_files = {
         "internal.thrift": ["Glean/Internal/Types.hs"],
     },
-    thrift_flags = ["-I", "."],
+        thrift_flags = ["-I", "."],
+    ),
     deps = [
         "//hsthrift/common/util:fb-util",
         "//hsthrift/lib:thrift-lib",

@@ -31,8 +31,6 @@
 # its source artifact's own path - a bare copy of the whole gen-hs2/
 # directory would derive "gen.gen-hs2.Foo.Types" instead of "Foo.Types".
 
-load("//buck2:haskell.bzl", "haskell_binary", "haskell_library", "haskell_test")
-
 # thrift-compiler's default --gen-prefix; every caller in this repo relies
 # on the default, so `outs` entries are resolved as GEN_PREFIX + "/" + out
 # within the raw output directory.
@@ -101,35 +99,54 @@ def _thrift_stem(thrift_file):
     base = thrift_file.split(":")[-1].split("/")[-1]
     return base[:-len(".thrift")] if base.endswith(".thrift") else base
 
-# haskell_library()/haskell_binary(), but their .thrift dependencies (and
-# the thrift_compile() targets for them) are declared inline instead of by
-# hand. `thrift_files` maps each .thrift file to the list of Haskell files
-# it generates (module paths, same as any other srcs entry - not
-# gen-hs2-prefixed):
+# A `srcs` dict for haskell_library()/haskell_binary()/haskell_test()
+# (buck2/haskell.bzl), covering both a target's `.thrift` dependencies and
+# any hand-written sources, in one call - the thrift_compile() targets for
+# each `.thrift` file are declared inline instead of by hand. `thrift_files`
+# maps each `.thrift` file to the list of Haskell files it generates
+# (module paths, same as any other srcs entry - not gen-hs2-prefixed):
 #
-#   thrift_haskell_library(
+#   haskell_library(
 #       name = "foo",
-#       thrift_files = {
-#           "if/Foo.thrift": ["Foo/Types.hs", "Foo/Service.hs"],
-#       },
-#       srcs = ["Handwritten.hs"],
+#       srcs = thrift_library(
+#           name = "foo",
+#           thrift_files = {
+#               "if/Foo.thrift": ["Foo/Types.hs", "Foo/Service.hs"],
+#           },
+#           srcs = ["Handwritten.hs"],
+#       ),
 #       ...
 #   )
 #
 # is equivalent to declaring a thrift_compile() per .thrift file and adding
 # {"Foo/Types.hs": ":<gen-target>[Foo/Types.hs]", ...} to srcs by hand, as
 # hsthrift/lib/BUCK originally did for gen-rpc-options/gen-application-
-# exception. This dict is only ever consumed by haskell_library()/
-# haskell_binary() (buck2/haskell.bzl), which resolves it (and any dict a
-# caller passes via `srcs` here) down to the plain list the native rule
-# needs - see the comment there for why (srcs as a dict is deprecated).
+# exception. This is a plain function returning a dict, not a rule of its
+# own - deliberately just one `thrift_library()` rather than a separate
+# thrift_haskell_library()/thrift_haskell_binary()/thrift_haskell_test()
+# per Haskell target kind (buck2.md TODO), since the only thing that ever
+# varied between those three was which already-existing haskell_*() macro
+# got called with the result - `name` has to be passed to both calls (once
+# to name this target's own generated thrift_compile() sub-targets, once
+# for the real haskell_*() target) since a plain function like this can't
+# see its caller's own `name = ` argument the way a macro effectively can.
+# The result is only ever consumed by haskell_library()/haskell_binary()/
+# haskell_test(), which resolve a dict `srcs` (and any dict a caller
+# passes via `srcs` here) down to the plain list the native rule needs -
+# see the comment there for why (srcs as a dict is deprecated on the
+# native rule itself).
 #
 # thrift_flags applies to every entry in thrift_files (--hs is automatic,
 # don't include it); a .thrift file needing different flags entirely (e.g.
 # a different -I - thrift-compiler rejects a repeated -I, so this can't
 # just be appended to thrift_flags) can replace them via
 # thrift_file_flags = {"if/Foo.thrift": ["--use-int", "-I", "other/dir"]}.
-def _thrift_srcs(name, thrift_files, thrift_flags, thrift_file_flags, srcs):
+def thrift_library(
+        name,
+        thrift_files = {},
+        thrift_flags = [],
+        thrift_file_flags = {},
+        srcs = []):
     all_srcs = dict(srcs) if type(srcs) == type({}) else {s: s for s in srcs}
 
     for thrift_file, outs in thrift_files.items():
@@ -144,36 +161,3 @@ def _thrift_srcs(name, thrift_files, thrift_flags, thrift_file_flags, srcs):
             all_srcs[out] = ":{}[{}]".format(gen_name, out)
 
     return all_srcs
-
-def thrift_haskell_library(
-        name,
-        thrift_files = {},
-        thrift_flags = [],
-        thrift_file_flags = {},
-        srcs = [],
-        **kwargs):
-    all_srcs = _thrift_srcs(name, thrift_files, thrift_flags, thrift_file_flags, srcs)
-    haskell_library(name = name, srcs = all_srcs, **kwargs)
-
-def thrift_haskell_binary(
-        name,
-        thrift_files = {},
-        thrift_flags = [],
-        thrift_file_flags = {},
-        srcs = [],
-        **kwargs):
-    all_srcs = _thrift_srcs(name, thrift_files, thrift_flags, thrift_file_flags, srcs)
-    haskell_binary(name = name, srcs = all_srcs, **kwargs)
-
-# Same as thrift_haskell_binary(), but for a test-suite (haskell_test()
-# instead of haskell_binary()) - hsthrift/tests/thrift-tests.cabal's own
-# test-suites all generate their fixtures from a .thrift file this way.
-def thrift_haskell_test(
-        name,
-        thrift_files = {},
-        thrift_flags = [],
-        thrift_file_flags = {},
-        srcs = [],
-        **kwargs):
-    all_srcs = _thrift_srcs(name, thrift_files, thrift_flags, thrift_file_flags, srcs)
-    haskell_test(name = name, srcs = all_srcs, **kwargs)
