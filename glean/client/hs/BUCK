@@ -11,7 +11,7 @@ cxx_library(
         "cpp/write.cpp",
     ],
     deps = [
-        "//hsthrift/folly-clib:folly-clib",
+        "@hsthrift//folly-clib:folly-clib",
     ],
     visibility = ["PUBLIC"],
 )
@@ -32,10 +32,10 @@ haskell_library(
     ],
     deps = [
         ":client-hs-cxx",
-        "//hsthrift/common/mangle:mangle",
-        "//hsthrift/common/util:fb-util",
-        "//hsthrift/haxl:thrift-haxl",
-        "//hsthrift/lib:thrift-lib",
+        "@hsthrift//common/mangle:mangle",
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//haxl:thrift-haxl",
+        "@hsthrift//lib:thrift-lib",
         "//glean/angle:angle",
         "//glean/backend-api:backend-api",
         "//glean/config:config",

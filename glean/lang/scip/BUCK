@@ -7,7 +7,7 @@ haskell_library(
         "Glean/SCIP/Driver.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
     ],
     packages = [
         "aeson",

@@ -8,7 +8,7 @@ haskell_library(
         "Glean/Indexer/JavaLsif.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/index:indexer-core",
         "//glean/lang/lsif:lsif",
         "//glean/lang/lsif/indexer:lsif-indexer",

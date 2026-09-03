@@ -83,7 +83,7 @@ def _thrift_compile_impl(ctx: AnalysisContext) -> list[Provider]:
 thrift_compile = rule(
     impl = _thrift_compile_impl,
     attrs = {
-        "compiler": attrs.exec_dep(providers = [RunInfo], default = "//hsthrift/compiler:thrift-compiler"),
+        "compiler": attrs.exec_dep(providers = [RunInfo], default = "@hsthrift//compiler:thrift-compiler"),
         "flags": attrs.list(attrs.string(), default = []),
         "out": attrs.string(default = "gen"),
         "outs": attrs.list(attrs.string(), default = []),

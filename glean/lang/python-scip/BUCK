@@ -8,7 +8,7 @@ haskell_library(
         "Glean/Indexer/PythonScip.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/index:indexer-core",
         "//glean/lang/scip:scip",
         "//glean/lang/scip/indexer:scip-indexer",

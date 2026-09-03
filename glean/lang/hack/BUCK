@@ -10,7 +10,7 @@ haskell_library(
         "Glean/Indexer/Hack.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/index:indexer-core",
     ],
     packages = [

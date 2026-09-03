@@ -10,7 +10,7 @@ haskell_library(
         "Glean/Indexer/Haskell.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/index:indexer-core",
     ],
     packages = [
@@ -35,8 +35,8 @@ haskell_binary(
         "HieIndexer/Options.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
-        "//hsthrift/lib:thrift-lib",
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
         "//glean/client/hs:client-hs",
         "//glean/client/hs/local:client-hs-local",
         "//glean/hs:core",

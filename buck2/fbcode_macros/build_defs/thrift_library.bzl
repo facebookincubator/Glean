@@ -49,7 +49,7 @@ def thrift_library(
             # Not in any deps/hs2_deps list gen-schema emits, but the
             # generated Types.hs genuinely imports Thrift.Binary.Parser/
             # Thrift.CodegenTypesOnly directly - see buck2.md.
-            "//hsthrift/lib:thrift-lib",
+            "@hsthrift//lib:thrift-lib",
         ],
         visibility = ["PUBLIC"],
     )

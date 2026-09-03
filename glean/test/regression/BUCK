@@ -17,7 +17,7 @@ haskell_library(
         "Glean/Regression/Test.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/client/hs:client-hs",
         "//glean/client/hs/local:client-hs-local",
         "//glean/db:db",

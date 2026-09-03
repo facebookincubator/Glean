@@ -21,7 +21,7 @@ haskell_library(
         "Glean/Schema/Util.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/if:if-glean-hs",
     ],
     packages = [

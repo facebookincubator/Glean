@@ -21,7 +21,7 @@ _INDEXER_TEST_ARGS = ["--indexer=$(exe //glean/lang/clang:clang-index)"]
 # obvious per-target helper - BUCK files, unlike `.bzl` ones, don't allow
 # function definitions.)
 _COMMON_DEPS = [
-    "//hsthrift/common/util:fb-util",
+    "@hsthrift//common/util:fb-util",
     "//glean/index:indexer-core",
     "//glean/lang/clang:clang-indexer",
     "//glean/lib:lib",

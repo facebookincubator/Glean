@@ -9,7 +9,7 @@ haskell_library(
         "Glean/Dump.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/angle:angle",
         "//glean/backend-api:backend-api",
         "//glean/hs:core",

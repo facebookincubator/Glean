@@ -4,6 +4,33 @@
   toolchains = buck2/toolchains
   none = none
   fbcode_macros = buck2/fbcode_macros
+  hsthrift = hsthrift
+  # A single third-party cell (rather than a plain //third-party/... path)
+  # so this same name means "wherever the *outermost* project's prebuilt
+  # Hackage packages live" from both Glean's and hsthrift's own buck2/*.bzl
+  # files - cell names are global per project (see buck2.md's hsthrift-cell
+  # entry), so hsthrift's generated deps (haskell_library() etc, via its own
+  # duplicated buck2/haskell.bzl) resolve @third-party// to *this* mapping
+  # when nested here, not its own hsthrift/third-party/. That's exactly the
+  # point: Glean's root cabal.project already lists hsthrift's own .cabal
+  # files as packages, so Glean's third-party/haskell/ already carries
+  # everything hsthrift needs too - one prebuilt copy of e.g. `array`
+  # instead of two different buck2 target identities wrapping the same
+  # underlying .so, which is what made a single Glean target depending on
+  # both hsthrift and Glean's own Haskell code fail to link (buck2 refuses
+  # to merge two different libraries claiming the same soname, even when
+  # the files are byte-identical).
+  third-party = third-party
+  # Carved out as their own (otherwise-unused) cells purely so buck2 treats
+  # them as cell boundaries and excludes them from the `hsthrift//...`
+  # wildcard - these are hsthrift's own standalone-mode copies (for building
+  # hsthrift outside of Glean), dead weight here since cell names are global
+  # and any `prelude//...`/`toolchains//...`/`third-party//...` reference
+  # from within hsthrift's buck2/*.bzl files resolves to Glean's own cells
+  # above when nested inside this project.
+  hsthrift-prelude = hsthrift/buck2/prelude
+  hsthrift-toolchains = hsthrift/buck2/toolchains
+  hsthrift-third-party = hsthrift/third-party
 
 [cell_aliases]
   config = prelude
@@ -20,7 +47,9 @@
 [parser]
   target_platform_detector_spec = target:root//...->prelude//platforms:default \
     target:prelude//...->prelude//platforms:default \
-    target:toolchains//...->prelude//platforms:default
+    target:toolchains//...->prelude//platforms:default \
+    target:hsthrift//...->prelude//platforms:default \
+    target:third-party//...->prelude//platforms:default
 
 [build]
   execution_platforms = prelude//platforms:default

@@ -8,7 +8,7 @@ haskell_library(
         "Glean/LocalOrRemote.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/backend-local:backend-local",
         "//glean/hs:core",
         "//glean/client/hs:client-hs",

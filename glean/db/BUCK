@@ -98,8 +98,8 @@ haskell_library(
         "Glean/Write/JSON.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
-        "//hsthrift/lib:thrift-lib",
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
         "//glean/angle:angle",
         "//glean/backend-api:backend-api",
         "//glean/bytecode:bytecode",

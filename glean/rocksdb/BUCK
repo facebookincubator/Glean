@@ -29,8 +29,8 @@ cxx_library(
         "-lrocksdb",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util-cxx",
-        "//hsthrift/folly-clib:folly-clib",
+        "@hsthrift//common/util:fb-util-cxx",
+        "@hsthrift//folly-clib:folly-clib",
         "//glean/rts:rts",
         "//glean/storage:storage",
     ],
