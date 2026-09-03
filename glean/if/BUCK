@@ -1,14 +1,32 @@
 load("//buck2:haskell.bzl", "haskell_library")
-load("//buck2:thrift.bzl", "thrift_library")
-# Cabal's `if-glean-hs` library (glean.cabal.in).
+load("//buck2:thrift.bzl", "thrift_srcs", "thrift_srcs_export")
+# hs_include'd verbatim into the generated Types.hs by thrift-compiler - a
+# thrift_srcs_export() rather than a plain export_file() so if-glean-hs
+# can `deps` on it (thrift_compile()'s `deps` needs the ThriftSrcsInfo
+# provider, which only thrift_srcs_export()/thrift_srcs()/thrift_library()
+# targets carry).
+thrift_srcs_export(
+    name = "glean_include.hs",
+    srcs = {"glean/if/glean_include.hs": "glean_include.hs"},
+)
+
+# Cabal's `if-glean-hs` library (glean.cabal.in). glean.thrift's own
+# `include`s need if-fb303-hs/if-auth-hs/thrift-annotation's own thrift
+# files.
 haskell_library(
     name = "if-glean-hs",
-    srcs = thrift_library(
+    srcs = thrift_srcs(
         name = "if-glean-hs",
         thrift_files = {
         "glean.thrift": ["Glean/Types.hs", "Glean/GleanService/Client.hs", "Glean/GleanService/Service.hs"],
     },
-        thrift_flags = ["-I", "."],
+        deps = [
+        ":glean_include.hs",
+        "//glean/github/if:if-fb303-hs-thrift",
+        "//glean/if/facebook:if-auth-hs-thrift",
+        "//thrift/annotation:thrift-annotation-thrift",
+    ],
+        full_paths = True,
     ),
     deps = [
         "@hsthrift//common/util:fb-util",
@@ -37,12 +55,16 @@ haskell_library(
 # Cabal's `if-index-hs` library (glean.cabal.in).
 haskell_library(
     name = "if-index-hs",
-    srcs = thrift_library(
+    srcs = thrift_srcs(
         name = "if-index-hs",
         thrift_files = {
         "index.thrift": ["Glean/Index/Types.hs", "Glean/Index/GleanIndexingService/Client.hs", "Glean/Index/GleanIndexingService/Service.hs"],
     },
-        thrift_flags = ["-I", "."],
+        deps = [
+        ":if-glean-hs-thrift",
+        "//thrift/annotation:thrift-annotation-thrift",
+    ],
+        full_paths = True,
     ),
     deps = [
         "@hsthrift//common/util:fb-util",
@@ -69,12 +91,17 @@ haskell_library(
 # Cabal's `if-internal-hs` library (glean.cabal.in).
 haskell_library(
     name = "if-internal-hs",
-    srcs = thrift_library(
+    srcs = thrift_srcs(
         name = "if-internal-hs",
         thrift_files = {
         "internal.thrift": ["Glean/Internal/Types.hs"],
     },
-        thrift_flags = ["-I", "."],
+        deps = [
+        "//glean/config:config-thrift",
+        ":if-glean-hs-thrift",
+        "//thrift/annotation:thrift-annotation-thrift",
+    ],
+        full_paths = True,
     ),
     deps = [
         "@hsthrift//common/util:fb-util",
