@@ -1,14 +1,14 @@
 load("//buck2:haskell.bzl", "haskell_library")
-load("//buck2:thrift.bzl", "thrift_library")
+load("//buck2:thrift.bzl", "thrift_srcs")
 # Cabal's `thrift-annotation` library (glean.cabal.in): the standard Thrift
 # annotation IDLs, generated to Haskell. cpp/haskell/hack/rust/thrift.thrift
 # all `include "thrift/annotation/scope.thrift"` (and cpp/haskell also
-# thrift.thrift) by full repo-root-relative path, so thrift_flags needs
-# `-I .` (cwd is the repo root - see buck2/thrift.bzl) rather than the
-# package-relative `-I <dir>` hsthrift/lib uses for its own local includes.
+# thrift.thrift) - every file below sees every other one automatically,
+# since they're all in the same thrift_files dict (see thrift_srcs()'s own
+# comment in buck2/thrift.bzl).
 haskell_library(
     name = "thrift-annotation",
-    srcs = thrift_library(
+    srcs = thrift_srcs(
         name = "thrift-annotation",
         thrift_files = {
         "scope.thrift": ["Scope/Types.hs"],
@@ -18,7 +18,7 @@ haskell_library(
         "hack.thrift": ["Hack/Types.hs"],
         "rust.thrift": ["Rust/Types.hs"],
     },
-        thrift_flags = ["-I", "."],
+        full_paths = True,
     ),
     deps = [
         "@hsthrift//common/util:fb-util",

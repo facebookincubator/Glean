@@ -1,14 +1,16 @@
 load("//buck2:haskell.bzl", "haskell_library")
-load("//buck2:thrift.bzl", "thrift_library")
-# Cabal's `if-auth-hs` library (glean.cabal.in).
+load("//buck2:thrift.bzl", "thrift_srcs")
+# Cabal's `if-auth-hs` library (glean.cabal.in). auth.thrift has no
+# `include`s of its own, but exports itself (via `deps`-ability) as
+# //glean/if/facebook:if-auth-hs-thrift for glean/glass/if's own use.
 haskell_library(
     name = "if-auth-hs",
-    srcs = thrift_library(
+    srcs = thrift_srcs(
         name = "if-auth-hs",
         thrift_files = {
         "auth.thrift": ["Glean/Auth/Auth/Types.hs"],
     },
-        thrift_flags = ["-I", "."],
+        full_paths = True,
     ),
     deps = [
         "@hsthrift//common/util:fb-util",

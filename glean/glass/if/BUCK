@@ -1,10 +1,12 @@
 load("//buck2:haskell.bzl", "haskell_library")
-load("//buck2:thrift.bzl", "thrift_library")
+load("//buck2:thrift.bzl", "thrift_srcs")
 # Cabal's `if-glass-hs` library (glean.cabal.in): the Glass thrift service
-# definition.
+# definition. glass.thrift's own `include`s of glean/github/if/fb303.thrift,
+# glean/if/facebook/auth.thrift and several thrift/annotation/*.thrift need
+# those packages' own thrift files via `deps`.
 haskell_library(
     name = "if-glass-hs",
-    srcs = thrift_library(
+    srcs = thrift_srcs(
         name = "if-glass-hs",
         thrift_files = {
         "glass.thrift": [
@@ -13,7 +15,12 @@ haskell_library(
             "Glean/Glass/GlassService/Service.hs",
         ],
     },
-        thrift_flags = ["-I", "."],
+        deps = [
+        "//glean/github/if:if-fb303-hs-thrift",
+        "//glean/if/facebook:if-auth-hs-thrift",
+        "//thrift/annotation:thrift-annotation-thrift",
+    ],
+        full_paths = True,
     ),
     deps = [
         "@hsthrift//common/util:fb-util",

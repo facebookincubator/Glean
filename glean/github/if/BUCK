@@ -1,15 +1,19 @@
 load("//buck2:haskell.bzl", "haskell_library")
-load("//buck2:thrift.bzl", "thrift_library")
-# Cabal's `if-fb303-hs` library (glean.cabal.in).
+load("//buck2:thrift.bzl", "thrift_srcs")
+# Cabal's `if-fb303-hs` library (glean.cabal.in). fb303.thrift's own
+# `include "glean/github/if/fb303_core.thrift"` resolves automatically
+# (both in the same thrift_files dict below); fb303_core.thrift's own
+# annotation `include` needs thrift/annotation's own thrift files.
 haskell_library(
     name = "if-fb303-hs",
-    srcs = thrift_library(
+    srcs = thrift_srcs(
         name = "if-fb303-hs",
         thrift_files = {
         "fb303_core.thrift": ["Fb303Core/Types.hs", "Fb303Core/BaseService/Client.hs", "Fb303Core/BaseService/Service.hs"],
         "fb303.thrift": ["Fb303/Types.hs", "Fb303/FacebookService/Client.hs", "Fb303/FacebookService/Service.hs"],
     },
-        thrift_flags = ["-I", "."],
+        deps = ["//thrift/annotation:thrift-annotation-thrift"],
+        full_paths = True,
     ),
     deps = [
         "@hsthrift//common/util:fb-util",

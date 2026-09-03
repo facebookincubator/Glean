@@ -1,19 +1,23 @@
 load("//buck2:haskell.bzl", "haskell_library")
-load("//buck2:thrift.bzl", "thrift_library")
+load("//buck2:thrift.bzl", "thrift_srcs")
 # Cabal's `config` library (glean.cabal.in): only service/client/server
 # config, not recipes or glass repomapping (those aren't part of the `config`
 # library's exposed-modules in glean.cabal.in, even though they live under
-# this same directory tree).
+# this same directory tree). client_config.thrift's own `include
+# "glean/config/service.thrift"` resolves automatically (both in the same
+# thrift_files dict below); the standard annotation `include`s each of the
+# three make need `//thrift/annotation`'s own thrift files via `deps`.
 haskell_library(
     name = "config",
-    srcs = thrift_library(
+    srcs = thrift_srcs(
         name = "config",
         thrift_files = {
         "service.thrift": ["Glean/Service/Types.hs"],
         "client/client_config.thrift": ["Glean/ClientConfig/Types.hs"],
         "server/server_config.thrift": ["Glean/ServerConfig/Types.hs"],
     },
-        thrift_flags = ["-I", "."],
+        deps = ["//thrift/annotation:thrift-annotation-thrift"],
+        full_paths = True,
     ),
     deps = [
         "@hsthrift//common/util:fb-util",
