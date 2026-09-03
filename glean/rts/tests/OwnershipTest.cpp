@@ -68,6 +68,21 @@ struct TestOwnership final : Ownership {
   std::vector<UsetId> facts_; // Owner set for each fact
 };
 
+SetExpr<MutableOwnerSet> makeSetExpr(SetOp op, std::set<UsetId> members) {
+  const auto upper = members.empty() ? 0 : *members.rbegin() + 1;
+  return {op, SetU32::from(members).toEliasFano(upper)};
+}
+
+std::vector<SetExpr<MutableOwnerSet>> makeSetExprs(
+    std::initializer_list<std::pair<SetOp, std::set<UsetId>>> specs) {
+  std::vector<SetExpr<MutableOwnerSet>> result;
+  result.reserve(specs.size());
+  for (const auto& [op, members] : specs) {
+    result.push_back(makeSetExpr(op, members));
+  }
+  return result;
+}
+
 std::unique_ptr<OwnershipSetIterator> TestOwnership::getSetIterator() {
   struct MemorySetIterator : OwnershipSetIterator {
     MemorySetIterator(
@@ -99,6 +114,14 @@ std::unique_ptr<OwnershipSetIterator> TestOwnership::getSetIterator() {
   };
 
   return std::make_unique<MemorySetIterator>(firstId_, sets_);
+}
+
+std::vector<bool> visibleUsets(const Slice& slice, UsetId first, UsetId end) {
+  std::vector<bool> result;
+  for (UsetId id = first; id < end; ++id) {
+    result.push_back(slice.visible(id));
+  }
+  return result;
 }
 
 void checkVisibility(
@@ -307,6 +330,137 @@ TEST(OwnershipTest, SliceTest) {
   checkVisibility(ownership, firstUsetId, numSets, {0, 2}, false);
   checkVisibility(ownership, firstUsetId, numSets, {0, 1, 2}, true);
   checkVisibility(ownership, firstUsetId, numSets, {0, 1, 2}, false);
+}
+
+TEST(OwnershipTest, SlicesRequireEveryCoveringSliceToBeVisible) {
+  boost::dynamic_bitset<uint64_t> ownershipBits(4);
+  ownershipBits.set(0);
+  ownershipBits.set(2);
+  ownershipBits.set(3);
+  Slice ownership(10, ownershipBits);
+
+  boost::dynamic_bitset<uint64_t> aclBits(4);
+  aclBits.set(0);
+  aclBits.set(1);
+  aclBits.set(3);
+  Slice acl(10, aclBits);
+
+  Slices slices({&ownership, &acl});
+
+  EXPECT_EQ(slices.first(), 10);
+  EXPECT_EQ(slices.end(), 14);
+  EXPECT_TRUE(slices.visible(10));
+  EXPECT_FALSE(slices.visible(11));
+  EXPECT_FALSE(slices.visible(12));
+  EXPECT_TRUE(slices.visible(13));
+  EXPECT_FALSE(slices.visible(14));
+  EXPECT_FALSE(slices.visible(INVALID_USET));
+}
+
+TEST(OwnershipTest, SlicesRangeCanContainGapsThatAreNotVisible) {
+  boost::dynamic_bitset<uint64_t> lowerBits(2);
+  lowerBits.set(0);
+  Slice lower(20, lowerBits);
+
+  boost::dynamic_bitset<uint64_t> upperBits(1);
+  upperBits.set(0);
+  Slice upper(30, upperBits);
+
+  Slices slices({&upper, &lower});
+
+  EXPECT_EQ(slices.first(), 20);
+  EXPECT_EQ(slices.end(), 31);
+  EXPECT_TRUE(slices.inRange(25));
+  EXPECT_FALSE(slices.visible(25));
+}
+
+TEST(OwnershipTest, EmptyOwnershipUsesBaseEndAsEmptySliceStart) {
+  boost::dynamic_bitset<uint64_t> baseBits(3);
+  baseBits.set(0);
+  Slice baseSlice(40, baseBits);
+  Slices base({&baseSlice});
+
+  TestOwnership ownership(
+      100, std::vector<SetExpr<MutableOwnerSet>>{}, std::vector<UsetId>{});
+
+  const auto result = slice(ownership, base, {41}, false);
+
+  EXPECT_TRUE(result->empty());
+  EXPECT_EQ(result->first(), base.end());
+  EXPECT_EQ(result->end(), base.end());
+}
+
+TEST(OwnershipTest, SliceUsesVisibleBaseSetsAndCurrentUnits) {
+  boost::dynamic_bitset<uint64_t> baseBits(2);
+  baseBits.set(0);
+  Slice baseSlice(50, baseBits);
+  Slices base({&baseSlice});
+
+  TestOwnership ownership(
+      100,
+      makeSetExprs({
+          {Or, {50}},
+          {Or, {51, 60}},
+          {And, {50, 60}},
+          {And, {51, 60}},
+      }),
+      std::vector<UsetId>{});
+
+  const auto result = slice(ownership, base, {60}, false);
+
+  EXPECT_EQ(
+      visibleUsets(*result, 100, 104),
+      std::vector<bool>({
+          true,
+          true,
+          true,
+          false,
+      }));
+}
+
+TEST(OwnershipTest, SliceExclusionPropagatesThroughCurrentDbSets) {
+  Slices base({});
+  TestOwnership ownership(
+      10,
+      makeSetExprs({
+          {Or, {1, 2}},
+          {And, {1, 2}},
+          {Or, {10, 11}},
+          {And, {10, 11}},
+      }),
+      std::vector<UsetId>{});
+
+  const auto result = slice(ownership, base, {1}, true);
+
+  EXPECT_EQ(
+      visibleUsets(*result, 10, 14),
+      std::vector<bool>({
+          true,
+          false,
+          true,
+          false,
+      }));
+}
+
+TEST(OwnershipTest, SliceSerializationPreservesVisibleMembers) {
+  boost::dynamic_bitset<uint64_t> bits(70);
+  bits.set(0);
+  bits.set(3);
+  bits.set(65);
+  Slice original(200, bits);
+
+  binary::Output output;
+  original.serialize(output);
+  binary::Input input(output.data(), output.size());
+
+  const auto restored = Slice::deserialize(input);
+
+  EXPECT_EQ(restored->first(), 200);
+  EXPECT_TRUE(restored->visible(200));
+  EXPECT_FALSE(restored->visible(201));
+  EXPECT_TRUE(restored->visible(203));
+  EXPECT_TRUE(restored->visible(265));
+  EXPECT_FALSE(restored->visible(266));
 }
 
 struct SetSerializationTest : testing::Test {};
