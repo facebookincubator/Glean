@@ -1,4 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_test")
+load("//third-party/haskell:tools.bzl", "GHC_BIN_DIR")
 
 # Cabal's `glean-snapshot-haskell` test-suite (glean.cabal.in): needs
 # `hie-indexer` (//glean/lang/haskell:hie-indexer) and a GHC matching the
@@ -6,7 +7,7 @@ load("//buck2:haskell.bzl", "haskell_test")
 # `build-tool-depends:` puts hie-indexer on PATH automatically under
 # `cabal test`, and the ambient `cabal test` shell's own `ghc` happens to
 # already be the right version; under buck2 there's no such guarantee
-# (this shell's own default `ghc` is 9.6.7, not this toolchain's 9.4.8,
+# (this shell's own default `ghc` may not match this toolchain's own -
 # and hie-indexer panics on the resulting `.hie` file version mismatch:
 # "readHieFile: hie file versions don't match ... Expected 9048 but got
 # 9067" - see buck2.md), so both are passed explicitly via flags
@@ -34,7 +35,7 @@ haskell_test(
     # parser rejects a flag given twice), so the only way to point it at
     # the right GHC is to make bare `ghc` resolve there via `$PATH`.
     test_env = {
-        "PATH": "third-party/haskell/ghc-9.4.8/bin:/usr/bin:/bin",
+        "PATH": GHC_BIN_DIR + ":/usr/bin:/bin",
     },
     visibility = ["PUBLIC"],
 )

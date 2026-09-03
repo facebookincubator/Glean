@@ -1,13 +1,27 @@
 load("@prelude//toolchains:demo.bzl", "system_demo_toolchains")
 load("@toolchains//haskell.bzl", "haskell_toolchain")
+load("@root//third-party/haskell:tools.bzl", "GHC_VERSION")
 
 # Defaults for other toolchains
 system_demo_toolchains()
 
+# `compiler`/`packager` are resolved via $PATH at build-action time (see
+# buck2/toolchains/haskell.bzl - this is a thin custom rule, not the
+# prelude's own real haskell_toolchain, so there's no absolute-path
+# resolution here), relying on the version-suffixed-binary convention
+# most GHC install methods provide (e.g. `ghc-9.4.8` alongside the bare
+# `ghc`) - not specific to any one of them (ghcup, distro packages, Nix,
+# ...), see mk/gen-haskell-prebuilt.py's own `_find_ghc()` for the same
+# convention (with a bare-binary fallback) used to find GHC's own tools
+# directly. GHC_VERSION itself comes from that script's own generated
+# generated third-party/haskell/tools.bzl (in turn read from Cabal's
+# plan.json - see that script's own comment) rather than being hardcoded
+# here, so re-running that script after `cabal build all
+# --only-dependencies -w ghc-<version>` retargets this too.
 haskell_toolchain(
     name = "haskell",
-    compiler = "ghc-9.4.8",
-    packager = "ghc-pkg-9.4.8",
+    compiler = "ghc-" + GHC_VERSION,
+    packager = "ghc-pkg-" + GHC_VERSION,
     haddock = "haddock",
     compiler_flags = ["-O"],
     linker_flags = [],
