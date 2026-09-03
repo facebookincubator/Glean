@@ -71,8 +71,8 @@ cxx_binary(
         "-lre2",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util-cxx",
-        "//hsthrift/folly-clib:folly-clib",
+        "@hsthrift//common/util:fb-util-cxx",
+        "@hsthrift//folly-clib:folly-clib",
         "//glean/rts:rts",
         "//glean/cpp:client-cpp",
         # Not in glean-clang.cabal's own `build-depends: glean:rts,
@@ -100,9 +100,9 @@ haskell_library(
         "Glean/Indexer/Cpp.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
-        "//hsthrift/http:thrift-http",
-        "//hsthrift/lib:thrift-lib",
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//http:thrift-http",
+        "@hsthrift//lib:thrift-lib",
         "//glean/client/hs:client-hs",
         "//glean/client/hs/local:client-hs-local",
         "//glean/index:indexer-core",
@@ -141,7 +141,7 @@ haskell_library(
         "Derive/Types.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/client/hs:client-hs",
         "//glean/client/hs/local:client-hs-local",
         "//glean/hs:core",

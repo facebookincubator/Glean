@@ -51,7 +51,7 @@ haskell_library(
         "Glean/Write/Stats.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/angle:angle",
         "//glean/bytecode:bytecode",
         "//glean/config:config",

@@ -10,7 +10,7 @@ haskell_library(
         "Glean/Interprocess/Worklist.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/interprocess/cpp:interprocess-cpp",
     ],
     packages = [

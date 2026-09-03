@@ -16,8 +16,8 @@ haskell_library(
         thrift_flags = ["-I", "."],
     ),
     deps = [
-        "//hsthrift/common/util:fb-util",
-        "//hsthrift/lib:thrift-lib",
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
         "//glean/config:config",
         "//glean/if/facebook:if-auth-hs",
         "//glean/github/if:if-fb303-hs",

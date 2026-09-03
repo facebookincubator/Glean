@@ -38,9 +38,9 @@ haskell_library(
         "Glean/Util/Warden.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
-        "//hsthrift/http:thrift-http",
-        "//hsthrift/lib:thrift-lib",
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//http:thrift-http",
+        "@hsthrift//lib:thrift-lib",
         "//glean/config:config",
         "//glean/github:stubs",
         "//glean/if:if-glean-hs",

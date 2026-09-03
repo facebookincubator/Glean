@@ -13,7 +13,7 @@ haskell_library(
         "Glean/Indexer/List.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/index:indexer-core",
         "//glean/lang/angle:angle-indexer",
         "//glean/lang/clang:clang-indexer",

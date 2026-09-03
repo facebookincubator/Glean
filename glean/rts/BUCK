@@ -130,8 +130,8 @@ cxx_library(
         "//glean/bytecode:bytecode-cpp",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util-cxx",
-        "//hsthrift/folly-clib:folly-clib",
+        "@hsthrift//common/util:fb-util-cxx",
+        "@hsthrift//folly-clib:folly-clib",
     ],
     visibility = ["PUBLIC"],
 )

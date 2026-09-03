@@ -25,7 +25,7 @@ haskell_library(
         "Glean/Shell/Types.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/angle:angle",
         "//glean/tools/gleancli/plugin:cli-types",
         "//glean/if:if-glean-hs",

@@ -10,7 +10,7 @@ haskell_library(
         "Glean/Indexer/LSIF.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/client/hs:client-hs",
         "//glean/index:indexer-core",
         "//glean/lang/lsif:lsif",

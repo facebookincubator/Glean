@@ -14,7 +14,7 @@ haskell_library(
         "Glean/Query/Thrift/Internal.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/if:if-glean-hs",
         "//glean/typed:typed",
         "//glean/util:util",

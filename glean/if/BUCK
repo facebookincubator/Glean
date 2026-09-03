@@ -11,8 +11,8 @@ haskell_library(
         thrift_flags = ["-I", "."],
     ),
     deps = [
-        "//hsthrift/common/util:fb-util",
-        "//hsthrift/lib:thrift-lib",
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
         "//glean/config:config",
         "//glean/github/if:if-fb303-hs",
         "//glean/if/facebook:if-auth-hs",
@@ -45,8 +45,8 @@ haskell_library(
         thrift_flags = ["-I", "."],
     ),
     deps = [
-        "//hsthrift/common/util:fb-util",
-        "//hsthrift/lib:thrift-lib",
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
         ":if-glean-hs",
         "//thrift/annotation:thrift-annotation",
     ],
@@ -77,8 +77,8 @@ haskell_library(
         thrift_flags = ["-I", "."],
     ),
     deps = [
-        "//hsthrift/common/util:fb-util",
-        "//hsthrift/lib:thrift-lib",
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
         "//glean/config:config",
         ":if-glean-hs",
         "//thrift/annotation:thrift-annotation",

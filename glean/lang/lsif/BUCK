@@ -18,7 +18,7 @@ haskell_library(
         "Glean/LSIF/Driver.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
     ],
     packages = [
         "aeson",

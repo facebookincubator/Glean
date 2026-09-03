@@ -8,7 +8,7 @@ haskell_library(
         "Haxl/DataSource/Glean/Common.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/backend-api:backend-api",
         "//glean/config:config",
         "//glean/hs:core",

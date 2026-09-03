@@ -11,7 +11,7 @@ haskell_library(
         "GleanCLI/Utils.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/client/hs/local:client-hs-local",
         "//glean/config:config",
         "//glean/db:db",

@@ -14,7 +14,7 @@ haskell_test(
         "Angle/AngleTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -42,7 +42,7 @@ haskell_test(
         "Angle/ErrorTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -68,7 +68,7 @@ haskell_test(
         "Angle/NestedTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -94,7 +94,7 @@ haskell_test(
         "Angle/DerivedTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -119,7 +119,7 @@ haskell_test(
         "Angle/SetTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -144,7 +144,7 @@ haskell_test(
         "Angle/StoredTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -169,7 +169,7 @@ haskell_test(
         "Angle/ArrayTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -194,7 +194,7 @@ haskell_test(
         "Angle/RecExpansionTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -219,7 +219,7 @@ haskell_test(
         "Angle/DataTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -243,7 +243,7 @@ haskell_test(
         "Angle/OptTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -269,7 +269,7 @@ haskell_test(
         "Angle/MiscTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -295,7 +295,7 @@ haskell_test(
         "ApiTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/github:stubs",
@@ -318,7 +318,7 @@ haskell_test(
         "CppCatchTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/backend-api:backend-api",
@@ -342,8 +342,8 @@ haskell_test(
         "JSONWriteTest.hs",
     ],
     deps = [
-        "//hsthrift/lib:thrift-lib",
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -370,7 +370,7 @@ haskell_test(
         "RTSTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -395,7 +395,7 @@ haskell_test(
         "RTSJSONTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/github:stubs",
@@ -416,7 +416,7 @@ haskell_test(
         "DatabaseJanitorTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/github:stubs",
@@ -440,7 +440,7 @@ haskell_test(
         "DbDeriveTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -467,7 +467,7 @@ haskell_test(
         "BackupTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/backend-api:backend-api",
@@ -493,7 +493,7 @@ haskell_test(
         "CatalogTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/github:stubs",
@@ -518,7 +518,7 @@ haskell_test(
         "LifecycleTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/client/hs:client-hs",
@@ -544,7 +544,7 @@ haskell_test(
         "TestShard.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/backend-api:backend-api",
@@ -565,7 +565,7 @@ haskell_test(
         "DbPropertiesTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/backend-api:backend-api",
@@ -587,7 +587,7 @@ haskell_test(
         "ParserTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -607,8 +607,8 @@ haskell_test(
         "Schema/Lib.hs",
     ],
     deps = [
-        "//hsthrift/lib:thrift-lib",
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -636,8 +636,8 @@ haskell_test(
         "Schema/Lib.hs",
     ],
     deps = [
-        "//hsthrift/lib:thrift-lib",
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -664,8 +664,8 @@ haskell_test(
         "Schema/Lib.hs",
     ],
     deps = [
-        "//hsthrift/lib:thrift-lib",
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -691,7 +691,7 @@ haskell_test(
         "InventoryTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/hs:core",
@@ -712,7 +712,7 @@ haskell_test(
         "ContinuationTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/backend-api:backend-api",
@@ -734,7 +734,7 @@ haskell_test(
         "LookupTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/github:stubs",
@@ -755,7 +755,7 @@ haskell_test(
         "IncrementalTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/angle:angle",
@@ -788,7 +788,7 @@ haskell_test(
         "DatabaseJanitorTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/backend-api:backend-api",
@@ -815,7 +815,7 @@ haskell_test(
         "TimeoutTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/backend-api:backend-api",
@@ -837,7 +837,7 @@ haskell_test(
         "StorageRocksDBTest.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/test/lib:test-lib",
         "//glean/test/unit:test-unit",
         "//glean/config:config",

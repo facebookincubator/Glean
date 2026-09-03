@@ -16,8 +16,8 @@ haskell_library(
         thrift_flags = ["-I", "."],
     ),
     deps = [
-        "//hsthrift/common/util:fb-util",
-        "//hsthrift/lib:thrift-lib",
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
         "//thrift/annotation:thrift-annotation",
     ],
     packages = [

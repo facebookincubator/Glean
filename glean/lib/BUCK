@@ -7,7 +7,7 @@ haskell_library(
         "Glean/Derive.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/client/hs:client-hs",
         "//glean/if:if-glean-hs",
     ],
@@ -35,7 +35,7 @@ haskell_library(
         "Glean/Util/PredSet.hs",
     ],
     deps = [
-        "//hsthrift/common/util:fb-util",
+        "@hsthrift//common/util:fb-util",
         "//glean/client/hs:client-hs",
         "//glean/hs:core",
         "//glean/db:db",
