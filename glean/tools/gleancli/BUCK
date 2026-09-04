@@ -14,7 +14,7 @@ haskell_binary(
     # this for free (haskeline's own .so already records libtinfo as a
     # DT_NEEDED dependency), but this migration's `opt` mode links
     # statically, and the third-party/haskell/BUCK generator
-    # (mk/gen-haskell-prebuilt.py) doesn't currently carry over a prebuilt
+    # (buck2/gen-haskell-prebuilt.py) doesn't currently carry over a prebuilt
     # package's own `extra-libraries-static:` from its real GHC package
     # conf, so nothing else declares this dependency.
     linker_flags = ["-with-rtsopts=-I0", "-ltinfo"],

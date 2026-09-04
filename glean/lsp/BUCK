@@ -8,7 +8,7 @@ load("//buck2:haskell.bzl", "haskell_binary")
 # 5 extra Hackage deps (lsp, text-rope, Diff, unliftio, unliftio-core)
 # needed a `cabal build --only-dependencies exe:glean-lsp` run and a new
 # `(pkg == 'glean-lsp' and comp == 'exe:glean-lsp')` root in
-# mk/gen-haskell-prebuilt.py's get_root_dep_ids() - nothing in
+# buck2/gen-haskell-prebuilt.py's get_root_dep_ids() - nothing in
 # glean.cabal.in's own project happens to need any of them (see buck2.md).
 #
 # This package's own `common fb-haskell` (glean-lsp.cabal) is

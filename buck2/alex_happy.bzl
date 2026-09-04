@@ -1,7 +1,7 @@
 # Rules for running alex and happy.
 #
 # Unlike hsc2hs, alex/happy don't ship with GHC - they're separate Hackage
-# packages. mk/gen-haskell-prebuilt.py asks Cabal where it put them
+# packages. buck2/gen-haskell-prebuilt.py asks Cabal where it put them
 # (`cabal list-bin alex`/`happy`) and freezes the answer in
 # third-party/haskell/tools.bzl, the same "Cabal identifies/builds it,
 # buck2 just references the frozen result" approach third-party/haskell/BUCK

@@ -4,7 +4,7 @@
 # reuse the same CPreprocessorInfo providers that real cxx_library() compiles
 # use, so anything a C++ dependency exports via `public_include_directories`,
 # `exported_headers` (see buck2/cxx.bzl), or (for a haskell_prebuilt_
-# library()) `cxx_header_dirs` (see mk/gen-haskell-prebuilt.py) is picked up
+# library()) `cxx_header_dirs` (see buck2/gen-haskell-prebuilt.py) is picked up
 # automatically. The C++ compiler and the hsc2hs binary itself both come
 # from the cxx/haskell toolchains (toolchains/BUCK, toolchains/haskell.bzl)
 # rather than being hardcoded here.
@@ -71,7 +71,7 @@ def _hsc2hs_impl(ctx: AnalysisContext) -> list[Provider]:
     # tools.bzl, which really are separate Cabal packages) - derive the
     # version from the haskell toolchain's own compiler name instead
     # (buck2/toolchains/BUCK sets compiler = "ghc-" + GHC_VERSION, read
-    # from Cabal's own resolved plan - see mk/gen-haskell-prebuilt.py).
+    # from Cabal's own resolved plan - see buck2/gen-haskell-prebuilt.py).
     ghc_compiler = ctx.attrs._haskell_toolchain[HaskellToolchainInfo].compiler
     ghc_version = ghc_compiler[len("ghc-"):] if ghc_compiler.startswith("ghc-") else ghc_compiler
     hsc2hs_tool = "hsc2hs-" + ghc_version
