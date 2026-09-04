@@ -1,0 +1,43 @@
+# https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning
+name: CodeQL
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: '31 4 * * 1'
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        # Only languages that CodeQL can analyze without building Glean.
+        # Analyzing c-cpp needs the full hsthrift/folly/rocksdb/GHC toolchain
+        # from ci.yml, and go/csharp are a handful of files, so they are left
+        # out rather than run a second heavyweight build on every push.
+        language: [actions, python, javascript-typescript]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          language: ${{ matrix.language }}
+          build-mode: none
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: /language:${{ matrix.language }}
