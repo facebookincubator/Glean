@@ -11,7 +11,7 @@ system_demo_toolchains()
 # resolution here), relying on the version-suffixed-binary convention
 # most GHC install methods provide (e.g. `ghc-9.4.8` alongside the bare
 # `ghc`) - not specific to any one of them (ghcup, distro packages, Nix,
-# ...), see mk/gen-haskell-prebuilt.py's own `_find_ghc()` for the same
+# ...), see buck2/gen-haskell-prebuilt.py's own `_find_ghc()` for the same
 # convention (with a bare-binary fallback) used to find GHC's own tools
 # directly. GHC_VERSION itself comes from that script's own generated
 # generated third-party/haskell/tools.bzl (in turn read from Cabal's

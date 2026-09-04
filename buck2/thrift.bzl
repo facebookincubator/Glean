@@ -3,7 +3,7 @@ load("//buck2:haskell.bzl", "haskell_library")
 # A rule for running the (buck2-built) Thrift compiler over a .thrift file.
 #
 # Unlike hsc2hs/alex/happy, the compiler here is itself a buck2 target
-# (@hsthrift//compiler:thrift-compiler), not an external frozen tool - so we
+# (//compiler:thrift-compiler), not an external frozen tool - so we
 # depend on it as a normal exec_dep and let buck2 build it as part of the
 # action's inputs, instead of hardcoding a path anywhere.
 #
@@ -170,7 +170,7 @@ def _thrift_compile_impl(ctx: AnalysisContext) -> list[Provider]:
 thrift_compile = rule(
     impl = _thrift_compile_impl,
     attrs = {
-        "compiler": attrs.exec_dep(providers = [RunInfo], default = "@hsthrift//compiler:thrift-compiler"),
+        "compiler": attrs.exec_dep(providers = [RunInfo], default = "//compiler:thrift-compiler"),
         "deps": attrs.list(attrs.dep(providers = [ThriftSrcsInfo]), default = []),
         "flags": attrs.list(attrs.string(), default = []),
         "out": attrs.string(default = "gen"),
