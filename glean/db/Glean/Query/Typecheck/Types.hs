@@ -59,9 +59,9 @@ data TcTerm
   | TcElementsOfArray TcPat
   | TcElementsOfSet TcPat
   | TcElementsUnresolved Type TcPat
-  | TcQueryGen TcQuery
-  | TcAll TcQuery
-  | TcNegation [TcStatement]
+  | TcWhere TcQuery
+  | TcAll TcPat
+  | TcNegation TcPat
   | TcPrimCall PrimOp [TcPat]
   | TcIf { cond :: Typed TcPat, then_ :: TcPat, else_ :: TcPat }
   | TcDeref Type TcPat
@@ -105,11 +105,10 @@ instance Display TcTerm where
   display opts (TcElementsOfArray arr) = displayAtom opts arr <> "[..]"
   display opts (TcElementsOfSet set) = "elements" <+> parens (display opts set)
   display opts (TcElementsUnresolved _ pat) = displayAtom opts pat <> "[..]"
-  display opts (TcQueryGen q) = parens (display opts q)
+  display opts (TcWhere q) = parens (display opts q)
   display opts (TcAll query)
     = "all" <+> "(" <> display opts query <> ")"
-  display opts (TcNegation q) =
-    "!" <> parens (sep (punctuate ";" (map (display opts) q)))
+  display opts (TcNegation q) = "!" <> parens (display opts q)
   display opts (TcPrimCall op args) =
     hsep (display opts op : map (displayAtom opts) args)
   display opts (TcPromote _ pat) =
@@ -126,7 +125,7 @@ instance Display TcTerm where
     TcOr{} -> parens (display opts pat)
     TcFactGen{} -> parens (display opts pat)
     TcPrimCall{} -> parens (display opts pat)
-    TcQueryGen{} -> parens (display opts pat)
+    TcWhere{} -> parens (display opts pat)
     TcNegation{} -> display opts pat
     TcIf{} -> parens (display opts pat)
     _ -> display opts pat

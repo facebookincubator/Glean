@@ -87,32 +87,32 @@ typecheck dbSchema opts rtsType query = do
       { tcEnvPredicates = predicatesById dbSchema
       , tcEnvTypes = typesById dbSchema
       }
-  (q@(TcQuery ty _ _ _ _), TypecheckState{..}) <-
+  ((q@(TcQuery ty _ _ _ _), _, _), TypecheckState{..}) <-
     let state = initialTypecheckState tcEnv opts rtsType TcModeQuery in
-    withExceptT (Text.pack . show) $ flip runStateT state $ do
-      modify $ \s -> s { tcVisible = varsQuery query mempty }
-      q@(TcQuery retTy _ _ _ _) <- inferQuery ContextPat query
-        <* freeVariablesAreErrors <* unboundVariablesAreErrors
-      resolvePromote
-      subst <- gets tcSubst
-      whenDebug $ liftIO $ hPutStrLn stderr $ show $
-        vcat [
-          "subst:", indent 2 (vcat
-            [ pretty n <> " := " <> displayDefault ty
-            | (n,ty) <- IntMap.toList subst
-            ]),
-          "query: " <> displayDefault q
-        ]
-      zonkVars
-      zonkTcQuery q
-        `catchError` \_ -> do
-           (head,_,_) <- needsResult query
-           opts <- gets tcDisplayOpts
-           retTy' <- apply retTy
-           prettyErrorAt (sourcePatSpan head) $ vcat
-             [ "query has ambiguous type",
-               indent 4 $ "type: " <> display opts retTy'
-             ]
+    withExceptT (Text.pack . show) $ flip runStateT state $
+      encloseLocal (varsQuery query mempty) $ do
+        q@(TcQuery retTy _ _ _ _) <- inferQuery ContextPat query
+        freeVariablesAreErrors
+        resolvePromote
+        subst <- gets tcSubst
+        whenDebug $ liftIO $ hPutStrLn stderr $ show $
+          vcat [
+            "subst:", indent 2 (vcat
+              [ pretty n <> " := " <> displayDefault ty
+              | (n,ty) <- IntMap.toList subst
+              ]),
+            "query: " <> displayDefault q
+          ]
+        zonkVars
+        zonkTcQuery q
+          `catchError` \_ -> do
+             (head,_,_) <- needsResult query
+             opts <- gets tcDisplayOpts
+             retTy' <- apply retTy
+             prettyErrorAt (sourcePatSpan head) $ vcat
+               [ "query has ambiguous type",
+                 indent 4 $ "type: " <> display opts retTy'
+               ]
   return (QueryWithInfo q tcNextVar Nothing ty, tcPreds)
 
 -- | Typecheck the query for a derived predicate
@@ -136,39 +136,38 @@ typecheckDeriving tcEnv opts rtsType PredicateDetails{..} derivingInfo = do
       case derivingInfo of
         NoDeriving -> return NoDeriving
         Derive deriveWhen q -> do
-          modify $ \s -> s { tcVisible = varsQuery q mempty }
-          -- we typecheck the pattern first, because we know its type.
-          (head, stmts, ord) <- needsResult q
-          let
-            (key, maybeVal) = case head of
-              KeyValue _ key val -> (key, Just val)
-                -- Backwards compat, we had a predicate in schema v4 of the form
-                --   X -> prim.toLower X
-                -- but this doesn't parse if -> binds tighter than application.
-              App _ (KeyValue _ key val) xs ->
-                let end
-                      | null xs   = val
-                      | otherwise = last xs
-                    span = spanBetween (sourcePatSpan val) (sourcePatSpan end)
-                in
-                (key, Just (App span val xs))
-              _other -> (head, Nothing)
-          key' <- typecheckPattern ContextPat predicateKeyType key
-          maybeVal' <- case maybeVal of
-            Nothing
-              | eqType (tcOptAngleVersion opts) unit predicateValueType ->
-                return Nothing
-              | otherwise -> prettyErrorIn head $ nest 4 $ vcat
-                [ "a functional predicate must return a value,"
-                , "i.e. the query should have the form 'X -> Y where .." ]
-            Just val -> Just <$>
-              typecheckPattern ContextPat predicateValueType val
-          stmts' <- mapM typecheckStatement stmts
-          freeVariablesAreErrors
-          unboundVariablesAreErrors
-          resolvePromote
-          zonkVars
-          q <- zonkTcQuery (TcQuery predicateKeyType key' maybeVal' stmts' ord)
+          (q, _, _) <- encloseLocal (varsQuery q mempty) $ do
+            -- we typecheck the pattern first, because we know its type.
+            (head, stmts, ord) <- needsResult q
+            let
+              (key, maybeVal) = case head of
+                KeyValue _ key val -> (key, Just val)
+                  -- Backwards compat, we had a predicate in schema v4 of the form
+                  --   X -> prim.toLower X
+                  -- but this doesn't parse if -> binds tighter than application.
+                App _ (KeyValue _ key val) xs ->
+                  let end
+                        | null xs   = val
+                        | otherwise = last xs
+                      span = spanBetween (sourcePatSpan val) (sourcePatSpan end)
+                  in
+                  (key, Just (App span val xs))
+                _other -> (head, Nothing)
+            key' <- typecheckPattern ContextPat predicateKeyType key
+            maybeVal' <- case maybeVal of
+              Nothing
+                | eqType (tcOptAngleVersion opts) unit predicateValueType ->
+                  return Nothing
+                | otherwise -> prettyErrorIn head $ nest 4 $ vcat
+                  [ "a functional predicate must return a value,"
+                  , "i.e. the query should have the form 'X -> Y where .." ]
+              Just val -> Just <$>
+                typecheckPattern ContextPat predicateValueType val
+            stmts' <- mapM typecheckStatement stmts
+            freeVariablesAreErrors
+            resolvePromote
+            zonkVars
+            zonkTcQuery (TcQuery predicateKeyType key' maybeVal' stmts' ord)
           nextVar <- gets tcNextVar
           return $ Derive deriveWhen $
             QueryWithInfo q nextVar Nothing predicateKeyType
@@ -322,7 +321,7 @@ inferExpr ctx pat = case pat of
     return (Ref (MatchExt (Typed ty (TcOr a' b'))), ty)
   NestedQuery _ q -> do
     q@(TcQuery ty _ _ _ _) <- inferQuery ctx q
-    return (Ref (MatchExt (Typed ty (TcQueryGen q))), ty)
+    return (Ref (MatchExt (Typed ty (TcWhere q))), ty)
   Negation _ _ ->
     (,unit) <$> typecheckPattern ctx unit pat
   IfPattern _ srcCond srcThen srcElse -> do
@@ -361,11 +360,10 @@ inferExpr ctx pat = case pat of
             , "does not have a set type"
             ]
   All _ e -> do
-    (e',elementTy) <- inferExpr ctx e
-    let
-      q = TcQuery elementTy e' Nothing [] Unordered
-      ty = SetTy elementTy
-    return (Ref (MatchExt (Typed ty (TcAll q))), ty)
+    ((e',elementTy), _, _) <-
+      encloseLocal (varsPat e mempty) $ inferExpr ctx e
+    let ty = SetTy elementTy
+    return (Ref (MatchExt (Typed ty (TcAll e'))), ty)
 
   TypeSignature s e ty -> do
     rtsType <- gets tcRtsType
@@ -621,37 +619,13 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     return (Ref (MatchExt (Typed ty (TcIf cond then_ else_))))
 
   (ty, NestedQuery _ query) ->
-    Ref . MatchExt . Typed ty . TcQueryGen <$> typecheckQuery ctx ty query
+    Ref . MatchExt . Typed ty . TcWhere <$> typecheckQuery ctx ty query
 
-  (ty, Negation s pat) | ty == unit -> do
-    let startPos = mkSpan (startLoc s) (startLoc s)
-        empty = Tuple startPos []
-        (stmts, ord) = case pat of
-          NestedQuery _ (SourceQuery Nothing stmts _) -> (stmts, ord)
-          other -> ([SourceStatement (Wildcard s) other], Unordered)
-
-        -- A negated pattern must always have type {}.
-        query = SourceQuery (Just empty) stmts ord
-
-        -- Variables bound within a negated query are
-        -- not considered bound outside of it.
-        enclose tc = do
-          before <- get
-          modify $ \s -> s {
-            tcVisible = varsPat pat (tcVisible before)
-          }
-          res <- tc
-          modify $ \after -> after
-            { tcBindings = tcBindings before
-            , tcUses = tcUses after `HashSet.intersection` tcVisible before
-            , tcScope = tcScope after
-                `HashMap.intersection` HashSet.toMap (tcVisible before)
-            , tcVisible = tcVisible before
-            }
-          return res
-
-    TcQuery _ _ _ stmts _ <- enclose $ typecheckQuery ctx unit query
-    return $ Ref (MatchExt (Typed unit (TcNegation stmts)))
+  (ty, Negation _ pat) | ty == unit -> do
+    (pat, _, _) <-
+      encloseLocal (varsPat pat mempty) $
+        typecheckPattern ctx unit (ignoreResult pat)
+    return $ Ref (MatchExt (Typed unit (TcNegation pat)))
 
   (PredicateTy _ _, FactId _ Nothing fid) -> do
     isFactIdAllowed pat
@@ -665,9 +639,9 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     return (f e')
 
   (ty@(SetTy elemTy), All _ query) -> do
-    arg <- typecheckPattern ctx elemTy query
-    let q = TcQuery elemTy arg Nothing [] Unordered
-    return (Ref (MatchExt (Typed ty (TcAll q))))
+    (arg, _, _) <- encloseLocal (varsPat query mempty) $
+      typecheckPattern ctx elemTy query
+    return (Ref (MatchExt (Typed ty (TcAll arg))))
 
   -- A match on a predicate type with a pattern that is not a wildcard,
   -- variable, field selector or dereference matches the key.
@@ -818,13 +792,8 @@ freeVariablesAreErrors = do
       , "This is usually a mistake, so it is disallowed in Angle."
       ]
 
-unboundVariablesAreErrors :: T ()
-unboundVariablesAreErrors = do
-  TypecheckState{..} <- get
-  unboundVariablesAreErrors_ tcUses tcBindings
-
-unboundVariablesAreErrors_ :: VarSet -> VarSet -> T ()
-unboundVariablesAreErrors_ uses binds = do
+unboundVariablesAreErrors :: VarSet -> VarSet -> T ()
+unboundVariablesAreErrors uses binds = do
   case HashSet.toList (uses `HashSet.difference` binds) of
     [] -> return ()
     badGuys -> prettyError $ nest 4 $ vcat
@@ -856,17 +825,19 @@ checkVarCase span name
 -- 2. The set of variables that are considered to be *used* by this
 --    pattern are those that are used in either branch.
 --
-disjunction :: VarSet -> T a -> VarSet -> (a -> T b) -> T (a,b)
+
+disjunction :: VarSet -> T a -> VarSet -> (a -> T b) -> T (a, b)
 disjunction varsA ta varsB tb = do
   state0 <- get
-  (a, usesA, bindsA) <- oneBranch varsA ta
-  (b, usesB, bindsB) <- oneBranch varsB (tb a)
+  (a, usesA, bindsA) <- encloseLocal varsA ta
+  (b, usesB, bindsB) <- encloseLocal varsB (tb a)
+  let binds = bindsA `HashSet.intersection` bindsB
+  let uses = usesA `HashSet.union` usesB
   modify  $ \s -> s {
-    tcBindings = tcBindings state0 `HashSet.union` -- Note (1) above
-      (bindsA `HashSet.intersection` bindsB),
-    tcUses = tcUses state0 `HashSet.union` -- Note (2) above
-      (usesA `HashSet.union` usesB) }
-  return (a,b)
+    tcBindings = tcBindings state0 `HashSet.union` binds, -- Note (1) above
+    tcUses = tcUses state0 `HashSet.union` uses -- Note (2) above
+  }
+  return (a, b)
 
 -- | Typechecking either A or B in A|B
 --
@@ -879,9 +850,9 @@ disjunction varsA ta varsB tb = do
 -- 3. To determine what is local to any nested A|B subterms, we update
 --    tcVisible by finding the visible variables of the current pattern.
 --
-oneBranch :: VarSet -> T a -> T (a, VarSet, VarSet)
-oneBranch branchVars ta = do
-  visibleBefore  <- gets tcVisible
+encloseLocal :: VarSet -> T a -> T (a, VarSet, VarSet)
+encloseLocal branchVars ta = do
+  before@TypecheckState { tcVisible = visibleBefore } <- get
   modify $ \s -> s {
     tcUses = HashSet.empty,
     tcBindings = HashSet.empty,
@@ -892,13 +863,16 @@ oneBranch branchVars ta = do
   let
     localUses = HashSet.difference (tcUses after) visibleBefore
     localBinds = HashSet.difference (tcBindings after) visibleBefore
-  unboundVariablesAreErrors_ localUses localBinds
+  unboundVariablesAreErrors localUses localBinds
   modify $ \s -> s
     { tcScope = HashMap.intersection
         (tcScope after)
         (HashSet.toMap visibleBefore)
        -- See Note (1) above
-    , tcVisible = visibleBefore }
+    , tcUses = tcUses before
+    , tcBindings = tcUses before
+    , tcVisible = tcVisible before
+    }
   let
     extUses = HashSet.intersection (tcUses after) visibleBefore
     extBinds = HashSet.intersection (tcBindings after) visibleBefore
@@ -1038,9 +1012,9 @@ tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
       TcElementsOfArray x -> overPat x
       TcElementsOfSet x -> overPat x
       TcElementsUnresolved _ x -> overPat x
-      TcQueryGen q -> overQuery q
-      TcAll q -> overQuery q
-      TcNegation stmts -> foldMap overStatement stmts
+      TcWhere q -> overQuery q
+      TcAll q -> overPat q
+      TcNegation p -> overPat p
       TcPrimCall _ xs -> foldMap overPat xs
       TcIf (Typed _ x) y z -> foldMap overPat [x, y, z]
       TcDeref _ p -> overPat p
@@ -1095,8 +1069,8 @@ tcTermUsesNegation = \case
   TcElementsOfArray x -> tcPatUsesNegation x
   TcElementsOfSet x -> tcPatUsesNegation x
   TcElementsUnresolved _ p -> tcPatUsesNegation p
-  TcQueryGen q -> tcQueryUsesNegation q
-  TcAll query -> tcQueryUsesNegation query
+  TcWhere q -> tcQueryUsesNegation q
+  TcAll p -> tcPatUsesNegation p
   TcNegation _ -> Just PatternNegation
   TcPrimCall _ xs -> firstJust tcPatUsesNegation xs
   -- one can replicate negation using if statements

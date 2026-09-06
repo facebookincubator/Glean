@@ -102,12 +102,12 @@ instantiateWithFreshVariables query numVars = do
     TcElementsOfSet (instantiatePat base pat)
   instantiateTcTerm base (TcElementsUnresolved ty pat) =
     TcElementsUnresolved ty (instantiatePat base pat)
-  instantiateTcTerm base (TcQueryGen query) =
-    TcQueryGen (instantiateQuery base query)
-  instantiateTcTerm base (TcAll query) =
-    TcAll (instantiateQuery base query)
-  instantiateTcTerm base (TcNegation stmts) =
-    TcNegation (map (instantiateStmt base) stmts)
+  instantiateTcTerm base (TcWhere query) =
+    TcWhere (instantiateQuery base query)
+  instantiateTcTerm base (TcAll pat) =
+    TcAll (instantiatePat base pat)
+  instantiateTcTerm base (TcNegation p) =
+    TcNegation (instantiatePat base p)
   instantiateTcTerm base (TcPrimCall op args) =
     TcPrimCall op (map (instantiatePat base) args)
   instantiateTcTerm base (TcIf (Typed ty cond) then_ else_) =

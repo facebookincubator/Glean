@@ -81,7 +81,6 @@ data CgStatement_ var
   | CgAllStatement var (Expr_ var) [CgStatement_ var]
   | CgNegation [CgStatement_ var]
   | CgDisjunction [[CgStatement_ var]]
-  -- ^ For rationale, see Note [why do we have sequential composition?]
   | CgConditional
     { cond :: [CgStatement_ var]
     , then_ :: [CgStatement_ var]
@@ -89,37 +88,7 @@ data CgStatement_ var
     }
   deriving (Show, Functor, Foldable, Traversable)
 
-
 type CgStatement = CgStatement_ Var
-
-{- Note [why do we have sequential composition?]
-
-The issue is that queries for sum types can't necessarily be handled
-by nested generators. Consider
-
-  v = cxx1.FunctionName (name(cxx1.Name "xyz" ) | operator(cxx1.Name "+"))
-
-If we flattened this into nested generators we would get
-
-  x = cxx1.Name "xyz"
-  y = cxx1.Name "+"
-  z = cxx1.FunctionName (name x | operator y)
-
-Now suppose there is no name xyz. This query will match nothing,
-because the generator for cxx1.Name "xyz" would be empty.  (even if
-the generator matched, flattening out the generators like this will
-test too many combinations and do too much work).
-
-With sequential composition of queries we can do it like this:
-
- n = (name x where x = cxx1.Name "xyz") |
-     (operator x where x = cxx1.Name "+")
- v = cxx1.FunctionName n
-
-(Note that this query won't work if you write it because we can't
-typecheck the sub-query "name x where ...", but we can generate the
-AST for it in the JSON query compiler.)
--}
 
 type Generator = Generator_ Var
 
