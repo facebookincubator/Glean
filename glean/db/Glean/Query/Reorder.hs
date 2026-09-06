@@ -929,7 +929,9 @@ toCgStatement stmt = case stmt of
     lhs' <- fixVars IsPat lhs
     return [CgStatement lhs' gen']
   FlatAllStatement v e g -> do
-    cg <- withScopeFor (scopeVars g <> vars e) $ do
+    -- withinNegation enforces that bindings within the all are local
+    -- to this scope and not visible outside.
+    cg <- withinNegation $ withScopeFor (scopeVars g <> vars e) $ do
       stmts <- reorderGroup g
       e' <- fixVars IsExpr e
       return [CgAllStatement v e' stmts]
