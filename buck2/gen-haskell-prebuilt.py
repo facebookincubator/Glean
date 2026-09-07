@@ -24,6 +24,7 @@ retargeting the whole buck2 build at a different GHC version is just:
 Run from the Glean repository root.
 """
 
+import glob
 import json
 import os
 import re
@@ -132,9 +133,38 @@ GLOBAL_DB = os.path.join(GLOBAL_ROOT_ABS, "package.conf.d")
 # GHC-version mismatch - see glean/lang/haskell/tests/BUCK).
 GHC_BIN_ABS = os.path.dirname(os.path.realpath(GHC))
 
-STORE_DB   = os.path.expanduser(f"~/.cabal/store/ghc-{GHC_VERSION}/package.db")
-INPLACE_DB = os.path.join(GLEAN_ROOT, f"dist-newstyle/packagedb/ghc-{GHC_VERSION}")
-ALL_DBS    = [GLOBAL_DB, STORE_DB, INPLACE_DB]
+def _find_store_roots():
+    """Cabal's per-compiler store directory isn't reliably just "ghc-
+    <version>" - some cabal-install/GHC combinations (observed: GHC 9.8.2
+    with cabal-install 3.14) suffix it with an ABI hash instead, e.g.
+    "ghc-9.8.2-6af5", to keep incompatible builds of the same nominal
+    version from colliding. Cabal doesn't expose that suffix through any
+    query command (`cabal path --store-dir` only gives the unversioned
+    `~/.cabal/store` root) - discovering it by construction would mean
+    reverse-engineering an internal, undocumented hash. Globbing instead
+    (any directory starting with "ghc-<version>") sidesteps needing to
+    know the exact suffix at all, and self-corrects if the naming scheme
+    changes again - find_pkg() tries every match for each package
+    individually, rather than this needing to guess the one true root
+    ahead of time.
+    """
+    base = os.path.expanduser("~/.cabal/store")
+    prefix = f"ghc-{GHC_VERSION}"
+    roots = sorted(
+        d for d in glob.glob(os.path.join(base, prefix + "*"))
+        if os.path.isdir(d) and (os.path.basename(d) == prefix or os.path.basename(d).startswith(prefix + "-"))
+    )
+    if not roots:
+        print(f"ERROR: no '{base}/{prefix}*' directory found - run "
+              f"'cabal build all --only-dependencies -w {GHC}' first",
+              file=sys.stderr)
+        sys.exit(1)
+    return roots
+
+STORE_ROOTS = _find_store_roots()
+STORE_DBS   = [os.path.join(r, "package.db") for r in STORE_ROOTS]
+INPLACE_DB  = os.path.join(GLEAN_ROOT, f"dist-newstyle/packagedb/ghc-{GHC_VERSION}")
+ALL_DBS     = [GLOBAL_DB] + STORE_DBS + [INPLACE_DB]
 
 TARGET_DIR    = os.path.join(GLEAN_ROOT, "third-party/haskell")
 TARGET_STORE_DB = os.path.join(TARGET_DIR, "store-db")
@@ -143,10 +173,13 @@ TARGET_STORE_DB = os.path.join(TARGET_DIR, "store-db")
 GLOBAL_DB_REL = f"ghc-{GHC_VERSION}/package.conf.d"
 STORE_DB_REL  = "store-db"
 
-# Absolute roots for translating absolute paths -> repo-relative.
-# `~/.cabal/store` is Cabal's own convention (unrelated to how GHC itself
-# was installed), so that one's fine to keep as-is.
-STORE_ROOT_ABS  = os.path.realpath(os.path.expanduser(f"~/.cabal/store/ghc-{GHC_VERSION}"))
+# Absolute roots for translating absolute paths -> repo-relative. One
+# real store root per STORE_DBS entry (see _find_store_roots()) - in
+# practice only one of these ever actually has any of our packages in it
+# (see main()'s own check when picking which one "cabal-store" should
+# point at), but abs_to_rel() tries all of them, same as find_pkg() does
+# for lookups.
+STORE_ROOTS_ABS = [os.path.realpath(r) for r in STORE_ROOTS]
 GLOBAL_ROOT_REL = f"ghc-{GHC_VERSION}"
 STORE_ROOT_REL  = "cabal-store"
 GHC_BIN_REL     = "ghc-bin"
@@ -168,8 +201,9 @@ def abs_to_rel(abs_path):
     p = os.path.realpath(abs_path)
     if p.startswith(GLOBAL_ROOT_ABS + "/"):
         return GLOBAL_ROOT_REL + "/" + p[len(GLOBAL_ROOT_ABS) + 1:]
-    if p.startswith(STORE_ROOT_ABS + "/"):
-        return STORE_ROOT_REL + "/" + p[len(STORE_ROOT_ABS) + 1:]
+    for store_root in STORE_ROOTS_ABS:
+        if p.startswith(store_root + "/"):
+            return STORE_ROOT_REL + "/" + p[len(store_root) + 1:]
     return None
 
 def is_global_pkg(uid):
@@ -386,10 +420,11 @@ def setup_store_db(packages):
         if val is None or is_global_pkg(uid):
             continue
         info, db = val
-        if db != STORE_DB:
+        if db not in STORE_DBS:
             continue
-        # Symlink the .conf file from the real store DB
-        src  = os.path.join(STORE_DB, f"{uid}.conf")
+        # Symlink the .conf file from the real store DB (whichever of
+        # STORE_DBS this particular package actually resolved from).
+        src  = os.path.join(db, f"{uid}.conf")
         dest = os.path.join(TARGET_STORE_DB, f"{uid}.conf")
         if os.path.exists(src):
             os.symlink(src, dest)
@@ -407,7 +442,7 @@ def setup_store_db(packages):
 def db_rel_for(uid, db_path):
     if is_global_pkg(uid):
         return GLOBAL_DB_REL
-    if db_path == STORE_DB:
+    if db_path in STORE_DBS:
         return STORE_DB_REL
     return None
 
@@ -537,10 +572,6 @@ def main():
 
     ensure_symlink(os.path.join(TARGET_DIR, GLOBAL_ROOT_REL), GLOBAL_ROOT_ABS)
     ensure_symlink(os.path.join(TARGET_DIR, GHC_BIN_REL), GHC_BIN_ABS)
-    ensure_symlink(
-        os.path.join(TARGET_DIR, STORE_ROOT_REL),
-        os.path.expanduser(f"~/.cabal/store/ghc-{GHC_VERSION}"),
-    )
 
     print("Reading root dep IDs...")
     root_ids = get_root_dep_ids()
@@ -551,6 +582,23 @@ def main():
     found   = sum(1 for v in packages.values() if v is not None)
     skipped = len(packages) - found
     print(f"  {found} resolved, {skipped} skipped (local or not found)")
+
+    # Point "cabal-store" at whichever of STORE_ROOTS actually turned out
+    # to hold our packages - there can be more than one candidate (see
+    # _find_store_roots()), but everything we found should have come from
+    # exactly one of them in practice (they're alternate ABI-hash variants
+    # of the same nominal GHC version, not meant to be mixed within one
+    # resolved build). More than one actually in use means something more
+    # confusing is going on than this script can safely guess its way
+    # through - worth a human looking, not a silent pick.
+    used_roots = {db for _, db in packages.values() if db in STORE_DBS}
+    if len(used_roots) > 1:
+        print(f"ERROR: packages resolved from more than one cabal store "
+              f"directory: {sorted(used_roots)} - expected at most one",
+              file=sys.stderr)
+        sys.exit(1)
+    store_root = os.path.dirname(next(iter(used_roots))) if used_roots else os.path.dirname(STORE_DBS[0])
+    ensure_symlink(os.path.join(TARGET_DIR, STORE_ROOT_REL), store_root)
 
     print("Building filtered store-db...")
     setup_store_db(packages)
