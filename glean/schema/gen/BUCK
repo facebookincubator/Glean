@@ -1,5 +1,5 @@
-load("//buck2:gen_schema.bzl", "gen_schema")
 load("//buck2:haskell.bzl", "haskell_binary")
+load("gen_schema.bzl", "gen_schema")
 
 # Cabal's `gen-schema` executable (glean.cabal.in): reads
 # glean/schema/source/*.angle and generates glean/schema/thrift/*.thrift,
