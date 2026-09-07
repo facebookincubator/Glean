@@ -31,6 +31,7 @@
   hsthrift-prelude = hsthrift/buck2/prelude
   hsthrift-toolchains = hsthrift/buck2/toolchains
   hsthrift-third-party = hsthrift/third-party
+  hsthrift-constraints = hsthrift/buck2/constraints
 
 [cell_aliases]
   config = prelude
