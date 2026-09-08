@@ -51,6 +51,7 @@ data GleanServerLog
   | SetClientUnixname Text
   | SetClientApplication Text
   | SetClientName Text
+  | SetSrClientId Text
   | SetRequestContinuationSize Int
   | SetResponseContinuationSize Int
   | SetSchemaId Text
