@@ -21,6 +21,22 @@ Fact::Clause clauseFrom(const unsigned char* d, size_t total, size_t ks) {
   return Fact::Clause::from(folly::ByteRange(d, total), ks);
 }
 
+std::vector<Id> collectIds(FactIterator& iter) {
+  std::vector<Id> ids;
+  for (auto ref = iter.get(); ref; iter.next(), ref = iter.get()) {
+    ids.push_back(ref.id);
+  }
+  return ids;
+}
+
+std::vector<std::string> collectKeys(FactIterator& iter) {
+  std::vector<std::string> keys;
+  for (auto ref = iter.get(); ref; iter.next(), ref = iter.get()) {
+    keys.push_back(ref.key().str());
+  }
+  return keys;
+}
+
 } // namespace
 
 TEST(FactSetTest, DefineAddsFactAndAdvancesId) {
@@ -270,6 +286,27 @@ TEST(FactSetTest, PredicateStatsTracksFactCounts) {
   EXPECT_EQ(s2->count, 1);
 }
 
+TEST(FactSetTest, PredicateStatsUpdatesAfterInitialRead) {
+  FactSet fs(Id::lowest());
+  const auto pid1 = Pid::lowest();
+  const auto pid2 = Pid::lowest() + 1;
+  unsigned char d1[] = "a";
+  unsigned char d2[] = "bb";
+  unsigned char d3[] = "ccc";
+
+  fs.define(pid1, clauseFrom(d1, 1, 1));
+  ASSERT_NE(fs.predicateStats().lookup(pid1), nullptr);
+
+  fs.define(pid1, clauseFrom(d2, 2, 2));
+  fs.define(pid2, clauseFrom(d3, 3, 3));
+
+  const auto stats = fs.predicateStats();
+  ASSERT_NE(stats.lookup(pid1), nullptr);
+  ASSERT_NE(stats.lookup(pid2), nullptr);
+  EXPECT_EQ(*stats.lookup(pid1), MemoryStats(2, 3));
+  EXPECT_EQ(*stats.lookup(pid2), MemoryStats(1, 3));
+}
+
 TEST(FactSetTest, SeekWithNonexistentTypeReturnsEmpty) {
   FactSet fs(Id::lowest());
   unsigned char d[] = "key";
@@ -280,6 +317,65 @@ TEST(FactSetTest, SeekWithNonexistentTypeReturnsEmpty) {
       folly::ByteRange(prefix, static_cast<size_t>(0)),
       std::nullopt);
   EXPECT_FALSE(bool(iter->get()));
+}
+
+TEST(FactSetTest, SeekReturnsOnlyMatchingPrefixInKeyOrder) {
+  FactSet fs(Id::lowest());
+  unsigned char d1[] = "band";
+  unsigned char d2[] = "apple";
+  unsigned char d3[] = "banana";
+  unsigned char d4[] = "bar";
+  unsigned char d5[] = "ban";
+
+  fs.define(Pid::lowest(), clauseFrom(d1, 4, 4));
+  fs.define(Pid::lowest(), clauseFrom(d2, 5, 5));
+  fs.define(Pid::lowest(), clauseFrom(d3, 6, 6));
+  fs.define(Pid::lowest(), clauseFrom(d4, 3, 3));
+  fs.define(Pid::lowest(), clauseFrom(d5, 3, 3));
+
+  unsigned char prefix[] = "ban";
+  auto iter = fs.seek(Pid::lowest(), folly::ByteRange(prefix, 3), std::nullopt);
+  const std::vector<std::string> expected{"ban", "banana", "band"};
+  EXPECT_EQ(collectKeys(*iter), expected);
+}
+
+TEST(FactSetTest, SeekRestartResumesAtRestartFact) {
+  FactSet fs(Id::lowest());
+  unsigned char d1[] = "ban";
+  unsigned char d2[] = "banana";
+  unsigned char d3[] = "band";
+  fs.define(Pid::lowest(), clauseFrom(d1, 3, 3));
+  const auto restartId = fs.define(Pid::lowest(), clauseFrom(d2, 6, 6));
+  fs.define(Pid::lowest(), clauseFrom(d3, 4, 4));
+
+  auto restart = fs.enumerate(restartId, restartId + 1)->get();
+  unsigned char prefix[] = "ban";
+  auto iter = fs.seek(Pid::lowest(), folly::ByteRange(prefix, 3), restart);
+
+  const std::vector<std::string> expected{"banana", "band"};
+  EXPECT_EQ(collectKeys(*iter), expected);
+}
+
+TEST(FactSetTest, SeekIndexReflectsFactsAddedAfterFirstSeek) {
+  FactSet fs(Id::lowest());
+  unsigned char d1[] = "alpha";
+  unsigned char d2[] = "alpine";
+  unsigned char d3[] = "beta";
+  fs.define(Pid::lowest(), clauseFrom(d1, 5, 5));
+
+  unsigned char prefix[] = "al";
+  auto firstSeek =
+      fs.seek(Pid::lowest(), folly::ByteRange(prefix, 2), std::nullopt);
+  const std::vector<std::string> initiallyExpected{"alpha"};
+  EXPECT_EQ(collectKeys(*firstSeek), initiallyExpected);
+
+  fs.define(Pid::lowest(), clauseFrom(d2, 6, 6));
+  fs.define(Pid::lowest(), clauseFrom(d3, 4, 4));
+
+  auto refreshedSeek =
+      fs.seek(Pid::lowest(), folly::ByteRange(prefix, 2), std::nullopt);
+  const std::vector<std::string> refreshedExpected{"alpha", "alpine"};
+  EXPECT_EQ(collectKeys(*refreshedSeek), refreshedExpected);
 }
 
 TEST(FactSetTest, FactsByDifferentPredicatesAreIndependent) {
@@ -305,6 +401,22 @@ TEST(FactSetTest, LookupBelowStartingIdReturnsNotFound) {
   EXPECT_FALSE(found);
 }
 
+TEST(FactSetTest, EnumerateBackWithBoundsMatchesForwardRangeInReverse) {
+  FactSet fs(Id::lowest());
+  unsigned char d1[] = "a";
+  unsigned char d2[] = "b";
+  unsigned char d3[] = "c";
+  unsigned char d4[] = "d";
+  fs.define(Pid::lowest(), clauseFrom(d1, 1, 1));
+  fs.define(Pid::lowest(), clauseFrom(d2, 1, 1));
+  fs.define(Pid::lowest(), clauseFrom(d3, 1, 1));
+  fs.define(Pid::lowest(), clauseFrom(d4, 1, 1));
+
+  auto iter = fs.enumerateBack(Id::lowest() + 3, Id::lowest() + 1);
+  const std::vector<Id> expected{Id::lowest() + 2, Id::lowest() + 1};
+  EXPECT_EQ(collectIds(*iter), expected);
+}
+
 TEST(FactSetTest, SeekWithinSectionFullRangeWorks) {
   FactSet fs(Id::lowest());
   unsigned char d1[] = "abc";
@@ -323,4 +435,51 @@ TEST(FactSetTest, SeekWithinSectionFullRangeWorks) {
     ++count;
   }
   EXPECT_EQ(count, 2);
+}
+
+TEST(FactSetTest, SeekWithinSectionRejectsNarrowBounds) {
+  FactSet fs(Id::lowest());
+  unsigned char d1[] = "abc";
+  unsigned char d2[] = "abd";
+  fs.define(Pid::lowest(), clauseFrom(d1, 3, 3));
+  fs.define(Pid::lowest(), clauseFrom(d2, 3, 3));
+
+  unsigned char prefix[] = "ab";
+  EXPECT_THROW(
+      fs.seekWithinSection(
+          Pid::lowest(),
+          folly::ByteRange(prefix, 2),
+          Id::lowest(),
+          Id::lowest() + 1,
+          std::nullopt),
+      std::runtime_error);
+}
+
+TEST(FactSetTest, SerializeReorderWritesRequestedFactsInRequestedOrder) {
+  FactSet fs(Id::lowest());
+  unsigned char d1[] = "key1value1";
+  unsigned char d2[] = "key2value2";
+  unsigned char d3[] = "key3value3";
+  fs.define(Pid::lowest(), clauseFrom(d1, 10, 4));
+  fs.define(Pid::lowest() + 1, clauseFrom(d2, 10, 4));
+  fs.define(Pid::lowest() + 2, clauseFrom(d3, 10, 4));
+
+  const uint64_t order[] = {(Id::lowest() + 2).toWord(), Id::lowest().toWord()};
+  const auto serialized = fs.serializeReorder(folly::range(order));
+
+  EXPECT_EQ(serialized.first, Id::lowest());
+  EXPECT_EQ(serialized.count, 2);
+
+  binary::Input input(serialized.facts.bytes());
+  Pid type = Pid::invalid();
+  Fact::Clause clause;
+  Fact::deserialize(input, type, clause);
+  EXPECT_EQ(type, Pid::lowest() + 2);
+  EXPECT_EQ(clause.key().str(), "key3");
+  EXPECT_EQ(clause.value().str(), "value3");
+
+  Fact::deserialize(input, type, clause);
+  EXPECT_EQ(type, Pid::lowest());
+  EXPECT_EQ(clause.key().str(), "key1");
+  EXPECT_EQ(clause.value().str(), "value1");
 }
