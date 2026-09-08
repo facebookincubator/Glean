@@ -17,6 +17,16 @@ HaskellToolchainInfo = provider(
     fields = {
         "compiler": provider_field(typing.Any, default = None),
         "compiler_flags": provider_field(typing.Any, default = None),
+        # Extra environment variables for the compile action specifically
+        # (not the link action - see haskell/compile.bzl). Needed for e.g.
+        # LD_PRELOAD-ing the ASAN runtime into GHC's own process: GHC's
+        # Template Haskell splices dlopen dependencies' shared objects
+        # *during compilation*, and an asan-instrumented .so dlopen'd into
+        # a plain (non-instrumented) host process fails with "undefined
+        # symbol: __asan_option_detect_stack_use_after_return" unless that
+        # process already has the matching ASAN runtime loaded - confirmed
+        # empirically (see buck2.md).
+        "compile_env": provider_field(typing.Any, default = {}),
         "linker": provider_field(typing.Any, default = None),
         "linker_flags": provider_field(typing.Any, default = None),
         "haddock": provider_field(typing.Any, default = None),

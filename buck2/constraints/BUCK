@@ -19,3 +19,41 @@ constraint_value(
     constraint_setting = ":build_mode",
     visibility = ["PUBLIC"],
 )
+
+# Matches glean.cabal.in's `flag asan` (default False) - `if flag(asan):
+# cxx-options: -fsanitize=address` (common fb-cpp) and `ghc-options:
+# -optc-fsanitize=address -optl-fsanitize=address` (common exe). Opt-in
+# only - selected via `-m //buck2/constraints:asan` - so unlike build_mode
+# this needs no "off" value or PACKAGE-level default: not selecting it
+# already means "not active", which select()'s own "DEFAULT" arm already
+# expresses (see buck2/cxx.bzl, buck2/haskell.bzl).
+constraint_setting(
+    name = "sanitizer",
+    visibility = ["PUBLIC"],
+)
+
+constraint_value(
+    name = "asan",
+    constraint_setting = ":sanitizer",
+    visibility = ["PUBLIC"],
+)
+
+# Matches glean.cabal.in's `flag clang` (default False) - `if !flag(clang):
+# cxx-options: -fcoroutines` (common fb-cpp): GCC needs -fcoroutines to
+# enable C++20 coroutines, Clang doesn't need (or, on some versions, even
+# recognise) it. This doesn't itself make buck2's cxx_toolchain actually
+# invoke clang - neither does Cabal's own flag: it's a "tell the build
+# what compiler I'm already using" signal, not a compiler selector - so
+# pass `-m //buck2/constraints:clang` alongside whatever actually makes
+# the toolchain use clang (CC/CXX env vars today; a real select()'d
+# toolchain compiler is a separate, not-yet-needed change).
+constraint_setting(
+    name = "compiler",
+    visibility = ["PUBLIC"],
+)
+
+constraint_value(
+    name = "clang",
+    constraint_setting = ":compiler",
+    visibility = ["PUBLIC"],
+)

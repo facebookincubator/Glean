@@ -273,8 +273,24 @@ def compile(ctx: AnalysisContext, link_style: LinkStyle, enable_profiling: bool,
             compile_cmd.add(args.srcs)
 
     artifact_suffix = get_artifact_suffix(link_style, enable_profiling)
+
+    # compile_env's values are shell-evaluated (via `sh -c`) rather than
+    # passed straight through as literal env values - this lets a value
+    # like "$(clang -print-file-name=libclang_rt.asan-x86_64.so)" get
+    # resolved fresh at actual build-action execution time, matching this
+    # project's existing convention of resolving tools via $PATH at
+    # build-action time rather than baking absolute host paths into .bzl
+    # or BUCK files (see toolchains/BUCK's `compiler`/`packager`).
+    run_cmd = compile_cmd
+    if haskell_toolchain.compile_env:
+        env_exports = "".join([
+            'export {}="{}"; '.format(name, value)
+            for name, value in haskell_toolchain.compile_env.items()
+        ])
+        run_cmd = cmd_args(["sh", "-c", env_exports + 'exec "$@"', "sh"], compile_cmd)
+
     ctx.actions.run(
-        compile_cmd,
+        run_cmd,
         category = "haskell_compile_" + artifact_suffix.replace("-", "_"),
         # We can't use no_outputs_cleanup because GHC's recompilation checking
         # is based on file timestamps, and Buck doesn't maintain timestamps when
