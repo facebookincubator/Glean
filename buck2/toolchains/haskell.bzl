@@ -10,6 +10,7 @@ def _haskell_toolchain_impl(ctx):
             haddock = ctx.attrs.haddock,
             compiler_flags = ctx.attrs.compiler_flags,
             linker_flags = ctx.attrs.linker_flags,
+            compile_env = ctx.attrs.compile_env,
         ),
         HaskellPlatformInfo(name = host_info().arch),
     ]
@@ -22,6 +23,7 @@ haskell_toolchain = rule(
         "haddock": attrs.string(default = "haddock"),
         "compiler_flags": attrs.list(attrs.string(), default = []),
         "linker_flags": attrs.list(attrs.string(), default = []),
+        "compile_env": attrs.dict(attrs.string(), attrs.string(), default = {}),
     },
     is_toolchain_rule = True,
 )

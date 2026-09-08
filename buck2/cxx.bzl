@@ -25,21 +25,64 @@
 #     errors on `-std=c++20` against a `.c` file ("not allowed with 'C'"),
 #     not just warns - so it's opt-out (`cxx_std = False`) rather than
 #     unconditional, for lmdb-clib's genuine C sources.
-_BUILD_MODE_CXX_FLAGS = select({
-    "root//buck2/constraints:opt": ["-O3"],
+#   - `-Wno-nullability-completeness -fno-omit-frame-pointer` (`common
+#     fb-cpp`'s own unconditional flags) - the former is a Clang-only
+#     diagnostic (silently ignored by GCC, so unconditional is safe either
+#     way), the latter keeps stack traces/profiling working.
+#   - `-fcoroutines` unless `flag(clang)` (`common fb-cpp`: `if !flag(clang)
+#     cxx-options: -fcoroutines`) - GCC needs it to enable C++20 coroutines,
+#     Clang doesn't (and may not recognise it) - see buck2/constraints/BUCK's
+#     own `clang` value for why this doesn't itself switch compilers.
+#   - `-fsanitize=address` if `flag(asan)` (`common fb-cpp`: `if flag(asan)
+#     cxx-options: -fsanitize=address`) - selected via `-m //buck2/
+#     constraints:asan`.
+#   - `-O3 -DNDEBUG` in `opt` mode, *unless* asan is also active, in which
+#     case `-g` instead - matching `common fb-cpp`'s own `if flag(opt) &&
+#     !flag(asan) cxx-options: -O3 -DNDEBUG else cxx-options: -g` exactly
+#     (asan diagnostics need debug info and are meaningless optimised away,
+#     so opt+asan intentionally doesn't optimise).
+_ASAN_CXX_FLAGS = select({
+    "root//buck2/constraints:asan": ["-fsanitize=address"],
     "DEFAULT": [],
 })
+
+_COROUTINES_FLAGS = select({
+    "root//buck2/constraints:clang": [],
+    "DEFAULT": ["-fcoroutines"],
+})
+
+_BUILD_MODE_CXX_FLAGS = select({
+    "root//buck2/constraints:opt": select({
+        "root//buck2/constraints:asan": ["-g"],
+        "DEFAULT": ["-O3", "-DNDEBUG"],
+    }),
+    "DEFAULT": ["-g"],
+})
+
+_COMMON_CXX_FLAGS = (
+    ["-Wno-nullability-completeness", "-fno-omit-frame-pointer"] +
+    _COROUTINES_FLAGS + _ASAN_CXX_FLAGS + _BUILD_MODE_CXX_FLAGS
+)
 
 _HASWELL_FLAGS = select({
     "prelude//cpu:x86_64": ["-march=haswell"],
     "DEFAULT": [],
 })
 
-def cxx_library(name, compiler_flags = [], cxx_std = True, **kwargs):
+def cxx_library(name, compiler_flags = [], linker_flags = [], cxx_std = True, **kwargs):
     std_flags = ["-std=c++20"] if cxx_std else []
     native.cxx_library(
         name = name,
-        compiler_flags = std_flags + compiler_flags + _BUILD_MODE_CXX_FLAGS + _HASWELL_FLAGS,
+        compiler_flags = std_flags + compiler_flags + _COMMON_CXX_FLAGS + _HASWELL_FLAGS,
+        # -fsanitize=address has to reach the *linker* too, not just the
+        # compiler - it isn't just an instrumentation flag, it also tells
+        # gcc/clang to link the ASan runtime in; a .so whose objects were
+        # compiled with it but linked without it is missing that runtime
+        # (confirmed directly: exactly this gap produced "undefined
+        # symbol: __asan_option_detect_stack_use_after_return" the first
+        # time asan mode touched anything with a shared-library dependency,
+        # here hsthrift's own folly-clib).
+        linker_flags = _ASAN_CXX_FLAGS + linker_flags,
         **kwargs
     )
 
@@ -48,10 +91,11 @@ def cxx_library(name, compiler_flags = [], cxx_std = True, **kwargs):
 # sources) needs this, but the flags themselves are identical to
 # cxx_library()'s, so it's a duplicate of this wrapper rather than a
 # hand-rolled select() at the one call site.
-def cxx_binary(name, compiler_flags = [], cxx_std = True, **kwargs):
+def cxx_binary(name, compiler_flags = [], linker_flags = [], cxx_std = True, **kwargs):
     std_flags = ["-std=c++20"] if cxx_std else []
     native.cxx_binary(
         name = name,
-        compiler_flags = std_flags + compiler_flags + _BUILD_MODE_CXX_FLAGS + _HASWELL_FLAGS,
+        compiler_flags = std_flags + compiler_flags + _COMMON_CXX_FLAGS + _HASWELL_FLAGS,
+        linker_flags = _ASAN_CXX_FLAGS + linker_flags,
         **kwargs
     )

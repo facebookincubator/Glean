@@ -25,5 +25,41 @@ haskell_toolchain(
     haddock = "haddock",
     compiler_flags = ["-O"],
     linker_flags = [],
+    # Under asan, GHC's own process needs the ASAN runtime already loaded
+    # before Template Haskell dlopen's an asan-instrumented dependency
+    # mid-compile (confirmed empirically - see buck2/prelude/haskell/
+    # toolchain.bzl's own comment on `compile_env`, and buck2.md). The
+    # runtime here must match whichever compiler actually produces this
+    # project's cxx_library .so's - that's whatever `c++` resolves to via
+    # `/etc/alternatives/c++` (clang, on this machine - see buck2/prelude/
+    # toolchains/demo.bzl's system_cxx_toolchain, which auto-detects the
+    # same way for *compiling*, even though the *link* step is hardcoded
+    # to plain g++ there; mixing compile/link drivers is fine, but the
+    # ASAN runtime ABI must match the *compiler*, not the linker).
+    # Deliberately not a literal path: `compile_env`'s values are shell-
+    # evaluated at build-action time (see haskell/compile.bzl), so this
+    # tracks whatever `c++` and its runtime library layout actually are
+    # on the machine doing the build, the same way `compiler`/`packager`
+    # above resolve via $PATH rather than a baked-in absolute path. Only
+    # actually correct while `c++` resolves to clang - if this project's
+    # default cxx compiler ever moves to gcc, swap the runtime name to
+    # `libasan.so` too (`gcc -print-file-name=libasan.so`).
+    compile_env = select({
+        "root//buck2/constraints:asan": {
+            "LD_PRELOAD": "$(c++ -print-file-name=libclang_rt.asan-x86_64.so)",
+            # This preload leaks into every subprocess GHC spawns while
+            # compiling (not just the dlopen'd .so's it's actually for) -
+            # including plain system tools like `ld`/`bash`/`gcc` that
+            # aren't written to be leak-clean under a leak-checking
+            # allocator and were never meant to be instrumented at all.
+            # Disable leak detection for this incidental, build-tooling-
+            # wide preload; the C++ code we actually care about checking
+            # still gets real leak detection when the *final executable*
+            # itself is linked with -fsanitize=address (see haskell.bzl's
+            # _ASAN_LINKER_FLAGS), which is a separate, unaffected setting.
+            "ASAN_OPTIONS": "detect_leaks=0",
+        },
+        "DEFAULT": {},
+    }),
     visibility = ["PUBLIC"],
 )

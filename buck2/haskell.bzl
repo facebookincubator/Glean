@@ -117,6 +117,16 @@ _BUILD_MODE_DYNAMIC_TOO = select({
     "DEFAULT": False,
 })
 
+# Matches glean.cabal.in's `common exe`: `if flag(asan) ghc-options:
+# -optc-fsanitize=address -optl-fsanitize=address` - only executables
+# (haskell_binary(), below) link a C/C++ runtime that asan instruments,
+# so (matching Cabal's own `common exe`, never applied to a library
+# component) this is only added there, not in haskell_library().
+_ASAN_LINKER_FLAGS = select({
+    "root//buck2/constraints:asan": ["-optc-fsanitize=address", "-optl-fsanitize=address"],
+    "DEFAULT": [],
+})
+
 # The .hs path a source's module lives at once preprocessed: `path`
 # unchanged unless it still carries a raw preprocessor extension (true for
 # `srcs` given as a list, where `path == src`, or an explicit identity entry
@@ -233,7 +243,17 @@ def haskell_binary(
     native.haskell_binary(
         name = name,
         srcs = _resolve_srcs(name, srcs, all_deps, hsc_flags),
-        compiler_flags = all_compiler_flags + _BUILD_MODE_HASKELL_FLAGS,
+        # _ASAN_LINKER_FLAGS also goes into compiler_flags, not just
+        # linker_flags below - Cabal's own `-optc-fsanitize=address` /
+        # `-optl-fsanitize=address` are both plain `ghc-options`, applied
+        # to *every* ghc invocation Cabal makes for this component,
+        # compiling and linking alike (unlike buck2, it has no separate
+        # per-file-compile vs final-link flag lists) - and each is a no-op
+        # on a ghc invocation that doesn't do the corresponding thing
+        # (`-optl-...` during a compile-only invocation, `-optc-...` when
+        # nothing needs the C compiler), so adding both everywhere is the
+        # faithful equivalent, not redundant belt-and-braces.
+        compiler_flags = all_compiler_flags + _BUILD_MODE_HASKELL_FLAGS + _ASAN_LINKER_FLAGS,
         deps = all_deps,
         # Every Cabal executable/test-suite gets `-threaded -rtsopts` for
         # free via glean.cabal.in's `common exe` stanza - not opt-in, so
@@ -245,7 +265,7 @@ def haskell_binary(
         # haskell) hangs until it times out, even though it compiles and
         # links fine. Merged with, not replaced by, a caller's own
         # `linker_flags` (e.g. gleancli's `-with-rtsopts=-I0`).
-        linker_flags = ["-threaded", "-rtsopts"] + linker_flags,
+        linker_flags = ["-threaded", "-rtsopts"] + _ASAN_LINKER_FLAGS + linker_flags,
         **kwargs
     )
 
