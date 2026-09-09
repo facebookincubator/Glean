@@ -89,11 +89,6 @@ syncCompletePredicates env repo =
         readDatabase env repo $ \_ lookup -> f (Just lookup)
   maybe ($ Nothing) withBase maybeBase $ \base -> do
   withOpenDatabase env repo $ \OpenDB{..} -> do
-    meta <- atomically $ Catalog.readMeta (envCatalog env) repo
-    let dbAclEnabled = isACLEnabled (metaProperties meta)
-    calculateEnabled <- aclCalculateEnabled
-    let aclProcessingEnabled = dbAclEnabled && calculateEnabled
-
     let computeOwnership = Storage.computeOwnership odbHandle base
           (schemaInventory odbSchema)
 
@@ -106,25 +101,43 @@ syncCompletePredicates env repo =
             logInfo $ "ownership propagation complete: "
               <> showOwnershipStats stats
 
-    if not aclProcessingEnabled
-      then do
-        when (dbAclEnabled && not calculateEnabled) $
-          logInfo "ACL augmentation skipped: calculate_acls knob is off"
-        computeOwnership >>= storeOwnership
-      else do
-        mAclConfig <- Data.retrievePathACLConfig odbHandle
-        case mAclConfig of
-          Nothing ->
-            throwIO $ Thrift.Exception $ Text.concat
-              [ "ACLs are enabled for this database (the glean.acl property "
-              , "is set) but no ACL config is stored."
-              ]
-          Just config -> do
-            let aclConfig = typedPathConfig config
-            firstACLID <- registerACLGroupUnits odbHandle odbWriting aclConfig
-            own <- computeOwnership
-            storeACLOwnership odbHandle own firstACLID aclConfig
-            storeOwnership own
+    mAclConfig <- aclConfigToApply env repo odbHandle
+    case mAclConfig of
+      Nothing -> computeOwnership >>= storeOwnership
+      Just aclConfig -> do
+        firstACLID <- registerACLGroupUnits odbHandle odbWriting aclConfig
+        own <- computeOwnership
+        storeACLOwnership odbHandle own firstACLID aclConfig
+        storeOwnership own
+
+-- | The ACL config to apply when completing an ACL-enabled db, or 'Nothing'
+-- when completion should apply no ACL constraints at all.
+--
+-- Throws when the db is ACL-enabled but has no stored config, rather than
+-- completing a db that is readable by everyone.
+aclConfigToApply
+  :: Storage.DatabaseOps db
+  => Env
+  -> Repo
+  -> db
+  -> IO (Maybe PathACLConfig)
+aclConfigToApply env repo handle = do
+  meta <- atomically $ Catalog.readMeta (envCatalog env) repo
+  calculateEnabled <- aclCalculateEnabled
+  if
+    | not (isACLEnabled (metaProperties meta)) -> return Nothing
+    | not calculateEnabled -> do
+      logInfo "ACL augmentation skipped: calculate_acls knob is off"
+      return Nothing
+    | otherwise -> do
+      mConfig <- Data.retrievePathACLConfig handle
+      case mConfig of
+        Nothing ->
+          throwIO $ Thrift.Exception $ Text.concat
+            [ "ACLs are enabled for this database (the glean.acl property is "
+            , "set) but no ACL config is stored."
+            ]
+        Just config -> return $ Just $ typedPathConfig config
 
 typedPathConfig :: HashMap.HashMap Text.Text [Text.Text] -> PathACLConfig
 typedPathConfig config = HashMap.fromList
