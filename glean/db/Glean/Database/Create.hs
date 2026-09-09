@@ -31,6 +31,7 @@ import Text.Printf
 #ifdef GLEAN_FACEBOOK
 import Facebook.Process
 #endif
+import Util.Control.Exception (catchAll)
 import Util.Log
 import Util.STM
 
@@ -38,6 +39,7 @@ import Glean.Backend.Types (StackedDbOpts(..))
 import Glean.BuildInfo
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Config
+import qualified Glean.Database.Data as Data
 import Glean.Database.Exception
 import Glean.Database.Meta
 import Glean.Database.Repo
@@ -63,6 +65,17 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
   | envReadOnly = dbError kickOff_repo "can't create database in read only mode"
   | Just err <- validateDbName kickOff_repo = dbError kickOff_repo $
     "Can't create database: " <> err
+  -- ACL mode and ACL config are both create-time properties and must be
+  -- supplied together.
+  | isACLEnabled kickOff_properties && isNothing kickOff_acl_config =
+    dbError kickOff_repo $
+      "Can't create database: the glean.acl property is set but no ACL "
+      <> "config was supplied. An all-public database must supply an empty "
+      <> "config."
+  | not (isACLEnabled kickOff_properties) && isJust kickOff_acl_config =
+    dbError kickOff_repo $
+      "Can't create database: an ACL config was supplied but the glean.acl "
+      <> "property is not set, so nothing would ever consume the config."
   | otherwise = do
       let
         schemaToUse =
@@ -149,20 +162,13 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
                 kickOff_dependencies'
               (do
                 logInfo $ inRepo kickOff_repo "created")
-              (\exc -> atomically $ void $
-                  -- If opening the db fails for any reason, mark the db as
-                  -- failed.
-                  Catalog.modifyMeta envCatalog kickOff_repo $ \meta ->
-                    return meta
-                      { metaCompleteness = Broken DatabaseBroken
-                        { databaseBroken_task = ""
-                        , databaseBroken_reason =
-                            "couldn't create: " <> Text.pack (show exc)
-                        }
-                      })
+              (markBroken "couldn't create")
             OpenDB{..} <- unmask $ Async.wait opener
             addSchemaIdProperty envCatalog kickOff_repo (schemaId odbSchema)
-            -- Log ACL mode for this create operation
+            forM_ kickOff_acl_config $ \config ->
+              Data.storePathACLConfig odbHandle config `catchAll` \exc -> do
+                markBroken "couldn't store the ACL config" exc
+                throwIO exc
             let aclMode = getACLMode allProps
             logInfo $ inRepo kickOff_repo $ showACLMode aclMode
             return $ Thrift.KickOffResponse
@@ -171,6 +177,16 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
               , kickOffResponse_auth_message = Nothing
               }
   where
+    markBroken :: Text -> SomeException -> IO ()
+    markBroken what exc = atomically $ void $
+      Catalog.modifyMeta envCatalog kickOff_repo $ \meta ->
+        return meta
+          { metaCompleteness = Broken DatabaseBroken
+            { databaseBroken_task = ""
+            , databaseBroken_reason = what <> ": " <> Text.pack (show exc)
+            }
+          }
+
     addSchemaIdProperty :: Catalog.Catalog -> Repo -> SchemaId -> IO ()
     addSchemaIdProperty catalog repo hash =
       void $ atomically $ Catalog.modifyMeta catalog repo $ \meta ->

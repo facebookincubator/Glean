@@ -13,6 +13,8 @@ module GleanCLI.Create (
   createDb,
 ) where
 
+import Control.Exception (IOException, try)
+import qualified Data.Aeson as Aeson
 import Data.ByteString (ByteString)
 import Data.Default
 import qualified Data.HashMap.Strict as HashMap
@@ -25,8 +27,10 @@ import Options.Applicative
 
 import Glean
 import qualified Glean.Remote
-import Glean.Database.Meta (utcTimeToPosixEpochTime)
+import Glean.Database.Meta
+  (getACLMode, showACLMode, utcTimeToPosixEpochTime)
 import Glean.Types as Thrift
+import Util.IO (die)
 import Util.Time
 
 
@@ -36,6 +40,7 @@ data CreateOpts = CreateOpts
   , properties :: [(Text,Text)]
   , updateSchemaForStacked :: Bool
   , aclMode :: Maybe ACLMode
+  , aclConfigPath :: Maybe FilePath
   }
 
 -- | ACL mode for the database
@@ -57,13 +62,24 @@ parseCreateOpts = do
   properties <- dbPropertiesOpt
   updateSchemaForStacked <- updateSchemaForStackedOpt
   aclMode <- optional aclModeOpt
+  aclConfigPath <- optional aclConfigOpt
   return CreateOpts {
     writeRepoTime,
     dependencies,
     properties,
     updateSchemaForStacked,
-    aclMode
+    aclMode,
+    aclConfigPath
   }
+
+aclConfigOpt :: Parser FilePath
+aclConfigOpt = strOption
+  (  long "acl-config"
+  <> metavar "FILE"
+  <> help ("Path to the ACL config JSON file (directory path -> list of ACL "
+  <> "group IDs). Required with --acl; pass an empty object for an "
+  <> "all-public DB.")
+  )
 
 aclModeOpt :: Parser ACLMode
 aclModeOpt = option readACLMode
@@ -212,9 +228,8 @@ createDb backend repo opts = do
   deps <- mapM getDependencies opts.dependencies
   let aclProperty = maybe [] (pure . aclModeToProperty) opts.aclMode
       allProperties = HashMap.fromList (opts.properties ++ aclProperty)
-  case opts.aclMode of
-    Just mode -> putStrLn $ "[glean create] " ++ showACLModeLog mode
-    Nothing -> putStrLn "[glean create] ACL: disabled"
+  aclConfig <- traverse loadACLConfig opts.aclConfigPath
+  putStrLn $ "[glean create] " ++ showACLMode (getACLMode allProperties)
   -- Retry transient channel exceptions so a write-server restart doesn't fail
   -- the kick-off.
   let retryBackend =
@@ -227,11 +242,21 @@ createDb backend repo opts = do
       , kickOff_repo_hash_time =
           utcTimeToPosixEpochTime <$> opts.writeRepoTime
       , kickOff_update_schema_for_stacked = opts.updateSchemaForStacked
+      , kickOff_acl_config = aclConfig
       }
   return alreadyExists
 
--- | Convert ACL mode to a human-readable description for CLI logging
-showACLModeLog :: ACLMode -> String
-showACLModeLog ACLActive = "ACL: active"
-showACLModeLog ACLEnforced = "ACL: enforced (strict mode)"
-showACLModeLog ACLPermissive = "ACL: permissive (no directory inheritance)"
+-- | Load the ACL config (path -> list of ACL group IDs) from a JSON file.
+-- Dies on parse failure.
+loadACLConfig :: FilePath -> IO (HashMap.HashMap Text [Text])
+loadACLConfig configPath = do
+  -- eitherDecodeFileStrict' reports decode failures in its result but lets
+  -- read failures through as exceptions, so catch those too.
+  parsed <- try (Aeson.eitherDecodeFileStrict' configPath)
+  case parsed of
+    Right (Right config) -> return config
+    Right (Left err) ->
+      die 3 $ "Failed to parse ACL config from " ++ configPath ++ ": " ++ err
+    Left (err :: IOException) ->
+      die 3 $ "Failed to read ACL config from " ++ configPath ++ ": "
+        ++ show err

@@ -970,6 +970,15 @@ struct KickOff {
   // schema can only add or remove predicates relative to the base DB
   // schema; the definitions of existing predicates must be identical.
   6: bool update_schema_for_stacked = false;
+
+  // ACL configuration for this DB.
+  // Maps directory paths to lists of ACL group ID strings.
+  // Each path maps to one or more group IDs (e.g., {"src/alpha": ["premier"],
+  // "src/bravo": ["beta", "gamma"]}). Latter means you need ACL beta or gamma
+  // to access.
+  // Must be provided if ACL is enabled for the database. An all-public
+  // database supplies an empty map.
+  7: optional map<string, list<string>> (hs.type = "HashMap") acl_config;
 }
 
 struct KickOffResponse {

@@ -15,6 +15,7 @@ import Control.Concurrent.Async
 import Control.Concurrent.MVar
 import Control.Exception
 import Control.Monad
+import Data.Maybe (isNothing)
 import qualified Data.Aeson as Aeson
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as BSL
@@ -93,6 +94,23 @@ syncCompletePredicates env repo =
       if aclProcessingEnabled
         then Data.retrievePathACLConfig odbHandle
         else return Nothing
+
+    -- 'Nothing' here is not "no groups" -- it means the config never reached
+    -- the db, or what is stored is corrupt. Either way, completing would
+    -- apply no ACL constraints at all and publish a db that is readable by
+    -- everyone, so refuse instead. This is the backstop for any route that
+    -- leaves an ACL-enabled db without a config, including a crash before
+    -- storing the ACL config followed by a succeeding retry on with
+    -- "already exists" outcome.
+    -- An all-public db stores an explicit empty config and arrives here as
+    -- @Just mempty@, which is allowed.
+    when (aclProcessingEnabled && isNothing mAclConfig) $
+      throwIO $ Thrift.Exception $ Text.concat
+        [ "ACLs are enabled for this database (the glean.acl property is set) "
+        , "but no ACL config is stored. Completing would apply no ACL "
+        , "constraints, leaving every fact readable by everyone. Recreate the "
+        , "database with 'glean create --acl --acl-config'."
+        ]
 
     let typedPathConfig config = HashMap.fromList
           [ (Path p, map ACL acls) | (p, acls) <- HashMap.toList config ]
