@@ -11,22 +11,22 @@
 
 -- | ACL configuration validation and processing.
 --
--- This module handles the path→ACL group IDs configuration that is sent
--- with each batch write. Each path maps to a list of ACL group ID strings.
+-- This module handles the path→ACL group IDs configuration supplied at
+-- @glean create@. Each path maps to a list of ACL group ID strings.
 -- Paths are directory paths. It is assumed that the map has a small number
 -- of entries (less than 100).
 --
 -- Flow:
--- 1. Indexer sends path→[ACL group ID strings] mapping with each batch
--- 2. Server parses group ID strings into integers
--- 3. Server builds ACL ownership using the integer group IDs directly
+-- 1. @glean create --acl-config@ sends the path→[ACL group ID strings]
+--    mapping on 'Glean.Types.KickOff'; the server persists it in DB metadata
+-- 2. At @glean complete@ the server reads it back and registers each group
+--    as an @acl:\<name\>@ ownership unit
+-- 3. Server builds ACL ownership from those unit IDs
 
 module Glean.Database.ACLConfig
-  ( -- * Path Config (from batch)
-    Path(..)
+  ( Path(..)
   , ACL(..)
   , PathACLConfig
-  , emptyPathConfig
   , pathConfigToList
   , getAllGroupIds
 
@@ -48,13 +48,9 @@ newtype ACL = ACL Text
   deriving stock (Show, Eq)
   deriving newtype (Hashable)
 
--- | Path ACL configuration from batch: maps paths to lists of ACL group ID
--- strings. Example: {"src/internal/": ["1", "2"], "src/public/": ["3"]}
+-- | Path ACL configuration: maps paths to lists of ACL group ID strings.
+-- Example: {"src/internal/": ["1", "2"], "src/public/": ["3"]}
 type PathACLConfig = HashMap Path [ACL]
-
--- | Empty path configuration.
-emptyPathConfig :: PathACLConfig
-emptyPathConfig = HashMap.empty
 
 -- | List the @(path, ACLs)@ entries of a path ACL config.
 pathConfigToList :: PathACLConfig -> [(Path, [ACL])]

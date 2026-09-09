@@ -11,7 +11,6 @@
 module Glean.Write.JSON
   ( buildJsonBatch
   , syncWriteJsonBatch
-  , syncWriteJsonBatchWithACLConfig
   , writeJsonBatch
   ) where
 
@@ -64,25 +63,12 @@ syncWriteJsonBatch
   -> [Thrift.JsonFactBatch]
   -> Maybe Thrift.SendJsonBatchOptions
   -> IO ()
-syncWriteJsonBatch env repo batches opts =
-  syncWriteJsonBatchWithACLConfig env repo batches opts Nothing
-
--- | Write JSON batch with ACL config
-syncWriteJsonBatchWithACLConfig
-  :: Env
-  -> Repo
-  -> [Thrift.JsonFactBatch]
-  -> Maybe Thrift.SendJsonBatchOptions
-  -> Maybe (HashMap Text [Text])
-    -- ^ ACL config (path -> list of ACL group ID strings)
-  -> IO ()
-syncWriteJsonBatchWithACLConfig env repo batches opts aclConfig = do
+syncWriteJsonBatch env repo batches opts = do
   let batch =
         Thrift.SendJsonBatch
           { Thrift.sendJsonBatch_batches = batches
           , Thrift.sendJsonBatch_options = opts
           , Thrift.sendJsonBatch_remember = False
-          , Thrift.sendJsonBatch_acl_config = aclConfig
           }
   content <- writeJsonBatch env repo batch
   void $ syncWriteContentDatabase env repo content
@@ -95,11 +81,7 @@ writeJsonBatch
 writeJsonBatch env repo SendJsonBatch{..} = do
   dbSchema <- withOpenDatabase env repo (return . Database.odbSchema)
   batch <- buildJsonBatch dbSchema sendJsonBatch_options sendJsonBatch_batches
-  -- Copy ACL config from SendJsonBatch to the resulting Batch
-  let batchWithACL = batch
-        { Thrift.batch_acl_config = sendJsonBatch_acl_config
-        }
-  return $ writeContentFromBatch batchWithACL
+  return $ writeContentFromBatch batch
 
 buildJsonBatch
   :: DbSchema
@@ -188,8 +170,6 @@ withFactBuilder action =
     ownerVecs
     mempty
     Nothing -- TODO: we should have a schema ID for JSON batches
-    -- TODO(T276420184): thread ACL config through the JSON withFactBuilder path
-    Nothing -- acl_config
 
 
 type WriteFacts a = ReaderT FactBuilder IO a

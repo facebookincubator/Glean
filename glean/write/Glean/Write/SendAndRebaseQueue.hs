@@ -18,7 +18,6 @@ import Control.Exception
 import Control.Monad
 import qualified Data.ByteString as BS
 import qualified Data.HashMap.Strict as HashMap
-import Data.Text (Text)
 import Data.Word
 
 import Util.Log
@@ -231,30 +230,10 @@ data Sender = Sender
     -- or 'WaitSubstNone' if nothing has been sent yet
   , sSent :: TVar Point
     -- ^ Records the size and time the last batch was sent, for stats
-  , sFacts :: MVar (FactSet, [FactOwnership], ACLConfig)
-    -- ^ The fact buffer plus the state that travels with it: the ownership
-    -- accumulated for the next flush, and the 'ACLConfig' to propagate with
-    -- the batch.
+  , sFacts :: MVar (FactSet, [FactOwnership])
+    -- ^ The fact buffer plus the ownership accumulated for the next flush
   , sCallbacks :: TQueue Callback
     -- ^ Callbacks to run when the in-flight batch completes
-  }
-
--- | ACL configuration that needs to be propagated with batches
-newtype ACLConfig = ACLConfig
-  { aclConfig :: Maybe (HashMap.HashMap Text [Text])
-  }
-
--- | An 'ACLConfig' with no configuration.
-emptyACLConfig :: ACLConfig
-emptyACLConfig = ACLConfig Nothing
-
--- | Combine ACL configs, preferring the newer config when it is present.
--- A 'Nothing' newer config leaves the existing config untouched.
-preferNewerACLConfig :: ACLConfig -> ACLConfig -> ACLConfig
-preferNewerACLConfig old new = ACLConfig
-  { aclConfig = case aclConfig new of
-      Nothing -> aclConfig old
-      just -> just
   }
 
 -- | The outcome a 'Sender' is waiting for from its in-flight send: nothing
@@ -302,7 +281,7 @@ withSendAndRebaseQueue backend repo inventory settings action = do
           worker <- Sender i
             <$> newTMVarIO WaitSubstNone
             <*> newTVarIO (error "missing sSent")
-            <*> newMVar (factset, [], emptyACLConfig)
+            <*> newMVar (factset, [])
             <*> newTQueueIO
           atomically $ writeTQueue (srqSenders srq) worker
       deleteSenderPool srq =
@@ -342,10 +321,9 @@ writeSendAndRebaseQueue srq batch callback = do
 -- | Add an incoming batch to a sender's buffer, then flush if needed.
 --
 -- The batch is rebased and de-duplicated against the cache and the existing
--- buffer, its ownership is accumulated for the next flush, and its ACL config
--- is merged in (newer config wins). If the buffer has grown past
--- 'srqFactBufferSize' we flush with wait=True, applying back-pressure to the
--- writer until the server responds.
+-- buffer, and its ownership is accumulated for the next flush. If the buffer
+-- has grown past 'srqFactBufferSize' we flush with wait=True, applying
+-- back-pressure to the writer until the server responds.
 senderSendOrAppend
   :: SendAndRebaseQueue
   -> Sender
@@ -358,23 +336,17 @@ senderSendOrAppend srq sender batch callback latency = do
   -- and having a free Sender to write the batch.
   statBump srq Stats.mutatorLatency =<< endTick latency
   let !size = BS.length $ Thrift.batch_facts batch
-  -- Extract ACL config from incoming batch
-  let incomingACL = ACLConfig
-        { aclConfig = Thrift.batch_acl_config batch
-        }
   newSize <-
     -- "Mutator throughput" is how fast we are appending new facts
     -- to the FactSet.
     statTick srq Stats.mutatorThroughput (fromIntegral size) $ do
-      modifyMVar (sFacts sender) $ \(base, ownership, existingACL) -> do
+      modifyMVar (sFacts sender) $ \(base, ownership) -> do
         (facts, owned) <-
           rebase (srqInventory srq) batch (srqFacts srq) base
         FactSet.append base facts
         atomically $ writeTQueue (sCallbacks sender) callback
         newSize <- FactSet.factMemory base
-        -- Prefer the newer ACL config when present
-        let mergedACL = preferNewerACLConfig existingACL incomingACL
-        return ((base, owned : ownership, mergedACL), newSize)
+        return ((base, owned : ownership), newSize)
   updateLookupCacheStats srq
   let !wait = newSize >= srqFactBufferSize srq
   senderRebaseAndFlush wait srq sender
@@ -462,14 +434,14 @@ senderRebaseAndFlush wait srq sender = do
           logError (show e)
           atomically $ putTMVar (sSubstVar sender) (WaitSubstError e)
           throwIO e) $
-        modifyMVar_ (sFacts sender) $ \(base, owned, aclCfg) ->
+        modifyMVar_ (sFacts sender) $ \(base, owned) ->
           -- eagerly release the subst when we're done
           bracket (deserialize thriftSubst) release $ \subst -> do
             (newBase, newSubst) <-
               FactSet.rebase (srqInventory srq) subst (srqFacts srq) base
             -- Rebase the accumulated ownership for the next flush.
             newOwned <- mapM (substOwnership newSubst) owned
-            return (newBase, newOwned, aclCfg)
+            return (newBase, newOwned)
       -- "Commit throughput" will be write throughput to the server
       start <- readTVarIO (sSent sender)
       statBump srq Stats.commitThroughput =<< endTick start
@@ -478,32 +450,25 @@ senderRebaseAndFlush wait srq sender = do
 
 -- | Serialize the sender's current fact buffer and hand it to the
 -- underlying 'SendQueue'. The outgoing batch carries the accumulated
--- ownership plus the current ACL config.
+-- ownership.
 --
 -- After sending, the ownership is cleared: the facts stay in the buffer and
 -- are only renamed and dropped once the substitution comes back in
 -- 'senderRebaseAndFlush', where any ownership accumulated in the meantime is
--- rebased. The ACL config is kept as it applies to every batch for this DB.
+-- rebased.
 senderFlush :: SendAndRebaseQueue -> Sender -> IO ()
 senderFlush srq sender =
-  modifyMVar_ (sFacts sender) $ \(facts, owned, aclCfg) -> do
+  modifyMVar_ (sFacts sender) $ \(facts, owned) -> do
   factOnlyBatch <- FactSet.serialize facts
   let batch = factOnlyBatch
         { Thrift.batch_owned = ownershipUnits (unionOwnership owned)
-        , Thrift.batch_acl_config = aclConfig aclCfg
         }
   -- Log batch details before sending
   let numFacts = Thrift.batch_count batch
       numOwnershipUnits = HashMap.size (Thrift.batch_owned batch)
-      hasACL = case aclConfig aclCfg of
-        Just cfg -> not (HashMap.null cfg)
-        Nothing -> False
-      aclEntries = maybe 0 HashMap.size (aclConfig aclCfg)
   log $ "Flushing batch: facts=" ++ show numFacts ++
         ", ownership_units=" ++ show numOwnershipUnits ++
-        ", ownership=" ++ show (length owned) ++
-        ", has_acl_config=" ++ show hasACL ++
-        (if hasACL then " (" ++ show aclEntries ++ " ACL entries)" else "")
+        ", ownership=" ++ show (length owned)
   !size <- FactSet.factMemory facts
   start <- beginTick (fromIntegral size)
   atomically $ do
@@ -516,8 +481,7 @@ senderFlush srq sender =
     writeTVar (sSent sender) start
   -- Clear the ownership now that it has been sent; ownership accumulated
   -- before the substitution arrives is rebased in 'senderRebaseAndFlush'.
-  -- Keep ACL config for the next batch (it applies to all batches for this DB)
-  return (facts, [], aclCfg)
+  return (facts, [])
   where log msg = vlog 1 $ "Sender " <> show (sId sender) <> ": " <> msg
 
 -- | Read and reset the LookupCache counters and report them via 'srqStats'.

@@ -253,16 +253,6 @@ void BatchBase::logEnd() const {
             << total_serialized_units;
 }
 
-void BatchBase::setACLConfig(
-    std::unordered_map<std::string, std::vector<std::string>> config) {
-  aclConfig_ = std::move(config);
-}
-
-const std::unordered_map<std::string, std::vector<std::string>>&
-BatchBase::getACLConfig() const {
-  return aclConfig_;
-}
-
 } // namespace cpp
 } // namespace glean
 } // namespace facebook

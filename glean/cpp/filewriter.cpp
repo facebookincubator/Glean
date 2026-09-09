@@ -43,16 +43,6 @@ class FileWriter : public Sender {
         {7, batch.getSchemaId()},
     };
 
-    // Add ACL config fields if present
-    const auto& aclConfig = batch.getACLConfig();
-    if (!aclConfig.empty()) {
-      // Field 9: acl_config - map<string, list<string>>
-      fields.emplace_back(
-          9,
-          serialize::thriftcompact::StringMap(
-              aclConfig.begin(), aclConfig.end()));
-    }
-
     serialize::thriftcompact::put(out, fields);
     folly::writeFile(folly::ByteRange(out.data(), out.size()), path.c_str());
   }

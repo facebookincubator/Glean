@@ -482,12 +482,6 @@ class BatchBase {
   std::map<std::string, std::vector<int64_t>> serializeOwnership() const;
   void clearOwnership();
 
-  // ACL config support (path -> list of ACL group ID strings)
-  void setACLConfig(
-      std::unordered_map<std::string, std::vector<std::string>> config);
-  const std::unordered_map<std::string, std::vector<std::string>>&
-  getACLConfig() const;
-
   FactStats bufferStats() const {
     return FactStats{buffer.factMemory(), buffer.size()};
   }
@@ -537,9 +531,6 @@ class BatchBase {
   mutable size_t last_serialized_units = 0;
   mutable size_t total_serialized_units = 0;
   std::set<std::string> unique_units;
-
-  // ACL config support (path -> list of ACL group ID strings)
-  std::unordered_map<std::string, std::vector<std::string>> aclConfig_;
 };
 
 /// A typed instantiation of an Inventory for a particular Schema.
@@ -663,10 +654,8 @@ class Batch : private BatchBase {
   using BatchBase::CacheStats;
   using BatchBase::cacheStats;
   using BatchBase::endUnit;
-  using BatchBase::getACLConfig;
   using BatchBase::logEnd;
   using BatchBase::rebase;
-  using BatchBase::setACLConfig;
 };
 
 } // namespace cpp

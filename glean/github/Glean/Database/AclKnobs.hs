@@ -13,7 +13,6 @@
 -- disabled.
 module Glean.Database.AclKnobs
   ( aclCalculateEnabled
-  , aclStoreEnabled
   , aclCheckEnabled
   , aclLocalTestingAllowed
   ) where
@@ -21,10 +20,6 @@ module Glean.Database.AclKnobs
 -- | Whether ACL ownership augmentation runs at @glean complete@.
 aclCalculateEnabled :: IO Bool
 aclCalculateEnabled = return False
-
--- | Whether per-batch ACL config is validated and persisted during writes.
-aclStoreEnabled :: IO Bool
-aclStoreEnabled = return False
 
 -- | Whether the query server filters results by ACL group membership.
 aclCheckEnabled :: IO Bool
