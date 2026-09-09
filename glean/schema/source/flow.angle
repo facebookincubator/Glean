@@ -85,6 +85,19 @@ predicate ModuleDoc: {
   file: src.File,
 }
 
+predicate ModuleDocblockRange: {
+  module: flow.Module,
+  file: src.File,
+  span: src.ByteSpan,
+} stored { FileModule, File, Span } where
+  flow.ModuleDoc {
+    documentation = flow.Documentation (flow.Range {
+      module = FileModule,
+      span = Span
+    }),
+    file = File
+  }
+
 # Re-index ModuleDoc so it is left-most keyed by module fact for O(1) lookup
 predicate ModuleComments: {
   module: flow.Module,
