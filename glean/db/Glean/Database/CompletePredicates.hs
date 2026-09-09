@@ -45,7 +45,12 @@ import Glean.Database.Schema.Types
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Types
 import Glean.Database.ACLOwnership (augmentOwnershipWithACL)
-import Glean.Database.ACLConfig (ACL(ACL), Path(Path), getAllGroupIds)
+import Glean.Database.ACLConfig
+  ( ACL(ACL)
+  , Path(Path)
+  , PathACLConfig
+  , getAllGroupIds
+  )
 import Glean.Internal.Types as Thrift
 import Glean.Logger
 import Glean.Repo.Text (repoToText)
@@ -89,13 +94,7 @@ syncCompletePredicates env repo =
     calculateEnabled <- aclCalculateEnabled
     let aclProcessingEnabled = dbAclEnabled && calculateEnabled
 
-    let typedPathConfig config = HashMap.fromList
-          [ (Path p, map ACL acls) | (p, acls) <- HashMap.toList config ]
-        aclGroupUnitNames config =
-          [ "acl:" <> Text.encodeUtf8 g
-          | ACL g <- getAllGroupIds (typedPathConfig config) ]
-
-        computeOwnership = Storage.computeOwnership odbHandle base
+    let computeOwnership = Storage.computeOwnership odbHandle base
           (schemaInventory odbSchema)
 
         storeOwnership own = do
@@ -115,77 +114,69 @@ syncCompletePredicates env repo =
       else do
         mAclConfig <- Data.retrievePathACLConfig odbHandle
         case mAclConfig of
-          -- 'Nothing' is not "no groups" -- it means the config never reached
-          -- the db, or what is stored is corrupt. Either way, completing would
-          -- apply no ACL constraints at all and publish a db that is readable
-          -- by everyone, so refuse instead. This is the backstop for any route
-          -- that leaves an ACL-enabled db without a config, including a crash
-          -- before storing the ACL config followed by a succeeding retry on
-          -- with "already exists" outcome.
-          -- An all-public db stores an explicit empty config and arrives here
-          -- as @Just mempty@, which is allowed.
           Nothing ->
             throwIO $ Thrift.Exception $ Text.concat
               [ "ACLs are enabled for this database (the glean.acl property "
-              , "is set) but no ACL config is stored. Completing would apply "
-              , "no ACL constraints, leaving every fact readable by everyone. "
-              , "Recreate the database with 'glean create --acl --acl-config'."
+              , "is set) but no ACL config is stored."
               ]
-
-          Just aclConfig -> do
-            -- Register ACL group names as ACL units *before* computing
-            -- ownership. Doing this once here, after all batches are written
-            -- (waitForWrites above), rather than per batch, guarantees the ACL
-            -- units are allocated UnitIds above every regular ownership unit.
-            -- The returned id is the firstACLID boundary: every UnitId below
-            -- it is a regular ownership unit, every UnitId at or above it is
-            -- an ACL group unit. The units own no facts; the query server
-            -- resolves groups via getUnitId("acl:<name>").
-            --
-            -- For an ACL-enabled DB with no ACL groups (an empty shard, or an
-            -- all-public config) we register zero units. registerACLUnits
-            -- returns the boundary (= next free UnitId) without allocating, so
-            -- we still obtain a firstACLID. Storing it unconditionally is what
-            -- makes ACL filtering engage at query time: 'buildLayerACLSlice'
-            -- skips filtering entirely (fail-open) when firstACLID is absent.
-            let names = aclGroupUnitNames aclConfig
-            UnitId firstId <- withWriteLock odbWriting $ \lock ->
-              Storage.registerACLUnits odbHandle lock names
-            logInfo $ "ACL augmentation: registered "
-              <> Text.pack (show (length names)) <> " ACL group units"
-            let firstACLID = UsetId firstId
-
+          Just config -> do
+            let aclConfig = typedPathConfig config
+            firstACLID <- registerACLGroupUnits odbHandle odbWriting aclConfig
             own <- computeOwnership
-
-            -- AND-join ACL constraints into ownership when there is a
-            -- non-empty config; an empty config has no constraints to apply.
-            -- Either way, record the firstACLID boundary and the (possibly
-            -- empty) group mapping, so firstACLID is never absent at query
-            -- time (which would silently disable ACL filtering).
-            groupMapping <-
-              if HashMap.null aclConfig
-                then do
-                  logInfo
-                    "ACL augmentation: no ACL groups; storing empty boundary"
-                  return HashMap.empty
-                else do
-                  logInfo $ "ACL augmentation: processing "
-                    <> Text.pack (show (HashMap.size aclConfig))
-                    <> " ACL config entries"
-                  augmentOwnershipWithACL odbHandle own
-                    (typedPathConfig aclConfig)
-            Data.storeFirstACLID odbHandle firstACLID
-            Data.storeACLGroupMapping odbHandle
-              (buildGroupMappingJson
-                (HashMap.fromList
-                  [ (t, w)
-                  | (ACL t, UnitId w) <- HashMap.toList groupMapping ]))
-            logInfo $ "ACL augmentation complete: firstACLID="
-              <> Text.pack (show firstACLID)
-              <> ", groups="
-              <> Text.pack (show (HashMap.size groupMapping))
-
+            storeACLOwnership odbHandle own firstACLID aclConfig
             storeOwnership own
+
+typedPathConfig :: HashMap.HashMap Text.Text [Text.Text] -> PathACLConfig
+typedPathConfig config = HashMap.fromList
+  [ (Path p, map ACL acls) | (p, acls) <- HashMap.toList config ]
+
+-- | Register the ACL group names as ACL units and return the firstACLID
+-- boundary: every UnitId below it is a regular ownership unit, every UnitId
+-- at or above it is an ACL group unit. The units own no facts.
+registerACLGroupUnits
+  :: Storage.DatabaseOps db
+  => db
+  -> Maybe Writing
+  -> PathACLConfig
+  -> IO UsetId
+registerACLGroupUnits handle writing aclConfig = do
+  let names =
+        [ "acl:" <> Text.encodeUtf8 g | ACL g <- getAllGroupIds aclConfig ]
+  UnitId firstId <- withWriteLock writing $ \lock ->
+    Storage.registerACLUnits handle lock names
+  logInfo $ "ACL augmentation: registered "
+    <> Text.pack (show (length names)) <> " ACL group units"
+  return (UsetId firstId)
+
+-- | AND-join the ACL constraints into ownership. Record the firstACLID boundary
+-- and the group mapping.
+storeACLOwnership
+  :: Storage.DatabaseOps db
+  => db
+  -> ComputedOwnership
+  -> UsetId
+  -> PathACLConfig
+  -> IO ()
+storeACLOwnership handle own firstACLID aclConfig = do
+  groupMapping <-
+    if HashMap.null aclConfig
+      then do
+        logInfo "ACL augmentation: no ACL groups; storing empty boundary"
+        return HashMap.empty
+      else do
+        logInfo $ "ACL augmentation: processing "
+          <> Text.pack (show (HashMap.size aclConfig))
+          <> " ACL config entries"
+        augmentOwnershipWithACL handle own aclConfig
+  Data.storeFirstACLID handle firstACLID
+  Data.storeACLGroupMapping handle
+    (buildGroupMappingJson
+      (HashMap.fromList
+        [ (t, w) | (ACL t, UnitId w) <- HashMap.toList groupMapping ]))
+  logInfo $ "ACL augmentation complete: firstACLID="
+    <> Text.pack (show firstACLID)
+    <> ", groups="
+    <> Text.pack (show (HashMap.size groupMapping))
 
 completeAxiomPredicates :: Env -> Repo -> IO CompletePredicatesResponse
 completeAxiomPredicates env@Env{..} repo = do
