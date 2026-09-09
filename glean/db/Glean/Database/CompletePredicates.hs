@@ -158,16 +158,10 @@ storeACLOwnership
   -> PathACLConfig
   -> IO ()
 storeACLOwnership handle own firstACLID aclConfig = do
-  groupMapping <-
-    if HashMap.null aclConfig
-      then do
-        logInfo "ACL augmentation: no ACL groups; storing empty boundary"
-        return HashMap.empty
-      else do
-        logInfo $ "ACL augmentation: processing "
-          <> Text.pack (show (HashMap.size aclConfig))
-          <> " ACL config entries"
-        augmentOwnershipWithACL handle own aclConfig
+  logInfo $ "ACL augmentation: processing "
+    <> Text.pack (show (HashMap.size aclConfig))
+    <> " ACL config entries"
+  groupMapping <- augmentOwnershipWithACL handle own aclConfig
   Data.storeFirstACLID handle firstACLID
   Data.storeACLGroupMapping handle
     (buildGroupMappingJson
