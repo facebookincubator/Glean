@@ -57,3 +57,29 @@ constraint_value(
     constraint_setting = ":compiler",
     visibility = ["PUBLIC"],
 )
+
+# Profiling (`buck2 build ... -m //buck2/constraints:prof`). Opt-in only,
+# like sanitizer/compiler above - no "off" value needed. Unlike those two,
+# this isn't matching a glean.cabal.in flag - this project has never used
+# Cabal's own `--enable-profiling` (checked: no `profiling`/`*-profiling`
+# setting anywhere in cabal.project or ~/.cabal/config, just commented-out
+# template lines) - so there's no existing Cabal behaviour to replicate,
+# only GHC's own standard `-prof` mechanism, which buck2's prelude already
+# implements natively (haskell_library()/haskell_binary()'s own
+# `enable_profiling` attr - see buck2/haskell.bzl). Forces `build_mode` to
+# behave as `opt`'s link_style (static) regardless of dev/opt, since a
+# profiled *shared* library isn't a thing GHC supports (confirmed in the
+# prelude itself - haskell.bzl's own library-build loop silently skips
+# building that combination) - independent of whether `-O` (opt) is also
+# wanted, exactly like glean.cabal.in's own `asan` needing `-g` regardless
+# of the `opt` flag (see cxx.bzl).
+constraint_setting(
+    name = "profiling",
+    visibility = ["PUBLIC"],
+)
+
+constraint_value(
+    name = "prof",
+    constraint_setting = ":profiling",
+    visibility = ["PUBLIC"],
+)
