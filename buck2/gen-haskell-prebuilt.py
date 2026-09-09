@@ -20,8 +20,6 @@ retargeting the whole buck2 build at a different GHC version is just:
 
   cabal build all --only-dependencies -w ghc-<version>
   buck2/gen-haskell-prebuilt.py
-
-Run from the Glean repository root.
 """
 
 import glob
@@ -36,7 +34,7 @@ import sys
 # Configuration
 # ---------------------------------------------------------------------------
 
-GLEAN_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def _read_ghc_version():
     """The GHC version Cabal last resolved this project's build plan
@@ -47,7 +45,7 @@ def _read_ghc_version():
     then this script enough to retarget everything downstream at a
     different GHC version.
     """
-    plan_path = os.path.join(GLEAN_ROOT, "dist-newstyle/cache/plan.json")
+    plan_path = os.path.join(ROOT, "dist-newstyle/cache/plan.json")
     if not os.path.exists(plan_path):
         print(f"ERROR: {plan_path} not found - run "
               f"'cabal build all --only-dependencies' first", file=sys.stderr)
@@ -129,8 +127,7 @@ GLOBAL_DB = os.path.join(GLOBAL_ROOT_ABS, "package.conf.d")
 # instance, commonly puts the binary in /usr/bin and the libdir in
 # /usr/lib/ghc-<version>, two unrelated trees) - so it needs its own repo
 # symlink, separate from the libdir one, for anything that needs GHC's
-# own `bin/` on `$PATH` (e.g. a test-suite working around the hie-indexer
-# GHC-version mismatch - see glean/lang/haskell/tests/BUCK).
+# own `bin/` on `$PATH`.
 GHC_BIN_ABS = os.path.dirname(os.path.realpath(GHC))
 
 def _find_store_roots():
@@ -163,10 +160,10 @@ def _find_store_roots():
 
 STORE_ROOTS = _find_store_roots()
 STORE_DBS   = [os.path.join(r, "package.db") for r in STORE_ROOTS]
-INPLACE_DB  = os.path.join(GLEAN_ROOT, f"dist-newstyle/packagedb/ghc-{GHC_VERSION}")
+INPLACE_DB  = os.path.join(ROOT, f"dist-newstyle/packagedb/ghc-{GHC_VERSION}")
 ALL_DBS     = [GLOBAL_DB] + STORE_DBS + [INPLACE_DB]
 
-TARGET_DIR    = os.path.join(GLEAN_ROOT, "third-party/haskell")
+TARGET_DIR    = os.path.join(ROOT, "third-party/haskell")
 TARGET_STORE_DB = os.path.join(TARGET_DIR, "store-db")
 
 # Repo-relative db paths (relative to TARGET_DIR) used in BUCK rules
@@ -277,17 +274,6 @@ def collect_packages(root_ids):
         if uid in visited:
             continue
         name = pkg_name(uid)
-        # A simple package's inplace unit-id is "<pkg>-<ver>-inplace"; a
-        # named-sublibrary one (e.g. glean.cabal.in's `library stubs`) is
-        # "<pkg>-<ver>-inplace-<sublib>" - neither is a real installed
-        # package buck2 can reference by store path (it's one of this
-        # project's own local packages, built directly by buck2 rather
-        # than vendored as a vendored prebuilt). get_root_dep_ids() should
-        # never hand this walk a local id as a *root* (it filters using
-        # plan.json's own local/external split), and no genuinely external
-        # package's own `depends:` should ever reference one either - this
-        # check is a cheap, generic backstop for both, not something that
-        # should ordinarily fire.
         if '-inplace' in uid:
             visited[uid] = None
             continue
@@ -312,27 +298,28 @@ def get_root_dep_ids():
     Derived entirely from Cabal's own `dist-newstyle/cache/plan.json`,
     which `cabal build all --only-dependencies` populates with a
     `style: "local"` entry for *every* component of *every* package
-    listed in `cabal.project` (library, executable and test-suite alike -
-    this project's `tests: True` is what pulls test-suites in too) -
-    without ever actually building any of them (dependency *resolution*
-    is a static solve over each package's own `build-depends:` field,
-    independent of compilation - see buck2.md's "explore a build
-    reconfigured around Cabal" entry for how this was confirmed
-    empirically). This is why nothing project-specific needs to be
-    hand-maintained here any more: no per-package .conf filename list, no
-    wanted-component allowlist, no manual roots for a package (like
-    glean-clang's `clang-derive-lib`) that only *some* other local
-    component happens to need - every local component's own `depends:`
-    is walked, uniformly.
+    listed in `cabal.project` (library, executable and test-suite
+    alike - this project's `tests: True` is what pulls test-suites in
+    too) - without ever actually building any of them (dependency
+    *resolution* is a static solve over each package's own
+    `build-depends:` field, independent of compilation - see
+    buck2.md's "explore a build reconfigured around Cabal" entry for
+    how this was confirmed empirically). This is why nothing
+    project-specific needs to be hand-maintained here any more: no
+    per-package .conf filename list, no wanted-component allowlist, no
+    manual roots for a package that only *some* other local component
+    happens to need - every local component's own `depends:` is
+    walked, uniformly.
 
-    (One thing this genuinely can't discover: extra C-library flags from
-    a component's `pkgconfig-depends:` - e.g. `rts`'s icu-uc/gflags or
-    glean-clang's LLVM linkage - since those only get computed when Cabal
-    runs a package's *real* configure step, which `--only-dependencies`
-    skips for every local component. That's a separate, narrower problem
-    from root-dependency discovery, needing its own solution.)
+    (One thing this genuinely can't discover: extra C-library flags
+    from a component's `pkgconfig-depends:` since those only get
+    computed when Cabal runs a package's *real* configure step, which
+    `--only-dependencies` skips for every local component. That's a
+    separate, narrower problem from root-dependency discovery, needing
+    its own solution.)
+
     """
-    plan_path = os.path.join(GLEAN_ROOT, "dist-newstyle/cache/plan.json")
+    plan_path = os.path.join(ROOT, "dist-newstyle/cache/plan.json")
     if not os.path.exists(plan_path):
         print(f"ERROR: {plan_path} not found - run "
               f"'cabal build all --only-dependencies' first", file=sys.stderr)
@@ -363,7 +350,7 @@ def get_tool_paths():
     for tool in BUILD_TOOLS:
         result = subprocess.run(
             ["cabal", "list-bin", "-w", GHC, tool],
-            cwd=GLEAN_ROOT, capture_output=True, text=True
+            cwd=ROOT, capture_output=True, text=True
         )
         if result.returncode != 0 or not result.stdout.strip():
             print(f"  WARNING: 'cabal list-bin {tool}' failed - "

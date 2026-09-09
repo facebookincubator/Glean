@@ -1,32 +1,48 @@
-# The build-mode axis (buck2.md TODO: "we should support different build
-# modes"): `dev` (default - shared libs, no optimisation, fast iteration) and
-# `opt` (static binary, optimised: -O for Haskell, -O3 for C++). Selected via
-# `buck2 build ... -m //buck2/constraints:opt`; `dev` is the default, set as
-# a PACKAGE-level cfg modifier at the repo root (see ../../PACKAGE).
+# Build configuration. These options are normally set on the command
+# line via -m, e.g.
+#
+#   buck2 build //some/target -m buck2//constraint:asan
+#
+# Aliases for constraints can be configured in the PACKAGE file.
+# Checking configuration settings is done using select().
+
+# build_mode: selects between
+#   - dev (the default; faster rebuild, more runtime checks, slower execution)
+#   - opt (slower rebuild, fewer runtime checks, faster execution)
+#
+# Usually these are aliased to simply dev/opt, so you can say
+#
+#   buck2 build //some/target -m opt
+#
+# to build with optimisation.
 constraint_setting(
     name = "build_mode",
     visibility = ["PUBLIC"],
 )
 
+# build_mode dev: typically
+#    - no optimisation
+#    - assertions enabled
+#    - debug logging enabled
+#    - shared libraries for faster linking
 constraint_value(
     name = "dev",
     constraint_setting = ":build_mode",
     visibility = ["PUBLIC"],
 )
 
+# build_mode opt: typically
+#    - full optimisation
+#    - assertions disabled
+#    - debug logging disabled
+#    - static linking
 constraint_value(
     name = "opt",
     constraint_setting = ":build_mode",
     visibility = ["PUBLIC"],
 )
 
-# Matches glean.cabal.in's `flag asan` (default False) - `if flag(asan):
-# cxx-options: -fsanitize=address` (common fb-cpp) and `ghc-options:
-# -optc-fsanitize=address -optl-fsanitize=address` (common exe). Opt-in
-# only - selected via `-m //buck2/constraints:asan` - so unlike build_mode
-# this needs no "off" value or PACKAGE-level default: not selecting it
-# already means "not active", which select()'s own "DEFAULT" arm already
-# expresses (see buck2/cxx.bzl, buck2/haskell.bzl).
+# Enable address sanitiser (-fsanitize=address) for C/C++ code
 constraint_setting(
     name = "sanitizer",
     visibility = ["PUBLIC"],
@@ -38,15 +54,7 @@ constraint_value(
     visibility = ["PUBLIC"],
 )
 
-# Matches glean.cabal.in's `flag clang` (default False) - `if !flag(clang):
-# cxx-options: -fcoroutines` (common fb-cpp): GCC needs -fcoroutines to
-# enable C++20 coroutines, Clang doesn't need (or, on some versions, even
-# recognise) it. This doesn't itself make buck2's cxx_toolchain actually
-# invoke clang - neither does Cabal's own flag: it's a "tell the build
-# what compiler I'm already using" signal, not a compiler selector - so
-# pass `-m //buck2/constraints:clang` alongside whatever actually makes
-# the toolchain use clang (CC/CXX env vars today; a real select()'d
-# toolchain compiler is a separate, not-yet-needed change).
+# The C compiler flavour, used to select flags
 constraint_setting(
     name = "compiler",
     visibility = ["PUBLIC"],
@@ -58,21 +66,8 @@ constraint_value(
     visibility = ["PUBLIC"],
 )
 
-# Profiling (`buck2 build ... -m //buck2/constraints:prof`). Opt-in only,
-# like sanitizer/compiler above - no "off" value needed. Unlike those two,
-# this isn't matching a glean.cabal.in flag - this project has never used
-# Cabal's own `--enable-profiling` (checked: no `profiling`/`*-profiling`
-# setting anywhere in cabal.project or ~/.cabal/config, just commented-out
-# template lines) - so there's no existing Cabal behaviour to replicate,
-# only GHC's own standard `-prof` mechanism, which buck2's prelude already
-# implements natively (haskell_library()/haskell_binary()'s own
-# `enable_profiling` attr - see buck2/haskell.bzl). Forces `build_mode` to
-# behave as `opt`'s link_style (static) regardless of dev/opt, since a
-# profiled *shared* library isn't a thing GHC supports (confirmed in the
-# prelude itself - haskell.bzl's own library-build loop silently skips
-# building that combination) - independent of whether `-O` (opt) is also
-# wanted, exactly like glean.cabal.in's own `asan` needing `-g` regardless
-# of the `opt` flag (see cxx.bzl).
+# Enable Haskell profiling. Requires all the Cabal package
+# dependencies to be built for profiling too.
 constraint_setting(
     name = "profiling",
     visibility = ["PUBLIC"],

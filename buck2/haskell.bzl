@@ -4,12 +4,12 @@
 #   - package deps: `packages = ["text", ...]` instead of explicit
 #     `"@third-party//haskell:text"` entries in `deps`.
 #   - a standard set of packages (base, rts) added to every target.
-#   - the fb-haskell extension set (from the `fb-haskell` common stanza in
-#     glean.cabal.in) enabled by default, so individual rules don't need to
-#     repeat it. Pass fb_haskell = False for a package that doesn't import
-#     that common stanza (e.g. mangle, which declares its own minimal
-#     default-extensions) - compiler_flags is then used as-is instead of
-#     appended to FB_HASKELL_EXTENSIONS.
+#   - the fb-haskell extension set enabled by default, so individual
+#     rules don't need to repeat it. Pass fb_haskell = False for a
+#     package that doesn't import that common stanza (e.g. mangle,
+#     which declares its own minimal default-extensions) -
+#     compiler_flags is then used as-is instead of appended to
+#     FB_HASKELL_EXTENSIONS.
 #   - hsc2hs: any `.hsc` file in `srcs` is automatically preprocessed, with
 #     include paths derived from `deps` (see buck2/hsc2hs.bzl) - so a `.hsc`
 #     file that needs a C++ dependency's headers just needs that dependency
