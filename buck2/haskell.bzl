@@ -76,9 +76,18 @@ def _package_deps(packages):
 # BUCK file, the same reasoning as FB_HASKELL_EXTENSIONS above - one place
 # to change, automatically applied to every haskell_library()/
 # haskell_binary() in the tree.
+#
+# `prof` (buck2/constraints/BUCK) also forces static, regardless of
+# dev/opt - GHC doesn't support profiled *shared* libraries (the prelude's
+# own haskell_library() build loop silently skips that combination), so
+# this needs its own nested arm rather than just concatenating with the
+# opt/dev choice, the same shape as cxx.bzl's asan+opt interaction.
 _BUILD_MODE_LINK_STYLE = select({
-    "root//buck2/constraints:opt": "static",
-    "DEFAULT": "shared",
+    "root//buck2/constraints:prof": "static",
+    "DEFAULT": select({
+        "root//buck2/constraints:opt": "static",
+        "DEFAULT": "shared",
+    }),
 })
 
 # GHC's `-O` (Cabal's own default build has no explicit -O0/-O1/-O2
@@ -112,8 +121,32 @@ _BUILD_MODE_HASKELL_FLAGS = select({
 # independent ones, which would silently redo the dynamic-way codegen
 # twice for no reason), and its package `.conf` advertises
 # `dynamic-library-dirs:` pointing at the result.
+#
+# `prof` needs exactly the same "give TH a dynamic way" treatment, for the
+# same underlying reason (this GHC binary, not Template Haskell itself) -
+# but it can't reuse `-dynamic-too` for its *own* profiled compile, since
+# `-prof -dynamic-too` would mean a profiled *and* dynamic secondary way,
+# which GHC doesn't support. No special-casing needed here, though: the
+# prelude's own haskell_library() already builds both `enable_profiling`
+# values for every library (compile.bzl's `build_shared_too` is forced off
+# specifically for the profiled pass, on regardless for the non-profiled
+# one), so setting `dynamic_too = True` here just makes that *non*-profiled
+# pass also produce the dynamic way TH needs, exactly as it does for `opt`
+# - the profiled pass is untouched.
 _BUILD_MODE_DYNAMIC_TOO = select({
-    "root//buck2/constraints:opt": True,
+    "root//buck2/constraints:prof": True,
+    "DEFAULT": select({
+        "root//buck2/constraints:opt": True,
+        "DEFAULT": False,
+    }),
+})
+
+# See buck2/constraints/BUCK's own comment: no Cabal `profiling` flag to
+# match, just GHC's standard `-prof` (the prelude's own haskell_library()/
+# haskell_binary() `enable_profiling` attr adds `-prof` and switches to
+# the `_p.a`/`p_o`/`p_hi` suffixed way - see prelude/haskell/compile.bzl).
+_PROF_ENABLED = select({
+    "root//buck2/constraints:prof": True,
     "DEFAULT": False,
 })
 
@@ -240,6 +273,7 @@ def haskell_binary(
     all_deps = deps + _package_deps(packages)
     all_compiler_flags = (FB_HASKELL_EXTENSIONS + compiler_flags) if fb_haskell else compiler_flags
     kwargs.setdefault("link_style", _BUILD_MODE_LINK_STYLE)
+    kwargs.setdefault("enable_profiling", _PROF_ENABLED)
     native.haskell_binary(
         name = name,
         srcs = _resolve_srcs(name, srcs, all_deps, hsc_flags),
