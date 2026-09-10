@@ -30,7 +30,7 @@ module Glean.Database.ACLOwnership
 import Control.Monad (when)
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
-import Data.Maybe (fromMaybe, mapMaybe, catMaybes)
+import Data.Maybe (mapMaybe, catMaybes)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import Data.Word
@@ -133,20 +133,11 @@ buildUnitAssignments dbHandle configEntries resolveGroup = do
         if null groupUnitIds
           then return []
           else do
-            let normPrefix = fromMaybe prefix
-                  (Text.stripPrefix "fbcode/" prefix)
-            matchingUnits <-
-              findMatchingUnits normPrefix
+            matchingUnits <- scanPrefix prefix
             return
               [ (uid, groupUnitIds)
               | uid <- matchingUnits
               ]
-
-      findMatchingUnits normPrefix = do
-        units1 <- scanPrefix normPrefix
-        units2 <-
-          scanPrefix ("fbcode/" <> normPrefix)
-        return $ units1 ++ units2
 
       scanPrefix prefix = do
         let prefixBS = Text.encodeUtf8 prefix
