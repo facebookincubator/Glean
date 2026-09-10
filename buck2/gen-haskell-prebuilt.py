@@ -137,15 +137,32 @@ def _find_store_roots():
     "ghc-9.8.2-6af5", to keep incompatible builds of the same nominal
     version from colliding. Cabal doesn't expose that suffix through any
     query command (`cabal path --store-dir` only gives the unversioned
-    `~/.cabal/store` root) - discovering it by construction would mean
+    store root) - discovering it by construction would mean
     reverse-engineering an internal, undocumented hash. Globbing instead
     (any directory starting with "ghc-<version>") sidesteps needing to
     know the exact suffix at all, and self-corrects if the naming scheme
     changes again - find_pkg() tries every match for each package
     individually, rather than this needing to guess the one true root
     ahead of time.
+
+    The unversioned root itself is *not* reliably `~/.cabal/store` either
+    - cabal-install only uses that legacy path when `~/.cabal` already
+    exists (true on a dev machine with an established cabal install, per
+    XDG-fallback logic in cabal-install itself); a from-scratch container
+    (CI, confirmed via a real failure: "no '/github/home/.cabal/store/
+    ghc-9.4.7*' directory found") gets the newer XDG default instead
+    (typically `~/.local/state/cabal/store`). Asking `cabal path
+    --store-dir` rather than hardcoding either avoids needing to know
+    which convention is in effect at all.
     """
-    base = os.path.expanduser("~/.cabal/store")
+    result = subprocess.run(
+        ["cabal", "path", "--store-dir"], cwd=ROOT, capture_output=True, text=True
+    )
+    if result.returncode != 0 or not result.stdout.strip():
+        print(f"ERROR: 'cabal path --store-dir' failed:\n{result.stderr}",
+              file=sys.stderr)
+        sys.exit(1)
+    base = result.stdout.strip()
     prefix = f"ghc-{GHC_VERSION}"
     roots = sorted(
         d for d in glob.glob(os.path.join(base, prefix + "*"))
@@ -544,6 +561,10 @@ def generate_buck_file(packages):
 # ---------------------------------------------------------------------------
 
 def main():
+    # TARGET_DIR is .gitignore'd (it's entirely generated), so a fresh
+    # checkout - CI, or anyone's first run - won't have it yet.
+    os.makedirs(TARGET_DIR, exist_ok=True)
+
     # Drop any other "ghc-<version>" symlink left over from a previous run
     # targeting a different GHC version - otherwise switching versions
     # just accumulates stale, unused ones (harmless, but pointless cruft
