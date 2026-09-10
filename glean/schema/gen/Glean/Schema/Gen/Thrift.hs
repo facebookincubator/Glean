@@ -92,12 +92,16 @@ genTargets slashVn info oncall =
         [ "\"//thrift/annotation:rust\""
         , "\"//thrift/annotation:thrift\""
         ]
+      generatePyDeprecated =
+        namespace `elem` withPyDeprecatedNamespaces
     in
     [ "thrift_library("
     , "  name = \"" <> namespace <> "\","
     , "  hs_namespace = \"" <> hsNamespace <> "\","
     , "  py3_namespace = \"" <> py3Namespace <> "\","
-    , "  py_base_module = \"" <> pyBaseModule <> "\","
+    ] ++
+    [ "  py_base_module = \"" <> pyBaseModule <> "\","
+    | generatePyDeprecated
     ] ++
     [ "  hs_includes = [\"" <> namespace <> "_include.hs\"]," ] ++
     [ "  thrift_rust_options = [" <> Text.intercalate ", " (
@@ -108,9 +112,11 @@ genTargets slashVn info oncall =
     , "  thrift_cpp2_options = [" <> Text.intercalate ", " (
       "\"json\"" : typesCppSplits
       ) <> "],"
-    , "  thrift_py_options = \"utf8strings\","
-    , "  thrift_py3_options = [\"inplace_migrate\"],"
-    , "  languages = [" <> Text.intercalate ", " langs <> "],"
+    ] ++
+    [ "  thrift_py_options = \"utf8strings\"," | generatePyDeprecated ] ++
+    [ "  thrift_py3_options = [\"inplace_migrate\"],"
+    , "  languages = [" <>
+      Text.intercalate ", " (langs generatePyDeprecated) <> "],"
     , "  thrift_srcs = { \"" <> namespace <> ".thrift\" : [] },"
     , "  deps = [" <> Text.intercalate "," thriftDeps <> "],"
     , "  hs2_deps = ["
@@ -127,16 +133,68 @@ genTargets slashVn info oncall =
       [ "\"//" <> thriftDir slashVn <> ":" <> underscored dep <> "\""
       | dep <- deps ]
 
-    langs :: [Text]
-    langs = map (\x -> "\"" <> x <> "\"") [
-        "hs2",
-        "py-deprecated",
-        "py3-deprecated",
-        "python",
-        "java-swift",
-        "rust",
-        "cpp2"
+    langs :: Bool -> [Text]
+    langs generatePyDeprecated = map (\x -> "\"" <> x <> "\"") $
+        ["hs2"] ++
+        ["py-deprecated" | generatePyDeprecated] ++
+        [ "py3-deprecated"
+        , "python"
+        , "java-swift"
+        , "rust"
+        , "cpp2"
         ]
+
+withPyDeprecatedNamespaces :: [Text]
+withPyDeprecatedNamespaces =
+  [ "anglelang"
+  , "buck"
+  , "builtin"
+  , "chef"
+  , "code"
+  , "code_anglelang"
+  , "code_buck"
+  , "code_chef"
+  , "code_csharp"
+  , "code_cxx"
+  , "code_dataswarm"
+  , "code_erlang"
+  , "code_fbthrift"
+  , "code_flow"
+  , "code_graphql"
+  , "code_hack"
+  , "code_hs"
+  , "code_java"
+  , "code_kotlin"
+  , "code_lsif"
+  , "code_pp"
+  , "code_python"
+  , "code_quality"
+  , "code_scip"
+  , "code_swift"
+  , "codemarkup_types"
+  , "csharp"
+  , "cxx1"
+  , "dataswarm"
+  , "digest"
+  , "erlang"
+  , "fbthrift"
+  , "flow"
+  , "graphql"
+  , "hack"
+  , "hs"
+  , "java_alpha"
+  , "javakotlin_alpha"
+  , "kotlin_alpha"
+  , "lsif"
+  , "lsif_types"
+  , "pp1"
+  , "python"
+  , "scip"
+  , "scm"
+  , "src"
+  , "swift"
+  , "sys"
+  ]
 
 thriftDir :: Text -> Text
 thriftDir slashVn = "glean/schema" <> slashVn <> "/thrift"
