@@ -1,4 +1,20 @@
 load("//buck2:cxx.bzl", "cxx_library")
+load("@prelude//third-party:pkgconfig.bzl", "external_pkgconfig_library")
+
+# Matches glean.cabal.in's `rts` library's own `pkgconfig-depends:
+# libunwind, libglog, icu-uc, gflags, libxxhash` (libunwind/libglog come
+# transitively via folly-clib's own exported_deps already, per the
+# comment below - gflags is folly-clib's own pkgconfig target, reused
+# rather than shelling out to pkg-config a second time).
+external_pkgconfig_library(
+    name = "icuuc",
+    package = "icu-uc",
+)
+
+external_pkgconfig_library(
+    name = "xxhash",
+    package = "libxxhash",
+)
 
 # Cabal's `rts` library (glean.cabal.in): the Glean runtime - fact storage,
 # binary encoding, bytecode VM, ownership tracking, query execution (see
@@ -108,15 +124,16 @@ cxx_library(
     ],
     compiler_flags = ["-DOSS=1"],
     # -lunwind, -latomic and -lglog all already come transitively via
-    # folly-clib's own exported_linker_flags (hsthrift/folly-clib/BUCK) -
-    # only the libraries folly-clib doesn't already export are listed here.
-    exported_linker_flags = [
-        "-licuuc",
-        "-licudata",
-        "-lgflags",
-        "-lxxhash",
-    ],
-    # bytecode-cpp is `exported_deps`, not `deps`: rts's own exported
+    # folly-clib's own exported_deps (hsthrift/folly-clib/BUCK) - only
+    # the libraries folly-clib doesn't already export are listed here.
+    # icuuc/xxhash/gflags are all `external_pkgconfig_library()` targets
+    # (buck2/prelude/third-party/pkgconfig.bzl) - plain `exported_deps` on
+    # them, reaching across the hsthrift/glean cell boundary for gflags,
+    # is safe: see that file's own comment for why the GHC FFI-stub
+    # breakage this used to cause is fixed at the root now, rather than
+    # by routing around `deps`/`exported_deps`.
+    #
+    # bytecode-cpp is also `exported_deps`: rts's own exported
     # inventory.h pulls in bytecode/subroutine.h, which pulls in
     # glean/bytecode/instruction.h - so anything depending on rts to get
     # inventory.h transitively needs bytecode-cpp's headers too, not just
@@ -128,6 +145,9 @@ cxx_library(
     # `glean/rts/*.h` headers - one hop closer - resolved fine).
     exported_deps = [
         "//glean/bytecode:bytecode-cpp",
+        ":icuuc",
+        ":xxhash",
+        "@hsthrift//folly-clib:gflags",
     ],
     deps = [
         "@hsthrift//common/util:fb-util-cxx",

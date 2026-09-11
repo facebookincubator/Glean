@@ -21,13 +21,24 @@ load("@prelude//:prelude.bzl", "native")
 # manually with `deps`. Additionally, ABI/platform differences are not handled
 # by this rule so be careful not to cache it in Remote Execution etc to prevent
 # different machines from reusing the outputs of these rules.
+#
+# LOCAL FORK: the cflags genrule below always appends a harmless
+# `-I.nonexistent` after whatever pkg-config (or the fallback)
+# actually produces, guaranteeing its output file is never
+# empty. Reason: when a Haskell compile passes these flags to GHC it
+# prepends an `-optP=` prefix, so we get `-optP=@file`, and GHC then
+# passes this onto the C compiler as `-Xpreprocessor @file`. If @file
+# is empty, this causes the C compiler to interpret the next argument
+# as the argument to `-Xpreprocessor`, resulting in a misparsing of
+# the command line. Therefore we ensure that @file is never empty.
+
 def external_pkgconfig_library(
     name, package = None, visibility = ["PUBLIC"], labels = [], default_target_platform = "prelude//platforms:default", deps = [], fallback = None
 ):
     if package == None:
         package = name
 
-    cmd_cflags = "pkg-config --cflags {} > $OUT".format(package)
+    cmd_cflags = "pkg-config --cflags {} > $OUT; echo '-I.nonexistent' >> $OUT".format(package)
     cmd_libs = "pkg-config --libs {} > $OUT".format(package)
 
     if fallback != None:
@@ -37,7 +48,7 @@ def external_pkgconfig_library(
         cmd_cflags = "if pkg-config --exists {}; then {}; else echo {} > $OUT; fi".format(
             package,
             cmd_cflags,
-            " ".join(preprocessor_flags),
+            " ".join(preprocessor_flags) + " -I.nonexistent",
         )
 
         cmd_libs = "if pkg-config --exists {}; then {}; else echo {} > $OUT; fi".format(

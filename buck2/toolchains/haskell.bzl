@@ -27,4 +27,3 @@ haskell_toolchain = rule(
     },
     is_toolchain_rule = True,
 )
-
