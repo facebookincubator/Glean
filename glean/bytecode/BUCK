@@ -84,5 +84,17 @@ genrule(
         "Issue.hs": ["Glean/RTS/Bytecode/Gen/Issue.hs"],
         "Version.hs": ["Glean/RTS/Bytecode/Gen/Version.hs"],
     },
+    # `exec_compatible_with` has to go on *this* target, not on
+    # `:gen-bytecode-hs` itself - it selects the execution platform for
+    # the action that *runs* an exec_dep (this genrule's own action,
+    # invoking `gen-bytecode-hs` via `$(exe ...)` above), not for the
+    # exec_dep target in isolation; the exec_dep then just inherits
+    # whatever platform this target resolved to (confirmed directly -
+    # see buck2.md). This opts the whole build of `:gen-bytecode-hs`
+    # into `root//buck2/platforms:exec-opt` whenever it's actually run
+    # (i.e. whenever glean:core or anything else depending on this
+    # genrule rebuilds), without forcing opt when `:gen-bytecode-hs` is
+    # built/tested directly.
+    exec_compatible_with = ["root//buck2/constraints:opt"],
     visibility = ["PUBLIC"],
 )

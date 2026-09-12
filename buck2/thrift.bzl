@@ -232,6 +232,7 @@ def _thrift_compile_all(name, thrift_files, thrift_flags, thrift_file_flags, dep
             flags = thrift_file_flags.get(thrift_file, thrift_flags),
             deps = deps,
             outs = outs,
+            exec_compatible_with = ["root//buck2/constraints:opt"],
         )
         for out in outs:
             all_srcs[out] = ":{}[{}]".format(gen_name, out)
