@@ -53,4 +53,8 @@
     target:third-party//...->prelude//platforms:default
 
 [build]
-  execution_platforms = prelude//platforms:default
+  # This buckconfig key takes exactly one target, not a list - see
+  # buck2/platforms/BUCK's own `:exec` target (and its defs.bzl comment)
+  # for why an aggregator target is needed and how platform selection
+  # among its two candidates actually works.
+  execution_platforms = root//buck2/platforms:exec

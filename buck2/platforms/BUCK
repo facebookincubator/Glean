@@ -1,0 +1,46 @@
+load(":defs.bzl", "execution_platform_with_constraints", "execution_platforms")
+
+# A second execution platform, identical to `prelude//platforms:default`
+# except its configuration also carries the `opt` build-mode constraint
+# value - see buck2.md's entry on forcing `opt` for build-time codegen
+# tools. Listed second in `.buckconfig`'s `[build] execution_platforms`,
+# so it's only selected for targets that explicitly opt in via
+# `exec_compatible_with = ["root//buck2/constraints:opt"]` (currently:
+# hsthrift//compiler:thrift-compiler, //glean/schema/gen:gen-schema,
+# //glean/bytecode:gen-bytecode-hs) - every other exec_dep/`$(exe ...)`
+# edge in the build (e.g. the test-time indexer binaries clang-index,
+# hie-indexer) has no such requirement, so it stays compatible with, and
+# keeps resolving to, the plain default platform - unaffected, and still
+# governed by the project's ordinary `-m dev`/`-m opt` choice like
+# everything else.
+#
+# `root//buck2/constraints:opt`, not a bare `//buck2/constraints:opt` -
+# this needs to be the exact same constraint *value* the project's own
+# dev/opt PACKAGE-level cfg modifier (`root//PACKAGE`) attaches to the
+# *target* configuration, so a `select()` written the usual way (keyed on
+# `root//buck2/constraints:opt`, e.g. buck2/haskell.bzl's `_BUILD_MODE_*`)
+# resolves the same "opt" arm here as it would under a plain `-m opt`
+# build - "root" is a cell alias, not a literal cell name, so this
+# resolves correctly both nested inside another project and when this
+# checkout is standalone (see hsthrift/PACKAGE's own comment on the same
+# convention).
+execution_platform_with_constraints(
+    name = "exec-opt",
+    base = "prelude//platforms:default",
+    constraint_values = ["root//buck2/constraints:opt"],
+    visibility = ["PUBLIC"],
+)
+
+# The actual target `.buckconfig`'s `[build] execution_platforms` points
+# at - see defs.bzl's own comment on why this indirection is needed
+# (that buckconfig key takes one target, not a list). Order matters:
+# `:default` first, so anything with no `exec_compatible_with`
+# requirement (almost everything) keeps resolving to it.
+execution_platforms(
+    name = "exec",
+    platforms = [
+        "prelude//platforms:default",
+        ":exec-opt",
+    ],
+    visibility = ["PUBLIC"],
+)
