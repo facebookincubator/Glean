@@ -48,8 +48,6 @@ haskell_test(
     srcs = {
         "Glean/Glass/Regression/Cpp.hs": "Glean/Glass/Regression/Cpp.hs",
         "Glean/Glass/Regression/Cpp/Github.hs": "Glean/Glass/Regression/Cpp/Github.hs",
-        "Glean/Clang/Test.hs": "//glean/lang/clang/tests:test-hs",
-        "Glean/Clang/Test/DerivePass.hs": "//glean/lang/clang/tests:test-derivepass-hs",
     },
     deps = [
         ":glass-regression",
@@ -58,6 +56,7 @@ haskell_test(
         "//glean/index:indexer-core",
         "//glean/lang/clang:clang-derive-lib",
         "//glean/lang/clang:clang-indexer",
+        "//glean/lang/clang/tests:clang-test-lib",
         "//glean/lib:lib",
         "//glean/test/regression:regression-test-lib",
     ],

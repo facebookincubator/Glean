@@ -1,4 +1,4 @@
-load("//buck2:haskell.bzl", "haskell_test")
+load("//buck2:haskell.bzl", "haskell_library", "haskell_test")
 
 _INDEXER_TEST_ARGS = ["--indexer=$(exe //glean/lang/clang:clang-index)"]
 
@@ -23,15 +23,39 @@ _COMMON_PACKAGES = [
     "unordered-containers",
 ]
 
+# Glean.Clang.Test and Glean.Clang.Test.DerivePass, shared by every
+# haskell_test() below (and by glean/glass/test/regression:glass-
+# regression-cpp) - a real haskell_library() instead of a
+# native.export_file() per module (the previous approach): each
+# consumer used to get its own from-scratch compile of these same two
+# files as part of its own srcs, and a plain export_file() just hands a
+# raw source file to whatever includes it, rather than something you
+# can build/typecheck once and link against. Deps are the union of what
+# each module needs (Test.hs only needs _COMMON_DEPS; DerivePass.hs,
+# which imports Test.hs plus Derive.{Env,Lib,Types} from clang-derive-
+# lib, needs the rest) - a harmless superset for the one consumer
+# (clang-test-regression) that only uses Test.hs, since GHC only links
+# in a library's actually-referenced modules regardless of what else
+# the library contains.
+haskell_library(
+    name = "clang-test-lib",
+    srcs = {
+        "Glean/Clang/Test.hs": "Glean/Clang/Test.hs",
+        "Glean/Clang/Test/DerivePass.hs": "Glean/Clang/Test/DerivePass.hs",
+    },
+    deps = _DERIVE_DEPS,
+    packages = _COMMON_PACKAGES + ["data-default"],
+    visibility = ["PUBLIC"],
+)
+
 haskell_test(
     name = "clang-test-regression",
     main = "Glean.Clang.Regression",
     srcs = {
-        "Glean/Clang/Test.hs": "Glean/Clang/Test.hs",
         "Glean/Clang/Regression.hs": "github/Glean/Clang/Regression.hs",
         "Glean/Regression/Driver/Clang.hs": "Glean/Regression/Driver/Clang.hs",
     },
-    deps = _COMMON_DEPS,
+    deps = _COMMON_DEPS + [":clang-test-lib"],
     packages = _COMMON_PACKAGES,
     test_args = _INDEXER_TEST_ARGS,
     visibility = ["PUBLIC"],
@@ -41,12 +65,10 @@ haskell_test(
     name = "clang-test-derivefamilies",
     main = "Glean.Clang.DeriveFamilies",
     srcs = {
-        "Glean/Clang/Test.hs": "Glean/Clang/Test.hs",
         "Glean/Clang/DeriveFamilies.hs": "github/Glean/Clang/DeriveFamilies.hs",
-        "Glean/Clang/Test/DerivePass.hs": "Glean/Clang/Test/DerivePass.hs",
         "Glean/Regression/Driver/DeriveDeclFamilies.hs": "Glean/Regression/Driver/DeriveDeclFamilies.hs",
     },
-    deps = _DERIVE_DEPS,
+    deps = _DERIVE_DEPS + [":clang-test-lib"],
     packages = _COMMON_PACKAGES,
     test_args = _INDEXER_TEST_ARGS,
     visibility = ["PUBLIC"],
@@ -56,12 +78,10 @@ haskell_test(
     name = "clang-test-deriveattributes",
     main = "Glean.Clang.DeriveAttrs",
     srcs = {
-        "Glean/Clang/Test.hs": "Glean/Clang/Test.hs",
         "Glean/Clang/DeriveAttrs.hs": "github/Glean/Clang/DeriveAttrs.hs",
-        "Glean/Clang/Test/DerivePass.hs": "Glean/Clang/Test/DerivePass.hs",
         "Glean/Regression/Driver/DeriveFunctionDeclAttribute.hs": "Glean/Regression/Driver/DeriveFunctionDeclAttribute.hs",
     },
-    deps = _DERIVE_DEPS,
+    deps = _DERIVE_DEPS + [":clang-test-lib"],
     packages = _COMMON_PACKAGES,
     test_args = _INDEXER_TEST_ARGS,
     visibility = ["PUBLIC"],
@@ -71,12 +91,10 @@ haskell_test(
     name = "clang-test-derivefuncalls",
     main = "Glean.Clang.DeriveFunCalls",
     srcs = {
-        "Glean/Clang/Test.hs": "Glean/Clang/Test.hs",
         "Glean/Clang/DeriveFunCalls.hs": "github/Glean/Clang/DeriveFunCalls.hs",
-        "Glean/Clang/Test/DerivePass.hs": "Glean/Clang/Test/DerivePass.hs",
         "Glean/Regression/Driver/DeriveFunctionCalls.hs": "Glean/Regression/Driver/DeriveFunctionCalls.hs",
     },
-    deps = _DERIVE_DEPS,
+    deps = _DERIVE_DEPS + [":clang-test-lib"],
     packages = _COMMON_PACKAGES,
     test_args = _INDEXER_TEST_ARGS,
     visibility = ["PUBLIC"],
@@ -86,12 +104,10 @@ haskell_test(
     name = "clang-test-deriveobjcinherit",
     main = "Glean.Clang.DeriveObjCInheritance",
     srcs = {
-        "Glean/Clang/Test.hs": "Glean/Clang/Test.hs",
         "Glean/Clang/DeriveObjCInheritance.hs": "github/Glean/Clang/DeriveObjCInheritance.hs",
-        "Glean/Clang/Test/DerivePass.hs": "Glean/Clang/Test/DerivePass.hs",
         "Glean/Regression/Driver/DeriveObjcInheritance.hs": "Glean/Regression/Driver/DeriveObjcInheritance.hs",
     },
-    deps = _DERIVE_DEPS,
+    deps = _DERIVE_DEPS + [":clang-test-lib"],
     packages = _COMMON_PACKAGES,
     test_args = _INDEXER_TEST_ARGS,
     visibility = ["PUBLIC"],
@@ -101,25 +117,11 @@ haskell_test(
     name = "clang-test-codemarkup",
     main = "Glean.Clang.CodeMarkup",
     srcs = {
-        "Glean/Clang/Test.hs": "Glean/Clang/Test.hs",
         "Glean/Clang/CodeMarkup.hs": "github/Glean/Clang/CodeMarkup.hs",
-        "Glean/Clang/Test/DerivePass.hs": "Glean/Clang/Test/DerivePass.hs",
         "Glean/Regression/Driver/DeriveForCodemarkup.hs": "Glean/Regression/Driver/DeriveForCodemarkup.hs",
     },
-    deps = _DERIVE_DEPS,
+    deps = _DERIVE_DEPS + [":clang-test-lib"],
     packages = _COMMON_PACKAGES,
     test_args = _INDEXER_TEST_ARGS,
-    visibility = ["PUBLIC"],
-)
-
-native.export_file(
-    name = "test-hs",
-    src = "Glean/Clang/Test.hs",
-    visibility = ["PUBLIC"],
-)
-
-native.export_file(
-    name = "test-derivepass-hs",
-    src = "Glean/Clang/Test/DerivePass.hs",
     visibility = ["PUBLIC"],
 )
