@@ -1,67 +1,3 @@
-#
-# This Makefile is quite primitive, it's just about enough to build
-# everything for CI, but for development we'll want something better
-# eventually.
-#
-# To build everything: type "make"
-#
-# To run the tests, type "make test"
-#
-# For development, use "make MODE=dev" for faster, unoptimised builds and
-# "make MODE=opt" for slower, optimised builds.
-#
-# =====
-# Modes
-# =====
-#
-# By default, make builds everything via Cabal using standard Cabal directories.
-# With MODE=dev|opt, make will use a build directory specific to that mode and
-# separate from the default build directories and from other modes. This means
-# that the individual modes don't interfere with each other and can be worked
-# with without rebuilding everything. Typically, you want MODE=dev for
-# development and MODE=opt for benchmarking.
-#
-# The dev and opt modes also build C++ libraries via make rather than Cabal as
-# described below.
-#
-# =======================
-# Cabal and C++ libraries
-# =======================
-#
-# We have two modes of compiling Glean's internal C++ libraries, controlled by
-# the CXX_MODE variable. These modes need slightly different glean.cabal files.
-# Thus, we generate glean.cabal by running glean.cabal.in through m4 with
-# appropriate macro definitions.
-#
-# The reason for this is that Cabal can't build .cpp files in parallel and also
-# doesn't track include dependencies between different libraries with
-# cxx-sources. However, Cabal is the only way to get things onto Hackage. Thus,
-# we support building C++ libraries via Cabal but for development, building
-# via make should be preferred.
-#
-# Building via make (CXX_MODE=make):
-#   * Builds C++ libraries outside of Cabal
-#   * Compiles C++ modules in parallel (about 2:30min faster for full build)
-#   * Automatically tracks include dependencies
-#
-# Building via Cabal (otherwise):
-#   * Might work on Hackage
-#
-# The C++ libraries are defined in mk/cxx.mk, see the docs there for adding,
-# removing or modifying libraries.
-#
-# ===================
-# Auto-generated code
-# ===================
-#
-# Re-running "make" will regenerate a bunch of things. That's because
-# the Makefile is dumb and doesn't know much about the dependencies of
-# the generated files. To avoid recompiling any code if nothing changed,
-# we generally write generated code into $(CODEGEN_DIR) and then
-# rsync --checksum it to the actual source directory which preserves timestamps
-# for files which haven't changed.
-#
-
 CABAL_BIN=cabal
 PWD := $(shell pwd)
 
@@ -72,26 +8,15 @@ PWD := $(shell pwd)
 #
 EXTRA_GHC_OPTS ?=
 
-# Allow developers to locally override things
--include settings.mk
-
 # Run recipes under bash so `set -o pipefail` works (see the test target).
 SHELL := /bin/bash
-
-MODE ?= def
-
-ifneq ($(MODE),def)
-include mk/mode-$(MODE).mk
-endif
 
 CABAL = $(CABAL_BIN) --jobs --ghc-options='$(EXTRA_GHC_OPTS)' \
             -vnormal+nowrap --project-file=$(PWD)/cabal.project \
 			$(CABAL_CONFIG_FLAGS) $(GETDEPS_CABAL_FLAGS)
 
 BUILD_DIR = .build
-MODE_DIR = $(BUILD_DIR)/$(MODE)
-CODEGEN_DIR = $(MODE_DIR)/codegen
-CXX_DIR = $(MODE_DIR)/cxx
+CODEGEN_DIR = $(BUILD_DIR)/codegen
 
 BYTECODE_GEN= \
 	glean/hs/Glean/RTS/Bytecode/Gen/Instruction.hs \
@@ -104,49 +29,21 @@ BYTECODE_SRCS= \
 
 # Code generators. May be injected by external build systems if those are
 # managing the build.
-GEN_SCHEMA = $(CABAL) run glean:gen-schema --
+# GEN_SCHEMA = $(CABAL) run glean:gen-schema --
+GEN_SCHEMA = buck2 run glean/schema/gen:gen-schema --
 GEN_BYTECODE = $(CABAL) run glean:gen-bytecode-hs --
 
-all:: glean.cabal thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs glean
+all:: thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs glean
 
 .PHONY: cabal-update
-cabal-update:: glean.cabal
+cabal-update::
 	$(CABAL) update
 
 # Targets in this file invoke Cabal and hence can't be built in parallel
 .NOTPARALLEL:
 
-.PHONY: force
-$(BUILD_DIR)/mode: force
-	@mkdir -p $(@D)
-	@(echo $(MODE) | cmp -s $@) || (echo $(MODE) > $@)
-
-# We have to regenerate glean.cabal if the mode (and hence the path to defs.m4)
-# changes even if the actual files are older.
-glean.cabal: glean.cabal.in $(BUILD_DIR)/mode $(CXX_DIR)/defs.m4
-	rm -f $@
-	m4 -E -E -P $(CXX_DIR)/defs.m4 glean.cabal.in \
-		| sed "/-- Copyright/a \\\n-- @""generated from glean.cabal.in\\n-- DO NO EDIT THIS FILE DIRECTLY" \
-		> $@
-	chmod guo-w $@
-
-# we have to copy the generated C++ headers to a designated place for reasons
-glean/schema/cpp/schema.h: gen-schema
-	mkdir -p glean/schema/cpp
-	cp $(CODEGEN_DIR)/gen-schema/glean/lang/clang/schema.h glean/schema/cpp/schema.h
-
-$(CXX_DIR)/defs.m4: force
-	@$(MAKE) -f mk/cxx.mk --no-print-directory CXX_MODE=$(CXX_MODE) CXX_DIR=$(CXX_DIR) $@
-
-.PHONY: cxx-libraries
-cxx-libraries:
-	@$(MAKE) -f mk/cxx.mk --no-print-directory CXX_MODE=$(CXX_MODE) CXX_DIR=$(CXX_DIR) $@
-
-cxx-test-%: force
-	@$(MAKE) -f mk/cxx.mk --no-print-directory CXX_MODE=$(CXX_MODE) CXX_DIR=$(CXX_DIR) $@
-
 .PHONY: glean
-glean:: glean.cabal cxx-libraries
+glean::
 	set -o pipefail; $(CABAL) build glean glean-server glean-hyperlink 2>&1 | grep -vF 'experimental feature (issue #5660)'
 
 SCIP_TO_GLEAN_DIR = glean/lang/scip/indexer/scip_to_glean
@@ -160,11 +57,11 @@ scip-to-glean::
 gen-bytecode: $(BYTECODE_GEN)
 
 # Note we don't rsync here because we have actual dependencies
-$(BYTECODE_GEN) &: $(BYTECODE_SRCS) glean.cabal
+$(BYTECODE_GEN) &: $(BYTECODE_SRCS)
 	$(GEN_BYTECODE) --install_dir=glean/hs
 
 .PHONY: test
-test:: glean.cabal
+test::
 	set -o pipefail; $(CABAL) test glean:tests --test-show-details=failures 2>&1 | grep -vF 'experimental feature (issue #5660)'
 
 SCHEMAS= \
@@ -280,7 +177,7 @@ thrift-hsthrift-hs::
 endif
 
 .PHONY: gen-schema
-gen-schema :: glean.cabal cxx-libraries
+gen-schema ::
 	rm -rf $(CODEGEN_DIR)/$@
 	mkdir -p $(CODEGEN_DIR)/$@
 	$(GEN_SCHEMA) \
@@ -290,6 +187,9 @@ gen-schema :: glean.cabal cxx-libraries
 		--hs glean/schema \
 		--cpp glean/lang/clang/schema.h
 	rsync -r --checksum $(CODEGEN_DIR)/$@/ .
+	# we have to copy the generated C++ headers to a designated place for reasons
+	mkdir -p glean/schema/cpp
+	rsync $(CODEGEN_DIR)/gen-schema/glean/lang/clang/schema.h glean/schema/cpp/schema.h
 
 THRIFT_GLEAN= \
 	glean/github/if/fb303.thrift \
@@ -339,7 +239,7 @@ thrift-schema-hs: thrift-compiler
 
 # full build up to glass lib
 .PHONY: glass-lib
-glass-lib:: thrift gen-schema thrift-schema-hs thrift-glean-hs glean.cabal cxx-libraries
+glass-lib:: thrift gen-schema thrift-schema-hs thrift-glean-hs
 	$(CABAL) build glass-lib
 
 # short circuit target to avoid thrift regen
@@ -348,15 +248,15 @@ glass::
 	$(CABAL) build glass-server glass-democlient
 
 .PHONY: glean-clang
-glean-clang:: gen-schema glean glean.cabal cxx-libraries glean/schema/cpp/schema.h
+glean-clang:: gen-schema glean glean/schema/cpp/schema.h
 	$(CABAL) build glean-clang
 
 .PHONY: glean-hie
-glean-hie:: glean.cabal cxx-libraries
+glean-hie::
 	$(CABAL) build hie-indexer
 
 .PHONY: glean-lsp
-glean-lsp:: glean.cabal
+glean-lsp::
 	$(CABAL) build glean-lsp
 
 define bash_macros
