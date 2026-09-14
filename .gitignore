@@ -4,7 +4,6 @@
 dist-newstyle
 gen-hs2
 gen-cpp2
-glean.cabal
 glean/hs/Glean/RTS/Bytecode/Gen
 glean/schema/hs
 glean/schema/thrift
