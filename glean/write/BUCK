@@ -1,9 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_library")
 
-# Cabal's `write` library (glean.cabal.in): client-side fact writing. Does
-# NOT depend on glean:db or glean:schema (see glean.cabal.in - the schema
-# dep was removed as genuinely unused, confirmed with a real
-# `cabal build glean:lib:write`).
 haskell_library(
     name = "write",
     srcs = [

@@ -1,9 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_library")
 
-# Cabal's `test-lib` library (glean.cabal.in). MakeTestDB.hs also lives in
-# this directory but isn't in glean.cabal.in's exposed-modules and isn't
-# referenced from anywhere else in glean.cabal.in either - left out, same
-# as every other unreferenced file elsewhere in this migration.
 haskell_library(
     name = "test-lib",
     srcs = [

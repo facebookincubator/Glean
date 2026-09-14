@@ -89,11 +89,6 @@ cxx_binary(
     visibility = ["PUBLIC"],
 )
 
-# Cabal's `indexers` library includes this module (Glean.Indexer.Cpp) among
-# its 18 - see glean/index/BUCK's comment for the split rationale. The
-# heaviest of the 14 language indexers: uses Glean.Interprocess.Worklist to
-# parallelise indexing work (see glean/interprocess/cpp/BUCK's comment for
-# why interprocess was split off client-cpp specifically because of this).
 haskell_library(
     name = "clang-indexer",
     srcs = [
@@ -126,8 +121,6 @@ haskell_library(
     visibility = ["PUBLIC"],
 )
 
-# Cabal's `clang-derive-lib` library (glean.cabal.in) - shares this
-# package's hs-source-dir but is otherwise unrelated to `clang-indexer`.
 haskell_library(
     name = "clang-derive-lib",
     srcs = [

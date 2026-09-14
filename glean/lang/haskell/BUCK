@@ -1,9 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_binary", "haskell_library")
 
-# Cabal's `indexers` library includes this module (Glean.Indexer.Haskell)
-# among its 18 - see glean/index/BUCK's comment for the split rationale.
-# (HieIndexer/* are a separate standalone executable, not part of
-# `indexers`.)
 haskell_library(
     name = "haskell-indexer",
     srcs = [
@@ -22,10 +18,6 @@ haskell_library(
     visibility = ["PUBLIC"],
 )
 
-# Cabal's `hie-indexer` executable (glean.cabal.in): reads GHC's .hie files
-# (via the `hiedb`/`hie-compat` packages and the real `ghc` package) and
-# writes the resulting facts to Glean. Gated on `common haskell-indexer`
-# (GHC >= 9.2 - true for this toolchain's own GHC, so always buildable here).
 haskell_binary(
     name = "hie-indexer",
     main = "HieIndexer.Main",

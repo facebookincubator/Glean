@@ -1,13 +1,5 @@
 load("//buck2:cxx.bzl", "cxx_library")
 
-# Cabal's `interprocess-cpp` library (glean.cabal.in): split out of
-# `client-cpp` (Simon's request) specifically so glean:interprocess (needed
-# by glean:indexers, for parallelising glean-clang's indexing work) doesn't
-# have to depend on glean:client-cpp - and, transitively, on
-# glean/schema/cpp/schema.h (from gen-schema, not yet buck2-built) - just to
-# get this worklist/counters FFI, which is otherwise unrelated to
-# client-cpp's glean/cpp/{filewriter,glean}.cpp. Verified under Cabal too
-# (glean.cabal.in, mk/cxx.mk) - both builds now use the same split.
 cxx_library(
     name = "interprocess-cpp",
     srcs = [

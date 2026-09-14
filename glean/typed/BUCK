@@ -1,7 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_library")
 
-# Cabal's `typed` library (glean.cabal.in): fact serialization/
-# deserialization, and the query DSL.
 haskell_library(
     name = "typed",
     srcs = [

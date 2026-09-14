@@ -1,11 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_library")
 
-# Cabal's `lsif` library (glean.cabal.in): LSIF (Language Server Index
-# Format) parsing/conversion. Genuinely has no glean: dependency at all
-# beyond fb-util - it produces its own intermediate representation
-# (Data.LSIF.Types); only Glean.Indexer.LSIF (part of glean:indexers, not
-# this library - lives in glean/lang/lsif/indexer/) wires it into Glean's
-# own schema.
 haskell_library(
     name = "lsif",
     srcs = [

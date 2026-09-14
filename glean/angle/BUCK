@@ -1,12 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_library")
 
-# Cabal's `angle` library (glean.cabal.in): the Angle query-language
-# lexer/parser and schema name resolution. `.x`/`.y` files in srcs are
-# auto-run through alex/happy (see buck2/alex_happy.bzl, buck2/haskell.bzl) -
-# the same mechanism already proven for hsthrift/compiler's
-# Lexer.x/Parser.y. Cabal's `hsc2hs-cpp` import/`hsc2hs-options` on this
-# library are vestigial - there's no actual .hsc file under glean/angle, so
-# nothing here needs hsc_flags.
 haskell_library(
     name = "angle",
     srcs = [

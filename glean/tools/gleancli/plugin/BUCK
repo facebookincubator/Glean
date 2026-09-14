@@ -1,9 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_library")
 
-# Cabal's `cli-types` library (glean.cabal.in). GleanCLI/Types.hs's
-# `#if GLEAN_FACEBOOK` block (Glean.Facebook.Logger.Database, Logger.IO) is
-# excluded since we never define GLEAN_FACEBOOK - same as everywhere else
-# this macro shows up.
 haskell_library(
     name = "cli-types",
     srcs = [

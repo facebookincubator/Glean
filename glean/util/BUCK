@@ -1,12 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_library")
 
-# Cabal's `util` library (glean.cabal.in). Glean.Impl.ThriftService has
-# `#ifdef FBTHRIFT ... #else ... #endif`; since we never define FBTHRIFT
-# (buck2 doesn't support that flag - see buck2.md TODO), the #else branch is
-# what actually compiles here, which needs Thrift.Channel.HTTP
-# (//hsthrift/http:thrift-http) rather than the fbthrift-only
-# Thrift.Channel.HeaderChannel (hsthrift/cpp-channel, not migrated - and
-# out of scope, since it's fbthrift-based).
 haskell_library(
     name = "util",
     srcs = [

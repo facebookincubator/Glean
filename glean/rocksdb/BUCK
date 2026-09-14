@@ -1,23 +1,11 @@
 load("//buck2:cxx.bzl", "cxx_library")
 load("@prelude//third-party:pkgconfig.bzl", "external_pkgconfig_library")
 
-# Matches this library's own `pkgconfig-depends: rocksdb, fmt` in
-# glean.cabal.in (fmt is folly-clib's own pkgconfig target, reused rather
-# than shelling out to pkg-config a second time for the same library).
-# Named "rocksdb-pkg", not "rocksdb" - that name's already taken by the
-# cxx_library() below, matching Cabal's own package name.
 external_pkgconfig_library(
     name = "rocksdb-pkg",
     package = "rocksdb",
 )
 
-# Cabal's `rocksdb` library (glean.cabal.in): storage backend on top of
-# //glean/storage:storage and //glean/rts:rts. -fno-rtti matches Cabal's
-# cxx-options exactly (RocksDB's own headers are commonly built/used
-# without RTTI). container-impl.cpp's `#ifdef GLEAN_FACEBOOK` branch
-# (a real Meta-internal rocksdb wrapper, glean/facebook/rocksdb/rocksdb.h -
-# doesn't exist in this checkout) is excluded since we never define
-# GLEAN_FACEBOOK, same idea as -DOSS=1 elsewhere but a different macro.
 cxx_library(
     name = "rocksdb",
     srcs = [
@@ -36,11 +24,6 @@ cxx_library(
         "util.h",
     ],
     compiler_flags = ["-DOSS=1", "-fno-rtti"],
-    # Matches this target's own former `exported_linker_flags =
-    # ["-lrocksdb"]` (rocksdb/fmt need to reach glean/db:db, which
-    # depends on this transitively via storage/lmdb). Plain `exported_deps`
-    # on rocksdb-pkg/fmt is safe here - see
-    # buck2/prelude/third-party/pkgconfig.bzl's own comment.
     exported_deps = [
         ":rocksdb-pkg",
         "@hsthrift//folly-clib:fmt",

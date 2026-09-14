@@ -1,11 +1,5 @@
 load("//buck2:cxx.bzl", "cxx_library")
 
-# lmdb-clib.cabal: a vendored copy of the LMDB C library (mdb.c, midl.c),
-# built directly rather than linked against the system liblmdb - same
-# "vendor the C source, control the exact version" approach
-# hsthrift/folly-clib takes for folly. -DMDB_MAXKEYSIZE=0 is LMDB's own
-# knob (see lmdb-clib.cabal's description) to raise the max key size from
-# 511 bytes to ~2kB via the local PAGEBASE tweak in lmdb.h.
 cxx_library(
     name = "lmdb-clib",
     # Genuine C, not C++ - gcc hard errors on -std=c++20 against a .c file,

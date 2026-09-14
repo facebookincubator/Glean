@@ -1,14 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_binary", "haskell_library")
 
-# Glean/Server/Config.hs and Glean/Server/Sharding.hs aren't their own
-# Cabal library - `executable glean-server` compiles them as its own
-# `other-modules:`, and `test-suite publish-shards` (glean/test/tests)
-# reaches them via combined hs-source-dirs and recompiles them a second
-# time. Rather than mirroring that duplication (the way `Glean/Handler.hs`
-# below does, matching `lib`/`lib-derive`'s split), factor them into a
-# real library both consumers link against instead - one compile, and
-# `publish-shards` gets a normal cross-package dependency rather than
-# needing these two files exposed as raw sources.
 haskell_library(
     name = "sharding",
     srcs = [
@@ -28,7 +19,6 @@ haskell_library(
     visibility = ["PUBLIC"],
 )
 
-# Cabal's `handler` library (glean.cabal.in).
 haskell_library(
     name = "handler",
     srcs = [
@@ -47,24 +37,9 @@ haskell_library(
     visibility = ["PUBLIC"],
 )
 
-# Cabal's `glean-server` executable (glean.cabal.in): `#if GLEAN_FACEBOOK`
-# (auth, tracing, Manifold backups, JustKnobs, ...) and `#if ENABLE_S3`
-# (Glean.Database.Backup.S3, gated behind the `s3-support` flag - default
-# True under plain Cabal, but this migration never defines either macro,
-# matching every other GLEAN_FACEBOOK/ENABLE_S3-gated piece elsewhere) are
-# both excluded. Cabal's own `other-modules:` recompiles Glean/Handler.hs
-# directly into this executable rather than depending on the `handler`
-# library above - genuinely two separate compiles of the same file, same
-# shape as `lib`/`lib-derive` sharing `glean/lib` elsewhere in this
-# migration - so this mirrors that rather than linking against `:handler`.
-# Server/Config.hs and Server/Sharding.hs, by contrast, are factored into
-# `:sharding` above instead of being mirrored the same way.
 haskell_binary(
     name = "glean-server",
     main = "Glean.Server",
-    # Server.hs uses bare `#if GLEAN_FACEBOOK` with no per-file
-    # `{-# LANGUAGE CPP #-}` pragma - Cabal supplies it via this
-    # executable's own `default-extensions: CPP`.
     compiler_flags = ["-XCPP"],
     srcs = [
         "Glean/Handler.hs",

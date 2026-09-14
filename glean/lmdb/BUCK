@@ -1,9 +1,5 @@
 load("//buck2:cxx.bzl", "cxx_library")
 
-# Cabal's `lmdb` library (glean.cabal.in): storage backend on top of
-# //glean/storage:storage, //glean/rts:rts and the vendored
-# //glean/lmdb-clib:lmdb-clib (for lmdb.h/mdb.c/midl.c - see that BUCK
-# file).
 cxx_library(
     name = "lmdb",
     srcs = [
@@ -22,10 +18,6 @@ cxx_library(
         "util.h",
     ],
     compiler_flags = ["-DOSS=1"],
-    # Matches this library's own `pkgconfig-depends: fmt` in
-    # glean.cabal.in. Plain `exported_deps` on fmt is safe here, even
-    # though glean/db:db depends on this transitively - see
-    # buck2/prelude/third-party/pkgconfig.bzl's own comment.
     exported_deps = [
         "@hsthrift//folly-clib:fmt",
     ],

@@ -1,10 +1,6 @@
 load("//buck2:haskell.bzl", "haskell_test")
 load("@third-party//haskell:tools.bzl", "GHC_BIN_DIR")
 
-# Cabal's `glean-snapshot-codemarkup-haskell` test-suite (glean.cabal.in):
-# needs `hie-indexer` (//glean/lang/haskell:hie-indexer) and a matching
-# GHC on `$PATH` - see glean/lang/haskell/tests/BUCK's comment for the
-# full explanation (same driver, same fix).
 haskell_test(
     name = "glean-snapshot-codemarkup-haskell",
     main = "Main",
