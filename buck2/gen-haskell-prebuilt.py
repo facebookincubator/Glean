@@ -204,7 +204,7 @@ GHC_BIN_REL     = "ghc-bin"
 # whenever the solved version changes).
 BUILD_TOOLS = ["alex", "happy"]
 
-INFO_FIELDS = "name,version,id,library-dirs,dynamic-library-dirs,hs-libraries,depends,include-dirs"
+INFO_FIELDS = "name,version,id,library-dirs,dynamic-library-dirs,hs-libraries,depends,include-dirs,extra-libraries"
 
 # ---------------------------------------------------------------------------
 # Path helpers
@@ -509,6 +509,18 @@ def generate_buck_file(packages):
             if rel:
                 header_dirs.append(rel)
 
+        # e.g. terminfo's own `extra-libraries: tinfo` - a plain system
+        # C library (found via $PATH/ld's usual search, not one of this
+        # package's own static_libs/shared_libs) that GHC links in
+        # whenever anything uses this package, dynamic or static alike.
+        # exported_linker_flags (unlike linker_flags) propagates to
+        # every *dependent* rule's own link line transitively - the
+        # same reason a manually-added `-lfoo` on some downstream
+        # haskell_binary() (e.g. glean/tools/gleancli/BUCK's old
+        # `-ltinfo`, there only because this field wasn't read) had to
+        # exist at all: nothing else declared the dependency.
+        extra_libs = [f'-l{lib}' for lib in info.get('extra-libraries', '').split()]
+
         dep_targets = []
         for dep_uid in info.get('depends', '').split():
             if dep_uid in uid_to_rule:
@@ -537,6 +549,11 @@ def generate_buck_file(packages):
             lines.append('    cxx_header_dirs = [')
             for p in header_dirs:
                 lines.append(f'        {p!r},')
+            lines.append('    ],')
+        if extra_libs:
+            lines.append('    exported_linker_flags = [')
+            for f in extra_libs:
+                lines.append(f'        {f!r},')
             lines.append('    ],')
         if dep_targets:
             lines.append('    deps = [')
