@@ -1,21 +1,7 @@
 load("//buck2:haskell.bzl", "haskell_library")
 
-# Cabal's `shell-lib` library (glean.cabal.in): the `glean shell` REPL.
-# Glean/Shell.hs's `#if GLEAN_FACEBOOK ... import Glean.Util.CxxXRef ...
-# #endif` is excluded (never defined) - so despite `Glean.Util.CxxXRef`
-# showing up in a plain grep of this file, glean:lib is genuinely not a dep
-# here at all, matching glean.cabal.in's own build-depends for this library
-# (no glean:lib listed there either). glean:lsif is listed in Cabal's
-# build-depends but nothing in any of these 5 files actually references
-# Data.LSIF.* or Glean.LSIF.Driver - left out here since it's unused,
-# same reasoning as glean:write's now-removed glean:schema dep.
 haskell_library(
     name = "shell-lib",
-    # Cabal sets `default-extensions: CPP` at the library level for
-    # shell-lib (glean.cabal.in) - several files here rely on CPP without
-    # their own `{-# LANGUAGE CPP #-}` pragma (e.g. Shell/Terminal.hs's
-    # `#if __GLASGOW_HASKELL__ >= 810`), so it needs to come from
-    # compiler_flags instead.
     compiler_flags = ["-XCPP"],
     srcs = [
         "Glean/Shell.hs",

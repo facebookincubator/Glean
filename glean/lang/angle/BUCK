@@ -1,7 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_library")
 
-# Cabal's `indexers` library includes this module (Glean.Indexer.Angle)
-# among its 18 - see glean/index/BUCK's comment for the split rationale.
 haskell_library(
     name = "angle-indexer",
     srcs = [

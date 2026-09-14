@@ -1,7 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_library")
 
-# Cabal's `client-hs-local` library (glean.cabal.in): client API that
-# supports either local or remote DBs.
 haskell_library(
     name = "client-hs-local",
     srcs = [

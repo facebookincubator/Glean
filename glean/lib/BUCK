@@ -1,6 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_library")
 
-# Cabal's `lib-derive` library (glean.cabal.in).
 haskell_library(
     name = "lib-derive",
     srcs = [
@@ -18,8 +17,6 @@ haskell_library(
     visibility = ["PUBLIC"],
 )
 
-# Cabal's `lib` library (glean.cabal.in): a second, unrelated library that
-# happens to share `lib-derive`'s hs-source-dir (glean/lib).
 haskell_library(
     name = "lib",
     srcs = [
@@ -41,10 +38,6 @@ haskell_library(
         "//glean/db:db",
         "//glean/if:if-glean-hs",
         "//glean/util:util",
-        # Glean.Schema.*.Types modules this library's own source files
-        # actually import (see buck2.md's "gen-schema" entry for why this
-        # migration builds one small library per schema namespace, rather
-        # than the single "schema" Cabal names all of them within).
         "//glean/schema/thrift:anglelang",
         "//glean/schema/thrift:builtin",
         "//glean/schema/thrift:code",

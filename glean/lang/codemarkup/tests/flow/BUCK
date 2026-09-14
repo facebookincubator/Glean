@@ -1,6 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_test")
 
-# Cabal's `glean-snapshot-flow` test-suite (glean.cabal.in).
 haskell_test(
     name = "glean-snapshot-flow",
     main = "Glean.Regression.Flow.Main",

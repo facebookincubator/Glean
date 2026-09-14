@@ -1,11 +1,6 @@
 load("//buck2:cxx.bzl", "cxx_library")
 load("@prelude//third-party:pkgconfig.bzl", "external_pkgconfig_library")
 
-# Matches glean.cabal.in's `rts` library's own `pkgconfig-depends:
-# libunwind, libglog, icu-uc, gflags, libxxhash` (libunwind/libglog come
-# transitively via folly-clib's own exported_deps already, per the
-# comment below - gflags is folly-clib's own pkgconfig target, reused
-# rather than shelling out to pkg-config a second time).
 external_pkgconfig_library(
     name = "icuuc",
     package = "icu-uc",
@@ -16,34 +11,6 @@ external_pkgconfig_library(
     package = "libxxhash",
 )
 
-# Cabal's `rts` library (glean.cabal.in): the Glean runtime - fact storage,
-# binary encoding, bytecode VM, ownership tracking, query execution (see
-# CLAUDE.md). Pure C++, no Haskell exposed-modules at all; glean:core (the
-# Haskell interface to this) reaches it entirely via hsc2hs + FFI.
-#
-# -DOSS=1 matches Cabal's cxx-options/cc-options for this library exactly:
-# several rts headers/sources have `#ifdef OSS ... #else ... #endif` picking
-# between a plain `<cpp/HsStruct.h>`-style include (OSS, resolved via
-# fb-util-cxx's public_include_directories) and an internal Meta-only
-# `<common/hs/util/cpp/HsStruct.h>` path that doesn't exist in this
-# checkout - so -DOSS=1 isn't just matching Cabal's flags, it's required for
-# the sources to even find their headers here.
-#
-# `exported_headers` lists every header this library owns so
-# "glean/rts/foo.h"-style includes (repo-root-relative, matching Cabal's
-# `include-dirs: .` - "." relative to glean.cabal at the repo root) resolve
-# correctly - no `include_directories`/`public_include_directories` needed
-# at all: a target's `header_namespace` defaults to its own buck2 package
-# path (`ctx.label.package`, here "glean/rts" - see prelude/cxx/headers.bzl
-# cxx_attr_header_namespace), so a plain relative header name like
-# "ownership/derived.h" is automatically exposed at the virtual path
-# "glean/rts/ownership/derived.h", exactly matching the source. This is
-# more precise than the old blanket `-I<repo root>` (which handed every
-# `.cpp` action here read access to every header in the whole tree,
-# whether it used it or not) - now each dependent only sees exactly the
-# headers this library actually exports, and adding a new one here means
-# updating this list, not silently picking up whatever else happens to
-# live under the same `-I`.
 cxx_library(
     name = "rts",
     srcs = [
@@ -123,26 +90,6 @@ cxx_library(
         "validate.h",
     ],
     compiler_flags = ["-DOSS=1"],
-    # -lunwind, -latomic and -lglog all already come transitively via
-    # folly-clib's own exported_deps (hsthrift/folly-clib/BUCK) - only
-    # the libraries folly-clib doesn't already export are listed here.
-    # icuuc/xxhash/gflags are all `external_pkgconfig_library()` targets
-    # (buck2/prelude/third-party/pkgconfig.bzl) - plain `exported_deps` on
-    # them, reaching across the hsthrift/glean cell boundary for gflags,
-    # is safe: see that file's own comment for why the GHC FFI-stub
-    # breakage this used to cause is fixed at the root now, rather than
-    # by routing around `deps`/`exported_deps`.
-    #
-    # bytecode-cpp is also `exported_deps`: rts's own exported
-    # inventory.h pulls in bytecode/subroutine.h, which pulls in
-    # glean/bytecode/instruction.h - so anything depending on rts to get
-    # inventory.h transitively needs bytecode-cpp's headers too, not just
-    # rts's own. A dependency's `exported_headers` only reach *that
-    # dependency's own direct* dependents by default - `exported_deps` is
-    # what re-exports them one hop further, to rts's own dependents too
-    # (found by client-cpp/storage/rocksdb/lmdb all failing on
-    # "glean/bytecode/instruction.h" specifically, while rts's own
-    # `glean/rts/*.h` headers - one hop closer - resolved fine).
     exported_deps = [
         "//glean/bytecode:bytecode-cpp",
         ":icuuc",

@@ -1,6 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_library")
 
-# Cabal's `haxl-datasource` library (glean.cabal.in).
 haskell_library(
     name = "haxl-datasource",
     srcs = [

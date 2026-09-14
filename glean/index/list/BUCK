@@ -1,12 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_library")
 
-# Cabal's `indexers` library (glean.cabal.in) as a whole is really this
-# target: Glean.Indexer.List, the module that aggregates every language
-# indexer into one registry - see glean/index/BUCK's comment for why the
-# rest of Cabal's `indexers` got split into its own constellation of
-# targets (indexer-core + one per language) instead of living here too.
-# Any downstream consumer that needs "the indexers library" as Cabal saw it
-# should depend on both this and //glean/index:indexer-core.
 haskell_library(
     name = "indexers",
     srcs = [

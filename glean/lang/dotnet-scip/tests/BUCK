@@ -1,6 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_test")
 
-# Cabal's `glean-snapshot-dotnet-scip` test-suite (glean.cabal.in).
 haskell_test(
     name = "glean-snapshot-dotnet-scip",
     main = "Glean.Regression.DotnetScip.Main",

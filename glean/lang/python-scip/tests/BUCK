@@ -1,6 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_test")
 
-# Cabal's `glean-snapshot-python-scip` test-suite (glean.cabal.in).
 haskell_test(
     name = "glean-snapshot-python-scip",
     main = "Glean.Regression.PythonScip.Main",

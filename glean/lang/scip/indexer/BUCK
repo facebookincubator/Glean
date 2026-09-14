@@ -1,10 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_library")
 
-# Cabal's `indexers` library includes this module (Glean.Indexer.SCIP) among
-# its 18 - split into its own buck2 target since it lives in a different
-# hs-source-dir than the rest (see glean/index/BUCK's comment for the full
-# split rationale). Depended on by several other language indexers
-# (go, swift, python-scip, dotnet-scip, rust-scip, typescript).
 haskell_library(
     name = "scip-indexer",
     srcs = [

@@ -1,10 +1,6 @@
 load("//buck2:haskell.bzl", "haskell_library")
 load("//buck2:cxx.bzl", "cxx_library")
 
-# Cabal's `client-hs` library (glean.cabal.in) mixes a C++ source
-# (cpp/write.cpp) directly into the Haskell library stanza; buck2 has no
-# equivalent, so it's split into its own cxx_library() here, same pattern
-# as fb-util-cxx/fb-util.
 cxx_library(
     name = "client-hs-cxx",
     srcs = [
@@ -16,8 +12,6 @@ cxx_library(
     visibility = ["PUBLIC"],
 )
 
-# Main client API; supports only remote DBs. Does NOT depend on glean:db or
-# glean:backend-local (see glean.cabal.in).
 haskell_library(
     name = "client-hs",
     srcs = [

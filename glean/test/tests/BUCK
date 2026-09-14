@@ -1,12 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_test")
 
-# Cabal's `glean/test/tests` test-suites (glean.cabal.in's `common test`/
-# `common angle-test` stanzas) - one haskell_binary() per test-suite, each
-# depending on the specific `//glean/schema/{thrift,hs}:NAME` targets its own
-# files actually import (grepped, not guessed - see buck2.md). A handful of
-# test-suites needing whole not-yet-built subtrees (hack-derive-test,
-# backup-s3, timeout, publish-shards) are deliberately left for later.
-
 haskell_test(
     name = "angle-test-angle",
     main = "Angle.AngleTest",
@@ -779,10 +772,6 @@ haskell_test(
 haskell_test(
     name = "publish-shards",
     main = "PublishShardsTest",
-    # Cabal's `publish-shards` test-suite (glean.cabal.in): `common test`'s
-    # hs-source-dirs (glean/test/tests) plus its own `hs-source-dirs:
-    # glean/server` - the glean/server half comes from a real dependency
-    # on `//glean/server:sharding` instead (see that BUCK file).
     srcs = [
         "PublishShardsTest.hs",
         "DatabaseJanitorTest.hs",

@@ -1,25 +1,7 @@
 load("//buck2:haskell.bzl", "haskell_test")
 
-# `--indexer=$(exe ...)` on the *-test targets below points each suite
-# directly at this package's own clang-index build, rather than relying on
-# `clang-index` being on `$PATH` (Glean.Indexer.Cpp's `withExe` falls back
-# to a `$PATH` search when `-indexer` isn't given) - more hermetic under
-# `buck2 test`, and the same fix removes the need to manually prepend
-# clang-index's output dir onto `$PATH` the way this migration's own
-# by-hand verification runs have had to (see buck2.md).
 _INDEXER_TEST_ARGS = ["--indexer=$(exe //glean/lang/clang:clang-index)"]
 
-# Cabal's 6 `clang-test-*` test-suites (glean.cabal.in): `common test`-free
-# (these use plain `fb-haskell, fb-cpp, deps, exe`), sharing hs-source-dirs
-# glean/lang/clang/tests and glean/lang/clang/tests/github (the latter has
-# no BUCK file of its own, so it's part of this same package). The
-# `github/Glean/Clang/*.hs` files declare `module Glean.Clang.X` (no
-# `github.` prefix), so their module-name-derived object path doesn't
-# match their on-disk path - `srcs` as a dict remaps them, same mechanism
-# buck2/haskell.bzl's own doc comment describes for a source living
-# somewhere other than its module name implies. (No `def` here for the
-# obvious per-target helper - BUCK files, unlike `.bzl` ones, don't allow
-# function definitions.)
 _COMMON_DEPS = [
     "@hsthrift//common/util:fb-util",
     "//glean/index:indexer-core",
@@ -130,19 +112,6 @@ haskell_test(
     visibility = ["PUBLIC"],
 )
 
-# Exported so //glean/glass/test/regression:glass-regression-cpp (a
-# different buck2 package) can embed the same two files, matching Cabal's
-# own model exactly: glass-regression-cpp's own stanza (glean.cabal.in)
-# lists `Glean.Clang.Test`/`Glean.Clang.Test.DerivePass` as `other-modules`
-# too, recompiled fresh there rather than shared via a library, the same
-# duplication already used across all 6 `clang-test-*` targets above.
-# buck2 (unlike Cabal) requires a file to belong to exactly one package,
-# so it can't just be listed as a raw `srcs` path from the other package -
-# `export_file()` re-exposes it as a target these two consumers can
-# reference directly (`_resolve_src` in buck2/haskell.bzl already treats
-# a dict `srcs` value that isn't a local path as something to relocate via
-# `export_file()`, and `export_file()`'s own `src` attr accepts a
-# cross-package dependency just as well as a local file).
 native.export_file(
     name = "test-hs",
     src = "Glean/Clang/Test.hs",

@@ -1,18 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_library")
 
-# Cabal's `stubs` library (glean.cabal.in): open-source no-op/simplified
-# implementations of things that have a real Meta-internal version under
-# glean/facebook (fb303, auth headers, scribe writes, incomplete-db backup,
-# shard publishing, indexing). Facebook.Service.HttpFb303 is included
-# unconditionally - Cabal only builds it `if !flag(fbthrift)`, but we don't
-# support the fbthrift flag with buck2 at all (see buck2.md TODO), so that
-# branch is always the one that applies here.
-#
-# Glean/Init.hsc FFI-imports a real folly C++ symbol
-# (folly::unsafe_unscoped_init) via Mangle.TH's TemplateHaskell `mangle`
-# splice; the symbol itself comes from folly-clib (folly/init/Init.cpp),
-# which is why folly-clib is a dep here even though nothing else in this
-# library touches C++ directly.
 haskell_library(
     name = "stubs",
     srcs = [
@@ -59,10 +46,6 @@ haskell_library(
     visibility = ["PUBLIC"],
 )
 
-# Cabal's `defaultconfigs` library (glean.cabal.in) - also hs-source-dirs:
-# glean/github, but a separate Cabal library from `stubs` (private, only
-# glean:core and a couple of others depend on it), so a separate buck2
-# target here too even though it shares this directory.
 haskell_library(
     name = "defaultconfigs",
     srcs = [
@@ -79,10 +62,6 @@ haskell_library(
     visibility = ["PUBLIC"],
 )
 
-# Cabal's `aclknobs` library (glean.cabal.in): open-source stub for the
-# Facebook-internal ACL JustKnobs (glean/facebook has the real
-# implementation) - both knobs default to False here, so ACL handling is
-# disabled. No deps at all.
 haskell_library(
     name = "aclknobs",
     srcs = [
@@ -91,8 +70,6 @@ haskell_library(
     visibility = ["PUBLIC"],
 )
 
-# Cabal's `logger` library (glean.cabal.in) - private, also hs-source-dirs:
-# glean/github, same shape as `defaultconfigs` above.
 haskell_library(
     name = "logger",
     srcs = [

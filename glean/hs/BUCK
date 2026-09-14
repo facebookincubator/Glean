@@ -1,18 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_library")
 
-# Cabal's `core` library (glean.cabal.in): the Haskell interface to
-# //glean/rts:rts. Glean/RTS/Foreign/Ownership.hsc and Query.hsc are the
-# only real .hsc files (everything else here is plain Foreign/FFI .hs, same
-# as most of fb-util's own FFI modules) - both include glean/rts headers
-# directly (glean/rts/ownership.h, query.h, ffi.h), which is why rts is a
-# dep here (its public_include_directories propagates into the hsc2hs step -
-# see hsc2hs.bzl). -DOSS=1 (hsc_flags, matching Cabal's per-library
-# `hsc2hs-options: --cflag=-DOSS=1`) is needed because glean/rts/query.h
-# itself has an `#ifdef OSS` block (see glean/rts/BUCK's own comment for
-# why) - hsc2hs's intermediate C compile needs to see the same value the
-# main //glean/rts:rts compile does, or it'll try to pull in the
-# Meta-internal branch instead.
-
 haskell_library(
     name = "core",
     hsc_flags = ["-C", "-DOSS=1"],

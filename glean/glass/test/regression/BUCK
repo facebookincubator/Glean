@@ -1,12 +1,6 @@
 load("//buck2:haskell.bzl", "haskell_library", "haskell_test")
 load("@third-party//haskell:tools.bzl", "GHC_BIN_DIR")
 
-# Cabal's `glass-regression` library (glean.cabal.in): shared snapshot-test
-# driver for every `glass-regression-*` test-suite below. `hs-source-dirs:
-# glean/glass/test/regression/lib` has no BUCK file of its own, so it's
-# part of this same package - srcs below are given relative to this
-# package's own root ("glean/glass/test/regression"), hence the "lib/"
-# prefix.
 haskell_library(
     name = "glass-regression",
     srcs = {
@@ -48,11 +42,6 @@ haskell_library(
     visibility = ["PUBLIC"],
 )
 
-# Cabal's `glass-regression-cpp` test-suite: needs `flag(clang-tests)` -
-# buildable here since glean-clang (LLVM 15) is. `Glean/Clang/Test.hs`/
-# `Test/DerivePass.hs` come from //glean/lang/clang/tests (see that
-# BUCK's own comment on the two export_file() targets) - same duplication
-# Cabal itself uses (this stanza's own `other-modules:` lists them too).
 haskell_test(
     name = "glass-regression-cpp",
     main = "Glean.Glass.Regression.Cpp.Github",
@@ -109,9 +98,6 @@ haskell_test(
     visibility = ["PUBLIC"],
 )
 
-# Needs `--hie-indexer`/a matching GHC the same way glean-snapshot-haskell
-# does - see glean/lang/haskell/tests/BUCK's comment for the full
-# explanation (same GHC-version issue, same fix).
 haskell_test(
     name = "glass-regression-haskell",
     main = "Glean.Glass.Regression.Haskell.Main",

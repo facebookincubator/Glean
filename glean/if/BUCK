@@ -1,18 +1,11 @@
 load("//buck2:haskell.bzl", "haskell_library")
 load("//buck2:thrift.bzl", "thrift_srcs", "thrift_srcs_export")
-# hs_include'd verbatim into the generated Types.hs by thrift-compiler - a
-# thrift_srcs_export() rather than a plain export_file() so if-glean-hs
-# can `deps` on it (thrift_compile()'s `deps` needs the ThriftSrcsInfo
-# provider, which only thrift_srcs_export()/thrift_srcs()/thrift_library()
-# targets carry).
+
 thrift_srcs_export(
     name = "glean_include.hs",
     srcs = {"glean/if/glean_include.hs": "glean_include.hs"},
 )
 
-# Cabal's `if-glean-hs` library (glean.cabal.in). glean.thrift's own
-# `include`s need if-fb303-hs/if-auth-hs/thrift-annotation's own thrift
-# files.
 haskell_library(
     name = "if-glean-hs",
     srcs = thrift_srcs(
@@ -52,7 +45,6 @@ haskell_library(
     visibility = ["PUBLIC"],
 )
 
-# Cabal's `if-index-hs` library (glean.cabal.in).
 haskell_library(
     name = "if-index-hs",
     srcs = thrift_srcs(
@@ -88,7 +80,6 @@ haskell_library(
     visibility = ["PUBLIC"],
 )
 
-# Cabal's `if-internal-hs` library (glean.cabal.in).
 haskell_library(
     name = "if-internal-hs",
     srcs = thrift_srcs(
