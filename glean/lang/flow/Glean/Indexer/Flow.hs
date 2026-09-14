@@ -58,6 +58,7 @@ indexer = Indexer {
             , "flow.FlowEntityImportUses"
             , "flow.FlowTypeEntityImportUses"
             , "flow.ModuleContains"
+            , "flow.ModuleDocblockRange"
             , "flow.ModuleComments"
 
               -- possibly deprecated
