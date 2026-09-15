@@ -1,5 +1,7 @@
 load("//buck2:cxx.bzl", "cxx_binary")
 load("//buck2:haskell.bzl", "haskell_library")
+load("//buck2:llvm.bzl", "external_llvm_config_library")
+load("@prelude//third-party:pkgconfig.bzl", "external_pkgconfig_library")
 
 # LLVM/Clang 15.0.7 exactly - glean/lang/clang/Setup.hs (glean-clang.cabal's
 # Custom Setup, not run under buck2) pins this version precisely via
@@ -7,8 +9,14 @@ load("//buck2:haskell.bzl", "haskell_library")
 # API. This toolchain happens to have llvm-config-15 installed alongside
 # newer ones (15/17/18/19/20), an exact match - if that ever changes, this
 # is the one place to update.
-_LLVM_INCLUDE = "/usr/lib/llvm-15/include"
-_LLVM_LIBDIR = "/usr/lib/llvm-15/lib"
+external_llvm_config_library(
+    name = "llvm",
+    version = "15",
+)
+
+external_pkgconfig_library(
+    name = "fmt",
+)
 
 # Cabal's `clang-index` executable (glean-clang.cabal, a wholly separate
 # Cabal package from glean.cabal.in - see that file's own comment on why:
@@ -19,8 +27,9 @@ _LLVM_LIBDIR = "/usr/lib/llvm-15/lib"
 #
 # Flags combine glean-clang.cabal's own `common fb-cpp` (`-DOSS=1
 # -std=c++20 -Wno-nullability-completeness`, `-DGLEAN_X86_64 -march=haswell`
-# if x86_64) with the defines `llvm-config --cxxflags` reports
-# (`-D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS`) and
+# if x86_64) with whatever `llvm-config-15 --cxxflags` reports (its `-I`/
+# `-D` flags only - see buck2/llvm.bzl's own comment for why not the whole
+# thing verbatim, pulled in transitively via the `:llvm` dep below) and
 # `executable clang-index`'s own `-fexceptions` override. Deliberately
 # *not* `llvm-config`'s own `-std=c++14`/`-fno-exceptions`: this package's
 # sources use `std::filesystem` (path.h/path.cpp), which needs >= C++17,
@@ -53,21 +62,20 @@ cxx_binary(
         "prelude//cpu:x86_64": ["-DGLEAN_X86_64"],
         "DEFAULT": [],
     }) + [
-        "-D_GNU_SOURCE",
-        "-D__STDC_CONSTANT_MACROS",
-        "-D__STDC_FORMAT_MACROS",
         "-fexceptions",
-        # `include_directories` always resolves relative to this package,
-        # even for a leading "/" - a plain compiler flag is the only way to
-        # get a genuine absolute system include path onto the command line.
-        "-I" + _LLVM_INCLUDE,
     ],
+    # -lclang-cpp isn't an LLVM-proper component (it's Clang's own
+    # unified C++ API library) - llvm-config doesn't know about it, so
+    # it stays a plain hardcoded flag here, same as -lpthread/-lre2
+    # (unrelated third-party libs this file itself links against
+    # directly, nothing to do with the LLVM/Clang toolchain). fmt has
+    # its own pkg-config file on this system (`pkg-config --exists
+    # fmt`), so that one goes through the `:fmt` dep below instead of a
+    # hardcoded `-lfmt`, the same way glean/rts/BUCK's `icuuc`/`xxhash`
+    # already do for their own system libraries.
     linker_flags = [
-        "-L" + _LLVM_LIBDIR,
         "-lclang-cpp",
-        "-lLLVM-15",
         "-lpthread",
-        "-lfmt",
         "-lre2",
     ],
     deps = [
@@ -75,6 +83,8 @@ cxx_binary(
         "@hsthrift//folly-clib:folly-clib",
         "//glean/rts:rts",
         "//glean/cpp:client-cpp",
+        ":llvm",
+        ":fmt",
         # Not in glean-clang.cabal's own `build-depends: glean:rts,
         # glean:client-cpp` at all, despite index.cpp directly
         # #include-ing and calling into it (worklist::*/interprocess::
