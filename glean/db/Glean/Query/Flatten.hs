@@ -210,20 +210,25 @@ flattenSeqGenerators (Ref (MatchExt (Typed ty match))) = case match of
   TcElementsOfSet pat -> do
     r <- flattenPattern pat
     return [(mempty, stmts, SetElementGenerator ty pat') | (stmts,pat') <- r ]
-  TcQueryGen query -> do
+  TcWhere query -> do
     (group, term, _) <- flattenQuery' query
     return [(floatGroup group, mempty, TermGenerator term)]
-  TcAll query -> do
-    (group, term, _) <- flattenQuery' query
+  TcAll p -> do
+    let elemTy = case derefType ty of
+          Schema.SetTy t -> t
+          _other -> error "TcAll: not SetTy"
+    (group, term, _) <- flattenQuery' $
+      TcQuery elemTy p Nothing [] Angle.Unordered
     var <- fresh ty
     return
       [ (Statements [FlatAllStatement var term group]
       , mempty
       , TermGenerator (Ref (MatchVar var)))]
-  TcNegation stmts -> do
-    (ords, floats) <- mapAndUnzipM flattenStatement stmts
-    let neg = FlatNegation (mkGroup ords floats)
-    return [(oneStmt neg, mempty, TermGenerator $ Tuple [])]
+  TcNegation p -> do
+    (group, _term, _) <- flattenQuery' (TcQuery ty p Nothing [] Angle.Ordered)
+    -- Note: term is discarded. e.g. in !(X where ...) we don't do anything
+    -- with the X.
+    return [(oneStmt (FlatNegation group), mempty, TermGenerator $ Tuple [])]
   TcPrimCall op args -> do
     r <- manyTerms (\args -> PrimCall op args ty) <$> mapM flattenPattern args
     return [ (mempty, float, gen) | (float, gen) <- r ]
