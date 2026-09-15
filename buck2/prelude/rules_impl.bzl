@@ -450,15 +450,14 @@ _haskell_extra_attributes = {
     },
     "haskell_library": {
         "preferred_linkage": attrs.enum(Linkage.values(), default = "any"),
-        # When set (and both a static and a shared output style are wanted -
-        # see get_output_styles_for_linkage), build the static archive with
-        # `-dynamic-too` and derive the shared library from that same
+        # No `dynamic_too` attr here any more (LOCAL FORK - see
+        # buck2.md): whether to build the static archive with
+        # `-dynamic-too` (deriving the shared library from that same
         # compile's .dyn_o output, instead of compiling "static" and
-        # "shared" independently. Exists so a build mode wanting a fully
-        # static final link (which still needs every package loadable the
-        # dynamic way, for Template Haskell - see buck2/haskell.bzl) can
-        # pay for that once per package instead of twice.
-        "dynamic_too": attrs.bool(default = False),
+        # "shared" independently) is now driven directly from
+        # `haskell_toolchain.dynamic_ghc` in haskell.bzl's own
+        # `haskell_library_impl`, not a per-target attribute - see that
+        # field's own comment (toolchain.bzl) for why.
         "template_deps": attrs.list(attrs.exec_dep(providers = [HaskellLibraryProvider]), default = []),
         "_cxx_toolchain": toolchains_common.cxx(),
         "_haskell_toolchain": toolchains_common.haskell(),

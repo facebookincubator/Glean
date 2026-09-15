@@ -1,6 +1,6 @@
 load("@prelude//toolchains:demo.bzl", "system_demo_toolchains")
 load("@toolchains//haskell.bzl", "haskell_toolchain")
-load("@third-party//haskell:tools.bzl", "GHC_VERSION")
+load("@third-party//haskell:tools.bzl", "GHC_DYNAMIC", "GHC_VERSION")
 
 # Defaults for other toolchains
 system_demo_toolchains()
@@ -31,6 +31,11 @@ haskell_toolchain(
     # future GHC bug workaround - not for anything build-mode-dependent.)
     compiler_flags = [],
     linker_flags = [],
+    # GHC_DYNAMIC comes from buck2/gen-haskell-prebuilt.py's own probe
+    # of this specific `ghc` binary (`ghc --info`'s `("GHC Dynamic",
+    # ...)` entry) - not assumed - so retargeting GHC (per this file's
+    # own comment on GHC_VERSION) picks this up automatically too.
+    dynamic_ghc = GHC_DYNAMIC,
     # Under asan, GHC's own process needs the ASAN runtime already loaded
     # before Template Haskell dlopen's an asan-instrumented dependency
     # mid-compile (confirmed empirically - see buck2/prelude/haskell/

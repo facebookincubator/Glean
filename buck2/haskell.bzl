@@ -98,27 +98,37 @@ _BUILD_MODE_HASKELL_FLAGS = select({
     "DEFAULT": [],
 })
 
-# Always on, regardless of dev/opt/prof, for every haskell_library() -
-# not a build-mode choice. Two independent reasons, neither tied to which
-# mode happens to be selected:
+# The `-dynamic-too`/native-shared-libs-symlink-tree machinery this
+# section used to force on unconditionally (via a `dynamic_too = True`
+# kwarg here) is now driven entirely by `haskell_toolchain.dynamic_ghc`
+# instead - a LOCAL FORK in `buck2/prelude/haskell/{toolchain,haskell}
+# .bzl` (see buck2.md) auto-detected per GHC installation by buck2/
+# gen-haskell-prebuilt.py (`ghc --info`'s own `("GHC Dynamic",...)`
+# report), not hardcoded here. No kwarg needed any more - the prelude's
+# own `haskell_library_impl`/`haskell_binary_impl` read the toolchain
+# directly. Kept for reference, since the *reasoning* for why this
+# needs to be on whenever GHC itself is dynamically linked is still the
+# same as when this was a hardcoded `True`:
 #
 # 1. Template Haskell splices need every package loadable the *dynamic*
-#    way: this GHC's own `ghc` binary is dynamically linked (`ghc --info`
-#    shows "GHC Dynamic: YES"), and its internal splice interpreter can
-#    only load packages that were also built the dynamic way - not a
-#    property of Template Haskell itself, just how this GHC binary
-#    happens to be built. Tried `-fexternal-interpreter` first (runs
-#    splices in a separate, non-dynamic `ghc-iserv` process instead), but
-#    that has two hard problems of its own, confirmed via direct GHC
-#    repros with no buck2 involved: `ghc-iserv`'s internal object loader
-#    can't handle the ELF TLS relocations modern C++ (e.g. folly)
-#    generates, and it eagerly loads *every* exposed package's native
-#    closure for the whole `ghc --make` session the moment any one splice
-#    needs it, not just that splice's own transitive deps. Using real
-#    dynamic linking instead (matching what Cabal already does) sidesteps
-#    both: a `.so`'s native deps resolve automatically via `DT_NEEDED`,
-#    and the OS dynamic linker (unlike GHC's internal one) handles every
-#    relocation type.
+#    way: a dynamically-linked `ghc` binary's internal splice
+#    interpreter can only load packages that were also built the
+#    dynamic way - not a property of Template Haskell itself, just how
+#    that GHC binary happens to be built. (A *statically* linked GHC
+#    doesn't have this requirement at all - it never dlopen's anything
+#    for splices - which is exactly why this is now toolchain-derived
+#    rather than always-on.) Tried `-fexternal-interpreter` first (runs
+#    splices in a separate, non-dynamic `ghc-iserv` process instead),
+#    but that has two hard problems of its own, confirmed via direct
+#    GHC repros with no buck2 involved: `ghc-iserv`'s internal object
+#    loader can't handle the ELF TLS relocations modern C++ (e.g.
+#    folly) generates, and it eagerly loads *every* exposed package's
+#    native closure for the whole `ghc --make` session the moment any
+#    one splice needs it, not just that splice's own transitive deps.
+#    Using real dynamic linking instead (matching what Cabal already
+#    does) sidesteps both: a `.so`'s native deps resolve automatically
+#    via `DT_NEEDED`, and the OS dynamic linker (unlike GHC's internal
+#    one) handles every relocation type.
 #
 #    Crucially, this isn't just a `link_style = "static"` concern: GHC's
 #    splice interpreter needs a dynamic interface for a package whenever
@@ -136,8 +146,8 @@ _BUILD_MODE_HASKELL_FLAGS = select({
 #    fixed at the time by adding `dynamic_too = True` to that one
 #    library, which is exactly the wrong shape of fix (would need
 #    repeating for every library anything might ever reach statically,
-#    forever). Unconditional is the only version of this that's actually
-#    correct.
+#    forever) - toolchain-wide (now: whenever GHC is dynamic) is the
+#    only version of this that's actually correct.
 #
 # 2. It's a pure efficiency win whenever a library builds both link
 #    styles anyway (`preferred_linkage = "any"`, the default - i.e.
@@ -151,7 +161,7 @@ _BUILD_MODE_HASKELL_FLAGS = select({
 #    variants). So this was never actually saving anything by being off
 #    in `dev` mode - it was doing strictly more work (two full compiles)
 #    for the same two outputs `preferred_linkage = "any"` already
-#    produces regardless.
+#    produces regardless (whenever GHC is dynamic - see point 1).
 #
 # `prof` needs the same treatment for the same underlying reason (this
 # GHC binary, not Template Haskell itself) but can't reuse `-dynamic-too`
@@ -160,9 +170,9 @@ _BUILD_MODE_HASKELL_FLAGS = select({
 # special-casing needed here though: the prelude's own haskell_library()
 # already builds both `enable_profiling` values for every library
 # (compile.bzl's `build_shared_too` is forced off specifically for the
-# profiled pass, on regardless for the non-profiled one), so this simply
-# being unconditionally `True` already makes that *non*-profiled pass
-# also produce the dynamic way TH needs - the profiled pass is untouched.
+# profiled pass, on regardless for the non-profiled one), so a dynamic
+# GHC's non-profiled pass already produces the dynamic way TH needs -
+# the profiled pass is untouched.
 
 # See buck2/constraints/BUCK's own comment: no Cabal `profiling` flag to
 # match, just GHC's standard `-prof` (the prelude's own haskell_library()/
@@ -274,7 +284,6 @@ def haskell_library(
     # needs to be set once, there.
     all_deps = deps + _package_deps(packages)
     all_compiler_flags = (FB_HASKELL_EXTENSIONS + compiler_flags) if fb_haskell else compiler_flags
-    kwargs.setdefault("dynamic_too", True)
     native.haskell_library(
         name = name,
         srcs = _resolve_srcs(name, srcs, all_deps, hsc_flags),
