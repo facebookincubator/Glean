@@ -15,6 +15,7 @@ haskell_library(
         "Glean/Glass/Describe.hs",
         "Glean/Glass/Digest.hs",
         "Glean/Glass/Env.hs",
+        "Glean/Glass/ErrorClassification.hs",
         "Glean/Glass/Handler/Symbols.hs",
         "Glean/Glass/Handler/Documents.hs",
         "Glean/Glass/Handler/Cxx.hs",
