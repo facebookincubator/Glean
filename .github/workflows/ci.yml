@@ -14,6 +14,22 @@ jobs:
         ghc: [9.2.8, 9.4.7, 9.6.7]
         compiler: [gcc]
         index-state: [2025-04-14T00:00:00Z]
+        # buck2, following the pattern in hsthrift/.github/workflows/
+        # ci-getdeps.yml: a second buildtype sharing every setup step
+        # with the existing Cabal build below, diverging only at the
+        # very end (Build hsthrift and Glean onward) where it builds
+        # and tests via buck2 instead of `make`. Restricted to a single
+        # GHC version via `exclude` below - buck2's own GHC version is
+        # whatever `dist-newstyle/cache/plan.json` says Cabal last
+        # resolved against (buck2/gen-haskell-prebuilt.py reads it from
+        # there), not something meaningful to cross with every ghc in
+        # this matrix the way the Cabal build itself is.
+        buildtype: [cabal, buck2]
+        exclude:
+          - buildtype: buck2
+            ghc: 9.2.8
+          - buildtype: buck2
+            ghc: 9.6.7
     runs-on: 32-core-ubuntu
     container:
       image: ubuntu:24.04
@@ -117,7 +133,7 @@ jobs:
           curl --proto '=https' --tlsv1.2 -sSf "https://downloads.haskell.org/~ghcup/x86_64-linux-ghcup" -o "$LOCAL_BIN"/ghcup
           chmod +x "$LOCAL_BIN"/ghcup
           # Avoiding 3.12 due to https://github.com/haskell/cabal/issues/10046
-          ghcup install cabal 3.10 --set
+          ghcup install cabal --set
           apt-get install -y build-essential libgmp-dev libnuma-dev
           ghcup install ghc ${{ matrix.ghc }} --set
           echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
@@ -187,26 +203,77 @@ jobs:
       - name: Install hsthrift and Glean dependencies
         run: apt-get install -y pkg-config rsync libgmock-dev libpcre3-dev libtinfo-dev libxxhash-dev squashfs-tools
 
-      - name: Build hsthrift and Glean
+      - if: matrix.buildtype != 'buck2'
+        name: Build hsthrift and Glean
         run: make
 
-      - name: Build glass
+      - if: matrix.buildtype != 'buck2'
+        name: Build glass
         run: make glass
 
       - name: Install glean-clang dependencies
         run: apt-get install -y clang-15 libclang-15-dev libclang-cpp15-dev libre2-dev
 
-      - name: Build glean-clang
+      - if: matrix.buildtype != 'buck2'
+        name: Build glean-clang
         run: make glean-clang
 
-      - if: matrix.ghc != '8.6.5' && matrix.ghc != '8.8.4' && matrix.ghc != '8.10.7'
+      - if: matrix.buildtype != 'buck2' && matrix.ghc != '8.6.5' && matrix.ghc != '8.8.4' && matrix.ghc != '8.10.7'
         name: Build hie-indexer
         run: make glean-hie
 
-      - name: Run tests
+      - if: matrix.buildtype == 'buck2'
+        name: Build dependencies
+        run: cabal $CABAL_CONFIG_FLAGS build all --only-dependencies
+
+      - if: matrix.buildtype == 'buck2'
+        name: Fix HOME ownership for buck2
+        # This container job runs as root, but $HOME (bind-mounted from
+        # the runner host) keeps the host runner's UID as owner rather
+        # than root's - buck2 refuses to start as root unless $HOME is
+        # *also* owned by root ("buck2 is not allowed to run as root
+        # (unless home dir is owned by root)"). Same fix hsthrift's own
+        # ci-getdeps.yml uses for its own buck2 leg; cabal/ghcup don't
+        # care about this mismatch, so it's only needed here.
+        run: chown -R root:root "$HOME"
+
+      - if: matrix.buildtype == 'buck2'
+        name: Install sudo
+        # Required by "Install buck2" below
+        run: apt-get install -y sudo
+
+      - if: matrix.buildtype == 'buck2'
+        name: Install buck2
+        uses: zadlg/buck2-github-composite-action@v3
+        with:
+          release-tag: '2026-09-01'
+          arch: 'x86_64'
+          platform: 'unknown-linux-gnu'
+          sha384: 'a17cf63f52abec68a2abbae2047202dd938294b23229702c02d483ade2c6e99917911398954ae2122ee6cb902afb1873'
+          output-path: '/usr/bin/buck2'
+
+      - if: matrix.buildtype == 'buck2'
+        name: Setup buck2 build
+        run: python3 buck2/gen-haskell-prebuilt.py
+
+      - if: matrix.buildtype == 'buck2'
+        name: Run gen-schema
+        run: make BUILD=buck2 gen-schema
+
+      - if: matrix.buildtype == 'buck2'
+        name: Build everything
+        run: buck2 build '//glean/...'
+
+      - if: matrix.buildtype != 'buck2'
+        name: Run tests
         run: make test
 
-      - name: Build glean-lsp
+      - if: matrix.buildtype == 'buck2'
+        name: Run tests
+        run: buck2 test '//glean/...'
+
+      - if: matrix.buildtype != 'buck2'
+        name: Build glean-lsp
         run: make glean-lsp
 
   # check the vscode extension builds
