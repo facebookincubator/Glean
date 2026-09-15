@@ -52,8 +52,8 @@ cxxRepo = "fbsource"
 aospOculusRepo :: Text
 aospOculusRepo = "aosp.oculus.14.cxx"
 
-aospNucleusRepo :: Text
-aospNucleusRepo = "aosp.nucleus.14.cxx"
+aospNucleus16Repo :: Text
+aospNucleus16Repo = "aosp.nucleus.16.cxx"
 
 examplePath, newPath :: Glass.Path
 examplePath = Glass.Path "main.cpp"
@@ -105,7 +105,7 @@ main = do
     createTestDatabase testConfig
       { testRepo = Glean.Repo aospOculusRepo "oculus-root" }
     createTestDatabase testConfig
-      { testRepo = Glean.Repo aospNucleusRepo "nucleus-root" }
+      { testRepo = Glean.Repo aospNucleus16Repo "nucleus-root" }
 
 
 --------------------------------------------------------------------------------
@@ -312,13 +312,14 @@ testMatchingRevision withEnv = TestLabel "matching" $ TestList
 
 testBranchSelection :: WithEnv -> Test
 testBranchSelection withEnv = TestLabel "branch" $ TestList
-  [ TestLabel "matches-revision" $ TestCase $ withEnv $ \env -> do
+  [ TestLabel "nucleus-14-routes-to-nucleus-16" $
+    TestCase $ withEnv $ \env -> do
     result <- symbolsList env def
       { repo = Glass.RepoName "aosp"
       , revision2 = Glass.Revision "nucleus-latest"
       }
     assertEqual
-      "Expected a revision from nucleus db when nucleus-latest is requested"
+      "Expected nucleus-14 to use the nucleus-16 DB"
       (SimpleSymbolsListXResult (Glass.Revision "nucleus-root") False)
       result
 
