@@ -1,3 +1,6 @@
+# set BUILD=buck2 to use buck2
+BUILD ?= cabal
+
 CABAL_BIN=cabal
 PWD := $(shell pwd)
 
@@ -29,8 +32,11 @@ BYTECODE_SRCS= \
 
 # Code generators. May be injected by external build systems if those are
 # managing the build.
-# GEN_SCHEMA = $(CABAL) run glean:gen-schema --
+ifeq ($(BUILD),buck2)
 GEN_SCHEMA = buck2 run glean/schema/gen:gen-schema --
+else
+GEN_SCHEMA = $(CABAL) run glean:gen-schema --
+endif
 GEN_BYTECODE = $(CABAL) run glean:gen-bytecode-hs --
 
 all:: thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs glean
