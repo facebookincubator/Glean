@@ -98,22 +98,25 @@ predicate ModuleDocblockRange: {
     file = File
   }
 
-# Re-index ModuleDoc so it is left-most keyed by module fact for O(1) lookup
+# Re-index module documentation so it is left-most keyed by module fact for O(1) lookup
 predicate ModuleComments: {
   module: flow.Module,
   file: src.File,
   span: src.ByteSpan
-} stored { Module, File, Span } where
-  ( { file = F } = Module;
-    Mod = Module
+} stored
+  ({ Module, File, Span } where
+    flow.ModuleDocblockRange { module = Module, file = File, span = Span }
   ) | (
-    { string_ = S } = Module;
+    { StringModule, File, Span } where
+    { string_ = S } = StringModule;
     flow.StringToFileModule { string_ = S, file = F };
-    Mod = flow.Module { file = F }
-  );
-  Range = flow.Range { module = Mod, span = Span };
-  Doc = flow.Documentation Range;
-  flow.ModuleDoc { documentation = Doc, file = File };
+    FileModule = flow.Module { file = F };
+    flow.ModuleDocblockRange {
+      module = FileModule,
+      file = File,
+      span = Span
+    }
+  )
 
 # indicates that a declaration is an import statement
 predicate ImportDeclaration: {
