@@ -107,8 +107,34 @@ def _ghc_print(ghc_path, flag):
         sys.exit(1)
     return result.stdout.strip()
 
+def _ghc_dynamic(ghc_path):
+    """Whether this specific `ghc` binary is itself dynamically linked -
+    `ghc --info`'s own `("GHC Dynamic","YES"/"NO")` entry (confirmed
+    directly: `ghc-9.4.8 --info | grep -i dynamic` on this machine shows
+    exactly that literal, one `("key","value")` tuple per line). Not
+    assumed - some GHC installs (musl/static distros, some Nix profiles)
+    ship a statically-linked `ghc` itself, in which case Template
+    Haskell splices never dlopen anything (see buck2/toolchains/
+    haskell.bzl's own `dynamic_ghc` toolchain attr, and buck2.md, for
+    why this matters: the whole `-dynamic-too`/shared-libs-symlink-tree
+    machinery in buck2/prelude/haskell/haskell.bzl exists purely to
+    support TH splices dlopen-ing dependencies into a *dynamically
+    linked* GHC process - none of it applies when GHC itself is static).
+    """
+    result = subprocess.run([ghc_path, "--info"], capture_output=True, text=True)
+    if result.returncode != 0:
+        print(f"ERROR: '{ghc_path} --info' failed:\n{result.stderr}", file=sys.stderr)
+        sys.exit(1)
+    m = re.search(r'\("GHC Dynamic",\s*"(\w+)"\)', result.stdout)
+    if not m:
+        print(f"ERROR: no (\"GHC Dynamic\",...) entry in '{ghc_path} --info' output",
+              file=sys.stderr)
+        sys.exit(1)
+    return m.group(1) == "YES"
+
 GHC = _find_ghc()
 GHC_PKG = _find_ghc_pkg(GHC)
+GHC_DYNAMIC = _ghc_dynamic(GHC)
 
 # GHC's own reported lib directory is the stable anchor for everything it
 # bundles - both the global package db (a direct child, `<libdir>/
@@ -394,6 +420,10 @@ def generate_tools_file(tool_paths):
         # knows.
         f'GHC_VERSION = {GHC_VERSION!r}',
         f'GHC_BIN_DIR = "third-party/haskell/{GHC_BIN_REL}"',
+        # Whether this GHC is itself dynamically linked - see
+        # _ghc_dynamic()'s own comment above, and buck2/toolchains/
+        # haskell.bzl's `dynamic_ghc` toolchain attr, which this feeds.
+        f'GHC_DYNAMIC = {GHC_DYNAMIC!r}',
         '',
     ]
     for tool in BUILD_TOOLS:
@@ -616,7 +646,7 @@ def main():
     # resolved build). More than one actually in use means something more
     # confusing is going on than this script can safely guess its way
     # through - worth a human looking, not a silent pick.
-    used_roots = {db for _, db in packages.values() if db in STORE_DBS}
+    used_roots = {v[1] for v in packages.values() if v is not None and v[1] in STORE_DBS}
     if len(used_roots) > 1:
         print(f"ERROR: packages resolved from more than one cabal store "
               f"directory: {sorted(used_roots)} - expected at most one",

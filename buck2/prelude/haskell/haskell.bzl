@@ -852,7 +852,15 @@ def haskell_library_impl(ctx: AnalysisContext) -> list[Provider]:
     libname = repr(ctx.label.path).replace("//", "_").replace("/", "_") + "_" + ctx.label.name
     pkgname = libname.replace("_", "-")
 
-    native_shared_libs_dir = _native_shared_libs_dir(ctx.actions, libname, shared_library_infos)
+    # LOCAL FORK (see buck2.md): both this and build_shared_too below
+    # are gated on haskell_toolchain.dynamic_ghc now, not unconditional
+    # - see that field's own comment (toolchain.bzl) for why: neither
+    # is meaningful when GHC itself is statically linked.
+    haskell_toolchain = ctx.attrs._haskell_toolchain[HaskellToolchainInfo]
+    native_shared_libs_dir = (
+        _native_shared_libs_dir(ctx.actions, libname, shared_library_infos)
+        if haskell_toolchain.dynamic_ghc else None
+    )
 
     link_styles = [legacy_output_style_to_link_style(o) for o in get_output_styles_for_linkage(preferred_linkage)]
 
@@ -861,7 +869,7 @@ def haskell_library_impl(ctx: AnalysisContext) -> list[Provider]:
     # output style, build them together from one -dynamic-too compile
     # instead of two independent ones. Only meaningful when both exist.
     build_shared_too = (
-        getattr(ctx.attrs, "dynamic_too", False) and
+        haskell_toolchain.dynamic_ghc and
         LinkStyle("static") in link_styles and
         LinkStyle("shared") in link_styles
     )
@@ -1123,14 +1131,21 @@ def haskell_binary_impl(ctx: AnalysisContext) -> list[Provider]:
     if enable_profiling and link_style == LinkStyle("shared"):
         link_style = LinkStyle("static")
 
+    # LOCAL FORK (see buck2.md): fetched here (rather than after compile()
+    # as upstream has it) so it's available to gate native_shared_libs_dir
+    # below on haskell_toolchain.dynamic_ghc - see that field's own
+    # comment (toolchain.bzl) for why it's not meaningful otherwise.
+    haskell_toolchain = ctx.attrs._haskell_toolchain[HaskellToolchainInfo]
+
     compiled = compile(
         ctx,
         link_style,
         enable_profiling = enable_profiling,
-        native_shared_libs_dir = _native_shared_libs_dir(ctx.actions, ctx.attrs.name, attr_deps_shared_library_infos(ctx)),
+        native_shared_libs_dir = (
+            _native_shared_libs_dir(ctx.actions, ctx.attrs.name, attr_deps_shared_library_infos(ctx))
+            if haskell_toolchain.dynamic_ghc else None
+        ),
     )
-
-    haskell_toolchain = ctx.attrs._haskell_toolchain[HaskellToolchainInfo]
 
     output = ctx.actions.declare_output(ctx.attrs.name, has_content_based_path = False)
     link = cmd_args(
