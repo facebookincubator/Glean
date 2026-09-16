@@ -14,22 +14,13 @@ jobs:
         ghc: [9.2.8, 9.4.7, 9.6.7]
         compiler: [gcc]
         index-state: [2025-04-14T00:00:00Z]
-        # buck2, following the pattern in hsthrift/.github/workflows/
-        # ci-getdeps.yml: a second buildtype sharing every setup step
-        # with the existing Cabal build below, diverging only at the
-        # very end (Build hsthrift and Glean onward) where it builds
-        # and tests via buck2 instead of `make`. Restricted to a single
-        # GHC version via `exclude` below - buck2's own GHC version is
-        # whatever `dist-newstyle/cache/plan.json` says Cabal last
-        # resolved against (buck2/gen-haskell-prebuilt.py reads it from
-        # there), not something meaningful to cross with every ghc in
-        # this matrix the way the Cabal build itself is.
-        buildtype: [cabal, buck2]
-        exclude:
-          - buildtype: buck2
-            ghc: 9.2.8
-          - buildtype: buck2
-            ghc: 9.6.7
+        buildtype: [cabal]
+        include:
+          - ghc: 9.4.7
+            # the buck2 build hardwires clang in its toolchain for now
+            compiler: clang
+            index-state: 2025-04-14T00:00:00Z
+            buildtype: buck2
     runs-on: 32-core-ubuntu
     container:
       image: ubuntu:24.04
@@ -155,6 +146,9 @@ jobs:
           update-alternatives --install /usr/bin/gcc gcc /usr/bin/clang-$VER 10
           # needed for `hsc2hs`, `g++` is hardcoded into `hsc2hs-options`.
           update-alternatives --install /usr/bin/g++ g++ /usr/bin/clang++-$VER 10
+          # needed for buck2, which defaults to clang++
+          update-alternatives --install /usr/bin/clang clang /usr/bin/clang-$VER 10
+          update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-$VER 10
           echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS -fclang" >>"$GITHUB_ENV"
 
       - name: Install folly and rocksdb dependencies
