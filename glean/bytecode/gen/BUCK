@@ -1,0 +1,30 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+
+haskell_binary(
+    name = "gen-bytecode-hs",
+    srcs = [
+        "Glean/Bytecode/Generate/Haskell.hs",
+    ],
+    main = "Glean.Bytecode.Generate.Haskell",
+    deps = [
+        "//glean/bytecode:bytecode",
+        "//glean/bytecode/def:bytecode-instruction",
+    ],
+    packages = [
+        "directory",
+        "filepath",
+        "text",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+genrule(
+    name = "gen-bytecode",
+    cmd = "$(exe :gen-bytecode-hs) --install_dir=$OUT",
+    outs = {
+        "Glean/RTS/Bytecode/Gen/Instruction.hs" : ["Glean/RTS/Bytecode/Gen/Instruction.hs"],
+        "Glean/RTS/Bytecode/Gen/Issue.hs" : ["Glean/RTS/Bytecode/Gen/Issue.hs"],
+        "Glean/RTS/Bytecode/Gen/Version.hs" : ["Glean/RTS/Bytecode/Gen/Version.hs"],
+    },
+    visibility = ["PUBLIC"],
+)
