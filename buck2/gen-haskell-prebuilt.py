@@ -194,11 +194,21 @@ def _find_store_roots():
         d for d in glob.glob(os.path.join(base, prefix + "*"))
         if os.path.isdir(d) and (os.path.basename(d) == prefix or os.path.basename(d).startswith(prefix + "-"))
     )
+    # No match is legitimate, not just "forgot to build first": cabal only
+    # ever creates `<store-dir>/ghc-<version>*` the first time it actually
+    # installs *some* package into the store, so a project whose every
+    # dependency happens to be a GHC boot package (nothing outside the
+    # global package db - e.g. a from-scratch checkout on a CI runner
+    # whose `~/.cabal/store` has never been touched by anything) will
+    # genuinely never have one - confirmed directly: this hit a hard
+    # `sys.exit(1)` here on a fresh GitHub Actions runner even though
+    # `cabal build all --only-dependencies` had just been run, precisely
+    # because it had nothing store-worthy to install. Any package this
+    # skips that *did* need the store still surfaces its own "WARNING:
+    # not found" from collect_packages() below - that's the right place
+    # for this to be an error, not here, before resolution has even run.
     if not roots:
-        print(f"ERROR: no '{base}/{prefix}*' directory found - run "
-              f"'cabal build all --only-dependencies -w {GHC}' first",
-              file=sys.stderr)
-        sys.exit(1)
+        print(f"  No '{base}/{prefix}*' directory yet (no store packages needed)")
     return roots
 
 STORE_ROOTS = _find_store_roots()
@@ -428,8 +438,7 @@ def generate_tools_file(tool_paths):
     ]
     for tool in BUILD_TOOLS:
         rel = tool_paths.get(tool)
-        if rel is not None:
-            lines.append(f'{tool.upper()} = "third-party/haskell/{rel}"')
+        lines.append(f'{tool.upper()} = "third-party/haskell/{rel or "missing"}"')
 
     tools_path = os.path.join(TARGET_DIR, 'tools.bzl')
     with open(tools_path, 'w') as f:
@@ -652,8 +661,17 @@ def main():
               f"directory: {sorted(used_roots)} - expected at most one",
               file=sys.stderr)
         sys.exit(1)
-    store_root = os.path.dirname(next(iter(used_roots))) if used_roots else os.path.dirname(STORE_DBS[0])
-    ensure_symlink(os.path.join(TARGET_DIR, STORE_ROOT_REL), store_root)
+    if used_roots:
+        store_root = os.path.dirname(next(iter(used_roots)))
+    elif STORE_DBS:
+        store_root = os.path.dirname(STORE_DBS[0])
+    else:
+        # No store packages at all (see _find_store_roots()) - nothing
+        # will ever need "cabal-store" to resolve anything, so there's
+        # no directory to point it at.
+        store_root = None
+    if store_root is not None:
+        ensure_symlink(os.path.join(TARGET_DIR, STORE_ROOT_REL), store_root)
 
     print("Building filtered store-db...")
     setup_store_db(packages)

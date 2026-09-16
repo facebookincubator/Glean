@@ -17,29 +17,7 @@ HaskellToolchainInfo = provider(
     fields = {
         "compiler": provider_field(typing.Any, default = None),
         "compiler_flags": provider_field(typing.Any, default = None),
-        # Extra environment variables for the compile action specifically
-        # (not the link action - see haskell/compile.bzl). Needed for e.g.
-        # LD_PRELOAD-ing the ASAN runtime into GHC's own process: GHC's
-        # Template Haskell splices dlopen dependencies' shared objects
-        # *during compilation*, and an asan-instrumented .so dlopen'd into
-        # a plain (non-instrumented) host process fails with "undefined
-        # symbol: __asan_option_detect_stack_use_after_return" unless that
-        # process already has the matching ASAN runtime loaded - confirmed
-        # empirically (see buck2.md).
         "compile_env": provider_field(typing.Any, default = {}),
-        # LOCAL FORK (see buck2.md): whether the `compiler` above is
-        # itself dynamically linked. Template Haskell splices dlopen
-        # their dependencies' shared objects into GHC's own process
-        # *during compilation* - but only if that process is itself
-        # dynamically linked in the first place; a statically-linked
-        # GHC never does this dlopen-based loading at all, so none of
-        # `_native_shared_libs_dir`'s symlink-tree machinery or
-        # `-dynamic-too`'s "build shared as a static-compile byproduct"
-        # optimisation (both in haskell.bzl) apply to it. Defaults to
-        # `True` (the prior, unconditional assumption every toolchain
-        # definition made before this field existed), so any toolchain
-        # that doesn't set this explicitly keeps its exact previous
-        # behaviour.
         "dynamic_ghc": provider_field(bool, default = True),
         "linker": provider_field(typing.Any, default = None),
         "linker_flags": provider_field(typing.Any, default = None),
