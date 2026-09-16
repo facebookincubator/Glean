@@ -100,7 +100,7 @@ def _hsc2hs_impl(ctx: AnalysisContext) -> list[Provider]:
         # The hsc file's own package dir, so `#include "foo.h"`/`<foo.h>`
         # against a local (non-exported) header resolves, same as it would
         # when compiling a sibling cxx_library() source in this package.
-        "-I" + ctx.label.package,
+        "-I" + ("." if ctx.label.package == "" else ctx.label.package),
         _hsc2hs_include_args(merged),
         cmd_args(headers_dir, format = "-I{}") if headers_dir else [],
         "-o",

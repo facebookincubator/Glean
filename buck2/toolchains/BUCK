@@ -23,12 +23,6 @@ haskell_toolchain(
     compiler = "ghc-" + GHC_VERSION,
     packager = "ghc-pkg-" + GHC_VERSION,
     haddock = "haddock",
-    # No `-O` here - GHC's own optimisation level is a dev/opt build-mode
-    # choice (buck2/haskell.bzl's own `_BUILD_MODE_HASKELL_FLAGS`), applied
-    # per-target there, not something every single GHC invocation should
-    # get unconditionally regardless of mode. (This toolchain-level list is
-    # for flags that genuinely apply no matter what's being built - e.g. a
-    # future GHC bug workaround - not for anything build-mode-dependent.)
     compiler_flags = [],
     linker_flags = [],
     # GHC_DYNAMIC comes from buck2/gen-haskell-prebuilt.py's own probe
