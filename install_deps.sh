@@ -15,7 +15,7 @@
 
 set -e
 
-HSTHRIFT_REPO=https://github.com/facebookincubator/hsthrift.git
+HSTHRIFT_REPO=https://github.com/simonmar/hsthrift.git
 THREADS=4
 EXTRA_DEPS="rocksdb"
 
@@ -31,7 +31,7 @@ while [ "$#" -gt 0 ]; do
 done
 
 if test ! -d hsthrift; then
-    git clone "${HSTHRIFT_REPO}"
+    git clone "${HSTHRIFT_REPO}" -b buck2
 fi
 
 # Make sure this is available for a subsequent cabal update
