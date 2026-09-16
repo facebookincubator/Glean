@@ -98,6 +98,48 @@ _BUILD_MODE_HASKELL_FLAGS = select({
     "DEFAULT": [],
 })
 
+# haskell_library()'s own `preferred_linkage` (native prelude attr, not
+# something this file invented) - "any" (the native default, and this
+# project's own default before this) always builds *both* output
+# styles for every library, regardless of whether the final binary
+# consuming it ever uses one of them - confirmed directly: even a plain
+# `dev`-mode build (link_style "shared" everywhere) produces a real
+# `lib-static/lib....a` for every single haskell_library() in the tree.
+# That's not just idle disk space: prelude/haskell/haskell.bzl's own
+# `build_shared_too` is true whenever *both* static and shared output
+# styles are wanted for a `dynamic_ghc` toolchain (see that field's own
+# comment) - true for "any" unconditionally - so `dev` mode has been
+# doing a full extra `-dynamic-too` static-way compile of every single
+# Haskell module in the tree for no reason: nothing in `dev` mode ever
+# *links* the static way (every dev-mode `haskell_binary()` links
+# "shared" - see `_BUILD_MODE_LINK_STYLE` above), so that compile's own
+# output - the static archive - never actually gets used for anything.
+# `shared` linkage (`get_output_styles_for_linkage` in the vendored
+# `prelude/linking/link_info.bzl`) still produces a `pic_archive` (a
+# cheap `ar`-bundle of the same `-fPIC` objects the shared library
+# needs anyway - archiving doesn't link against anything, so this is a
+# side effect of the *same* compile, not a second one) alongside the
+# real `shared_lib`, just not the independently-compiled plain `archive`
+# only "any"/"static" produce - which is exactly the one `dynamic_too`
+# was fusing into every dev-mode compile for nothing.
+#
+# `prof`/`opt` both stay "any": `haskell_library_impl` itself already
+# special-cases enable_profiling + preferred_linkage=="any" (forcing
+# static, since GHC can't profile shared libraries) - giving it "any"
+# here is what lets that existing check fire correctly, rather than
+# duplicating "static" decisions in two places. `opt` genuinely can
+# need both ways (e.g. a target reached once via the ordinary opt
+# target platform and once via `root//buck2/platforms:exec-opt`, or
+# `haskell_prebuilt_library()` consumers expecting either), so it keeps
+# the original, safe "any" rather than narrowing like `dev` does.
+_BUILD_MODE_PREFERRED_LINKAGE = select({
+    "root//buck2/constraints:prof": "any",
+    "DEFAULT": select({
+        "root//buck2/constraints:opt": "any",
+        "DEFAULT": "shared",
+    }),
+})
+
 # The `-dynamic-too`/native-shared-libs-symlink-tree machinery this
 # section used to force on unconditionally (via a `dynamic_too = True`
 # kwarg here) is now driven entirely by `haskell_toolchain.dynamic_ghc`
@@ -278,12 +320,16 @@ def haskell_library(
         **kwargs):
     # No `link_style` here - unlike haskell_binary(), haskell_library()
     # doesn't take one at all: a library builds whichever output styles its
-    # `preferred_linkage` calls for (both, by default), and it's entirely
-    # the *consumer* doing the linking (ultimately some haskell_binary())
-    # that picks which one to actually use. The build-mode link_style only
-    # needs to be set once, there.
+    # `preferred_linkage` calls for, and it's entirely the *consumer* doing
+    # the linking (ultimately some haskell_binary()) that picks which one
+    # to actually use. The build-mode link_style only needs to be set once,
+    # there - `preferred_linkage` is set once here instead, to just the one
+    # style `_BUILD_MODE_LINK_STYLE` says dev-mode binaries actually link
+    # (see `_BUILD_MODE_PREFERRED_LINKAGE`'s own comment for why "both, by
+    # default" was real, measurable wasted work in `dev` mode specifically).
     all_deps = deps + _package_deps(packages)
     all_compiler_flags = (FB_HASKELL_EXTENSIONS + compiler_flags) if fb_haskell else compiler_flags
+    kwargs.setdefault("preferred_linkage", _BUILD_MODE_PREFERRED_LINKAGE)
     native.haskell_library(
         name = name,
         srcs = _resolve_srcs(name, srcs, all_deps, hsc_flags),
