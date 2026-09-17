@@ -22,7 +22,11 @@ set_cfg_constructor(
     extra_data = struct(),
 )
 
-# `dev` is the default build mode when no -m flag is given.
 set_cfg_modifiers(
-    cfg_modifiers = ["root//buck2/constraints:dev"],
+    cfg_modifiers = [
+        # `dev` is the default build mode when no -m flag is given
+        "root//buck2/constraints:dev",
+        # The buck2 cxx toolchain defaults to clang
+        "root//buck2/constraints:clang"
+    ],
 )
