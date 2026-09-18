@@ -1,0 +1,14 @@
+load("//buck2:haskell.bzl", "haskell_test")
+
+haskell_test(
+    name = "glean-snapshot-dotnet-scip",
+    main = "Glean.Regression.DotnetScip.Main",
+    srcs = [
+        "Glean/Regression/DotnetScip/Main.hs",
+    ],
+    deps = [
+        "//glean/lang/dotnet-scip:dotnet-scip-indexer",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    visibility = ["PUBLIC"],
+)

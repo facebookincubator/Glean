@@ -1,0 +1,14 @@
+load("//buck2:haskell.bzl", "haskell_test")
+
+haskell_test(
+    name = "glean-snapshot-typescript",
+    main = "Glean.Regression.TypeScript.Main",
+    srcs = [
+        "Glean/Regression/TypeScript/Main.hs",
+    ],
+    deps = [
+        "//glean/lang/typescript:typescript-indexer",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    visibility = ["PUBLIC"],
+)

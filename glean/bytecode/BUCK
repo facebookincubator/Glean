@@ -1,0 +1,26 @@
+load("//buck2:cxx.bzl", "cxx_library")
+load("//buck2:haskell.bzl", "haskell_binary", "haskell_library")
+
+cxx_library(
+    name = "bytecode-cpp",
+    exported_headers = [
+        "evaluate.h",
+        "instruction.h",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_library(
+    name = "bytecode",
+    srcs = [
+        "Glean/Bytecode/Types.hs",
+        "Glean/Bytecode/Decode.hs",
+        "Glean/Bytecode/SysCalls.hs",
+    ],
+    packages = [
+        "mtl",
+        "text",
+        "transformers",
+    ],
+    visibility = ["PUBLIC"],
+)

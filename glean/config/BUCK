@@ -1,0 +1,35 @@
+load("//buck2:haskell.bzl", "haskell_library")
+load("//buck2:thrift.bzl", "thrift_srcs")
+
+haskell_library(
+    name = "config",
+    srcs = thrift_srcs(
+        name = "config",
+        thrift_files = {
+        "service.thrift": ["Glean/Service/Types.hs"],
+        "client/client_config.thrift": ["Glean/ClientConfig/Types.hs"],
+        "server/server_config.thrift": ["Glean/ServerConfig/Types.hs"],
+    },
+        deps = ["//thrift/annotation:thrift-annotation-thrift"],
+        full_paths = True,
+    ),
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+        "//thrift/annotation:thrift-annotation",
+    ],
+    packages = [
+        "aeson",
+        "bytestring",
+        "containers",
+        "data-default",
+        "deepseq",
+        "ghc-prim",
+        "hashable",
+        "STMonadTrans",
+        "text",
+        "unordered-containers",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)

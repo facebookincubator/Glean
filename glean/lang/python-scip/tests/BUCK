@@ -1,0 +1,14 @@
+load("//buck2:haskell.bzl", "haskell_test")
+
+haskell_test(
+    name = "glean-snapshot-python-scip",
+    main = "Glean.Regression.PythonScip.Main",
+    srcs = [
+        "Glean/Regression/PythonScip/Main.hs",
+    ],
+    deps = [
+        "//glean/lang/python-scip:python-scip-indexer",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    visibility = ["PUBLIC"],
+)

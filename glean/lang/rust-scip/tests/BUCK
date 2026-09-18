@@ -1,0 +1,14 @@
+load("//buck2:haskell.bzl", "haskell_test")
+
+haskell_test(
+    name = "glean-snapshot-rust-scip",
+    main = "Glean.Regression.RustScip.Main",
+    srcs = [
+        "Glean/Regression/RustScip/Main.hs",
+    ],
+    deps = [
+        "//glean/lang/rust-scip:rust-scip-indexer",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    visibility = ["PUBLIC"],
+)

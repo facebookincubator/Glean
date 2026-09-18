@@ -1,0 +1,46 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+
+haskell_binary(
+    name = "glean-lsp",
+    main = "Glean.LSP",
+    srcs = [
+        "Data/ConcurrentCache.hs",
+        "Data/Path.hs",
+        "Data/RangeMap.hs",
+        "Glean/LSP.hs",
+        "Glean/LSP/Diff.hs",
+    ],
+    compiler_flags = [
+        "-XDisambiguateRecordFields",
+        "-XOverloadedRecordDot",
+        "-XNoFieldSelectors",
+        "-XDuplicateRecordFields",
+        "-XImportQualifiedPost",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+        "//glean/glass:glass-lib",
+        "//glean/glass/if:if-glass-hs",
+        "//glean/util:util",
+    ],
+    packages = [
+        "Diff",
+        "aeson",
+        "containers",
+        "data-default",
+        "directory",
+        "exceptions",
+        "filepath",
+        "hashable",
+        "lsp",
+        "optparse-applicative",
+        "text",
+        "text-rope",
+        "transformers",
+        "unliftio",
+        "unliftio-core",
+        "unordered-containers",
+    ],
+    visibility = ["PUBLIC"],
+)

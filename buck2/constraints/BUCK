@@ -1,0 +1,80 @@
+# Build configuration. These options are normally set on the command
+# line via -m, e.g.
+#
+#   buck2 build //some/target -m buck2//constraint:asan
+#
+# Aliases for constraints can be configured in the PACKAGE file.
+# Checking configuration settings is done using select().
+
+# build_mode: selects between
+#   - dev (the default; faster rebuild, more runtime checks, slower execution)
+#   - opt (slower rebuild, fewer runtime checks, faster execution)
+#
+# Usually these are aliased to simply dev/opt, so you can say
+#
+#   buck2 build //some/target -m opt
+#
+# to build with optimisation.
+constraint_setting(
+    name = "build_mode",
+    visibility = ["PUBLIC"],
+)
+
+# build_mode dev: typically
+#    - no optimisation
+#    - assertions enabled
+#    - debug logging enabled
+#    - shared libraries for faster linking
+constraint_value(
+    name = "dev",
+    constraint_setting = ":build_mode",
+    visibility = ["PUBLIC"],
+)
+
+# build_mode opt: typically
+#    - full optimisation
+#    - assertions disabled
+#    - debug logging disabled
+#    - static linking
+constraint_value(
+    name = "opt",
+    constraint_setting = ":build_mode",
+    visibility = ["PUBLIC"],
+)
+
+# Enable address sanitiser (-fsanitize=address) for C/C++ code
+constraint_setting(
+    name = "sanitizer",
+    visibility = ["PUBLIC"],
+)
+
+constraint_value(
+    name = "asan",
+    constraint_setting = ":sanitizer",
+    visibility = ["PUBLIC"],
+)
+
+# The C compiler flavour, used to select flags
+constraint_setting(
+    name = "compiler",
+    visibility = ["PUBLIC"],
+)
+
+constraint_value(
+    name = "clang",
+    constraint_setting = ":compiler",
+    visibility = ["PUBLIC"],
+)
+
+# Enable Haskell profiling. Requires all the Cabal package
+# dependencies to be built for profiling too.
+constraint_setting(
+    name = "profiling",
+    visibility = ["PUBLIC"],
+)
+
+constraint_value(
+    name = "prof",
+    constraint_setting = ":profiling",
+    visibility = ["PUBLIC"],
+)

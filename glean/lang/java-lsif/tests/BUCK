@@ -1,0 +1,14 @@
+load("//buck2:haskell.bzl", "haskell_test")
+
+haskell_test(
+    name = "glean-snapshot-java-lsif",
+    main = "Glean.Regression.JavaLsif.Main",
+    srcs = [
+        "Glean/Regression/JavaLsif/Main.hs",
+    ],
+    deps = [
+        "//glean/lang/java-lsif:java-lsif-indexer",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    visibility = ["PUBLIC"],
+)

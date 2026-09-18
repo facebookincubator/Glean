@@ -1,0 +1,17 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "interprocess",
+    srcs = [
+        "Glean/Interprocess/Counters.hs",
+        "Glean/Interprocess/Worklist.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/interprocess/cpp:interprocess-cpp",
+    ],
+    packages = [
+        "temporary",
+    ],
+    visibility = ["PUBLIC"],
+)

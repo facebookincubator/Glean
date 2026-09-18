@@ -1,0 +1,18 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "dotnet-scip-indexer",
+    srcs = [
+        "Glean/Indexer/DotnetScip.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/index:indexer-core",
+        "//glean/lang/scip:scip",
+        "//glean/lang/scip/indexer:scip-indexer",
+    ],
+    packages = [
+        "optparse-applicative",
+    ],
+    visibility = ["PUBLIC"],
+)

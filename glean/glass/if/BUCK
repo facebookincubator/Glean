@@ -1,0 +1,32 @@
+load("//buck2:haskell.bzl", "haskell_library")
+load("//buck2:thrift.bzl", "thrift_srcs")
+
+haskell_library(
+    name = "if-glass-hs",
+    srcs = thrift_srcs(
+        name = "if-glass-hs",
+        thrift_files = {
+        "glass.thrift": [
+            "Glean/Glass/Types.hs",
+            "Glean/Glass/GlassService/Client.hs",
+            "Glean/Glass/GlassService/Service.hs",
+        ],
+    },
+        deps = [
+        "//glean/github/if:if-fb303-hs-thrift",
+        "//glean/if/facebook:if-auth-hs-thrift",
+        "//thrift/annotation:thrift-annotation-thrift",
+    ],
+        full_paths = True,
+    ),
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+        "//glean/config:config",
+        "//glean/if/facebook:if-auth-hs",
+        "//glean/github/if:if-fb303-hs",
+        "//glean/if:if-index-hs",
+        "//thrift/annotation:thrift-annotation",
+    ],
+    visibility = ["PUBLIC"],
+)

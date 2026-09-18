@@ -1,0 +1,39 @@
+load("@prelude//third-party:pkgconfig.bzl", "external_pkgconfig_library")
+
+# All of Glean's own (non-Haskell) pkg-config-discovered system library
+# dependencies, collected in one place rather than scattered across
+# each consuming cxx_library()'s own BUCK file. This is an ordinary
+# package under the root cell (`root//third-party:...`, or bare
+# `//third-party:...` from within this cell) - unlike third-party/
+# haskell/ next door, `third-party` itself is *not* a shared cell name,
+# specifically so this file can be simple, ordinary, and independent of
+# hsthrift's own separate copy (hsthrift/third-party/BUCK) with no
+# cross-project surprises. `fmt`/`gflags` are declared again here even
+# though hsthrift's own folly-clib already declares them too (see that
+# file) - that's an intentional, harmless duplication: each is just a
+# thin genrule shelling out to the same `pkg-config` command, not a
+# compiled artifact, so two independent copies in two different cells
+# cost nothing and stay simple to reason about.
+
+external_pkgconfig_library(
+    name = "icuuc",
+    package = "icu-uc",
+)
+
+external_pkgconfig_library(
+    name = "xxhash",
+    package = "libxxhash",
+)
+
+external_pkgconfig_library(
+    name = "rocksdb-pkg",
+    package = "rocksdb",
+)
+
+external_pkgconfig_library(
+    name = "fmt",
+)
+
+external_pkgconfig_library(
+    name = "gflags",
+)

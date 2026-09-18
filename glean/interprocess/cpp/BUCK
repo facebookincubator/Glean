@@ -1,0 +1,22 @@
+load("//buck2:cxx.bzl", "cxx_library")
+
+cxx_library(
+    name = "interprocess-cpp",
+    srcs = [
+        "worklist.cpp",
+        "counters.cpp",
+    ],
+    exported_headers = [
+        "counters.h",
+        "counters_ffi.h",
+        "worklist.h",
+        "worklist_ffi.h",
+    ],
+    compiler_flags = ["-DOSS=1"],
+    deps = [
+        "@hsthrift//common/util:fb-util-cxx",
+        "@hsthrift//folly-clib:folly-clib",
+        "//glean/rts:rts",
+    ],
+    visibility = ["PUBLIC"],
+)

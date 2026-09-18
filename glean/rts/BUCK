@@ -1,0 +1,109 @@
+load("//buck2:cxx.bzl", "cxx_library")
+
+cxx_library(
+    name = "rts",
+    srcs = [
+        "binary.cpp",
+        "benchmarking/factblock.cpp",
+        "benchmarking/ffi.cpp",
+        "bytecode/subroutine.cpp",
+        "cache.cpp",
+        "define.cpp",
+        "error.cpp",
+        "fact.cpp",
+        "factset.cpp",
+        "ffi.cpp",
+        "inventory.cpp",
+        "json.cpp",
+        "lookup.cpp",
+        "nat.cpp",
+        "ownership.cpp",
+        "ownership/acl.cpp",
+        "ownership/derived.cpp",
+        "ownership/setu32.cpp",
+        "ownership/slice.cpp",
+        "ownership/uset.cpp",
+        "prim.cpp",
+        "query.cpp",
+        "sanity.cpp",
+        "set.cpp",
+        "stats.cpp",
+        "string.cpp",
+        "substitution.cpp",
+        "thrift.cpp",
+        "timer.cpp",
+        "validate.cpp",
+    ],
+    exported_headers = [
+        "acl/acl_provider.h",
+        "acl/json_acl_provider.h",
+        "benchmarking/factblock.h",
+        "benchmarking/ffi.h",
+        "binary.h",
+        "bytecode/subroutine.h",
+        "bytecode/syscall.h",
+        "cache.h",
+        "define.h",
+        "densemap.h",
+        "error.h",
+        "fact.h",
+        "factset.h",
+        "ffi.h",
+        "id.h",
+        "inventory.h",
+        "json.h",
+        "lookup.h",
+        "nat.h",
+        "ondemand.h",
+        "ownership.h",
+        "ownership/acl.h",
+        "ownership/derived.h",
+        "ownership/fallbackavx.h",
+        "ownership/pool.h",
+        "ownership/setu32.h",
+        "ownership/slice.h",
+        "ownership/triearray.h",
+        "ownership/uset.h",
+        "prim.h",
+        "query.h",
+        "sanity.h",
+        "serialize.h",
+        "set.h",
+        "stacked.h",
+        "stats.h",
+        "store.h",
+        "string.h",
+        "substitution.h",
+        "thrift.h",
+        "timer.h",
+        "validate.h",
+    ],
+    compiler_flags = ["-DOSS=1"],
+    exported_deps = [
+        "//glean/bytecode:bytecode-cpp",
+        "//third-party:icuuc",
+        "//third-party:xxhash",
+        # `id.h`/`error.h`/`ownership/triearray.h` (`exported_headers`
+        # below) include <fmt/core.h> directly, so this needs to be one
+        # of *this* library's own `exported_deps`, not just transitively
+        # reachable via folly-clib (see `deps` below): folly-clib
+        # exports fmt correctly to whoever depends on *it* directly, but
+        # that's one hop too far - folly-clib is only a plain `dep` of
+        # *rts*, and buck2's cxx_library() only forwards a library's
+        # `exported_deps` preprocessor info to that library's own
+        # consumers (`buck2/prelude/cxx/cxx_library.bzl`'s
+        # `inherited_exported_preprocessor_infos`), not its plain
+        # `deps`. So folly-clib's exported fmt flags reach rts.cpp's own
+        # compilation fine, but stop there - anyone consuming *rts*'s
+        # exported headers (glean/hs's hsc2hs preprocessing of a .hsc
+        # file that transitively #include's id.h, in particular) never
+        # saw them without this.
+        "//third-party:fmt",
+        "//third-party:gflags",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util-cxx",
+        "@hsthrift//folly-clib:folly-clib",
+    ],
+    visibility = ["PUBLIC"],
+)

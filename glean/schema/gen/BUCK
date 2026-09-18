@@ -1,0 +1,70 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+load("gen_schema.bzl", "gen_schema")
+
+# Cabal's `gen-schema` executable (glean.cabal.in): reads
+# glean/schema/source/*.angle and generates glean/schema/thrift/*.thrift,
+# glean/schema/hs/*.hs and glean/lang/clang/schema.h (see Makefile's
+# `gen-schema` target). Building the executable itself doesn't need any of
+# that output - it's the thing that *produces* it.
+haskell_binary(
+    name = "gen-schema",
+    main = "Glean.Schema.Gen.Main",
+    srcs = [
+        "Glean/Schema/Gen/Main.hs",
+        "Glean/Schema/Gen/HackJson.hs",
+        "Glean/Schema/Gen/Utils.hs",
+        "Glean/Schema/Gen/Cpp.hs",
+        "Glean/Schema/Gen/Haskell.hs",
+        "Glean/Schema/Gen/OCaml.hs",
+        "Glean/Schema/Gen/Python.hs",
+        "Glean/Schema/Gen/Rust.hs",
+        "Glean/Schema/Gen/Thrift.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+        "//glean/angle:angle",
+        "//glean/hs:core",
+        "//glean/config:config",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/if:if-internal-hs",
+    ],
+    packages = [
+        "aeson",
+        "aeson-pretty",
+        "bytestring",
+        "containers",
+        "data-default",
+        "extra",
+        "fuzzy",
+        "hashable",
+        "text",
+        "text-show",
+        "unordered-containers",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Actually running gen-schema against glean/schema/source/*.angle, producing
+# glean/schema/{thrift,hs}/* and glean/lang/clang/schema.h as buck2 build
+# artifacts (see gen_schema.bzl) rather than relying on the checked-in
+# copies a prior `make gen-schema` (Cabal) run left in the tree.
+gen_schema(
+    name = "output",
+    # `exec_compatible_with` has to go on *this* target, not on
+    # `:gen-schema` itself - it selects the execution platform for the
+    # action that *runs* an exec_dep (this gen_schema() rule's own
+    # action, invoking `gen-schema` per gen_schema.bzl's
+    # `attrs.exec_dep`), not for the exec_dep target in isolation; the
+    # exec_dep then just inherits whatever platform this target
+    # resolved to (confirmed directly - see buck2.md). This opts the
+    # whole build of `:gen-schema` (and its dependency closure -
+    # glean/hs:core, glean/db:db, glean/angle:angle, ...) into
+    # `root//buck2/platforms:exec-opt` whenever it's actually run to
+    # process glean/schema/source/*.angle during a build, without
+    # forcing opt when `:gen-schema` is built/tested directly (which
+    # still resolves under the ordinary target platform).
+    exec_compatible_with = ["root//buck2/constraints:opt"],
+    visibility = ["PUBLIC"],
+)

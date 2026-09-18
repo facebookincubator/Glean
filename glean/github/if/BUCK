@@ -1,0 +1,34 @@
+load("//buck2:haskell.bzl", "haskell_library")
+load("//buck2:thrift.bzl", "thrift_srcs")
+
+haskell_library(
+    name = "if-fb303-hs",
+    srcs = thrift_srcs(
+        name = "if-fb303-hs",
+        thrift_files = {
+        "fb303_core.thrift": ["Fb303Core/Types.hs", "Fb303Core/BaseService/Client.hs", "Fb303Core/BaseService/Service.hs"],
+        "fb303.thrift": ["Fb303/Types.hs", "Fb303/FacebookService/Client.hs", "Fb303/FacebookService/Service.hs"],
+    },
+        deps = ["//thrift/annotation:thrift-annotation-thrift"],
+        full_paths = True,
+    ),
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+        "//thrift/annotation:thrift-annotation",
+    ],
+    packages = [
+        "aeson",
+        "bytestring",
+        "containers",
+        "data-default",
+        "deepseq",
+        "ghc-prim",
+        "hashable",
+        "STMonadTrans",
+        "text",
+        "unordered-containers",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)

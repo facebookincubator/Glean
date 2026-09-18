@@ -1,0 +1,113 @@
+/*
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is dual-licensed under either the MIT license found in the
+ * LICENSE-MIT file in the root directory of this source tree or the Apache
+ * License, Version 2.0 found in the LICENSE-APACHE file in the root directory
+ * of this source tree. You may select, at your option, one of the
+ * above-listed licenses.
+ */
+
+package com.facebook.buck.installer.android
+
+import com.facebook.buck.core.util.log.Logger
+import com.facebook.buck.installer.InstallError
+
+private const val INSUFFICIENT_STORAGE_ERROR = "INSTALL_FAILED_INSUFFICIENT_STORAGE"
+private const val NO_SPACE_LEFT_ON_DEVICE_ERROR = "No space left on device"
+private const val KILOBYTE = 1024L
+private const val MEGABYTE = 1024L * KILOBYTE
+
+/** At a scale that does not round an amount worth reporting down to zero. */
+private fun describeBytes(bytes: Long): String =
+    when {
+      bytes >= MEGABYTE -> "${bytes / MEGABYTE}MB"
+      bytes >= KILOBYTE -> "${bytes / KILOBYTE}KB"
+      else -> "${bytes}B"
+    }
+
+internal fun isInsufficientStorageFailure(message: String): Boolean =
+    message.contains(INSUFFICIENT_STORAGE_ERROR) || message.contains(NO_SPACE_LEFT_ON_DEVICE_ERROR)
+
+class AndroidInstallException(val installError: InstallError) :
+    RuntimeException(installError.message) {
+  init {
+    LOG.error(installError.message)
+  }
+
+  companion object {
+    private val LOG: Logger = Logger.get(AndroidInstallException::class.java.name)
+
+    fun rebootRequired(msg: String) =
+        AndroidInstallException(InstallError(msg, AndroidInstallErrorTag.MANUAL_REBOOT_REQUIRED))
+
+    fun tempFolderNotWritable(): AndroidInstallException = AndroidInstallException(
+        InstallError(
+            "Temp folder is not writable.",
+            AndroidInstallErrorTag.TEMP_FOLDER_NOT_WRITABLE,
+        ),
+    )
+
+    fun operationNotSupported(operation: String): AndroidInstallException = AndroidInstallException(
+        InstallError(
+            "Operation $operation is not supported.",
+            AndroidInstallErrorTag.OTHER_INFRA,
+        ),
+    )
+
+    fun deviceAbiUnknown() = AndroidInstallException(
+        InstallError("Device ABI is unknown.", AndroidInstallErrorTag.UNKNOWN_DEVICE_ABI),
+    )
+
+    fun insufficientStorage(requiredBytes: Long, availableBytes: Long) = AndroidInstallException(
+        InstallError(
+            "Not enough space on device: the exopackage files for this build need " +
+                "${describeBytes(requiredBytes)} but only ${describeBytes(availableBytes)} is " +
+                "free " +
+                "under /data. Free some space, or run `adb uninstall` on apps you no longer " +
+                "need -- their exopackage files under /data/local/tmp/exopackage are only " +
+                "reclaimed by installing them again.",
+            AndroidInstallErrorTag.NO_SPACE_LEFT_ON_DEVICE,
+        ),
+    )
+
+    fun exopackageGarbageCollectionFailed(message: String?) = AndroidInstallException(
+        InstallError(
+            "Failed to delete stale exopackage files, aborting before pushing new ones. " +
+                "Continuing would leak several GB per install and eventually fill the device." +
+                (message?.let { "\n$it" } ?: ""),
+            AndroidInstallErrorTag.EXOPACKAGE_GARBAGE_COLLECTION_FAILED,
+        ),
+    )
+
+    fun artifactMissing(path: String) = AndroidInstallException(
+        InstallError(
+            "Exopackage artifact is missing from the build output: $path",
+            AndroidInstallErrorTag.ERROR_MATERIALIZING_ARTIFACT,
+        ),
+    )
+
+    fun adbPathNotFound() = AndroidInstallException(
+        InstallError("Adb path not found.", AndroidInstallErrorTag.ADB_NOT_FOUND),
+    )
+
+    fun installedApkMismatch(message: String) = AndroidInstallException(
+        InstallError(message, AndroidInstallErrorTag.INSTALLED_APK_MISMATCH),
+    )
+
+    fun adbCommandFailedException(
+        message: String,
+        exceptionMessage: String?,
+    ): AndroidInstallException {
+      val errorMessage = exceptionMessage?.let { "\n" + it } ?: ""
+      val fullMessage = "$message.$errorMessage"
+      val tag =
+          if (isInsufficientStorageFailure(fullMessage)) {
+            AndroidInstallErrorTag.NO_SPACE_LEFT_ON_DEVICE
+          } else {
+            AndroidInstallErrorTag.ADB_COMMAND_FAILED
+          }
+      return AndroidInstallException(InstallError(fullMessage, tag))
+    }
+  }
+}

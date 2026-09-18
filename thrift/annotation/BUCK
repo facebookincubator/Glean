@@ -1,0 +1,36 @@
+load("//buck2:haskell.bzl", "haskell_library")
+load("//buck2:thrift.bzl", "thrift_srcs")
+
+haskell_library(
+    name = "thrift-annotation",
+    srcs = thrift_srcs(
+        name = "thrift-annotation",
+        thrift_files = {
+        "scope.thrift": ["Scope/Types.hs"],
+        "thrift.thrift": ["Facebook/Thrift/Annotation/Thrift/Thrift/Types.hs"],
+        "haskell.thrift": ["Facebook/Thrift/Annotation/Haskell/Haskell/Types.hs"],
+        "cpp.thrift": ["Facebook/Thrift/Annotation/Cpp/Cpp/Types.hs"],
+        "hack.thrift": ["Hack/Types.hs"],
+        "rust.thrift": ["Rust/Types.hs"],
+    },
+        full_paths = True,
+    ),
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+    ],
+    packages = [
+        "aeson",
+        "bytestring",
+        "containers",
+        "data-default",
+        "deepseq",
+        "ghc-prim",
+        "hashable",
+        "STMonadTrans",
+        "text",
+        "unordered-containers",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)

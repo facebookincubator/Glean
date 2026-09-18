@@ -1,0 +1,41 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+#
+# This source code is dual-licensed under either the MIT license found in the
+# LICENSE-MIT file in the root directory of this source tree or the Apache
+# License, Version 2.0 found in the LICENSE-APACHE file in the root directory
+# of this source tree. You may select, at your option, one of the
+# above-listed licenses.
+
+def _is_universal(platform: PlatformInfo, refs: struct) -> bool:
+    universal = platform.configuration.constraints.get(refs.universal[ConstraintSettingInfo].label)
+    return universal.label == refs.universal_enabled[ConstraintValueInfo].label if universal != None else False
+
+def _apple_resource_transition_impl(platform: PlatformInfo, refs: struct, attrs: struct) -> PlatformInfo:
+    if attrs.skip_universal_resource_dedupe or not _is_universal(platform, refs):
+        return platform
+    else:
+        cpu_constraint_label = refs.cpu[ConstraintSettingInfo].label
+        filtered_constraints = {
+            constraint_setting_label: constraint_setting_value
+            for (constraint_setting_label, constraint_setting_value) in platform.configuration.constraints.items()
+            if constraint_setting_label != cpu_constraint_label
+        }
+        return PlatformInfo(
+            label = "apple_universal_deduped_resource",
+            configuration = ConfigurationInfo(
+                constraints = filtered_constraints,
+                values = platform.configuration.values,
+            ),
+        )
+
+apple_resource_transition = transition(
+    impl = _apple_resource_transition_impl,
+    refs = {
+        "cpu": "config//cpu/constraints:cpu",
+        "universal": "config//cpu/constraints:universal",
+        "universal_enabled": "config//cpu/constraints:universal-enabled",
+    },
+    attrs = [
+        "skip_universal_resource_dedupe",
+    ],
+)

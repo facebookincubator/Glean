@@ -1,0 +1,36 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "test-lib",
+    srcs = [
+        "TestBatch.hs",
+        "TestDB.hs",
+        "TestData.hs",
+        "Glean/Database/Catalog/Test.hs",
+        "Glean/Database/Test.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/backend-local:backend-local",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/config:config",
+        "//glean/if:if-glean-hs",
+        "//glean/if:if-internal-hs",
+        "//glean/github:stubs",
+        "//glean/test/unit:test-unit",
+        "//glean/typed:typed",
+        "//glean/util:util",
+        "//glean/schema/thrift:cxx1",
+        "//glean/schema/thrift:src",
+        "//glean/schema/thrift:glean_test",
+        "//glean/schema/thrift:sys",
+        "//glean/schema/hs:cxx1",
+        "//glean/schema/hs:src",
+        "//glean/schema/hs:glean_test",
+        "//glean/schema/hs:sys",
+    ],
+    visibility = ["PUBLIC"],
+)
