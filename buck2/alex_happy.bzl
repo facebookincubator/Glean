@@ -7,7 +7,7 @@
 # buck2 just references the frozen result" approach third-party/haskell/BUCK
 # uses for library packages. Re-run that script to pick up a version bump.
 
-load("@third-party//haskell:tools.bzl", "ALEX", "HAPPY")
+load("@third-party-haskell//:tools.bzl", "ALEX", "HAPPY")
 
 def _run_tool_impl(ctx: AnalysisContext) -> list[Provider]:
     out = ctx.actions.declare_output(ctx.attrs.out)

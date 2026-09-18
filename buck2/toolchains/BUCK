@@ -1,6 +1,6 @@
 load("@prelude//toolchains:demo.bzl", "system_demo_toolchains")
 load("@toolchains//haskell.bzl", "haskell_toolchain")
-load("@third-party//haskell:tools.bzl", "GHC_DYNAMIC", "GHC_VERSION")
+load("@third-party-haskell//:tools.bzl", "GHC_DYNAMIC", "GHC_VERSION")
 
 # Defaults for other toolchains
 system_demo_toolchains()

@@ -1,5 +1,5 @@
 load("//buck2:haskell.bzl", "haskell_test")
-load("@third-party//haskell:tools.bzl", "GHC_BIN_DIR")
+load("@third-party-haskell//:tools.bzl", "GHC_BIN_DIR")
 
 haskell_test(
     name = "glean-snapshot-codemarkup-haskell",

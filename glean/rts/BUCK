@@ -1,15 +1,4 @@
 load("//buck2:cxx.bzl", "cxx_library")
-load("@prelude//third-party:pkgconfig.bzl", "external_pkgconfig_library")
-
-external_pkgconfig_library(
-    name = "icuuc",
-    package = "icu-uc",
-)
-
-external_pkgconfig_library(
-    name = "xxhash",
-    package = "libxxhash",
-)
 
 cxx_library(
     name = "rts",
@@ -92,9 +81,25 @@ cxx_library(
     compiler_flags = ["-DOSS=1"],
     exported_deps = [
         "//glean/bytecode:bytecode-cpp",
-        ":icuuc",
-        ":xxhash",
-        "@hsthrift//folly-clib:gflags",
+        "//third-party:icuuc",
+        "//third-party:xxhash",
+        # `id.h`/`error.h`/`ownership/triearray.h` (`exported_headers`
+        # below) include <fmt/core.h> directly, so this needs to be one
+        # of *this* library's own `exported_deps`, not just transitively
+        # reachable via folly-clib (see `deps` below): folly-clib
+        # exports fmt correctly to whoever depends on *it* directly, but
+        # that's one hop too far - folly-clib is only a plain `dep` of
+        # *rts*, and buck2's cxx_library() only forwards a library's
+        # `exported_deps` preprocessor info to that library's own
+        # consumers (`buck2/prelude/cxx/cxx_library.bzl`'s
+        # `inherited_exported_preprocessor_infos`), not its plain
+        # `deps`. So folly-clib's exported fmt flags reach rts.cpp's own
+        # compilation fine, but stop there - anyone consuming *rts*'s
+        # exported headers (glean/hs's hsc2hs preprocessing of a .hsc
+        # file that transitively #include's id.h, in particular) never
+        # saw them without this.
+        "//third-party:fmt",
+        "//third-party:gflags",
     ],
     deps = [
         "@hsthrift//common/util:fb-util-cxx",
