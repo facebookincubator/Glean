@@ -2,7 +2,7 @@
 #
 # These handle:
 #   - package deps: `packages = ["text", ...]` instead of explicit
-#     `"@third-party//haskell:text"` entries in `deps`.
+#     `"@third-party-haskell//:text"` entries in `deps`.
 #   - a standard set of packages (base, rts) added to every target.
 #   - the fb-haskell extension set enabled by default, so individual
 #     rules don't need to repeat it. Pass fb_haskell = False for a
@@ -65,7 +65,7 @@ FB_HASKELL_EXTENSIONS = [
 
 def _package_deps(packages):
     all_pkgs = {p: None for p in (AUTO_PACKAGES + packages)}
-    return [("@third-party//haskell:" + p) for p in sorted(all_pkgs.keys())]
+    return [("@third-party-haskell//:" + p) for p in sorted(all_pkgs.keys())]
 
 # Build modes (buck2.md TODO "we should support different build modes"),
 # selected via `buck2 build ... -m root//buck2/constraints:opt` (`dev` is

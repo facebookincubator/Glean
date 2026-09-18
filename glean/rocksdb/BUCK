@@ -1,10 +1,4 @@
 load("//buck2:cxx.bzl", "cxx_library")
-load("@prelude//third-party:pkgconfig.bzl", "external_pkgconfig_library")
-
-external_pkgconfig_library(
-    name = "rocksdb-pkg",
-    package = "rocksdb",
-)
 
 cxx_library(
     name = "rocksdb",
@@ -25,8 +19,8 @@ cxx_library(
     ],
     compiler_flags = ["-DOSS=1", "-fno-rtti"],
     exported_deps = [
-        ":rocksdb-pkg",
-        "@hsthrift//folly-clib:fmt",
+        "//third-party:rocksdb-pkg",
+        "//third-party:fmt",
     ],
     deps = [
         "@hsthrift//common/util:fb-util-cxx",

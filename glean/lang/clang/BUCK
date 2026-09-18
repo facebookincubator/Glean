@@ -1,7 +1,6 @@
 load("//buck2:cxx.bzl", "cxx_binary")
 load("//buck2:haskell.bzl", "haskell_library")
 load("//buck2:llvm.bzl", "external_llvm_config_library")
-load("@prelude//third-party:pkgconfig.bzl", "external_pkgconfig_library")
 
 # LLVM/Clang 15.0.7 exactly - glean/lang/clang/Setup.hs (glean-clang.cabal's
 # Custom Setup, not run under buck2) pins this version precisely via
@@ -12,10 +11,6 @@ load("@prelude//third-party:pkgconfig.bzl", "external_pkgconfig_library")
 external_llvm_config_library(
     name = "llvm",
     version = "15",
-)
-
-external_pkgconfig_library(
-    name = "fmt",
 )
 
 # Cabal's `clang-index` executable (glean-clang.cabal, a wholly separate
@@ -70,9 +65,10 @@ cxx_binary(
     # (unrelated third-party libs this file itself links against
     # directly, nothing to do with the LLVM/Clang toolchain). fmt has
     # its own pkg-config file on this system (`pkg-config --exists
-    # fmt`), so that one goes through the `:fmt` dep below instead of a
-    # hardcoded `-lfmt`, the same way glean/rts/BUCK's `icuuc`/`xxhash`
-    # already do for their own system libraries.
+    # fmt`), so that one goes through the `//third-party:fmt` dep below
+    # instead of a hardcoded `-lfmt`, the same way `//third-party:
+    # icuuc`/`:xxhash` do for glean/rts's own system libraries (see
+    # //third-party/BUCK's own comment).
     linker_flags = [
         "-lclang-cpp",
         "-lpthread",
@@ -84,7 +80,7 @@ cxx_binary(
         "//glean/rts:rts",
         "//glean/cpp:client-cpp",
         ":llvm",
-        ":fmt",
+        "//third-party:fmt",
         # Not in glean-clang.cabal's own `build-depends: glean:rts,
         # glean:client-cpp` at all, despite index.cpp directly
         # #include-ing and calling into it (worklist::*/interprocess::
