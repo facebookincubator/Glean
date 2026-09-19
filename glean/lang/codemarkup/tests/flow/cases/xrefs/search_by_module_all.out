@@ -6,6 +6,6 @@
       "module": { "key": { "string_": "cjs_exports" } }
     }
   },
-  { "key": { "name": "core.js", "module": { "key": { "lib": "core.js" } } } },
+  { "key": { "name": "misc.js", "module": { "key": { "lib": "misc.js" } } } },
   { "key": { "name": "react", "module": { "key": { "string_": "react" } } } }
 ]
