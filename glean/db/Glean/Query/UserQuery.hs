@@ -61,7 +61,6 @@ import qualified Glean.Backend.Types as Backend
 import Glean.Schema.Types
   (RefTarget(..), LookupResult(..), NameEnv, resolveRef)
 import qualified Glean.Database.Catalog as Catalog
-import Glean.Database.AclKnobs (aclCheckEnabled)
 import Glean.Database.Schema.Types
 import Glean.Database.Open
 import qualified Glean.Database.PredicateStats as PredicateStats
@@ -138,7 +137,7 @@ genericUserQuery
 {-# INLINE genericUserQuery #-}
 genericUserQuery env repo query enc = do
   config@ServerConfig.Config{..} <- Observed.get (envServerConfig env)
-  checkAclsEnabled <- aclCheckEnabled
+  checkAclsEnabled <- envAclCheckEnabled env
   readDatabaseWithBoundaries env repo checkAclsEnabled $ \odb bounds lookup ->
     maybe id limitAllocsThrow config_query_alloc_limit
       $ performUserQuery enc (odbSchema odb) $
@@ -156,7 +155,7 @@ genericUserQueryFacts
 {-# INLINE genericUserQueryFacts #-}
 genericUserQueryFacts env repo query enc = do
   config <- Observed.get (envServerConfig env)
-  checkAclsEnabled <- aclCheckEnabled
+  checkAclsEnabled <- envAclCheckEnabled env
   readDatabaseWithBoundaries env repo checkAclsEnabled $ \odb _bounds lookup ->
     performUserQuery enc (odbSchema odb) $
       userQueryFactsImpl (odbSchema odb) config lookup query

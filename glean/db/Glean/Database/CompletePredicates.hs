@@ -37,7 +37,6 @@ import Glean.Database.Repo (inRepo)
 import Glean.Database.Schema
 import Glean.Database.Writes (enqueueCheckpoint)
 import Glean.Database.Meta (getACLMode, showACLMode, isACLEnabled)
-import Glean.Database.AclKnobs (aclCalculateEnabled)
 import Glean.Database.Schema.Types
   ( lookupPredicateSourceRef
   , SchemaSelector(..)
@@ -123,7 +122,7 @@ aclConfigToApply
   -> IO (Maybe PathACLConfig)
 aclConfigToApply env repo handle = do
   meta <- atomically $ Catalog.readMeta (envCatalog env) repo
-  calculateEnabled <- aclCalculateEnabled
+  calculateEnabled <- envAclCalculateEnabled env
   if
     | not (isACLEnabled (metaProperties meta)) -> return Nothing
     | not calculateEnabled -> do

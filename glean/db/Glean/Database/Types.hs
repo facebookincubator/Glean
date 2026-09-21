@@ -294,6 +294,10 @@ data Env = Env
   , envResolveAclGroups :: [Text] -> IO [Text]
     -- ^ Given the candidate ACL group names of the DB layer being queried,
     -- resolve the subset the current request's caller is a member of.
+  , envAclCalculateEnabled :: IO Bool
+    -- ^ Whether completion should calculate ACL ownership.
+  , envAclCheckEnabled :: IO Bool
+    -- ^ Whether queries should filter facts by ACL ownership.
   , envTracer :: Tracer GleanTrace
   , envDebug :: DebugFlags
   }

@@ -74,6 +74,7 @@ import Util.IO (listDirectoryRecursive)
 import Util.Log (logInfo)
 
 import Glean.Angle.Types
+import Glean.Database.AclKnobs (aclCalculateEnabled, aclCheckEnabled)
 import qualified Glean.Database.Backup.Backend as Backup -- from glean/util
 import qualified Glean.Database.Backup.Mock as Backup.Mock
 import qualified Glean.Database.BatchLocation as BatchLocation
@@ -201,6 +202,10 @@ data Config = Config
     -- ^ Given the candidate ACL group names defined by the DB layer being
     -- queried, return the subset the current request's caller is a member
     -- of, used for query-time ACL filtering.
+  , cfgAclCalculateEnabled :: IO Bool
+    -- ^ Whether completion should calculate ACL ownership.
+  , cfgAclCheckEnabled :: IO Bool
+    -- ^ Whether queries should filter facts by ACL ownership.
   , cfgTracer :: Tracer GleanTrace
   , cfgDebug :: DebugFlags
   }
@@ -246,6 +251,8 @@ instance Default Config where
     , cfgEnableRecursion = False
     , cfgFilterAvailableDBs = const $ return []
     , cfgAclGroupResolver = const (pure [])
+    , cfgAclCalculateEnabled = aclCalculateEnabled
+    , cfgAclCheckEnabled = aclCheckEnabled
     , cfgTracer = mempty
     , cfgDebug = def
     }
@@ -559,6 +566,8 @@ options = do
     , cfgBatchLocationParser = cfgBatchLocationParser def
     , cfgFilterAvailableDBs = const $ return []
     , cfgAclGroupResolver = cfgAclGroupResolver def
+    , cfgAclCalculateEnabled = cfgAclCalculateEnabled def
+    , cfgAclCheckEnabled = cfgAclCheckEnabled def
     , cfgTracer = mempty
     , cfgSchemaId = Nothing
     , .. }
