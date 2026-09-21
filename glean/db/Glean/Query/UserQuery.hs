@@ -139,10 +139,7 @@ genericUserQuery
 genericUserQuery env repo query enc = do
   config@ServerConfig.Config{..} <- Observed.get (envServerConfig env)
   checkAclsEnabled <- aclCheckEnabled
-  aclGroupNames <- if checkAclsEnabled
-        then envResolveAclGroups env
-        else pure Nothing
-  readDatabaseWithBoundaries env repo aclGroupNames $ \odb bounds lookup ->
+  readDatabaseWithBoundaries env repo checkAclsEnabled $ \odb bounds lookup ->
     maybe id limitAllocsThrow config_query_alloc_limit
       $ performUserQuery enc (odbSchema odb) $
           userQueryImpl env odb config
@@ -160,10 +157,7 @@ genericUserQueryFacts
 genericUserQueryFacts env repo query enc = do
   config <- Observed.get (envServerConfig env)
   checkAclsEnabled <- aclCheckEnabled
-  aclGroupNames <- if checkAclsEnabled
-        then envResolveAclGroups env
-        else pure Nothing
-  readDatabaseWithBoundaries env repo aclGroupNames $ \odb _bounds lookup ->
+  readDatabaseWithBoundaries env repo checkAclsEnabled $ \odb _bounds lookup ->
     performUserQuery enc (odbSchema odb) $
       userQueryFactsImpl (odbSchema odb) config lookup query
 

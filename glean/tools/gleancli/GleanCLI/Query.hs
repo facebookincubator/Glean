@@ -119,10 +119,12 @@ instance Plugin QueryCommand where
         in Query{..}
 
   -- Local ACL testing: install a resolver returning the CLI-provided ACL
-  -- group names so the query is sliced as if the user were in those groups.
-  -- Applied via 'liftConfig', so it no-ops against a remote backend.
+  -- group names (ignoring the layer's candidate names) so the query is
+  -- sliced as if the caller were in exactly those groups. Applied via
+  -- 'liftConfig', so it no-ops against a remote backend.
   dbConfigTransform Query{aclGroupNames = mgroups} = case mgroups of
-    Just gs -> \cfg -> cfg { GleanDB.cfgAclGroupResolver = pure (Just gs) }
+    Just gs ->
+      \cfg -> cfg { GleanDB.cfgAclGroupResolver = const (pure gs) }
     Nothing -> id
 
   runCommand _ _ backend Query{..} = do

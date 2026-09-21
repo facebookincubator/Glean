@@ -13,35 +13,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-from glean.tools.acl.generate_acls import (
-    acl_group_name,
-    get_repo_name,
-    validate_root,
-    write_output,
-)
-
-
-class AclGroupNameTest(unittest.TestCase):
-    def test_strips_repo_region_prefix(self) -> None:
-        self.assertEqual(
-            acl_group_name("dir", "REPO_REGION:repos/hg/fbsource/=gradient"),
-            "gradient",
-        )
-
-    def test_keeps_the_suffix_after_the_last_equals(self) -> None:
-        # Regression test for the scraped-CLI bug this tool replaced: the old
-        # regex captured the trailing ", request group: ..." as part of the name.
-        self.assertEqual(
-            acl_group_name("dir", "REPO_REGION:repos/hg/fbsource/=titan_expansion"),
-            "titan_expansion",
-        )
-
-    def test_bare_value_is_used_verbatim(self) -> None:
-        self.assertEqual(acl_group_name("dir", "alpha"), "alpha")
-
-    def test_empty_name_raises(self) -> None:
-        with self.assertRaises(ValueError):
-            acl_group_name("dir", "REPO_REGION:repos/hg/fbsource/=")
+from glean.tools.acl.generate_acls import get_repo_name, validate_root, write_output
 
 
 class ValidateRootTest(unittest.TestCase):
@@ -65,7 +37,7 @@ class ValidateRootTest(unittest.TestCase):
 
 class WriteOutputTest(unittest.TestCase):
     def test_writes_json_to_file(self) -> None:
-        result = {"dir": ["a", "b"]}
+        result = {"dir": ["REPO_REGION:repos/hg/fbsource/=restricted_source"]}
         with tempfile.TemporaryDirectory() as d:
             out = os.path.join(d, "acls.json")
             write_output(result, out)

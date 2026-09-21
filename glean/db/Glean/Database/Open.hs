@@ -164,17 +164,17 @@ withOpenDBLookup
   :: Env
   -> Repo
   -> OpenDB
-  -> Maybe [Text]  -- ^ ACL group names, or Nothing to disable ACL filtering
+  -> Bool  -- ^ whether ACL filtering is enabled (resolved per-layer below)
   -> (Boundaries -> Lookup -> IO a)
   -> IO a
 withOpenDBLookup env repo odb@OpenDB{ odbBaseSlices = baseSlices, .. }
-    aclGroupNames f =
+    aclEnabled f =
   Lookup.withCanLookup odbHandle $ \lookup -> do
   parent <- repoParent env repo
   case parent of
     Nothing -> do
       bounds <- flatBoundaries lookup
-      withFlatACLLookup env repo odb aclGroupNames lookup $ \sliced ->
+      withFlatACLLookup env repo odb aclEnabled lookup $ \sliced ->
         f bounds sliced
     Just baseRepo ->
       withOpenDatabase env baseRepo $ \baseOdb@OpenDB{odbHandle = baseHandle} ->
@@ -182,7 +182,7 @@ withOpenDBLookup env repo odb@OpenDB{ odbBaseSlices = baseSlices, .. }
           withOpenDBStack env baseRepo baseLookup $ \base -> do
             bounds <- stackedBoundaries base lookup
             let ownershipSlices = catMaybes baseSlices
-            withStackedACLLookup env repo odb baseRepo baseOdb aclGroupNames
+            withStackedACLLookup env repo odb baseRepo baseOdb aclEnabled
               ownershipSlices base lookup $ \stackedLookup ->
               f bounds stackedLookup
 
@@ -217,18 +217,18 @@ readDatabase
   -> (OpenDB -> Lookup.Lookup -> IO a)
   -> IO a
 readDatabase env repo f =
-  readDatabaseWithBoundaries env repo Nothing $ \odb _ lookup ->
+  readDatabaseWithBoundaries env repo False $ \odb _ lookup ->
   f odb lookup
 
 readDatabaseWithBoundaries
   :: Env
   -> Repo
-  -> Maybe [Text]  -- ^ ACL group names, or Nothing to disable ACL filtering
+  -> Bool  -- ^ whether ACL filtering is enabled (resolved per-layer below)
   -> (OpenDB -> Boundaries -> Lookup -> IO a)
   -> IO a
-readDatabaseWithBoundaries env repo aclGroupNames f =
+readDatabaseWithBoundaries env repo aclEnabled f =
   withOpenDatabase env repo $ \odb ->
-  withOpenDBLookup env repo odb aclGroupNames $ \bounds lookup ->
+  withOpenDBLookup env repo odb aclEnabled $ \bounds lookup ->
     f odb bounds lookup
 
 -- -----------------------------------------------------------------------------
@@ -280,24 +280,41 @@ buildLayerACLSlice
   :: Env
   -> Repo
   -> OpenDB
-  -> Maybe [Text]  -- ^ ACL group names, or Nothing to disable ACL filtering
+  -> Bool  -- ^ whether ACL filtering is enabled for this query
   -> (Maybe Ownership.Slice -> IO a)
   -> IO a
-buildLayerACLSlice _env _repo _odb Nothing f = do
+buildLayerACLSlice _env _repo _odb False f = do
   vlog 1 "[ACL-Slice] ACL filtering disabled, skipping ACL slice"
   f Nothing
-buildLayerACLSlice _env repo odb (Just aclGroupNames) f
-  -- Not an ACL DB: there is nothing to filter, every fact is public. This
-  -- is the only case where dropping the slice (serving all facts) is safe.
+buildLayerACLSlice env repo odb True f
   | odbACLMode odb == ACLDisabled = do
       vlog 1 "[ACL-Slice] ACL mode disabled, skipping ACL slice"
       f Nothing
-  -- ACL-enforcing layer. firstACLID and ownership are established at
-  -- completion for every ACL-enabled DB (registerACLUnits + storeOwnership),
-  -- so their absence here is an inconsistent DB, not a non-ACL one. Fail
-  -- CLOSED: error out rather than silently serve unfiltered facts, which
-  -- would be an ACL bypass.
-  | otherwise =
+  | otherwise = do
+      -- Resolve the caller's subset of THIS layer's ACL group names. The
+      -- resolver reads the request's authenticated identity (see
+      -- 'cfgAclGroupResolver') and returns the groups it belongs to. We resolve
+      -- per layer because each layer has a disjoint UnitId space and its own
+      -- 'odbACLMapping'.
+      let candidates = Map.keys (odbACLMapping odb)
+      aclGroupNames <-
+        if null candidates
+          then return []
+          else envResolveAclGroups env candidates
+      buildLayerACLSliceForGroups repo odb aclGroupNames f
+
+-- | Build the ACL ownership slice for a single layer given the caller's
+-- already-resolved subset of that layer's ACL group names.
+--
+-- Precondition: 'ACLDisabled' layers are handled by 'buildLayerACLSlice' before
+-- it resolves, so they never reach here.
+buildLayerACLSliceForGroups
+  :: Repo
+  -> OpenDB
+  -> [Text]  -- ^ caller's ACL groups for this layer ([] = public-only)
+  -> (Maybe Ownership.Slice -> IO a)
+  -> IO a
+buildLayerACLSliceForGroups repo odb aclGroupNames f =
       case odbFirstACLID odb of
         Nothing ->
           dbError repo $
@@ -349,12 +366,12 @@ withFlatACLLookup
   :: Env
   -> Repo
   -> OpenDB
-  -> Maybe [Text] -- ^ ACL group names, or Nothing to disable ACL filtering
+  -> Bool -- ^ whether ACL filtering is enabled (resolved per-layer)
   -> Lookup     -- ^ the layer's lookup
   -> (Lookup -> IO a)
   -> IO a
-withFlatACLLookup env repo odb aclGroupNames lookup f =
-  buildLayerACLSlice env repo odb aclGroupNames $ \mAclSlice ->
+withFlatACLLookup env repo odb aclEnabled lookup f =
+  buildLayerACLSlice env repo odb aclEnabled $ \mAclSlice ->
     withMaybeSliced (maybeToList mAclSlice) lookup f
 
 -- | Build ACL slices for all layers in a stacked DB (base layers only).
@@ -364,19 +381,19 @@ withStackedACLSlices
   :: Env
   -> Repo       -- ^ Base repo (immediate parent)
   -> OpenDB     -- ^ Base OpenDB
-  -> Maybe [Text] -- ^ ACL group names, or Nothing to disable ACL filtering
+  -> Bool -- ^ whether ACL filtering is enabled (resolved per-layer)
   -> ([Ownership.Slice] -> IO a)
   -> IO a
-withStackedACLSlices env baseRepo baseOdb aclGroupNames f = do
+withStackedACLSlices env baseRepo baseOdb aclEnabled f = do
   -- Build ACL slice for this base layer
-  buildLayerACLSlice env baseRepo baseOdb aclGroupNames $ \mSlice -> do
+  buildLayerACLSlice env baseRepo baseOdb aclEnabled $ \mSlice -> do
     -- Recurse to deeper layers
     parent <- repoParent env baseRepo
     case parent of
       Nothing -> f (maybeToList mSlice)
       Just parentRepo ->
         withOpenDatabase env parentRepo $ \parentOdb ->
-          withStackedACLSlices env parentRepo parentOdb aclGroupNames
+          withStackedACLSlices env parentRepo parentOdb aclEnabled
             $ \parentSlices ->
             f (maybeToList mSlice ++ parentSlices)
 
@@ -390,18 +407,18 @@ withStackedACLLookup
   -> OpenDB             -- ^ Top OpenDB
   -> Repo               -- ^ Base repo (immediate parent)
   -> OpenDB             -- ^ Base OpenDB
-  -> Maybe [Text]       -- ^ ACL group names; Nothing disables ACL filtering
+  -> Bool               -- ^ whether ACL filtering is enabled (per-layer)
   -> [Ownership.Slice]  -- ^ Ownership slices for the base stack
   -> Lookup             -- ^ Base stack lookup
   -> Lookup             -- ^ Top layer lookup
   -> (Lookup -> IO a)
   -> IO a
-withStackedACLLookup env repo odb baseRepo baseOdb aclGroupNames
+withStackedACLLookup env repo odb baseRepo baseOdb aclEnabled
     ownershipSlices base lookup f =
   -- Build ACL slices for base layers (walk the base stack)
-  withStackedACLSlices env baseRepo baseOdb aclGroupNames $ \baseACLSlices ->
+  withStackedACLSlices env baseRepo baseOdb aclEnabled $ \baseACLSlices ->
   -- Build ACL slice for the top layer
-  buildLayerACLSlice env repo odb aclGroupNames $ \mTopACLSlice ->
+  buildLayerACLSlice env repo odb aclEnabled $ \mTopACLSlice ->
     -- Slice each side only if it has slices (empty would hide everything),
     -- then stack the (possibly sliced) base under the top layer.
     withMaybeSliced (ownershipSlices ++ baseACLSlices) base $ \slicedBase ->

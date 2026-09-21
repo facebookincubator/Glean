@@ -40,6 +40,7 @@ import Network.HTTP.Client
 
 import JustKnobs (evalKnob)
 import Glean.Auth.Verify (enforcementEnabled)
+import Glean.Auth.AclResolver (initAclResolver)
 import Glean.Auth.AttachHandler (withVerifiedAuth)
 import Logger.IO
 import Glean.Facebook.Logger.Server
@@ -83,6 +84,9 @@ main =
   withLogger configAPI $ \logger ->
   withTracing $ \tracer ->
   withAvailableDBFilterViaSR evb $ \filterAvailableDBs ->
+  enforcementEnabled >>= \catAuthEnabled ->
+  (if catAuthEnabled then initAclResolver else pure (const (pure [])))
+    >>= \aclGroupResolver ->
 #endif
   let
     dbCfg = (cfgDBConfig cfg0){
@@ -93,6 +97,7 @@ main =
       , cfgBatchLocationParser = Some (FacebookBatchLocationParser)
       , cfgFilterAvailableDBs = filterAvailableDBs
       , cfgTracer = tracer
+      , cfgAclGroupResolver = aclGroupResolver
 #endif
       }
 #if GLEAN_FACEBOOK
@@ -220,7 +225,6 @@ main =
   -- codesearch/glean:cat_auth_kill. Default on; flipping the kill-switch true
   -- disables checking and takes effect on restart. The CAT surface is
   -- Meta-internal, so this is excluded from the OSS build.
-  catAuthEnabled <- enforcementEnabled
   let serverOpts = opts
         { ThriftServer.customModifyFn =
             if catAuthEnabled then Just c_glean_add_cat_module else Nothing

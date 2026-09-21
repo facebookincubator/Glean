@@ -9,9 +9,10 @@
 """
 Generate Glean's ACL config from the source control restricted paths.
 
-Produces a JSON file mapping directory paths to their ACL group names:
+Produces a JSON file mapping directory paths to the canonical ACL identities
+returned by SCS:
 {
-    "dir_path": ["group_name1", "group_name2"],
+    "dir_path": ["REPO_REGION:repos/hg/repo/=group_name"],
     ...
 }
 """
@@ -43,30 +44,13 @@ TIMEOUT_MS = 300_000
 BOOKMARK = "master"
 
 
-def acl_group_name(path: str, path_acl: str) -> str:
-    """
-    Extract the group name Glean stores from a full repo-region ACL identity.
-
-    SCS returns the ACL as a MononokeIdentity, e.g.
-    "REPO_REGION:repos/hg/fbsource/=gradient". Glean stores only the bare
-    region name ("gradient"); the server re-prepends the type and repo prefix
-    when it checks membership (see glean/facebook/acl/AclResolve.h).
-    """
-    name = path_acl.rsplit("=", 1)[-1].strip()
-    # A restriction root with no usable group name would silently widen access,
-    # so surface it rather than emitting an empty entry.
-    if not name:
-        raise ValueError(f"empty ACL group name for path {path!r}")
-    return name
-
-
 async def fetch_acl_config(repo_name: str) -> dict[str, list[str]]:
     """
-    Stream every restriction root in the repo from SCS as a path -> group
-    names mapping.
+    Stream every restriction root in the repo from SCS as a path -> canonical
+    ACL identities mapping.
 
     `check_permissions` is left off: this builds the config describing which
-    groups guard which paths, which is independent of whoever runs the tool.
+    ACLs guard which paths, which is independent of whoever runs the tool.
     Asking for permission checks would additionally filter by the caller's own
     access and produce a config that varies by who generated it.
     """
@@ -87,10 +71,7 @@ async def fetch_acl_config(repo_name: str) -> dict[str, list[str]]:
         _, stream = await client.commit_find_restricted_paths(
             CommitSpecifier(repo=repo, id=commit_id), params
         )
-        return {
-            item.path: [acl_group_name(item.path, path_acl) for path_acl in item.acls]
-            async for item in stream
-        }
+        return {item.path: list(item.acls) async for item in stream}
 
 
 async def resolve_bookmark(

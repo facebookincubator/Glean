@@ -291,11 +291,9 @@ data Env = Env
       -- ^ Experimental support for recursive queries. For testing only.
   , envFilterAvailableDBs :: [Thrift.Repo] -> IO [Thrift.Repo]
     -- ^ Filter out DBs not currently available in the server tier
-  , envResolveAclGroups :: IO (Maybe [Text])
-    -- ^ Resolve the ACL group names for the current request (see
-    -- 'Glean.Database.Config.cfgAclGroupResolver'). 'Nothing' disables
-    -- filtering; 'Just []' restricts to public facts; 'Just gs' restricts
-    -- to the named groups.
+  , envResolveAclGroups :: [Text] -> IO [Text]
+    -- ^ Given the candidate ACL group names of the DB layer being queried,
+    -- resolve the subset the current request's caller is a member of.
   , envTracer :: Tracer GleanTrace
   , envDebug :: DebugFlags
   }

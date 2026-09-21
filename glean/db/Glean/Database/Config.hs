@@ -197,14 +197,10 @@ data Config = Config
     -- ^ Enable experimental support for recursion
   , cfgFilterAvailableDBs :: [Repo] -> IO [Repo]
     -- ^ Filter out DBs not currently available on some other server
-  , cfgAclGroupResolver :: IO (Maybe [Text])
-    -- ^ Resolve the ACL group names for the current request, used for
-    -- query-time ACL filtering. 'Nothing' means filtering is disabled;
-    -- 'Just []' means the caller is in no groups (public facts only);
-    -- 'Just gs' restricts visibility to the named groups. The default
-    -- ('pure (Just [])') fails closed (public-only). Production wiring
-    -- derives the groups from the authenticated identity; the Glean CLI
-    -- overrides it for local testing.
+  , cfgAclGroupResolver :: [Text] -> IO [Text]
+    -- ^ Given the candidate ACL group names defined by the DB layer being
+    -- queried, return the subset the current request's caller is a member
+    -- of, used for query-time ACL filtering.
   , cfgTracer :: Tracer GleanTrace
   , cfgDebug :: DebugFlags
   }
@@ -249,7 +245,7 @@ instance Default Config where
     , cfgBatchLocationParser = Some BatchLocation.DefaultParser
     , cfgEnableRecursion = False
     , cfgFilterAvailableDBs = const $ return []
-    , cfgAclGroupResolver = pure (Just [])
+    , cfgAclGroupResolver = const (pure [])
     , cfgTracer = mempty
     , cfgDebug = def
     }
