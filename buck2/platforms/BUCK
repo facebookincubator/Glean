@@ -28,30 +28,48 @@ load(":defs.bzl", "execution_platform_with_constraints", "execution_platforms")
 # *plain* default execution platform, not `:exec-opt` specifically.
 #
 # So `:exec-default` exists purely to be "prelude//platforms:default
-# plus this project's own clang constraint value" - the actual default
-# every exec_dep edge without a further requirement resolves to.
-# `:exec-opt` is then derived from *this*, not the raw prelude target,
-# so it inherits `clang` too instead of needing its own copy of the same
-# reasoning.
+# plus this project's own clang constraint value, plus `dev`" - the
+# actual default every exec_dep edge without a further requirement
+# resolves to. `dev` here isn't load-bearing for the coroutines fix
+# above (absence of `opt`/`prof` already falls through to the same
+# `DEFAULT` arm every `_BUILD_MODE_*` select in buck2/{cxx,haskell}.bzl
+# uses for "dev") - it's here so a select() that ever checks *for*
+# `root//buck2/constraints:dev` positively, rather than treating its
+# absence as the dev case, still gets a real match under this platform
+# too, rather than depending on coincidence. `:exec-opt` is then
+# derived from *this*, not the raw prelude target, so it inherits
+# `clang` too instead of needing its own copy of the same reasoning.
 execution_platform_with_constraints(
     name = "exec-default",
     base = "prelude//platforms:default",
-    constraint_values = ["root//buck2/constraints:clang"],
+    constraint_values = [
+        "root//buck2/constraints:clang",
+        "root//buck2/constraints:dev",
+    ],
     visibility = ["PUBLIC"],
 )
 
 # A second execution platform, identical to `:exec-default` except its
-# configuration also carries the `opt` build-mode constraint value - see
-# buck2.md's entry on forcing `opt` for build-time codegen tools. Listed
-# second in `.buckconfig`'s `[build] execution_platforms`, so it's only
-# selected for targets that explicitly opt in via
-# `exec_compatible_with = ["root//buck2/constraints:opt"]` (currently:
-# hsthrift//compiler:thrift-compiler, //glean/schema/gen:gen-schema,
-# //glean/bytecode:gen-bytecode-hs) - every other exec_dep/`$(exe ...)`
-# edge in the build (e.g. the test-time indexer binaries clang-index,
-# hie-indexer) has no such requirement, so it stays compatible with, and
-# keeps resolving to, `:exec-default` - unaffected, and still governed by
-# the project's ordinary `-m dev`/`-m opt` choice like everything else.
+# configuration also carries the `opt` build-mode constraint value
+# instead of `dev` (see `defs.bzl`'s `execution_platform_with_
+# constraints()` - constraint_values passed here for the `build_mode`
+# constraint_setting *replace* whatever `base` already had for that
+# same setting, not add to it, so this doesn't end up with both `dev`
+# and `opt` set at once) - see buck2.md's entry on forcing `opt` for
+# build-time codegen tools. Listed second in `.buckconfig`'s `[build]
+# execution_platforms`, so it's only selected for targets that
+# explicitly opt in via `exec_compatible_with` requiring
+# `root//buck2/constraints:opt` (currently: hsthrift//compiler:
+# thrift-compiler, //glean/schema/gen:gen-schema, //glean/bytecode:
+# gen-bytecode-hs - unconditionally, they always want to run fast
+# regardless of the ambient build mode - and, via buck2/haskell.bzl's
+# `_BUILD_MODE_EXEC_COMPATIBLE_WITH`, every haskell_binary()/
+# haskell_test() *only when the ambient build mode is itself `opt`* -
+# see that file's own comment for why a plain, unconditional
+# `exec_compatible_with` requirement on clang-index/hie-indexer's own
+# targets wouldn't have worked here). Every other exec_dep/`$(exe ...)`
+# edge in the build has no such requirement, so it stays compatible
+# with, and keeps resolving to, `:exec-default`.
 #
 # `root//buck2/constraints:opt`, not a bare `//buck2/constraints:opt` -
 # this needs to be the exact same constraint *value* the project's own

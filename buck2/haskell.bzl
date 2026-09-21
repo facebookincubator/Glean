@@ -140,6 +140,36 @@ _BUILD_MODE_PREFERRED_LINKAGE = select({
     }),
 })
 
+# Makes a build-time/test-time tool referenced via exec_dep or a
+# `$(exe ...)` string-parameter macro (e.g. glean-clang's clang-index,
+# glean-lang-haskell's hie-indexer - both invoked this way from
+# haskell_test()'s `test_args`, see buck2/platforms/BUCK) inherit the
+# *calling* target's own ambient `-m opt`/dev build mode, rather than
+# always landing on whichever execution platform happens to be first in
+# `.buckconfig`'s `[build] execution_platforms` list regardless of it.
+#
+# Execution-platform selection for an edge is driven by the *requesting*
+# target's own `exec_compatible_with` attribute (evaluated under that
+# target's own *ordinary*, non-exec configuration - so a select() here
+# keyed the usual way correctly sees the real ambient build mode), which
+# filters the globally-registered platform list down to ones providing
+# every listed constraint value. Setting this unconditionally on
+# clang-index/hie-indexer's own targets wouldn't work: those targets
+# themselves aren't what's being exec-configured here, the *referencing*
+# haskell_test() is - exec_compatible_with has to live there instead, so
+# it's applied via haskell_binary()/haskell_test() below rather than
+# left for each `$(exe ...)`-using BUCK file to remember individually.
+# In `dev`/default mode this resolves to `[]` (no requirement beyond
+# what's already implicit), keeping the existing `:exec-default`
+# resolution; in `opt` mode it requires `root//buck2/constraints:opt`,
+# which only `:exec-opt` provides, so opt builds now correctly get an
+# opt-mode clang-index/hie-indexer too instead of always getting a dev-
+# mode one.
+_BUILD_MODE_EXEC_COMPATIBLE_WITH = select({
+    "root//buck2/constraints:opt": ["root//buck2/constraints:opt"],
+    "DEFAULT": [],
+})
+
 # The `-dynamic-too`/native-shared-libs-symlink-tree machinery this
 # section used to force on unconditionally (via a `dynamic_too = True`
 # kwarg here) is now driven entirely by `haskell_toolchain.dynamic_ghc`
@@ -352,6 +382,7 @@ def haskell_binary(
     all_compiler_flags = (FB_HASKELL_EXTENSIONS + compiler_flags) if fb_haskell else compiler_flags
     kwargs.setdefault("link_style", _BUILD_MODE_LINK_STYLE)
     kwargs.setdefault("enable_profiling", _PROF_ENABLED)
+    kwargs.setdefault("exec_compatible_with", _BUILD_MODE_EXEC_COMPATIBLE_WITH)
     native.haskell_binary(
         name = name,
         srcs = _resolve_srcs(name, srcs, all_deps, hsc_flags),
@@ -418,4 +449,14 @@ def haskell_test(name, test_args = [], test_env = {}, **kwargs):
         test = ":" + bin,
         args = test_args,
         env = {"LANG": "C.UTF-8"} | test_env,
+        # `test_args`'s own `$(exe ...)` macros (e.g. clang-index,
+        # hie-indexer - see buck2/platforms/BUCK) are resolved for
+        # *this* target, not the `:bin` haskell_binary() above - it's
+        # this sh_test() whose own exec_compatible_with governs which
+        # execution platform those tools get built under, so the same
+        # build-mode-inheriting default needs to be set here too, not
+        # just on haskell_binary() (which already gets it via its own
+        # kwargs.setdefault, but that's a separate target from this
+        # one).
+        exec_compatible_with = _BUILD_MODE_EXEC_COMPATIBLE_WITH,
     )
