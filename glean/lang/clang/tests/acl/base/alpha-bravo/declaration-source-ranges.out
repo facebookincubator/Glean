@@ -1,0 +1,57 @@
+[
+  "@generated",
+  {
+    "key": {
+      "tuplefield0": "acl_alpha_marker",
+      "tuplefield1": "alpha/xref.cpp"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": "acl_bravo_marker",
+      "tuplefield1": "bravo/bravo.cpp"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": "acl_bravo_target",
+      "tuplefield1": "alpha/xref.cpp"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": "acl_bravo_target",
+      "tuplefield1": "bravo/bravo.cpp"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": "acl_either_marker",
+      "tuplefield1": "either/either.cpp"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": "acl_nested_marker",
+      "tuplefield1": "alpha/bravo/nested.cpp"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": "acl_public_marker",
+      "tuplefield1": "public/public.cpp"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": "acl_public_target",
+      "tuplefield1": "alpha/xref.cpp"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": "acl_public_target",
+      "tuplefield1": "public/public.cpp"
+    }
+  }
+]

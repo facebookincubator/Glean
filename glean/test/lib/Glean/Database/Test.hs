@@ -25,6 +25,7 @@ module Glean.Database.Test
   , enableTcDebug
   , enableQueryDebug
   , enableRocksDBCache
+  , setAclTesting
   , withTestEnv
   , kickOffTestDB
   , waitUntilComplete
@@ -59,6 +60,13 @@ import Glean.Util.ConfigProvider
 import qualified Glean.Util.ThriftSource as ThriftSource
 
 type Setting = Config -> Config
+
+setAclTesting :: ([Text.Text] -> IO [Text.Text]) -> Setting
+setAclTesting resolveGroups cfg = cfg
+  { cfgAclCalculateEnabled = pure True
+  , cfgAclCheckEnabled = pure True
+  , cfgAclGroupResolver = resolveGroups
+  }
 
 setRoot :: FilePath -> Setting
 setRoot path cfg = cfg{ cfgDataStore = fileDataStore path }

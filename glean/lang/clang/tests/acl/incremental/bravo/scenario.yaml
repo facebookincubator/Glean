@@ -1,0 +1,4 @@
+groups: ["REPO_REGION:repos/hg/fbsource/=bravo"]
+pruned:
+  units: [bravo/bravo.cpp]
+  exclude: true

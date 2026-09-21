@@ -1,0 +1,12 @@
+query: |
+  { Name, FileName } where
+    cxx1.FunctionDeclaration {
+      name = { name = { name = Name:string } },
+      source = { file = File }
+    };
+    Name =
+      "acl_alpha_marker" |
+      "acl_bravo_marker" |
+      "acl_nested_marker";
+    src.File FileName = File
+transform: [gensort, []]

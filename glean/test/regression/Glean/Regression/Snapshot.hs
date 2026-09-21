@@ -16,6 +16,7 @@
 
 module Glean.Regression.Snapshot
   ( testMain
+  , testMainWithSettings
   ) where
 
 import Control.Exception
@@ -37,6 +38,7 @@ import Util.JSON.Pretty ()
 import Util.Log
 
 import Glean (Backend)
+import Glean.Database.Test (Setting)
 import Glean.Indexer
 import Glean.Init (withUnitTestOptions)
 import Glean.Regression.Config
@@ -64,13 +66,15 @@ discoverTests root = go ""
 
 -- | Run one test and its *.query files, return (*.out, *.perf) 'FilePath'.
 runTest
-  :: Driver opts
+  :: (TestConfig -> IO [Setting])
+  -> Driver opts
   -> opts
   -> FilePath    -- ^ test root, canonicalized
   -> TestConfig
   -> IO [FilePath]
-runTest driver@Driver{..} driverOpts root testIn =
-  withTestBackend testIn $ \backend -> do
+runTest settingsForTest driver@Driver{..} driverOpts root testIn = do
+  settings <- settingsForTest testIn
+  withTestBackendWithSettings settings testIn $ \backend -> do
     let index = indexerRun driverIndexer
     driverCreateDatabase driverOpts backend index testIn
     runQueries backend driver root testIn
@@ -127,7 +131,8 @@ data Outputs = Outputs
 
 -- | Run one test and check the *.out files against the golden *.out files.
 executeTest
-  :: Config
+  :: (TestConfig -> IO [Setting])
+  -> Config
   -> Driver opts
   -> opts
   -> String  -- ^ group which produces the base golden output ('outGoldenBase')
@@ -135,7 +140,7 @@ executeTest
   -> (Outputs -> IO Result)  -- ^ compare or overwrite golden outputs
   -> FilePath
   -> IO Result
-executeTest cfg driver driverOpts base_group group diff subdir =
+executeTest settingsForTest cfg driver driverOpts base_group group diff subdir =
   with_outdir $ \outdir -> do
   let test = TestConfig
         { testRepo =
@@ -149,7 +154,7 @@ executeTest cfg driver driverOpts base_group group diff subdir =
         , testSchema = cfgSchema cfg
         }
   createDirectoryIfMissing True $ testOutput test
-  outputs <- runTest driver driverOpts (cfgRoot cfg) test
+  outputs <- runTest settingsForTest driver driverOpts (cfgRoot cfg) test
   compareOutputs test diff base_group group outputs
   where
     with_outdir f = case cfgOutput cfg of
@@ -218,15 +223,27 @@ diff Outputs{..} = do
 -- With --replace : find all /testRoot/*/*/ directories and update all golden
 -- *.out files.
 testMain :: Driver opts -> IO ()
-testMain driver = do
+testMain = testMainWithSettings $ const $ pure []
+
+testMainWithSettings
+  :: (TestConfig -> IO [Setting])
+  -> Driver opts
+  -> IO ()
+testMainWithSettings settingsForTest driver = do
   let parse = indexerOptParser (driverIndexer driver)
   withUnitTestOptions (optionsWith parse) $ \act (mk_cfg, indexerOpts) -> do
     cfg <- mk_cfg
-    testAll act cfg driver indexerOpts
+    testAll settingsForTest act cfg driver indexerOpts
 
 
-testAll :: TestAction -> Config -> Driver opts -> opts -> IO ()
-testAll act cfg driver opts = do
+testAll
+  :: (TestConfig -> IO [Setting])
+  -> TestAction
+  -> Config
+  -> Driver opts
+  -> opts
+  -> IO ()
+testAll settingsForTest act cfg driver opts = do
   tests' <- if null $ cfgTests cfg
     then discoverTests $ cfgRoot cfg
     else return $ cfgTests cfg
@@ -255,7 +272,9 @@ testAll act cfg driver opts = do
             -- wouldn't know which files we can remove in
             -- removeNonRegenerated below.
             result <- mconcat $ flip map groups $ \g ->
-              executeTest cfg' driver opts (head groups) g regenerate subdir
+              executeTest
+                settingsForTest cfg' driver opts
+                (head groups) g regenerate subdir
             removeNonRegenerated root subdir result
             toHUnit result
 
@@ -265,7 +284,8 @@ testAll act cfg driver opts = do
           (if null g then id else HUnit.TestLabel g) $
             HUnit.TestList $ flip map tests $ \subdir ->
               HUnit.TestLabel subdir $ HUnit.TestCase $
-                executeTest cfg driver opts (head groups) g diff subdir
+                executeTest
+                  settingsForTest cfg driver opts (head groups) g diff subdir
                   >>= toHUnit
 
   where

@@ -1,0 +1,9 @@
+query: |
+  { Name, FileName } where
+    cxx1.FunctionDefinition { declaration = Decl };
+    cxx1.FunctionDeclaration {
+      name = { name = { name = Name:string } },
+      source = { file = File }
+    } = Decl;
+    src.File FileName = File
+transform: [gensort, []]

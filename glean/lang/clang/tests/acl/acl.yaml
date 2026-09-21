@@ -1,0 +1,7 @@
+acl:
+  alpha: ["REPO_REGION:repos/hg/fbsource/=alpha"]
+  bravo: ["REPO_REGION:repos/hg/fbsource/=bravo"]
+  alpha/bravo: ["REPO_REGION:repos/hg/fbsource/=bravo"]
+  either:
+    - "REPO_REGION:repos/hg/fbsource/=alpha"
+    - "REPO_REGION:repos/hg/fbsource/=bravo"
