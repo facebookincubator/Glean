@@ -8,56 +8,71 @@
 # automatically. The C++ compiler and the hsc2hs binary itself both come
 # from the cxx/haskell toolchains (toolchains/BUCK, toolchains/haskell.bzl)
 # rather than being hardcoded here.
+#
+# `exported_headers`'s own generated header-symlink-tree "-I" flag needs no
+# special handling here despite not coming from a plain `include_directories`
+# attr: `cxx_exported_preprocessor_info()`'s own `get_exported_preprocessor_
+# args()` (buck2/prelude/cxx/preprocessor.bzl) bakes it directly into the
+# same `CPreprocessorArgs.args` list ordinary `compiler_flags`/`exported_
+# preprocessor_flags` live in - so it's already covered by the plain "args"
+# projection `_hsc2hs_include_args` below uses, with no separate
+# reconstruction needed (confirmed directly: removing an earlier, more
+# manual symlinked-headers-tree workaround here made no difference to a
+# target consuming glean/rts's own `exported_headers`).
 
-load("@prelude//:paths.bzl", "paths")
 load("@prelude//cxx:cxx_context.bzl", "get_cxx_toolchain_info")
 load("@prelude//cxx:preprocessor.bzl", "cxx_inherited_preprocessor_infos", "cxx_merge_cpreprocessors")
 load("@prelude//decls/toolchains_common.bzl", "toolchains_common")
 load("@prelude//haskell:toolchain.bzl", "HaskellToolchainInfo")
 
-# hsc2hs understands "-Idir" natively (and uses it for its own dependency
-# scanning), but anything else meant for the C compiler - e.g. "-isystem
-# dir" - has to be passed through via one "-C" per token. Reconstruct that
-# from the raw CPreprocessor records rather than the projected `cmd_args`,
-# since we need to tell "-I..." apart from everything else.
+# Every C-compiler-bound flag - "-Idir"/"-isystem dir" included -
+# reaches the underlying C compiler via hsc2hs's own `--cflag=FLAG`
+# (`--help`: "flag to pass to the C compiler" - the long form of `-C
+# FLAG`, but critically a *single* token rather than two, unlike `-C`
+# itself). `--help` also documents plain "-I DIR" as being just "passed
+# to the C compiler" too - the exact same thing - so there's no
+# behavioural reason to special-case "-I"/"-isystem" separately from
+# anything else a CPreprocessor record contains.
+#
+# Using the single-token `--cflag=` form (rather than the two-token
+# `-C`) is what makes it possible to use `CPreprocessorTSet`'s own
+# *official* `args_projections` (`include_dirs`/`args` -
+# buck2/prelude/cxx/preprocessor.bzl - the exact pair a real
+# cxx_compile action itself combines for its full preprocessor command
+# line, see buck2/prelude/cxx/compile.bzl) directly via `cmd_args(...,
+# format = "--cflag={}")`, instead of hand-walking `pp_info.set.
+# traverse()`'s raw per-record fields ourselves - confirmed directly
+# that `format` applies *per projected element*, not once to the whole
+# projection concatenated together. (A two-token `-C FLAG` couldn't use
+# this: `pp_info.set.project_as_args(...)` returns an opaque
+# `TransitiveSetArgsProjection` with no Starlark-level way to interleave
+# a literal "-C" before each element - confirmed directly, too:
+# `for a in pp_info.set.project_as_args("args")` fails analysis with
+# `Operation (iter) not supported on type 'TransitiveSetArgsProjection'`,
+# and every other prelude use of `project_as_args()` matches that -
+# always appended straight into a `cmd_args`, never iterated.)
+#
+# This also transparently covers `external_pkgconfig_library()`'s own
+# `exported_preprocessor_flags` (buck2/prelude/third-party/pkgconfig.bzl
+# - used by e.g. glean/rts's `fmt` dep): a single opaque `@argsfile`
+# token whose real content (`pkg-config --cflags`'s actual output)
+# doesn't exist until build time. `--cflag=@argsfile` still works
+# without buck2 ever needing to know what's inside it - clang/gcc both
+# expand a bare `@file` response-file argument generically, wherever it
+# appears on their own command line. A previous, more manual version of
+# this function had no case for that opaque token at all and silently
+# dropped it - invisible whenever pkg-config's own cflags output happens
+# to be empty (true for a system-default-installed package, e.g. `fmt`
+# via the system package manager), but a real, silent loss of a needed
+# `-I` wherever pkg-config *does* report one - confirmed as the cause of
+# a `hsc2hs`-stage `'fmt/core.h' file not found` that only ever
+# reproduced in CI, where `fmt` is built by getdeps into a non-default
+# prefix.
 def _hsc2hs_include_args(pp_info):
-    args = []
-    for records in pp_info.set.traverse():
-        for record in records:
-            for d in record.include_dirs:
-                args.append(cmd_args(d, format = "-I{}"))
-            system_dirs = record.system_include_dirs.include_dirs if record.system_include_dirs else []
-            for d in system_dirs:
-                args.extend(["-C", "-isystem", "-C", d])
-            skip = False
-            for i, a in enumerate(record.args.args):
-                if skip:
-                    skip = False
-                elif a == "-isystem" and i + 1 < len(record.args.args):
-                    args.extend(["-C", "-isystem", "-C", record.args.args[i + 1]])
-                    skip = True
-    return args
-
-# A C++ dep that exposes its headers via `headers`/`exported_headers`
-# (see buck2/cxx.bzl) rather than `include_directories`/`public_include_
-# directories` doesn't put anything in `record.include_dirs` at all - the
-# generated symlink-tree include path lives inside the opaque `record.args`
-# cmd_args instead (built by the prelude's own `get_exported_preprocessor_
-# args`), which `_hsc2hs_include_args` above has no way to pick apart from
-# everything else in there. Rather than reverse-engineer that cmd_args,
-# rebuild an equivalent tree ourselves directly from `record.headers` (a
-# plain, non-opaque `list[CHeader]` - name/namespace/artifact), which is
-# exactly the same header set the real cxx_library() compile would see.
-def _hsc2hs_headers_dir(ctx, pp_info):
-    headers = {}
-    for records in pp_info.set.traverse():
-        for record in records:
-            for h in record.headers:
-                key = paths.join(h.namespace, h.name) if h.namespace else h.name
-                headers[key] = h.artifact
-    if not headers:
-        return None
-    return ctx.actions.symlinked_dir("hsc2hs-headers", headers)
+    return [
+        cmd_args(pp_info.set.project_as_args("include_dirs"), format = "--cflag={}"),
+        cmd_args(pp_info.set.project_as_args("args"), format = "--cflag={}"),
+    ]
 
 def _hsc2hs_impl(ctx: AnalysisContext) -> list[Provider]:
     out = ctx.actions.declare_output(ctx.attrs.out)
@@ -77,8 +92,6 @@ def _hsc2hs_impl(ctx: AnalysisContext) -> list[Provider]:
     hsc2hs_tool = "hsc2hs-" + ghc_version
 
     cxx_compiler = get_cxx_toolchain_info(ctx).cxx_compiler_info.compiler
-
-    headers_dir = _hsc2hs_headers_dir(ctx, merged)
 
     cmd = cmd_args(
         hsc2hs_tool,
@@ -102,7 +115,6 @@ def _hsc2hs_impl(ctx: AnalysisContext) -> list[Provider]:
         # when compiling a sibling cxx_library() source in this package.
         "-I" + ("." if ctx.label.package == "" else ctx.label.package),
         _hsc2hs_include_args(merged),
-        cmd_args(headers_dir, format = "-I{}") if headers_dir else [],
         "-o",
         out.as_output(),
         ctx.attrs.hsc_file,
