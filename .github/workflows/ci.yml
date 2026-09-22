@@ -157,13 +157,23 @@ jobs:
             libaio-dev libbz2-dev libdouble-conversion-dev libdwarf-dev libgoogle-glog-dev libiberty-dev libjemalloc-dev \
             liblzma-dev liblz4-dev libsnappy-dev libsodium-dev libssl-dev libunwind-dev libzstd-dev libfast-float-dev librocksdb-dev
 
-      - name: Fetch hsthrift and build folly, rocksdb
+      - if: matrix.buildtype != 'buck2'
+        name: Fetch hsthrift and build folly, rocksdb
         run: ./install_deps.sh --threads $(nproc) --use-system-libs
 
-      - name: Nuke build artifacts
+      - if: matrix.buildtype == 'buck2'
+        name: Fetch hsthrift
+        # TODO: do this with install_deps above
+        run: |
+          apt-get install -y libfmt-dev
+          git clone https://github.com/simonmar/hsthrift.git -b buck2
+
+      - if: matrix.buildtype != 'buck2'
+        name: Nuke build artifacts
         run: rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/
 
-      - name: Setup hsthrift environment
+      - if: matrix.buildtype != 'buck2'
+        name: Setup hsthrift environment
         run: |
           echo "LD_LIBRARY_PATH=$HOME/.hsthrift/lib:$LD_LIBRARY_PATH" >> "$GITHUB_ENV"
           echo "PKG_CONFIG_PATH=$HOME/.hsthrift/lib/pkgconfig:$PKG_CONFIG_PATH" >> "$GITHUB_ENV"
