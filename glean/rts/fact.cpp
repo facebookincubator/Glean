@@ -26,7 +26,8 @@ void Fact::deserialize(binary::Input& input, Pid& type, Fact::Clause& clause) {
   type = input.packed<Pid>();
   const auto key_size = input.packed<uint32_t>();
   const auto value_size = input.packed<uint32_t>();
-  const auto data = input.bytes(key_size + value_size).data();
+  const auto data =
+      input.bytes(static_cast<size_t>(key_size) + value_size).data();
   clause = {data, key_size, value_size};
 }
 
