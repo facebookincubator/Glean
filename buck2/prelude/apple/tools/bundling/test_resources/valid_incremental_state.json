@@ -1,0 +1,48 @@
+{
+  "items": [
+    {
+      "source": "repo/foo.txt",
+      "destination_relative_to_bundle": "foo.txt",
+      "digest": "foo_digest"
+    },
+    {
+      "source": "buck-out/bar.txt",
+      "destination_relative_to_bundle": "Resources/bar.txt",
+      "digest": "bar_digest"
+    },
+    {
+      "source": "buck-out/bar",
+      "destination_relative_to_bundle": "Resources/bar",
+      "resolved_symlink": "bar.txt"
+    }
+  ],
+  "codesign_configuration": null,
+  "codesigned": true,
+  "codesigned_on_copy": [
+    {
+      "path": "Resources/bar.txt"
+    },
+    {
+      "path": "Resources/baz.txt",
+      "entitlements_digest": "abc"
+    },
+    {
+      "path": "Resources/qux.txt",
+      "codesign_flags_override": ["--deep", "--force"]
+    },
+    {
+      "path": "Resources/Parent.framework",
+      "extra_codesign_paths": ["Frameworks/Base.framework"]
+    }
+  ],
+  "codesign_identity": "Johny Appleseed",
+  "codesign_arguments": [
+    "--force",
+    "--deep"
+  ],
+  "versioned_if_macos": true,
+  "swift_stdlib_paths": [
+    "Frameworks/libswiftCore.dylib"
+  ],
+  "version": 8
+}

@@ -1,0 +1,84 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "stubs",
+    srcs = [
+        "Facebook/Fb303.hs",
+        "Facebook/Service.hs",
+        "Facebook/Service/HttpFb303.hs",
+        "Glean/Auth.hs",
+        "Glean/BuildInfo.hs",
+        "Glean/Database/Backup/Incomplete.hs",
+        "Glean/Datasource/Scribe/Write.hs",
+        "Glean/Init.hsc",
+        "Glean/Server/PublishShards.hs",
+        "Glean/Index.hs",
+        "Glean/Username.hs",
+        "ServiceData/Types.hs",
+        "ServiceData/GlobalStats.hs",
+        "TestRunner.hs",
+    ],
+    deps = [
+        "@hsthrift//common/mangle:mangle",
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//folly-clib:folly-clib",
+        "@hsthrift//http:thrift-http",
+        "@hsthrift//lib:thrift-lib",
+        "//glean/github/if:if-fb303-hs",
+        "//glean/if:if-glean-hs",
+        "//glean/if:if-index-hs",
+    ],
+    packages = [
+        "HUnit",
+        "bytestring",
+        "http-types",
+        "optparse-applicative",
+        "process",
+        "tasty",
+        "tasty-hunit",
+        "template-haskell",
+        "text",
+        "time",
+        "unix",
+        "unordered-containers",
+        "wai",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_library(
+    name = "defaultconfigs",
+    srcs = [
+        "Glean/DefaultConfigs.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/config:config",
+        "//glean/util:util",
+    ],
+    packages = [
+        "text",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_library(
+    name = "aclknobs",
+    srcs = [
+        "Glean/Database/AclKnobs.hs",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_library(
+    name = "logger",
+    srcs = [
+        "Logger/IO.hs",
+        "Logger/GleanGlass.hs",
+        "Logger/GleanGlassErrors.hs",
+    ],
+    deps = [
+        "//glean/util:util",
+    ],
+    visibility = ["PUBLIC"],
+)

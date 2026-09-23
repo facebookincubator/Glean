@@ -1,0 +1,118 @@
+load("//buck2:haskell.bzl", "haskell_library")
+load("//buck2:thrift.bzl", "thrift_srcs", "thrift_srcs_export")
+
+thrift_srcs_export(
+    name = "glean_include.hs",
+    srcs = {"glean/if/glean_include.hs": "glean_include.hs"},
+)
+
+haskell_library(
+    name = "if-glean-hs",
+    srcs = thrift_srcs(
+        name = "if-glean-hs",
+        thrift_files = {
+        "glean.thrift": ["Glean/Types.hs", "Glean/GleanService/Client.hs", "Glean/GleanService/Service.hs"],
+    },
+        deps = [
+        ":glean_include.hs",
+        "//glean/github/if:if-fb303-hs-thrift",
+        "//glean/if/facebook:if-auth-hs-thrift",
+        "//thrift/annotation:thrift-annotation-thrift",
+    ],
+        full_paths = True,
+    ),
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+        "//glean/config:config",
+        "//glean/github/if:if-fb303-hs",
+        "//glean/if/facebook:if-auth-hs",
+        "//thrift/annotation:thrift-annotation",
+    ],
+    packages = [
+        "aeson",
+        "bytestring",
+        "containers",
+        "data-default",
+        "deepseq",
+        "ghc-prim",
+        "hashable",
+        "STMonadTrans",
+        "text",
+        "unordered-containers",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_library(
+    name = "if-index-hs",
+    srcs = thrift_srcs(
+        name = "if-index-hs",
+        thrift_files = {
+        "index.thrift": ["Glean/Index/Types.hs", "Glean/Index/GleanIndexingService/Client.hs", "Glean/Index/GleanIndexingService/Service.hs"],
+    },
+        deps = [
+        ":if-glean-hs-thrift",
+        "//thrift/annotation:thrift-annotation-thrift",
+    ],
+        full_paths = True,
+    ),
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+        ":if-glean-hs",
+        "//thrift/annotation:thrift-annotation",
+    ],
+    packages = [
+        "aeson",
+        "bytestring",
+        "containers",
+        "data-default",
+        "deepseq",
+        "ghc-prim",
+        "hashable",
+        "STMonadTrans",
+        "text",
+        "unordered-containers",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_library(
+    name = "if-internal-hs",
+    srcs = thrift_srcs(
+        name = "if-internal-hs",
+        thrift_files = {
+        "internal.thrift": ["Glean/Internal/Types.hs"],
+    },
+        deps = [
+        "//glean/config:config-thrift",
+        ":if-glean-hs-thrift",
+        "//thrift/annotation:thrift-annotation-thrift",
+    ],
+        full_paths = True,
+    ),
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+        "//glean/config:config",
+        ":if-glean-hs",
+        "//thrift/annotation:thrift-annotation",
+    ],
+    packages = [
+        "aeson",
+        "bytestring",
+        "containers",
+        "data-default",
+        "deepseq",
+        "ghc-prim",
+        "hashable",
+        "STMonadTrans",
+        "text",
+        "unordered-containers",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)

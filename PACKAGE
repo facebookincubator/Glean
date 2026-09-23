@@ -1,0 +1,32 @@
+# Root PACKAGE file: registers buck2's cfg-modifier machinery so that
+# `buck2 build ... -m //buck2/constraints:opt` (or `:dev`) works (see
+# buck2.md TODO "we should support different build modes"). This can only
+# be done from the repository root PACKAGE file (set_cfg_constructor's own
+# restriction) - there is nowhere else to put it.
+load(
+    "@prelude//cfg/modifier/cfg_constructor.bzl",
+    "cfg_constructor_post_constraint_analysis",
+    "cfg_constructor_pre_constraint_analysis",
+)
+load("@prelude//cfg/modifier/common.bzl", "MODIFIER_METADATA_KEY")
+load("@prelude//cfg/modifier/set_cfg_modifiers.bzl", "set_cfg_modifiers")
+
+set_cfg_constructor(
+    stage0 = cfg_constructor_pre_constraint_analysis,
+    stage1 = cfg_constructor_post_constraint_analysis,
+    key = MODIFIER_METADATA_KEY,
+    aliases = struct(
+      dev= "root//buck2/constraints:dev",
+      opt= "root//buck2/constraints:opt"
+    ),
+    extra_data = struct(),
+)
+
+set_cfg_modifiers(
+    cfg_modifiers = [
+        # `dev` is the default build mode when no -m flag is given
+        "root//buck2/constraints:dev",
+        # The buck2 cxx toolchain defaults to clang
+        "root//buck2/constraints:clang"
+    ],
+)

@@ -1,0 +1,32 @@
+load("//buck2:cxx.bzl", "cxx_library")
+
+cxx_library(
+    name = "rocksdb",
+    srcs = [
+        "container-impl.cpp",
+        "database-impl.cpp",
+        "ffi.cpp",
+        "rocksdb.cpp",
+    ],
+    # `headers` not `exported_headers`: nothing outside this package
+    # includes these, unlike glean/rts's or glean/storage's headers.
+    headers = [
+        "container-impl.h",
+        "database-impl.h",
+        "ffi.h",
+        "rocksdb.h",
+        "util.h",
+    ],
+    compiler_flags = ["-DOSS=1", "-fno-rtti"],
+    exported_deps = [
+        "//third-party:rocksdb-pkg",
+        "//third-party:fmt",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util-cxx",
+        "@hsthrift//folly-clib:folly-clib",
+        "//glean/rts:rts",
+        "//glean/storage:storage",
+    ],
+    visibility = ["PUBLIC"],
+)

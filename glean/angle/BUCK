@@ -1,0 +1,36 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "angle",
+    srcs = [
+        "Glean/Angle/Hash.hs",
+        "Glean/Angle/Lexer.x",
+        "Glean/Angle/Parser.y",
+        "Glean/Angle/Types.hs",
+        "Glean/Display.hs",
+        "Glean/Schema/Resolve.hs",
+        "Glean/Schema/Evolve.hs",
+        "Glean/Schema/Types.hs",
+        "Glean/Schema/Util.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/if:if-glean-hs",
+    ],
+    packages = [
+        "aeson",
+        "attoparsec",
+        "bifunctors",
+        "binary",
+        "bytestring",
+        "containers",
+        "extra",
+        "hashable",
+        "prettyprinter",
+        "text",
+        "text-show",
+        "unordered-containers",
+        "utf8-string",
+    ],
+    visibility = ["PUBLIC"],
+)

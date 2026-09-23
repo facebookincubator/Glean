@@ -1,0 +1,32 @@
+load("//buck2:haskell.bzl", "haskell_library")
+load("//buck2:thrift.bzl", "thrift_srcs")
+
+haskell_library(
+    name = "if-auth-hs",
+    srcs = thrift_srcs(
+        name = "if-auth-hs",
+        thrift_files = {
+        "auth.thrift": ["Glean/Auth/Auth/Types.hs"],
+    },
+        full_paths = True,
+    ),
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+        "//thrift/annotation:thrift-annotation",
+    ],
+    packages = [
+        "aeson",
+        "bytestring",
+        "containers",
+        "data-default",
+        "deepseq",
+        "ghc-prim",
+        "hashable",
+        "STMonadTrans",
+        "text",
+        "unordered-containers",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)
