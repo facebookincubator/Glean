@@ -6,9 +6,7 @@ haskell_binary(
     srcs = [
         "Data/ConcurrentCache.hs",
         "Data/Path.hs",
-        "Data/RangeMap.hs",
         "Glean/LSP.hs",
-        "Glean/LSP/Diff.hs",
     ],
     compiler_flags = [
         "-XDisambiguateRecordFields",
