@@ -157,16 +157,17 @@ jobs:
             libaio-dev libbz2-dev libdouble-conversion-dev libdwarf-dev libgoogle-glog-dev libiberty-dev libjemalloc-dev \
             liblzma-dev liblz4-dev libsnappy-dev libsodium-dev libssl-dev libunwind-dev libzstd-dev libfast-float-dev librocksdb-dev
 
+      - if: matrix.buildtype == 'buck2'
+        # buck2 uses the system libfmt and bundled-folly
+        run: apt-get install -y libfmt-dev
+
+      - name: Fetch hsthrift
+        # TMP: we need the buck2 hsthrift branch with this Glean branch
+        run: git clone https://github.com/simonmar/hsthrift.git -b buck2
+
       - if: matrix.buildtype != 'buck2'
         name: Fetch hsthrift and build folly, rocksdb
         run: ./install_deps.sh --threads $(nproc) --use-system-libs
-
-      - if: matrix.buildtype == 'buck2'
-        name: Fetch hsthrift
-        # TODO: do this with install_deps above
-        run: |
-          apt-get install -y libfmt-dev
-          git clone https://github.com/simonmar/hsthrift.git -b buck2
 
       - if: matrix.buildtype != 'buck2'
         name: Nuke build artifacts
