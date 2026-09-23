@@ -185,7 +185,8 @@ jobs:
       # This tells the folly-clib package to look for folly using pkg-config
       # instead of building its own copy of the sources. Later we can switch
       # to using bundled-folly, or have CI test both variants.
-      - name: Disable bundled-folly
+      - if: matrix.buildtype != 'buck2'
+        name: Disable bundled-folly
         run: echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS -f-bundled-folly" >> "$GITHUB_ENV"
 
       - name: Grab folly sources
