@@ -550,18 +550,22 @@ std::unique_ptr<ComputedOwnership> computeOwnership(
   std::sort(order.begin(), order.end());
   Id prev = Id::lowest() - 1;
   UsetId current = INVALID_USET;
-  for (auto& pr : order) {
-    auto id = Id::fromWord(pr.first);
-    auto usetid = pr.second->id;
-    VLOG(5) << fmt::format("sparse owner: {} -> {}", id.toWord(), usetid);
-    if (id != prev + 1 || current != usetid) {
-      if (id != prev + 1) {
+  for (auto& fact_uset : order) {
+    const auto fact_id = Id::fromWord(fact_uset.first);
+    const auto usetid = fact_uset.second->id;
+    VLOG(5) << fmt::format("sparse owner: {} -> {}", fact_id.toWord(), usetid);
+    if (fact_id != prev + 1 // expect fact IDs to be consecutive. Otherwise some
+                            // facts are missing.
+        || usetid != current // factOwners encode fact ranges, so if the usetid
+                             // is the same, no need to emplace back to it
+    ) {
+      if (fact_id != prev + 1) {
         factOwners.emplace_back(prev + 1, INVALID_USET);
       }
-      factOwners.emplace_back(id, usetid);
+      factOwners.emplace_back(fact_id, usetid);
       current = usetid;
     }
-    prev = id;
+    prev = fact_id;
   }
   // fill the gap between the sparse and dense mappings with INVALID_USET
   if (prev + 1 < min_id) {
