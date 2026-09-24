@@ -176,7 +176,10 @@ jobs:
           make setup-folly-version
 
       - name: Disable some tests
-        run: echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS -f-hack-tests" >> "$GITHUB_ENV"
+        # Hack tests: we need to figure out how to install Hack
+        # Flow: upstream version differs in the test output it generates,
+        # see commit bd1ed37
+        run: echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS -f-hack-tests -f-flow-tests" >> "$GITHUB_ENV"
 
       # Overrides the default in cabal.project. Kept per-matrix-entry so a
       # single configuration can be held back on an older index when it needs
