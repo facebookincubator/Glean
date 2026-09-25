@@ -437,6 +437,7 @@ doFinalize :: Env -> Repo -> IO Bool
 doFinalize env@Env{..} repo =
   loggingAction (runLogRepo "finalize" env repo) (const mempty) $ do
     atomically $ notify envListener $ FinalizeStarted repo
+    say logInfo "starting"
 
     -- If the client didn't explicitly call completePredicates, we'll
     -- do that now. Do this *before* optimising/compacting, because
@@ -444,15 +445,21 @@ doFinalize env@Env{..} repo =
     -- by this pass.
     meta <- atomically $ Catalog.readMeta envCatalog repo
     when (not (metaAxiomComplete meta)) $
-      phase "completing predicates" $ syncCompletePredicates env repo
+      phase "completing predicates" $
+        syncCompletePredicates env repo
 
     config <- Observed.get envServerConfig
+    say logInfo "database acquisition"
     withOpenDatabase env repo $ \OpenDB{..} -> do
-      Storage.prepareFactOwnerCache odbHandle
-      maybeOwnership <- readTVarIO odbOwnership
-      forM_ maybeOwnership $ \ownership -> do
-        stats <- getOwnershipStats ownership
-        logInfo $ "final ownership: " <> Text.unpack (showOwnershipStats stats)
+      say logInfo "database acquisition complete"
+      phase "preparing fact-owner cache" $
+        Storage.prepareFactOwnerCache odbHandle
+      phase "reading ownership stats" $ do
+        maybeOwnership <- readTVarIO odbOwnership
+        forM_ maybeOwnership $ \ownership -> do
+          stats <- getOwnershipStats ownership
+          say logInfo $
+            "final ownership: " <> Text.unpack (showOwnershipStats stats)
       let compact = ServerConfig.config_compact_on_completion config
       phase (if compact then "optimizing(compacting)" else "optimizing") $
         Storage.optimize odbHandle compact
@@ -461,14 +468,15 @@ doFinalize env@Env{..} repo =
     -- update and re-merge our internal representation of the schema
     phase "updating schema" $ schemaUpdated env (Just repo)
 
-    time <- envGetCurrentTime
-    atomically $ do
-      void $ Catalog.modifyMeta envCatalog repo $ \meta -> return meta
-        { metaCompleteness = Complete $ DatabaseComplete
-          (utcTimeToPosixEpochTime time)
-          Nothing -- the size gets updated after a backup
-        }
-      notify envListener $ FinalizeFinished repo
+    phase "updating completion status" $ do
+      time <- envGetCurrentTime
+      atomically $ do
+        void $ Catalog.modifyMeta envCatalog repo $ \meta -> return meta
+          { metaCompleteness = Complete $ DatabaseComplete
+            (utcTimeToPosixEpochTime time)
+            Nothing -- the size gets updated after a backup
+          }
+        notify envListener $ FinalizeFinished repo
     say logInfo "finished"
     return True
 
@@ -494,7 +502,11 @@ doFinalize env@Env{..} repo =
   where
     say log s = log $ inRepo repo $ "finalize: " ++ s
     phase :: String -> IO a -> IO a
-    phase label act = say logInfo label >> act
+    phase label act = do
+      say logInfo label
+      result <- act
+      say logInfo $ label <> " complete"
+      return result
 
 -- | Back up databases forever.
 backuper :: Env -> IO ()
@@ -504,7 +516,7 @@ backuper env@Env{..} = loop mempty `catchAll` \exc -> do
   where
     loop sinbin = do
       (repo, action) <- do
-        r <- atomically $ Just <$> getTodo env sinbin <|> return Nothing
+        r <- atomically $ optional $ getTodo env sinbin
         case r of
           Just todo -> return todo
           Nothing -> do
