@@ -92,6 +92,36 @@ recursionTest = TestList
           , RTS.Tuple [ RTS.Nat 1, RTS.Nat 5 ]
           ]
           facts
+
+  , TestLabel "cycle closed by a later derive declaration" $ TestCase $ do
+    -- P is declared without a derivation in x.1 and only gets one in x.2,
+    -- closing the cycle P -> Q -> P across schemas.
+    withSchemaAndFacts [enableRecursion]
+      [s|
+        schema x.1 {
+          predicate Base : nat
+          predicate P : nat
+          predicate Q : nat
+            A where x.P.1 A
+        }
+        schema x.2 : x.1 {
+          derive x.P.1
+            A where x.Base.1 A | x.Q.1 A
+        }
+        schema all.1 : x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.Base" 1)
+          [ [s|{ "key": 1 }|]
+          , [s|{ "key": 2 }|]
+          ]
+      ]
+      $ \env repo schema -> do
+        p <- decodeResultsAs "x.P.1" schema =<< runQ env repo [s| x.P.1 _ |]
+        assertEqual "P uses the derivation from x.2"
+          [ RTS.Nat 1, RTS.Nat 2 ] p
+        q <- decodeResultsAs "x.Q.1" schema =<< runQ env repo [s| x.Q.1 _ |]
+        assertEqual "Q sees P's derivation from x.2"
+          [ RTS.Nat 1, RTS.Nat 2 ] q
   ]
   where
     runQ env repo query =
