@@ -2049,6 +2049,19 @@ test-suite angle-test-derived
     main-is: Angle/DerivedTest.hs
     ghc-options: -main-is Angle.DerivedTest
 
+test-suite angle-test-recursion
+    import: test, angle-test
+    type: exitcode-stdio-1.0
+    main-is: Angle/RecursionTest.hs
+    other-modules: Schema.Lib
+    ghc-options: -main-is Angle.RecursionTest
+    build-depends:
+        glean:config,
+        glean:if-internal-hs,
+        glean:lib-derive,
+        glean:util,
+        glean:client-hs,
+
 test-suite angle-test-set
     import: test, angle-test
     type: exitcode-stdio-1.0
