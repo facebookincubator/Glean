@@ -12,8 +12,8 @@ import Control.Monad
 import Control.Monad.State (State, runState)
 import qualified Control.Monad.State as State
 import Data.Bitraversable (bitraverse)
-import Data.Foldable (asum)
-import Data.Maybe (fromMaybe)
+import Data.Foldable (asum, foldl')
+import Data.Maybe (fromMaybe, isJust)
 import qualified Data.Set as Set
 import qualified Data.Graph as Graph
 import Data.HashMap.Strict (HashMap)
@@ -62,36 +62,60 @@ pruneQueries
   -> HashMap PredicateId TypecheckedQuery
   -> HashMap PredicateId TypecheckedQuery
 pruneQueries hasStoredFacts derivations =
-  foldr add mempty $ topologicalSort derivations
+  -- Components come in reverse topological order, so by the time we
+  -- process a component all components it depends on have been pruned.
+  foldl' addComponent mempty (Graph.stronglyConnComp edges)
   where
-    add :: (PredicateId, TypecheckedQuery)
-        -> HashMap PredicateId TypecheckedQuery
-        -> HashMap PredicateId TypecheckedQuery
-    add (predId, query) derivedWithFacts =
-       case prune (hasFacts predId derivedWithFacts) query of
-          Nothing -> derivedWithFacts
-          Just pruned -> HashMap.insert predId pruned derivedWithFacts
-
-    hasFacts predId derivedWithFacts child =
-      child == predId
-        || hasStoredFacts child
-        || child `HashMap.member` derivedWithFacts
-
-topologicalSort
-  :: HashMap PredicateId TypecheckedQuery
-  -> [(PredicateId, TypecheckedQuery)]
-topologicalSort derivations =
-  [ entry
-  | vertex <- Graph.topSort graph
-  , let (entry,_,_) = fromVertex vertex
-  ]
-  where
-    (graph, fromVertex, _) = Graph.graphFromEdges edges
     edges =
       [ (entry, predId, dependencies)
       | entry@(predId, query) <- HashMap.toList derivations
       , let dependencies = Set.toList $ tcQueryDeps $ qiQuery query
       ]
+
+    addComponent
+      :: HashMap PredicateId TypecheckedQuery
+      -> Graph.SCC (PredicateId, TypecheckedQuery)
+      -> HashMap PredicateId TypecheckedQuery
+    addComponent derivedWithFacts component =
+      foldl' add derivedWithFacts entries
+      where
+        entries = Graph.flattenSCC component
+
+        -- Members of this component that may have facts.
+        inComponent = case component of
+          Graph.AcyclicSCC _ -> Set.empty
+          Graph.CyclicSCC _ -> leastFixpoint Set.empty
+
+        add acc (predId, query) =
+          case prune (hasFacts inComponent) query of
+            Nothing -> acc
+            Just pruned -> HashMap.insert predId pruned acc
+
+        hasFacts withFacts child =
+          hasStoredFacts child
+            || child `HashMap.member` derivedWithFacts
+            || child `Set.member` withFacts
+
+        -- Members of a recursive component depend on each other, so we
+        -- can't prune them one at a time. Instead we start by assuming
+        -- that none of them has facts, and keep adding the ones whose
+        -- derivation survives pruning until nothing changes. Assuming that
+        -- more predicates have facts never causes more to be pruned, so
+        -- this terminates and finds the smallest such set. If we started
+        -- by assuming that all of them have facts, we would keep
+        -- derivations that can never produce anything, like
+        --
+        --   predicate P : nat
+        --     X where P X
+        leastFixpoint withFacts
+          | next == withFacts = withFacts
+          | otherwise = leastFixpoint next
+          where
+            next = Set.fromList
+              [ predId
+              | (predId, query) <- entries
+              , isJust $ prune (hasFacts withFacts) query
+              ]
 
 -- | Remove paths that we know will not yield any result.
 -- This will save us a lot of compilation at query time.
