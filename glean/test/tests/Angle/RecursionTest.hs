@@ -11,13 +11,14 @@ module Angle.RecursionTest (main) where
 
 import Control.Exception
 import Data.Default (def)
-import Data.List (sort)
+import Data.List (isInfixOf, sort)
 import Data.Text (Text, unpack)
 import Test.HUnit
 
 import TestRunner
 import Util.String.Quasi
 
+import Glean.Angle.Types (latestAngleVersion)
 import Glean.Database.Schema.Types
 import Glean.Database.Config (Config(..))
 import Glean.Init
@@ -224,7 +225,42 @@ recursionTest = TestList
           [s| x.Chain { 1, { just = x.Chain { 2, { just = x.Chain { 3, nothing } } } } } |]
         assertEqual "Chain facts form the same list as Node facts"
           1 (length list)
+
+  , TestLabel "accepts negation of a non-recursive predicate in recursion" $
+    TestCase $ do
+    withSchemaAndFacts [enableRecursion]
+      [s|
+        schema x.1 {
+          type Node = nat
+          predicate Edge : { from: Node, to: Node }
+          predicate Blocked : { from: Node, to: Node }
+          predicate Path : { from: Node, to: Node }
+            { A, B } where
+              (x.Edge { A, B }; !(x.Blocked { A, B })) |
+              (x.Path { A, K }; x.Edge { K, B }; !(x.Blocked { K, B }))
+        }
+        schema all.1 : x.1 {}
+      |]
+      -- 1 -> 2 -x-> 3 -> 4
+      [ mkBatch (PredicateRef "x.Edge" 1)
+          [ [s|{ "key": { "from": 1, "to": 2 } }|]
+          , [s|{ "key": { "from": 2, "to": 3 } }|]
+          , [s|{ "key": { "from": 3, "to": 4 } }|]
+          ]
+      , mkBatch (PredicateRef "x.Blocked" 1)
+          [ [s|{ "key": { "from": 2, "to": 3 } }|]
+          ]
+      ]
+      $ \env repo schema -> do
+        facts <- decodeResultsAs "x.Path.1" schema =<< runQ env repo
+          [s| x.Path _ |]
+        assertEqual "result content"
+          [ RTS.Tuple [ RTS.Nat 1, RTS.Nat 2 ]
+          , RTS.Tuple [ RTS.Nat 3, RTS.Nat 4 ]
+          ]
+          (sort facts)
   ]
+
   where
     runQ env repo query =
       try $ userQuery env repo $ def
@@ -261,7 +297,92 @@ recursionTest = TestList
             unpack (showRef ref) <> ": " <> unpack err
           Right details -> predicateKeyType details
 
+stratificationTest :: Test
+stratificationTest = TestList
+  [ TestLabel "rejects recursion through negation" $ TestCase $
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          predicate Base : nat
+          predicate P : nat
+            A where x.Base A; !(x.Q A)
+          predicate Q : nat
+            A where x.P A
+        }
+        schema all.1 : x.1 {}
+      |]
+      (assertRejected "x.P.1 -> !x.Q.1 -> x.P.1")
+
+  , TestLabel "rejects a predicate negating itself" $ TestCase $
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          predicate Base : nat
+          predicate P : nat
+            A where x.Base A; !(x.P A)
+        }
+        schema all.1 : x.1 {}
+      |]
+      (assertRejected "x.P.1 -> !x.P.1")
+
+  , TestLabel "rejects recursion through an if condition" $ TestCase $
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          predicate Base : nat
+          predicate P : nat
+            B where x.Base A; B = if (x.P A) then A else 0
+        }
+        schema all.1 : x.1 {}
+      |]
+      (assertRejected "x.P.1 -> !x.P.1")
+
+  , TestLabel "rejects recursion through all" $ TestCase $
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          predicate Base : nat
+          predicate P : nat
+            A where x.Base A; _ = all (x.P A)
+        }
+        schema all.1 : x.1 {}
+      |]
+      (assertRejected "x.P.1 -> !x.P.1")
+
+  , TestLabel "accepts negation of a recursive predicate outside its cycle" $
+    TestCase $
+    -- NeedsFlying and LandRoute are both recursive, and NeedsFlying
+    -- negates LandRoute, but LandRoute doesn't depend on NeedsFlying.
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          type Town = nat
+          predicate Road : { begin : Town, end : Town }
+          predicate FlightRoute : { from : Town, to : Town }
+          predicate LandRoute : { from : Town, to : Town }
+            { From, To } where
+              x.Road { From, To } |
+              (x.LandRoute { From, X }; x.Road { X, To })
+          predicate NeedsFlying : { from : Town, to : Town }
+            { From, To } where
+              !(x.LandRoute { From, To });
+              x.FlightRoute { From, To } |
+              (x.NeedsFlying { From, X }; x.FlightRoute { X, To })
+        }
+        schema all.1 : x.1 {}
+      |]
+      (either (assertFailure . show) return)
+  ]
+  where
+    assertRejected :: String -> Either SomeException () -> IO ()
+    assertRejected expected r = case r of
+      Left err ->
+        assertBool ("error should mention " <> expected <> ":\n" <> show err) $
+          expected `isInfixOf` show err
+      Right () -> assertFailure "schema was accepted"
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "recursion" recursionTest
+  , TestLabel "stratification" stratificationTest
   ]
