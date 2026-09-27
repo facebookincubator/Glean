@@ -18,7 +18,7 @@ import Test.HUnit
 import TestRunner
 import Util.String.Quasi
 
-import Glean.Angle.Types (latestAngleVersion)
+import Glean.Angle.Types (AngleVersion(..), latestAngleVersion)
 import Glean.Database.Schema.Types
 import Glean.Database.Config (Config(..))
 import Glean.Init
@@ -373,16 +373,90 @@ stratificationTest = TestList
       |]
       (either (assertFailure . show) return)
   ]
-  where
-    assertRejected :: String -> Either SomeException () -> IO ()
-    assertRejected expected r = case r of
-      Left err ->
-        assertBool ("error should mention " <> expected <> ":\n" <> show err) $
-          expected `isInfixOf` show err
-      Right () -> assertFailure "schema was accepted"
+
+storedTest :: Test
+storedTest = TestList
+  [ TestLabel "rejects a recursive stored predicate" $ TestCase $
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          predicate Base : nat
+          predicate P : nat
+            stored A where x.Base A | x.P A
+        }
+        schema all.1 : x.1 {}
+      |]
+      (assertRejected "x.P.1 is recursive")
+
+  , TestLabel "rejects a stored predicate in a cycle" $ TestCase $
+    -- S is stored and R isn't, but deriving S expands R, which refers
+    -- back to S.
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          predicate Base : nat
+          predicate S : nat
+            stored A where x.R A
+          predicate R : nat
+            A where x.Base A | x.S A
+        }
+        schema all.1 : x.1 {}
+      |]
+      (assertRejected "x.S.1 is recursive")
+
+  , TestLabel "rejects a stored predicate using recursion" $ TestCase $
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          type Node = nat
+          predicate Edge : { from: Node, to: Node }
+          predicate Path : { from: Node, to: Node }
+            { A, B } where
+              x.Edge { A, B } | (x.Path { A, K }; x.Edge { K, B })
+          predicate Reachable : Node
+            stored B where x.Path { 1, B }
+        }
+        schema all.1 : x.1 {}
+      |]
+      (assertRejected
+        "x.Reachable.1 depends on the recursive predicate x.Path.1")
+
+  , TestLabel "accepts a stored predicate using default derivations" $
+    TestCase $
+    -- P.1 and P.2 derive each other, but only one of the two derivations
+    -- is ever enabled, so Stored doesn't depend on recursion.
+    withSchema (AngleVersion 11)
+      [s|
+        schema test.1 {
+          predicate P : { a : string, b : nat }
+        }
+        schema test.2 : test.1 {
+          predicate P : { a : string, b : nat, c : {} }
+
+          derive test.P.1 default
+            { A, B } where P.2 { A, B, _ }
+
+          derive test.P.2 default
+            { A, B, {} } where test.P.1 { A, B }
+
+          predicate Stored : string
+            stored A where test.P.1 { A, _ }
+        }
+        schema all.1 : test.1, test.2 {}
+      |]
+      (either (assertFailure . show) return)
+  ]
+
+assertRejected :: String -> Either SomeException () -> IO ()
+assertRejected expected r = case r of
+  Left err ->
+    assertBool ("error should mention " <> expected <> ":\n" <> show err) $
+      expected `isInfixOf` show err
+  Right () -> assertFailure "schema was accepted"
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "recursion" recursionTest
   , TestLabel "stratification" stratificationTest
+  , TestLabel "stored predicates" storedTest
   ]
