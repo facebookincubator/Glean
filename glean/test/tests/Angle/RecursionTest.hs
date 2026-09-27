@@ -93,6 +93,43 @@ recursionTest = TestList
           ]
           facts
 
+  , TestLabel "non-linear recursion typechecks" $ TestCase $ do
+    withSchemaAndFacts [enableRecursion]
+      [s|
+        schema x.1 {
+          type Node = nat
+          predicate Edge : { from: Node, to: Node }
+          predicate Path : { from: Node, to: Node }
+            { A, B } where
+              (Path { A, X }; Path { X, B }) | Edge { A, B }
+        }
+        schema all.1 : x.1 {}
+      |]
+      [ mkBatch (PredicateRef "x.Edge" 1)
+          [ [s|{ "key": { "from": 1, "to": 2 } }|]
+          ]
+      ]
+      $ \_ _ _ -> return ()
+
+  , TestLabel "mutual recursion typechecks" $ TestCase $ do
+    withSchemaAndFacts [enableRecursion]
+      [s|
+        schema x.1 {
+          predicate P : nat
+          predicate Q : nat
+          predicate R : nat
+            A where P A | S A
+          predicate S : nat
+            A where Q A | R A
+        }
+        schema all.1 : x.1 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 1)
+          [ [s|{ "key": 1 }|]
+          ]
+      ]
+      $ \_ _ _ -> return ()
+
   , TestLabel "cycle closed by a later derive declaration" $ TestCase $ do
     -- P is declared without a derivation in x.1 and only gets one in x.2,
     -- closing the cycle P -> Q -> P across schemas.
