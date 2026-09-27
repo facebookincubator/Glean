@@ -21,6 +21,7 @@ module Glean.Query.Typecheck
   , defaultTcOpts
   , emptyTcEnv
   , tcQueryDeps
+  , tcQueryNegativeDeps
   , tcQueryUsesNegation
   , UseOfNegation(..)
   ) where
@@ -1023,6 +1024,61 @@ tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
       TcPromote _ p -> overPat p
       TcDemote _ p -> overPat p
       TcStructPat fs -> foldMap overPat (map snd fs)
+
+-- | Predicates that a query depends on negatively. These are the
+-- predicates searched in any context where adding facts of the predicate
+-- can change the query's results, rather than only add to them:
+--
+-- * inside a negation @!(...)@
+-- * in the condition of @if ... then ... else ...@, because the else
+--   branch runs when the condition has no results
+-- * inside @all (...)@, because the set of results it builds changes
+--
+-- A predicate must not depend negatively on itself, directly or through
+-- other predicates (see 'Glean.Database.Schema.checkStratification').
+tcQueryNegativeDeps :: TcQuery -> Set PredicateId
+tcQueryNegativeDeps q = Set.fromList $ map getRef (overQuery False q)
+  where
+    getRef (PidRef _ ref) = ref
+
+    -- The Bool says whether we are in a negative context.
+    overQuery :: Bool -> TcQuery -> [PidRef]
+    overQuery neg (TcQuery _ key mval stmts _) =
+      overPat neg key
+        <> maybe [] (overPat neg) mval
+        <> foldMap (overStatement neg) stmts
+
+    overStatement :: Bool -> TcStatement -> [PidRef]
+    overStatement neg (TcStatement _ lhs rhs) =
+      overPat neg lhs <> overPat neg rhs
+
+    overPat :: Bool -> TcPat -> [PidRef]
+    overPat neg = foldMap (bifoldMap (overTyped neg) (const mempty))
+
+    overTyped :: Bool -> Typed TcTerm -> [PidRef]
+    overTyped neg (Typed _ tcTerm) = overTerm neg tcTerm
+
+    overTerm :: Bool -> TcTerm -> [PidRef]
+    overTerm neg = \case
+      TcFactGen pref x y _ ->
+        [ pref | neg ] <> overPat neg x <> overPat neg y
+      TcNegation p -> overPat True p
+      TcIf (Typed _ x) y z -> overPat True x <> foldMap (overPat neg) [y, z]
+      TcAll p -> overPat True p
+      TcOr x y -> overPat neg x <> overPat neg y
+      TcElementsOfArray x -> overPat neg x
+      TcElementsOfSet x -> overPat neg x
+      TcElementsUnresolved _ x -> overPat neg x
+      TcWhere q -> overQuery neg q
+      TcPrimCall _ xs -> foldMap (overPat neg) xs
+      -- Dereferencing looks up the key of a fact we already have, which
+      -- doesn't change as more facts are added.
+      TcDeref _ p -> overPat neg p
+      TcFieldSelect (Typed _ p) _ -> overPat neg p
+      TcAltSelect (Typed _ p) _ -> overPat neg p
+      TcPromote _ p -> overPat neg p
+      TcDemote _ p -> overPat neg p
+      TcStructPat fs -> foldMap (overPat neg . snd) fs
 
 data UseOfNegation
   = PatternNegation

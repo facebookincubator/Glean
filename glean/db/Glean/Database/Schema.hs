@@ -461,6 +461,11 @@ mkDbSchema toList cacheVar knownPids dbContent
             $ "use of " <> feature  <> " is not allowed in a stored predicate: "
             <> showRef (predicateRef d)
 
+    -- Check that no predicate depends on its own negation.
+    -- See Note [Stratification]
+    either (throwIO . Thrift.Exception) return $
+      checkStratification (tcEnvPredicates tcEnv)
+
     let
         predicates = snd <$> toList (tcEnvPredicates tcEnv)
 
@@ -966,6 +971,98 @@ derivationEdges preds =
   | (ref, details) <- HashMap.toList preds
   , Derive _ (QueryWithInfo query _ _ _)  <- [predicateDeriving details]
   ]
+
+{- Note [Stratification]
+
+Recursive derivations shouldn't let us define a fact in terms of its own
+negation:
+
+  predicate P : nat
+    A where Base A; !(Q A)
+  predicate Q : nat
+    A where P A
+
+Here a fact P 1 exists only if Q 1 doesn't, and Q 1 exists only if P 1
+does, so there's no sensible answer. We rule this out by requiring the
+schema to be stratified: no predicate may depend negatively on itself,
+directly or through other predicates. Negation of a recursive predicate
+is fine as long as the negation isn't part of the recursion, because then
+there is no way to have this kid of contradictory specification.
+
+A dependency is negative when the predicate is searched inside a
+negation, in the condition of an if, or inside `all` (see
+tcQueryNegativeDeps).
+
+Unlike checkRecursiveDefinitions, we include default derivations. Pairs of
+default derivations used for schema migration form cycles, but they don't
+negate each other, and if a default derivation ever were part of a cycle
+through negation it would be unsound whenever it is enabled.
+-}
+
+-- | Check that no predicate depends negatively on itself, directly or
+-- through other predicates. See Note [Stratification].
+checkStratification :: HashMap PredicateId PredicateDetails -> Either Text ()
+checkStratification preds =
+  unless (null violations) $ Left $ Text.unlines $
+    "recursion through negation is not allowed. These predicates depend "
+      <> "on their own negation:"
+    : [ "  " <> Text.intercalate " -> "
+          (showPred ref : ("!" <> showPred neg) : map showPred (drop 1 path))
+      | (ref, neg) <- violations
+      , let path = pathWithin neg ref
+      ]
+    ++ [ "(!P means that P is negated, used in the condition of an if, "
+          <> "or used inside all)" ]
+  where
+    edges = derivationEdges preds
+
+    deps :: HashMap PredicateId [PredicateId]
+    deps = HashMap.fromList [ (ref, ds) | (_, ref, ds) <- edges ]
+
+    depsOf :: PredicateId -> [PredicateId]
+    depsOf p = HashMap.lookupDefault [] p deps
+
+    -- the recursive component that each recursive predicate belongs to
+    componentOf :: HashMap PredicateId Int
+    componentOf = HashMap.fromList
+      [ (ref, n)
+      | (n, CyclicSCC refs) <- zip [0..] components
+      , ref <- refs
+      ]
+      where
+      components = stronglyConnComp [ (ref, ref, ds) | (_, ref, ds) <- edges ]
+
+    sameComponent a b =
+      isJust (HashMap.lookup a componentOf)
+      && HashMap.lookup a componentOf == HashMap.lookup b componentOf
+
+    -- (P, Q) where P's derivation depends negatively on Q and Q is in
+    -- the same recursive component as P.
+    violations :: [(PredicateId, PredicateId)]
+    violations = sort
+      [ (ref, neg)
+      | (query, ref, _) <- edges
+      , HashMap.member ref componentOf
+      , neg <- Set.toList (tcQueryNegativeDeps query)
+      , sameComponent ref neg
+      ]
+
+    -- Shortest path of dependencies from one predicate to another in the
+    -- same recursive component, including both ends.
+    pathWithin :: PredicateId -> PredicateId -> [PredicateId]
+    pathWithin from to = go [(from, [])] (HashSet.singleton from)
+      where
+      go [] _ = [from, to] -- unreachable: they are in the same component
+      go ((p, path) : rest) seen
+        | p == to = reverse (p : path)
+        | otherwise =
+          go (rest ++ [ (n, p : path) | n <- next ])
+            (foldr HashSet.insert seen next)
+        where
+        next =
+          [ n | n <- depsOf p, sameComponent n to, not (HashSet.member n seen) ]
+
+    showPred = showRef . predicateIdRef
 
 -- | Check that the type of a stored predicate doesn't refer to any
 -- derived predicates.
