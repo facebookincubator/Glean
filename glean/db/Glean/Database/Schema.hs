@@ -945,23 +945,32 @@ usesOfNegation
   :: HashMap PredicateId PredicateDetails
   -> HashMap PredicateId UseOfNegation
 usesOfNegation preds =
-  foldl' recordUseOfNegation mempty derivations
+  -- Components come in reverse topological order, so by the time we
+  -- process a component all components it depends on have been processed.
+  foldl' addComponent mempty $
+    stronglyConnComp [ (d, ref, deps) | d@(_, ref, deps) <- derivations ]
   where
-    recordUseOfNegation usesNegation (mUseOfNeg, ref, deps)
-      | Just use <- mUseOfNeg
-      = HashMap.insert ref use usesNegation
-      | Just use <- firstJust (`HashMap.lookup` usesNegation) deps
-      = HashMap.insert ref use usesNegation
-      | otherwise
-      -- remove from Map in case a derived predicate in this schema that does
-      -- not use negation overrode a derived predicate that used negation.
-      = HashMap.delete ref usesNegation
+    -- The members of a recursive component depend on each other, so if
+    -- one of them uses negation, directly or through a dependency outside
+    -- the component, they all do.
+    addComponent usesNegation component =
+      case uses of
+        Nothing -> usesNegation
+        Just use -> foldl' (\m ref -> HashMap.insert ref use m) usesNegation
+          [ ref | (_, ref, _) <- members ]
+      where
+      members = flattenSCC component
+      uses =
+        firstJust (\(use, _, _) -> use) members <|>
+        firstJust (`HashMap.lookup` usesNegation)
+          (concat [ deps | (_, _, deps) <- members ])
 
-    -- derivations in dependency order with flag for use of negation
+    -- derivations with flag for use of negation
     derivations :: [(Maybe UseOfNegation, PredicateId, [PredicateId])]
-    derivations = toPred . getNode <$> reverse (topSort graph)
-    (graph, getNode, _) = graphFromEdges $ derivationEdges preds
-    toPred (b, k, ks) = (tcQueryUsesNegation b, k, ks)
+    derivations =
+      [ (tcQueryUsesNegation query, ref, deps)
+      | (query, ref, deps) <- derivationEdges preds
+      ]
 
 derivationEdges
   :: HashMap PredicateId PredicateDetails
