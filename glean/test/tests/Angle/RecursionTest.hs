@@ -11,6 +11,7 @@ module Angle.RecursionTest (main) where
 
 import Control.Exception
 import Data.Default (def)
+import Data.List (sort)
 import Data.Text (Text, unpack)
 import Test.HUnit
 
@@ -159,6 +160,70 @@ recursionTest = TestList
         q <- decodeResultsAs "x.Q.1" schema =<< runQ env repo [s| x.Q.1 _ |]
         assertEqual "Q sees P's derivation from x.2"
           [ RTS.Nat 1, RTS.Nat 2 ] q
+
+  , TestLabel "recursion using a non-recursive derived predicate" $
+    TestCase $ do
+    -- Step is derived but not recursive, so it is inlined into each
+    -- expansion of Path.
+    withSchemaAndFacts [enableRecursion]
+      [s|
+        schema x.1 {
+          type Node = nat
+          predicate Edge : { from: Node, to: Node }
+          predicate Step : { from: Node, to: Node }
+            { A, B } where Edge { A, B }
+          predicate Path : { from: Node, to: Node }
+            { A, B } where
+              Step { A, B } | (Path { A, K }; Step { K, B })
+        }
+        schema all.1 : x.1 {}
+      |]
+      [ mkBatch (PredicateRef "x.Edge" 1)
+          [ [s|{ "key": { "from": 1, "to": 2 } }|]
+          , [s|{ "key": { "from": 2, "to": 3 } }|]
+          ]
+      ]
+      $ \env repo schema -> do
+        facts <- decodeResultsAs "x.Path.1" schema =<< runQ env repo
+          [s| x.Path _ |]
+        assertEqual "result content"
+          [ RTS.Tuple [ RTS.Nat 1, RTS.Nat 2 ]
+          , RTS.Tuple [ RTS.Nat 1, RTS.Nat 3 ]
+          , RTS.Tuple [ RTS.Nat 2, RTS.Nat 3 ]
+          ]
+          (sort facts)
+
+  , TestLabel "derived predicate whose type refers to itself" $
+    TestCase $ do
+    -- Chain copies a linked list of Node facts, so the key of each
+    -- derived Chain fact refers to another derived Chain fact.
+    withSchemaAndFacts [enableRecursion]
+      [s|
+        schema x.1 {
+          predicate Node : { label : nat, next : maybe Node }
+          predicate Chain : { label : nat, next : maybe Chain }
+            { L, N } where
+              Node { L, M };
+              (M = nothing; N = nothing) |
+              (M = { just = Node { L2, _ } }; N = { just = Chain { L2, _ } })
+        }
+        schema all.1 : x.1 {}
+      |]
+      -- 1 -> 2 -> 3
+      [ mkBatch (PredicateRef "x.Node" 1)
+          [ [s|{ "id": 1, "key": { "label": 3 } }|]
+          , [s|{ "id": 2, "key": { "label": 2, "next": 1 } }|]
+          , [s|{ "id": 3, "key": { "label": 1, "next": 2 } }|]
+          ]
+      ]
+      $ \env repo schema -> do
+        chains <- decodeResultsAs "x.Chain.1" schema =<< runQ env repo
+          [s| x.Chain _ |]
+        assertEqual "one Chain fact per Node" 3 (length chains)
+        list <- decodeResultsAs "x.Chain.1" schema =<< runQ env repo
+          [s| x.Chain { 1, { just = x.Chain { 2, { just = x.Chain { 3, nothing } } } } } |]
+        assertEqual "Chain facts form the same list as Node facts"
+          1 (length list)
   ]
   where
     runQ env repo query =
