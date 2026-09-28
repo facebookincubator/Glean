@@ -8,6 +8,8 @@
 
 #include <fmt/core.h>
 
+#include "glean/rts/factset.h"
+#include "glean/rts/inventory.h"
 #include "glean/rts/ownership.h"
 #include "glean/rts/ownership/slice.h"
 
@@ -303,6 +305,75 @@ Usets buildExampleSets(std::vector<UnitId> units) {
   return usets;
 }
 
+struct TestOwnershipUnitIterator final : OwnershipUnitIterator {
+  struct Entry {
+    UnitId unit;
+    std::vector<OwnershipUnit::Ids> ids;
+  };
+
+  explicit TestOwnershipUnitIterator(std::vector<Entry> entries)
+      : entries_(std::move(entries)) {}
+
+  folly::Optional<OwnershipUnit> get() override {
+    if (next_ == entries_.size()) {
+      return folly::none;
+    }
+    const auto& entry = entries_[next_++];
+    return OwnershipUnit{entry.unit, {entry.ids.data(), entry.ids.size()}};
+  }
+
+ private:
+  std::vector<Entry> entries_;
+  size_t next_ = 0;
+};
+
+std::shared_ptr<Subroutine> traversalFor(
+    folly::Optional<std::pair<Id, Pid>> reference) {
+  std::vector<uint64_t> code;
+  size_t locals = 0;
+  if (reference) {
+    locals = 2;
+    code = {
+        static_cast<uint64_t>(Op::LoadConst),
+        reference->first.toWord(),
+        4,
+        static_cast<uint64_t>(Op::LoadConst),
+        reference->second.toWord(),
+        5,
+        static_cast<uint64_t>(Op::CallFun_2_0),
+        0,
+        4,
+        5,
+    };
+  }
+  code.push_back(static_cast<uint64_t>(Op::Ret));
+  return std::make_shared<Subroutine>(
+      std::move(code),
+      4,
+      0,
+      locals,
+      std::vector<uint64_t>{},
+      std::vector<std::string>{});
+}
+
+Predicate predicateWithReference(
+    Pid type,
+    folly::Optional<std::pair<Id, Pid>> reference) {
+  auto traverser = traversalFor(reference);
+  return Predicate{type, "test.Predicate", 1, traverser, traverser};
+}
+
+UsetId ownerAt(const ComputedOwnership& ownership, Id fact) {
+  UsetId owner = INVALID_USET;
+  for (const auto& [start, candidate] : ownership.facts_) {
+    if (start > fact) {
+      break;
+    }
+    owner = candidate;
+  }
+  return owner;
+}
+
 } // namespace
 
 TEST(OwnershipTest, SliceTest) {
@@ -461,6 +532,44 @@ TEST(OwnershipTest, SliceSerializationPreservesVisibleMembers) {
   EXPECT_TRUE(restored->visible(203));
   EXPECT_TRUE(restored->visible(265));
   EXPECT_FALSE(restored->visible(266));
+}
+
+TEST(OwnershipTest, ComputeOwnershipPropagatesOwnersTransitively) {
+  FactSet facts(Id::lowest());
+  unsigned char leafData[] = "leaf";
+  unsigned char middleData[] = "middle";
+  unsigned char topData[] = "top";
+  const auto leaf = facts.define(
+      Pid::lowest(), Fact::Clause::fromKey(folly::ByteRange(leafData, 4)));
+  const auto middle = facts.define(
+      Pid::lowest() + 1,
+      Fact::Clause::fromKey(folly::ByteRange(middleData, 6)));
+  const auto top = facts.define(
+      Pid::lowest() + 2, Fact::Clause::fromKey(folly::ByteRange(topData, 3)));
+  Inventory inventory({
+      predicateWithReference(Pid::lowest(), folly::none),
+      predicateWithReference(Pid::lowest() + 1, {{leaf, Pid::lowest()}}),
+      predicateWithReference(Pid::lowest() + 2, {{middle, Pid::lowest() + 1}}),
+  });
+  TestOwnershipUnitIterator units({
+      {0, {{leaf, leaf}}},
+      {1, {{middle, middle}}},
+      {2, {{top, top}}},
+  });
+
+  const auto ownership = computeOwnership(inventory, facts, nullptr, &units);
+
+  const auto* leafOwner =
+      ownership->sets_.lookupById(ownerAt(*ownership, leaf));
+  const auto* middleOwner =
+      ownership->sets_.lookupById(ownerAt(*ownership, middle));
+  const auto* topOwner = ownership->sets_.lookupById(ownerAt(*ownership, top));
+  ASSERT_NE(leafOwner, nullptr);
+  ASSERT_NE(middleOwner, nullptr);
+  ASSERT_NE(topOwner, nullptr);
+  EXPECT_EQ(SetU32::to(leafOwner->exp.set), (std::set<uint32_t>{0, 1, 2}));
+  EXPECT_EQ(SetU32::to(middleOwner->exp.set), (std::set<uint32_t>{1, 2}));
+  EXPECT_EQ(SetU32::to(topOwner->exp.set), (std::set<uint32_t>{2}));
 }
 
 struct SetSerializationTest : testing::Test {};
