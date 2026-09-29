@@ -346,63 +346,68 @@ impl GleanJSONOutput {
     /// The shards are complete SCIP subgraphs, per the SCIP schema definition
     /// This facilitates smaller writes to Glean without global, stateful keys
     pub fn shard(self, shard_size: usize) -> Vec<Self> {
+        // Exhaustive so that a new field can't be silently left out of every shard.
+        let GleanJSONOutput {
+            src_files,
+            file_langs,
+            documentation,
+            symbol_documentation,
+            file_ranges,
+            enclosing_ranges,
+            symbols,
+            definitions,
+            references,
+            local_names,
+            symbol_names,
+            is_implementation,
+            enclosing_symbols,
+            symbol_kinds,
+            metadata,
+            display_names,
+            display_name_symbols,
+            file_lines,
+        } = self;
+
         // Lookup tables, inline to avoid annoying lifetime specifiers
-        let files = self
-            .src_files
+        let files = src_files
             .iter()
             .map(|x| (x.id, x))
             .collect::<HashMap<_, _>>();
-        let documentation = self
-            .documentation
+        let documentation = documentation
             .iter()
             .map(|x| (x.id, x))
             .collect::<HashMap<_, _>>();
-        let file_ranges = self
-            .file_ranges
+        let file_ranges = file_ranges
             .iter()
             .map(|x| (x.id, x))
             .collect::<HashMap<_, _>>();
-        let symbols = self
-            .symbols
+        let symbols = symbols.iter().map(|x| (x.id, x)).collect::<HashMap<_, _>>();
+        let local_names = local_names
             .iter()
             .map(|x| (x.id, x))
             .collect::<HashMap<_, _>>();
-        let local_names = self
-            .local_names
-            .iter()
-            .map(|x| (x.id, x))
-            .collect::<HashMap<_, _>>();
-        let display_names = self
-            .display_names
+        let display_names = display_names
             .iter()
             .map(|x| (x.id, x))
             .collect::<HashMap<_, _>>();
 
         let mut source_nodes: Vec<Node> = Vec::new();
-        source_nodes.extend(self.symbol_names.into_iter().map(Node::SymbolName));
+        source_nodes.extend(symbol_names.into_iter().map(Node::SymbolName));
+        source_nodes.extend(is_implementation.into_iter().map(Node::IsImplementation));
+        source_nodes.extend(enclosing_symbols.into_iter().map(Node::EnclosingSymbol));
+        source_nodes.extend(file_langs.into_iter().map(Node::FileLanguage));
+        source_nodes.extend(symbol_kinds.into_iter().map(Node::SymbolKind));
+        source_nodes.extend(definitions.into_iter().map(Node::Definition));
+        source_nodes.extend(references.into_iter().map(Node::Reference));
+        source_nodes.extend(enclosing_ranges.into_iter().map(Node::EnclosingRange));
         source_nodes.extend(
-            self.is_implementation
-                .into_iter()
-                .map(Node::IsImplementation),
-        );
-        source_nodes.extend(
-            self.enclosing_symbols
-                .into_iter()
-                .map(Node::EnclosingSymbol),
-        );
-        source_nodes.extend(self.file_langs.into_iter().map(Node::FileLanguage));
-        source_nodes.extend(self.symbol_kinds.into_iter().map(Node::SymbolKind));
-        source_nodes.extend(self.definitions.into_iter().map(Node::Definition));
-        source_nodes.extend(self.references.into_iter().map(Node::Reference));
-        source_nodes.extend(self.enclosing_ranges.into_iter().map(Node::EnclosingRange));
-        source_nodes.extend(
-            self.symbol_documentation
+            symbol_documentation
                 .into_iter()
                 .map(Node::SymbolDocumentation),
         );
-        source_nodes.extend(self.file_lines.into_iter().map(Node::FileLines));
+        source_nodes.extend(file_lines.into_iter().map(Node::FileLines));
         source_nodes.extend(
-            self.display_name_symbols
+            display_name_symbols
                 .into_iter()
                 .map(Node::DisplayNameSymbol),
         );
@@ -505,7 +510,7 @@ impl GleanJSONOutput {
 
         // Metadata is one global fact, so every shard carries it and stays a complete DB input.
         for shard in &mut shards {
-            shard.metadata = self.metadata.clone();
+            shard.metadata = metadata.clone();
         }
 
         shards
