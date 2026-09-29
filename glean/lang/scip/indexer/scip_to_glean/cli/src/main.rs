@@ -446,6 +446,59 @@ mod tests {
         assert_eq!(output_json, "[]\n");
     }
 
+    #[test]
+    fn test_sharded_scip_keeps_all_predicates() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json_dir = tempfile::TempDir::new().expect("unable to create temp dir");
+
+        let mut index = Index::new();
+        index.metadata.mut_or_insert_default();
+        let mut doc = Document::new();
+        doc.relative_path = "test.java".to_string();
+        doc.text = "class Foo {}\n".to_string();
+        let mut occ = ScipOccurrence::new();
+        occ.symbol = "semanticdb maven . . Foo#".to_string();
+        occ.range = vec![0, 6, 9];
+        occ.symbol_roles = 1; // Definition
+        doc.occurrences.push(occ);
+        let mut info = ScipSymbolInformation::new();
+        info.symbol = "semanticdb maven . . Foo#".to_string();
+        info.display_name = "Foo".to_string();
+        doc.symbols.push(info);
+        index.documents.push(doc);
+        write_scip_index_full(&mut scip_file, index);
+
+        let mut args = build_args(
+            scip_file.path().to_path_buf(),
+            output_json_dir.path().to_path_buf(),
+        );
+        args.shard = Some(1);
+        build_json(args).expect("failure building JSON");
+
+        let shards: Vec<String> = std::fs::read_dir(output_json_dir.path())
+            .unwrap()
+            .map(|entry| std::fs::read_to_string(entry.unwrap().path()).unwrap())
+            .collect();
+        for predicate in [
+            "src.FileLines.1",
+            "scip.DisplayName.1",
+            "scip.DisplayNameSymbol.1",
+        ] {
+            assert!(
+                shards
+                    .iter()
+                    .any(|json| find_predicate_facts(json, predicate).is_some()),
+                "{predicate} missing from every shard"
+            );
+        }
+        assert!(
+            shards
+                .iter()
+                .all(|json| find_predicate_facts(json, "scip.Metadata.1").is_some()),
+            "every shard should carry scip.Metadata"
+        );
+    }
+
     /// Helper to create a SCIP index file with a single document
     fn write_scip_index(scip_file: &mut impl std::io::Write, doc: Document) {
         let mut index = Index::new();

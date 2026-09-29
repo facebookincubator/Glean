@@ -88,7 +88,7 @@ struct Metadata {
     tool_info: Option<ToolInfo>,
     version: i32,
 }
-#[derive(Serialize)]
+#[derive(Serialize, Clone, Eq, PartialEq, Hash)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 struct DisplayNameSymbol {
     display_name: ScipId,
@@ -111,6 +111,9 @@ enum Node {
     LocalName(IdKey<Box<str>>),
     Symbol(IdKey<Box<str>>),
     Documentation(IdKey<Box<str>>),
+    FileLines(Key<FileLines>),
+    DisplayNameSymbol(Key<DisplayNameSymbol>),
+    DisplayName(IdKey<Box<str>>),
 }
 
 #[derive(Default)]
@@ -157,6 +160,9 @@ where
                 Node::LocalName(node) => output.local_names.push(node),
                 Node::Symbol(node) => output.symbols.push(node),
                 Node::Documentation(node) => output.documentation.push(node),
+                Node::FileLines(node) => output.file_lines.push(node),
+                Node::DisplayNameSymbol(node) => output.display_name_symbols.push(node),
+                Node::DisplayName(node) => output.display_names.push(node),
             }
         }
 
@@ -366,6 +372,11 @@ impl GleanJSONOutput {
             .iter()
             .map(|x| (x.id, x))
             .collect::<HashMap<_, _>>();
+        let display_names = self
+            .display_names
+            .iter()
+            .map(|x| (x.id, x))
+            .collect::<HashMap<_, _>>();
 
         let mut source_nodes: Vec<Node> = Vec::new();
         source_nodes.extend(self.symbol_names.into_iter().map(Node::SymbolName));
@@ -389,8 +400,14 @@ impl GleanJSONOutput {
                 .into_iter()
                 .map(Node::SymbolDocumentation),
         );
+        source_nodes.extend(self.file_lines.into_iter().map(Node::FileLines));
+        source_nodes.extend(
+            self.display_name_symbols
+                .into_iter()
+                .map(Node::DisplayNameSymbol),
+        );
 
-        let mut shards = Vec::new();
+        let mut shards: Vec<Self> = Vec::new();
 
         let mut current_graph: HashSet<Node> = HashSet::new();
 
@@ -460,11 +477,24 @@ impl GleanJSONOutput {
                             to_visit.push(Node::Symbol(symbol.clone()));
                             to_visit.push(Node::Documentation(doc.clone()));
                         }
+                        Node::FileLines(file_lines) => {
+                            let file = *files.get(&file_lines.key.file).unwrap();
+                            to_visit.push(Node::File(file.clone()));
+                        }
+                        Node::DisplayNameSymbol(display_name_symbol) => {
+                            let symbol = *symbols.get(&display_name_symbol.key.symbol).unwrap();
+                            let display_name = *display_names
+                                .get(&display_name_symbol.key.display_name)
+                                .unwrap();
+                            to_visit.push(Node::Symbol(symbol.clone()));
+                            to_visit.push(Node::DisplayName(display_name.clone()));
+                        }
                         // sink nodes:
                         Node::LocalName(_) => {}
                         Node::Symbol(_) => {}
                         Node::Documentation(_) => {}
                         Node::File(_) => {}
+                        Node::DisplayName(_) => {}
                     }
                     current_graph.insert(node);
                 }
@@ -472,6 +502,11 @@ impl GleanJSONOutput {
         }
 
         shards.push(current_graph.into());
+
+        // Metadata is one global fact, so every shard carries it and stays a complete DB input.
+        for shard in &mut shards {
+            shard.metadata = self.metadata.clone();
+        }
 
         shards
     }
