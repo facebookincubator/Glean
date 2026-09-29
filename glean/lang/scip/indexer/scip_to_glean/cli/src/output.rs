@@ -38,9 +38,10 @@ struct FileRange {
     range: GleanRange,
 }
 #[derive(Serialize, Clone, Eq, PartialEq, Hash)]
+#[serde(rename_all = "camelCase")]
 struct EnclosingRange {
     range: ScipId,
-    enclosingRange: ScipId,
+    enclosing_range: ScipId,
 }
 #[derive(Serialize, Clone, Eq, PartialEq, Hash)]
 struct SymbolLocation {
@@ -210,7 +211,7 @@ impl GleanJSONOutput {
             id,
             key: EnclosingRange {
                 range,
-                enclosingRange: enclosing_range,
+                enclosing_range,
             },
         });
     }
@@ -436,7 +437,7 @@ impl GleanJSONOutput {
                         Node::EnclosingRange(enclosing_range) => {
                             let EnclosingRange {
                                 range,
-                                enclosingRange: enclosing_range,
+                                enclosing_range,
                             } = &enclosing_range.key;
                             let range_idkey = *file_ranges.get(range).unwrap();
                             let enclosing_range_idkey = *file_ranges.get(enclosing_range).unwrap();
