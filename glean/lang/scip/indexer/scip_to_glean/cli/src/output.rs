@@ -94,6 +94,7 @@ struct DisplayNameSymbol {
     symbol: ScipId,
 }
 
+/// A node in the fact graph.
 #[derive(Eq, Hash, PartialEq, Clone)]
 enum Node {
     SymbolName(Key<SymbolName>),
@@ -115,6 +116,7 @@ enum Node {
     DisplayName(IdKey<Box<str>>),
 }
 
+/// The JSON output we will generate, suitable for Glean to import.
 #[derive(Default)]
 pub struct GleanJSONOutput {
     src_files: Vec<IdKey<Box<str>>>,
@@ -341,9 +343,12 @@ impl GleanJSONOutput {
             + self.file_lines.len()
     }
 
-    /// Consumes self, returns a list of GleanJSONOutput shards that are approximately of size `shard_size`
-    /// The shards are complete SCIP subgraphs, per the SCIP schema definition
-    /// This facilitates smaller writes to Glean without global, stateful keys
+    /// Split this `GleanJSONOutput` value into a vec of smaller GleanJSONOutput
+    /// values that each contain roughly `shard_size` items.
+    ///
+    /// Each smaller value is a self-contained SCIP subgraph, per the SCIP
+    /// schema definition. This enables us to do multiple smaller writes to
+    /// Glean without needing any tracking state.
     pub fn shard(self, shard_size: usize) -> Vec<Self> {
         // Exhaustive so that a new field can't be silently left out of every shard.
         let GleanJSONOutput {
