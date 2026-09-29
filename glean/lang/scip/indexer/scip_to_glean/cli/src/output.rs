@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-use std::collections::HashMap;
-use std::collections::HashSet;
-
+use ahash::AHashMap as HashMap;
+use ahash::AHashSet as HashSet;
 use serde::Serialize;
 
 use crate::GleanRange;
