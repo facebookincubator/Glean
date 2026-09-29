@@ -350,6 +350,8 @@ impl GleanJSONOutput {
     /// schema definition. This enables us to do multiple smaller writes to
     /// Glean without needing any tracking state.
     pub fn shard(self, shard_size: usize) -> Vec<Self> {
+        let shard_capacity = shard_size.min(self.total_facts_count());
+
         // Exhaustive so that a new field can't be silently left out of every shard.
         let GleanJSONOutput {
             src_files,
@@ -430,7 +432,7 @@ impl GleanJSONOutput {
 
         let mut shards: Vec<Self> = Vec::new();
 
-        let mut current_graph: HashSet<Node> = HashSet::new();
+        let mut current_graph: HashSet<Node> = HashSet::with_capacity(shard_capacity);
 
         let mut to_visit: Vec<Node> = Vec::new();
 
@@ -439,7 +441,7 @@ impl GleanJSONOutput {
             if current_graph.len() >= shard_size {
                 shards.push(current_graph.into());
 
-                current_graph = HashSet::new();
+                current_graph = HashSet::with_capacity(shard_capacity);
             }
 
             to_visit.push(node);
