@@ -92,11 +92,11 @@ checkWritable repo OpenDB{..} =
     Nothing -> dbError repo "can't write to a read only database"
     Just writing -> return writing
 
--- | We can only add fact ownership *before* @glean complete@, otherwise
--- it won't get propagated. Similarly, we can only add facts with
--- explicit dependencies *after* @glean complete@.
-checkComplete :: Env -> Repo -> Thrift.Batch -> IO ()
-checkComplete env repo Thrift.Batch{..} = do
+-- | Enforce phase constraints on ownership fields and reject non-empty ACL
+-- writes that provide no explicit, computed, or dependency-based ownership.
+validateWriteContent :: Env -> Repo -> WriteContent -> IO ()
+validateWriteContent env repo WriteContent{
+    writeBatch = Thrift.Batch{..}, ..} = do
   -- Read database properties to check ACL mode
   meta <- atomically $ Catalog.readMeta (envCatalog env) repo
   let dbAclEnabled = isACLEnabled (metaProperties meta)
@@ -111,7 +111,11 @@ checkComplete env repo Thrift.Batch{..} = do
       throwIO $ Thrift.Exception
         "Attempting to write facts with dependencies before 'glean complete'"
   -- Check based on database ACL property, not server config
-  when (dbAclEnabled && batch_count > 0 && HashMap.null batch_owned) $
+  let hasOwnership =
+        not (HashMap.null batch_owned) ||
+        isJust writeOwnership ||
+        not (HashMap.null batch_dependencies)
+  when (dbAclEnabled && batch_count > 0 && not hasOwnership) $
     throwIO $ Thrift.Exception $ "ACLs are enabled for this database but " <>
       "batch contains no ownership data. Indexer must be run with " <>
       "--ownership to emit ownership information."
@@ -131,8 +135,8 @@ writeDatabase
 writeDatabase env repo materializeContent latency =
   readDatabase env repo $ \odb lookup -> do
     writing <- checkWritable repo odb
-    WriteContent{..} <- materializeContent
-    checkComplete env repo writeBatch
+    content@WriteContent{..} <- materializeContent
+    validateWriteContent env repo content
     Stats.bump (envStats env) Stats.mutatorLatency =<< endTick latency
     let !size = batchSize writeBatch
 

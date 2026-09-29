@@ -41,6 +41,7 @@ import Glean.Typed
 import Glean.Types as Thrift
 import Glean.Test.HUnit
 import qualified Glean.Schema.GleanTest.Types as Glean.Test
+import qualified Glean.Schema.GleanTest as GleanTestSchema
 import Glean.Query.Thrift
 import Glean.Write.JSON (syncWriteJsonBatch)
 
@@ -49,6 +50,7 @@ import TestDB
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "deriveStored" $ testDerivation $ deriveSerial $ const mempty
+  , TestLabel "deriveStoredAcl" deriveStoredAclTest
   , TestLabel "deriveParallel" deriveParallelTest
   , TestLabel "deriveIncremental" deriveIncrementalTest
   ]
@@ -59,6 +61,23 @@ testDerivation derive = TestList
   , TestLabel "completenessTest" $ completenessTest derive
   , TestLabel "deriveDeleteDeriveTest" $ deriveDeleteDeriveTest derive
   ]
+
+deriveStoredAclTest :: Test
+deriveStoredAclTest = TestCase $ withTestEnv [] $ \env -> do
+  let repo = Thrift.Repo "dbderive-acl" "1"
+  kickOffTestDB env repo $ \kickOff -> kickOff
+    { kickOff_properties =
+        HashMap.insert "glean.acl" "enabled" $ kickOff_properties kickOff
+    , kickOff_acl_config = Just $ HashMap.singleton "test" ["acl-group"]
+    }
+  writeFactsIntoDB env repo [GleanTestSchema.allPredicates] $
+    withUnit "test" $
+      makeFact_ @Glean.Test.StringPair $
+        Glean.Test.StringPair_key "a" "b"
+
+  derivedCount <- deriveSerial (const mempty) env repo
+    (Proxy @Glean.Test.StoredRevStringPair)
+  assertEqual "deriveStoredAclTest" 1 derivedCount
 
 type RunDerive = forall p. Predicate p => Env -> Repo -> Proxy p -> IO Int
 
