@@ -304,14 +304,24 @@ impl GoLineDirectiveSegment {
     }
 }
 
+/// Returns the line number set by a Go line directive, i.e. the virtual line
+/// of the source line that follows the directive.
+///
+/// Accepts both the `//line filename:line[:col]` and the
+/// `/*line filename:line[:col]*/` forms, ignoring surrounding whitespace.
+/// When the directive ends in two numbers, they are read as `line:col`.
+/// Returns `None` if `line` is not a line directive or its line number is
+/// missing or zero.
+///
+/// For example, both `//line parser.y:42` and `/*line parser.y:42:5*/`
+/// return `Some(42)`: the line after the directive is line 42 of `parser.y`.
 fn parse_go_line_directive(line: &[u8]) -> Option<u64> {
     let line = trim_ascii(line);
     let directive = if let Some(rest) = line.strip_prefix(b"//line ") {
         rest
-    } else if let Some(rest) = line.strip_prefix(b"/*line ") {
-        trim_ascii(rest).strip_suffix(b"*/")?
     } else {
-        return None;
+        let rest = line.strip_prefix(b"/*line ")?;
+        trim_ascii(rest).strip_suffix(b"*/")?
     };
 
     let directive = std::str::from_utf8(trim_ascii(directive)).ok()?;
@@ -454,12 +464,9 @@ impl Env {
         // Normalize paths for TypeScript files only
         // TODO T240234639: Remove once SCIP stops returning paths with ../
         if matches!(lang, LanguageId::TypeScript | LanguageId::TypeScriptReact) {
-            match normalize_filepath(&filepath) {
-                Some(normalized) => filepath = normalized,
-                // Cannot normalize path properly (e.g., too many .. components);
-                // signal to the caller to skip this document.
-                None => return None,
-            }
+            // Cannot normalize path properly (e.g., too many .. components);
+            // signal to the caller to skip this document.
+            filepath = normalize_filepath(&filepath)?;
         }
 
         Some(filepath.into_boxed_str())
