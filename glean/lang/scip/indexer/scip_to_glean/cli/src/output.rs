@@ -395,7 +395,19 @@ impl GleanJSONOutput {
             .map(|x| (x.id, x))
             .collect::<HashMap<_, _>>();
 
-        let mut source_nodes: Vec<Node> = Vec::new();
+        let mut source_nodes: Vec<Node> = Vec::with_capacity(
+            symbol_names.len()
+                + is_implementation.len()
+                + enclosing_symbols.len()
+                + file_langs.len()
+                + symbol_kinds.len()
+                + definitions.len()
+                + references.len()
+                + enclosing_ranges.len()
+                + symbol_documentation.len()
+                + file_lines.len()
+                + display_name_symbols.len(),
+        );
         source_nodes.extend(symbol_names.into_iter().map(Node::SymbolName));
         source_nodes.extend(is_implementation.into_iter().map(Node::IsImplementation));
         source_nodes.extend(enclosing_symbols.into_iter().map(Node::EnclosingSymbol));
@@ -420,6 +432,8 @@ impl GleanJSONOutput {
 
         let mut current_graph: HashSet<Node> = HashSet::new();
 
+        let mut to_visit: Vec<Node> = Vec::new();
+
         // source nodes are our entry into each subgraph
         for node in source_nodes {
             if current_graph.len() >= shard_size {
@@ -428,7 +442,7 @@ impl GleanJSONOutput {
                 current_graph = HashSet::new();
             }
 
-            let mut to_visit = vec![node.clone()];
+            to_visit.push(node);
 
             while let Some(node) = to_visit.pop() {
                 if !current_graph.contains(&node) {
