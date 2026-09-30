@@ -76,6 +76,13 @@ class ClangDB {
 
   // Files
 
+  /// Resolves a Clang file entry to its Glean file fact and canonical path.
+  ///
+  /// The path is made relative to the indexing root when possible, resolving
+  /// symlinks within that root. When contents are available, this also adds
+  /// `Digest::FileDigest` and `Src::FileLines` facts to the current indexing
+  /// batch. Generated Buck paths are made content-addressed to avoid duplicate
+  /// file identities. Returns no value when a generated file cannot be read.
   std::optional<std::pair<Fact<Src::File>, std::filesystem::path>>
   fileFromEntry(const clang::FileEntryRef& entry);
 
@@ -83,18 +90,28 @@ class ClangDB {
     return sourceManager().getFileEntryForID(id);
   }
 
+  /// Resolves a Clang `FileID` to its Glean file fact and normalized path.
+  ///
+  /// A `FileID` is the `SourceManager`'s opaque identifier for a source buffer.
+  /// Returns no value when the buffer does not represent a physical file or its
+  /// contents cannot be read.
   std::optional<std::pair<Fact<Src::File>, std::filesystem::path>> physicalFile(
       clang::FileID id) {
-    std::optional<std::pair<Fact<Src::File>, std::filesystem::path>> res;
-    if (auto data = folly::get_default(files, id, nullptr)) {
-      res = {data->fact, data->path};
+    std::optional<std::pair<Fact<Src::File>, std::filesystem::path>> result;
+    if (auto* data = folly::get_default(files, id, nullptr)) {
+      result = {data->fact, data->path};
+    } else if (auto cached = folly::get_optional(resolved_physical_files, id)) {
+      result = *cached;
     } else if (auto entry = sourceManager().getFileEntryRefForID(id)) {
-      res = fileFromEntry(*entry);
+      result = fileFromEntry(*entry);
+      if (result) {
+        resolved_physical_files.emplace(id, *result);
+      }
     }
-    if (res) {
-      batch.fact<Src::FileLanguage>(res->first, getLanguage());
+    if (result) {
+      batch.fact<Src::FileLanguage>(result->first, getLanguage());
     }
-    return res;
+    return result;
   }
 
   Fact<Src::File> file(clang::FileID id) {
@@ -288,7 +305,25 @@ class ClangDB {
   };
 
   std::deque<FileData> file_data;
+  /// Per-file indexing state for source files entered by Clang's preprocessor.
+  ///
+  /// Populated when `clang::PPCallbacks::FileChanged` reports
+  /// `clang::PPCallbacks::EnterFile`, including for the translation unit's main
+  /// file and textual includes. Each value accumulates declarations,
+  /// preprocessing events, cross-references, and generated trace facts.
   folly::F14FastMap<clang::FileID, FileData*, HashFileID> files;
+  /// Resolved file metadata for source locations deserialized from precompiled
+  /// modules.
+  ///
+  /// Clang's `SourceManager` assigns `FileID`s to locations restored from a PCM
+  /// without reporting `clang::PPCallbacks::FileChanged`. Memoizing their file
+  /// facts and paths avoids repeatedly reading and hashing the source files,
+  /// without creating per-file indexing state for imported module contents.
+  folly::F14FastMap<
+      clang::FileID,
+      std::pair<Fact<Src::File>, std::filesystem::path>,
+      HashFileID>
+      resolved_physical_files;
 
   /// returns the language processed by the compilerInstance
   Src::Language getLanguage() const {
