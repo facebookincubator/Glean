@@ -30,6 +30,7 @@ import Glean.Database.Schema
 import Glean.Database.Schema.Types
 import Glean.LocalOrRemote (loadDbSchema)
 import qualified Glean.LocalOrRemote as Glean
+import qualified Glean.Remote as Remote
 import Glean.Types
 import Glean.RTS.Types
 import Glean.RTS.Foreign.FactSet (FactSet)
@@ -92,8 +93,8 @@ instance Plugin MergeCommand where
     --   --file-format=json, because the inventory isn't used.
     schemaData <- case inventorySource of
       Just (Left repo) -> do
-        dbSchema <- Glean.withBackendWithDefaultOptions
-          evb cfgAPI svc Nothing $ \backend -> do
+        dbSchema <- Glean.withBackend
+          evb cfgAPI svc Nothing (Remote.setTimeout 30) $ \backend -> do
             loadDbSchema backend repo
         logInfo("db's schema ID is: "  <> show (schemaId dbSchema))
         return (HaveSchema dbSchema)
