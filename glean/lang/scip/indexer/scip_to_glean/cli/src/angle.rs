@@ -79,7 +79,15 @@ pub struct Env {
     /// with contradictory `scip.SymbolKind` facts.
     kind_overrides: HashMap<Box<str>, SymbolKind>,
     go_line_directive_maps: HashMap<ScipId, GoLineDirectiveMap>,
+    /// Whether to attribute the facts decoded from each document to an
+    /// ownership unit named after the document's qualified filepath, and
+    /// all other facts to `NO_DOCUMENT_UNIT`.
+    ownership: bool,
 }
+
+/// Ownership unit of the facts that come from no SCIP document, such as
+/// `scip.Metadata` and the facts decoded from `Index.external_symbols`.
+const NO_DOCUMENT_UNIT: &str = "none";
 
 /// Normalize a filepath by removing .. and . components
 /// Returns None if the path cannot be properly normalized (e.g., too many .. components)
@@ -353,14 +361,21 @@ fn trim_ascii(bytes: &[u8]) -> &[u8] {
 }
 
 impl Env {
-    pub fn new() -> Self {
-        Self {
+    pub fn new(ownership: bool) -> Self {
+        let mut env = Self {
             unique: 1,
             fact_id: HashMap::new(),
             out: GleanJSONOutput::default(),
             kind_overrides: HashMap::new(),
             go_line_directive_maps: HashMap::new(),
-        }
+            ownership,
+        };
+        env.out.set_unit(env.no_document_unit());
+        env
+    }
+
+    fn no_document_unit(&self) -> Option<&'static str> {
+        self.ownership.then_some(NO_DOCUMENT_UNIT)
     }
 
     pub fn output(self) -> GleanJSONOutput {
@@ -511,7 +526,7 @@ impl Env {
         path_prefix: Option<&str>,
         strip_prefix: Option<&str>,
         source_root: Option<&Path>,
-        mut doc: Document,
+        doc: Document,
     ) -> Result<()> {
         let lang = self.infer_lang_for_doc(default_lang, infer_language, &doc);
         let Some(filepath) =
@@ -526,6 +541,23 @@ impl Env {
             return Ok(());
         };
 
+        // The unit is the `src.File` key, so that ACL path prefixes match it.
+        let unit = self.ownership.then_some(&*filepath);
+        self.out.set_unit(unit);
+        let result = self.decode_doc_facts(lang, filepath, source_root, doc);
+        self.out.set_unit(self.no_document_unit());
+        result
+    }
+
+    /// Emits the facts of a document whose language and qualified filepath
+    /// have already been determined.
+    fn decode_doc_facts(
+        &mut self,
+        lang: LanguageId,
+        filepath: Box<str>,
+        source_root: Option<&Path>,
+        mut doc: Document,
+    ) -> Result<()> {
         // SCIP allows multiple Documents to share the same `relative_path`:
         // the Index proto comment in third-party/scip/scip.proto says
         // "Complementary information can be merged together from multiple
@@ -1113,7 +1145,7 @@ mod tests {
 
     #[test]
     fn test_file_language_of_perl() {
-        let env = Env::new();
+        let env = Env::new(false);
         assert!(
             matches!(
                 env.file_language_of("lib/Foo/Bar.pm"),
@@ -1136,7 +1168,7 @@ mod tests {
 
     #[test]
     fn test_file_language_of_perl_adjacent_extensions_unmapped() {
-        let env = Env::new();
+        let env = Env::new(false);
         assert!(
             env.file_language_of("t/basic.t").is_none(),
             "`.t` is not Perl-specific"
@@ -1153,7 +1185,7 @@ mod tests {
 
     #[test]
     fn test_file_language_of_unaffected_by_perl_arm() {
-        let env = Env::new();
+        let env = Env::new(false);
         assert!(matches!(
             env.file_language_of("main.rs"),
             Some(LanguageId::Rust)

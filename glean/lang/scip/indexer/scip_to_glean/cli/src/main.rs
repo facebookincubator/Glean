@@ -81,6 +81,12 @@ struct BuildJsonArgs {
         help = "Shards the JSON graph into subgraphs. Subgraphs will be approximately the size specified. Uses the --output argument as a directory, and writes one file per shard"
     )]
     shard: Option<usize>,
+
+    #[arg(
+        long,
+        help = "Attribute the facts decoded from each document to a Glean ownership unit named after the document's filepath, as written in src.File. Needed for incremental and ACL-enabled databases"
+    )]
+    ownership: bool,
 }
 
 #[cfg(feature = "facebook")]
@@ -211,7 +217,7 @@ fn build_json(args: BuildJsonArgs) -> Result<()> {
         .as_ref()
         .and_then(|s| LanguageId::new(s).known());
 
-    let mut env = Env::new();
+    let mut env = Env::new(args.ownership);
     for input in &args.input {
         decode_scip_data(
             &mut env,
@@ -364,6 +370,7 @@ mod tests {
             strip_prefix: None,
             source_root: None,
             shard: None,
+            ownership: false,
         }
     }
 
@@ -403,6 +410,7 @@ mod tests {
             strip_prefix: None,
             source_root: None,
             shard: None,
+            ownership: false,
         };
 
         build_json(args).expect("failure building JSON");
@@ -427,6 +435,7 @@ mod tests {
             strip_prefix: None,
             source_root: None,
             shard: Some(100),
+            ownership: false,
         };
 
         build_json(args).expect("failure building JSON");
@@ -562,6 +571,7 @@ mod tests {
             strip_prefix: None,
             source_root: None,
             shard: None,
+            ownership: false,
         };
         build_json(args).expect("failure building JSON");
 
@@ -611,6 +621,7 @@ mod tests {
             strip_prefix: None,
             source_root: Some(source_dir.path().to_path_buf()),
             shard: None,
+            ownership: false,
         };
         build_json(args).expect("failure building JSON");
 
@@ -654,6 +665,7 @@ mod tests {
             strip_prefix: None,
             source_root: None,
             shard: None,
+            ownership: false,
         };
         build_json(args).expect("failure building JSON");
 
@@ -806,6 +818,7 @@ mod tests {
             strip_prefix: None,
             source_root: None,
             shard: None,
+            ownership: false,
         };
         build_json(args).expect("failure building JSON");
 
@@ -863,6 +876,7 @@ mod tests {
             strip_prefix: None,
             source_root: None,
             shard: None,
+            ownership: false,
         };
         build_json(args).expect("failure building JSON");
 
@@ -912,6 +926,7 @@ mod tests {
             strip_prefix: None,
             source_root: None,
             shard: None,
+            ownership: false,
         };
         build_json(args).expect("failure building JSON");
 
