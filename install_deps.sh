@@ -34,10 +34,5 @@ if test ! -d hsthrift; then
     git clone "${HSTHRIFT_REPO}"
 fi
 
-# Make sure this is available for a subsequent cabal update
-if test ! -f glean.cabal; then
-    make glean.cabal
-fi
-
 cd hsthrift
 ./new_install_deps.sh --no-fbthrift "${EXTRA_DEPS}" --threads "${THREADS}"

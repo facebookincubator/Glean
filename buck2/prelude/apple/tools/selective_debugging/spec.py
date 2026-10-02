@@ -1,0 +1,115 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+#
+# This source code is dual-licensed under either the MIT license found in the
+# LICENSE-MIT file in the root directory of this source tree or the Apache
+# License, Version 2.0 found in the LICENSE-APACHE file in the root directory
+# of this source tree. You may select, at your option, one of the
+# above-listed licenses.
+
+# pyre-strict
+
+import json
+import re
+from dataclasses import dataclass, field
+
+
+@dataclass
+class BuildTargetPatternOutputPathMatcher:
+    pattern: str
+    output_path: str = field(init=False)
+
+    def __post_init__(self) -> None:
+        _, package_and_name = self.pattern.split("//")
+        if package_and_name.endswith("..."):
+            # recursive pattern
+            output_path, _ = package_and_name.split("...")
+        elif package_and_name.endswith(":"):
+            # package pattern
+            package, _ = package_and_name.split(":")
+            # This assumes the output path created by buck2, which if
+            # modified, would break this logic.
+            output_path = f"{package}/__"
+        else:
+            # target pattern
+            package, name = package_and_name.split(":")
+            # This assumes the output path created by buck2, which if
+            # modified, would break this logic.
+            output_path = f"{package}/__{name}__"
+
+        self.output_path = output_path
+
+    def match_path(self, debug_file_path: str) -> bool:
+        return self.output_path in debug_file_path
+
+
+@dataclass
+class Spec:
+    spec_path: str
+    include_build_target_patterns: list[BuildTargetPatternOutputPathMatcher] = field(
+        init=False
+    )
+    include_regular_expressions: list[re.Pattern[str]] = field(init=False)
+    exclude_build_target_patterns: list[BuildTargetPatternOutputPathMatcher] = field(
+        init=False
+    )
+    exclude_regular_expressions: list[re.Pattern[str]] = field(init=False)
+
+    def __post_init__(self) -> None:
+        with open(self.spec_path) as f:
+            data = json.load(f)
+
+        self.include_build_target_patterns = [
+            BuildTargetPatternOutputPathMatcher(entry)
+            for entry in data["include_build_target_patterns"]
+        ]
+        self.include_regular_expressions = [
+            re.compile(_sanitize_regex_pattern(entry))
+            for entry in data["include_regular_expressions"]
+        ]
+        self.exclude_build_target_patterns = [
+            BuildTargetPatternOutputPathMatcher(entry)
+            for entry in data["exclude_build_target_patterns"]
+        ]
+        self.exclude_regular_expressions = [
+            re.compile(_sanitize_regex_pattern(entry))
+            for entry in data["exclude_regular_expressions"]
+        ]
+
+    def scrub_debug_file_path(self, debug_file_path: str) -> bool:
+        if self.include_build_target_patterns or self.include_regular_expressions:
+            is_included = _path_matches_pattern_or_expression(
+                debug_file_path,
+                self.include_build_target_patterns,
+                self.include_regular_expressions,
+            )
+        else:
+            is_included = True
+
+        # If the path is included (and not excluded), do not scrub
+        return not (
+            is_included
+            and not _path_matches_pattern_or_expression(
+                debug_file_path,
+                self.exclude_build_target_patterns,
+                self.exclude_regular_expressions,
+            )
+        )
+
+
+def _sanitize_regex_pattern(pattern: str) -> str:
+    double_slash_index = pattern.find("//")
+    return pattern[double_slash_index + 1 :] if double_slash_index != -1 else pattern
+
+
+def _path_matches_pattern_or_expression(
+    debug_file_path: str,
+    patterns: list[BuildTargetPatternOutputPathMatcher],
+    expressions: list[re.Pattern[str]],
+) -> bool:
+    for pattern in patterns:
+        if pattern.match_path(debug_file_path):
+            return True
+    for expression in expressions:
+        if expression.search(debug_file_path):
+            return True
+    return False

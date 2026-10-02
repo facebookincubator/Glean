@@ -1,0 +1,199 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+#
+# This source code is dual-licensed under either the MIT license found in the
+# LICENSE-MIT file in the root directory of this source tree or the Apache
+# License, Version 2.0 found in the LICENSE-APACHE file in the root directory
+# of this source tree. You may select, at your option, one of the
+# above-listed licenses.
+
+load("@prelude//android:android_binary.bzl", "get_build_config_java_libraries")
+load("@prelude//android:android_binary_native_library_rules.bzl", "get_android_binary_native_library_info")
+load("@prelude//android:android_binary_resources_rules.bzl", "get_cxx_resources", "get_manifest")
+load(
+    "@prelude//android:android_providers.bzl",
+    "AndroidResourceInfo",
+    "ExportedAndroidResourceInfo",
+    "get_all_android_packageable_targets",
+    "merge_android_packageable_info",
+)
+load("@prelude//android:android_resource.bzl", "get_text_symbols")
+load("@prelude//android:android_toolchain.bzl", "AndroidToolchainInfo")
+load("@prelude//android:configuration.bzl", "get_deps_by_platform")
+load("@prelude//android:cpu_filters.bzl", "CPU_FILTER_FOR_DEFAULT_PLATFORM", "CPU_FILTER_FOR_PRIMARY_PLATFORM")
+load("@prelude//android:util.bzl", "create_enhancement_context")
+load("@prelude//java:java_providers.bzl", "create_java_packaging_dep", "get_all_java_packaging_deps", "get_all_java_packaging_deps_from_packaging_infos")
+load("@prelude//java:java_toolchain.bzl", "JavaToolchainInfo")
+load("@prelude//utils:argfile.bzl", "argfile")
+load("@prelude//utils:utils.bzl", "flatten")
+
+def android_aar_impl(ctx: AnalysisContext) -> list[Provider]:
+    deps_by_platform = get_deps_by_platform(ctx)
+    primary_platform = CPU_FILTER_FOR_PRIMARY_PLATFORM if CPU_FILTER_FOR_PRIMARY_PLATFORM in deps_by_platform else CPU_FILTER_FOR_DEFAULT_PLATFORM
+    deps = deps_by_platform[primary_platform]
+
+    excluded_java_packaging_deps = get_all_java_packaging_deps(ctx, ctx.attrs.excluded_java_deps)
+    excluded_java_packaging_deps_targets = set([excluded_dep.label.raw_target() for excluded_dep in excluded_java_packaging_deps])
+    java_packaging_deps = [
+        packaging_dep
+        for packaging_dep in get_all_java_packaging_deps(ctx, deps)
+        if packaging_dep.label.raw_target() not in excluded_java_packaging_deps_targets
+    ]
+    android_packageable_info = merge_android_packageable_info(ctx.label, ctx.actions, deps)
+
+    excluded_android_packageable_targets = set(get_all_android_packageable_targets(ctx.attrs.excluded_java_deps))
+    manifest_infos = android_packageable_info.manifests.traverse(ordering = "topological") if android_packageable_info.manifests else []
+    manifests = [manifest_info.manifest for manifest_info in manifest_infos if manifest_info.target_label not in excluded_android_packageable_targets]
+    android_manifest = get_manifest(ctx, manifests, ctx.attrs.manifest_entries, should_replace_application_id_placeholders = False)
+
+    if ctx.attrs.include_build_config_class:
+        build_config_infos = list(android_packageable_info.build_config_infos.traverse()) if android_packageable_info.build_config_infos else []
+        java_packaging_deps.extend(
+            get_all_java_packaging_deps_from_packaging_infos(
+                ctx,
+                get_build_config_java_libraries(ctx, build_config_infos, package_type = "release", exopackage_modes = []),
+            )
+        )
+
+    enhancement_ctx = create_enhancement_context(ctx)
+    android_binary_native_library_info = get_android_binary_native_library_info(
+        enhancement_ctx,
+        android_packageable_info,
+        deps_by_platform,
+        prebuilt_native_library_dirs_to_exclude = excluded_android_packageable_targets,
+        shared_libraries_to_exclude = excluded_android_packageable_targets,
+        native_library_merge_glue = getattr(ctx.attrs, "native_library_merge_glue", None),
+        native_library_merge_sequence = getattr(ctx.attrs, "native_library_merge_sequence", None),
+        native_library_merge_map = getattr(ctx.attrs, "native_library_merge_map", None),
+        native_library_merge_non_asset_libs = getattr(ctx.attrs, "native_library_merge_non_asset_libs", False),
+        native_library_merge_linker_args = getattr(ctx.attrs, "native_library_merge_linker_args", None),
+        native_library_merge_linker_args_all = getattr(ctx.attrs, "native_library_merge_linker_args_all", None),
+        native_library_merge_code_generator = getattr(ctx.attrs, "native_library_merge_code_generator", None),
+        native_library_merge_sequence_blocklist = getattr(ctx.attrs, "native_library_merge_sequence_blocklist", None),
+    )
+    java_packaging_deps.extend([
+        create_java_packaging_dep(
+            ctx,
+            library_output,
+        )
+        for library_output in android_binary_native_library_info.generated_java_code
+    ])
+
+    jars = [dep.jar for dep in java_packaging_deps if dep.jar]
+    classes_jar = ctx.actions.declare_output("classes.jar", has_content_based_path = False)
+    java_toolchain = ctx.attrs._java_toolchain[JavaToolchainInfo]
+    classes_jar_cmd = cmd_args([
+        java_toolchain.jar_builder,
+        "--entries-to-jar",
+        argfile(actions = ctx.actions, name = "classes_jar_entries.txt", args = jars),
+        "--output",
+        classes_jar.as_output(),
+    ])
+
+    if ctx.attrs.remove_classes:
+        remove_classes_file = ctx.actions.write("remove_classes.txt", ctx.attrs.remove_classes, has_content_based_path = False)
+        classes_jar_cmd.add([
+            "--blocklist-patterns",
+            remove_classes_file,
+            "--blocklist-patterns-matcher",
+            "remove_classes_patterns_matcher",
+        ])
+
+    ctx.actions.run(classes_jar_cmd, category = "create_classes_jar")
+
+    sub_targets = {}
+    dependency_sources_jars = [dep.sources_jar for dep in java_packaging_deps if dep.sources_jar]
+    if dependency_sources_jars:
+        combined_sources_jar = ctx.actions.declare_output("sources.jar", has_content_based_path = False)
+        java_toolchain = ctx.attrs._java_toolchain[JavaToolchainInfo]
+        combined_sources_jar_cmd = cmd_args([
+            java_toolchain.jar_builder,
+            "--entries-to-jar",
+            argfile(actions = ctx.actions, name = "combined_sources_jar_entries.txt", args = dependency_sources_jars),
+            "--output",
+            combined_sources_jar.as_output(),
+        ])
+
+        if ctx.attrs.remove_classes:
+            remove_classes_file = ctx.actions.write("sources_remove_classes.txt", ctx.attrs.remove_classes, has_content_based_path = False)
+            combined_sources_jar_cmd.add([
+                "--blocklist-patterns",
+                remove_classes_file,
+                "--blocklist-patterns-matcher",
+                "remove_classes_patterns_matcher",
+            ])
+
+        ctx.actions.run(combined_sources_jar_cmd, category = "create_sources_jar")
+        sub_targets["sources.jar"] = [DefaultInfo(default_output = combined_sources_jar)]
+
+    entries = [android_manifest, classes_jar]
+
+    all_resource_infos = list(android_packageable_info.resource_infos.traverse()) if android_packageable_info.resource_infos else []
+    resource_infos = [resource_info for resource_info in all_resource_infos if resource_info.raw_target not in excluded_android_packageable_targets]
+
+    android_toolchain = ctx.attrs._android_toolchain[AndroidToolchainInfo]
+    if resource_infos:
+        res_dirs = [resource_info.res for resource_info in resource_infos if resource_info.res]
+        if ctx.attrs.package_resources and res_dirs:
+            merged_resource_sources_dir = ctx.actions.declare_output("merged_resource_sources_dir/res", dir = True, has_content_based_path = False)
+            merge_resource_sources_cmd = cmd_args([
+                android_toolchain.merge_android_resource_sources[RunInfo],
+                "--resource-paths",
+                argfile(actions = ctx.actions, name = "resource_paths.txt", args = res_dirs),
+                "--output",
+                merged_resource_sources_dir.as_output(),
+            ])
+
+            ctx.actions.run(merge_resource_sources_cmd, category = "merge_android_resource_sources")
+
+            r_dot_txt = get_text_symbols(
+                ctx, merged_resource_sources_dir, [dep for dep in deps if AndroidResourceInfo in dep or ExportedAndroidResourceInfo in dep]
+            )
+            entries.extend([merged_resource_sources_dir, r_dot_txt])
+
+        assets_dirs = flatten([resource_infos.assets for resource_infos in resource_infos])
+        entries.extend(assets_dirs)
+
+    cxx_resources = get_cxx_resources(ctx, deps, dir_name = "assets")
+    if cxx_resources:
+        entries.append(cxx_resources)
+
+    native_libs_file = argfile(actions = ctx.actions, name = "native_libs_entries.txt", args = android_binary_native_library_info.native_libs_for_primary_apk)
+    native_libs_assets_file = argfile(
+        actions = ctx.actions, name = "native_libs_assets_entries.txt", args = android_binary_native_library_info.root_module_native_lib_assets
+    )
+
+    entries_file = ctx.actions.write("entries.txt", entries, has_content_based_path = False)
+
+    aar = ctx.actions.declare_output("{}.aar".format(ctx.label.name), has_content_based_path = False)
+    create_aar_cmd = cmd_args(
+        [
+            android_toolchain.aar_builder,
+            "--output_path",
+            aar.as_output(),
+            "--entries_file",
+            entries_file,
+            "--on_duplicate_entry",
+            "fail",
+            "--native_libs_file",
+            native_libs_file,
+            "--native_libs_assets_file",
+            native_libs_assets_file,
+        ],
+        hidden = [
+            entries,
+        ],
+    )
+    if ctx.attrs.proguard_config:
+        create_aar_cmd.add([
+            "--proguard_config_file",
+            ctx.attrs.proguard_config,
+        ])
+
+    if ctx.attrs.hardcode_permissions_for_deterministic_output == True:
+        create_aar_cmd.add([
+            "--hardcode_permissions_for_deterministic_output",
+        ])
+
+    ctx.actions.run(create_aar_cmd, category = "create_aar")
+
+    return [DefaultInfo(default_outputs = [aar], sub_targets = enhancement_ctx.get_sub_targets() | sub_targets)]

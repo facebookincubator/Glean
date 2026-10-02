@@ -1,0 +1,31 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "write",
+    srcs = [
+        "Glean/Write/Async.hs",
+        "Glean/Write/Options.hs",
+        "Glean/Write/SendQueue.hs",
+        "Glean/Write/SendAndRebaseQueue.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+        "//glean/backend-api:backend-api",
+        "//glean/hs:core",
+        "//glean/if:if-glean-hs",
+        "//glean/github:stubs",
+        "//glean/typed:typed",
+        "//glean/util:util",
+    ],
+    packages = [
+        "async",
+        "bytestring",
+        "data-default",
+        "extra",
+        "optparse-applicative",
+        "text",
+        "unordered-containers",
+    ],
+    visibility = ["PUBLIC"],
+)

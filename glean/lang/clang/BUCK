@@ -1,0 +1,161 @@
+load("//buck2:cxx.bzl", "cxx_binary")
+load("//buck2:haskell.bzl", "haskell_library")
+load("//buck2:llvm.bzl", "external_llvm_config_library")
+
+# LLVM/Clang 15.0.7 exactly - glean/lang/clang/Setup.hs (glean-clang.cabal's
+# Custom Setup, not run under buck2) pins this version precisely via
+# llvm-config, since it links directly against clang's own unstable C++ AST
+# API. This toolchain happens to have llvm-config-15 installed alongside
+# newer ones (15/17/18/19/20), an exact match - if that ever changes, this
+# is the one place to update.
+external_llvm_config_library(
+    name = "llvm",
+    version = "15",
+)
+
+# Cabal's `clang-index` executable (glean-clang.cabal, a wholly separate
+# Cabal package from glean.cabal.in - see that file's own comment on why:
+# its Custom Setup.hs detects LLVM/clang, which Cabal doesn't support
+# combined with glean.cabal.in's multiple internal libraries). `-no-hs-main`
+# there means this is genuinely a plain C++ executable, not a Haskell one
+# with C++ sources mixed in - `cxx_binary`, not `haskell_binary`.
+#
+# Flags combine glean-clang.cabal's own `common fb-cpp` (`-DOSS=1
+# -std=c++20 -Wno-nullability-completeness`, `-DGLEAN_X86_64 -march=haswell`
+# if x86_64) with whatever `llvm-config-15 --cxxflags` reports (its `-I`/
+# `-D` flags only - see buck2/llvm.bzl's own comment for why not the whole
+# thing verbatim, pulled in transitively via the `:llvm` dep below) and
+# `executable clang-index`'s own `-fexceptions` override. Deliberately
+# *not* `llvm-config`'s own `-std=c++14`/`-fno-exceptions`: this package's
+# sources use `std::filesystem` (path.h/path.cpp), which needs >= C++17,
+# so whatever Cabal's actual flag-precedence does with Setup.hs's
+# llvm-config-derived buildInfo, the *effective* standard has to end up as
+# this package's own `-std=c++20`, not llvm-config's C++14 - confirmed by
+# trying the c++14 flag and hitting exactly that compile error. `glog`/
+# `gflags`/`atomic` aren't in the link line below since they're already
+# covered transitively via `fb-util-cxx`/`folly-clib`'s own
+# `exported_linker_flags`. `-std=c++20`/`-march=haswell` themselves come
+# from `//buck2:cxx.bzl`'s `cxx_binary` wrapper now (same one
+# `cxx_library()` uses), not hand-rolled here - `-DGLEAN_X86_64` still
+# needs its own `select()` since that define is specific to this target,
+# not part of the wrapper's centralized flags.
+cxx_binary(
+    name = "clang-index",
+    srcs = [
+        "index.cpp",
+        "action.cpp",
+        "ast.cpp",
+        "db.cpp",
+        "hash.cpp",
+        "path.cpp",
+        "preprocessor.cpp",
+    ],
+    compiler_flags = [
+        "-DOSS=1",
+        "-Wno-nullability-completeness",
+    ] + select({
+        "prelude//cpu:x86_64": ["-DGLEAN_X86_64"],
+        "DEFAULT": [],
+    }) + [
+        "-fexceptions",
+    ],
+    # -lclang-cpp isn't an LLVM-proper component (it's Clang's own
+    # unified C++ API library) - llvm-config doesn't know about it, so
+    # it stays a plain hardcoded flag here, same as -lpthread/-lre2
+    # (unrelated third-party libs this file itself links against
+    # directly, nothing to do with the LLVM/Clang toolchain). fmt has
+    # its own pkg-config file on this system (`pkg-config --exists
+    # fmt`), so that one goes through the `//third-party:fmt` dep below
+    # instead of a hardcoded `-lfmt`, the same way `//third-party:
+    # icuuc`/`:xxhash` do for glean/rts's own system libraries (see
+    # //third-party/BUCK's own comment).
+    linker_flags = [
+        "-lclang-cpp",
+        "-lpthread",
+        "-lre2",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util-cxx",
+        "@hsthrift//folly-clib:folly-clib",
+        "//glean/rts:rts",
+        "//glean/cpp:client-cpp",
+        ":llvm",
+        "//third-party:fmt",
+        # Not in glean-clang.cabal's own `build-depends: glean:rts,
+        # glean:client-cpp` at all, despite index.cpp directly
+        # #include-ing and calling into it (worklist::*/interprocess::
+        # counters) - a real, pre-existing gap in the Cabal package
+        # itself, not something this migration introduced.
+        "//glean/interprocess/cpp:interprocess-cpp",
+        # db.h's unconditional (not `#if GLEAN_FACEBOOK`-guarded)
+        # `#include "glean/schema/cpp/schema.h"` - see //:schema-cpp-header
+        # for why this lives at the repo root rather than in this package.
+        "//:schema-cpp-header",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_library(
+    name = "clang-indexer",
+    srcs = [
+        "Glean/Indexer/Cpp.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//http:thrift-http",
+        "@hsthrift//lib:thrift-lib",
+        "//glean/client/hs:client-hs",
+        "//glean/client/hs/local:client-hs-local",
+        "//glean/index:indexer-core",
+        "//glean/interprocess/hs:interprocess",
+        "//glean/server:handler",
+        "//glean/github/if:if-fb303-hs",
+        "//glean/github:stubs",
+        "//glean/util:util",
+    ],
+    packages = [
+        "aeson",
+        "ansi-terminal",
+        "async",
+        "bytestring",
+        "directory",
+        "filepath",
+        "optparse-applicative",
+        "process",
+        "text",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_library(
+    name = "clang-derive-lib",
+    srcs = [
+        "Derive/Common.hs",
+        "Derive/CxxDeclarationSources.hs",
+        "Derive/CxxSame.hs",
+        "Derive/CxxTargetUses.hs",
+        "Derive/Env.hs",
+        "Derive/Generic.hs",
+        "Derive/Lib.hs",
+        "Derive/Types.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/client/hs:client-hs",
+        "//glean/client/hs/local:client-hs-local",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/lib:lib",
+        "//glean/lib:lib-derive",
+        "//glean/util:util",
+        "//glean/schema/thrift:cxx1",
+        "//glean/schema/thrift:src",
+        "//glean/schema/hs:cxx1",
+        "//glean/schema/hs:src",
+    ],
+    packages = [
+        "ghc-compact",
+        "vector-algorithms",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,34 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "typed",
+    srcs = [
+        "Glean/Query/Angle.hs",
+        "Glean/Typed.hs",
+        "Glean/Typed/Binary.hs",
+        "Glean/Typed/Build.hs",
+        "Glean/Typed/BuildFact.hs",
+        "Glean/Typed/Fact.hs",
+        "Glean/Typed/Id.hs",
+        "Glean/Typed/Predicate.hs",
+        "Glean/Typed/Prim.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+        "//glean/angle:angle",
+        "//glean/hs:core",
+        "//glean/if:if-glean-hs",
+    ],
+    packages = [
+        "bytestring",
+        "containers",
+        "deepseq",
+        "hashable",
+        "text",
+        "text-show",
+        "unordered-containers",
+        "vector",
+    ],
+    visibility = ["PUBLIC"],
+)

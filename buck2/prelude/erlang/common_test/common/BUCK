@@ -1,0 +1,35 @@
+load("@prelude//utils:source_listing.bzl", "source_listing")
+
+oncall("build_infra")
+
+source_listing()
+
+erlang_application(
+    name = "common",
+    srcs = glob([
+        "src/*.erl",
+        "src/*.hrl",
+    ]),
+    applications = [
+        "kernel",
+        "stdlib",
+    ],
+    erl_opts = [
+        "+debug_info",
+        "+warnings_as_errors",
+    ],
+    includes = glob(["include/*.hrl"]),
+    shell_libs = [],
+    use_global_parse_transforms = False,
+    visibility = ["PUBLIC"],
+)
+
+erlang_tests(
+    contacts = ["build_infra"],
+    labels = ["unit"],
+    suites = ["test/ct_stdout_SUITE.erl"],
+    deps = [
+        "stdlib",
+        ":common",
+    ],
+)

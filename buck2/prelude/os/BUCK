@@ -1,0 +1,149 @@
+load("@prelude//utils:source_listing.bzl", "source_listing")
+
+oncall("build_infra")
+
+source_listing()
+
+prelude = native  # Avoid warnings and auto-formatters
+
+# The short list of ubiquitous, mainstream operating systems:
+
+config_setting(
+    name = "linux",
+    constraint_values = [
+        "//os/constraints:os[linux]",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+config_setting(
+    name = "macos",
+    constraint_values = [
+        "//os/constraints:os[macos]",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+config_setting(
+    name = "windows",
+    constraint_values = [
+        "//os/constraints:os[windows]",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Android
+
+config_setting(
+    name = "android",
+    constraint_values = [
+        "//os/constraints:os[android]",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+prelude.constraint_setting(
+    name = "maybe_building_android_binary",
+    visibility = ["PUBLIC"],
+)
+
+prelude.constraint_value(
+    name = "building_android_binary",
+    constraint_setting = ":maybe_building_android_binary",
+    visibility = ["prelude//..."],
+)
+
+# Rest of Apple's operating systems.
+
+config_setting(
+    name = "iphoneos",
+    constraint_values = [
+        "//os/constraints:os[iphoneos]",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+config_setting(
+    name = "tvos",
+    constraint_values = [
+        "//os/constraints:os[tvos]",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+config_setting(
+    name = "watchos",
+    constraint_values = [
+        "//os/constraints:os[watchos]",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Long tail but contemporarily relevant operating systems.
+# Whether a Tier 2 rustc target exists is approximately the right bar.
+
+config_setting(
+    name = "freebsd",
+    constraint_values = [
+        "//os/constraints:os[freebsd]",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+config_setting(
+    name = "fuchsia",
+    constraint_values = [
+        "//os/constraints:os[fuchsia]",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+config_setting(
+    name = "illumos",
+    constraint_values = [
+        "//os/constraints:os[illumos]",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+config_setting(
+    name = "netbsd",
+    constraint_values = [
+        "//os/constraints:os[netbsd]",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+config_setting(
+    name = "wasi",
+    constraint_values = [
+        "//os/constraints:os[wasi]",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+config_setting(
+    name = "linux-sgx",
+    constraint_values = [
+        "//os/constraints:os[linux]",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+config_setting(
+    name = "linux-arm64",
+    constraint_values = [
+        "//cpu/constraints:cpu[arm64]",
+        "//os/constraints:os[linux]",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# For platforms with no OS, like microcontrollers.
+config_setting(
+    name = "none",
+    constraint_values = [
+        "//os/constraints:os[none]",
+    ],
+    visibility = ["PUBLIC"],
+)

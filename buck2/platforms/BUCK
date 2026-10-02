@@ -1,0 +1,103 @@
+load(":defs.bzl", "execution_platform_with_constraints", "execution_platforms")
+
+# Any exec_dep/`$(exe ...)` edge (a build-time tool dependency) gets
+# reconfigured to match whichever execution platform is chosen for it,
+# straight from that platform's own `constraint_values` - it does *not*
+# go through the project's root PACKAGE-level `set_cfg_modifiers()` at
+# all, since that machinery only drives ordinary target-platform
+# configuration. `prelude//platforms:default` (the vendored prelude
+# target every exec_dep falls back to unless it specifically requires
+# `:opt` below) carries none of this project's own constraint values, so
+# without a project-specific default platform of our own, every such
+# edge - and everything it transitively pulls in, e.g. clang-index,
+# hie-indexer, or any Haskell tool linking against glean/rts,
+# glean/rocksdb, hsthrift's folly-clib, ... - silently fell back to the
+# DEFAULT (GCC-flavored) arm of buck2/cxx.bzl's `_COROUTINES_FLAGS`
+# select and re-added `-fcoroutines` to those specific exec-configured
+# copies. Invisible on a dev machine with a newer clang that tolerates
+# the unrecognised flag, but a hard `clang: error: unknown argument:
+# '-fcoroutines'` on CI's older clang. Confirmed by diffing
+# `.cpp.target_cxx_args` across configurations: building
+# `root//glean/rts:rts` by its own label (plain target-platform
+# resolution, no exec_dep edge involved) came out clean, but the *same*
+# target reappeared with `-fcoroutines` under a second, exec-configured
+# configuration as soon as anything reached it via an exec_dep edge -
+# i.e. the full `//glean/...` CI invocation, not a single-target build -
+# and adding `clang` to `:exec-opt` alone (the first fix attempted here)
+# didn't fully clear it, because most of those edges resolve to the
+# *plain* default execution platform, not `:exec-opt` specifically.
+#
+# So `:exec-default` exists purely to be "prelude//platforms:default
+# plus this project's own clang constraint value, plus `dev`" - the
+# actual default every exec_dep edge without a further requirement
+# resolves to. `dev` here isn't load-bearing for the coroutines fix
+# above (absence of `opt`/`prof` already falls through to the same
+# `DEFAULT` arm every `_BUILD_MODE_*` select in buck2/{cxx,haskell}.bzl
+# uses for "dev") - it's here so a select() that ever checks *for*
+# `root//buck2/constraints:dev` positively, rather than treating its
+# absence as the dev case, still gets a real match under this platform
+# too, rather than depending on coincidence. `:exec-opt` is then
+# derived from *this*, not the raw prelude target, so it inherits
+# `clang` too instead of needing its own copy of the same reasoning.
+execution_platform_with_constraints(
+    name = "exec-default",
+    base = "prelude//platforms:default",
+    constraint_values = [
+        "root//buck2/constraints:clang",
+        "root//buck2/constraints:dev",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# A second execution platform, identical to `:exec-default` except its
+# configuration also carries the `opt` build-mode constraint value
+# instead of `dev` (see `defs.bzl`'s `execution_platform_with_
+# constraints()` - constraint_values passed here for the `build_mode`
+# constraint_setting *replace* whatever `base` already had for that
+# same setting, not add to it, so this doesn't end up with both `dev`
+# and `opt` set at once) - see buck2.md's entry on forcing `opt` for
+# build-time codegen tools. Listed second in `.buckconfig`'s `[build]
+# execution_platforms`, so it's only selected for targets that
+# explicitly opt in via `exec_compatible_with` requiring
+# `root//buck2/constraints:opt` (currently: hsthrift//compiler:
+# thrift-compiler, //glean/schema/gen:gen-schema, //glean/bytecode:
+# gen-bytecode-hs - unconditionally, they always want to run fast
+# regardless of the ambient build mode - and, via buck2/haskell.bzl's
+# `_BUILD_MODE_EXEC_COMPATIBLE_WITH`, every haskell_binary()/
+# haskell_test() *only when the ambient build mode is itself `opt`* -
+# see that file's own comment for why a plain, unconditional
+# `exec_compatible_with` requirement on clang-index/hie-indexer's own
+# targets wouldn't have worked here). Every other exec_dep/`$(exe ...)`
+# edge in the build has no such requirement, so it stays compatible
+# with, and keeps resolving to, `:exec-default`.
+#
+# `root//buck2/constraints:opt`, not a bare `//buck2/constraints:opt` -
+# this needs to be the exact same constraint *value* the project's own
+# dev/opt PACKAGE-level cfg modifier (`root//PACKAGE`) attaches to the
+# *target* configuration, so a `select()` written the usual way (keyed on
+# `root//buck2/constraints:opt`, e.g. buck2/haskell.bzl's `_BUILD_MODE_*`)
+# resolves the same "opt" arm here as it would under a plain `-m opt`
+# build - "root" is a cell alias, not a literal cell name, so this
+# resolves correctly both nested inside another project and when this
+# checkout is standalone (see hsthrift/PACKAGE's own comment on the same
+# convention).
+execution_platform_with_constraints(
+    name = "exec-opt",
+    base = ":exec-default",
+    constraint_values = ["root//buck2/constraints:opt"],
+    visibility = ["PUBLIC"],
+)
+
+# The actual target `.buckconfig`'s `[build] execution_platforms` points
+# at - see defs.bzl's own comment on why this indirection is needed
+# (that buckconfig key takes one target, not a list). Order matters:
+# `:exec-default` first, so anything with no `exec_compatible_with`
+# requirement (almost everything) keeps resolving to it.
+execution_platforms(
+    name = "exec",
+    platforms = [
+        ":exec-default",
+        ":exec-opt",
+    ],
+    visibility = ["PUBLIC"],
+)

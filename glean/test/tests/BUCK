@@ -1,0 +1,841 @@
+load("//buck2:haskell.bzl", "haskell_test")
+
+haskell_test(
+    name = "angle-test-angle",
+    main = "Angle.AngleTest",
+    srcs = [
+        "Angle/AngleTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/typed:typed",
+        "//glean/schema/thrift:builtin",
+        "//glean/schema/thrift:sys",
+        "//glean/schema/thrift:cxx1",
+        "//glean/schema/thrift:glean_test",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "angle-test-error",
+    main = "Angle.ErrorTest",
+    srcs = [
+        "Angle/ErrorTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/typed:typed",
+        "//glean/schema/thrift:cxx1",
+        "//glean/schema/thrift:glean_test",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "angle-test-nested",
+    main = "Angle.NestedTest",
+    srcs = [
+        "Angle/NestedTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/typed:typed",
+        "//glean/schema/thrift:cxx1",
+        "//glean/schema/thrift:glean_test",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "angle-test-derived",
+    main = "Angle.DerivedTest",
+    srcs = [
+        "Angle/DerivedTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/typed:typed",
+        "//glean/schema/thrift:glean_test",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "angle-test-set",
+    main = "Angle.SetTest",
+    srcs = [
+        "Angle/SetTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/typed:typed",
+        "//glean/schema/thrift:glean_test",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "angle-test-stored",
+    main = "Angle.StoredTest",
+    srcs = [
+        "Angle/StoredTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/typed:typed",
+        "//glean/schema/thrift:glean_test",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "angle-test-array",
+    main = "Angle.ArrayTest",
+    srcs = [
+        "Angle/ArrayTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/typed:typed",
+        "//glean/schema/thrift:glean_test",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "angle-test-rec-expansion",
+    main = "Angle.RecExpansionTest",
+    srcs = [
+        "Angle/RecExpansionTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/typed:typed",
+        "//glean/schema/thrift:glean_test",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "angle-test-data",
+    main = "Angle.DataTest",
+    srcs = [
+        "Angle/DataTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/typed:typed",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "angle-test-opt",
+    main = "Angle.OptTest",
+    srcs = [
+        "Angle/OptTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/typed:typed",
+        "//glean/schema/thrift:cxx1",
+        "//glean/schema/thrift:glean_test",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "angle-test-misc",
+    main = "Angle.MiscTest",
+    srcs = [
+        "Angle/MiscTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/typed:typed",
+        "//glean/schema/thrift:cxx1",
+        "//glean/schema/thrift:glean_test",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "api",
+    main = "ApiTest",
+    srcs = [
+        "ApiTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/github:stubs",
+        "//glean/backend-api:backend-api",
+        "//glean/hs:core",
+        "//glean/if:if-glean-hs",
+        "//glean/typed:typed",
+        "//glean/schema/thrift:glean_test",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "cppexception",
+    main = "CppCatchTest",
+    srcs = [
+        "CppCatchTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/typed:typed",
+        "//glean/schema/thrift:cxx1",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "jsonwrite",
+    main = "JSONWriteTest",
+    srcs = [
+        "JSONWriteTest.hs",
+    ],
+    deps = [
+        "@hsthrift//lib:thrift-lib",
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/client/hs:client-hs",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/typed:typed",
+        "//glean/schema/thrift:glean_test",
+        "//glean/schema/thrift:sys",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "rtstest",
+    main = "RTSTest",
+    srcs = [
+        "RTSTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/client/hs:client-hs",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/config:config",
+        "//glean/if:if-glean-hs",
+    ],
+    packages = [
+        "HUnit",
+        "QuickCheck",
+        "quickcheck-text",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "rts-json",
+    main = "RTSJSONTest",
+    srcs = [
+        "RTSJSONTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+    ],
+    packages = [
+        "HUnit",
+        "QuickCheck",
+        "quickcheck-text",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "dbjanitor",
+    main = "DatabaseJanitorTest",
+    srcs = [
+        "DatabaseJanitorTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/if:if-internal-hs",
+        "//glean/config:config",
+        "//glean/util:util",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "dbderive",
+    main = "DbDeriveTest",
+    srcs = [
+        "DbDeriveTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/client/hs:client-hs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/if:if-internal-hs",
+        "//glean/github:stubs",
+        "//glean/typed:typed",
+        "//glean/schema/thrift:glean_test",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "backup",
+    main = "BackupTest",
+    srcs = [
+        "BackupTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/backend-api:backend-api",
+        "//glean/backend-local:backend-local",
+        "//glean/config:config",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/if:if-internal-hs",
+        "//glean/github:stubs",
+        "//glean/util:util",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "catalog",
+    main = "CatalogTest",
+    srcs = [
+        "CatalogTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/if:if-internal-hs",
+        "//glean/util:util",
+    ],
+    packages = [
+        "HUnit",
+        "QuickCheck",
+        "quickcheck-io",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "lifecycle",
+    main = "LifecycleTest",
+    srcs = [
+        "LifecycleTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/client/hs:client-hs",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/if:if-internal-hs",
+        "//glean/util:util",
+    ],
+    packages = [
+        "HUnit",
+        "QuickCheck",
+        "quickcheck-io",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "shard",
+    main = "TestShard",
+    srcs = [
+        "TestShard.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/if:if-glean-hs",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "dbproperties",
+    main = "DbPropertiesTest",
+    srcs = [
+        "DbPropertiesTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/backend-api:backend-api",
+        "//glean/client/hs:client-hs",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/if:if-glean-hs",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "parser",
+    main = "ParserTest",
+    srcs = [
+        "ParserTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/github:stubs",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "schematest",
+    main = "Schema.Basic",
+    srcs = [
+        "Schema/Basic.hs",
+        "Schema/Lib.hs",
+    ],
+    deps = [
+        "@hsthrift//lib:thrift-lib",
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/config:config",
+        "//glean/if:if-glean-hs",
+        "//glean/if:if-internal-hs",
+        "//glean/lib:lib-derive",
+        "//glean/util:util",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "schemaevolves",
+    main = "Schema.Evolves",
+    srcs = [
+        "Schema/Evolves.hs",
+        "Schema/Lib.hs",
+    ],
+    deps = [
+        "@hsthrift//lib:thrift-lib",
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/client/hs:client-hs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/config:config",
+        "//glean/if:if-glean-hs",
+        "//glean/util:util",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "schemamulti",
+    main = "Schema.Multi",
+    srcs = [
+        "Schema/Multi.hs",
+        "Schema/Lib.hs",
+    ],
+    deps = [
+        "@hsthrift//lib:thrift-lib",
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/config:config",
+        "//glean/if:if-glean-hs",
+        "//glean/if:if-internal-hs",
+        "//glean/util:util",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "inventory",
+    main = "InventoryTest",
+    srcs = [
+        "InventoryTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-internal-hs",
+        "//glean/github:stubs",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "continuation",
+    main = "ContinuationTest",
+    srcs = [
+        "ContinuationTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/if:if-glean-hs",
+        "//glean/schema/thrift:cxx1",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "lookup",
+    main = "LookupTest",
+    srcs = [
+        "LookupTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/github:stubs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/rts/tests:lookup-invariants-cxx",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "incremental",
+    main = "IncrementalTest",
+    srcs = [
+        "IncrementalTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/angle:angle",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/client/hs:client-hs",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/lib:lib-derive",
+        "//glean/typed:typed",
+        "//glean/schema/thrift:glean_test",
+        "//glean/schema/hs:glean_test",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "publish-shards",
+    main = "PublishShardsTest",
+    srcs = [
+        "PublishShardsTest.hs",
+        "DatabaseJanitorTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/backend-api:backend-api",
+        "//glean/backend-local:backend-local",
+        "//glean/config:config",
+        "//glean/hs:core",
+        "//glean/db:db",
+        "//glean/if:if-glean-hs",
+        "//glean/if:if-internal-hs",
+        "//glean/github:stubs",
+        "//glean/util:util",
+        "//glean/server:sharding",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "timeout",
+    main = "TimeoutTest",
+    srcs = [
+        "TimeoutTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/backend-api:backend-api",
+        "//glean/github:stubs",
+        "//glean/bench:bench-lib",
+        "//glean/schema/thrift:glean_test",
+    ],
+    packages = [
+        "HUnit",
+        "data-default",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "storage-rocksdb",
+    main = "StorageRocksDBTest",
+    srcs = [
+        "StorageRocksDBTest.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/test/lib:test-lib",
+        "//glean/test/unit:test-unit",
+        "//glean/config:config",
+        "//glean/db:db",
+        "//glean/github:stubs",
+        "//glean/util:util",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)

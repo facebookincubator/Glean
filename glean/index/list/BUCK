@@ -1,0 +1,31 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "indexers",
+    srcs = [
+        "Glean/Indexer/List.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/index:indexer-core",
+        "//glean/lang/angle:angle-indexer",
+        "//glean/lang/clang:clang-indexer",
+        "//glean/lang/dotnet-scip:dotnet-scip-indexer",
+        "//glean/lang/erlang:erlang-indexer",
+        "//glean/lang/flow:flow-indexer",
+        "//glean/lang/go:go-indexer",
+        "//glean/lang/hack:hack-indexer",
+        "//glean/lang/haskell:haskell-indexer",
+        "//glean/lang/java-lsif:java-lsif-indexer",
+        "//glean/lang/lsif/indexer:lsif-indexer",
+        "//glean/lang/python-scip:python-scip-indexer",
+        "//glean/lang/rust-scip:rust-scip-indexer",
+        "//glean/lang/scip/indexer:scip-indexer",
+        "//glean/lang/swift:swift-indexer",
+        "//glean/lang/typescript:typescript-indexer",
+    ],
+    packages = [
+        "optparse-applicative",
+    ],
+    visibility = ["PUBLIC"],
+)

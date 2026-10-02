@@ -1,0 +1,160 @@
+load("//buck2:haskell.bzl", "haskell_library", "haskell_test")
+load("@third-party-haskell//:tools.bzl", "GHC_BIN_DIR")
+
+haskell_library(
+    name = "glass-regression",
+    srcs = {
+        "Glean/Glass/Regression/Snapshot.hs": "lib/Glean/Glass/Regression/Snapshot.hs",
+        "Glean/Glass/Regression/Tests.hs": "lib/Glean/Glass/Regression/Tests.hs",
+        "Glean/Glass/Regression/Util.hs": "lib/Glean/Glass/Regression/Util.hs",
+    },
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+        "//glean/client/hs:client-hs",
+        "//glean/client/hs/local:client-hs-local",
+        "//glean/glass:glass-lib",
+        "//glean/glass/if:if-glass-hs",
+        "//glean/index:indexer-core",
+        "//glean/index/list:indexers",
+        "//glean/github:logger",
+        "//glean/github:stubs",
+        "//glean/test/regression:regression-test-lib",
+        "//glean/util:util",
+    ],
+    packages = [
+        "HUnit",
+        "aeson",
+        "aeson-pretty",
+        "bytestring",
+        "containers",
+        "data-default",
+        "directory",
+        "extra",
+        "filepath",
+        "haxl",
+        "optparse-applicative",
+        "process",
+        "temporary",
+        "text",
+        "yaml",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "glass-regression-cpp",
+    main = "Glean.Glass.Regression.Cpp.Github",
+    srcs = {
+        "Glean/Glass/Regression/Cpp.hs": "Glean/Glass/Regression/Cpp.hs",
+        "Glean/Glass/Regression/Cpp/Github.hs": "Glean/Glass/Regression/Cpp/Github.hs",
+    },
+    deps = [
+        ":glass-regression",
+        "//glean/client/hs:client-hs",
+        "//glean/glass/if:if-glass-hs",
+        "//glean/index:indexer-core",
+        "//glean/lang/clang:clang-derive-lib",
+        "//glean/lang/clang:clang-indexer",
+        "//glean/lang/clang/tests:clang-test-lib",
+        "//glean/lib:lib",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    packages = [
+        "HUnit",
+        "aeson",
+        "text",
+    ],
+    test_args = ["--indexer=$(exe //glean/lang/clang:clang-index)"],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "glass-regression-flow",
+    main = "Glean.Glass.Regression.Flow.Main",
+    srcs = [
+        "Glean/Glass/Regression/Flow.hs",
+        "Glean/Glass/Regression/Flow/Main.hs",
+    ],
+    deps = [
+        ":glass-regression",
+        "//glean/lang/flow:flow-indexer",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "glass-regression-hack",
+    main = "Glean.Glass.Regression.Hack.Main",
+    srcs = [
+        "Glean/Glass/Regression/Hack.hs",
+        "Glean/Glass/Regression/Hack/Main.hs",
+    ],
+    deps = [
+        ":glass-regression",
+        "//glean/lang/hack:hack-indexer",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "glass-regression-haskell",
+    main = "Glean.Glass.Regression.Haskell.Main",
+    srcs = [
+        "Glean/Glass/Regression/Haskell.hs",
+        "Glean/Glass/Regression/Haskell/Main.hs",
+    ],
+    deps = [
+        ":glass-regression",
+        "//glean/lang/haskell:haskell-indexer",
+    ],
+    test_args = [
+        "--hie-indexer=$(exe //glean/lang/haskell:hie-indexer)",
+    ],
+    test_env = {
+        "PATH": GHC_BIN_DIR + ":/usr/bin:/bin",
+    },
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "glass-regression-typescript",
+    main = "Glean.Glass.Regression.TypeScript.Main",
+    srcs = [
+        "Glean/Glass/Regression/TypeScript.hs",
+        "Glean/Glass/Regression/TypeScript/Main.hs",
+    ],
+    deps = [
+        ":glass-regression",
+        "//glean/lang/typescript:typescript-indexer",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "glass-regression-go",
+    main = "Glean.Glass.Regression.Go.Main",
+    srcs = [
+        "Glean/Glass/Regression/Go.hs",
+        "Glean/Glass/Regression/Go/Main.hs",
+    ],
+    deps = [
+        ":glass-regression",
+        "//glean/lang/go:go-indexer",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_test(
+    name = "glass-regression-java-lsif",
+    main = "Glean.Glass.Regression.JavaLsif.Main",
+    srcs = [
+        "Glean/Glass/Regression/JavaLsif.hs",
+        "Glean/Glass/Regression/JavaLsif/Main.hs",
+    ],
+    deps = [
+        ":glass-regression",
+        "//glean/lang/java-lsif:java-lsif-indexer",
+    ],
+    visibility = ["PUBLIC"],
+)

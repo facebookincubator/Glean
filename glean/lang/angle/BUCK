@@ -1,0 +1,16 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "angle-indexer",
+    srcs = [
+        "Glean/Indexer/Angle.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/index:indexer-core",
+    ],
+    packages = [
+        "optparse-applicative",
+    ],
+    visibility = ["PUBLIC"],
+)

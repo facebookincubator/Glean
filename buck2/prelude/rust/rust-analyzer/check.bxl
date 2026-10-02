@@ -1,0 +1,57 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+#
+# This source code is dual-licensed under either the MIT license found in the
+# LICENSE-MIT file in the root directory of this source tree or the Apache
+# License, Version 2.0 found in the LICENSE-APACHE file in the root directory
+# of this source tree. You may select, at your option, one of the
+# above-listed licenses.
+
+load("@prelude//rust:outputs.bzl", "RustcExtraOutputsInfo")
+
+def _check_targets_impl(ctx: bxl.Context) -> list[bxl.EnsuredArtifact]:
+    uquery_owners = ctx.uquery().owner(ctx.cli_args.file)
+    target_universe = ctx.target_universe(uquery_owners)
+    owners = ctx.cquery().owner(ctx.cli_args.file, target_universe.target_set())
+    nodes = ctx.cquery().kind("^(rust_binary|rust_library|rust_test)$", owners)
+
+    if len(nodes) == 0:
+        return []
+
+    analysis = ctx.analysis(nodes).values()
+
+    artifacts = []
+    for a in analysis:
+        o = a.providers()[RustcExtraOutputsInfo]
+        # Temporarily disabled due to ICE reports in https://fb.workplace.com/groups/rust.analyzer/posts/1512577186779084
+        # and https://github.com/rust-lang/rust/issues/141540
+        # if ctx.cli_args.use_clippy:
+        #     artifacts.append(o.clippy_incr.compile_output.diag_json)
+        # else:
+        #     artifacts.append(o.metadata_incr.compile_output.diag_json)
+
+        if ctx.cli_args.use_clippy:
+            artifacts.append(o.clippy.compile_output.diag_json)
+        else:
+            artifacts.append(o.metadata.compile_output.diag_json)
+
+    art_output = ctx.output.ensure_multiple(artifacts)
+
+    return [artifact.abs_path() for artifact in art_output]
+
+def _run(ctx: bxl.Context) -> None:
+    diagnostic_paths = _check_targets_impl(ctx)
+
+    out = {
+        "diagnostic_paths": diagnostic_paths,
+        "project_root": ctx.root(),
+    }
+
+    ctx.output.print_json(out)
+
+check = bxl_main(
+    impl = _run,
+    cli_args = {
+        "file": cli_args.string(),
+        "use-clippy": cli_args.bool(),
+    },
+)

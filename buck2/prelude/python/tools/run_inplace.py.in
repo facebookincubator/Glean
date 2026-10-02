@@ -1,0 +1,217 @@
+#!<PYTHON>
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+#
+# This source code is licensed under both the MIT license found in the
+# LICENSE-MIT file in the root directory of this source tree and the Apache
+# License, Version 2.0 found in the LICENSE-APACHE file in the root directory
+# of this source tree.
+
+# N.B. When the interpreter is a build artifact, the `#!` line above expands to several
+# lines of shell/Python polyglot that resolve it relative to this file.
+
+# LINKTREEDIR=<MODULES_DIR>
+
+main_module = "<MAIN_MODULE>"
+main_function = "<MAIN_FUNCTION>"
+modules_dir = "<MODULES_DIR>"
+native_libs_env_var = "<NATIVE_LIBS_ENV_VAR>"
+native_libs_dirs = <NATIVE_LIBS_DIRS>
+native_libs_preload_env_var = "<NATIVE_LIBS_PRELOAD_ENV_VAR>"
+native_libs_preload = <NATIVE_LIBS_PRELOAD>
+interpreter_flags = "<PYTHON_INTERPRETER_FLAGS>"
+unc_prefix = "\\\\?\\"
+
+import os
+import platform
+import signal
+import subprocess
+import sys
+import time
+
+os.environ["PAR_LAUNCH_TIMESTAMP"] = str(time.time())
+
+dirpath = os.path.dirname(os.path.realpath(__file__))
+
+# Enable long path support on Windows
+if platform.system() == "Windows" and not dirpath.startswith(unc_prefix):
+    dirpath = unc_prefix + dirpath
+
+env_vals_to_restore = {}
+# Update the environment variable for the dynamic loader to the native
+# libraries location.
+if native_libs_dirs is not None:
+    old_native_libs_dirs = os.environ.get(native_libs_env_var)
+    os.environ[native_libs_env_var] = os.pathsep.join([
+        os.path.join(dirpath, native_libs_dir)
+        for native_libs_dir in native_libs_dirs
+    ])
+    env_vals_to_restore[native_libs_env_var] = old_native_libs_dirs
+if os.environ.get("PAR_APPEND_LD_LIBRARY_PATH") is not None:
+   os.environ[native_libs_env_var] = (
+      (os.environ[native_libs_env_var] + ":" + os.environ["PAR_APPEND_LD_LIBRARY_PATH"])
+      if os.environ.get(native_libs_env_var) is not None
+      else os.environ["PAR_APPEND_LD_LIBRARY_PATH"]
+   )
+
+# Update the environment variable for the dynamic loader to find libraries
+# to preload.
+if native_libs_preload is not None:
+    old_native_libs_preload = os.environ.get(native_libs_preload_env_var)
+    env_vals_to_restore[native_libs_preload_env_var] = old_native_libs_preload
+
+    # On macos, preloaded libs are found via paths.
+    if platform.system() == "Darwin":
+        full_path_preloads = []
+        for lib in native_libs_preload:
+            for native_libs_dir in native_libs_dirs:
+                fpath = os.path.join(dirpath, native_libs_dir, lib)
+                if os.path.exists(fpath):
+                    full_path_preloads.append(fpath)
+                    break
+            else:
+                raise Exception(
+                    "cannot find preload lib {!r} in paths {!r}".format(
+                        lib,
+                        native_libs_dirs,
+                    ),
+                )
+        native_libs_preload = full_path_preloads
+
+    os.environ[native_libs_preload_env_var] = os.pathsep.join(native_libs_preload)
+
+<ENV>
+
+# Note: this full block of code will be included as the argument to Python,
+# and will be the first thing that shows up in the process arguments as displayed
+# by programs like ps and top.
+#
+# We include sys.argv[0] at the start of this comment just to make it more visible what program
+# is being run in the ps and top output.
+STARTUP = f"""\
+# {sys.argv[0]}
+# Wrap everything in a private function to prevent globals being captured by
+# the `runpy._run_module_as_main` below.
+def __run():
+    import sys
+
+    # We set the paths beforehand to have a minimal amount of imports before
+    # nuking PWD from sys.path. Otherwise, there can be problems if someone runs
+    # from a directory with a similarly named file, even if their code is properly
+    # namespaced. e.g. if one has foo/bar/contextlib.py and while in foo/bar runs
+    # `buck run foo/bar:bin`, runpy will fail as it tries to import
+    # foo/bar/contextlib.py. You're just out of luck if you have sys.py
+
+    # Set `argv[0]` to the executing script.
+    assert sys.argv[0] == '-c'
+    sys.argv[0] = {sys.argv[0]!r}
+
+    # Remove the working directory.
+    assert sys.path[0] == ''
+    del sys.path[0]
+
+    import os
+    import runpy
+
+    def setenv(var, val):
+        if val is None:
+            os.environ.pop(var, None)
+        else:
+            os.environ[var] = val
+
+    def restoreenv(d):
+        for k, v in d.items():
+            setenv(k, v)
+
+    restoreenv({env_vals_to_restore!r})
+
+    # On windows, adjust os.add_dll_directory and PATH (for `ctypes.util.find_library`)
+    # so that native libraries can be found by the dynamic linker or ctypes
+    if sys.platform.startswith("win"):
+        path = os.environ.get("PATH", "")
+        dll_dirs = []
+        for native_libs_dir in {native_libs_dirs!r}:
+            d = os.path.join({dirpath!r}, native_libs_dir)
+            os.add_dll_directory(d)
+            dll_dirs.append(d)
+            if path and not path.endswith(os.pathsep):
+                path += os.pathsep
+            path += d
+        setenv("PATH", path)
+        # Persist DLL directories for child processes. sitecustomize.py will
+        # read this and call os.add_dll_directory() in each child, since
+        # those calls are process-local and don't propagate across spawns.
+        if dll_dirs:
+            os.environ["FB_PAR_WIN_DLL_DIRS"] = os.pathsep.join(dll_dirs)
+
+    from <MAIN_RUNNER_MODULE> import <MAIN_RUNNER_FUNCTION> as run_as_main
+    run_as_main({main_module!r}, {main_function!r})
+
+
+__run()
+"""
+
+args = [sys.executable]
+if interpreter_flags:
+    args.extend(interpreter_flags.split())
+args.extend(["-c", STARTUP])
+
+# Default to 'd' warnings, but allow users to control this via PYTHONWARNINGS
+# The -E causes python to ignore all PYTHON* environment vars so we have to
+# pass this down using the command line.
+warnings = os.environ.get("PYTHONWARNINGS", "d").split(",")
+for item in reversed(warnings):
+    args.insert(1, f"-W{item.strip()}")
+
+# Allow users to disable byte code generation by setting the standard environment var.
+# Same as above, because of -E we have to pass this down using the command line.
+if "PYTHONDONTWRITEBYTECODE" in os.environ:
+    args.insert(1, "-B")
+
+# Pass through PYTHONPROFILEIMPORTTIME as -X importtime. Similar issues to
+# PYTHONDONTWRITEBYTECODE above — because of -E we have to pass this via the
+# command line. Only supported on CPython.
+if "PYTHONPROFILEIMPORTTIME" in os.environ and platform.python_implementation() == "CPython":
+    args[1:1] = ["-X", "importtime"]
+
+# Save the variables that will be restored back into the environment by
+# fbcode/buck2/prelude/python/tools/make_par/sitecustomize.py
+for env in ("PYTHONPATH", "LD_LIBRARY_PATH", "LD_PRELOAD",
+            "DYLD_LIBRARY_PATH", "DYLD_INSERT_LIBRARIES"):
+    if env in os.environ:
+        os.environ["FB_SAVED_" + env] = os.environ[env]
+
+path = os.path.join(dirpath, modules_dir)
+os.environ["PYTHONPATH"] = path
+if "PAR_APPEND_PYTHONPATH" in os.environ:
+   os.environ["PYTHONPATH"] += ":" + os.environ["PAR_APPEND_PYTHONPATH"]
+
+# This environment variable is immediately unset on startup but will also appear
+# in e.g. `multiprocessing` workers, and so serves as an audit trail back to
+# the originating PAR (and can be read via e.g. `/proc/<pid>/environ`).
+os.environ["PAR_INVOKED_NAME_TAG"] = sys.argv[0]
+
+if platform.system() == "Windows":
+    # exec on Windows is not true exec - there is only 'spawn' ('CreateProcess').
+    # However, creating processes unnecessarily is painful, so we only do the spawn
+    # path if we have to, which is on Windows. That said, this complicates signal
+    # handling, so we need to set up some signal forwarding logic.
+
+    p = subprocess.Popen(args + sys.argv[1:])
+
+    def handler(signum, frame):
+        # If we're getting this, we need to forward signum to subprocesses
+        if signum == signal.SIGINT:
+            p.send_signal(signal.CTRL_C_EVENT)
+        elif signum == signal.SIGBREAK:
+            p.send_signal(signal.CTRL_BREAK_EVENT)
+        else:
+            # shouldn't happen, we should be killed instead
+            p.terminate()
+
+    signal.signal(signal.SIGINT, handler)
+    signal.signal(signal.SIGBREAK, handler)
+
+    p.wait()
+    sys.exit(p.returncode)
+else:
+    os.execv(sys.executable, args + sys.argv[1:])

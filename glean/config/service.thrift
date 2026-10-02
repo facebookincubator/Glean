@@ -7,6 +7,7 @@
 // configerator-thrift-updater glean/service.thrift
 // Copyright (c) Facebook, Inc. and its affiliates.
 
+include "thrift/annotation/haskell.thrift"
 include "thrift/annotation/thrift.thrift"
 
 @thrift.AllowLegacyMissingUris
@@ -24,8 +25,9 @@ struct HostPort {
   2: i32 port;
 }
 
+@haskell.NonEmpty
 union Service {
   1: string tier;
   2: HostPort hostPort;
   3: string uri;
-} (hs.nonempty)
+}

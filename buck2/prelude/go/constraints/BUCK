@@ -1,0 +1,27 @@
+load("@prelude//utils:source_listing.bzl", "source_listing")
+
+oncall("build_infra")
+
+source_listing()
+
+constraint(
+    name = "cgo_enabled",
+    default = "true",
+    values = [
+        "true",
+        "false",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+constraint(
+    name = "coverage_mode",
+    default = "none",
+    values = [
+        "none",
+        "set",
+        "count",
+        "atomic",
+    ],
+    visibility = ["PUBLIC"],
+)

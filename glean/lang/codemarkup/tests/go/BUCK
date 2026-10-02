@@ -1,0 +1,14 @@
+load("//buck2:haskell.bzl", "haskell_test")
+
+haskell_test(
+    name = "glean-snapshot-go",
+    main = "Glean.Regression.Go.Main",
+    srcs = [
+        "Glean/Regression/Go/Main.hs",
+    ],
+    deps = [
+        "//glean/lang/go:go-indexer",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    visibility = ["PUBLIC"],
+)

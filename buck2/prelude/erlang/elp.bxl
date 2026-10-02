@@ -1,0 +1,295 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+#
+# This source code is dual-licensed under either the MIT license found in the
+# LICENSE-MIT file in the root directory of this source tree or the Apache
+# License, Version 2.0 found in the LICENSE-APACHE file in the root directory
+# of this source tree. You may select, at your option, one of the
+# above-listed licenses.
+
+BuildResults = record(
+    result = field(dict[Label, bxl.BuildResult]),
+    artifacts = field(dict[Label, list[bxl.EnsuredArtifact]]),
+)
+
+# ------------------ IMPL ------------------
+
+def _add_includes_to_map(includes_map, includes):
+    for inc in includes:
+        includes_map[inc["value"]] = inc["type"]
+    return includes_map
+
+def _clean_up_includes(includes):
+    # - Remove duplicates
+    # - extract paths and build results
+    include_paths = [p["value"] for p in includes if p["type"] == "path"]
+    include_paths = [_as_path(p) for p in _uniq(include_paths)]
+    builds = [b for b in includes if b["type"] == "build"]
+
+    return include_paths + builds
+
+def _get_includes(ctx, includes_target, build_results):
+    includes = []
+    for inc in includes_target.value():
+        includes += _get_absolute_path(ctx, inc, build_results)
+    return _clean_up_includes(includes)
+
+def _get_absolute_path(ctx, src, build_results, allow_multiple = True) -> list[dict[str, str | bxl.EnsuredArtifact]]:
+    """
+    Get the absolute path of the thing passed in, which is either an artifact or a target label.
+    """
+    if isinstance(src, ConfiguredProvidersLabel) and build_results and src in build_results.result:
+        target = src.configured_target()
+        build_result = build_results.result[src]
+        failed_targets = []
+        for _ in build_result.failures():
+            failed_targets.append(str(target))
+        if failed_targets != []:
+            return [_as_error("target {} failed to build due to failures on the following targets [{}]".format(target, ", ".join(failed_targets)))]
+        paths = build_results.artifacts[src]
+        if not allow_multiple and len(paths) != 1:
+            return [_as_error("target {} has multiple outputs: {}".format(target, ", ".join([str(p) for p in paths])))]
+        return [_as_build(path.abs_path()) for path in paths]
+    elif isinstance(src, ConfiguredProvidersLabel):
+        return [_as_target(str(src.raw_target()))]
+    else:
+        return [_as_path(get_path_without_materialization(src, ctx, abs = True))]
+
+def _generate_sources(ctx, src, build_results) -> list:
+    """
+    Get the full set of sources used to generate a given target.
+    """
+    if isinstance(src, ConfiguredProvidersLabel) and build_results and src in build_results.result:
+        target = src.configured_target()
+        deps = ctx.cquery().deps(target)
+        inputs = ctx.cquery().inputs(deps)
+        return [f.cell + "//" + f.path for f in inputs]
+
+    else:
+        return []
+
+def _strip_includes_only(inc):
+    str_inc = str(inc)
+    suffix = "_includes_only"
+    if str_inc.endswith(suffix):
+        str_inc = str_inc[: -len(suffix)]
+    return str_inc
+
+def _build_alias_map(ctx, targets):
+    """Build a map from alias target labels to their fully-resolved actual targets.
+
+    Follows alias chains: if alias A points to alias B which points to
+    target C, both A and B map to C.
+    """
+    alias_targets = ctx.cquery().kind("^alias$", targets)
+    raw_map = {}
+    for alias_tgt in alias_targets:
+        actual_attr = alias_tgt.attrs_lazy().get("actual")
+        if actual_attr:
+            actual_value = actual_attr.value()
+            if isinstance(actual_value, ConfiguredProvidersLabel):
+                raw_map[alias_tgt.label.raw_target()] = actual_value.raw_target()
+
+    # Collapse chains: follow each entry until it lands on a non-alias.
+    # Depth is capped at 10 to guard against alias cycles.
+    alias_map = {}
+    for src, dst in raw_map.items():
+        visited = [src]
+        cur = dst
+        for _ in range(10):
+            if cur not in raw_map:
+                break
+            visited.append(cur)
+            cur = raw_map[cur]
+        if cur in raw_map:
+            warning("alias chain starting at {} exceeds 10 hops — possible cycle, truncating".format(src))
+        for v in visited:
+            alias_map[v] = cur
+    return alias_map
+
+def _resolve_target_label(label, alias_map):
+    """If label is an alias, return the fully-resolved actual target label."""
+    return alias_map.get(label, label)
+
+def _elp_config(ctx):
+    included_targets = ctx.cli_args.included_targets
+
+    # Load the prelude targets first, so if we are working in the prelude they will be overwritten
+    # by included or deps targets, and processed in ELP
+
+    included_targets = ctx.unconfigured_targets(included_targets)
+
+    # Keep alias targets alongside erlang targets for configuration.
+    # Aliases have kind "alias" (not "erlang_app"), so a kind-only filter
+    # would drop them.  Configuring them lets deps() follow alias→actual
+    # edges, placing actual targets into the dep graph where the single
+    # alias map built below can resolve them — including multi-hop chains.
+    included_candidates = ctx.uquery().kind("^(erlang_app|erlang_test|alias)$", included_targets)
+    included_configured = ctx.configured_targets(included_candidates, None)
+    all_targets = ctx.cquery().deps(included_configured)
+
+    # Build a single alias map from the full configured dep graph.
+    # deps() already follows alias→actual edges transitively, so alias
+    # actuals are always in all_targets.  The alias map is still needed to
+    # translate alias labels (e.g. //third-party/erlang:foo in a deps
+    # attribute) to actual target labels that match result dict keys.
+    alias_map = _build_alias_map(ctx, all_targets)
+
+    # Determine which targets are directly included (apps), resolving any
+    # aliases in the user-specified set through the alias map.
+    included_labels = {}
+    for tgt in included_configured:
+        raw = tgt.label.raw_target()
+        included_labels[_resolve_target_label(raw, alias_map)] = True
+
+    all = {}
+    for tgt in ctx.cquery().kind("^(erlang_app|erlang_test)$", all_targets):
+        raw = tgt.label.raw_target()
+        if raw in included_labels:
+            all[raw] = ("app", tgt.attrs_lazy())
+    for tgt in ctx.cquery().kind("^erlang_app$", all_targets):
+        raw = tgt.label.raw_target()
+        if raw not in all:
+            all[raw] = ("dep", tgt.attrs_lazy())
+
+    build_results = None
+    if ctx.cli_args.build_generated_code:
+        build_results = prebuild(ctx, all)
+
+    result = {}
+    for label_name, (typ, attrs) in all.items():
+        includes_map = {}
+        includes = attrs.get("includes")
+        if not includes:
+            includes = []
+        else:
+            includes = _get_includes(ctx, includes, build_results)
+        includes_map = _add_includes_to_map(includes_map, includes)
+
+        extra_includes = attrs.get("extra_includes")
+        if not extra_includes:
+            extra_includes_list = []
+        else:
+            extra_includes_list = [_strip_includes_only(_resolve_target_label(tgt.raw_target(), alias_map)) for tgt in extra_includes.value()]
+
+        deps_list = []
+        apps_list = []
+        included_apps_list = []
+        deps = attrs.get("deps")
+        if deps:
+            deps_list = [_resolve_target_label(tgt.raw_target(), alias_map) for tgt in deps.value()]
+
+        apps = attrs.get("applications")
+        if apps:
+            apps_list = [_resolve_target_label(tgt.raw_target(), alias_map) for tgt in apps.value()]
+
+        included_apps = attrs.get("included_applications")
+        if included_apps:
+            included_apps_list = [_resolve_target_label(tgt.raw_target(), alias_map) for tgt in included_apps.value()]
+
+        is_generated = "generated" in attrs.get("labels").value()
+        gen_srcs = []
+        srcs_attr = attrs.get("srcs")
+        srcs = []
+        if srcs_attr:
+            for src in srcs_attr.value():
+                srcs += _get_absolute_path(ctx, src, build_results)
+                if is_generated:
+                    gen_srcs += _generate_sources(ctx, src, build_results)
+
+        suite = attrs.get("suite")
+        if not suite:
+            suite = None
+        elif suite.value() == None:
+            suite = None
+        else:
+            [suite_info] = _get_absolute_path(ctx, suite.value(), build_results, allow_multiple = False)
+            if suite_info["type"] == "path" or suite_info["type"] == "build":
+                suite = suite_info["value"]
+            else:
+                suite = None
+
+        includes = [t for t in includes_map.keys() if includes_map[t] == "path" or includes_map[t] == "build"]
+        srcs = _construct_output(srcs)
+        gen_srcs = _uniq(gen_srcs)
+        result[label_name] = dict(
+            name = attrs.get("name"),
+            app_name = attrs.get("app_name"),
+            suite = suite,
+            srcs = srcs,
+            gen_srcs = gen_srcs,
+            includes = includes,
+            labels = attrs.get("labels"),
+            deps = deps_list,
+            apps = apps_list,
+            included_apps = included_apps_list,
+            extra_includes = extra_includes_list,
+            origin = typ,
+        )
+
+    ctx.output.print_json(result)
+
+def prebuild(ctx, all):
+    labels = []
+    for _label_name, (_typ, attrs) in all.items():
+        target_labels = attrs.get("labels")
+        if target_labels:
+            if "elp_skip_generation" in target_labels.value():
+                continue
+
+        includes = attrs.get("includes")
+        if includes:
+            for includes in includes.value():
+                if isinstance(includes, ConfiguredProvidersLabel):
+                    labels.append(includes)
+        srcs = attrs.get("srcs")
+        if srcs:
+            for src in srcs.value():
+                if isinstance(src, ConfiguredProvidersLabel):
+                    labels.append(src)
+        suite = attrs.get("suite")
+        if suite:
+            suite = suite.value()
+            if isinstance(suite, ConfiguredProvidersLabel):
+                labels.append(suite)
+
+    build_results = ctx.build(labels)
+    artifacts = ctx.output.ensure_multiple(build_results)
+    return BuildResults(result = build_results, artifacts = artifacts)
+
+def _construct_output(items: list[dict[str, str | bxl.EnsuredArtifact]]) -> list[str | bxl.EnsuredArtifact]:
+    # we completely ignore targets, since we don't have support for generated files in ELP
+    paths = _uniq([p.get("value") for p in items if p.get("type") in ["path", "build"]])
+    return paths
+
+def _uniq(xs):
+    return list(set(xs))
+
+def _as_path(src):
+    return {"type": "path", "value": src}
+
+def _as_target(src):
+    return {"type": "target", "value": src}
+
+def _as_build(artifact):
+    return {"type": "build", "value": artifact}
+
+def _as_error(error):
+    warning("ERROR: {}".format(error))
+    return {"type": "error", "value": error}
+
+# ------------------ INTERFACE ------------------
+
+elp_config = bxl_main(
+    impl = _elp_config,
+    cli_args = {
+        "build_generated_code": cli_args.option(cli_args.bool(), default = False, doc = "Enable builds for generated sources"),
+        "deps_targets": cli_args.option(
+            cli_args.list(cli_args.string()), doc = "Target to include deps from, if specified. See corresponding field in .elp.toml"
+        ),
+        "included_targets": cli_args.list(cli_args.string(), doc = "Targets to include in the query. See corresponding field in .elp.toml"),
+    },
+)
+
+# Run with `buck2 bxl prelude//erlang/elp.bxl:elp_config`
+# e.g.
+# buck2 bxl prelude//erlang/elp.bxl:elp_config -- --included_targets cell//...

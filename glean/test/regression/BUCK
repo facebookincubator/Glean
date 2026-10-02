@@ -1,0 +1,36 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "regression-test-lib",
+    compiler_flags = ["-XCPP", "-DOSS=1"],
+    srcs = [
+        "Glean/Regression/Config.hs",
+        "Glean/Regression/Driver/External.hs",
+        "Glean/Regression/Indexer.hs",
+        "Glean/Regression/Snapshot.hs",
+        "Glean/Regression/Snapshot/Driver.hs",
+        "Glean/Regression/Snapshot/Options.hs",
+        "Glean/Regression/Snapshot/Query.hs",
+        "Glean/Regression/Snapshot/Result.hs",
+        "Glean/Regression/Snapshot/Transform.hs",
+        "Glean/Regression/Test.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/client/hs:client-hs",
+        "//glean/client/hs/local:client-hs-local",
+        "//glean/db:db",
+        "//glean/index:indexer-core",
+        "//glean/index/list:indexers",
+        "//glean/if:if-glean-hs",
+        "//glean/lib:lib",
+        "//glean/github:stubs",
+        "//glean/test/lib:test-lib",
+        "//glean/util:util",
+    ],
+    packages = [
+        "split",
+        "yaml",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,13 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+
+haskell_binary(
+    name = "glass-server",
+    main = "Server",
+    srcs = [
+        "Server.hs",
+    ],
+    deps = [
+        "//glean/glass:glass-lib",
+    ],
+    visibility = ["PUBLIC"],
+)

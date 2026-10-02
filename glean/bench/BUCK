@@ -1,0 +1,23 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "bench-lib",
+    srcs = [
+        "BenchDB.hs",
+    ],
+    deps = [
+        "//glean/backend-api:backend-api",
+        "//glean/bench/lib:bench-util",
+        "//glean/client/hs:client-hs",
+        "//glean/db:db",
+        "//glean/test/lib:test-lib",
+        "//glean/typed:typed",
+        "//glean/schema/thrift:sys",
+        "//glean/schema/thrift:cxx1",
+        "//glean/schema/thrift:glean_test",
+        "//glean/schema/hs:sys",
+        "//glean/schema/hs:cxx1",
+        "//glean/schema/hs:glean_test",
+    ],
+    visibility = ["PUBLIC"],
+)

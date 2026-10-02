@@ -1,0 +1,16 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "test-unit",
+    srcs = [
+        "Glean/Test/HUnit.hs",
+        "Glean/Test/Mock.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+    ],
+    packages = [
+        "HUnit",
+    ],
+    visibility = ["PUBLIC"],
+)

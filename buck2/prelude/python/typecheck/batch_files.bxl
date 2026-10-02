@@ -1,0 +1,30 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+#
+# This source code is dual-licensed under either the MIT license found in the
+# LICENSE-MIT file in the root directory of this source tree or the Apache
+# License, Version 2.0 found in the LICENSE-APACHE file in the root directory
+# of this source tree. You may select, at your option, one of the
+# above-listed licenses.
+
+load(":batch.bxl", "check_targets")
+
+def _run_entry_point(ctx: bxl.Context) -> None:
+    targets = ctx.uquery().owner(ctx.cli_args.source)
+    check_targets(ctx, targets)
+
+run = bxl_main(
+    doc = "Run [typecheck] on the owning targets of given files.",
+    impl = _run_entry_point,
+    cli_args = {
+        "client-metadata": cli_args.option(cli_args.string(doc = "Passed through to buck as --client-metadata")),
+        "keep-going": cli_args.bool(
+            default = False,
+            doc = "Keep going on unconfigured target failures",
+        ),
+        "source": cli_args.list(
+            cli_args.string(
+                doc = "Files whose owning targets need to be checked",
+            ),
+        ),
+    },
+)

@@ -1,0 +1,27 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+#
+# This source code is dual-licensed under either the MIT license found in the
+# LICENSE-MIT file in the root directory of this source tree or the Apache
+# License, Version 2.0 found in the LICENSE-APACHE file in the root directory
+# of this source tree. You may select, at your option, one of the
+# above-listed licenses.
+
+def do_merge(ctx: bxl.Context, bxl_actions: bxl.Actions, built_sourcedbs: dict[TargetLabel, Artifact], command_category: str) -> bxl.EnsuredArtifact:
+    actions = bxl_actions.actions
+
+    merger_input = actions.write_json("merge_input.json", built_sourcedbs, has_content_based_path = False)
+    merger_output = actions.declare_output("merged_db.json", has_content_based_path = False)
+
+    dependency_key = bxl_actions.exec_deps.keys()[0]
+
+    command = cmd_args(
+        bxl_actions.exec_deps[dependency_key][RunInfo],
+        merger_input,
+        "--output",
+        merger_output.as_output(),
+        # Declare that the merger result depends on all sourcedbs
+        hidden = built_sourcedbs.values(),
+    )
+
+    actions.run(command, category = command_category)
+    return ctx.output.ensure(merger_output)

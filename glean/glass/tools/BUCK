@@ -1,0 +1,33 @@
+load("//buck2:haskell.bzl", "haskell_binary")
+
+haskell_binary(
+    name = "glass-symbol",
+    main = "Glean.Glass.Test.Symbol",
+    compiler_flags = ["-XCPP"],
+    srcs = [
+        "Glean/Glass/Test/Symbol.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/glass:glass-lib",
+        "//glean/glass/if:if-glass-hs",
+        "//glean/github:stubs",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+haskell_binary(
+    name = "glass-democlient",
+    main = "Glean.Glass.Test.DemoClient",
+    srcs = [
+        "Glean/Glass/Test/DemoClient.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "@hsthrift//lib:thrift-lib",
+        "//glean/glass/if:if-glass-hs",
+        "//glean/github:stubs",
+        "//glean/util:util",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,54 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+#
+# This source code is dual-licensed under either the MIT license found in the
+# LICENSE-MIT file in the root directory of this source tree or the Apache
+# License, Version 2.0 found in the LICENSE-APACHE file in the root directory
+# of this source tree. You may select, at your option, one of the
+# above-listed licenses.
+
+def _get_artifact(result: bxl.BuildResult) -> Artifact:
+    # NOTE: the first artifact is always the source db json
+    # T124989384 will make this nicer
+    for artifact in result.artifacts():
+        return artifact
+    fail("Sourcedb rule must have at least one artifact")
+
+def _get_sourcedb(result: list[bxl.EnsuredArtifact]) -> bxl.EnsuredArtifact:
+    # NOTE: the first artifact is always the source db json
+    # T124989384 will make this nicer
+    for artifact in result:
+        return artifact
+    fail("Sourcedb rule must have at least one artifact")
+
+def _abort_on_build_failure(target_label: TargetLabel, result: bxl.BuildResult) -> None:
+    for failure in result.failures():
+        error_message = "Target `{}` cannot be built by Buck\nreason: {}".format(target_label, failure)
+        fail(error_message)
+
+def _build(ctx: bxl.Context, targets: list[ConfiguredTargetLabel]) -> dict[Label, bxl.BuildResult]:
+    # Build sourcedbs of all targets
+    configured_sub_targets = [target.with_sub_target(["source-db-no-deps"]) for target in targets]
+    return ctx.build(configured_sub_targets)
+
+# Build sourcedb for the given targets, and return a mapping from target names
+# to the corresponding sourcedb JSON file location.
+def do_build(ctx: bxl.Context, targets: list[ConfiguredTargetLabel]) -> dict[TargetLabel, Artifact]:
+    build_results = _build(ctx, targets)
+
+    # Compute result dict
+    output = {}
+    for key, result in build_results.items():
+        raw_target = key.raw_target()
+        _abort_on_build_failure(raw_target, result)
+        path = _get_artifact(result)
+        output[raw_target] = path
+    return output
+
+# Same as do_build, except calls ensure to ensure artifacts are materialized.
+def do_build_ensured(ctx: bxl.Context, targets: list[ConfiguredTargetLabel]) -> dict[TargetLabel, bxl.EnsuredArtifact]:
+    build_results = _build(ctx, targets)
+    for key, value in build_results.items():
+        _abort_on_build_failure(key.raw_target(), value)
+
+    ensured_artifacts = ctx.output.ensure_multiple(build_results)
+    return {label.raw_target(): _get_sourcedb(artifact) for label, artifact in ensured_artifacts.items()}

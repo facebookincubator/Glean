@@ -1,0 +1,172 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+#
+# This source code is dual-licensed under either the MIT license found in the
+# LICENSE-MIT file in the root directory of this source tree or the Apache
+# License, Version 2.0 found in the LICENSE-APACHE file in the root directory
+# of this source tree. You may select, at your option, one of the
+# above-listed licenses.
+
+load(
+    "@prelude//android:android_providers.bzl",
+    "AndroidResourceInfo",
+    "AndroidResourceRDotInfo",
+    "PrebuiltNativeLibraryDir",
+    "RESOURCE_PRIORITY_LOW",
+    "merge_android_packageable_info",
+)
+load("@prelude//android:android_resource.bzl", "aapt2_compile", "extract_package_from_manifest")
+load("@prelude//android:android_toolchain.bzl", "AndroidToolchainInfo")
+load("@prelude//android:r_dot_java.bzl", "get_dummy_r_dot_java")
+load(
+    "@prelude//java:java_providers.bzl",
+    "ClasspathSnapshotGranularity",
+    "JavaClasspathEntry",
+    "create_abi",
+    "create_java_library_providers",
+    "generate_java_classpath_snapshot",
+)
+load("@prelude//java:java_toolchain.bzl", "JavaToolchainInfo")
+
+def android_prebuilt_aar_impl(ctx: AnalysisContext) -> list[Provider]:
+    manifest = ctx.actions.declare_output("AndroidManifest.xml", has_content_based_path = True)
+    all_classes_jar = ctx.actions.declare_output("classes.jar", has_content_based_path = True)
+    r_dot_txt = ctx.actions.declare_output("R.txt", has_content_based_path = True)
+    res = ctx.actions.declare_output("res", dir = True, has_content_based_path = True)
+    assets = ctx.actions.declare_output("assets", dir = True, has_content_based_path = True)
+    jni = ctx.actions.declare_output("jni", dir = True, has_content_based_path = True)
+    annotation_jars_dir = ctx.actions.declare_output("annotation_jars", dir = True, has_content_based_path = True)
+    proguard_config = ctx.actions.declare_output("proguard.txt", has_content_based_path = True)
+    lint_jar = ctx.actions.declare_output("lint.jar", has_content_based_path = True)
+
+    android_toolchain = ctx.attrs._android_toolchain[AndroidToolchainInfo]
+    unpack_aar_tool = android_toolchain.unpack_aar[RunInfo]
+    java_toolchain = ctx.attrs._java_toolchain[JavaToolchainInfo]
+    jar_builder_tool = cmd_args(java_toolchain.jar_builder, delimiter = " ")
+
+    unpack_aar_cmd = [
+        unpack_aar_tool,
+        "--aar",
+        ctx.attrs.aar,
+        "--manifest-path",
+        manifest.as_output(),
+        "--all-classes-jar-path",
+        all_classes_jar.as_output(),
+        "--r-dot-txt-path",
+        r_dot_txt.as_output(),
+        "--res-path",
+        res.as_output(),
+        "--assets-path",
+        assets.as_output(),
+        "--jni-path",
+        jni.as_output(),
+        "--annotation-jars-dir",
+        annotation_jars_dir.as_output(),
+        "--proguard-config-path",
+        proguard_config.as_output(),
+        "--jar-builder-tool",
+        jar_builder_tool,
+        "--lint-jar-path",
+        lint_jar.as_output(),
+    ]
+
+    ctx.actions.run(unpack_aar_cmd, category = "android_unpack_aar")
+
+    resource_info = AndroidResourceInfo(
+        raw_target = ctx.label.raw_target(),
+        aapt2_compile_output = aapt2_compile(ctx, res, android_toolchain),
+        allow_strings_as_assets_resource_filtering = True,
+        assets = [assets],
+        manifest_file = manifest,
+        r_dot_java_package = extract_package_from_manifest(ctx, manifest),
+        res = res,
+        res_priority = RESOURCE_PRIORITY_LOW,
+        text_symbols = r_dot_txt,
+    )
+
+    dummy_r_dot_java_info = get_dummy_r_dot_java(
+        ctx,
+        android_toolchain.merge_android_resources[RunInfo],
+        [resource_info],
+        None,
+    )
+
+    android_resource_r_dot_info = AndroidResourceRDotInfo(
+        dummy_r_dot_java = dummy_r_dot_java_info.library_output.abi,
+    )
+
+    abi = None if java_toolchain.is_bootstrap_toolchain else create_abi(ctx.actions, java_toolchain.class_abi_generator, all_classes_jar)
+    abi_jar_snapshot = generate_java_classpath_snapshot(
+        ctx.actions, java_toolchain.cp_snapshot_generator, ClasspathSnapshotGranularity("CLASS_LEVEL"), abi or all_classes_jar, ""
+    )
+
+    library_output_classpath_entry = JavaClasspathEntry(
+        full_library = all_classes_jar,
+        abi = abi or all_classes_jar,
+        abi_as_dir = None,
+        required_for_source_only_abi = ctx.attrs.required_for_source_only_abi,
+        abi_jar_snapshot = abi_jar_snapshot,
+    )
+
+    (
+        java_library_info,
+        java_packaging_info,
+        global_code_info,
+        shared_library_info,
+        linkable_graph,
+        cxx_resource_info,
+        template_placeholder_info,
+        java_library_intellij_info,
+    ) = create_java_library_providers(
+        ctx = ctx,
+        library_output = library_output_classpath_entry,
+        global_code_config = java_toolchain.global_code_config,
+        exported_deps = ctx.attrs.deps,
+        provided_deps = ctx.attrs.desugar_deps,
+        is_prebuilt_jar = True,
+        annotation_jars_dir = annotation_jars_dir,
+        proguard_config = proguard_config,
+        lint_jar = lint_jar,
+        sources_jar = ctx.attrs.source_jar,
+        dex_weight_factor = ctx.attrs.dex_weight_factor,
+    )
+
+    native_library = PrebuiltNativeLibraryDir(
+        raw_target = ctx.label.raw_target(),
+        dir = jni,
+        for_primary_apk = ctx.attrs.use_system_library_loader,
+        is_asset = False,
+    )
+
+    return [
+        java_library_info,
+        java_packaging_info,
+        global_code_info,
+        shared_library_info,
+        cxx_resource_info,
+        linkable_graph,
+        template_placeholder_info,
+        java_library_intellij_info,
+        android_resource_r_dot_info,
+        merge_android_packageable_info(
+            ctx.label,
+            ctx.actions,
+            ctx.attrs.deps,
+            manifest = manifest,
+            prebuilt_native_library_dir = native_library,
+            resource_info = resource_info,
+            for_primary_apk = ctx.attrs.for_primary_apk,
+        ),
+        resource_info,
+        DefaultInfo(
+            default_output = all_classes_jar,
+            other_outputs = [
+                manifest,
+                r_dot_txt,
+                res,
+                assets,
+                jni,
+                annotation_jars_dir,
+                proguard_config,
+            ],
+        ),
+    ]

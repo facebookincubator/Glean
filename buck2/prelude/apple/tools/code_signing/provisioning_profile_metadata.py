@@ -1,0 +1,104 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+#
+# This source code is dual-licensed under either the MIT license found in the
+# LICENSE-MIT file in the root directory of this source tree or the Apache
+# License, Version 2.0 found in the LICENSE-APACHE file in the root directory
+# of this source tree. You may select, at your option, one of the
+# above-listed licenses.
+
+# pyre-strict
+
+from __future__ import annotations
+
+import hashlib
+from dataclasses import dataclass
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Optional
+
+from apple.tools.plistlib_utils import detect_format_and_loads
+
+from .app_id import AppId
+
+
+@dataclass
+class ProvisioningProfileMetadata:
+    # Path to the provisioning profile file
+    file_path: Path
+    uuid: str
+    # Naïve object with ignored timezone, see https://bugs.python.org/msg110249
+    expiration_date: datetime
+    platforms: frozenset[str]
+    # Let's agree they are uppercased
+    developer_certificate_fingerprints: frozenset[str]
+    entitlements: dict[str, Any]
+    # Naïve object with ignored timezone (same as expiration_date)
+    creation_date: Optional[datetime] = None
+    provisions_all_devices: Optional[bool] = None
+    provisioned_devices: Optional[list[str]] = None
+
+    _mergeable_entitlements_keys: frozenset[str] = frozenset(
+        [
+            "application-identifier",
+            "beta-reports-active",
+            "get-task-allow",
+            "com.apple.developer.aps-environment",
+            "com.apple.developer.team-identifier",
+        ]
+    )
+
+    # See `ProvisioningProfileMetadataFactory::getAppIDFromEntitlements` from `ProvisioningProfileMetadataFactory.java` in Buck v1
+    def get_app_id(self) -> AppId:
+        maybe_app_id = self.entitlements.get(
+            "application-identifier"
+        ) or self.entitlements.get("com.apple.application-identifier")
+        if not maybe_app_id:
+            raise RuntimeError(
+                f"Entitlements do not contain app ID: {self.entitlements}"
+            )
+        return AppId.from_string(maybe_app_id)
+
+    # See `ProvisioningProfileMetadata::getMergeableEntitlements` from `ProvisioningProfileMetadata.java` in Buck v1
+    def get_mergeable_entitlements(self) -> dict[str, Any]:
+        return {
+            k: v
+            for k, v in self.entitlements.items()
+            if k in ProvisioningProfileMetadata._mergeable_entitlements_keys
+        }
+
+    # See `ProvisioningProfileMetadataFactory::fromProvisioningProfilePath` from `ProvisioningProfileMetadataFactory.java` in Buck v1
+    @staticmethod
+    def from_provisioning_profile_file_content(
+        file_path: Path, content: bytes
+    ) -> ProvisioningProfileMetadata:
+        root = detect_format_and_loads(content)
+        developer_certificate_fingerprints = {
+            hashlib.sha1(c).hexdigest().upper() for c in root["DeveloperCertificates"]
+        }
+        assert len(developer_certificate_fingerprints) > 0, (
+            "Expected at least one suitable certificate."
+        )
+        return ProvisioningProfileMetadata(
+            file_path=file_path,
+            uuid=root["UUID"],
+            expiration_date=root["ExpirationDate"],
+            platforms=frozenset(root["Platform"]),
+            developer_certificate_fingerprints=frozenset(
+                developer_certificate_fingerprints
+            ),
+            entitlements=root["Entitlements"],
+            creation_date=root.get("CreationDate"),
+            provisions_all_devices=root.get("ProvisionsAllDevices"),
+            provisioned_devices=root.get("ProvisionedDevices"),
+        )
+
+    def __hash__(self) -> int:
+        return hash(
+            (
+                self.file_path,
+                self.uuid,
+                self.expiration_date,
+                self.platforms,
+                self.developer_certificate_fingerprints,
+            )
+        )

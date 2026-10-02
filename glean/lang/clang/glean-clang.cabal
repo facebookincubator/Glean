@@ -133,6 +133,7 @@ executable clang-index
     build-depends:
         glean:rts,
         glean:client-cpp,
+        glean:interprocess-cpp,
     extra-libraries:
         clang-cpp,
         LLVM,

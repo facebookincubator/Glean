@@ -1,0 +1,802 @@
+/*
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is dual-licensed under either the MIT license found in the
+ * LICENSE-MIT file in the root directory of this source tree or the Apache
+ * License, Version 2.0 found in the LICENSE-APACHE file in the root directory
+ * of this source tree. You may select, at your option, one of the
+ * above-listed licenses.
+ */
+
+package com.facebook.buck.android.exopackage
+
+import com.facebook.buck.core.util.log.Logger
+import com.facebook.buck.installer.android.AndroidInstallException
+import com.google.common.base.Splitter
+import com.google.common.collect.ImmutableSortedSet
+import com.google.common.collect.Sets
+import java.io.File
+import java.lang.Thread.sleep
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+import java.security.MessageDigest
+import java.util.Optional
+import java.util.UUID
+import java.util.regex.Pattern
+import kotlin.system.measureTimeMillis
+
+class AndroidDeviceImpl(val serial: String, val adbUtils: AdbUtils) : AndroidDevice {
+
+  override fun installApkOnDevice(
+      apk: File,
+      installViaSd: Boolean,
+      quiet: Boolean,
+      verifyTempWritable: Boolean,
+      stagedInstallMode: Boolean,
+      userId: String?,
+      allowFastDeploy: Boolean,
+      packageName: String,
+  ): Boolean {
+    val elapsed = measureTimeMillis {
+      if (verifyTempWritable) {
+        try {
+          val uniqueFileName = "buck-experiment-${UUID.randomUUID()}"
+          executeAdbShellCommand("echo exo > /data/local/tmp/$uniqueFileName")
+          executeAdbShellCommand("rm /data/local/tmp/$uniqueFileName")
+        } catch (e: AdbCommandFailedException) {
+          // TODO: we should check for specific failure here
+          LOG.error("Failed to write to /data/local/tmp: ${e.message}")
+          throw AndroidInstallException.tempFolderNotWritable()
+        }
+      }
+
+      var installCommand: String
+      // Fast path: use --fastdeploy on SDK-supported devices.
+      // On any failure we fall back to a plain install.
+      if (allowFastDeploy && !stagedInstallMode && sdkSupportsFastDeploy()) {
+        installCommand = buildInstallCommand(apk, true, stagedInstallMode, userId)
+        try {
+          executeAdbCommandCatching(
+              installCommand,
+              "Failed to install ${apk.name} with --fastdeploy.",
+          )
+          verifyInstalledApkMatches(apk, packageName)
+          return@measureTimeMillis
+        } catch (e: AndroidInstallException) {
+          LOG.warn(
+              "The fast install failed or left the on-device apk missing or stale: ${e.message}.\n" +
+                  "Reinstalling ${apk.name} without --fastdeploy to recover.",
+          )
+        }
+      }
+
+      installCommand = buildInstallCommand(apk, false, stagedInstallMode, userId)
+      try {
+        executeAdbCommand(installCommand)
+      } catch (e: AdbCommandFailedException) {
+        val conflictingPackage = extractSignatureMismatchPackage(e.message)
+        if (conflictingPackage == null) {
+          throw AndroidInstallException.adbCommandFailedException(
+              "Failed to install ${apk.name}.",
+              e.message,
+          )
+        }
+        LOG.warn(
+            "Install of ${apk.name} failed because $conflictingPackage is already installed with a" +
+                " mismatched signature; uninstalling it and retrying the install.",
+        )
+        executeAdbCommandCatching(
+            "uninstall $conflictingPackage",
+            "Failed to uninstall $conflictingPackage while recovering from a signature mismatch.",
+        )
+        executeAdbCommandCatching(
+            installCommand,
+            "Failed to install ${apk.name} after uninstalling $conflictingPackage.",
+        )
+      }
+
+      if (!stagedInstallMode) {
+        verifyInstalledApkMatches(apk, packageName)
+      }
+    }
+    val userSuffix = if (userId != null) " for user $userId" else ""
+    val kbps = (apk.length() / 1024.0) / (elapsed / 1000.0)
+    LOG.info(
+        "Installed ${apk.name}$userSuffix (${apk.length()} bytes) in ${elapsed/1000.0} s ($kbps kB/s)",
+    )
+    return true
+  }
+
+  /**
+   * Verifies that the apk installed for [packageName] matches [apk] byte-for-byte (adb stores it
+   * verbatim). Always throws [AndroidInstallException] on failure: tagged
+   * [AndroidInstallErrorTag.INSTALLED_APK_MISMATCH] if the package is absent or the on-device apk
+   * differs, and tagged [AndroidInstallErrorTag.ADB_COMMAND_FAILED] if the on-device apk cannot be
+   * read back.
+   */
+  private fun verifyInstalledApkMatches(apk: File, packageName: String) {
+    val installedApk =
+        getPackageInfo(packageName).orElseThrow {
+          AndroidInstallException.installedApkMismatch(
+              "Install of ${apk.name} could not be verified: $packageName is not present on the" +
+                  " device after installing.",
+          )
+        }
+    val installedHash =
+        try {
+          getContentHash(installedApk.apkPath)
+        } catch (e: AdbCommandFailedException) {
+          throw AndroidInstallException.adbCommandFailedException(
+              "Could not read the on-device apk for $packageName to verify the install of" +
+                  " ${apk.name}.",
+              e.message,
+          )
+        }
+    val localApkHash = sha256Hex(apk)
+    if (!installedHash.equals(localApkHash, ignoreCase = true)) {
+      throw AndroidInstallException.installedApkMismatch(
+          "Install of ${apk.name} could not be verified: the on-device apk for $packageName does" +
+              " not match the local apk after installing.",
+      )
+    }
+  }
+
+  @Throws(Exception::class)
+  override fun getContentHash(path: String): String {
+    val output = executeAdbShellCommand("sha256sum $path").trim()
+    val hash = output.split(Regex("\\s+")).first()
+    // `sha256sum` can report an error on stdout (e.g. a missing file) while adb still exits 0, so
+    // the first token is not always a digest. Treat any non-hex output as a read failure so the
+    // caller surfaces ADB_COMMAND_FAILED rather than a misleading apk mismatch.
+    if (!hash.matches(Regex("[0-9a-fA-F]{64}"))) {
+      throw AdbCommandFailedException("sha256sum returned unexpected output for $path: \"$output\"")
+    }
+    return hash
+  }
+
+  private fun sha256Hex(file: File): String {
+    val digest = MessageDigest.getInstance("SHA-256")
+    file.inputStream().use { input ->
+      val buffer = ByteArray(8192)
+      var read = input.read(buffer)
+      while (read >= 0) {
+        digest.update(buffer, 0, read)
+        read = input.read(buffer)
+      }
+    }
+    return digest.digest().joinToString("") { "%02x".format(it.toInt() and 0xFF) }
+  }
+
+  /**
+   * Returns the package name from an adb `INSTALL_FAILED_UPDATE_INCOMPATIBLE` failure (signature
+   * mismatch), or null if the failure is not a signature mismatch. The package name is parsed from
+   * adb's message, e.g. "Existing package com.meta.ar.helixserver signatures do not match ...".
+   */
+  private fun extractSignatureMismatchPackage(message: String?): String? {
+    if (message == null || !message.contains(INSTALL_FAILED_UPDATE_INCOMPATIBLE)) {
+      return null
+    }
+    return SIGNATURE_MISMATCH_PACKAGE_PATTERN.find(message)?.groupValues?.getOrNull(1)?.takeIf {
+      PACKAGE_NAME_PATTERN.matches(it)
+    }
+  }
+
+  private fun buildInstallCommand(
+      apk: File,
+      fastDeploy: Boolean,
+      stagedInstallMode: Boolean,
+      userId: String?,
+  ): String = buildString {
+    append("install -r -d")
+    if (fastDeploy) append(" --fastdeploy")
+    if (stagedInstallMode) append(" --staged")
+    if (userId != null) append(" --user $userId")
+    append(" ${apk.absolutePath}")
+  }
+
+  private fun sdkSupportsFastDeploy(): Boolean {
+    val sdkVersion =
+        try {
+          getProperty("ro.build.version.sdk").toInt()
+        } catch (e: Exception) {
+          LOG.warn("Unable to determine SDK version, defaulting to legacy install: ${e.message}")
+          -1
+        }
+
+    return sdkVersion >= MIN_SDK_VERSION_FOR_FASTDEPLOY
+  }
+
+  override fun prepareForApexInstallation(): Boolean {
+    executeAdbCommand("root")
+    sleep(5000)
+    executeAdbCommand("wait-for-device")
+
+    // Root kills adbd, and sometimes, it takes a while for it to come back
+    for (i in 1..3) {
+      if (executeAdbShellCommand("whoami").equals("root")) {
+        break
+      }
+      sleep(1000)
+    }
+
+    val softRebootAvailable =
+        executeAdbShellCommand("pm", ignoreFailure = true).contains("force-non-staged")
+    LOG.info("Soft reboot available: $softRebootAvailable")
+    return softRebootAvailable
+  }
+
+  override fun installApexOnDevice(
+      apex: File,
+      quiet: Boolean,
+      restart: Boolean,
+      softRebootAvailable: Boolean,
+      waitForDeviceReady: Boolean,
+  ): Boolean {
+    val elapsed = measureTimeMillis {
+      try {
+        val installArgs = "--apex ${if (softRebootAvailable) "--force-non-staged" else ""}".trim()
+        executeAdbCommand("install $installArgs ${apex.absolutePath}")
+      } catch (e: AdbCommandFailedException) {
+        if ((e.message ?: "").contains("INSTALL_FAILED_VERIFICATION_FAILURE: Staged session ")) {
+          throw AndroidInstallException.rebootRequired(
+              "Device is already staged; You need to run 'adb reboot' on your device.",
+          )
+        }
+
+        // if the device can't install because the list of native libs is different,
+        // retry without the --force-non-staged flag. Then reboot automatically.
+        if (
+            (e.message ?: "").contains(
+                "INSTALL_FAILED_INTERNAL_ERROR: APEX installation failed: Set of native libs required",
+            )
+        ) {
+          // try install again without --force-non-staged
+          executeAdbCommandCatching(
+              "install -d --apex ${apex.absolutePath}",
+              "Failed to install ${apex.name}.",
+          )
+          throw AndroidInstallException.rebootRequired(
+              "Installed ${apex.name} on device; however --force-non-staged doesn't work when the" +
+                  " native lib dependencies of an apex have changed. You need to run 'adb" +
+                  " reboot' on your device to complete the install. See also:" +
+                  " https://www.internalfb.com/intern/wiki/RL/RL_Release_and_Reliability/Build_and_Release_Infra/APEX_in_fbsource/Pit_falls/",
+          )
+        }
+
+        // If the apex package has changed (e.g. not previously), fall back to
+        // remount + push so the apex lands directly in /system/apex.
+        if ((e.message ?: "").contains("INSTALL_FAILED_PACKAGE_CHANGED")) {
+          LOG.info(
+              "INSTALL_FAILED_PACKAGE_CHANGED for ${apex.name}, " +
+                  "attempting fallback install via remount and push",
+          )
+          try {
+            // Remount so that we can write to /system_ext/apex
+            executeAdbCommand("root")
+            executeAdbCommand("wait-for-device")
+            executeAdbCommand("remount")
+
+            // Remount sometimes requires a reboot because verity is enabled.
+            if (executeAdbShellCommand("getprop ro.boot.veritymode") == "enforcing") {
+              executeAdbCommand("reboot")
+              executeAdbCommand("wait-for-device")
+              waitForBootComplete()
+
+              executeAdbCommand("root")
+              executeAdbCommand("wait-for-device")
+              executeAdbCommand("remount")
+            }
+
+            // Potentially make this customizable in the future.
+            executeAdbCommand("push ${apex.absolutePath} /system_ext/apex/")
+
+            // Reboot to activate the apex
+            executeAdbCommand("reboot")
+            executeAdbCommand("wait-for-device")
+            waitForBootComplete()
+          } catch (fallbackError: AdbCommandFailedException) {
+            throw AndroidInstallException.adbCommandFailedException(
+                "Failed to install ${apex.name} via fallback remount+push.",
+                fallbackError.message,
+            )
+          }
+          return@measureTimeMillis
+        }
+
+        throw AndroidInstallException.adbCommandFailedException(
+            "Failed to install ${apex.name}.",
+            e.message,
+        )
+      }
+
+      if (!softRebootAvailable) {
+        throw AndroidInstallException.rebootRequired(
+            "--force-non-staged is not available on device" +
+                "(is the device running an older build?); " +
+                "${apex.name} was installed successfully but will not be active until " +
+                "you run 'adb reboot' on your device",
+        )
+      }
+
+      if (restart) {
+        try {
+          executeAdbShellCommand("stop")
+          executeAdbShellCommand("start")
+
+          if (waitForDeviceReady) {
+            // Wait for device to be fully ready after soft reboot
+            waitForBootComplete()
+            waitUntilPackageManagerReady()
+            waitForStorageReady()
+          }
+        } catch (e: AdbCommandFailedException) {
+          throw AndroidInstallException.rebootRequired(
+              "Failed to stop+start shell; ${apex.name} was installed successfully but device will be in an unknown state until you run 'adb reboot'",
+          )
+        }
+      }
+    }
+    val kbps = (apex.length() / 1024.0) / (elapsed / 1000.0)
+    LOG.info("Installed ${apex.name} (${apex.length()} bytes) in ${elapsed/1000.0} s ($kbps kB/s)")
+    return true
+  }
+
+  private fun waitForBootComplete() {
+    waitForCondition(
+        command = "getprop sys.boot_completed",
+        condition = { output -> output.trim() == "1" },
+        successMessage = "Boot completed after soft reboot",
+        timeoutMessage = "Device did not complete boot after soft reboot within timeout",
+        timeoutMs = 80000, // Account for Horizon OS Emulator.
+    )
+  }
+
+  private fun waitUntilPackageManagerReady() {
+    waitForCondition(
+        command = "pm",
+        condition = { output -> output.isNotEmpty() && !output.contains("Can't find service") },
+        successMessage = "Package manager service ready",
+        timeoutMessage = "Package manager service did not become ready within timeout",
+    )
+  }
+
+  private fun waitForStorageReady() {
+    waitForCondition(
+        command = "ls /storage/emulated/0 2>&1 || echo STORAGE_NOT_READY",
+        condition = { output ->
+          !output.contains("Transport endpoint is not connected") &&
+              !output.contains("STORAGE_NOT_READY") &&
+              !output.contains("No such file or directory")
+        },
+        successMessage = "Storage filesystem ready",
+        timeoutMessage = "Storage filesystem did not become ready within timeout",
+        timeoutMs = 30000,
+    )
+  }
+
+  /**
+   * Polls a shell command until a condition is met or timeout is reached.
+   *
+   * @param command the shell command to execute
+   * @param condition a predicate that returns true when the desired state is reached
+   * @param successMessage message to log on success
+   * @param timeoutMessage message for the exception if timeout is reached
+   * @param timeoutMs maximum time to wait in milliseconds
+   * @param pollIntervalMs time between polling attempts in milliseconds
+   * @throws AndroidInstallException if the condition is not met within the timeout
+   */
+  private fun waitForCondition(
+      command: String,
+      condition: (String) -> Boolean,
+      successMessage: String,
+      timeoutMessage: String,
+      timeoutMs: Long = 10000,
+      pollIntervalMs: Long = 100,
+  ) {
+    LOG.info("Waiting for condition (timeout: ${timeoutMs}ms): $successMessage")
+    val startTime = System.currentTimeMillis()
+    var attempt = 0
+
+    while (System.currentTimeMillis() - startTime < timeoutMs) {
+      attempt++
+      if (condition(executeAdbShellCommand(command, ignoreFailure = true))) {
+        LOG.info(successMessage)
+        return
+      }
+      LOG.info("Attempt $attempt: condition not met, retrying in ${pollIntervalMs}ms...")
+      sleep(pollIntervalMs)
+    }
+
+    throw AndroidInstallException.rebootRequired(timeoutMessage)
+  }
+
+  override fun stopPackage(packageName: String) {
+    executeAdbShellCommandCatching(
+        "am force-stop $packageName",
+        "Failed to stop package $packageName.",
+    )
+  }
+
+  @Throws(Exception::class)
+  override fun getPackageInfo(packageName: String): Optional<PackageInfo> {
+    val output: String =
+        try {
+          executeAdbShellCommand("pm path $packageName")
+        } catch (e: AdbCommandFailedException) {
+          LOG.warn("Failed to get package info for $packageName: ${e.message}")
+          return Optional.empty()
+        }
+    // `pm path` prints one `package:<path>` line per installed apk (base plus any config splits),
+    // and prints nothing for a package that is not installed. Use the base apk (first line); treat
+    // output with no `package:` line as "not installed".
+    val apkPath =
+        output
+            .lineSequence()
+            .map { it.trim() }
+            .firstOrNull { it.startsWith("package:") }
+            ?.removePrefix("package:") ?: return Optional.empty()
+    return Optional.of(PackageInfo(apkPath, "", ""))
+  }
+
+  @Throws(Exception::class)
+  override fun uninstallPackage(packageName: String) {
+    executeAdbCommandCatching("uninstall $packageName", "Failed to uninstall $packageName.")
+  }
+
+  @Throws(Exception::class)
+  override fun getApkManifestDigest(packagePath: String): String {
+    val entry: String =
+        executeAdbShellCommand("unzip -l $packagePath | grep -E -o 'META-INF/[A-Z]+\\.SF'").trim()
+    val result: String = executeAdbShellCommand(
+        "unzip -p $packagePath $entry | grep -E 'SHA1-Digest-Manifest:|SHA-256-Digest-Manifest:'",
+    )
+    val (_, digest) = result.split(":", limit = 2)
+    return digest.trim()
+  }
+
+  @Throws(Exception::class)
+  override fun listDirRecursive(root: Path): ImmutableSortedSet<Path> {
+    val lsOutput: String =
+        executeAdbCommandCatching("shell ls -R $root", "Failed to list path $root.")
+
+    val paths: MutableSet<Path> = HashSet()
+    val dirs: MutableSet<Path?> = HashSet()
+    var currentDir: Path? = null
+    for (line in Splitter.on(LINE_ENDING).omitEmptyStrings().split(lsOutput)) {
+      if (line.endsWith(":")) {
+        currentDir = root.relativize(Paths.get(line.removeSuffix(":")))
+        dirs.add(currentDir)
+      } else {
+        checkNotNull(currentDir)
+        paths.add(currentDir.resolve(line))
+      }
+    }
+    return ImmutableSortedSet.copyOf<Path>(Sets.difference(paths, dirs))
+  }
+
+  override fun rmFiles(dirPath: String, filesToDelete: Iterable<String>) {
+    val elapsed: Long = measureTimeMillis {
+      val tempFile = File.createTempFile("files_to_delete", ".txt")
+      try {
+        tempFile.writeText(
+            filesToDelete.joinToString("\n") { Paths.get(dirPath).resolve(it).toString() },
+        )
+        executeAdbCommand("push -z brotli ${tempFile.absolutePath} /data/local/tmp")
+        executeAdbShellCommand("cat /data/local/tmp/${tempFile.name} | xargs rm -f")
+      } catch (e: AdbCommandFailedException) {
+        throw AndroidInstallException.adbCommandFailedException(
+            "Failed delete ${filesToDelete.count()} files from $dirPath.",
+            e.message,
+        )
+      } finally {
+        tempFile.delete()
+        executeAdbShellCommand("rm -f /data/local/tmp/${tempFile.name}")
+      }
+    }
+    LOG.info("Deleted ${filesToDelete.count()} files from $dirPath in ${elapsed/1000.0} seconds.")
+  }
+
+  @Throws(Exception::class)
+  override fun createForward(): AutoCloseable {
+    return AutoCloseable {}
+  }
+
+  @Throws(Exception::class)
+  override fun installFiles(
+      filesType: String,
+      installPaths: Map<Path, Path>,
+      packageName: String,
+  ) {
+    LOG.debug(
+        "%s: %s",
+        filesType,
+        installPaths
+            .map { "${it.value.parent} -> ${it.key.parent}" }
+            .distinct()
+            .joinToString(separator = "\n\t", prefix = "[", postfix = "]"),
+    )
+    val timeSpent: Long = measureTimeMillis {
+      when (filesType) {
+        // 1- create a temp folder for each destination folder
+        // 2- copy all the files to the temp folder. adb does not support symbolic links so
+        // this is necessary
+        // 3- push the temp folder to the device using one call to adb. this is much faster
+        // than pushing each file individually
+        "secondary_dex",
+        "native_library",
+        "resources" -> {
+          // create a temp folder for each destination folder
+          val tempFolders = mutableMapOf<Path, Path>()
+          val stagingDir = scratchDirFor(packageName)
+          var pushFailure: Throwable? = null
+          try {
+            installPaths.keys
+                .stream()
+                .map { it.parent }
+                .distinct()
+                .forEach { tempFolders[it] = Files.createTempDirectory("${it.fileName}_") }
+            installPaths.forEach { (destination, source) ->
+              val targetPath = tempFolders[destination.parent]?.resolve(destination.fileName)
+              Files.copy(source, targetPath, StandardCopyOption.REPLACE_EXISTING)
+            }
+            // push the temp folder to the device
+            mkDirP(stagingDir)
+            tempFolders.forEach { (destination, source) ->
+              try {
+                executeAdbCommand("push -z brotli $source $stagingDir")
+                executeAdbShellCommand("mv $stagingDir/${source.fileName}/* $destination")
+                // instagram will fail to star if dex files are writable
+                executeAdbShellCommand("chmod 644 $destination/*")
+              } catch (e: AdbCommandFailedException) {
+                throw AndroidInstallException.adbCommandFailedException(
+                    "Failed to push $source to $destination.",
+                    e.message,
+                )
+              }
+            }
+          } catch (t: Throwable) {
+            pushFailure = t
+            throw t
+          } finally {
+            // `values`, not `keys`: the keys are on-device destinations.
+            tempFolders.values.forEach { it.toFile().deleteRecursively() }
+            // Only what this call pushed, since concurrent calls share the package's staging
+            // directory.
+            if (tempFolders.isNotEmpty()) {
+              val pushed = tempFolders.values.joinToString(" ") { "$stagingDir/${it.fileName}" }
+              try {
+                executeAdbShellCommand("rm -rf $pushed")
+              } catch (e: Exception) {
+                // Leaving a payload behind is a failure in its own right, but not one worth losing
+                // the push failure over: while unwinding, attach it instead of replacing it.
+                pushFailure?.addSuppressed(e) ?: throw e
+              }
+            }
+          }
+        }
+        else -> {
+          installPaths.forEach { (destination, source) ->
+            LOG.debug("\tPushing $source to $destination")
+            executeAdbCommandCatching(
+                "push $source $destination",
+                "Failed to push $source to $destination.",
+            )
+          }
+        }
+      }
+    }
+    LOG.info("$filesType: Transferred ${installPaths.size} files in ${timeSpent/1000.0} seconds")
+  }
+
+  @Throws(Exception::class)
+  override fun rmStaleFiles(packageName: String) {
+    val scratchDir = scratchDirFor(packageName)
+    executeAdbShellCommandCatching("rm -rf $scratchDir", "Failed to remove $scratchDir.")
+  }
+
+  /**
+   * Where payloads for [packageName] are pushed before being moved into place. Per package, so that
+   * reclaiming one app's leftovers cannot destroy a transfer another install has in flight.
+   */
+  private fun scratchDirFor(packageName: String): String {
+    // Interpolated into the adb shell commands that move payloads into place.
+    require(PACKAGE_NAME_PATTERN.matches(packageName)) { "Not a package name: $packageName" }
+    return "$SCRATCH_ROOT/$packageName"
+  }
+
+  @Throws(Exception::class)
+  override fun mkDirP(dirpath: String) {
+    executeAdbShellCommandCatching(
+        "umask 022 && mkdir -p $dirpath",
+        "Failed to create dir $dirpath.",
+    )
+  }
+
+  @Throws(Exception::class)
+  override fun getProperty(name: String): String {
+    return executeAdbShellCommandCatching("getprop $name", "Failed to get property $name.")
+  }
+
+  @Throws(Exception::class)
+  override fun getDeviceAbis(): List<String> {
+    val abiListProperty = getProperty("ro.product.cpu.abilist")
+    if (abiListProperty.isNotEmpty()) {
+      return abiListProperty.split(',')
+    } else {
+      return listOf(getProperty("ro.product.cpu.abi"), getProperty("ro.product.cpu.abi2"))
+          .filter { it.isEmpty() }
+          .takeIf { it.isNotEmpty() } ?: throw AndroidInstallException.deviceAbiUnknown()
+    }
+  }
+
+  @Throws(Exception::class)
+  override fun killProcess(processName: String) {
+    throw AndroidInstallException.operationNotSupported("killProcess")
+  }
+
+  override fun getSerialNumber(): String {
+    return serial
+  }
+
+  @Throws(Exception::class)
+  override fun getWindowManagerProperty(propertyName: String): String {
+    throw AndroidInstallException.operationNotSupported("getWindowManagerProperty")
+  }
+
+  override fun uninstallApkFromDevice(packageName: String, keepData: Boolean): Boolean {
+    try {
+      executeAdbShellCommand("rm -rf ${ExopackageInstaller.EXOPACKAGE_INSTALL_ROOT}/$packageName")
+      executeAdbShellCommand("pm uninstall ${if (keepData) "-k " else ""} $packageName")
+      return true
+    } catch (e: AdbCommandFailedException) {
+      LOG.warn("Failed to uninstall $packageName: ${e.message}")
+      return false
+    }
+  }
+
+  /**
+   * Sometimes installation fails and leaves the root directory in a weird state. Adding a cheap
+   * fix-root at the beginning to make sure all the folders have access permission.
+   */
+  override fun fixRootDir(rootDir: String) {
+    LOG.info("Fixing root dir $rootDir")
+    executeAdbShellCommandCatching(
+        "find $rootDir -type d -exec chmod a+x {} +",
+        "Failed to fix root dir $rootDir.",
+    )
+  }
+
+  override fun setDebugAppPackageName(packageName: String?): Boolean {
+    if (packageName != null) {
+      executeAdbShellCommand(adbUtils.getAmSetDebugAppCommand(packageName))
+    }
+    return true
+  }
+
+  override fun enableAppLinks(packageName: String?) {
+    if (packageName != null) {
+      executeAdbShellCommand("pm set-app-links --package $packageName 1 all")
+    }
+  }
+
+  override fun getDiskSpace(humanReadable: Boolean): List<String> {
+    // `-k` rather than a bare `df`: POSIX leaves the default block size to the implementation, so
+    // the unit has to be pinned for the numbers to mean anything.
+    val units = if (humanReadable) "-h" else "-k"
+    try {
+      val result: String = executeAdbShellCommand("df $units /data | awk '{print \$2, \$3, \$4}'")
+      val (size, used, available) = result.lines()[1].split(" ", limit = 3)
+      return listOf(size, used, available)
+    } catch (e: Exception) {
+      LOG.warn("Failed to get disk space: $e")
+      return listOf("_", "_", "_")
+    }
+  }
+
+  override fun isEmulator(): Boolean {
+    return isLocalTransport() || getProperty("ro.kernel.qemu") == "1"
+  }
+
+  override fun isOnline(): Boolean {
+    return getState() == "device"
+  }
+
+  private fun getState(): String {
+    return try {
+      adbUtils.executeAdbCommand("get-state", serialNumber)
+    } catch (e: AdbCommandFailedException) {
+      // When a device is offline, adb get-state fails with exit code 1.
+      // Return "offline" to indicate the device state instead of throwing an exception.
+      // This allows the installer to continue with other available devices.
+      LOG.warn("Failed to get state for device $serialNumber: ${e.message}")
+      "offline"
+    }
+  }
+
+  /**
+   * To be consistent with adb, we treat all local transports (as opposed to USB transports) as
+   * emulators instead of devices.
+   */
+  private fun isLocalTransport(): Boolean {
+    /** Pattern that matches Genymotion serial numbers; ex. 127.0.0.1:15562 */
+    return Pattern.compile("\\d+\\.\\d+\\.\\d+\\.\\d+:\\d+").matcher(serialNumber).find()
+  }
+
+  @Throws(Exception::class)
+  override fun installBuildUuidFile(
+      dataRoot: Path,
+      packageName: String,
+      buildUuid: String,
+  ): Boolean {
+    val destinationPath: String = dataRoot.resolve(packageName).toString()
+    try {
+      executeAdbShellCommand("umask 022 && mkdir -p $destinationPath")
+      executeAdbShellCommand("echo $buildUuid > $destinationPath/build_uuid.txt")
+    } catch (e: Exception) {
+      // we don't want to fail the install if we can't install the build_uuid.txt file
+      LOG.warn("Failed to install build_uuid.txt file on $serial: ${e.message}")
+    }
+    return true
+  }
+
+  override fun deviceStartIntent(intent: AndroidIntent?): String {
+    if (intent == null) {
+      return ""
+    }
+
+    try {
+      executeAdbShellCommand(AndroidIntent.getAmStartCommand(intent))
+      return ""
+    } catch (e: AdbCommandFailedException) {
+      throw AndroidInstallException.adbCommandFailedException("Failed to start intent.", e.message)
+    }
+  }
+
+  private fun executeAdbShellCommandCatching(command: String, message: String): String {
+    try {
+      return adbUtils.executeAdbShellCommand(command, serialNumber)
+    } catch (e: AdbCommandFailedException) {
+      throw AndroidInstallException.adbCommandFailedException(message, e.message)
+    }
+  }
+
+  private fun executeAdbCommandCatching(command: String, message: String): String {
+    try {
+      return adbUtils.executeAdbCommand(command, serialNumber)
+    } catch (e: AdbCommandFailedException) {
+      throw AndroidInstallException.adbCommandFailedException(message, e.message)
+    }
+  }
+
+  private fun executeAdbShellCommand(command: String, ignoreFailure: Boolean = false): String =
+      adbUtils.executeAdbShellCommand(command, serialNumber, ignoreFailure)
+
+  private fun executeAdbCommand(command: String, ignoreFailure: Boolean = false): String =
+      adbUtils.executeAdbCommand(command, serialNumber, ignoreFailure)
+
+  companion object {
+    private val LINE_ENDING: Pattern = Pattern.compile("\r?\n")
+    private val LOG: Logger = Logger.get(AndroidDeviceImpl::class.java.name)
+
+    // --fastdeploy is only supported on Android 10+ (API 29+)
+    // https://developer.android.com/tools/releases/platform-tools#2905_october_2019
+    private const val MIN_SDK_VERSION_FOR_FASTDEPLOY = 29
+
+    private const val INSTALL_FAILED_UPDATE_INCOMPATIBLE = "INSTALL_FAILED_UPDATE_INCOMPATIBLE"
+
+    // Matches the package name in adb's signature-mismatch message, which is phrased as either
+    // "Existing package <pkg> signatures do not match ..." or "Package <pkg> signatures do not
+    // match ..." depending on the Android version.
+    private val SIGNATURE_MISMATCH_PACKAGE_PATTERN =
+        Regex("package (\\S+) signatures do not match", RegexOption.IGNORE_CASE)
+
+    private val PACKAGE_NAME_PATTERN = Regex("[\\w.]+")
+
+    // Payloads are pushed here and then moved into place. Keeping them under one directory, rather
+    // than loose in /data/local/tmp, is what makes leftovers from an interrupted install
+    // identifiable, and so reclaimable.
+    private const val SCRATCH_ROOT = "/data/local/tmp/buck-exo-staging"
+  }
+}

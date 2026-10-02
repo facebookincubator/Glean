@@ -1,0 +1,28 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "backend-api",
+    srcs = [
+        "Glean/Backend/Types.hs",
+        "Glean/Backend/Retry.hs",
+        "Glean/Write/SendBatch.hs",
+        "Glean/Query/Thrift.hs",
+        "Glean/Query/Thrift/Internal.hs",
+    ],
+    deps = [
+        "@hsthrift//common/util:fb-util",
+        "//glean/if:if-glean-hs",
+        "//glean/typed:typed",
+        "//glean/util:util",
+    ],
+    packages = [
+        "async",
+        "containers",
+        "data-default",
+        "hashable",
+        "haxl",
+        "text",
+        "unordered-containers",
+    ],
+    visibility = ["PUBLIC"],
+)

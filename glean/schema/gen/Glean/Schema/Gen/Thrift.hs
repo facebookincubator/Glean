@@ -89,7 +89,8 @@ genTargets slashVn info oncall =
         [ "\"//glean/if:glean\"" ] ++
         depTargets ++
         [ "\"//thrift/annotation:cpp\"" | useCppAnnotation ] ++
-        [ "\"//thrift/annotation:rust\""
+        [ "\"//thrift/annotation:haskell\""
+        , "\"//thrift/annotation:rust\""
         , "\"//thrift/annotation:thrift\""
         ]
       generatePyDeprecated =
@@ -303,7 +304,8 @@ genNamespace slashVn namespaces version
     , "include \"glean/if/glean.thrift\""
     ] ++
     [ "include \"thrift/annotation/cpp.thrift\"" | useCppAnnotation ] ++
-    [ "include \"thrift/annotation/rust.thrift\""] ++
+    [ "include \"thrift/annotation/haskell.thrift\""
+    , "include \"thrift/annotation/rust.thrift\""] ++
     [ "include \"" <> thriftDir slashVn <> "/" <> underscored dep
         <> ".thrift\""
     | dep <- deps ] ++
@@ -527,7 +529,7 @@ genPred here PredicateDef{..} = do
       , [ allowReservedIdentifierAnnotation name
         <> structOrUnion <> " " <> name <> " {" ]
       , indentLines . catMaybes . zipWith (flip ($)) [1..] $
-        [ \i -> Just $ mkField [] ["hs.strict"] structOrUnion i "id" type_id
+        [ \i -> Just $ mkField ["@haskell.Strict"] [] structOrUnion i "id" type_id
         , key, val ]
       , [ "}" ]
       ]

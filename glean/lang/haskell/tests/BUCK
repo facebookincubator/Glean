@@ -1,0 +1,28 @@
+load("//buck2:haskell.bzl", "haskell_test")
+load("@third-party-haskell//:tools.bzl", "GHC_BIN_DIR")
+
+haskell_test(
+    name = "glean-snapshot-haskell",
+    main = "Main",
+    srcs = [
+        "Main.hs",
+    ],
+    deps = [
+        "//glean/lang/haskell:haskell-indexer",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    packages = [
+        "text",
+    ],
+    test_args = [
+        "--hie-indexer=$(exe //glean/lang/haskell:hie-indexer)",
+    ],
+    # `Main.hs` itself hardcodes `--with-ghc ghc` (bare, `$PATH`-resolved) -
+    # passing our own `--with-ghc` again to override it errors out (this
+    # parser rejects a flag given twice), so the only way to point it at
+    # the right GHC is to make bare `ghc` resolve there via `$PATH`.
+    test_env = {
+        "PATH": GHC_BIN_DIR + ":/usr/bin:/bin",
+    },
+    visibility = ["PUBLIC"],
+)

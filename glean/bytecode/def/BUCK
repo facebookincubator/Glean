@@ -1,0 +1,13 @@
+load("//buck2:haskell.bzl", "haskell_library")
+
+haskell_library(
+    name = "bytecode-instruction",
+    srcs = [
+        "Glean/Bytecode/Generate/Instruction.hs"
+    ],
+    deps = ["//glean/bytecode:bytecode"],
+    packages = [
+        "text",
+    ],
+    visibility = ["PUBLIC"],
+)

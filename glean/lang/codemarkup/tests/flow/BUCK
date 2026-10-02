@@ -1,0 +1,14 @@
+load("//buck2:haskell.bzl", "haskell_test")
+
+haskell_test(
+    name = "glean-snapshot-flow",
+    main = "Glean.Regression.Flow.Main",
+    srcs = [
+        "Glean/Regression/Flow/Main.hs",
+    ],
+    deps = [
+        "//glean/lang/flow:flow-indexer",
+        "//glean/test/regression:regression-test-lib",
+    ],
+    visibility = ["PUBLIC"],
+)

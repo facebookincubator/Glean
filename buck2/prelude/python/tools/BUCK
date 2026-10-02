@@ -1,0 +1,169 @@
+load("@prelude//python:internal_tools.bzl", "python_internal_tools")
+load("@prelude//utils:source_listing.bzl", "source_listing")
+
+oncall("plf_experience")
+
+source_listing()
+
+python_internal_tools(
+    name = "python_internal_tools",
+    visibility = ["PUBLIC"],
+)
+
+prelude = native
+
+prelude.python_bootstrap_binary(
+    name = "extract",
+    main = "extract.py",
+    visibility = ["PUBLIC"],
+)
+
+prelude.python_bootstrap_binary(
+    name = "create_manifest_for_source_dir",
+    main = "create_manifest_for_source_dir.py",
+    visibility = ["PUBLIC"],
+)
+
+prelude.python_bootstrap_binary(
+    name = "make_source_db",
+    main = "make_source_db.py",
+    visibility = ["PUBLIC"],
+)
+
+prelude.python_bootstrap_binary(
+    name = "make_source_db_no_deps",
+    main = "make_source_db_no_deps.py",
+    visibility = ["PUBLIC"],
+)
+
+prelude.export_file(
+    name = "__test_main__.py",
+    src = "__test_main__.py",
+    visibility = ["PUBLIC"],
+)
+
+prelude.python_bootstrap_binary(
+    name = "make_py_package_inplace.py",
+    main = "make_py_package_inplace.py",
+    visibility = ["PUBLIC"],
+)
+
+prelude.export_file(
+    name = "run_inplace.py.in",
+    src = "run_inplace.py.in",
+)
+
+prelude.command_alias(
+    name = "make_py_package_inplace",
+    args = [
+        "--template",
+        "$(location :run_inplace.py.in)",
+    ],
+    exe = ":make_py_package_inplace.py",
+    visibility = ["PUBLIC"],
+)
+
+prelude.python_bootstrap_binary(
+    name = "make_py_package_modules",
+    main = "make_py_package_modules.py",
+    visibility = ["PUBLIC"],
+)
+
+prelude.export_file(
+    name = "compile.py",
+    src = "compile.py",
+    visibility = ["PUBLIC"],
+)
+
+prelude.python_bootstrap_binary(
+    name = "generate_static_extension_info",
+    main = "generate_static_extension_info.py",
+    visibility = ["PUBLIC"],
+)
+
+# Main file used for native python binaries
+prelude.export_file(
+    name = "embedded_main.cpp",
+    src = "embedded_main.cpp",
+    visibility = ["PUBLIC"],
+)
+
+# Custom importer for native linked `cxx_python_extension' targets
+prelude.export_file(
+    name = "static_extension_utils.cpp",
+    src = "static_extension_utils.cpp",
+    visibility = ["PUBLIC"],
+)
+
+prelude.export_file(
+    name = "static_extension_finder.py",
+    src = "static_extension_finder.py",
+    visibility = ["PUBLIC"],
+)
+
+prelude.python_bootstrap_binary(
+    name = "make_py_package_manifest_module",
+    main = "make_py_package_manifest_module.py",
+    visibility = ["PUBLIC"],
+)
+
+prelude.python_bootstrap_binary(
+    name = "fail_with_message",
+    main = "fail_with_message.py",
+    visibility = ["PUBLIC"],
+)
+
+prelude.python_bootstrap_binary(
+    name = "type_check_result_to_validation",
+    main = "type_check_result_to_validation.py",
+    visibility = ["PUBLIC"],
+)
+
+prelude.python_bootstrap_binary(
+    name = "wheel",
+    main = "wheel.py",
+    visibility = ["PUBLIC"],
+)
+
+# Run the test suite with this command:
+# buck2 run prelude//python/tools:tool_tests --target-platforms prelude//platforms:default
+prelude.sh_binary(
+    name = "tool_tests",
+    main = "tests/main.sh",
+    resources = [
+        "make_py_package_inplace.py",
+        "run_inplace.py.in",
+        "type_check_result_to_validation.py",
+        "wheel.py",
+    ]
+    + glob(["tests/**/*.py"]),
+)
+
+prelude.export_file(
+    name = "patchelf.py",
+    src = "patchelf.py",
+    mode = "reference",
+)
+
+prelude.command_alias(
+    name = "patchelf",
+    args = [
+        "--patchelf",
+        # @oss-disable[end= ]: "$(exe_target fbsource//third-party/patchelf:patchelf)",
+        "patchelf", # @oss-enable
+    ],
+    exe = ":patchelf.py",
+    visibility = ["PUBLIC"],
+)
+
+prelude.python_bootstrap_binary(
+    name = "create_link_tree",
+    main = "create_link_tree.py",
+    visibility = ["PUBLIC"],
+)
+
+prelude.python_bootstrap_binary(
+    name = "gather_libpython_symbols",
+    main = "gather_libpython_symbols.py",
+    visibility = ["PUBLIC"],
+)

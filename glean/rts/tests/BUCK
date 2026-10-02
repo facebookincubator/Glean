@@ -1,0 +1,13 @@
+load("//buck2:cxx.bzl", "cxx_library")
+
+cxx_library(
+    name = "lookup-invariants-cxx",
+    srcs = ["LookupInvariants.cpp"],
+    compiler_flags = ["-DOSS=1"],
+    deps = [
+        "@hsthrift//common/util:fb-util-cxx",
+        "@hsthrift//folly-clib:folly-clib",
+        "//glean/rts:rts",
+    ],
+    visibility = ["PUBLIC"],
+)

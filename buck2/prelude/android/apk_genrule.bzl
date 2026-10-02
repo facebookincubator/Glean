@@ -1,0 +1,223 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+#
+# This source code is dual-licensed under either the MIT license found in the
+# LICENSE-MIT file in the root directory of this source tree or the Apache
+# License, Version 2.0 found in the LICENSE-APACHE file in the root directory
+# of this source tree. You may select, at your option, one of the
+# above-listed licenses.
+
+load("@prelude//:genrule.bzl", "process_genrule")
+load("@prelude//android:android_apk.bzl", "get_install_info")
+load("@prelude//android:android_providers.bzl", "AndroidAabInfo", "AndroidApkInfo", "AndroidApkUnderTestInfo", "AndroidDerivedApkInfo")
+load("@prelude//android:android_toolchain.bzl", "AndroidToolchainInfo")
+load("@prelude//android:bundletool_util.bzl", "derive_universal_apk")
+load("@prelude//java:class_to_srcs.bzl", "JavaClassToSourceMapInfo")
+load("@prelude//java:java_providers.bzl", "KeystoreInfo")
+load("@prelude//utils:expect.bzl", "expect")
+
+# Native-library debug sub-targets that the wrapped android_apk/android_aab only
+# exposes in some configurations (e.g. relinker or native merging enabled).
+# Forward whichever happen to be present so they stay reachable through the
+# apk_genrule wrapper.
+_OPTIONAL_NATIVE_LIB_SUBTARGETS = [
+    "native_merge_debug",
+    "relinked_libs",
+    "relinked_libs_manifest",
+    "unrelinked_libs",
+]
+
+def _forward_optional_native_lib_subtargets(input_subtargets: dict) -> dict:
+    return {name: [input_subtargets[name][DefaultInfo]] for name in _OPTIONAL_NATIVE_LIB_SUBTARGETS if name in input_subtargets}
+
+def apk_genrule_impl(ctx: AnalysisContext) -> list[Provider]:
+    expect((ctx.attrs.apk == None) != (ctx.attrs.aab == None), "Exactly one of 'apk' and 'aab' must be specified")
+
+    input_android_apk_under_test_info = None
+    input_android_apk_subtargets = None
+    input_android_apk_template_placeholder_info = None
+    input_android_aab_subtargets = None
+    if ctx.attrs.apk != None:
+        # TODO(T104150125) The underlying APK should not have exopackage enabled
+        input_android_apk_info = ctx.attrs.apk[AndroidApkInfo]
+        expect(input_android_apk_info != None, "'apk' attribute must be an Android APK!")
+        input_apk = input_android_apk_info.apk
+        input_manifest = input_android_apk_info.manifest
+        input_materialized_artifacts = input_android_apk_info.materialized_artifacts
+        input_unstripped_shared_libraries = input_android_apk_info.unstripped_shared_libraries
+        input_android_apk_under_test_info = ctx.attrs.apk[AndroidApkUnderTestInfo]
+        input_android_apk_subtargets = ctx.attrs.apk[DefaultInfo].sub_targets
+        input_android_apk_template_placeholder_info = ctx.attrs.apk[TemplatePlaceholderInfo].keyed_variables
+
+        env_vars = {
+            "APK": cmd_args(input_apk),
+        }
+    else:
+        input_android_aab_info = ctx.attrs.aab[AndroidAabInfo]
+        expect(input_android_aab_info != None, "'aab' attribute must be an Android Bundle!")
+
+        # It's not an APK, but buck1 does this so we do it too for compatibility
+        input_apk = input_android_aab_info.aab
+        input_manifest = input_android_aab_info.manifest
+        input_materialized_artifacts = input_android_aab_info.materialized_artifacts
+        input_android_aab_subtargets = ctx.attrs.aab[DefaultInfo].sub_targets
+        input_unstripped_shared_libraries = input_android_aab_info.unstripped_shared_libraries
+
+        env_vars = {
+            "AAB": cmd_args(input_apk),
+        }
+
+    genrule_providers = process_genrule(
+        ctx,
+        ctx.attrs.out,
+        ctx.attrs.outs,
+        env_vars,
+        other_outputs = input_materialized_artifacts,
+        genrule_error_handler = ctx.attrs._android_toolchain[AndroidToolchainInfo].android_error_handler,
+    )
+
+    genrule_default_info = filter(lambda x: isinstance(x, DefaultInfo), genrule_providers)
+
+    expect(
+        len(genrule_default_info) == 1,
+        "Expecting a single DefaultInfo, but got {}",
+        genrule_default_info,
+    )
+
+    genrule_default_output = genrule_default_info[0].default_outputs[0]
+    genrule_default_output_is_aab = genrule_default_output.extension == ".aab"
+    genrule_default_output_is_apk = genrule_default_output.extension == ".apk"
+
+    expect(
+        genrule_default_output_is_aab or genrule_default_output_is_apk,
+        "apk_genrule must output a '.apk' or '.aab' file, but got {}",
+        genrule_default_info,
+    )
+
+    if ctx.attrs.aab:
+        if genrule_default_output_is_aab:
+            output_aab_info = AndroidAabInfo(
+                aab = genrule_default_output,
+                manifest = input_manifest,
+                materialized_artifacts = input_materialized_artifacts,
+                unstripped_shared_libraries = input_unstripped_shared_libraries,
+            )
+            output_apk = None
+        else:
+            output_aab_info = None
+            output_apk = genrule_default_output
+
+        if ctx.attrs.use_derived_apk:
+            expect(genrule_default_output_is_aab, "Default genrule output must end in '.aab' if use_derived_apk is True.")
+
+            output_apk = derive_universal_apk(
+                ctx = ctx,
+                android_toolchain = ctx.attrs._android_toolchain[AndroidToolchainInfo],
+                app_bundle = genrule_default_output,
+                keystore = ctx.attrs.keystore[KeystoreInfo] if ctx.attrs.keystore else None,
+            )
+            default_providers = [
+                DefaultInfo(
+                    default_output = output_apk,
+                    other_outputs = input_materialized_artifacts + genrule_default_info[0].other_outputs,
+                    sub_targets = {
+                        "aab": [
+                            DefaultInfo(
+                                default_outputs = [genrule_default_output],
+                            )
+                        ],
+                        "linker_argsfiles": [input_android_aab_subtargets["linker_argsfiles"][DefaultInfo]],
+                        "linker_commands": [input_android_aab_subtargets["linker_commands"][DefaultInfo]],
+                        "native_libs": [input_android_aab_subtargets["native_libs"][DefaultInfo]],
+                        "unstripped_native_libraries": [input_android_aab_subtargets["unstripped_native_libraries"][DefaultInfo]],
+                        "unstripped_native_libraries_files": [input_android_aab_subtargets["unstripped_native_libraries_files"][DefaultInfo]],
+                        "unstripped_native_libraries_json": [input_android_aab_subtargets["unstripped_native_libraries_json"][DefaultInfo]],
+                    }
+                    | _forward_optional_native_lib_subtargets(input_android_aab_subtargets),
+                ),
+                AndroidDerivedApkInfo(
+                    apk = output_apk,
+                ),
+            ] + filter(lambda x: not isinstance(x, DefaultInfo), genrule_providers)
+        else:
+            sub_targets = {k: [v[DefaultInfo]] for k, v in genrule_default_info[0].sub_targets.items()}
+            sub_targets.update(
+                {
+                    "linker_argsfiles": [input_android_aab_subtargets["linker_argsfiles"][DefaultInfo]],
+                    "linker_commands": [input_android_aab_subtargets["linker_commands"][DefaultInfo]],
+                    "native_libs": [input_android_aab_subtargets["native_libs"][DefaultInfo]],
+                    "unstripped_native_libraries": [input_android_aab_subtargets["unstripped_native_libraries"][DefaultInfo]],
+                    "unstripped_native_libraries_files": [input_android_aab_subtargets["unstripped_native_libraries_files"][DefaultInfo]],
+                    "unstripped_native_libraries_json": [input_android_aab_subtargets["unstripped_native_libraries_json"][DefaultInfo]],
+                }
+                | _forward_optional_native_lib_subtargets(input_android_aab_subtargets)
+            )
+            default_providers = [
+                DefaultInfo(
+                    default_output = genrule_default_output,
+                    other_outputs = genrule_default_info[0].other_outputs,
+                    sub_targets = sub_targets,
+                ),
+            ] + filter(lambda x: not isinstance(x, DefaultInfo), genrule_providers)
+
+    else:
+        sub_targets = {k: [v[DefaultInfo]] for k, v in genrule_default_info[0].sub_targets.items()}
+        sub_targets.update(
+            {
+                "classpath": [input_android_apk_subtargets["classpath"][DefaultInfo]],
+                "classpath_targets": [input_android_apk_subtargets["classpath_targets"][DefaultInfo]],
+                "linker_argsfiles": [input_android_apk_subtargets["linker_argsfiles"][DefaultInfo]],
+                "linker_commands": [input_android_apk_subtargets["linker_commands"][DefaultInfo]],
+                "manifest": [input_android_apk_subtargets["manifest"][DefaultInfo]],
+                "native_libs": [input_android_apk_subtargets["native_libs"][DefaultInfo]],
+                "unstripped_native_libraries": [input_android_apk_subtargets["unstripped_native_libraries"][DefaultInfo]],
+                "unstripped_native_libraries_files": [input_android_apk_subtargets["unstripped_native_libraries_files"][DefaultInfo]],
+                "unstripped_native_libraries_json": [input_android_apk_subtargets["unstripped_native_libraries_json"][DefaultInfo]],
+            }
+            | _forward_optional_native_lib_subtargets(input_android_apk_subtargets)
+        )
+        expect(
+            len(filter(lambda x: isinstance(x, TemplatePlaceholderInfo), genrule_providers)) == 0,
+            "TemplatePlaceholderInfo from genrule_providers needs to be merged",
+        )
+        templace_placeholder_info = TemplatePlaceholderInfo(
+            keyed_variables = {
+                "classpath": input_android_apk_template_placeholder_info["classpath"],
+                "classpath_including_targets_with_no_output": input_android_apk_template_placeholder_info["classpath_including_targets_with_no_output"],
+            },
+        )
+        expect(genrule_default_output_is_apk, "apk_genrule output must end in '.apk'")
+        output_apk = genrule_default_output
+        output_aab_info = None
+        default_providers = [
+            DefaultInfo(
+                default_output = output_apk,
+                other_outputs = genrule_default_info[0].other_outputs,
+                sub_targets = sub_targets,
+            ),
+            templace_placeholder_info,
+        ] + filter(lambda x: not isinstance(x, DefaultInfo), genrule_providers)
+
+    class_to_src_map = [ctx.attrs.apk[JavaClassToSourceMapInfo]] if (ctx.attrs.apk and JavaClassToSourceMapInfo in ctx.attrs.apk) else []
+
+    if output_apk:
+        apk_providers = [
+            AndroidApkInfo(
+                apk = output_apk,
+                manifest = input_manifest,
+                materialized_artifacts = input_materialized_artifacts,
+                unstripped_shared_libraries = input_unstripped_shared_libraries,
+            ),
+            get_install_info(
+                ctx,
+                output_apk = output_apk,
+                manifest = input_manifest,
+                exopackage_info = None,
+            ),
+        ]
+    else:
+        apk_providers = []
+
+    aab_providers = filter(None, [output_aab_info])
+    apk_under_test_providers = filter(None, [input_android_apk_under_test_info])
+
+    return default_providers + apk_providers + aab_providers + apk_under_test_providers + class_to_src_map

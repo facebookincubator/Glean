@@ -1,0 +1,70 @@
+[cells]
+  root = .
+  prelude = buck2/prelude
+  toolchains = buck2/toolchains
+  none = none
+  fbcode_macros = buck2/fbcode_macros
+  hsthrift = hsthrift
+  # A single shared cell for prebuilt Hackage packages - deliberately
+  # just the haskell/ subdirectory, not the whole of third-party/, so
+  # that third-party/BUCK's own pkgconfig targets (external_pkgconfig_
+  # library(), see that file's own comment) stay ordinary same-cell
+  # packages instead of being pulled into this same cross-project
+  # sharing. This name means "wherever the *outermost* project's
+  # prebuilt Hackage packages live" from both Glean's and hsthrift's own
+  # buck2/*.bzl files - cell names are global per project (see buck2.md's
+  # hsthrift-cell entry), so hsthrift's generated deps (haskell_library()
+  # etc, via its own duplicated buck2/haskell.bzl) resolve
+  # @third-party-haskell// to *this* mapping when nested here, not its
+  # own hsthrift/third-party/haskell/. That's exactly the point: Glean's
+  # root cabal.project already lists hsthrift's own .cabal files as
+  # packages, so Glean's third-party/haskell/ already carries everything
+  # hsthrift needs too - one prebuilt copy of e.g. `array` instead of two
+  # different buck2 target identities wrapping the same underlying .so,
+  # which is what made a single Glean target depending on both hsthrift
+  # and Glean's own Haskell code fail to link (buck2 refuses to merge two
+  # different libraries claiming the same soname, even when the files
+  # are byte-identical).
+  third-party-haskell = third-party/haskell
+  # Carved out as their own (otherwise-unused) cells purely so buck2 treats
+  # them as cell boundaries and excludes them from the `hsthrift//...`
+  # wildcard - these are hsthrift's own standalone-mode copies (for building
+  # hsthrift outside of Glean), dead weight here since cell names are global
+  # and any `prelude//...`/`toolchains//...`/`third-party-haskell//...`
+  # reference from within hsthrift's buck2/*.bzl files resolves to Glean's
+  # own cells above when nested inside this project. `hsthrift/third-party/
+  # BUCK` itself is *not* carved out this way - it stays an ordinary
+  # package under the plain `hsthrift` cell above, so it's a genuinely
+  # independent, hsthrift-cell-local file rather than being shadowed by
+  # Glean's own third-party/BUCK the way it would be if `third-party`
+  # itself were still the shared cell name.
+  hsthrift-prelude = hsthrift/buck2/prelude
+  hsthrift-toolchains = hsthrift/buck2/toolchains
+  hsthrift-third-party-haskell = hsthrift/third-party/haskell
+  hsthrift-constraints = hsthrift/buck2/constraints
+
+[cell_aliases]
+  config = prelude
+  ovr_config = prelude
+  fbcode = none
+  fbsource = none
+  buck = none
+
+# Uses a copy of the prelude bundled with the buck2 binary. You can alternatively delete this
+# section and vendor a copy of the prelude to the `prelude` directory of your project.
+# [external_cells]
+#   prelude = bundled
+
+[parser]
+  target_platform_detector_spec = target:root//...->prelude//platforms:default \
+    target:prelude//...->prelude//platforms:default \
+    target:toolchains//...->prelude//platforms:default \
+    target:hsthrift//...->prelude//platforms:default \
+    target:third-party-haskell//...->prelude//platforms:default
+
+[build]
+  # This buckconfig key takes exactly one target, not a list - see
+  # buck2/platforms/BUCK's own `:exec` target (and its defs.bzl comment)
+  # for why an aggregator target is needed and how platform selection
+  # among its two candidates actually works.
+  execution_platforms = root//buck2/platforms:exec
