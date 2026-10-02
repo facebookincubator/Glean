@@ -87,7 +87,7 @@ jobs:
       - name: Install indexer (java)
         run: |
           apt-get install -y default-jdk maven
-          curl -fLo coursier https://git.io/coursier-cli && chmod +x coursier
+          curl -fLo coursier --retry 5 https://github.com/coursier/launchers/raw/master/coursier && chmod +x coursier
           export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
           ./coursier bootstrap --standalone -o "$LOCAL_BIN"/lsif-java com.sourcegraph:lsif-java_2.13:0.8.0-RC1 --main-class com.sourcegraph.lsif_java.LsifJava
 

@@ -19,7 +19,7 @@ and Maven or Gradle installed to build, as lsif-java is a plugin to the Java
 compiler.
 
 ```
-curl -fLo coursier https://git.io/coursier-cli && chmod +x coursier
+curl -fLo coursier https://github.com/coursier/launchers/raw/master/coursier && chmod +x coursier
 ./coursier bootstrap --standalone -o lsif-java com.sourcegraph:lsif-java_2.13:0.8.0-RC1 --main-class com.sourcegraph.lsif_java.LsifJava
 ```
 
