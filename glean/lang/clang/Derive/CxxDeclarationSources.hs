@@ -26,6 +26,7 @@ module Derive.CxxDeclarationSources
   ) where
 
 import Data.Int (Int64)
+import qualified Data.Set as Set
 import qualified Data.Vector.Algorithms.Intro as VSort
 import qualified Data.Vector.Unboxed as VU
 import qualified Data.Vector.Unboxed.Mutable as VUM
@@ -90,8 +91,10 @@ fromDecl d =  (toDeclTag d, getDeclId d)
 -- first so that sorting will only need the first component of
 -- the tuple.
 --
--- > (targetId, targetTag, sourceId, sourceTag)
-type TargetSource = (Int64, DeclTag Word8, Int64, DeclTag Word8)
+-- > (targetId, targetTag, sourceId, sourceTag, declarationTargetsId)
+--
+-- The final ID propagates ownership from each contributing input fact.
+type TargetSource = (Int64, DeclTag Word8, Int64, DeclTag Word8, Int64)
 
 type TargetSourcesBuffer = Buffer.IOBuffer VU.Vector TargetSource
 
@@ -108,17 +111,22 @@ initialSize = 2^(10 :: Int)
 addDeclarationTarget
   :: TargetSourcesBuffer
   -> ()
-  -> Cxx.DeclarationTargets_key
+  -> Cxx.DeclarationTargets
   -> IO ()
-addDeclarationTarget buffer () Cxx.DeclarationTargets_key{..} =
-  mapM_ (Buffer.push buffer)
-    [ (targetId, targetTag, sourceId, sourceTag)
-    | let (sourceTag, sourceId) = fromDecl declarationTargets_key_source
-    , target <- declarationTargets_key_targets
-    , let (targetTag, targetId) = fromDecl target ]
+addDeclarationTarget buffer () fact = case getFactKey fact of
+  Nothing -> fail "internal error: addDeclarationTarget"
+  Just Cxx.DeclarationTargets_key{..} ->
+    mapM_ (Buffer.push buffer)
+      [ (targetId, targetTag, sourceId, sourceTag, dependencyId)
+      | let (sourceTag, sourceId) = fromDecl declarationTargets_key_source
+      , let dependencyId = fromFid $ idOf $ getId fact
+      , target <- declarationTargets_key_targets
+      , let (targetTag, targetId) = fromDecl target ]
 
--- | Create lazy list of facts to write
-toDeclarationSources :: TargetSources -> [Cxx.DeclarationSources_key]
+-- | Create a lazy list of facts and their source fact dependencies.
+toDeclarationSources
+  :: TargetSources
+  -> [(Cxx.DeclarationSources_key, [Fid])]
 toDeclarationSources = loop
   where
     loop v | VU.null v = []
@@ -128,18 +136,26 @@ toDeclarationSources = loop
           this = Cxx.DeclarationSources_key
             { declarationSources_key_target = targetOf front
             , declarationSources_key_sources =
-              map sourceOf (VU.toList matching) }
-      in this : loop next
+              map sourceOf $ VU.toList $ VU.uniq $
+                VU.map sourceKey matching }
+          dependencies = map Fid $ Set.toList $ Set.fromList $
+            map dependencyOf $ VU.toList matching
+      in (this, dependencies) : loop next
 
-    eqTarget (x1, x2, _, _) (y1, y2, _, _) = x1 == y1 && x2 == y2
-    targetOf (targetId, targetTag, _, _) = fromDeclTag targetTag targetId
-    sourceOf (_, _, sourceId, sourceTag) = fromDeclTag sourceTag sourceId
+    eqTarget (x1, x2, _, _, _) (y1, y2, _, _, _) =
+      x1 == y1 && x2 == y2
+    targetOf (targetId, targetTag, _, _, _) = fromDeclTag targetTag targetId
+    sourceKey (_, _, sourceId, sourceTag, _) = (sourceId, sourceTag)
+    sourceOf (sourceId, sourceTag) = fromDeclTag sourceTag sourceId
+    dependencyOf (_, _, _, _, dependencyId) = dependencyId
 
--- | Write all the 'Cxx.DeclarationSources' facts to Glean
+-- | Write all facts with ownership derived from their source facts.
 writeDeclSources :: Writer -> TargetSources -> IO ()
 writeDeclSources writer targetSources = do
   logInfo "writeDeclSources"
-  mapM_ (\f -> writeFacts writer (makeFact_ @Cxx.DeclarationSources f))
+  mapM_ (\(key, dependencies) -> writeFacts writer $ do
+      fact <- makeFact @Cxx.DeclarationSources key
+      derivedFrom dependencies [fact])
     (toDeclarationSources targetSources)
   logInfo "writeDeclSources done"
 
@@ -147,8 +163,8 @@ deriveCxxDeclarationSources :: Backend e => e -> Config -> Writer -> IO ()
 deriveCxxDeclarationSources e cfg writer = do
   logInfo "deriveCxxDeclarationSources"
   let
-    q :: Query Cxx.DeclarationTargets_key
-    q = keys $ maybe id limit (cfgMaxQueryFacts cfg) $
+    q :: Query Cxx.DeclarationTargets
+    q = maybe id limit (cfgMaxQueryFacts cfg) $
       limitBytes (cfgMaxQuerySize cfg)
       (allFacts :: Query Cxx.DeclarationTargets)
   (targetSourcesM :: TargetSourcesM) <- do
