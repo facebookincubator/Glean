@@ -499,9 +499,12 @@ unsetExpiring cat repo = do
 
 -- | Record intent to restore @repo@: add it to the catalog's restoring set
 -- with the given 'Meta'. This only registers the entry; it does NOT perform
--- the transfer. The caller (the janitor's restore action, or the incomplete
--- startup-restore) downloads the data, then calls 'finishRestoring', which
--- promotes the entry to live-here using this same 'Meta'. The 'Meta' is
+-- the transfer. Whoever downloads the data then calls 'finishRestoring', which
+-- promotes the entry to live-here using this same 'Meta'. Normally that's the
+-- backuper thread, which picks up every Restoring entry (e.g. registered by
+-- the janitor) but can only restore 'Complete' ones. The incomplete
+-- startup-restore downloads its own entries instead, so it must run before
+-- the backuper starts. The 'Meta' is
 -- stored verbatim (any completeness); its 'metaBackup' locator is what
 -- surfaces as the database location. Throws 'DBAlreadyExists' if @repo@ is
 -- already live, restoring, or ephemeral.

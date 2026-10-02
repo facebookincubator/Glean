@@ -111,24 +111,14 @@ main =
     cfg = cfg0{cfgDBConfig = dbCfg}
   in
 #endif
-  withDatabases evb (cfgDBConfig cfg) configAPI $ \databases -> do
+  withDatabasesInit evb (cfgDBConfig cfg) configAPI restoreIncomplete
+    $ \databases -> do
   withShardsUpdater evb cfg databases (1 :: Seconds)
     (readTVar (envShuttingDown databases)) $ do
 
   fb303 <- newFb303 "gleandriver"
 
   logInfo "Starting server"
-
-  -- Preemption resilience (feature-gated via the live ServerConfig flag):
-  -- restore this tier's Incomplete backups (and reclaim them) BEFORE
-  -- advertising ALIVE, so the indexer's resumed writes don't land before the
-  -- partial DB is back. no_shards write servers have no shard-readiness
-  -- dependency blocking this.
-  serverConfig <- Observed.get (envServerConfig databases)
-  when (ServerConfig.config_backup_incomplete_on_shutdown serverConfig) $ do
-    logInfo "Restoring incomplete DBs before going alive"
-    restoreIncompleteDatabasesOnStartup databases `catchAll` \exc ->
-      logError $ "restore-incomplete: startup restore failed: " <> show exc
 
   portVar <- newTVarIO Nothing
 
@@ -251,6 +241,23 @@ main =
 #endif
         serverOpts
         waitToStart
+
+-- | Preemption resilience (feature-gated via the live ServerConfig flag):
+-- restore this tier's Incomplete backups (and reclaim them) BEFORE
+-- advertising ALIVE, so the indexer's resumed writes don't land before the
+-- partial DB is back. no_shards write servers have no shard-readiness
+-- dependency blocking this.
+--
+-- Runs before the background threads start: otherwise the backuper would try
+-- to restore this restore's Restoring entries itself, and the janitor could
+-- register the same DBs for restore.
+restoreIncomplete :: Env -> IO ()
+restoreIncomplete databases = do
+  serverConfig <- Observed.get (envServerConfig databases)
+  when (ServerConfig.config_backup_incomplete_on_shutdown serverConfig) $ do
+    logInfo "Restoring incomplete DBs before going alive"
+    restoreIncompleteDatabasesOnStartup databases `catchAll` \exc ->
+      logError $ "restore-incomplete: startup restore failed: " <> show exc
 
 #if GLEAN_FACEBOOK
 -- | ModifyFunction (C++ FFI) that installs the Glean CAT ServiceInterceptor on

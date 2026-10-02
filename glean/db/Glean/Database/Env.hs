@@ -7,7 +7,7 @@
 -}
 
 {-# LANGUAGE CPP #-}
-module Glean.Database.Env ( withDatabases ) where
+module Glean.Database.Env ( withDatabases, withDatabasesInit ) where
 
 #if !MIN_VERSION_base(4,18,0)
 import Control.Applicative (liftA2)
@@ -60,7 +60,21 @@ withDatabases
   -> conf
   -> (Env -> IO a)
   -> IO a
-withDatabases evb cfg cfgapi act =
+withDatabases evb cfg cfgapi =
+  withDatabasesInit evb cfg cfgapi (\_ -> return ())
+
+-- | Like 'withDatabases', but runs @initialize@ on the Env before starting the
+-- background threads (janitor, backuper, writers, ...), so it can't race
+-- with them.
+withDatabasesInit
+  :: ConfigProvider conf
+  => EventBaseDataplane
+  -> Config
+  -> conf
+  -> (Env -> IO ())
+  -> (Env -> IO a)
+  -> IO a
+withDatabasesInit evb cfg cfgapi initialize act =
   ThriftSource.withValue cfgapi (cfgServerConfig cfg) $ \server_config -> do
   server_cfg <- Observed.get server_config
   schemaLoc <- schemaLocation cfg server_cfg
@@ -83,6 +97,7 @@ withDatabases evb cfg cfgapi act =
           server_config)
         closeEnv
         $ \env -> do
+            initialize env
             spawnThreads env
             act env
 
