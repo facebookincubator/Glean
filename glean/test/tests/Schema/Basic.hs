@@ -687,6 +687,43 @@ schemaNegation =
           Left e -> "negation is not allowed in a stored predicate"
             `isInfixOf` show e
           _ -> False
+
+  , TestLabel "negation - stored dependency on recursion" $ TestCase $
+    -- Stored depends on one predicate of a recursive pair and only the
+    -- other one uses negation. Check it both ways round, so the result
+    -- can't depend on the order in which the pair is processed.
+    forM_
+      [ [s|
+          schema test.1 {
+            predicate Base : string
+            predicate P : string
+              A where Base A | Q A;
+            predicate Q : string
+              A where P A; !(A = "x"..);
+            predicate Stored : string
+              stored A where P A
+          }
+          schema all.1 : test.1 {}
+        |]
+      , [s|
+          schema test.1 {
+            predicate Base : string
+            predicate P : string
+              A where Base A | Q A; !(A = "x"..);
+            predicate Q : string
+              A where P A;
+            predicate Stored : string
+              stored A where Q A
+          }
+          schema all.1 : test.1 {}
+        |]
+      ] $ \schema ->
+      withSchema latestAngleVersion schema $ \r ->
+      assertBool "schemaNegation - stored dependency on recursion" $
+        case r of
+          Left e -> "negation is not allowed in a stored predicate"
+            `isInfixOf` show e
+          _ -> False
   ]
 
 thinSchemaTest :: Test
