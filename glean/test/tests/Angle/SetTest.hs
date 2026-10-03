@@ -153,6 +153,13 @@ setSemanticsTest dbTestCase = TestList
   , TestLabel "multiple set results" $ dbTestCase $ \env repo -> do
       r <- runQuery_ env repo $ angleData @(Set Nat) [s| all X where X= (1|2) |]
       assertEqual "results" 2 (length r)
+  , TestLabel "all evaluated more than once" $ dbTestCase $ \env repo -> do
+      -- the set depends on X, so it's built once for each value of X
+      r <- runQuery_ env repo $ angleData @(Set Text)
+        [s| S where X = ("a" | "b"); S = all (X | "c") |]
+      assertEqual "results"
+        [fromList ["a", "c"], fromList ["b", "c"]]
+        (sort r)
   , TestLabel "predicate in all" $ dbTestCase $ \env repo -> do
       [set] <- runQuery_ env repo $ angleData @(Set Glean.Test.Predicate)
         [s| all (glean.test.Predicate _) |]
