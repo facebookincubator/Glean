@@ -173,6 +173,70 @@ int result = choose();
   EXPECT_EQ(result.count<Src::IndexFailure>(), 0);
 }
 
+TEST(AstTest, RecordsUsingDirectiveAsIndirectUseSiteXRef) {
+  const auto result = indexCode(R"cpp(
+namespace source {
+void choose();
+}
+namespace target {
+using namespace source;
+void call() {
+  choose();
+}
+}
+)cpp");
+
+  ASSERT_TRUE(result.parsed);
+  EXPECT_EQ(result.count<Cxx::UsingDirective>(), 1);
+  EXPECT_EQ(result.count<Cxx::FunctionDeclaration>(), 2);
+  EXPECT_EQ(result.count<Cxx::FunctionDefinition>(), 1);
+  EXPECT_EQ(result.count<Cxx::XRefIndirectTarget>(), 1);
+  EXPECT_EQ(result.count<Src::IndexFailure>(), 0);
+}
+
+TEST(AstTest, FindsUnscopedEnumeratorThroughUsingDirective) {
+  const auto result = indexCode(R"cpp(
+namespace source {
+enum Status {
+  Ready,
+};
+}
+namespace target {
+using namespace source;
+int state = Ready;
+}
+)cpp");
+
+  ASSERT_TRUE(result.parsed);
+  EXPECT_EQ(result.count<Cxx::EnumDeclaration>(), 1);
+  EXPECT_EQ(result.count<Cxx::EnumDefinition>(), 1);
+  EXPECT_EQ(result.count<Cxx::UsingDirective>(), 1);
+  EXPECT_EQ(result.count<Cxx::VariableDeclaration>(), 1);
+  EXPECT_EQ(result.count<Cxx::XRefIndirectTarget>(), 1);
+  EXPECT_EQ(result.count<Src::IndexFailure>(), 0);
+}
+
+TEST(AstTest, DoesNotRetargetThroughClassScopeUsingDeclarations) {
+  const auto result = indexCode(R"cpp(
+struct Base {
+  void run();
+};
+struct Derived : Base {
+  using Base::run;
+  void call() {
+    run();
+  }
+};
+)cpp");
+
+  ASSERT_TRUE(result.parsed);
+  EXPECT_EQ(result.count<Cxx::RecordDeclaration>(), 2);
+  EXPECT_EQ(result.count<Cxx::FunctionDeclaration>(), 2);
+  EXPECT_EQ(result.count<Cxx::UsingDeclaration>(), 1);
+  EXPECT_EQ(result.count<Cxx::XRefIndirectTarget>(), 0);
+  EXPECT_EQ(result.count<Src::IndexFailure>(), 0);
+}
+
 TEST(AstTest, RecordsMethodOverrideEdges) {
   const auto result = indexCode(R"cpp(
 struct Base {
