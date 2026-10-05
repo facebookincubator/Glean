@@ -543,6 +543,7 @@ compileStatements
             outputUninitialized $ \out -> do
               compileTermGen expr vars (Just out) $
                 insertOutputSet set out
+          resetOutput (castRegister (vars!v))
           setToArray set (castRegister (vars!v))
           freeSet set
         compile rest
