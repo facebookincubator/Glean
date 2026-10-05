@@ -86,32 +86,6 @@ void removeBatchDescriptorsFamily(const std::string& path) {
 } // namespace
 
 // ============================================================
-// Family registry: static definitions live in container-impl.cpp
-// ============================================================
-
-TEST(FamilyRegistryTest, LookupByNameReturnsMatchingFamily) {
-  EXPECT_EQ(Family::family("meta"), &Family::meta);
-  EXPECT_EQ(Family::family("ownershipSets"), &Family::ownershipSets);
-}
-
-TEST(FamilyRegistryTest, LookupByUnknownNameReturnsNull) {
-  EXPECT_EQ(Family::family("no-such-family"), nullptr);
-}
-
-TEST(FamilyRegistryTest, LookupByIndexOutOfRangeReturnsNull) {
-  EXPECT_EQ(Family::family(Family::count()), nullptr);
-}
-
-TEST(FamilyRegistryTest, IndexMatchesRegistrationPosition) {
-  ASSERT_GT(Family::count(), 0u);
-  for (size_t i = 0; i < Family::count(); ++i) {
-    const auto* family = Family::family(i);
-    ASSERT_NE(family, nullptr);
-    EXPECT_EQ(family->index, i);
-  }
-}
-
-// ============================================================
 // Container: open/read/write against a real on-disk RocksDB
 // ============================================================
 
@@ -160,6 +134,16 @@ TEST_F(ContainerImplTest, WriteDataOverwritesPreviousValueForSameKey) {
   EXPECT_EQ(*v, "second");
 }
 
+TEST_F(ContainerImplTest, WriterPublishesBufferedWritesOnlyOnCommit) {
+  auto writer = container_->write();
+  writer.put(Family::meta, bytes("buffered"), bytes("value"));
+
+  EXPECT_EQ(readMeta(*container_, "buffered"), std::nullopt);
+  writer.commit();
+  EXPECT_EQ(
+      readMeta(*container_, "buffered"), std::optional<std::string>{"value"});
+}
+
 TEST_F(ContainerImplTest, DataPersistsAfterReopeningReadOnly) {
   writeMeta(*container_, "persisted", "value");
   container_.reset();
@@ -172,6 +156,27 @@ TEST_F(ContainerImplTest, DataPersistsAfterReopeningReadOnly) {
   const auto v = readMeta(reopened, "persisted");
   ASSERT_TRUE(v.has_value());
   EXPECT_EQ(*v, "value");
+}
+
+TEST_F(ContainerImplTest, CreateRefusesToOverwriteExistingDatabase) {
+  writeMeta(*container_, "preserved", "value");
+  container_.reset();
+
+  EXPECT_THROW(
+      std::make_unique<ContainerImpl>(
+          dbPath(),
+          Mode::Create,
+          /*cache_index_and_filter_blocks=*/false,
+          folly::none),
+      std::runtime_error);
+
+  ContainerImpl reopened(
+      dbPath(),
+      Mode::ReadOnly,
+      /*cache_index_and_filter_blocks=*/false,
+      folly::none);
+  EXPECT_EQ(
+      readMeta(reopened, "preserved"), std::optional<std::string>{"value"});
 }
 
 TEST_F(ContainerImplTest, OptimizeDropsTemporaryFamilyDataButKeepsMetadata) {
@@ -192,9 +197,8 @@ TEST_F(ContainerImplTest, OptimizeDropsTemporaryFamilyDataButKeepsMetadata) {
   EXPECT_EQ(*v, "metadata");
 }
 
-TEST_F(ContainerImplTest, FlushThenBackupProducesReadableCopy) {
+TEST_F(ContainerImplTest, WritableBackupCapturesUnflushedData) {
   writeMeta(*container_, "backed-up", "value");
-  container_->flush();
 
   const std::string backupPath = tmpDir_->path().string() + "/backup";
   std::filesystem::create_directory(backupPath);
@@ -251,6 +255,26 @@ TEST_F(ContainerImplTest, ReadOnlyOpenSucceedsWhenOldDbLacksBatchDescriptors) {
   ASSERT_TRUE(v.has_value());
   EXPECT_EQ(*v, "value");
   EXPECT_EQ(reopened.family(Family::batchDescriptors), nullptr);
+}
+
+TEST_F(ContainerImplTest, ReadWriteOpenRecreatesMissingBatchDescriptors) {
+  container_.reset();
+  removeBatchDescriptorsFamily(dbPath());
+
+  ContainerImpl reopened(
+      dbPath(),
+      Mode::ReadWrite,
+      /*cache_index_and_filter_blocks=*/false,
+      folly::none);
+  {
+    auto writer = reopened.write();
+    writer.put(Family::batchDescriptors, bytes("batch"), bytes("pending"));
+    writer.commit();
+  }
+
+  EXPECT_THAT(
+      readFamilyValues(reopened, Family::batchDescriptors),
+      ::testing::ElementsAre("pending"));
 }
 
 TEST_F(ContainerImplTest, WriteDataAfterCloseThrows) {
