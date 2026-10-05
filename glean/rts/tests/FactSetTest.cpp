@@ -67,6 +67,23 @@ TEST(FactSetTest, DefineSameKeyDiffValueReturnsInvalid) {
   EXPECT_EQ(id2, Id::invalid());
 }
 
+TEST(FactSetTest, ConflictingDefinitionDoesNotConsumeAnId) {
+  FactSet fs(Id::lowest());
+  unsigned char original[] = "keyAAA";
+  unsigned char conflicting[] = "keyBBB";
+  unsigned char distinct[] = "newCCC";
+
+  const auto originalId = fs.define(Pid::lowest(), clauseFrom(original, 6, 3));
+  const auto conflictingId =
+      fs.define(Pid::lowest(), clauseFrom(conflicting, 6, 3));
+  const auto distinctId = fs.define(Pid::lowest(), clauseFrom(distinct, 6, 3));
+
+  EXPECT_EQ(conflictingId, Id::invalid());
+  EXPECT_EQ(distinctId, originalId + 1);
+  EXPECT_EQ(
+      fs.idByKey(Pid::lowest(), folly::ByteRange(original, 3)), originalId);
+}
+
 TEST(FactSetTest, DefineDifferentKeysGetDistinctIds) {
   FactSet fs(Id::lowest());
   unsigned char d1[] = "aaa";
@@ -202,6 +219,27 @@ TEST(FactSetTest, AppendCombinesTwoSets) {
   EXPECT_EQ(fs1.size(), 2);
   EXPECT_EQ(fs1.typeById(Id::lowest()), Pid::lowest());
   EXPECT_EQ(fs1.typeById(Id::lowest() + 1), Pid::lowest());
+}
+
+TEST(FactSetTest, AppendRefreshesPreviouslyMaterializedViews) {
+  FactSet fs(Id::lowest());
+  unsigned char alpha[] = "alpha";
+  fs.define(Pid::lowest(), clauseFrom(alpha, 5, 5));
+  EXPECT_EQ(*fs.predicateStats().lookup(Pid::lowest()), MemoryStats(1, 5));
+  auto initial =
+      fs.seek(Pid::lowest(), folly::ByteRange(alpha, 2), std::nullopt);
+  EXPECT_EQ(collectKeys(*initial), std::vector<std::string>{"alpha"});
+
+  FactSet appended(fs.firstFreeId());
+  unsigned char alpine[] = "alpine";
+  appended.define(Pid::lowest(), clauseFrom(alpine, 6, 6));
+  fs.append(std::move(appended));
+
+  auto refreshed =
+      fs.seek(Pid::lowest(), folly::ByteRange(alpha, 2), std::nullopt);
+  EXPECT_EQ(
+      collectKeys(*refreshed), (std::vector<std::string>{"alpha", "alpine"}));
+  EXPECT_EQ(*fs.predicateStats().lookup(Pid::lowest()), MemoryStats(2, 11));
 }
 
 TEST(FactSetTest, AppendableReturnsFalseOnIdGap) {
@@ -354,6 +392,23 @@ TEST(FactSetTest, SeekRestartResumesAtRestartFact) {
 
   const std::vector<std::string> expected{"banana", "band"};
   EXPECT_EQ(collectKeys(*iter), expected);
+}
+
+TEST(FactSetTest, SeekRejectsRestartOutsideFactSet) {
+  FactSet fs(Id::lowest() + 10);
+  unsigned char key[] = "key";
+  fs.define(Pid::lowest(), clauseFrom(key, 3, 3));
+  Fact::Ref before;
+  before.id = Id::lowest() + 9;
+  Fact::Ref after;
+  after.id = fs.firstFreeId();
+
+  EXPECT_THROW(
+      fs.seek(Pid::lowest(), folly::ByteRange(key, 1), before),
+      std::runtime_error);
+  EXPECT_THROW(
+      fs.seek(Pid::lowest(), folly::ByteRange(key, 1), after),
+      std::runtime_error);
 }
 
 TEST(FactSetTest, SeekIndexReflectsFactsAddedAfterFirstSeek) {
