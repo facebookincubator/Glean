@@ -9,6 +9,7 @@
 #include <gtest/gtest.h>
 
 #include <cstdint>
+#include <cstdio>
 #include <memory>
 #include <optional>
 #include <stdexcept>
@@ -17,6 +18,7 @@
 #include <vector>
 
 #include <folly/Range.h>
+#include <folly/init/Init.h>
 #include <folly/testing/TestUtil.h>
 
 #include "glean/rocksdb/rocksdb.h"
@@ -190,6 +192,43 @@ TEST_F(
           .empty());
 }
 
+TEST_F(
+    DatabaseImplTest,
+    SectionedSeekOnlyReturnsFactsWithinTheRequestedIdRange) {
+  commitThreeFacts();
+  const auto type = rts::Pid::lowest();
+  const std::vector<rts::Id> expected{startingId(), startingId() + 1};
+
+  EXPECT_EQ(
+      collectIds(database_->seekWithinSection(
+          type, bytes("alpha-"), startingId(), database_->firstFreeId())),
+      expected);
+  EXPECT_TRUE(collectIds(database_->seekWithinSection(
+                             type,
+                             bytes("alpha-"),
+                             database_->firstFreeId(),
+                             database_->firstFreeId() + 10))
+                  .empty());
+  EXPECT_TRUE(
+      collectIds(database_->seekWithinSection(
+                     type, bytes("alpha-"), rts::Id::invalid(), startingId()))
+          .empty());
+}
+
+// ============================================================
+// Ownership statistics
+// ============================================================
+
+TEST_F(DatabaseImplTest, OwnershipStatsReportNoUnitsAndUnknownOrphanCount) {
+  commitThreeFacts();
+
+  const auto stats = database_->getOwnership()->getStats();
+
+  EXPECT_EQ(stats.num_units, 0);
+  EXPECT_EQ(stats.num_sets, 0);
+  EXPECT_EQ(stats.num_orphan_facts, -1);
+}
+
 // ============================================================
 // Persistent database metadata
 // ============================================================
@@ -221,3 +260,14 @@ TEST_F(DatabaseImplTest, ReopenRejectsUnexpectedDatabaseVersion) {
 } // namespace
 
 } // namespace facebook::glean::rocks
+
+int main(int argc, char** argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  const folly::Init init(&argc, &argv, folly::InitOptions().useGFlags(false));
+  const int result = RUN_ALL_TESTS();
+  std::fflush(stdout);
+  std::fflush(stderr);
+  // RocksDB's monitoring/logging threads can block indefinitely at static
+  // destruction time in the test environment.
+  std::_Exit(result);
+}
