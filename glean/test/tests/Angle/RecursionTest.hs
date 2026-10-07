@@ -11,12 +11,14 @@ module Angle.RecursionTest (main) where
 
 import Control.Exception
 import Data.Default (def)
+import Data.List (isInfixOf, sort)
 import Data.Text (Text, unpack)
 import Test.HUnit
 
 import TestRunner
 import Util.String.Quasi
 
+import Glean.Angle.Types (AngleVersion(..), latestAngleVersion)
 import Glean.Database.Schema.Types
 import Glean.Database.Config (Config(..))
 import Glean.Init
@@ -92,7 +94,173 @@ recursionTest = TestList
           , RTS.Tuple [ RTS.Nat 1, RTS.Nat 5 ]
           ]
           facts
+
+  , TestLabel "non-linear recursion typechecks" $ TestCase $ do
+    withSchemaAndFacts [enableRecursion]
+      [s|
+        schema x.1 {
+          type Node = nat
+          predicate Edge : { from: Node, to: Node }
+          predicate Path : { from: Node, to: Node }
+            { A, B } where
+              (Path { A, X }; Path { X, B }) | Edge { A, B }
+        }
+        schema all.1 : x.1 {}
+      |]
+      [ mkBatch (PredicateRef "x.Edge" 1)
+          [ [s|{ "key": { "from": 1, "to": 2 } }|]
+          ]
+      ]
+      $ \_ _ _ -> return ()
+
+  , TestLabel "mutual recursion typechecks" $ TestCase $ do
+    withSchemaAndFacts [enableRecursion]
+      [s|
+        schema x.1 {
+          predicate P : nat
+          predicate Q : nat
+          predicate R : nat
+            A where P A | S A
+          predicate S : nat
+            A where Q A | R A
+        }
+        schema all.1 : x.1 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 1)
+          [ [s|{ "key": 1 }|]
+          ]
+      ]
+      $ \_ _ _ -> return ()
+
+  , TestLabel "cycle closed by a later derive declaration" $ TestCase $ do
+    -- P is declared without a derivation in x.1 and only gets one in x.2,
+    -- closing the cycle P -> Q -> P across schemas.
+    withSchemaAndFacts [enableRecursion]
+      [s|
+        schema x.1 {
+          predicate Base : nat
+          predicate P : nat
+          predicate Q : nat
+            A where x.P.1 A
+        }
+        schema x.2 : x.1 {
+          derive x.P.1
+            A where x.Base.1 A | x.Q.1 A
+        }
+        schema all.1 : x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.Base" 1)
+          [ [s|{ "key": 1 }|]
+          , [s|{ "key": 2 }|]
+          ]
+      ]
+      $ \env repo schema -> do
+        p <- decodeResultsAs "x.P.1" schema =<< runQ env repo [s| x.P.1 _ |]
+        assertEqual "P uses the derivation from x.2"
+          [ RTS.Nat 1, RTS.Nat 2 ] p
+        q <- decodeResultsAs "x.Q.1" schema =<< runQ env repo [s| x.Q.1 _ |]
+        assertEqual "Q sees P's derivation from x.2"
+          [ RTS.Nat 1, RTS.Nat 2 ] q
+
+  , TestLabel "recursion using a non-recursive derived predicate" $
+    TestCase $ do
+    -- Step is derived but not recursive, so it is inlined into each
+    -- expansion of Path.
+    withSchemaAndFacts [enableRecursion]
+      [s|
+        schema x.1 {
+          type Node = nat
+          predicate Edge : { from: Node, to: Node }
+          predicate Step : { from: Node, to: Node }
+            { A, B } where Edge { A, B }
+          predicate Path : { from: Node, to: Node }
+            { A, B } where
+              Step { A, B } | (Path { A, K }; Step { K, B })
+        }
+        schema all.1 : x.1 {}
+      |]
+      [ mkBatch (PredicateRef "x.Edge" 1)
+          [ [s|{ "key": { "from": 1, "to": 2 } }|]
+          , [s|{ "key": { "from": 2, "to": 3 } }|]
+          ]
+      ]
+      $ \env repo schema -> do
+        facts <- decodeResultsAs "x.Path.1" schema =<< runQ env repo
+          [s| x.Path _ |]
+        assertEqual "result content"
+          [ RTS.Tuple [ RTS.Nat 1, RTS.Nat 2 ]
+          , RTS.Tuple [ RTS.Nat 1, RTS.Nat 3 ]
+          , RTS.Tuple [ RTS.Nat 2, RTS.Nat 3 ]
+          ]
+          (sort facts)
+
+  , TestLabel "derived predicate whose type refers to itself" $
+    TestCase $ do
+    -- Chain copies a linked list of Node facts, so the key of each
+    -- derived Chain fact refers to another derived Chain fact.
+    withSchemaAndFacts [enableRecursion]
+      [s|
+        schema x.1 {
+          predicate Node : { label : nat, next : maybe Node }
+          predicate Chain : { label : nat, next : maybe Chain }
+            { L, N } where
+              Node { L, M };
+              (M = nothing; N = nothing) |
+              (M = { just = Node { L2, _ } }; N = { just = Chain { L2, _ } })
+        }
+        schema all.1 : x.1 {}
+      |]
+      -- 1 -> 2 -> 3
+      [ mkBatch (PredicateRef "x.Node" 1)
+          [ [s|{ "id": 1, "key": { "label": 3 } }|]
+          , [s|{ "id": 2, "key": { "label": 2, "next": 1 } }|]
+          , [s|{ "id": 3, "key": { "label": 1, "next": 2 } }|]
+          ]
+      ]
+      $ \env repo schema -> do
+        chains <- decodeResultsAs "x.Chain.1" schema =<< runQ env repo
+          [s| x.Chain _ |]
+        assertEqual "one Chain fact per Node" 3 (length chains)
+        list <- decodeResultsAs "x.Chain.1" schema =<< runQ env repo
+          [s| x.Chain { 1, { just = x.Chain { 2, { just = x.Chain { 3, nothing } } } } } |]
+        assertEqual "Chain facts form the same list as Node facts"
+          1 (length list)
+
+  , TestLabel "accepts negation of a non-recursive predicate in recursion" $
+    TestCase $ do
+    withSchemaAndFacts [enableRecursion]
+      [s|
+        schema x.1 {
+          type Node = nat
+          predicate Edge : { from: Node, to: Node }
+          predicate Blocked : { from: Node, to: Node }
+          predicate Path : { from: Node, to: Node }
+            { A, B } where
+              (x.Edge { A, B }; !(x.Blocked { A, B })) |
+              (x.Path { A, K }; x.Edge { K, B }; !(x.Blocked { K, B }))
+        }
+        schema all.1 : x.1 {}
+      |]
+      -- 1 -> 2 -x-> 3 -> 4
+      [ mkBatch (PredicateRef "x.Edge" 1)
+          [ [s|{ "key": { "from": 1, "to": 2 } }|]
+          , [s|{ "key": { "from": 2, "to": 3 } }|]
+          , [s|{ "key": { "from": 3, "to": 4 } }|]
+          ]
+      , mkBatch (PredicateRef "x.Blocked" 1)
+          [ [s|{ "key": { "from": 2, "to": 3 } }|]
+          ]
+      ]
+      $ \env repo schema -> do
+        facts <- decodeResultsAs "x.Path.1" schema =<< runQ env repo
+          [s| x.Path _ |]
+        assertEqual "result content"
+          [ RTS.Tuple [ RTS.Nat 1, RTS.Nat 2 ]
+          , RTS.Tuple [ RTS.Nat 3, RTS.Nat 4 ]
+          ]
+          (sort facts)
   ]
+
   where
     runQ env repo query =
       try $ userQuery env repo $ def
@@ -129,7 +297,166 @@ recursionTest = TestList
             unpack (showRef ref) <> ": " <> unpack err
           Right details -> predicateKeyType details
 
+stratificationTest :: Test
+stratificationTest = TestList
+  [ TestLabel "rejects recursion through negation" $ TestCase $
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          predicate Base : nat
+          predicate P : nat
+            A where x.Base A; !(x.Q A)
+          predicate Q : nat
+            A where x.P A
+        }
+        schema all.1 : x.1 {}
+      |]
+      (assertRejected "x.P.1 -> !x.Q.1 -> x.P.1")
+
+  , TestLabel "rejects a predicate negating itself" $ TestCase $
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          predicate Base : nat
+          predicate P : nat
+            A where x.Base A; !(x.P A)
+        }
+        schema all.1 : x.1 {}
+      |]
+      (assertRejected "x.P.1 -> !x.P.1")
+
+  , TestLabel "rejects recursion through an if condition" $ TestCase $
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          predicate Base : nat
+          predicate P : nat
+            B where x.Base A; B = if (x.P A) then A else 0
+        }
+        schema all.1 : x.1 {}
+      |]
+      (assertRejected "x.P.1 -> !x.P.1")
+
+  , TestLabel "rejects recursion through all" $ TestCase $
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          predicate Base : nat
+          predicate P : nat
+            A where x.Base A; _ = all (x.P A)
+        }
+        schema all.1 : x.1 {}
+      |]
+      (assertRejected "x.P.1 -> !x.P.1")
+
+  , TestLabel "accepts negation of a recursive predicate outside its cycle" $
+    TestCase $
+    -- NeedsFlying and LandRoute are both recursive, and NeedsFlying
+    -- negates LandRoute, but LandRoute doesn't depend on NeedsFlying.
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          type Town = nat
+          predicate Road : { begin : Town, end : Town }
+          predicate FlightRoute : { from : Town, to : Town }
+          predicate LandRoute : { from : Town, to : Town }
+            { From, To } where
+              x.Road { From, To } |
+              (x.LandRoute { From, X }; x.Road { X, To })
+          predicate NeedsFlying : { from : Town, to : Town }
+            { From, To } where
+              !(x.LandRoute { From, To });
+              x.FlightRoute { From, To } |
+              (x.NeedsFlying { From, X }; x.FlightRoute { X, To })
+        }
+        schema all.1 : x.1 {}
+      |]
+      (either (assertFailure . show) return)
+  ]
+
+storedTest :: Test
+storedTest = TestList
+  [ TestLabel "rejects a recursive stored predicate" $ TestCase $
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          predicate Base : nat
+          predicate P : nat
+            stored A where x.Base A | x.P A
+        }
+        schema all.1 : x.1 {}
+      |]
+      (assertRejected "x.P.1 is recursive")
+
+  , TestLabel "rejects a stored predicate in a cycle" $ TestCase $
+    -- S is stored and R isn't, but deriving S expands R, which refers
+    -- back to S.
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          predicate Base : nat
+          predicate S : nat
+            stored A where x.R A
+          predicate R : nat
+            A where x.Base A | x.S A
+        }
+        schema all.1 : x.1 {}
+      |]
+      (assertRejected "x.S.1 is recursive")
+
+  , TestLabel "rejects a stored predicate using recursion" $ TestCase $
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          type Node = nat
+          predicate Edge : { from: Node, to: Node }
+          predicate Path : { from: Node, to: Node }
+            { A, B } where
+              x.Edge { A, B } | (x.Path { A, K }; x.Edge { K, B })
+          predicate Reachable : Node
+            stored B where x.Path { 1, B }
+        }
+        schema all.1 : x.1 {}
+      |]
+      (assertRejected
+        "x.Reachable.1 depends on the recursive predicate x.Path.1")
+
+  , TestLabel "accepts a stored predicate using default derivations" $
+    TestCase $
+    -- P.1 and P.2 derive each other, but only one of the two derivations
+    -- is ever enabled, so Stored doesn't depend on recursion.
+    withSchema (AngleVersion 11)
+      [s|
+        schema test.1 {
+          predicate P : { a : string, b : nat }
+        }
+        schema test.2 : test.1 {
+          predicate P : { a : string, b : nat, c : {} }
+
+          derive test.P.1 default
+            { A, B } where P.2 { A, B, _ }
+
+          derive test.P.2 default
+            { A, B, {} } where test.P.1 { A, B }
+
+          predicate Stored : string
+            stored A where test.P.1 { A, _ }
+        }
+        schema all.1 : test.1, test.2 {}
+      |]
+      (either (assertFailure . show) return)
+  ]
+
+assertRejected :: String -> Either SomeException () -> IO ()
+assertRejected expected r = case r of
+  Left err ->
+    assertBool ("error should mention " <> expected <> ":\n" <> show err) $
+      expected `isInfixOf` show err
+  Right () -> assertFailure "schema was accepted"
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "recursion" recursionTest
+  , TestLabel "stratification" stratificationTest
+  , TestLabel "stored predicates" storedTest
   ]

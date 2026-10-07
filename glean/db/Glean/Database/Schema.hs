@@ -461,6 +461,16 @@ mkDbSchema toList cacheVar knownPids dbContent
             $ "use of " <> feature  <> " is not allowed in a stored predicate: "
             <> showRef (predicateRef d)
 
+    -- Check that no predicate depends on its own negation.
+    -- See Note [Stratification]
+    either (throwIO . Thrift.Exception) return $
+      checkStratification (tcEnvPredicates tcEnv)
+
+    -- Check that stored predicates don't involve recursion.
+    -- See Note [Recursion in stored predicates]
+    either (throwIO . Thrift.Exception) return $
+      checkStoredRecursion (tcEnvPredicates tcEnv)
+
     let
         predicates = snd <$> toList (tcEnvPredicates tcEnv)
 
@@ -940,23 +950,32 @@ usesOfNegation
   :: HashMap PredicateId PredicateDetails
   -> HashMap PredicateId UseOfNegation
 usesOfNegation preds =
-  foldl' recordUseOfNegation mempty derivations
+  -- Components come in reverse topological order, so by the time we
+  -- process a component all components it depends on have been processed.
+  foldl' addComponent mempty $
+    stronglyConnComp [ (d, ref, deps) | d@(_, ref, deps) <- derivations ]
   where
-    recordUseOfNegation usesNegation (mUseOfNeg, ref, deps)
-      | Just use <- mUseOfNeg
-      = HashMap.insert ref use usesNegation
-      | Just use <- firstJust (`HashMap.lookup` usesNegation) deps
-      = HashMap.insert ref use usesNegation
-      | otherwise
-      -- remove from Map in case a derived predicate in this schema that does
-      -- not use negation overrode a derived predicate that used negation.
-      = HashMap.delete ref usesNegation
+    -- The members of a recursive component depend on each other, so if
+    -- one of them uses negation, directly or through a dependency outside
+    -- the component, they all do.
+    addComponent usesNegation component =
+      case uses of
+        Nothing -> usesNegation
+        Just use -> foldl' (\m ref -> HashMap.insert ref use m) usesNegation
+          [ ref | (_, ref, _) <- members ]
+      where
+      members = flattenSCC component
+      uses =
+        firstJust (\(use, _, _) -> use) members <|>
+        firstJust (`HashMap.lookup` usesNegation)
+          (concat [ deps | (_, _, deps) <- members ])
 
-    -- derivations in dependency order with flag for use of negation
+    -- derivations with flag for use of negation
     derivations :: [(Maybe UseOfNegation, PredicateId, [PredicateId])]
-    derivations = toPred . getNode <$> reverse (topSort graph)
-    (graph, getNode, _) = graphFromEdges $ derivationEdges preds
-    toPred (b, k, ks) = (tcQueryUsesNegation b, k, ks)
+    derivations =
+      [ (tcQueryUsesNegation query, ref, deps)
+      | (query, ref, deps) <- derivationEdges preds
+      ]
 
 derivationEdges
   :: HashMap PredicateId PredicateDetails
@@ -966,6 +985,170 @@ derivationEdges preds =
   | (ref, details) <- HashMap.toList preds
   , Derive _ (QueryWithInfo query _ _ _)  <- [predicateDeriving details]
   ]
+
+{- Note [Stratification]
+
+Recursive derivations shouldn't let us define a fact in terms of its own
+negation:
+
+  predicate P : nat
+    A where Base A; !(Q A)
+  predicate Q : nat
+    A where P A
+
+Here a fact P 1 exists only if Q 1 doesn't, and Q 1 exists only if P 1
+does, so there's no sensible answer. We rule this out by requiring the
+schema to be stratified: no predicate may depend negatively on itself,
+directly or through other predicates. Negation of a recursive predicate
+is fine as long as the negation isn't part of the recursion, because then
+there is no way to have this kid of contradictory specification.
+
+A dependency is negative when the predicate is searched inside a
+negation, in the condition of an if, or inside `all` (see
+tcQueryNegativeDeps).
+
+Unlike checkRecursiveDefinitions, we include default derivations. Pairs of
+default derivations used for schema migration form cycles, but they don't
+negate each other, and if a default derivation ever were part of a cycle
+through negation it would be unsound whenever it is enabled.
+-}
+
+-- | Check that no predicate depends negatively on itself, directly or
+-- through other predicates. See Note [Stratification].
+checkStratification :: HashMap PredicateId PredicateDetails -> Either Text ()
+checkStratification preds =
+  unless (null violations) $ Left $ Text.unlines $
+    "recursion through negation is not allowed. These predicates depend "
+      <> "on their own negation:"
+    : [ "  " <> Text.intercalate " -> "
+          (showPred ref : ("!" <> showPred neg) : map showPred (drop 1 path))
+      | (ref, neg) <- violations
+      , let path = pathWithin neg ref
+      ]
+    ++ [ "(!P means that P is negated, used in the condition of an if, "
+          <> "or used inside all)" ]
+  where
+    edges = derivationEdges preds
+
+    deps :: HashMap PredicateId [PredicateId]
+    deps = HashMap.fromList [ (ref, ds) | (_, ref, ds) <- edges ]
+
+    depsOf :: PredicateId -> [PredicateId]
+    depsOf p = HashMap.lookupDefault [] p deps
+
+    -- the recursive component that each recursive predicate belongs to
+    componentOf :: HashMap PredicateId Int
+    componentOf = HashMap.fromList
+      [ (ref, n)
+      | (n, CyclicSCC refs) <- zip [0..] components
+      , ref <- refs
+      ]
+      where
+      components = stronglyConnComp [ (ref, ref, ds) | (_, ref, ds) <- edges ]
+
+    sameComponent a b =
+      isJust (HashMap.lookup a componentOf)
+      && HashMap.lookup a componentOf == HashMap.lookup b componentOf
+
+    -- (P, Q) where P's derivation depends negatively on Q and Q is in
+    -- the same recursive component as P.
+    violations :: [(PredicateId, PredicateId)]
+    violations = sort
+      [ (ref, neg)
+      | (query, ref, _) <- edges
+      , HashMap.member ref componentOf
+      , neg <- Set.toList (tcQueryNegativeDeps query)
+      , sameComponent ref neg
+      ]
+
+    -- Shortest path of dependencies from one predicate to another in the
+    -- same recursive component, including both ends.
+    pathWithin :: PredicateId -> PredicateId -> [PredicateId]
+    pathWithin from to = go [(from, [])] (HashSet.singleton from)
+      where
+      go [] _ = [from, to] -- unreachable: they are in the same component
+      go ((p, path) : rest) seen
+        | p == to = reverse (p : path)
+        | otherwise =
+          go (rest ++ [ (n, p : path) | n <- next ])
+            (foldr HashSet.insert seen next)
+        where
+        next =
+          [ n | n <- depsOf p, sameComponent n to, not (HashSet.member n seen) ]
+
+    showPred = showRef . predicateIdRef
+
+{- Note [Recursion in stored predicates]
+
+Stored predicates can't be recursive, and can't depend on recursive
+predicates for now ownership would be wrong.
+
+When a derived fact is created, its owners are taken from the facts being
+searched at that point. A recursive derivation searches facts derived earlier
+in the same query, and those live in the query's FactSet, which has no
+ownership information (FactSet::getOwner returns INVALID_USET). So the owners
+of the facts they came from would be lost, and an incremental DB could keep
+derived facts that it should have excluded.
+
+Default derivations are left out. The usual way this is used is where default
+derivations refer to each other but the two aren't enabled at the same time, so
+they don't make the predicates depending on them recursive.
+-}
+
+-- | Check that stored predicates don't involve recursion.
+-- See Note [Recursion in stored predicates].
+checkStoredRecursion :: HashMap PredicateId PredicateDetails -> Either Text ()
+checkStoredRecursion preds =
+  unless (null violations) $ Left $ Text.unlines $
+    "recursion is not supported in stored predicates yet:"
+    : [ "  " <> showPred ref <> problem
+      | (ref, recPred) <- violations
+      , let problem
+              | ref == recPred = " is recursive"
+              | otherwise =
+                " depends on the recursive predicate " <> showPred recPred
+      ]
+  where
+    edges :: [(PredicateId, PredicateId, [PredicateId])]
+    edges =
+      [ (ref, ref, Set.toList (tcQueryDeps query))
+      | (ref, details) <- HashMap.toList preds
+      , Derive when (QueryWithInfo query _ _ _) <- [predicateDeriving details]
+      , case when of
+          DeriveIfEmpty -> False
+          DeriveOnDemand -> True
+          DerivedAndStored -> True
+      ]
+
+    deps :: HashMap PredicateId [PredicateId]
+    deps = HashMap.fromList [ (ref, ds) | (_, ref, ds) <- edges ]
+
+    depsOf :: PredicateId -> [PredicateId]
+    depsOf ref = HashMap.lookupDefault [] ref deps
+
+    -- For each predicate that involves recursion, a recursive predicate
+    -- that it depends on (the predicate itself if it's recursive).
+    -- Components come in reverse topological order, so the dependencies
+    -- of a component have already been added by the time we get to it.
+    recursiveDep :: HashMap PredicateId PredicateId
+    recursiveDep = foldl' add mempty (stronglyConnComp edges)
+      where
+      add m = \case
+        CyclicSCC refs -> foldl' (\m' ref -> HashMap.insert ref ref m') m refs
+        AcyclicSCC ref ->
+          case firstJust (`HashMap.lookup` m) (depsOf ref) of
+            Nothing -> m
+            Just recPred -> HashMap.insert ref recPred m
+
+    violations :: [(PredicateId, PredicateId)]
+    violations = sort
+      [ (ref, recPred)
+      | (ref, details) <- HashMap.toList preds
+      , Derive DerivedAndStored _ <- [predicateDeriving details]
+      , Just recPred <- [HashMap.lookup ref recursiveDep]
+      ]
+
+    showPred = showRef . predicateIdRef
 
 -- | Check that the type of a stored predicate doesn't refer to any
 -- derived predicates.
