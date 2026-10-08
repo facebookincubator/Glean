@@ -86,7 +86,11 @@ instance Plugin DeriveCommand where
     = mdo
       -- get the schema from the db
       SchemaInfo{..} <- Glean.getSchemaInfo backend (Just deriveRepo) $
-        GetSchemaInfo (SelectSchema_stored Empty) False
+        GetSchemaInfo
+          { getSchemaInfo_select = SelectSchema_stored Empty
+          , getSchemaInfo_omit_source = False
+          , getSchemaInfo_include_predicate_versions = False
+          }
       -- get the typechecked predicates from the schema
       let (graph, getNode, _) = graphFromEdges edges
           edges = [ (p, p, pp)

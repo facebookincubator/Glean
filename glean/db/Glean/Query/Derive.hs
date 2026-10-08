@@ -8,6 +8,7 @@
 
 module Glean.Query.Derive
   ( deriveStored
+  , getSchemaVersion
   ) where
 
 import System.Timeout

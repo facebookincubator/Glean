@@ -1012,6 +1012,13 @@ struct SchemaInfo {
   // See UserQueryResults.auth_status.
   7: optional auth.AuthStatus auth_status;
   8: optional string auth_message;
+
+  // For each predicate name, the version that an unversioned reference
+  // resolves to: in the DB's schema for getSchemaInfo, or in the requested
+  // schema for getSchemaInfoForSchema. Names that the schema leaves ambiguous
+  // are omitted. Only populated when GetSchemaInfo.include_predicate_versions
+  // is set.
+  9: map<PredicateName, Version> predicateVersions;
 }
 
 union SelectSchema {
@@ -1032,6 +1039,9 @@ struct GetSchemaInfo {
   // Don't return the schema source. It can be large, so set this to
   // true if you don't need it.
   2: bool omit_source;
+
+  // Include SchemaInfo.predicateVersions.
+  3: bool include_predicate_versions;
 }
 
 struct FactIdRange {

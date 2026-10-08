@@ -81,15 +81,22 @@ instance Backend Database.Env where
 
   getSchemaInfo env (Just repo) req =
     withOpenDatabase env repo $ \odb -> do
+      let dbSchema = Database.odbSchema odb
       index <- Observed.get (Database.envSchemaSource env)
-      Database.getSchemaInfo (Database.odbSchema odb) index req
+      -- resolve predicate versions the same way as derivation does
+      schemaSelector <-
+        if Thrift.getSchemaInfo_include_predicate_versions req
+          then Just <$> Derive.getSchemaVersion env repo dbSchema
+          else return Nothing
+      Database.getSchemaInfo dbSchema index schemaSelector req
 
   getSchemaInfo env Nothing Thrift.GetSchemaInfo{..} = do
       index <- Observed.get (Database.envSchemaSource env)
       sid <- case getSchemaInfo_select of
           Thrift.SelectSchema_schema_id sid -> return sid
           other -> throwIO $ userError $ "unsupported: " <> show other
-      Database.getSchemaInfoForSchema index sid (envDebug env)
+      Database.getSchemaInfoForSchema index sid
+        getSchemaInfo_include_predicate_versions (envDebug env)
 
   validateSchema env (Thrift.ValidateSchema str) = do
     schema <- Observed.get (Database.envSchemaSource env)
@@ -244,10 +251,13 @@ runSyncQuery repo env q@(Query req) acc rvar = do
 
 loadDbSchema :: Backend a => a -> Thrift.Repo -> IO DbSchema
 loadDbSchema backend repo = do
-  Thrift.SchemaInfo schema pids _ dbSchemaIds _ _ _ _ <-
-    getSchemaInfo backend (Just repo) def
-      { Thrift.getSchemaInfo_select = Thrift.SelectSchema_stored def }
-  fromStoredSchema Nothing (StoredSchema schema pids dbSchemaIds)
+  info <- getSchemaInfo backend (Just repo) def
+    { Thrift.getSchemaInfo_select = Thrift.SelectSchema_stored def }
+  fromStoredSchema Nothing
+    (StoredSchema
+      (Thrift.schemaInfo_schema info)
+      (Thrift.schemaInfo_predicateIds info)
+      (Thrift.schemaInfo_dbSchemaIds info))
     readWriteContent def
 
 -- | Serialize the inventory for the schema used by this repo.

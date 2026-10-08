@@ -142,6 +142,32 @@ schemaUnversioned = TestCase $ do
         Right UserQueryResults{..} -> length userQueryResults_facts == 2
         _ -> False
 
+      info <- getSchemaInfo env (Just repo1) def
+        { getSchemaInfo_omit_source = True
+        , getSchemaInfo_include_predicate_versions = True
+        }
+      assertEqual "unversioned predicate resolves to the DB's version"
+        (Just 2) (Map.lookup "test.P" (schemaInfo_predicateVersions info))
+      assertBool "only unversioned names are included" $
+        Map.notMember "test.P.2" (schemaInfo_predicateVersions info)
+
+      sid <- case Map.keys (schemaInfo_dbSchemaIds info) of
+        [sid] -> return sid
+        sids -> assertFailure ("expected one DB schema id: " <> show sids)
+      infoForSchema <- getSchemaInfo env Nothing def
+        { getSchemaInfo_select = SelectSchema_schema_id (SchemaId sid)
+        , getSchemaInfo_omit_source = True
+        , getSchemaInfo_include_predicate_versions = True
+        }
+      assertEqual "unversioned predicate resolves in the requested schema"
+        (Just 2)
+        (Map.lookup "test.P" (schemaInfo_predicateVersions infoForSchema))
+
+      infoWithoutVersions <- getSchemaInfo env (Just repo1) def
+        { getSchemaInfo_omit_source = True }
+      assertBool "versions are only included on request" $
+        Map.null (schemaInfo_predicateVersions infoWithoutVersions)
+
 
 schemaTypeError :: Test
 schemaTypeError = TestCase $ do
@@ -315,6 +341,13 @@ schemaTypeShadowing = TestCase $ do
         Left err | "ambiguous" `isInfixOf` show err ->
           assertBool "ambiguous identifier" True
         _ -> assertFailure (show response)
+
+      info <- getSchemaInfo env (Just repo) def
+        { getSchemaInfo_omit_source = True
+        , getSchemaInfo_include_predicate_versions = True
+        }
+      assertBool "ambiguous predicate is not resolved" $
+        Map.notMember "x.P" (schemaInfo_predicateVersions info)
 
 fakeSchemaKey :: Text
 fakeSchemaKey = "glean/schema"

@@ -1137,9 +1137,15 @@ definitions schemas = (types, preds)
   types = HashMap.unions $ hashedTypes . procSchemaHashed <$> schemas
 
 
--- | Interrogate the schema associated with a DB
-getSchemaInfo :: DbSchema -> SchemaIndex -> GetSchemaInfo -> IO SchemaInfo
-getSchemaInfo dbSchema index@SchemaIndex{..} GetSchemaInfo{..} = do
+-- | Interrogate the schema associated with a DB. 'predicateVersions' are
+-- resolved in the given schema, if any.
+getSchemaInfo
+  :: DbSchema
+  -> SchemaIndex
+  -> Maybe SchemaSelector
+  -> GetSchemaInfo
+  -> IO SchemaInfo
+getSchemaInfo dbSchema index@SchemaIndex{..} selector GetSchemaInfo{..} = do
   let
     pids = Map.fromList $
       [ (fromPid $ predicatePid p, predicateRef p)
@@ -1185,10 +1191,28 @@ getSchemaInfo dbSchema index@SchemaIndex{..} GetSchemaInfo{..} = do
     , schemaInfo_derivationDependencies = derivationDependencies
     , schemaInfo_auth_status = Nothing
     , schemaInfo_auth_message = Nothing
+    , schemaInfo_predicateVersions =
+        maybe Map.empty (predicateVersions dbSchema) selector
     }
 
-getSchemaInfoForSchema :: SchemaIndex -> SchemaId -> DebugFlags -> IO SchemaInfo
-getSchemaInfoForSchema index sid debug = do
+-- | For each predicate name, the version that an unversioned reference
+-- resolves to in the given schema. Ambiguous names are omitted.
+predicateVersions :: DbSchema -> SchemaSelector -> Map Text Version
+predicateVersions dbSchema schemaSelector = Map.fromList
+  [ (name, predicateRef_version (predicateRef details))
+  | Just env <- [schemaNameEnv dbSchema schemaSelector]
+  , (SourceRef name Nothing, targets) <- HashMap.toList env
+  , [RefPred predId] <- [Set.toList targets]
+  , Just details <- [HashMap.lookup predId (predicatesById dbSchema)]
+  ]
+
+getSchemaInfoForSchema
+  :: SchemaIndex
+  -> SchemaId
+  -> Bool -- ^ include predicate versions
+  -> DebugFlags
+  -> IO SchemaInfo
+getSchemaInfoForSchema index sid includeVersions debug = do
   processed <- maybe (throwIO $ userError "schema id not found") return $
     findSchemaInIndex index sid
   dbSchema <-
@@ -1196,8 +1220,13 @@ getSchemaInfoForSchema index sid debug = do
       debug
   let schemaSource = renderSchemaSource (procSchemaSource processed)
 
-  res <- getSchemaInfo
-    dbSchema index (GetSchemaInfo (SelectSchema_schema_id sid) True)
+  res <- getSchemaInfo dbSchema index
+    (if includeVersions then Just (SpecificSchemaId sid) else Nothing)
+    GetSchemaInfo
+      { getSchemaInfo_select = SelectSchema_schema_id sid
+      , getSchemaInfo_omit_source = True
+      , getSchemaInfo_include_predicate_versions = includeVersions
+      }
   return res{schemaInfo_schema = schemaSource}
 
 
