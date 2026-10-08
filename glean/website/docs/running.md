@@ -181,3 +181,6 @@ Enable debugging output for the Angle typechecker.
 
 * `--debug-query`<br />
 Enable debugging output for the Angle query compiler.
+
+* `--debug-query-lint`<br />
+Enable consistency checks on the query before running; catches internal errors in the query compiler.
