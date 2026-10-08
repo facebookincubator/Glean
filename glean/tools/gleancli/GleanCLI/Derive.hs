@@ -81,27 +81,41 @@ instance Plugin DeriveCommand where
 
   runCommand _ _ backend Derive{..}
     | [(pred, parallel)] <- predicates
-    = deriveOne pred parallel
+    = deriveOne (parseRef pred) parallel
     | otherwise
     = mdo
       -- get the schema from the db
       SchemaInfo{..} <- Glean.getSchemaInfo backend (Just deriveRepo) $
         GetSchemaInfo
           { getSchemaInfo_select = SelectSchema_stored Empty
-          , getSchemaInfo_omit_source = False
-          , getSchemaInfo_include_predicate_versions = False
+          , getSchemaInfo_omit_source = True
+          , getSchemaInfo_include_predicate_versions = True
           }
       -- get the typechecked predicates from the schema
       let (graph, getNode, _) = graphFromEdges edges
           edges = [ (p, p, pp)
                   | (p, pp) <- Map.toList schemaInfo_derivationDependencies
                   ]
-          predicateName pid =
-            predicateRef_name (schemaInfo_predicateIds Map.! pid)
+          predicateSourceRef pid =
+            let PredicateRef name version = schemaInfo_predicateIds Map.! pid
+            in SourceRef name (Just version)
           derivations =
-            [ (predicateName pred, predicateName <$> deps)
+            [ (predicateSourceRef pred, predicateSourceRef <$> deps)
             | (_, pred, deps) <- getNode <$> vertices graph
             ]
+          -- An unversioned name uses the version selected by the DB's schema.
+          -- Servers that predate predicateVersions return an empty map, so
+          -- fall back to the only derived predicate with that name, if any.
+          resolve pred = case parseRef pred of
+            SourceRef name Nothing
+              | Just version <- Map.lookup name schemaInfo_predicateVersions ->
+                  SourceRef name (Just version)
+              | [ref] <- [ ref | (ref, _) <- derivations
+                               , sourceRefName ref == name ] ->
+                  ref
+            ref -> ref
+          requested =
+            [ (resolve pred, parallel) | (pred, parallel) <- predicates ]
 
       concurrencyAvailable <- newQSem deriveMaxConcurrency
 
@@ -112,28 +126,28 @@ instance Plugin DeriveCommand where
         ivars = Map.fromList $ zip (fst <$> derivations) asyncs
 
       -- sanity check: all the requested derivations must be in the graph
-      for_ predicates $ \(pred,_) ->
+      for_ requested $ \(pred,_) ->
         unless (pred `elem` map fst derivations) $ do
           throwIO $ userError $ printf
             ("abort: %s is not in the schema or is not derived. This is not" ++
               " supported, try deriving one predicate at a time instead.\n")
-            pred
+            (showRef pred)
 
       asyncs <- forM derivations $ \(pred, deps) -> async $ do
         -- wait for my dependencies
         mapM_ waitFor deps
 
         -- if I am one of the requested predicates, derive me
-        for_ (lookup pred predicates) $ \parallel -> do
+        for_ (lookup pred requested) $ \parallel -> do
           bracket_
             (waitQSem concurrencyAvailable)
             (signalQSem concurrencyAvailable) $ do
-              logInfo $ "Kicking off: " <> pred
+              logInfo $ "Kicking off: " <> showRef pred
               deriveOne pred parallel
-              logInfo $ "Done: " <> pred
+              logInfo $ "Done: " <> showRef pred
 
       -- evaluate the nodes corresponding to the requested predicates
-      mapM_ waitFor (fst <$> predicates)
+      mapM_ waitFor (fst <$> requested)
     where
       retryBackend =
         Glean.Remote.backendRetryWrites backend Glean.Remote.defaultRetryPolicy
@@ -141,5 +155,5 @@ instance Plugin DeriveCommand where
         derivePredicate retryBackend deriveRepo
           (Just $ fromIntegral $ pageBytes derivePageOptions)
           (fromIntegral <$> pageFacts derivePageOptions)
-          (parseRef pred)
+          pred
           parallel
