@@ -35,8 +35,10 @@ instance Search (ResultLocation Erlang.Entity) where
         searchSymbolId toks $ searchByNameAndKind "define" name
     | ["record", _app, _module, name] <- toks =
         searchSymbolId toks $ searchByNameAndKind "record" name
-    | ["type", _app, _module, name, _arity] <- toks =
-        searchSymbolId toks $ searchByNameAndKind "type" name
+    | ["type", app, module_, name, arity] <- toks
+    , Just arityNum <- readMaybe $ unpack arity =
+        searchSymbolId toks $
+          searchTypeByFQN (Just app) module_ name (Just arityNum)
     | ["header", _app, name] <- toks =
         searchSymbolId toks $ searchByNameAndKind "header" name
     | ["module", _app, name] <- toks =
@@ -63,8 +65,8 @@ instance Search (ResultLocation Erlang.Entity) where
         searchSymbolId toks $ searchByNameAndKind "define" name
     | ["record", _module, name] <- toks =
         searchSymbolId toks $ searchByNameAndKind "record" name
-    | ["type", _module, name] <- toks =
-        searchSymbolId toks $ searchByNameAndKind "type" name
+    | ["type", module_, name] <- toks =
+        searchSymbolId toks $ searchTypeByFQN Nothing module_ name Nothing
     | ["header", name] <- toks =
         searchSymbolId toks $ searchByNameAndKind "header" name
     | [module_, name, arity] <- toks
@@ -98,6 +100,25 @@ searchByNameAndKind kind name =
         field @"name" (string name) $
         field @"entity" ent
       end),
+    entityLocation (alt @"erlang" ent) file rangespan lname
+  ]
+
+searchTypeByFQN
+  :: Maybe Text -> Text -> Text -> Maybe Word64
+  -> Angle (ResultLocation Erlang.Entity)
+searchTypeByFQN app module_ name arity =
+  vars $ \(ent :: Angle Erlang.Entity) (file :: Angle Src.File)
+    (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text)
+    (decl :: Angle ErlangSchema.TypeDeclaration) ->
+  tuple (ent, file, rangespan, lname) `where_` [
+    decl .= predicate @ErlangSchema.TypeDeclaration (
+      rec $
+        field @"name" (string name) $
+        field @"arity" (maybe wild nat arity) $
+        field @"module" (string module_) $
+        field @"app" (maybe wild string app)
+      end),
+    ent .= alt @"decl" (alt @"type_" (asPredicate decl)),
     entityLocation (alt @"erlang" ent) file rangespan lname
   ]
 
