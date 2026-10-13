@@ -163,7 +163,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct B" },
+                          "type": { "key": "B" },
                           "kind": { "local": { "kind": 0, "attribute": 0 } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -216,7 +216,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct A" },
+                          "type": { "key": "A" },
                           "kind": { "field": { "mutable_": false } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -654,7 +654,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct B" },
+                          "type": { "key": "B" },
                           "kind": { "local": { "kind": 0, "attribute": 0 } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -707,7 +707,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct A" },
+                          "type": { "key": "A" },
                           "kind": { "field": { "mutable_": false } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -910,7 +910,7 @@
                             }
                           }
                         },
-                        "type": { "key": "struct A" },
+                        "type": { "key": "A" },
                         "kind": { "field": { "mutable_": false } },
                         "source": {
                           "file": { "key": "test.cpp" },
@@ -1093,7 +1093,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct B" },
+                          "type": { "key": "B" },
                           "kind": { "local": { "kind": 0, "attribute": 0 } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -1146,7 +1146,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct A" },
+                          "type": { "key": "A" },
                           "kind": { "field": { "mutable_": false } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -1636,7 +1636,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct B" },
+                          "type": { "key": "B" },
                           "kind": { "local": { "kind": 0, "attribute": 0 } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -1689,7 +1689,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct A" },
+                          "type": { "key": "A" },
                           "kind": { "field": { "mutable_": false } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -2035,7 +2035,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct B" },
+                          "type": { "key": "B" },
                           "kind": { "local": { "kind": 0, "attribute": 0 } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -2088,7 +2088,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct A" },
+                          "type": { "key": "A" },
                           "kind": { "field": { "mutable_": false } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -2434,7 +2434,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct B" },
+                          "type": { "key": "B" },
                           "kind": { "local": { "kind": 0, "attribute": 0 } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -2487,7 +2487,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct A" },
+                          "type": { "key": "A" },
                           "kind": { "field": { "mutable_": false } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -2655,7 +2655,7 @@
                   }
                 }
               },
-              "type": { "key": "struct A" },
+              "type": { "key": "A" },
               "kind": { "field": { "mutable_": false } },
               "source": {
                 "file": { "key": "test.cpp" },
@@ -2833,7 +2833,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct B" },
+                          "type": { "key": "B" },
                           "kind": { "local": { "kind": 0, "attribute": 0 } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -2886,7 +2886,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct A" },
+                          "type": { "key": "A" },
                           "kind": { "field": { "mutable_": false } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -3044,7 +3044,7 @@
                   }
                 }
               },
-              "type": { "key": "struct B" },
+              "type": { "key": "B" },
               "kind": { "local": { "kind": 0, "attribute": 0 } },
               "source": {
                 "file": { "key": "test.cpp" },
@@ -3222,7 +3222,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct B" },
+                          "type": { "key": "B" },
                           "kind": { "local": { "kind": 0, "attribute": 0 } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -3275,7 +3275,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct A" },
+                          "type": { "key": "A" },
                           "kind": { "field": { "mutable_": false } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -3433,7 +3433,7 @@
                   }
                 }
               },
-              "type": { "key": "struct B" },
+              "type": { "key": "B" },
               "kind": { "local": { "kind": 0, "attribute": 0 } },
               "source": {
                 "file": { "key": "test.cpp" },
@@ -3611,7 +3611,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct B" },
+                          "type": { "key": "B" },
                           "kind": { "local": { "kind": 0, "attribute": 0 } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -3664,7 +3664,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct A" },
+                          "type": { "key": "A" },
                           "kind": { "field": { "mutable_": false } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -4010,7 +4010,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct B" },
+                          "type": { "key": "B" },
                           "kind": { "local": { "kind": 0, "attribute": 0 } },
                           "source": {
                             "file": { "key": "test.cpp" },
@@ -4063,7 +4063,7 @@
                               }
                             }
                           },
-                          "type": { "key": "struct A" },
+                          "type": { "key": "A" },
                           "kind": { "field": { "mutable_": false } },
                           "source": {
                             "file": { "key": "test.cpp" },

@@ -464,7 +464,7 @@
                 }
               }
             },
-            "type": { "key": "N1::Bar<N1::Foo>" },
+            "type": { "key": "Bar<N1::Foo>" },
             "kind": { "local": { "kind": 0, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
@@ -492,7 +492,7 @@
                 }
               }
             },
-            "type": { "key": "N1::Bar<N1::Foo>" },
+            "type": { "key": "Bar<N1::Foo>" },
             "kind": { "local": { "kind": 0, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },

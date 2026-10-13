@@ -607,7 +607,7 @@
                               "parameters": [
                                 {
                                   "name": { "key": "" },
-                                  "type": { "key": "Foo::Bar" }
+                                  "type": { "key": "N1::N2::Foo::Bar" }
                                 },
                                 {
                                   "name": { "key": "" },
@@ -1409,7 +1409,7 @@
                     },
                     "signature": {
                       "key": {
-                        "returns": { "key": "Foo::Bar" },
+                        "returns": { "key": "N1::N2::Foo::Bar" },
                         "parameters": [
                           {
                             "name": { "key": "" },
@@ -1490,7 +1490,10 @@
                   "key": {
                     "returns": { "key": "void" },
                     "parameters": [
-                      { "name": { "key": "" }, "type": { "key": "Foo::Bar" } },
+                      {
+                        "name": { "key": "" },
+                        "type": { "key": "N1::N2::Foo::Bar" }
+                      },
                       {
                         "name": { "key": "" },
                         "type": { "key": "N1::N2::N3::YYY" }
@@ -1561,7 +1564,7 @@
                         "parameters": [
                           {
                             "name": { "key": "" },
-                            "type": { "key": "Foo::Bar" }
+                            "type": { "key": "N1::N2::Foo::Bar" }
                           },
                           {
                             "name": { "key": "" },

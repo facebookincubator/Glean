@@ -76,6 +76,76 @@
         "variable": {
           "key": {
             "name": {
+              "key": {
+                "name": { "key": "m3" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "T" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "const int" },
+            "kind": {
+              "global_": { "kind": 2, "attribute": 2, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 18,
+              "columnBegin": 3,
+              "lineEnd": 18,
+              "columnEnd": 29
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "m3" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "T" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "const int" },
+            "kind": {
+              "global_": { "kind": 2, "attribute": 2, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 18,
+              "columnBegin": 3,
+              "lineEnd": 18,
+              "columnEnd": 29
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "variable": {
+          "key": {
+            "name": {
               "key": { "name": { "key": "v2" }, "scope": { "global_": { } } }
             },
             "type": { "key": "int" },

@@ -320,7 +320,7 @@
                               "parameters": [
                                 {
                                   "name": { "key": "" },
-                                  "type": { "key": "Foo::Bar" }
+                                  "type": { "key": "N1::N2::Foo::Bar" }
                                 },
                                 {
                                   "name": { "key": "" },
@@ -512,7 +512,7 @@
                               "parameters": [
                                 {
                                   "name": { "key": "" },
-                                  "type": { "key": "Foo::Bar" }
+                                  "type": { "key": "N1::N2::Foo::Bar" }
                                 },
                                 {
                                   "name": { "key": "" },

@@ -1310,7 +1310,7 @@
                               }
                             }
                           },
-                          "type": { "key": "W<double>::Type" },
+                          "type": { "key": "N1::W<double>::Type" },
                           "kind": {
                             "global_": {
                               "kind": 0,
@@ -3417,7 +3417,7 @@
                     }
                   }
                 },
-                "type": { "key": "W<double>::Type" },
+                "type": { "key": "N1::W<double>::Type" },
                 "kind": {
                   "global_": { "kind": 0, "attribute": 0, "definition": true }
                 },
@@ -3474,7 +3474,7 @@
                     }
                   }
                 },
-                "type": { "key": "W<double>::Type" },
+                "type": { "key": "N1::W<double>::Type" },
                 "kind": { "local": { "kind": 0, "attribute": 0 } },
                 "source": {
                   "file": { "key": "test.cpp" },
@@ -3527,7 +3527,7 @@
                     }
                   }
                 },
-                "type": { "key": "W<double>::Type" },
+                "type": { "key": "N1::W<double>::Type" },
                 "kind": { "local": { "kind": 0, "attribute": 0 } },
                 "source": {
                   "file": { "key": "test.cpp" },

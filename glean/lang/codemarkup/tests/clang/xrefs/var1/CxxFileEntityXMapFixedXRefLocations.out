@@ -126,7 +126,7 @@
                             "global_": {
                               "kind": 2,
                               "attribute": 2,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
@@ -583,7 +583,7 @@
                           "global_": {
                             "kind": 2,
                             "attribute": 2,
-                            "definition": false
+                            "definition": true
                           }
                         },
                         "source": {
@@ -765,7 +765,7 @@
                             "global_": {
                               "kind": 2,
                               "attribute": 2,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
@@ -1222,7 +1222,7 @@
                           "global_": {
                             "kind": 2,
                             "attribute": 2,
-                            "definition": false
+                            "definition": true
                           }
                         },
                         "source": {
@@ -1404,7 +1404,7 @@
                             "global_": {
                               "kind": 2,
                               "attribute": 2,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
@@ -1861,7 +1861,7 @@
                           "global_": {
                             "kind": 2,
                             "attribute": 2,
-                            "definition": false
+                            "definition": true
                           }
                         },
                         "source": {
@@ -2043,7 +2043,7 @@
                             "global_": {
                               "kind": 2,
                               "attribute": 2,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
@@ -2540,7 +2540,7 @@
                             "global_": {
                               "kind": 2,
                               "attribute": 2,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
@@ -3037,7 +3037,7 @@
                             "global_": {
                               "kind": 2,
                               "attribute": 2,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
@@ -3534,7 +3534,7 @@
                             "global_": {
                               "kind": 2,
                               "attribute": 2,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
@@ -4031,7 +4031,7 @@
                             "global_": {
                               "kind": 2,
                               "attribute": 2,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
@@ -4387,7 +4387,7 @@
               },
               "type": { "key": "const int" },
               "kind": {
-                "global_": { "kind": 2, "attribute": 2, "definition": false }
+                "global_": { "kind": 2, "attribute": 2, "definition": true }
               },
               "source": {
                 "file": { "key": "test.cpp" },
@@ -4528,7 +4528,7 @@
                             "global_": {
                               "kind": 2,
                               "attribute": 2,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
@@ -4884,7 +4884,7 @@
               },
               "type": { "key": "const int" },
               "kind": {
-                "global_": { "kind": 2, "attribute": 2, "definition": false }
+                "global_": { "kind": 2, "attribute": 2, "definition": true }
               },
               "source": {
                 "file": { "key": "test.cpp" },
@@ -5025,7 +5025,7 @@
                             "global_": {
                               "kind": 2,
                               "attribute": 2,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
@@ -5509,7 +5509,7 @@
                             "global_": {
                               "kind": 2,
                               "attribute": 2,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
@@ -5993,7 +5993,7 @@
                             "global_": {
                               "kind": 2,
                               "attribute": 2,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
@@ -6477,7 +6477,7 @@
                             "global_": {
                               "kind": 2,
                               "attribute": 2,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
@@ -6961,7 +6961,7 @@
                             "global_": {
                               "kind": 2,
                               "attribute": 2,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
@@ -7445,7 +7445,7 @@
                             "global_": {
                               "kind": 2,
                               "attribute": 2,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
@@ -7937,7 +7937,7 @@
                             "global_": {
                               "kind": 2,
                               "attribute": 2,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {

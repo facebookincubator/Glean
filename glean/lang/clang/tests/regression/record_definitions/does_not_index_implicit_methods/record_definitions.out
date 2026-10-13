@@ -185,7 +185,7 @@
                     }
                   }
                 },
-                "type": { "key": "struct A" },
+                "type": { "key": "A" },
                 "kind": { "field": { "mutable_": false } },
                 "source": {
                   "file": { "key": "test.cpp" },

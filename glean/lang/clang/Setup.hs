@@ -30,25 +30,13 @@ import System.Environment
 uncheckedHsFFIDefines :: [String]
 uncheckedHsFFIDefines = ["__STDC_LIMIT_MACROS"]
 
+-- Supported LLVM major versions, in order of preference.
 llvmVersions :: [Version]
-llvmVersions = map mkVersion $ concat
-  [ concat
-    [ [ [a, b, c]
-      | c <- versions_c
-      ] ++ [[a, b]]
-    | b <- versions_b
-    ] ++ [[a]]
-  | a <- versions_a
-  ]
+llvmVersions = map mkVersion [[17], [15]]
 
-  where versions_a = [15]
-        versions_b = [0]
-        versions_c = [7]
-
--- Ordered by decreasing specificty so we will prefer llvm-config-9.0
--- over llvm-config-9 over llvm-config.
+-- Prefer llvm-config-17 over llvm-config-15 over llvm-config.
 llvmConfigNames :: [String]
-llvmConfigNames = reverse versionedConfigs ++ ["llvm-config"]
+llvmConfigNames = versionedConfigs ++ ["llvm-config"]
   where
     versionedConfigs =
       map
@@ -81,7 +69,8 @@ getLLVMConfig confFlags = do
                      (configPrograms confFlags)
   return $ getProgramOutput verbosity program
 
-  where llvmVersionsRange = foldr1 unionVersionRanges [ thisVersion v | v <- llvmVersions ]
+  where llvmVersionsRange = foldr1 unionVersionRanges
+          [ withinVersion v | v <- llvmVersions ]
 
 addToLdLibraryPath :: String -> IO ()
 addToLdLibraryPath path = do

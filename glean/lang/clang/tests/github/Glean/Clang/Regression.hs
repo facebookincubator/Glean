@@ -26,4 +26,10 @@ main = getArgs >>= \args ->
       , "xrefs/coro1"             -- Needs Clang 15
       , "xrefs/using-directive4"  -- Needs Clang 15
       , "index_failure/cpp"
+        -- golden outputs are from Clang 17, which differ from 15
+      , "declarations/var1"
+      , "record_definitions/class1"
+      , "record_definitions/does_not_index_implicit_methods"
+      , "xrefs/template-member-var1"
+      , "xrefs/var1"
       ]

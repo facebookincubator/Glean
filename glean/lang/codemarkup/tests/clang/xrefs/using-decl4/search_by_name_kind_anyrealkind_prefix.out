@@ -109,7 +109,7 @@
                     },
                     "signature": {
                       "key": {
-                        "returns": { "key": "Foo::Bar" },
+                        "returns": { "key": "N1::N2::Foo::Bar" },
                         "parameters": [
                           {
                             "name": { "key": "" },

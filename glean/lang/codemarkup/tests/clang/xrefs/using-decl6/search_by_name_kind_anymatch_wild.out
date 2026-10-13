@@ -292,7 +292,7 @@
                               }
                             }
                           },
-                          "type": { "key": "N2::Bar<Foo>" },
+                          "type": { "key": "Bar<N1::Foo>" },
                           "kind": {
                             "global_": {
                               "kind": 0,
@@ -489,7 +489,7 @@
                     }
                   }
                 },
-                "type": { "key": "N2::Bar<Foo>" },
+                "type": { "key": "Bar<N1::Foo>" },
                 "kind": {
                   "global_": { "kind": 0, "attribute": 0, "definition": true }
                 },
