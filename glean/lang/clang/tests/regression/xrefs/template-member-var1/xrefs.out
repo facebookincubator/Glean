@@ -30,31 +30,6 @@
           }
         },
         {
-          "range": { "begin": 398, "end": 399 },
-          "target": {
-            "declaration": {
-              "record_": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "A" },
-                      "scope": { "global_": { } }
-                    }
-                  },
-                  "kind": { "struct_": { } },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 11,
-                    "columnBegin": 22,
-                    "lineEnd": 15,
-                    "columnEnd": 1
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
           "range": { "begin": 473, "end": 474 },
           "target": {
             "declaration": {

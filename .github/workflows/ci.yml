@@ -129,7 +129,7 @@ jobs:
       - if: matrix.compiler == 'clang'
         name: Setup Clang
         run: |
-          export VER=17
+          export VER=19
           apt-get install -y clang-$VER
           apt-get remove -y gcc g++
           apt-get autoremove -y
@@ -194,7 +194,7 @@ jobs:
         run: make glass
 
       - name: Install glean-clang dependencies
-        run: apt-get install -y clang-17 libclang-17-dev libclang-cpp17-dev libre2-dev
+        run: apt-get install -y clang-19 libclang-19-dev libclang-cpp19-dev libre2-dev
 
       - name: Build glean-clang
         run: make glean-clang

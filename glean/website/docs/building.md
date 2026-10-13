@@ -88,7 +88,7 @@ sudo apt-get install \
 Additionally if you want to build the C++ indexer:
 
 ```
-apt install clang-17 libclang-17-dev libclang-cpp17-dev libre2-dev
+apt install clang-19 libclang-19-dev libclang-cpp19-dev libre2-dev
 ```
 
 ### Debian

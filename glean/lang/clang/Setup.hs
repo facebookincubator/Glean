@@ -32,9 +32,9 @@ uncheckedHsFFIDefines = ["__STDC_LIMIT_MACROS"]
 
 -- Supported LLVM major versions, in order of preference.
 llvmVersions :: [Version]
-llvmVersions = map mkVersion [[17], [15]]
+llvmVersions = map mkVersion [[19]]
 
--- Prefer llvm-config-17 over llvm-config-15 over llvm-config.
+-- Prefer llvm-config-19 over llvm-config.
 llvmConfigNames :: [String]
 llvmConfigNames = versionedConfigs ++ ["llvm-config"]
   where
