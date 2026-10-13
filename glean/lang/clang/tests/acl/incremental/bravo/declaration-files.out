@@ -1,1 +1,9 @@
-[ "@generated", "either/either.cpp", "public/public.cpp", "public/public.cpp" ]
+[
+  "@generated",
+  "alpha/tented.h",
+  "either/either.cpp",
+  "public/includes_tented.cpp",
+  "public/public.cpp",
+  "public/public.cpp",
+  "public/shared_caller.cpp"
+]

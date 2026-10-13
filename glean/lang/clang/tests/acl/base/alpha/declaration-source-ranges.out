@@ -8,14 +8,32 @@
   },
   {
     "key": {
+      "tuplefield0": "acl_alpha_shared_caller",
+      "tuplefield1": "alpha/shared_caller.cpp"
+    }
+  },
+  {
+    "key": {
       "tuplefield0": "acl_either_marker",
       "tuplefield1": "either/either.cpp"
     }
   },
   {
     "key": {
+      "tuplefield0": "acl_public_includes_tented",
+      "tuplefield1": "public/includes_tented.cpp"
+    }
+  },
+  {
+    "key": {
       "tuplefield0": "acl_public_marker",
       "tuplefield1": "public/public.cpp"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": "acl_public_shared_caller",
+      "tuplefield1": "public/shared_caller.cpp"
     }
   },
   {
@@ -28,6 +46,24 @@
     "key": {
       "tuplefield0": "acl_public_target",
       "tuplefield1": "public/public.cpp"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": "acl_shared_function",
+      "tuplefield1": "public/shared.h"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": "acl_tented_header_function",
+      "tuplefield1": "alpha/tented.h"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": "acl_tented_shared_header_function",
+      "tuplefield1": "alpha/tented_shared.h"
     }
   }
 ]

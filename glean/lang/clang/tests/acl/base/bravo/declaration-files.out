@@ -1,8 +1,11 @@
 [
   "@generated",
+  "alpha/tented.h",
   "bravo/bravo.cpp",
   "bravo/bravo.cpp",
   "either/either.cpp",
+  "public/includes_tented.cpp",
   "public/public.cpp",
-  "public/public.cpp"
+  "public/public.cpp",
+  "public/shared_caller.cpp"
 ]

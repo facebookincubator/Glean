@@ -1,12 +1,18 @@
 [
   "@generated",
   "alpha/bravo/nested.cpp",
+  "alpha/shared_caller.cpp",
+  "alpha/tented.h",
+  "alpha/tented_shared.h",
   "alpha/xref.cpp",
   "alpha/xref.cpp",
   "alpha/xref.cpp",
   "bravo/bravo.cpp",
   "bravo/bravo.cpp",
   "either/either.cpp",
+  "public/includes_tented.cpp",
   "public/public.cpp",
-  "public/public.cpp"
+  "public/public.cpp",
+  "public/shared.h",
+  "public/shared_caller.cpp"
 ]
