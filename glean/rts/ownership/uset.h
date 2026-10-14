@@ -531,11 +531,14 @@ struct UsetsMerge {
   explicit UsetsMerge(Usets& usets_) : usets(usets_) {}
 
   /** Queue `uset` for later merging into factId's ownership set.
-   *  Bumps uset's ref count to keep it alive while queued. */
-  void addUset(Id factId, Uset* uset) {
-    refs[factId].push_back(uset);
+   *  Bumps uset's ref count to keep it alive while queued.
+   *  Returns true if nothing was queued for factId before. */
+  bool addUset(Id factId, Uset* uset) {
+    auto [it, inserted] = refs.try_emplace(factId);
+    it->second.push_back(uset);
     usets.use(uset);
     usets_count += 1;
+    return inserted;
   }
 
   /** Merge all queued sets for factId (plus `uset` if non-null)

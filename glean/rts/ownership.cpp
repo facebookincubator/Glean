@@ -225,9 +225,9 @@ collectUsets(uint32_t firstUsetId, TrieArray<Uset>& utrie) {
  *  when the reverse iterator reaches the fact.  If the pending queue
  *  exceeds 1 GB, an early flush merges everything queued so far.
  *
- *  For stacked DBs, referenced facts in the base DB (id < min_id) are
- *  tracked in `sparse`; their final set is OR'd with the base DB's
- *  existing owner to form (set || base_owner).
+ *  For stacked DBs, base-DB facts (id < min_id) with claimed or queued sets
+ *  are processed next, highest ID first, and their final set is OR'd with
+ *  the base DB's existing owner to form (set || base_owner).
  *
  *  On completion, every fact whose set was materialised has been
  *  promoted (assigned a persistent UsetId in `usets`).
@@ -305,6 +305,10 @@ FOLLY_NOINLINE void completeOwnership(
     }
   };
 
+  // Base-DB facts for Phase 2. processFact pushes each base fact it starts
+  // queuing sets for.
+  std::priority_queue<Id> order;
+
   auto processFact = [&, min_id](Fact::Ref fact) {
     // `set == nullptr` means that the fact doesn't have an ownership set - we
     // might want to make that an error eventually?
@@ -336,7 +340,10 @@ FOLLY_NOINLINE void completeOwnership(
       predicate->traverse(tracker, fact.clause);
 
       for (const auto ref : refs) {
-        usetsMerge.addUset(ref, set);
+        const bool newlyQueued = usetsMerge.addUset(ref, set);
+        if (newlyQueued && ref < min_id) {
+          order.push(ref);
+        }
 
         // Memory pressure relief: if the deferred-merge queue exceeds
         // 1 GB, flush it now by merging all pending facts eagerly.
@@ -431,14 +438,8 @@ FOLLY_NOINLINE void completeOwnership(
   // Process base facts with ownership in `sparse` or deferred in UsetsMerge
   // in descending ID order, following their references deeper into the base.
   // Duplicates are skipped via `prev`.
-  std::priority_queue<Id> order;
   for (auto [id, uset] : sparse) {
     order.push(Id::fromWord(id));
-  }
-  for (const auto id : usetsMerge.factIds()) {
-    if (id < min_id) {
-      order.push(id);
-    }
   }
   Id prev = Id::invalid();
   for (; !order.empty(); order.pop()) {
@@ -451,10 +452,6 @@ FOLLY_NOINLINE void completeOwnership(
     base_lookup->factById(id, [&](Pid type, Fact::Clause clause) {
       stats.bumpBase();
       processFact({id, type, clause});
-      // Any base-DB facts referenced by this one also need processing
-      for (const auto ref : refs) {
-        order.push(ref);
-      }
       refs.clear();
     });
   }

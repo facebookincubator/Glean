@@ -570,8 +570,11 @@ stackedIncrementalTest2 settings = TestCase $
     nodesAre "1n" inc3 ["c","d"]
     pairsAre "1p" inc3 [("c","d"),("d","c")]
 
-queuedBaseOwnershipTest :: [Setting] -> Test
-queuedBaseOwnershipTest settings = TestCase $
+-- | Layer unit "L" references a base fact, so that fact and the base fact it
+-- references must be owned by "L" too. `claimant` is a layer unit that also
+-- claims the referenced base fact.
+queuedBaseOwnershipTest :: Maybe ByteString -> [Setting] -> Test
+queuedBaseOwnershipTest claimant settings = TestCase $
   withTestEnv settings $ \env -> do
     let base = Repo "queued-base" "0"
         layer = Repo "queued-base" "1"
@@ -584,7 +587,7 @@ queuedBaseOwnershipTest settings = TestCase $
     void $ incrementalDB env base layer []
     writeFactsIntoDB env layer [Glean.Test.allPredicates] $ do
       node <- makeFact @Glean.Test.Node (Glean.Test.Node_key "base")
-      ref <- makeFact @Glean.Test.NodeRef $
+      ref <- maybe id withUnit claimant $ makeFact @Glean.Test.NodeRef $
         Glean.Test.NodeRef_key "base-ref" node
       withUnit "L" $ forM_ ["layer-ref", "second-layer-ref"] $ \label ->
         makeFact_ @Glean.Test.NodeRef2 (Glean.Test.NodeRef2_key label ref)
@@ -597,7 +600,8 @@ queuedBaseOwnershipTest settings = TestCase $
     forM_ (map (idOf . getId) nodes <> map (idOf . getId) refs) $ \fid -> do
       owner <- factOwnership env layer fid
       assertEqual ("layer ownership reaches base fact " <> show fid)
-        (Just ["B", "L"]) (sort . allUnits <$> owner)
+        (Just $ sort $ ["B", "L"] <> maybe [] pure claimant)
+        (sort . allUnits <$> owner)
 
 -- tickled a bug in the storage of ownership information
 dupSetTest :: [Setting] -> Test
@@ -1067,7 +1071,10 @@ main_ = withUnitTest $ testRunner $ TestList
   , TestLabel "sharedOwnerCompactionTest" $
       backends sharedOwnerCompactionTest
   , TestLabel "dupSetTest" $ backends dupSetTest
-  , TestLabel "queuedBaseOwnershipTest" $ backends queuedBaseOwnershipTest
+  , TestLabel "queuedBaseOwnershipTest" $
+      backends (queuedBaseOwnershipTest Nothing)
+  , TestLabel "claimedQueuedBaseOwnershipTest" $
+      backends (queuedBaseOwnershipTest (Just "L2"))
   , TestLabel "orphanTest" $ backends orphanTest
   , TestLabel "deriveTest" $ backends deriveTest
   , TestLabel "externalDerivationTest" $ backends externalDerivationTest

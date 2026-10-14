@@ -123,12 +123,14 @@ For each fact F (visited in reverse order):
 The deferred merge queue is bounded: when it exceeds 1 GB, all pending
 merges are flushed eagerly (the "early merge" path).
 
-For **stacked DBs**, referenced facts in the base DB (id < min_id) are
+For **stacked DBs**, the sets of facts in the base DB (id < min_id) are
 tracked in a sparse map. Their final set is OR'd with the base DB's
 existing owner: `owner(F) = set || base_owner`.
 
 After processing all local facts, a second pass propagates ownership
-through base-DB facts using a priority queue (max-heap).
+through base-DB facts using a priority queue (max-heap). It holds the base
+facts that units claim and every base fact that `processFact` queues a set
+for.
 
 Output: the `Usets` store now contains all promoted sets, and a
 `factOwners` interval map records each fact's `UsetId`.
