@@ -428,13 +428,17 @@ FOLLY_NOINLINE void completeOwnership(
 
   // --- Phase 2: propagate into base DB(s) ---
   //
-  // Local facts may reference base-DB facts.  Phase 1 queued ownership
-  // sets for those via `sparse`.  Now we process them in descending ID
-  // order (max-heap), recursively following their own references deeper
-  // into the base.  Duplicates are skipped via `prev`.
+  // Process base facts with ownership in `sparse` or deferred in UsetsMerge
+  // in descending ID order, following their references deeper into the base.
+  // Duplicates are skipped via `prev`.
   std::priority_queue<Id> order;
   for (auto [id, uset] : sparse) {
     order.push(Id::fromWord(id));
+  }
+  for (const auto id : usetsMerge.factIds()) {
+    if (id < min_id) {
+      order.push(id);
+    }
   }
   Id prev = Id::invalid();
   for (; !order.empty(); order.pop()) {

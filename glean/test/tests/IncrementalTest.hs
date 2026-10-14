@@ -570,6 +570,35 @@ stackedIncrementalTest2 settings = TestCase $
     nodesAre "1n" inc3 ["c","d"]
     pairsAre "1p" inc3 [("c","d"),("d","c")]
 
+queuedBaseOwnershipTest :: [Setting] -> Test
+queuedBaseOwnershipTest settings = TestCase $
+  withTestEnv settings $ \env -> do
+    let base = Repo "queued-base" "0"
+        layer = Repo "queued-base" "1"
+    kickOffTestDB env base id
+    writeFactsIntoDB env base [Glean.Test.allPredicates] $ withUnit "B" $ do
+      node <- makeFact @Glean.Test.Node (Glean.Test.Node_key "base")
+      makeFact_ @Glean.Test.NodeRef (Glean.Test.NodeRef_key "base-ref" node)
+    completeTestDB env base
+
+    void $ incrementalDB env base layer []
+    writeFactsIntoDB env layer [Glean.Test.allPredicates] $ do
+      node <- makeFact @Glean.Test.Node (Glean.Test.Node_key "base")
+      ref <- makeFact @Glean.Test.NodeRef $
+        Glean.Test.NodeRef_key "base-ref" node
+      withUnit "L" $ forM_ ["layer-ref", "second-layer-ref"] $ \label ->
+        makeFact_ @Glean.Test.NodeRef2 (Glean.Test.NodeRef2_key label ref)
+    completeTestDB env layer
+
+    nodes <- runQuery_ env layer $ query $ predicate @Glean.Test.Node wild
+    refs <- runQuery_ env layer $ query $ predicate @Glean.Test.NodeRef wild
+    assertEqual "base node is reused" 1 (length nodes)
+    assertEqual "base reference is reused" 1 (length refs)
+    forM_ (map (idOf . getId) nodes <> map (idOf . getId) refs) $ \fid -> do
+      owner <- factOwnership env layer fid
+      assertEqual ("layer ownership reaches base fact " <> show fid)
+        (Just ["B", "L"]) (sort . allUnits <$> owner)
+
 -- tickled a bug in the storage of ownership information
 dupSetTest :: [Setting] -> Test
 dupSetTest settings = TestCase $
@@ -1038,6 +1067,7 @@ main_ = withUnitTest $ testRunner $ TestList
   , TestLabel "sharedOwnerCompactionTest" $
       backends sharedOwnerCompactionTest
   , TestLabel "dupSetTest" $ backends dupSetTest
+  , TestLabel "queuedBaseOwnershipTest" $ backends queuedBaseOwnershipTest
   , TestLabel "orphanTest" $ backends orphanTest
   , TestLabel "deriveTest" $ backends deriveTest
   , TestLabel "externalDerivationTest" $ backends externalDerivationTest
