@@ -745,6 +745,32 @@ openNewestTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   assertBool "don't open broken" dontOpenBroken
   assertBool "open not broken" openNotBroken
 
+-- | With janitor_open_latest_dbs = false, the newest DB is neither
+-- pre-opened nor exempt from closing when idle.
+dontKeepNewestOpenTest :: Test
+dontKeepNewestOpenTest =
+  TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
+  let cfg = dbConfig dbdir $ (serverConfig backupdir)
+        { config_close = def { databaseClosePolicy_close_after = 0 }
+        , config_janitor_open_latest_dbs = False
+        }
+
+  withDatabases evb cfg cfgAPI $ \env -> do
+
+  let newestDb = Repo "test" "0001"
+
+  runDatabaseJanitor env
+  notPreOpened <- atomically $ isDatabaseClosed env newestDb
+  assertBool "newest not opened by the janitor" notPreOpened
+
+  withOpenDatabase env newestDb (\_ -> return ())
+  openAfterUse <- atomically $ not <$> isDatabaseClosed env newestDb
+  assertBool "newest open after use" openAfterUse
+
+  runDatabaseJanitor env
+  closedWhenIdle <- atomically $ isDatabaseClosed env newestDb
+  assertBool "newest closed when idle" closedWhenIdle
+
 closeIdleDBsTest :: Test
 closeIdleDBsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   let cfg = dbConfig dbdir $ serverConfig backupdir
@@ -1084,6 +1110,7 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "retainPerDayWithDeleteIfOlder" retainPerDayWithDeleteIfOlderTest
   , TestLabel "backupRestore" backupRestoreTest
   , TestLabel "openNewestDB" openNewestTest
+  , TestLabel "dontKeepNewestOpen" dontKeepNewestOpenTest
   , TestLabel "closeIdleDBs" closeIdleDBsTest
   , TestLabel "expireDelay" expireTest
   , TestLabel "sharding" shardingTest

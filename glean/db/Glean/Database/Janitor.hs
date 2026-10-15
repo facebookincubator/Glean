@@ -249,11 +249,13 @@ runWithShards env myShards sm = do
 
   -- Open the most recent local, complete DB for each repo in order
   -- to avoid lag spikes. This will be the DB that clients will get
-  -- by default unless they specify a particular DB instance.
+  -- by default unless they specify a particular DB instance. Disabled
+  -- by janitor_open_latest_dbs = false (e.g. on write servers).
   let
       toOpen = uniqBy (comparing itemRepo) $
         [ item
-        | (_, dbsByAge) <- byRepoName
+        | config_janitor_open_latest_dbs
+        , (_, dbsByAge) <- byRepoName
         , item : _ <- [filter shouldOpen (NonEmpty.toList dbsByAge)]
         ] <>
         [ item
