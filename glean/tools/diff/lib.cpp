@@ -22,7 +22,6 @@
 #include "glean/rts/binary.h"
 #include "glean/rts/inventory.h"
 #include "glean/rts/lookup.h"
-#include "glean/rts/stacked.h"
 
 #include <atomic>
 #include <future>
