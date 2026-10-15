@@ -55,6 +55,83 @@ inline T fromBytes(const folly::ByteRange slice) {
   return x;
 }
 
+/**
+ * The owner sets stored in a DB, for adding new ones. New sets take their
+ * IDs from the DB's ID counter, which they share with units. Must only be
+ * used under the write lock.
+ */
+template <typename C>
+class OwnerSets {
+ public:
+  using Writer = typename C::Writer;
+
+  /** `next` is the DB's ID counter and `stored` the sets already in the DB. */
+  OwnerSets(UsetId& next, StoredUsets stored)
+      : next_(next), stored_(std::move(stored)) {}
+
+  /** The ID of the stored set equal to `uset`, or INVALID_USET. */
+  UsetId find(Uset* uset) const {
+    const auto existing = stored_.lookup(uset);
+    return existing ? existing->id : INVALID_USET;
+  }
+
+  /** The ID of the stored set equal to `set`. If there is none, writes `set`
+   *  under the next ID. */
+  UsetId intern(SetExpr<SetU32> set, Writer& writer) {
+    auto [stored, added] = stored_.add(
+        std::make_unique<Uset>(std::move(set.set), set.op, 0), next_);
+    if (added) {
+      ++next_;
+      auto serialized = stored->toEliasFano(next_);
+      putSet(writer, stored->id, serialized.op, serialized.set);
+      serialized.set.free();
+      putNextId(writer);
+    }
+    return stored->id;
+  }
+
+  /** Writes `sets`, which were numbered from the counter's value or above
+   *  when they were computed. */
+  void commit(Usets&& sets, Writer& writer) {
+    UsetId id = sets.getFirstId();
+    if (id < next_) {
+      rts::error("can't store sets from {}: IDs up to {} are taken", id, next_);
+    }
+    const auto upper = static_cast<UsetId>(id + sets.size());
+    for (auto& serialized : sets.toEliasFano(upper)) {
+      if ((id % 1000000) == 0) {
+        VLOG(1) << "storeOwnership: " << id;
+      }
+      putSet(writer, id++, serialized.op, serialized.set);
+      serialized.set.free();
+    }
+    VLOG(1) << "storeOwnership: writing sets (" << sets.size() << ")";
+    next_ = upper;
+    putNextId(writer);
+    stored_.add(std::move(sets));
+  }
+
+ private:
+  /** Serialize one ownership set (op + Elias-Fano payload) into the
+   *  ownershipSets column family keyed by its UsetId. */
+  static void putSet(Writer& writer, UsetId id, SetOp op, const OwnerSet& set) {
+    binary::Output key;
+    key.nat(id);
+    binary::Output value;
+    value.nat(op);
+    serializeEliasFano(value, set);
+    writer.put(C::Family::ownershipSets, key.bytes(), value.bytes());
+  }
+
+  void putNextId(Writer& writer) const {
+    writer.put(
+        C::Family::admin, bytesOf(AdminId::NEXT_UNIT_ID), bytesOf(next_));
+  }
+
+  UsetId& next_;
+  StoredUsets stored_;
+};
+
 ///
 /// Common operations for DB implementations abstracted over
 /// the ContainerImpl class, which must provide:
@@ -88,10 +165,9 @@ struct DatabaseCommon : Database {
   std::vector<size_t> ownership_unit_counters;
   folly::F14FastMap<uint64_t, size_t> ownership_derived_counters;
 
-  /** In-memory cache of promoted sets, used during writes to
-   *  deduplicate and look up existing sets. Must only be accessed
-   *  under the write lock. */
-  std::unique_ptr<rts::StoredUsets> usets_;
+  /** The stored owner sets, used during writes to deduplicate and add
+   *  sets. Must only be accessed under the write lock. */
+  std::unique_ptr<OwnerSets<C>> usets_;
 
   std::vector<size_t> loadOwnershipUnitCounters();
   folly::F14FastMap<uint64_t, size_t> loadOwnershipDerivedCounters();
@@ -99,7 +175,7 @@ struct DatabaseCommon : Database {
   std::unique_ptr<rts::OwnershipSetIterator> getSetIterator(
       DatabaseCommon<C>& db);
 
-  std::unique_ptr<rts::StoredUsets> loadOwnershipSets();
+  std::unique_ptr<OwnerSets<C>> loadOwnershipSets();
 
   folly::Optional<uint32_t> getUnitId(folly::ByteRange unit) override;
   folly::Optional<std::string> getUnit(uint32_t unit_id) override;
@@ -158,7 +234,7 @@ struct DatabaseCommon : Database {
 
   /** Persist derived-fact ownership. Rebases set IDs from the
    *  DefineOwnership's local namespace into the DB's global namespace
-   *  via a substitution map, promoting new sets one at a time. */
+   *  via a substitution map, interning new sets one at a time. */
   void addDefineOwnership(DefineOwnership& def) override;
 
   rts::UsetId getOwner(Id id) override;
@@ -429,7 +505,7 @@ std::unique_ptr<rts::OwnershipSetIterator> DatabaseCommon<C>::getSetIterator(
 }
 
 template <typename C>
-std::unique_ptr<StoredUsets> DatabaseCommon<C>::loadOwnershipSets() {
+std::unique_ptr<OwnerSets<C>> DatabaseCommon<C>::loadOwnershipSets() {
   auto t = makeAutoTimer("loadOwnershipSets");
 
   auto iter = getSetIterator(*this);
@@ -437,7 +513,7 @@ std::unique_ptr<StoredUsets> DatabaseCommon<C>::loadOwnershipSets() {
   auto first = pair.first;
   auto size = pair.second;
 
-  auto usets = std::make_unique<StoredUsets>();
+  StoredUsets usets;
 
   while (const auto iterPair = iter->get()) {
     auto set = SetU32::fromEliasFano(*iterPair->second.set);
@@ -451,14 +527,14 @@ std::unique_ptr<StoredUsets> DatabaseCommon<C>::loadOwnershipSets() {
             size);
       }
     });
-    usets->add(std::make_unique<Uset>(std::move(set), 0), iterPair->first);
+    usets.add(std::make_unique<Uset>(std::move(set), 0), iterPair->first);
   }
-  auto stats = usets->statistics();
+  auto stats = usets.statistics();
 
   LOG(INFO) << "loadOwnershipSets loaded " << stats.adds << " sets, "
             << stats.bytes << " bytes";
 
-  return usets;
+  return std::make_unique<OwnerSets<C>>(next_uset_id, std::move(usets));
 }
 
 template <typename C>
@@ -749,27 +825,6 @@ DatabaseCommon<C>::getOwnershipUnitIterator() {
   return std::make_unique<UnitIterator>(container_);
 }
 
-namespace {
-
-/** Serialize one ownership set (op + Elias-Fano payload) into the
- *  ownershipSets column family keyed by its UsetId. */
-template <typename C>
-void putOwnerSet(
-    C& /* container */,
-    typename C::Writer& writer,
-    UsetId id,
-    SetOp op,
-    const OwnerSet& set) {
-  binary::Output key;
-  key.nat(id);
-  binary::Output value;
-  value.nat(op);
-  serializeEliasFano(value, set);
-  writer.put(C::Family::ownershipSets, key.bytes(), value.bytes());
-}
-
-} // namespace
-
 template <typename C>
 void DatabaseCommon<C>::storeOwnership(ComputedOwnership& ownership) {
   container_.requireOpen();
@@ -777,33 +832,8 @@ void DatabaseCommon<C>::storeOwnership(ComputedOwnership& ownership) {
   if (ownership.sets_.size() > 0) {
     auto t = makeAutoTimer("storeOwnership(sets)");
     typename C::Writer writer = container_.write();
-
-    auto upper = ownership.sets_.getFirstId() + ownership.sets_.size();
-
-    auto serialized = ownership.sets_.toEliasFano(upper);
-    uint32_t id = ownership.sets_.getFirstId();
-    CHECK_GE(id, next_uset_id);
-
-    for (auto& exp : serialized) {
-      if ((id % 1000000) == 0) {
-        VLOG(1) << "storeOwnership: " << id;
-      }
-      putOwnerSet(container_, writer, id, exp.op, exp.set);
-      exp.set.free();
-      id++;
-    }
-
-    next_uset_id = upper;
-    writer.put(
-        C::Family::admin,
-        bytesOf(AdminId::NEXT_UNIT_ID),
-        bytesOf(next_uset_id));
-
-    VLOG(1) << "storeOwnership: writing sets (" << ownership.sets_.size()
-            << ")";
+    usets_->commit(std::move(ownership.sets_), writer);
     writer.commit();
-
-    usets_->add(std::move(ownership.sets_));
   }
 
   if (ownership.facts_.size() > 0) {
@@ -863,7 +893,7 @@ void DatabaseCommon<C>::addDefineOwnership(DefineOwnership& def) {
     };
 
     typename C::Writer writer = container_.write();
-    size_t numNewSets = 0;
+    const auto firstNewId = next_uset_id;
 
     for (auto uset : def.newSets_) {
       std::set<UsetId> s;
@@ -875,31 +905,15 @@ void DatabaseCommon<C>::addDefineOwnership(DefineOwnership& def) {
         }
         s.insert(newelt);
       });
-      SetU32 set = SetU32::from(s);
 
       auto oldId = uset->id;
-      auto [q, added] = usets_->add(
-          std::make_unique<Uset>(std::move(set), uset->exp.op, 0),
-          next_uset_id);
-      if (added) {
-        next_uset_id++;
-        auto ownerset = q->toEliasFano(next_uset_id);
-        putOwnerSet(container_, writer, q->id, ownerset.op, ownerset.set);
-        ownerset.set.free();
-        numNewSets++;
-      }
-      VLOG(2) << "rebased set " << oldId << " -> " << q->id;
-      substitution[oldId] = q->id;
+      auto id = usets_->intern({uset->exp.op, SetU32::from(s)}, writer);
+      VLOG(2) << "rebased set " << oldId << " -> " << id;
+      substitution[oldId] = id;
     }
 
-    if (numNewSets > 0) {
-      writer.put(
-          C::Family::admin,
-          bytesOf(AdminId::NEXT_UNIT_ID),
-          bytesOf(next_uset_id));
-    }
-
-    VLOG(1) << "addDefineOwnership: writing sets (" << numNewSets << ")";
+    VLOG(1) << "addDefineOwnership: writing sets (" << next_uset_id - firstNewId
+            << ")";
     writer.commit();
 
     for (auto& [_, pred] : def.defines_) {
@@ -1269,12 +1283,7 @@ struct StoredOwnership : Ownership {
     if (!db_->usets_) {
       rts::error("rocksdb: lookupSet on read-only DB");
     } else {
-      auto existing = db_->usets_->lookup(uset);
-      if (existing) {
-        return existing->id;
-      } else {
-        return INVALID_USET;
-      }
+      return db_->usets_->find(uset);
     }
   }
 
