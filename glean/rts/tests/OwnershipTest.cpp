@@ -572,6 +572,33 @@ TEST(OwnershipTest, ComputeOwnershipPropagatesOwnersTransitively) {
   EXPECT_EQ(SetU32::to(topOwner->exp.set), (std::set<uint32_t>{2}));
 }
 
+TEST(OwnershipTest, StoredUsetsKeepsTheIdsItIsGiven) {
+  StoredUsets stored;
+
+  const auto [first, firstAdded] =
+      stored.add(std::make_unique<Uset>(SetU32::from({0, 1}), Or, 0), 12);
+  const auto [duplicate, duplicateAdded] =
+      stored.add(std::make_unique<Uset>(SetU32::from({0, 1}), Or, 0), 13);
+
+  EXPECT_TRUE(firstAdded);
+  EXPECT_EQ(first->id, 12u);
+  EXPECT_FALSE(duplicateAdded);
+  EXPECT_EQ(duplicate, first);
+}
+
+TEST(OwnershipTest, StoredUsetsTakesComputedSets) {
+  Usets computed(10);
+  auto* set = computed.add(SetU32::from({0, 1}));
+  computed.promote(set);
+  StoredUsets stored;
+
+  stored.add(std::move(computed));
+
+  Uset probe(SetU32::from({0, 1}), Or, 0);
+  EXPECT_EQ(stored.lookup(&probe), set);
+  EXPECT_EQ(set->id, 10u);
+}
+
 struct SetSerializationTest : testing::Test {};
 
 RC_GTEST_PROP(SetSerializationTest, testSerialization, ()) {

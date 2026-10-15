@@ -91,7 +91,7 @@ struct DatabaseCommon : Database {
   /** In-memory cache of promoted sets, used during writes to
    *  deduplicate and look up existing sets. Must only be accessed
    *  under the write lock. */
-  std::unique_ptr<rts::Usets> usets_;
+  std::unique_ptr<rts::StoredUsets> usets_;
 
   std::vector<size_t> loadOwnershipUnitCounters();
   folly::F14FastMap<uint64_t, size_t> loadOwnershipDerivedCounters();
@@ -99,7 +99,7 @@ struct DatabaseCommon : Database {
   std::unique_ptr<rts::OwnershipSetIterator> getSetIterator(
       DatabaseCommon<C>& db);
 
-  std::unique_ptr<Usets> loadOwnershipSets();
+  std::unique_ptr<rts::StoredUsets> loadOwnershipSets();
 
   folly::Optional<uint32_t> getUnitId(folly::ByteRange unit) override;
   folly::Optional<std::string> getUnit(uint32_t unit_id) override;
@@ -429,7 +429,7 @@ std::unique_ptr<rts::OwnershipSetIterator> DatabaseCommon<C>::getSetIterator(
 }
 
 template <typename C>
-std::unique_ptr<Usets> DatabaseCommon<C>::loadOwnershipSets() {
+std::unique_ptr<StoredUsets> DatabaseCommon<C>::loadOwnershipSets() {
   auto t = makeAutoTimer("loadOwnershipSets");
 
   auto iter = getSetIterator(*this);
@@ -437,7 +437,7 @@ std::unique_ptr<Usets> DatabaseCommon<C>::loadOwnershipSets() {
   auto first = pair.first;
   auto size = pair.second;
 
-  auto usets = std::make_unique<Usets>(first + size);
+  auto usets = std::make_unique<StoredUsets>();
 
   while (const auto iterPair = iter->get()) {
     auto set = SetU32::fromEliasFano(*iterPair->second.set);
@@ -451,8 +451,7 @@ std::unique_ptr<Usets> DatabaseCommon<C>::loadOwnershipSets() {
             size);
       }
     });
-    auto p = usets->add(std::move(set), 0);
-    p->id = iterPair->first;
+    usets->add(std::make_unique<Uset>(std::move(set), 0), iterPair->first);
   }
   auto stats = usets->statistics();
 
@@ -551,9 +550,6 @@ void DatabaseCommon<C>::advanceUnitIds(
     size_t new_count) {
   if (new_count > 0) {
     next_uset_id += new_count;
-    if (usets_ && usets_->size() == 0) {
-      usets_ = std::make_unique<Usets>(next_uset_id);
-    }
     writer.put(
         C::Family::admin,
         bytesOf(AdminId::NEXT_UNIT_ID),
@@ -807,16 +803,8 @@ void DatabaseCommon<C>::storeOwnership(ComputedOwnership& ownership) {
             << ")";
     writer.commit();
 
-    if (usets_->size() == 0) {
-      // If usets_ is empty, then it will not have the correct firstId yet
-      usets_ = std::make_unique<Usets>(ownership.sets_.getFirstId());
-    }
-    usets_->append(std::move(ownership.sets_));
+    usets_->add(std::move(ownership.sets_));
   }
-
-  CHECK(usets_->size() == 0 || usets_->getNextId() == next_uset_id);
-  // TODO: better not add new units after storing sets, we should fail if that
-  // happens
 
   if (ownership.facts_.size() > 0) {
     auto t = makeAutoTimer("storeOwnership(facts)");
@@ -889,16 +877,14 @@ void DatabaseCommon<C>::addDefineOwnership(DefineOwnership& def) {
       });
       SetU32 set = SetU32::from(s);
 
-      auto newUset = std::make_unique<Uset>(std::move(set), uset->exp.op, 0);
-      auto p = newUset.get();
       auto oldId = uset->id;
-      auto q = usets_->add(std::move(newUset));
-      if (p == q) {
-        usets_->promote(p);
-        assert(next_uset_id == p->id);
+      auto [q, added] = usets_->add(
+          std::make_unique<Uset>(std::move(set), uset->exp.op, 0),
+          next_uset_id);
+      if (added) {
         next_uset_id++;
-        auto ownerset = p->toEliasFano(next_uset_id);
-        putOwnerSet(container_, writer, p->id, ownerset.op, ownerset.set);
+        auto ownerset = q->toEliasFano(next_uset_id);
+        putOwnerSet(container_, writer, q->id, ownerset.op, ownerset.set);
         ownerset.set.free();
         numNewSets++;
       }

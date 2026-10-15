@@ -192,6 +192,10 @@ The computed ownership is serialized and persisted by `storeOwnership`:
   - `NEXT_UNIT_ID`: end of the allocated ID range (covers both units
     and promoted sets).
 
+- While the DB is writable, its sets are also kept in a `StoredUsets`,
+  which deduplicates new sets. `StoredUsets` never assigns IDs: new sets
+  take theirs from `NEXT_UNIT_ID`, the DB's only ID counter.
+
 ## Stacked (incremental) DBs
 
 When a stacked DB is created on top of a base DB:

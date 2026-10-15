@@ -316,23 +316,14 @@ struct Usets {
     return nextId;
   }
 
-  /** Merge another Usets container into this one.  The other container
-   *  must be disjoint and its firstId must equal this->nextId (i.e.
-   *  its ID range immediately follows ours).  Ownership of all sets
-   *  is transferred; `other` is left empty. */
-  void append(Usets&& other) {
-    CHECK_EQ(other.firstId, nextId);
-    CHECK_EQ(other.nextId, nextId + other.usets.size());
-    other.foreach([&](Uset* uset) {
-      auto p = add(uset);
-      CHECK(p == uset); // we should have added it
-    });
-    other.usets
-        .clear(); // ownership of the underlying sets has been transferred
-    idIndex_.insert(
-        idIndex_.end(), other.idIndex_.begin(), other.idIndex_.end());
-    other.idIndex_.clear();
-    nextId = other.nextId;
+  /** Pass every set to `f`, which takes ownership, leaving this empty. */
+  template <typename F>
+  void release(F&& f) {
+    for (auto uset : usets) {
+      f(uset);
+    }
+    usets.clear();
+    idIndex_.clear();
   }
 
   using MutableEliasFanoList = SetU32::MutableEliasFanoList;
@@ -348,6 +339,45 @@ struct Usets {
   Stats stats;
   const UsetId firstId;
   UsetId nextId;
+};
+
+/**
+ * The sets stored in a DB, deduplicated by content. Unlike Usets, it never
+ * assigns IDs: each set is added with the ID that the DB gave it.
+ */
+struct StoredUsets {
+  /** The stored set equal to `uset`, or nullptr. */
+  Uset* FOLLY_NULLABLE lookup(Uset* uset) const {
+    return sets_.lookup(uset);
+  }
+
+  /** Store `uset` under `id` unless an equal set is already stored.
+   *  Returns the stored set and whether `uset` was added. */
+  std::pair<Uset*, bool> add(std::unique_ptr<Uset> uset, UsetId id) {
+    auto stored = sets_.add(uset.get());
+    if (stored != uset.get()) {
+      return {stored, false};
+    }
+    uset.release()->id = id;
+    return {stored, true};
+  }
+
+  /** Store every set of `usets`, which must all be promoted and new. */
+  void add(Usets&& usets) {
+    usets.release([&](Uset* uset) {
+      CHECK(uset->promoted());
+      CHECK(sets_.add(uset) == uset);
+    });
+  }
+
+  const Usets::Stats& statistics() const {
+    return sets_.statistics();
+  }
+
+ private:
+  // Only deduplicates. StoredUsets never promotes or drops sets in it, so
+  // their ref counts are unused.
+  Usets sets_{0};
 };
 
 // NOLINTNEXTLINE(facebook-avoid-non-const-global-variables)
