@@ -25,6 +25,7 @@ import Control.Monad
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
 import Data.Char(isAlphaNum)
+import Data.Default (def)
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.List.Extra as L
 import Data.Text (Text)
@@ -111,15 +112,39 @@ extOptions = do
     O.help "allow the binary to exit with a non-zero exit code"
   return Ext{..}
 
--- | Finish decoding parameters from @glean_test@ by
--- performing substitutions on @TEST_*@ variables, and return the
--- 'RunIndexer'.
+-- | Index with an external binary:
+--
+-- 1. Run 'extRunScript' with 'extArgs', after replacing these placeholders
+--    in each argument:
+--
+--    * @${TEST_REPO}@: the DB, e.g. @fbsource.fbthrift/0123abcd@. Despite
+--      the @TEST_@ prefix, this and the other variables are set for every
+--      caller, not only tests.
+--    * @${TEST_REPO_NAME}@ and @${TEST_REPO_HASH}@: its two halves.
+--    * @${TEST_ROOT}@: the directory to index.
+--    * @${JSON_BATCH_DIR}@ (only with 'Json'): a fresh directory where the
+--      binary must write its facts as JSON batches, which are then written
+--      to the DB.
+--    * @${GLEAN_SERVER}@ (only with 'Server'): the Glean server the binary
+--      must write its facts to, started for the run when the DB is local.
+--
+--    For example, @--repo=${TEST_REPO_NAME}@ becomes
+--    @--repo=fbsource.fbthrift@.
+--
+-- 2. Derive each stored predicate listed in 'extDerivePredicates' (such as
+--    @python.DeclarationsByFile@), in order, so that later ones can use
+--    earlier ones.
 execExternal :: Ext -> RunIndexer
 execExternal Ext{..} env repo IndexerParams{..} = do index; derive
   where
-  derive = forM_ extDerivePredicates $ \pred ->
-    derivePredicate env repo Nothing Nothing
-      (parseRef pred) Nothing
+  -- Axiom completion computes the ownership that derived facts inherit, which
+  -- ACL-enabled DBs require.
+  derive = unless (null extDerivePredicates) $ do
+    Glean.completePredicates env repo $
+      Glean.CompletePredicates_axiom def
+    forM_ extDerivePredicates $ \pred ->
+      derivePredicate env repo Nothing Nothing
+        (parseRef pred) Nothing
 
   repoName = Text.unpack (Glean.repo_name repo)
   repoHash = Text.unpack (Glean.repo_hash repo)
