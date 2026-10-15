@@ -140,7 +140,7 @@ struct ContainerImpl final : Container {
   ContainerImpl(
       const std::string& path,
       Mode m,
-      bool cache_index_and_filter_blocks,
+      const ContainerOptions& container_options,
       folly::Optional<std::shared_ptr<Cache>> cache);
 
   ContainerImpl(const ContainerImpl&) = delete;

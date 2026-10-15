@@ -54,12 +54,14 @@ const char* glean_rocksdb_container_open(
     if (cache) {
       cache_ptr = cache->value;
     }
-    *container = rocks::open(
-                     path,
-                     static_cast<rocks::Mode>(mode),
-                     cache_index_and_filter_blocks,
-                     std::move(cache_ptr))
-                     .release();
+    *container =
+        rocks::open(
+            path,
+            static_cast<rocks::Mode>(mode),
+            rocks::ContainerOptions{
+                .cache_index_and_filter_blocks = cache_index_and_filter_blocks},
+            std::move(cache_ptr))
+            .release();
   });
 }
 

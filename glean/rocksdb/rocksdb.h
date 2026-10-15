@@ -36,10 +36,15 @@ using Cache = ::rocksdb::Cache;
 std::shared_ptr<Cache> newCache(size_t capacity);
 size_t getCacheCapacity(const std::shared_ptr<Cache>& cache);
 
+/// RocksDB tuning applied when opening a container.
+struct ContainerOptions {
+  bool cache_index_and_filter_blocks = false;
+};
+
 std::unique_ptr<Container> open(
     const std::string& path,
     Mode mode,
-    bool cache_index_and_filter_blocks,
+    const ContainerOptions& container_options,
     folly::Optional<std::shared_ptr<Cache>> cache);
 
 void restore(const std::string& target, const std::string& source);

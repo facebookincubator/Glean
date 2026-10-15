@@ -129,7 +129,7 @@ void exportStatistics(std::shared_ptr<rocksdb::Statistics> stats) {}
 ContainerImpl::ContainerImpl(
     const std::string& path,
     Mode m,
-    bool cache_index_and_filter_blocks,
+    const ContainerOptions& container_options,
     folly::Optional<std::shared_ptr<Cache>> cache) {
   mode = m;
 
@@ -152,7 +152,7 @@ ContainerImpl::ContainerImpl(
     table_options.filter_policy.reset(rocksdb::NewBloomFilterPolicy(10, false));
     table_options.whole_key_filtering = true;
 
-    if (cache_index_and_filter_blocks) {
+    if (container_options.cache_index_and_filter_blocks) {
       table_options.cache_index_and_filter_blocks = true;
       table_options.cache_index_and_filter_blocks_with_high_priority = true;
       table_options.pin_l0_filter_and_index_blocks_in_cache = true;

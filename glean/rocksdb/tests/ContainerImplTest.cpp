@@ -94,10 +94,7 @@ class ContainerImplTest : public ::testing::Test {
   void SetUp() override {
     tmpDir_ = std::make_unique<folly::test::TemporaryDirectory>();
     container_ = std::make_unique<ContainerImpl>(
-        dbPath(),
-        Mode::Create,
-        /*cache_index_and_filter_blocks=*/false,
-        folly::none);
+        dbPath(), Mode::Create, ContainerOptions{}, folly::none);
   }
 
   std::string dbPath() const {
@@ -149,10 +146,7 @@ TEST_F(ContainerImplTest, DataPersistsAfterReopeningReadOnly) {
   container_.reset();
 
   ContainerImpl reopened(
-      dbPath(),
-      Mode::ReadOnly,
-      /*cache_index_and_filter_blocks=*/false,
-      folly::none);
+      dbPath(), Mode::ReadOnly, ContainerOptions{}, folly::none);
   const auto v = readMeta(reopened, "persisted");
   ASSERT_TRUE(v.has_value());
   EXPECT_EQ(*v, "value");
@@ -164,17 +158,11 @@ TEST_F(ContainerImplTest, CreateRefusesToOverwriteExistingDatabase) {
 
   EXPECT_THROW(
       std::make_unique<ContainerImpl>(
-          dbPath(),
-          Mode::Create,
-          /*cache_index_and_filter_blocks=*/false,
-          folly::none),
+          dbPath(), Mode::Create, ContainerOptions{}, folly::none),
       std::runtime_error);
 
   ContainerImpl reopened(
-      dbPath(),
-      Mode::ReadOnly,
-      /*cache_index_and_filter_blocks=*/false,
-      folly::none);
+      dbPath(), Mode::ReadOnly, ContainerOptions{}, folly::none);
   EXPECT_EQ(
       readMeta(reopened, "preserved"), std::optional<std::string>{"value"});
 }
@@ -209,10 +197,7 @@ TEST_F(ContainerImplTest, WritableBackupCapturesUnflushedData) {
   restore(restoredPath, backupPath);
 
   ContainerImpl restored(
-      restoredPath,
-      Mode::ReadOnly,
-      /*cache_index_and_filter_blocks=*/false,
-      folly::none);
+      restoredPath, Mode::ReadOnly, ContainerOptions{}, folly::none);
   const auto v = readMeta(restored, "backed-up");
   ASSERT_TRUE(v.has_value());
   EXPECT_EQ(*v, "value");
@@ -224,18 +209,12 @@ TEST_F(ContainerImplTest, ReadOnlyCheckpointProducesOpenableSnapshot) {
   container_.reset();
 
   ContainerImpl source(
-      dbPath(),
-      Mode::ReadOnly,
-      /*cache_index_and_filter_blocks=*/false,
-      folly::none);
+      dbPath(), Mode::ReadOnly, ContainerOptions{}, folly::none);
   const std::string checkpointPath = tmpDir_->path().string() + "/checkpoint";
   source.checkpoint(checkpointPath);
 
   ContainerImpl checkpoint(
-      checkpointPath,
-      Mode::ReadOnly,
-      /*cache_index_and_filter_blocks=*/false,
-      folly::none);
+      checkpointPath, Mode::ReadOnly, ContainerOptions{}, folly::none);
   const auto v = readMeta(checkpoint, "checkpointed");
   ASSERT_TRUE(v.has_value());
   EXPECT_EQ(*v, "value");
@@ -247,10 +226,7 @@ TEST_F(ContainerImplTest, ReadOnlyOpenSucceedsWhenOldDbLacksBatchDescriptors) {
   removeBatchDescriptorsFamily(dbPath());
 
   ContainerImpl reopened(
-      dbPath(),
-      Mode::ReadOnly,
-      /*cache_index_and_filter_blocks=*/false,
-      folly::none);
+      dbPath(), Mode::ReadOnly, ContainerOptions{}, folly::none);
   const auto v = readMeta(reopened, "old-db");
   ASSERT_TRUE(v.has_value());
   EXPECT_EQ(*v, "value");
@@ -262,10 +238,7 @@ TEST_F(ContainerImplTest, ReadWriteOpenRecreatesMissingBatchDescriptors) {
   removeBatchDescriptorsFamily(dbPath());
 
   ContainerImpl reopened(
-      dbPath(),
-      Mode::ReadWrite,
-      /*cache_index_and_filter_blocks=*/false,
-      folly::none);
+      dbPath(), Mode::ReadWrite, ContainerOptions{}, folly::none);
   {
     auto writer = reopened.write();
     writer.put(Family::batchDescriptors, bytes("batch"), bytes("pending"));

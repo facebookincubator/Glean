@@ -28,10 +28,10 @@ size_t getCacheCapacity(const std::shared_ptr<Cache>& cache) {
 std::unique_ptr<Container> open(
     const std::string& path,
     Mode mode,
-    bool cache_index_and_filter_blocks,
+    const ContainerOptions& container_options,
     folly::Optional<std::shared_ptr<Cache>> cache) {
   return std::make_unique<impl::ContainerImpl>(
-      path, mode, cache_index_and_filter_blocks, std::move(cache));
+      path, mode, container_options, std::move(cache));
 }
 
 } // namespace rocks

@@ -76,7 +76,7 @@ class DatabaseImplTest : public ::testing::Test {
       db::Mode mode,
       rts::Id requestedStartingId,
       int32_t version) const {
-    auto container = open(databasePath(), mode, false, {});
+    auto container = open(databasePath(), mode, ContainerOptions{}, {});
     return std::move(*container).openDatabase(requestedStartingId, 0, version);
   }
 
