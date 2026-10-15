@@ -33,6 +33,7 @@ module Glean.Database.Test
   , completeTestDB
   , withEmptyTestDB
   , writeFactsIntoDB
+  , writeFactsIntoDBWith
   ) where
 
 import Util.STM
@@ -188,10 +189,20 @@ writeFactsIntoDB
   -> [SchemaPredicates]
   -> (forall m. NewFact m => m ())
   -> IO ()
-writeFactsIntoDB env repo allPredicates facts = do
+writeFactsIntoDB env repo allPredicates =
+  writeFactsIntoDBWith env repo allPredicates id
+
+writeFactsIntoDBWith
+  :: Env
+  -> Thrift.Repo
+  -> [SchemaPredicates]
+  -> (Thrift.Batch -> Thrift.Batch)
+  -> (forall m. NewFact m => m ())
+  -> IO ()
+writeFactsIntoDBWith env repo allPredicates update facts = do
   !predicates <- loadPredicates env repo allPredicates
   batch <- buildBatch predicates Nothing facts
-  void $ syncWriteDatabase env repo batch
+  void $ syncWriteDatabase env repo (update batch)
 
 waitUntilComplete :: Env -> Thrift.Repo -> IO ()
 waitUntilComplete Env{..} repo = atomically $ do

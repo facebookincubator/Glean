@@ -13,7 +13,9 @@ import Control.Exception (finally)
 import Control.Monad
 import Data.ByteString (ByteString)
 import Data.Default
+import qualified Data.HashMap.Strict as HashMap
 import Data.List
+import qualified Data.Vector.Storable as Vector
 import Test.HUnit
 import System.Info
 import System.Exit
@@ -603,6 +605,46 @@ queuedBaseOwnershipTest claimant settings = TestCase $
         (Just $ sort $ ["B", "L"] <> maybe [] pure claimant)
         (sort . allUnits <$> owner)
 
+emptyUnitDerivationTest :: [Setting] -> Test
+emptyUnitDerivationTest settings = TestCase $
+  withTestEnv settings $ \env -> do
+    let base = Repo "empty-unit" "0"
+        layer = Repo "empty-unit" "1"
+    kickOffTestDB env base id
+    writeFactsIntoDB env base [Glean.Test.allPredicates] $ do
+      withUnit "A" $
+        makeFact_ @Glean.Test.Node (Glean.Test.Node_key "a")
+      withUnit "B" $
+        makeFact_ @Glean.Test.Node (Glean.Test.Node_key "b")
+    completeTestDB env base
+
+    void $ incrementalDB env base layer []
+    writeFactsIntoDBWith env layer [Glean.Test.allPredicates]
+      (\batch -> batch
+        { batch_owned = HashMap.singleton "E" Vector.empty }) (return ())
+    void $ completePredicates env layer $ CompletePredicates_axiom def
+    writeFactsIntoDB env layer [Glean.Test.allPredicates] $ do
+      a <- makeFact @Glean.Test.Node (Glean.Test.Node_key "a")
+      b <- makeFact @Glean.Test.Node (Glean.Test.Node_key "b")
+      pair <- makeFact @Glean.Test.StringPair $
+        Glean.Test.StringPair_key "a" "b"
+      derivedFrom [idOf (getId a), idOf (getId b)] [pair]
+    void $ completePredicates env layer $ CompletePredicates_derived $
+      CompleteDerivedPredicate $ PredicateRef "glean.test.StringPair" 6
+    completeTestDB env layer
+    closeDatabase env layer
+
+    pairs <- runQuery_ env layer $ query $ predicate @Glean.Test.StringPair wild
+    case pairs of
+      [pair] -> do
+        owner <- factOwnership env layer (idOf $ getId pair)
+        case owner of
+          Just (AndOwners inputs) ->
+            assertEqual "derived owner retains both base inputs"
+              [["A"], ["B"]] (sort $ map (sort . allUnits) inputs)
+          _ -> assertFailure ("expected derived AND owner: " <> show owner)
+      _ -> assertFailure ("expected one derived pair: " <> show pairs)
+
 -- tickled a bug in the storage of ownership information
 dupSetTest :: [Setting] -> Test
 dupSetTest settings = TestCase $
@@ -1075,6 +1117,7 @@ main_ = withUnitTest $ testRunner $ TestList
       backends (queuedBaseOwnershipTest Nothing)
   , TestLabel "claimedQueuedBaseOwnershipTest" $
       backends (queuedBaseOwnershipTest (Just "L2"))
+  , TestLabel "emptyUnitDerivationTest" $ backends emptyUnitDerivationTest
   , TestLabel "orphanTest" $ backends orphanTest
   , TestLabel "deriveTest" $ backends deriveTest
   , TestLabel "externalDerivationTest" $ backends externalDerivationTest

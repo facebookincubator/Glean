@@ -551,6 +551,9 @@ void DatabaseCommon<C>::advanceUnitIds(
     size_t new_count) {
   if (new_count > 0) {
     next_uset_id += new_count;
+    if (usets_ && usets_->size() == 0) {
+      usets_ = std::make_unique<Usets>(next_uset_id);
+    }
     writer.put(
         C::Family::admin,
         bytesOf(AdminId::NEXT_UNIT_ID),
