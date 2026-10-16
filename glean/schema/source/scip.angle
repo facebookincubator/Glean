@@ -166,6 +166,23 @@ predicate DefinitionDocumentation:
     { symbol = Symbol } = Defn; # be careful not to inline to the head
     scip.SymbolDocumentation { Symbol, Docs }
 
+# The text of `SymbolInformation.signature_documentation`: the signature as
+# shown in hover tooltips, e.g. `pub unsafe fn read<T>(src: *const T) -> T`
+predicate SymbolSignature:
+  {
+    symbol: Symbol,
+    signature: Documentation
+  }
+
+predicate DefinitionSignature:
+  {
+    defn: Definition,
+    signature: Documentation
+  }
+  { Defn, Signature } where
+    { symbol = Symbol } = Defn; # be careful not to inline to the head
+    scip.SymbolSignature { Symbol, Signature }
+
 # Symbol kinds from the `Symbol` semantic encoding
 predicate SymbolKind:
   {
