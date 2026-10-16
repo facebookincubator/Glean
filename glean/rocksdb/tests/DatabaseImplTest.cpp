@@ -75,8 +75,9 @@ class DatabaseImplTest : public ::testing::Test {
   std::unique_ptr<db::Database> openDatabase(
       db::Mode mode,
       rts::Id requestedStartingId,
-      int32_t version) const {
-    auto container = open(databasePath(), mode, ContainerOptions{}, {});
+      int32_t version,
+      const ContainerOptions& containerOptions = {}) const {
+    auto container = open(databasePath(), mode, containerOptions, {});
     return std::move(*container).openDatabase(requestedStartingId, 0, version);
   }
 
@@ -247,6 +248,27 @@ TEST_F(DatabaseImplTest, ReopenUsesPersistedBoundsFactsAndStats) {
       startingId() + 1);
   EXPECT_EQ(database_->count(rts::Pid::lowest()), rts::Interval{2});
   EXPECT_EQ(database_->count(rts::Pid::lowest() + 1), rts::Interval{1});
+}
+
+TEST_F(DatabaseImplTest, TunedContainerOptionsWriteAndReopen) {
+  ContainerOptions tuned;
+  tuned.cache_index_and_filter_blocks = true;
+  tuned.background_jobs = 4;
+  database_.reset();
+  temporaryDirectory_ = std::make_unique<folly::test::TemporaryDirectory>();
+  database_ = openDatabase(db::Mode::Create, startingId(), kVersion, tuned);
+
+  commitThreeFacts();
+  database_.reset();
+  database_ = openDatabase(db::Mode::ReadOnly, startingId(), kVersion, tuned);
+
+  EXPECT_EQ(database_->firstFreeId(), startingId() + 3);
+  EXPECT_EQ(
+      database_->idByKey(rts::Pid::lowest(), bytes("alpha-two")),
+      startingId() + 1);
+  EXPECT_EQ(
+      database_->idByKey(rts::Pid::lowest(), bytes("missing")),
+      rts::Id::invalid());
 }
 
 TEST_F(DatabaseImplTest, ReopenRejectsUnexpectedDatabaseVersion) {

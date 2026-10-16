@@ -68,6 +68,7 @@ data RocksDB = RocksDB
   { rocksRoot :: FilePath
   , rocksCache :: Maybe Cache
   , rocksCacheIndexAndFilterBlocks :: Bool
+  , rocksBackgroundJobs :: Int
   , rocksMaxDiskSize :: Maybe Int
     -- ^ virtual limit (bytes) to report capped disk capacities. The limit is
     -- not enforced. It's up to each io usage to check diskspace before writing.
@@ -101,6 +102,7 @@ newStorage root config@ServerConfig.Config{..} = do
     , rocksCache = cache
     , rocksCacheIndexAndFilterBlocks =
         config_db_rocksdb_cache_index_and_filter_blocks
+    , rocksBackgroundJobs = fromIntegral config_db_rocksdb_background_jobs
     , rocksMaxDiskSize = case mem_capacity of
         Just mem -> (* (mem * 1024)) . fromIntegral <$>
           config_db_rocksdb_disk_mem_capacity_ratio_limit
@@ -129,6 +131,7 @@ instance Storage RocksDB where
           glean_rocksdb_container_open cpath
             cmode
             (fromIntegral (fromEnum (rocksCacheIndexAndFilterBlocks rocks)))
+            (fromIntegral (rocksBackgroundJobs rocks))
             cache_ptr)
         $ \container -> do
       fp <- mask_ $ do
@@ -306,6 +309,7 @@ foreign import ccall safe glean_rocksdb_container_open
   :: CString
   -> CInt
   -> CBool
+  -> CInt
   -> Ptr Cache
   -> Ptr Container
   -> IO CString

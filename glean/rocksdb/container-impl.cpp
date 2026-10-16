@@ -175,7 +175,9 @@ ContainerImpl::ContainerImpl(
         rocksdb::NewBlockBasedTableFactory(table_options));
   }
 
-  // options.IncreaseParallelism();
+  if (container_options.background_jobs > 0) {
+    options.IncreaseParallelism(container_options.background_jobs);
+  }
   // options.compression = rocksdb::CompressionType::kNoCompression;
   // writeOptions.sync = false;
   // writeOptions.disableWAL = true;

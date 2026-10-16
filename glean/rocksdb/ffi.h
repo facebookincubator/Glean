@@ -38,6 +38,7 @@ const char* glean_rocksdb_container_open(
     const char* path,
     int mode,
     bool cache_index_and_filter_blocks,
+    int background_jobs,
     SharedCache* cache,
     Container** container);
 

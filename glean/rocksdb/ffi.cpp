@@ -47,6 +47,7 @@ const char* glean_rocksdb_container_open(
     const char* path,
     int mode,
     bool cache_index_and_filter_blocks,
+    int background_jobs,
     SharedCache* cache,
     Container** container) {
   return ffi::wrap([=] {
@@ -59,7 +60,8 @@ const char* glean_rocksdb_container_open(
             path,
             static_cast<rocks::Mode>(mode),
             rocks::ContainerOptions{
-                .cache_index_and_filter_blocks = cache_index_and_filter_blocks},
+                .cache_index_and_filter_blocks = cache_index_and_filter_blocks,
+                .background_jobs = background_jobs},
             std::move(cache_ptr))
             .release();
   });

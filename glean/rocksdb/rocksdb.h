@@ -39,6 +39,9 @@ size_t getCacheCapacity(const std::shared_ptr<Cache>& cache);
 /// RocksDB tuning applied when opening a container.
 struct ContainerOptions {
   bool cache_index_and_filter_blocks = false;
+  /// Background compaction and flush threads; 0 keeps RocksDB's default.
+  /// The thread pool is process-wide, so this applies to every open DB.
+  int background_jobs = 0;
 };
 
 std::unique_ptr<Container> open(
