@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "glean/rts/error.h"
 #include "glean/rts/id.h"
 #include "glean/rts/ownership/setu32.h"
 
@@ -271,9 +272,13 @@ struct Usets {
   /**
    * Promote a transient set to a persistent one by assigning it a unique
    * UsetId. No-op if already promoted.
+   * Reports ID exhaustion before changing the set or counter.
    */
   void promote(Uset* uset) {
     if (!uset->promoted()) {
+      if (nextId >= SPECIAL_USET) {
+        error("ownership expression ID range exhausted");
+      }
       uset->id = nextId++;
       // Bump the ref count so it outlives any transient users
       ++uset->refs;

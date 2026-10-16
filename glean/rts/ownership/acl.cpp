@@ -7,9 +7,9 @@
  */
 
 #include "glean/rts/ownership/acl.h"
+#include "glean/rts/ownership/expression.h"
 #include "glean/rts/timer.h"
 
-#include <folly/CppAttributes.h>
 #include <folly/container/F14Map.h>
 #include <set>
 
@@ -19,35 +19,14 @@ namespace rts {
 
 namespace {
 
-// Create an OR-set from a list of UsetIds and add it to the Usets container.
-Uset* FOLLY_NULLABLE makeOrSet(Usets& usets, const std::vector<UsetId>& ids) {
-  CHECK(!ids.empty());
-  if (ids.size() == 1) {
-    return usets.add(std::make_unique<Uset>(SetU32::from({ids[0]}), Or, 1));
-  }
-  std::set<UsetId> idSet(ids.begin(), ids.end());
-  auto entry = std::make_unique<Uset>(SetU32::from(idSet), Or, 1);
-  return usets.add(std::move(entry));
-}
-
-// Create an AND-set from a list of UsetIds and add it to the Usets container.
-Uset* FOLLY_NULLABLE makeAndSet(Usets& usets, const std::vector<UsetId>& ids) {
-  CHECK(!ids.empty());
-  if (ids.size() == 1) {
-    return usets.lookupById(ids[0]);
-  }
-  std::set<UsetId> idSet(ids.begin(), ids.end());
-  auto entry = std::make_unique<Uset>(SetU32::from(idSet), And, 1);
-  return usets.add(std::move(entry));
-}
-
 // Build UnitId → ACL CNF Uset mapping from assignments.
 // Each assignment's levels are converted to OR-sets and combined into a
 // CNF AND-set. All resulting Usets are promoted so they have IDs.
-folly::F14FastMap<UnitId, Uset*> buildUnitACLMap(
+folly::F14FastMap<UnitId, UsetId> buildUnitACLMap(
     Usets& usets,
     const std::vector<UnitACLAssignment>& assignments) {
-  folly::F14FastMap<UnitId, Uset*> unitACLMap;
+  OwnershipExpressionBuilder expressions(usets);
+  folly::F14FastMap<UnitId, UsetId> unitACLMap;
   unitACLMap.reserve(assignments.size());
 
   for (const auto& assignment : assignments) {
@@ -61,21 +40,14 @@ folly::F14FastMap<UnitId, Uset*> buildUnitACLMap(
       if (levelGroups.empty()) {
         continue;
       }
-      auto* orSet = CHECK_NOTNULL(makeOrSet(usets, levelGroups));
-      usets.promote(orSet);
-      orSetIds.push_back(orSet->id);
+      orSetIds.push_back(expressions.anyOf(levelGroups));
     }
 
     if (orSetIds.empty()) {
       continue;
     }
 
-    Uset* cnf = makeAndSet(usets, orSetIds);
-    unitACLMap[assignment.unitId] = cnf;
-  }
-
-  for (auto& [unitId, cnf] : unitACLMap) {
-    usets.promote(cnf);
+    unitACLMap[assignment.unitId] = expressions.allOf(orSetIds);
   }
 
   return unitACLMap;
@@ -94,6 +66,7 @@ void augmentOwnershipWithACL(
   auto& usets = ownership.sets_;
   auto& facts = ownership.facts_;
   const auto firstSetId = usets.getFirstId();
+  OwnershipExpressionBuilder expressions(usets);
 
   auto unitACLMap = buildUnitACLMap(usets, assignments);
 
@@ -146,7 +119,7 @@ void augmentOwnershipWithACL(
       //    ACL augmentation.
       auto it = unitACLMap.find(ownerUsetId);
       if (it != unitACLMap.end()) {
-        aclCnfIds.insert(it->second->id);
+        aclCnfIds.insert(it->second);
       } else {
         VLOG(1) << "augmentOwnershipWithACL: ownerUsetId " << ownerUsetId
                 << " < firstSetId " << firstSetId
@@ -182,7 +155,7 @@ void augmentOwnershipWithACL(
         if (member < firstSetId) {
           auto it = unitACLMap.find(member);
           if (it != unitACLMap.end()) {
-            aclCnfIds.insert(it->second->id);
+            aclCnfIds.insert(it->second);
           }
         }
       });
@@ -196,11 +169,10 @@ void augmentOwnershipWithACL(
     // Create AND(existingOwner, aclCnf1, aclCnf2, ...)
     std::vector<UsetId> andMembers = {ownerUsetId};
     andMembers.insert(andMembers.end(), aclCnfIds.begin(), aclCnfIds.end());
-    auto* andSet = CHECK_NOTNULL(makeAndSet(usets, andMembers));
-    usets.promote(andSet);
+    const auto augmentedOwner = expressions.allOf(andMembers);
 
-    augmentCache[originalOwner] = andSet->id;
-    ownerUsetId = andSet->id;
+    augmentCache[originalOwner] = augmentedOwner;
+    ownerUsetId = augmentedOwner;
     ++augmented;
   }
 

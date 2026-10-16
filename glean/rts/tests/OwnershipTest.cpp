@@ -11,9 +11,11 @@
 #include "glean/rts/factset.h"
 #include "glean/rts/inventory.h"
 #include "glean/rts/ownership.h"
+#include "glean/rts/ownership/expression.h"
 #include "glean/rts/ownership/slice.h"
 
 #include <gtest/gtest.h>
+#include <stdexcept>
 
 #include <rapidcheck.h>
 #include <rapidcheck/gtest.h>
@@ -401,6 +403,133 @@ TEST(OwnershipTest, SliceTest) {
   checkVisibility(ownership, firstUsetId, numSets, {0, 2}, false);
   checkVisibility(ownership, firstUsetId, numSets, {0, 1, 2}, true);
   checkVisibility(ownership, firstUsetId, numSets, {0, 1, 2}, false);
+}
+
+TEST(OwnershipTest, EquivalentOwnershipExpressionsShareAnId) {
+  Usets expressions(/* firstId */ 10);
+  OwnershipExpressionBuilder builder(expressions);
+
+  const auto first = builder.anyOf({2, 1, 2});
+  const auto second = builder.anyOf({1, 2});
+  const auto third = builder.anyOf({first, 1});
+
+  EXPECT_EQ(first, second);
+  EXPECT_EQ(first, third);
+}
+
+TEST(OwnershipTest, AlwaysSelectedUnitRepresentsUnrestrictedOwnership) {
+  constexpr UnitId kAlwaysSelected = 0;
+  constexpr UnitId kAlternativeA = 1;
+  constexpr UnitId kAlternativeB = 2;
+  constexpr UnitId kRequired = 3;
+  constexpr UsetId kFirstExpression = 4;
+
+  Usets expressions(kFirstExpression);
+  OwnershipExpressionBuilder builder(expressions);
+  const auto unrestrictedOwner = builder.anyOf({kAlwaysSelected});
+  const auto alternativeOwner = builder.anyOf({kAlternativeA, kAlternativeB});
+  const auto requiredOwner = builder.anyOf({kRequired});
+  const auto constrainedOwner =
+      builder.allOf({alternativeOwner, requiredOwner});
+
+  TestOwnership ownership(
+      kFirstExpression,
+      expressions.toEliasFano(expressions.getNextId()),
+      {unrestrictedOwner, constrainedOwner});
+  Slices base({});
+
+  const auto defaultSelection =
+      slice(ownership, base, {kAlwaysSelected}, false);
+  EXPECT_TRUE(defaultSelection->visible(ownership.getOwner(Id::fromWord(0))));
+  EXPECT_FALSE(defaultSelection->visible(ownership.getOwner(Id::fromWord(1))));
+
+  const auto extendedSelection = slice(
+      ownership, base, {kAlwaysSelected, kAlternativeB, kRequired}, false);
+  EXPECT_TRUE(extendedSelection->visible(ownership.getOwner(Id::fromWord(0))));
+  EXPECT_TRUE(extendedSelection->visible(ownership.getOwner(Id::fromWord(1))));
+}
+
+TEST(OwnershipTest, SingletonOwnershipExpressionsPreserveVisibility) {
+  constexpr UsetId kFirstExpression = 3;
+  Usets expressions(kFirstExpression);
+  std::vector<UsetId> owners;
+  {
+    OwnershipExpressionBuilder builder(expressions);
+    const auto conjunction = builder.allOf({0, 1});
+    const auto disjunction = builder.anyOf({0, 1});
+    owners = {
+        builder.anyOf({conjunction}),
+        builder.allOf({disjunction}),
+        builder.anyOf({conjunction, 2}),
+        builder.allOf({disjunction, 2}),
+        builder.allOf({0}),
+        builder.anyOf({0})};
+  }
+  EXPECT_EQ(owners[4], owners[5]);
+  const auto* singleton = expressions.lookupById(owners[4]);
+  ASSERT_NE(singleton, nullptr);
+  EXPECT_EQ(singleton->exp.op, Or);
+  for (const auto owner : owners) {
+    EXPECT_GE(owner, kFirstExpression);
+  }
+  TestOwnership ownership(
+      kFirstExpression,
+      expressions.toEliasFano(expressions.getNextId()),
+      std::move(owners));
+  Slices base({});
+
+  for (const bool exclude : {false, true}) {
+    for (unsigned selection = 0; selection < 8; ++selection) {
+      SCOPED_TRACE(fmt::format("selection={} exclude={}", selection, exclude));
+      std::vector<UnitId> units;
+      for (UnitId unit = 0; unit < 3; ++unit) {
+        if (selection & (1u << unit)) {
+          units.push_back(unit);
+        }
+      }
+      const bool a = ((selection & 1) != 0) != exclude;
+      const bool b = ((selection & 2) != 0) != exclude;
+      const bool c = ((selection & 4) != 0) != exclude;
+      const std::vector<bool> expected = {
+          a && b, a || b, (a && b) || c, (a || b) && c, a, a};
+      const auto selected = slice(ownership, base, units, exclude);
+      for (size_t fact = 0; fact < expected.size(); ++fact) {
+        EXPECT_EQ(
+            selected->visible(ownership.getOwner(Id::fromWord(fact))),
+            expected[fact])
+            << "fact=" << fact;
+      }
+    }
+  }
+}
+
+TEST(OwnershipTest, OwnershipExpressionIdsRejectSentinels) {
+  {
+    Usets invalidRange(INVALID_USET);
+    OwnershipExpressionBuilder invalidBuilder(invalidRange);
+    EXPECT_THROW(invalidBuilder.anyOf({0}), std::runtime_error);
+    EXPECT_EQ(invalidRange.getNextId(), INVALID_USET);
+    EXPECT_EQ(invalidRange.statistics().promoted, 0);
+  }
+
+  constexpr UsetId kLastExpression = SPECIAL_USET - 1;
+  Usets expressions(kLastExpression);
+  OwnershipExpressionBuilder builder(expressions);
+  const auto owner = builder.anyOf({0});
+  ASSERT_EQ(owner, kLastExpression);
+
+  EXPECT_THROW(builder.anyOf({1}), std::runtime_error);
+  EXPECT_EQ(expressions.getNextId(), SPECIAL_USET);
+  EXPECT_EQ(builder.anyOf({0}), owner);
+  ASSERT_EQ(expressions.statistics().promoted, 1);
+
+  TestOwnership ownership(
+      kLastExpression,
+      expressions.toEliasFano(expressions.getNextId()),
+      {owner});
+  Slices base({});
+  EXPECT_FALSE(slice(ownership, base, {}, false)->visible(owner));
+  EXPECT_TRUE(slice(ownership, base, {0}, false)->visible(owner));
 }
 
 TEST(OwnershipTest, SlicesRequireEveryCoveringSliceToBeVisible) {
