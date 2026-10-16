@@ -562,7 +562,7 @@
       "target": {
         "imp": {
           "key": {
-            "as_name": { "key": "main.OtherHelper" },
+            "as_name": { "key": "main.g.<locals>.OtherHelper" },
             "from_name": { "key": "lib.HelperClass" }
           }
         }
@@ -591,7 +591,7 @@
       "target": {
         "imp": {
           "key": {
-            "as_name": { "key": "main.OtherHelper" },
+            "as_name": { "key": "main.g.<locals>.OtherHelper" },
             "from_name": { "key": "lib.HelperClass" }
           }
         }
@@ -794,19 +794,6 @@
       "source": {
         "imp": {
           "key": {
-            "as_name": { "key": "main.OtherHelper" },
-            "from_name": { "key": "lib.HelperClass" }
-          }
-        }
-      },
-      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
-    }
-  },
-  {
-    "key": {
-      "source": {
-        "imp": {
-          "key": {
             "as_name": { "key": "main.big_func" },
             "from_name": { "key": "big_lib.big_func" }
           }
@@ -846,6 +833,19 @@
           }
         }
       }
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "main.g.<locals>.OtherHelper" },
+            "from_name": { "key": "lib.HelperClass" }
+          }
+        }
+      },
+      "target": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
     }
   },
   {
@@ -1335,19 +1335,6 @@
       "target": {
         "imp": {
           "key": {
-            "as_name": { "key": "main.OtherHelper" },
-            "from_name": { "key": "lib.HelperClass" }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "source": { "module": { "key": { "name": { "key": "main" } } } },
-      "target": {
-        "imp": {
-          "key": {
             "as_name": { "key": "main.big_func" },
             "from_name": { "key": "big_lib.big_func" }
           }
@@ -1363,6 +1350,19 @@
           "key": {
             "as_name": { "key": "main.func" },
             "from_name": { "key": "lib.func" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "source": { "module": { "key": { "name": { "key": "main" } } } },
+      "target": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "main.g.<locals>.OtherHelper" },
+            "from_name": { "key": "lib.HelperClass" }
           }
         }
       }

@@ -148,7 +148,7 @@
       "tuplefield1": {
         "imp": {
           "key": {
-            "as_name": { "key": "main.OtherHelper" },
+            "as_name": { "key": "main.g.<locals>.OtherHelper" },
             "from_name": { "key": "lib.HelperClass" }
           }
         }

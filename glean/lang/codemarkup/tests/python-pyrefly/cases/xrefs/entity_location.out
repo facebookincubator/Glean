@@ -655,29 +655,6 @@
           "decl": {
             "imp": {
               "key": {
-                "as_name": { "key": "main.OtherHelper" },
-                "from_name": { "key": "lib.HelperClass" }
-              }
-            }
-          }
-        }
-      },
-      "location": {
-        "file": {
-          "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/main.py"
-        },
-        "location": { "span": { "length": 11, "start": 468 } },
-        "name": "lib.HelperClass"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "python": {
-          "decl": {
-            "imp": {
-              "key": {
                 "as_name": { "key": "main.big_func" },
                 "from_name": { "key": "big_lib.big_func" }
               }
@@ -714,6 +691,29 @@
         },
         "location": { "span": { "length": 4, "start": 278 } },
         "name": "lib.func"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "main.g.<locals>.OtherHelper" },
+                "from_name": { "key": "lib.HelperClass" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": {
+          "key": "glean/lang/codemarkup/tests/python-pyrefly/cases/xrefs/main.py"
+        },
+        "location": { "span": { "length": 11, "start": 468 } },
+        "name": "lib.HelperClass"
       }
     }
   },

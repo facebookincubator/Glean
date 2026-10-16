@@ -1386,7 +1386,7 @@
             "file": {
               "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/xrefs/main.py"
             },
-            "name": { "key": "main.OtherHelper" }
+            "name": { "key": "main.g.<locals>.OtherHelper" }
           }
         }
       ]

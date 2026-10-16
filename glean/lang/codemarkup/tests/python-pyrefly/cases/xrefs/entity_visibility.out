@@ -384,21 +384,6 @@
         "decl": {
           "imp": {
             "key": {
-              "as_name": { "key": "main.OtherHelper" },
-              "from_name": { "key": "lib.HelperClass" }
-            }
-          }
-        }
-      }
-    },
-    "value": 0
-  },
-  {
-    "key": {
-      "python": {
-        "decl": {
-          "imp": {
-            "key": {
               "as_name": { "key": "main.big_func" },
               "from_name": { "key": "big_lib.big_func" }
             }
@@ -416,6 +401,21 @@
             "key": {
               "as_name": { "key": "main.func" },
               "from_name": { "key": "lib.func" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "imp": {
+            "key": {
+              "as_name": { "key": "main.g.<locals>.OtherHelper" },
+              "from_name": { "key": "lib.HelperClass" }
             }
           }
         }
