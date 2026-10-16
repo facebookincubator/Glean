@@ -66,6 +66,11 @@ struct SymbolDocs {
     symbol: ScipId,
 }
 #[derive(Serialize, Clone, Eq, PartialEq, Hash)]
+struct SymbolSignature {
+    signature: ScipId,
+    symbol: ScipId,
+}
+#[derive(Serialize, Clone, Eq, PartialEq, Hash)]
 struct SymbolName {
     name: ScipId,
     symbol: ScipId,
@@ -118,6 +123,7 @@ enum Node {
     Definition(Owned<Key<SymbolLocation>>),
     Reference(Owned<Key<SymbolLocation>>),
     SymbolDocumentation(Owned<IdKey<SymbolDocs>>),
+    SymbolSignature(Owned<Key<SymbolSignature>>),
     File(Owned<IdKey<Box<str>>>),
     FileRange(Owned<IdKey<FileRange>>),
     EnclosingRange(Owned<IdKey<EnclosingRange>>),
@@ -140,6 +146,7 @@ pub struct GleanJSONOutput {
     file_langs: Vec<Owned<IdKey<FileLang>>>,
     documentation: Vec<Owned<IdKey<Box<str>>>>,
     symbol_documentation: Vec<Owned<IdKey<SymbolDocs>>>,
+    symbol_signatures: Vec<Owned<Key<SymbolSignature>>>,
     file_ranges: Vec<Owned<IdKey<FileRange>>>,
     enclosing_ranges: Vec<Owned<IdKey<EnclosingRange>>>,
     symbols: Vec<Owned<IdKey<Box<str>>>>,
@@ -175,6 +182,7 @@ where
                 Node::Definition(node) => output.definitions.push(node),
                 Node::Reference(node) => output.references.push(node),
                 Node::SymbolDocumentation(node) => output.symbol_documentation.push(node),
+                Node::SymbolSignature(node) => output.symbol_signatures.push(node),
                 Node::LocalName(node) => output.local_names.push(node),
                 Node::Symbol(node) => output.symbols.push(node),
                 Node::Documentation(node) => output.documentation.push(node),
@@ -243,6 +251,14 @@ impl GleanJSONOutput {
             key: SymbolDocs {
                 symbol: symbol_id,
                 docs: doc_id,
+            },
+        }));
+    }
+    pub fn symbol_signature(&mut self, symbol_id: ScipId, signature_id: ScipId) {
+        self.symbol_signatures.push(self.owned(Key {
+            key: SymbolSignature {
+                symbol: symbol_id,
+                signature: signature_id,
             },
         }));
     }
@@ -371,6 +387,7 @@ impl GleanJSONOutput {
             + self.file_langs.len()
             + self.documentation.len()
             + self.symbol_documentation.len()
+            + self.symbol_signatures.len()
             + self.file_ranges.len()
             + self.enclosing_ranges.len()
             + self.symbols.len()
@@ -405,6 +422,7 @@ impl GleanJSONOutput {
             file_langs,
             documentation,
             symbol_documentation,
+            symbol_signatures,
             file_ranges,
             enclosing_ranges,
             symbols,
@@ -457,6 +475,7 @@ impl GleanJSONOutput {
                 + references.len()
                 + enclosing_ranges.len()
                 + symbol_documentation.len()
+                + symbol_signatures.len()
                 + file_lines.len()
                 + display_name_symbols.len(),
         );
@@ -473,6 +492,7 @@ impl GleanJSONOutput {
                 .into_iter()
                 .map(Node::SymbolDocumentation),
         );
+        source_nodes.extend(symbol_signatures.into_iter().map(Node::SymbolSignature));
         source_nodes.extend(file_lines.into_iter().map(Node::FileLines));
         source_nodes.extend(
             display_name_symbols
@@ -556,6 +576,14 @@ impl GleanJSONOutput {
                                 .unwrap();
                             to_visit.push(Node::Symbol(symbol.clone()));
                             to_visit.push(Node::Documentation(doc.clone()));
+                        }
+                        Node::SymbolSignature(symbol_signature) => {
+                            let symbol = *symbols.get(&symbol_signature.fact.key.symbol).unwrap();
+                            let signature = *documentation
+                                .get(&symbol_signature.fact.key.signature)
+                                .unwrap();
+                            to_visit.push(Node::Symbol(symbol.clone()));
+                            to_visit.push(Node::Documentation(signature.clone()));
                         }
                         Node::FileLines(file_lines) => {
                             let file = *files.get(&file_lines.fact.key.file).unwrap();
@@ -683,6 +711,12 @@ impl GleanJSONOutput {
             &mut w,
             "scip.SymbolDocumentation",
             self.symbol_documentation,
+            batches,
+        )?;
+        sub(
+            &mut w,
+            "scip.SymbolSignature",
+            self.symbol_signatures,
             batches,
         )?;
         sub(&mut w, "scip.SymbolName", self.symbol_names, batches)?;

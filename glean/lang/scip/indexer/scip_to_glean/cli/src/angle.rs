@@ -754,6 +754,14 @@ impl Env {
             }
         }
         if let Some(sym_id) = sym_id {
+            if let Some(signature) = info.signature_documentation.into_option() {
+                let signature = signature.text.trim();
+                if !signature.is_empty() {
+                    let signature_id = self.next_id();
+                    self.out.documentation(signature_id, signature.into());
+                    self.out.symbol_signature(sym_id, signature_id);
+                }
+            }
             if !info.display_name.is_empty() {
                 self.display_name_facts(info.display_name, sym_id);
             }

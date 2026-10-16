@@ -331,6 +331,8 @@ fn read_scip_file(file: &Path) -> Result<Index, Error> {
 
 #[cfg(test)]
 mod tests {
+    use std::collections::HashMap;
+
     #[cfg(feature = "facebook")]
     use proto_rust::scip::Document;
     #[cfg(feature = "facebook")]
@@ -473,6 +475,7 @@ mod tests {
         let mut info = ScipSymbolInformation::new();
         info.symbol = "semanticdb maven . . Foo#".to_string();
         info.display_name = "Foo".to_string();
+        info.signature_documentation = Some(signature_document("class Foo")).into();
         doc.symbols.push(info);
         index.documents.push(doc);
         write_scip_index_full(&mut scip_file, index);
@@ -492,6 +495,7 @@ mod tests {
             "src.FileLines.1",
             "scip.DisplayName.1",
             "scip.DisplayNameSymbol.1",
+            "scip.SymbolSignature.1",
         ] {
             assert!(
                 shards
@@ -522,6 +526,13 @@ mod tests {
         index
             .write_to_writer(scip_file)
             .expect("failed to write SCIP index");
+    }
+
+    fn signature_document(text: &str) -> Document {
+        let mut signature = Document::new();
+        signature.language = "rust".to_string();
+        signature.text = text.to_string();
+        signature
     }
 
     /// Helper to find a predicate's facts array in the output JSON
@@ -965,6 +976,94 @@ mod tests {
             .iter()
             .any(|f| f["key"].as_str().is_some_and(|s| s.contains("power state")));
         assert!(has_doc, "Expected documentation from external_symbols");
+    }
+
+    #[test]
+    fn test_signature_documentation_becomes_symbol_signature() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut doc = Document::new();
+        doc.relative_path = "lib.rs".to_string();
+        doc.language = "rust".to_string();
+        let symbols = [
+            ("rust-analyzer cargo foo 0.1.0 read().", 0),
+            ("rust-analyzer cargo foo 0.1.0 undocumented().", 1),
+            ("rust-analyzer cargo foo 0.1.0 blank().", 2),
+        ];
+        for (symbol, line) in symbols {
+            let mut occ = ScipOccurrence::new();
+            occ.symbol = symbol.to_string();
+            occ.range = vec![line, 0, 4];
+            occ.symbol_roles = 1; // Definition
+            doc.occurrences.push(occ);
+        }
+
+        let mut read = ScipSymbolInformation::new();
+        read.symbol = symbols[0].0.to_string();
+        read.documentation = vec!["Reads the value.".to_string()];
+        read.signature_documentation = Some(signature_document(
+            "pub unsafe fn read<T>(src: *const T) -> T",
+        ))
+        .into();
+        doc.symbols.push(read);
+
+        let mut undocumented = ScipSymbolInformation::new();
+        undocumented.symbol = symbols[1].0.to_string();
+        undocumented.documentation = vec!["Has docs but no signature.".to_string()];
+        doc.symbols.push(undocumented);
+
+        let mut blank = ScipSymbolInformation::new();
+        blank.symbol = symbols[2].0.to_string();
+        blank.signature_documentation = Some(signature_document("  ")).into();
+        doc.symbols.push(blank);
+
+        write_scip_index(&mut scip_file, doc);
+        build_json(build_args(
+            scip_file.path().to_path_buf(),
+            output_json.path().to_path_buf(),
+        ))
+        .expect("failure building JSON");
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        let symbol_ids: HashMap<u64, String> = find_predicate_facts(&output, "scip.Symbol.1")
+            .expect("scip.Symbol.1 not found")
+            .as_array()
+            .expect("facts should be array")
+            .iter()
+            .map(|f| (f["id"].as_u64().unwrap(), f["key"].to_string()))
+            .collect();
+        let docs: HashMap<u64, String> = find_predicate_facts(&output, "scip.Documentation.1")
+            .expect("scip.Documentation.1 not found")
+            .as_array()
+            .expect("facts should be array")
+            .iter()
+            .map(|f| {
+                (
+                    f["id"].as_u64().unwrap(),
+                    f["key"].as_str().unwrap().to_string(),
+                )
+            })
+            .collect();
+        let signatures: Vec<(String, String)> =
+            find_predicate_facts(&output, "scip.SymbolSignature.1")
+                .expect("scip.SymbolSignature.1 not found")
+                .as_array()
+                .expect("facts should be array")
+                .iter()
+                .map(|f| {
+                    let symbol = &symbol_ids[&f["key"]["symbol"].as_u64().unwrap()];
+                    let signature = &docs[&f["key"]["signature"].as_u64().unwrap()];
+                    (symbol.clone(), signature.clone())
+                })
+                .collect();
+
+        // Only `read` has a non-blank signature; the doc comment of
+        // `undocumented` must not be mistaken for one.
+        assert_eq!(signatures.len(), 1, "got {signatures:?}");
+        let (symbol, signature) = &signatures[0];
+        assert!(symbol.contains("read()"), "got {symbol}");
+        assert_eq!(signature, "pub unsafe fn read<T>(src: *const T) -> T");
     }
 
     /// A Go-style global symbol whose `info.kind = Constant` is emitted as

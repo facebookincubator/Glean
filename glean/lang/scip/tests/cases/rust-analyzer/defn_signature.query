@@ -1,0 +1,4 @@
+query: scip.DefinitionSignature _
+perf: True
+transform: [gensort, []]
+
