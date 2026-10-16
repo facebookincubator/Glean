@@ -212,6 +212,10 @@ struct RequestOptions {
 struct FeatureFlags {
   4: bool amend_lines_on_revision_mismatch = false;
   5: bool use_pyrefly_indexer_for_instagram_server = false;
+  // Serve fbcode Python from the Pyrefly-based Glean DB
+  // fbsource.fbcode.python.pyrefly instead of the Pyre-based
+  // fbsource.fbcode.python.
+  6: bool use_pyrefly_indexer_for_fbcode_python = false;
 }
 
 // List symbols in a file. Symbols are spans of one or more tokens Glean has
