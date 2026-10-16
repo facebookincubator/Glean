@@ -461,6 +461,31 @@ TEST(OwnershipTest, EmptyOwnershipUsesBaseEndAsEmptySliceStart) {
   EXPECT_EQ(result->end(), base.end());
 }
 
+TEST(OwnershipTest, SlicesBoundsIncludeEveryLayerInEitherOrder) {
+  Slice lower(20, boost::dynamic_bitset<uint64_t>(2));
+  Slice upper(30, boost::dynamic_bitset<uint64_t>(3));
+  for (const auto& order : {
+           std::vector<const Slice*>{&lower, &upper},
+           std::vector<const Slice*>{&upper, &lower},
+       }) {
+    Slices slices(order);
+    EXPECT_EQ(
+        std::make_pair(slices.first(), slices.end()),
+        std::make_pair(UsetId{20}, UsetId{33}));
+    EXPECT_TRUE(slices.inRange(32));
+  }
+}
+
+TEST(OwnershipTest, SlicesBoundsPreserveAZeroFirstId) {
+  Slice lower(0, boost::dynamic_bitset<uint64_t>(2));
+  Slice upper(10, boost::dynamic_bitset<uint64_t>(3));
+  Slices slices({&lower, &upper});
+  EXPECT_EQ(
+      std::make_pair(slices.first(), slices.end()),
+      std::make_pair(UsetId{0}, UsetId{13}));
+  EXPECT_TRUE(slices.inRange(0));
+}
+
 TEST(OwnershipTest, SliceUsesVisibleBaseSetsAndCurrentUnits) {
   boost::dynamic_bitset<uint64_t> baseBits(2);
   baseBits.set(0);

@@ -90,11 +90,13 @@ struct Slices {
   explicit Slices(std::vector<const Slice*> slices)
       : slices_(std::move(slices)) {
     UsetId first = 0, end = 0;
+    bool initialized = false;
     for (auto slice : slices_) {
-      if (first == 0 || slice->first() < first) {
+      if (!initialized || slice->first() < first) {
         first = slice->first();
-        end = std::max(end, slice->end());
       }
+      end = std::max(end, slice->end());
+      initialized = true;
     }
     first_ = first;
     end_ = end;
