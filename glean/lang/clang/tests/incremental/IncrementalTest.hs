@@ -16,6 +16,7 @@ import System.Exit
 import System.FilePath
 
 import Glean
+import Glean.Indexer (Indexer(..))
 import Glean.Regression.Indexer
 import Glean.Regression.Config
 import Glean.Regression.Snapshot (testMain)
@@ -34,6 +35,11 @@ incrementalClangDriver = clangDriver {
   }
   where
   clangDriver = DerivePass.driver DeriveLib.allCxxPasses
+
+  -- Like the incremental C++ database, don't rederive DeclarationSources:
+  -- the base facts must stay visible on their own.
+  incrementalIndexer = driverIndexer $ DerivePass.driver $
+    filter (/= DeriveLib.DeriveFunctionCalls_Pass_2) DeriveLib.allCxxPasses
 
   createDB opts backend indexer test = do
     let
@@ -58,4 +64,6 @@ incrementalClangDriver = clangDriver {
             pruned_exclude = True
           }
     fillDatabase backend repo (Just deps) (die "repo already exists") $
-      runIndexerForTest backend (indexer opts { Clang.clangIncremental = True }) test
+      runIndexerForTest backend
+        (indexerRun incrementalIndexer opts { Clang.clangIncremental = True })
+        test

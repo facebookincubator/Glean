@@ -21,11 +21,15 @@
 -- * Make this into DeclarationSources facts
 --
 -- * chunk the facts and write to Glean
+--
+-- * complete the predicate, so that the server computes the facts' owners
+--   from the dependencies recorded with them
 module Derive.CxxDeclarationSources
   ( deriveCxxDeclarationSources
   ) where
 
 import Data.Int (Int64)
+import Data.Proxy (Proxy(..))
 import qualified Data.Set as Set
 import qualified Data.Vector.Algorithms.Intro as VSort
 import qualified Data.Vector.Unboxed as VU
@@ -159,8 +163,11 @@ writeDeclSources writer targetSources = do
     (toDeclarationSources targetSources)
   logInfo "writeDeclSources done"
 
-deriveCxxDeclarationSources :: Backend e => e -> Config -> Writer -> IO ()
-deriveCxxDeclarationSources e cfg writer = do
+-- | The facts must be written before the predicate is completed, so this takes
+-- a function that runs an action with a writer and flushes it.
+deriveCxxDeclarationSources
+  :: Backend e => e -> Config -> ((Writer -> IO ()) -> IO ()) -> IO ()
+deriveCxxDeclarationSources e cfg withWriter = do
   logInfo "deriveCxxDeclarationSources"
   let
     q :: Query Cxx.DeclarationTargets
@@ -175,5 +182,8 @@ deriveCxxDeclarationSources e cfg writer = do
   VSort.sort targetSourcesM
   logInfo "sorted targetSourcesM"
   (targetSources :: TargetSources) <- VU.unsafeFreeze targetSourcesM
-  writeDeclSources writer (VU.uniq targetSources)
+  withWriter $ \writer -> writeDeclSources writer (VU.uniq targetSources)
+  completePredicates e (cfgRepo cfg) $
+    CompletePredicates_derived $ CompleteDerivedPredicate $
+      getName (Proxy @Cxx.DeclarationSources)
   logInfo "deriveCxxDeclarationSources done"

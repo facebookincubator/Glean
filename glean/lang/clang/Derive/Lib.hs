@@ -41,7 +41,9 @@ dispatchDerive env = \case
   DeriveTargetUses -> execN deriveUses
   DeriveDeclFamilies -> exec deriveSame
   DeriveFunctionCalls -> return () -- no-op; facts now emitted by the indexer
-  DeriveFunctionCalls_Pass_2 -> exec deriveCxxDeclarationSources
+  DeriveFunctionCalls_Pass_2 ->
+    deriveCxxDeclarationSources
+      (envBackend env) (envConfig env) (withEnvWriter env)
   DeriveGeneric p -> storedPredicate p
   where
     exec f = withEnvWriter env $ f (envBackend env) (envConfig env)
