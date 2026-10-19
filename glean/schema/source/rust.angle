@@ -2,7 +2,7 @@
 
 # Rust safety facts, layered on the generic SCIP index in the same database.
 # SCIP is language-neutral and cannot represent Rust's safety semantics.
-schema rust.1 {
+schema rust.2 {
 
 import scip
 import src
@@ -22,10 +22,15 @@ predicate UnsafeTrait:
     symbol: scip.Symbol,
   }
 
+# An `unsafe impl Foo for Bar { ... }` block. Unlike the predicates above it
+# carries a location: SCIP emits no symbol for an impl block, so `symbol` has
+# nothing to join against. The span starts at the `unsafe` token.
 predicate UnsafeImpl:
   {
     symbol: scip.Symbol,
     trait_symbol: scip.Symbol,
+    file: src.File,
+    span: src.ByteSpan,
   }
 
 # An explicit `unsafe { ... }` block. Anonymous -- an expression has no SCIP
