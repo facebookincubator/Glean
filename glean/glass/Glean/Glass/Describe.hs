@@ -101,7 +101,8 @@ describeEntity scmRevs ent SymbolResult{..} = do
     getRepoHashForLocation symbolResult_location scmRevs <$> Glean.haxlRepo
   let symbolDescription_name = symbolResult_qname
   symbolDescription_annotations <- eThrow =<< getAnnotationsForEntity repo ent
-  symbolDescription_pretty_comments <- eThrow =<< getCommentsForEntity repo ent
+  symbolDescription_pretty_comments <- eThrow =<< getCommentsForEntity repo
+    symbolResult_location ent
   (symbolDescription_visibility, symbolDescription_modifiers)
      <- eThrow =<< getInfoForEntity ent
   (symbolDescription_signature, symbolDescription_type_xrefs)
