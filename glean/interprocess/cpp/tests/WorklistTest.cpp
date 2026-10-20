@@ -47,7 +47,7 @@ struct StealingFile {
     stealingCounterSetup(file.path().string(), values);
   }
 
-  const std::string& path() const {
+  std::string path() const {
     return file.path().string();
   }
 };
