@@ -44,17 +44,11 @@
         },
         {
           "source": { "length": 3, "start": 390 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "int" }
-          }
+          "target": { "name": { "key": "int" } }
         },
         {
           "source": { "length": 3, "start": 419 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "int" }
-          }
+          "target": { "name": { "key": "int" } }
         },
         {
           "source": { "length": 3, "start": 478 },
@@ -85,10 +79,7 @@
         },
         {
           "source": { "length": 4, "start": 274 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.List" }
-          }
+          "target": { "name": { "key": "typing.List" } }
         },
         {
           "source": { "length": 4, "start": 385 },
@@ -101,10 +92,7 @@
         },
         {
           "source": { "length": 4, "start": 385 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.List" }
-          }
+          "target": { "name": { "key": "typing.List" } }
         },
         {
           "source": { "length": 4, "start": 414 },
@@ -117,10 +105,7 @@
         },
         {
           "source": { "length": 4, "start": 414 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.List" }
-          }
+          "target": { "name": { "key": "typing.List" } }
         },
         {
           "source": { "length": 4, "start": 426 },
@@ -133,17 +118,11 @@
         },
         {
           "source": { "length": 6, "start": 216 },
-          "target": {
-            "file": { "key": "timeit.pyi" },
-            "name": { "key": "timeit" }
-          }
+          "target": { "name": { "key": "timeit" } }
         },
         {
           "source": { "length": 6, "start": 260 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing" }
-          }
+          "target": { "name": { "key": "typing" } }
         },
         {
           "source": { "length": 6, "start": 434 },
@@ -156,10 +135,7 @@
         },
         {
           "source": { "length": 6, "start": 434 },
-          "target": {
-            "file": { "key": "timeit.pyi" },
-            "name": { "key": "timeit" }
-          }
+          "target": { "name": { "key": "timeit" } }
         },
         {
           "source": { "length": 6, "start": 574 },
@@ -298,24 +274,11 @@
         },
         {
           "source": { "length": 9, "start": 228 },
-          "target": {
-            "file": { "key": "functools.pyi" },
-            "name": { "key": "functools" }
-          }
+          "target": { "name": { "key": "functools" } }
         },
         {
           "source": { "length": 9, "start": 245 },
-          "target": {
-            "file": { "key": "functools.pyi" },
-            "name": { "key": "functools.lru_cache" }
-          }
-        },
-        {
-          "source": { "length": 9, "start": 442 },
-          "target": {
-            "file": { "key": "functools.pyi" },
-            "name": { "key": "functools.lru_cache" }
-          }
+          "target": { "name": { "key": "functools.lru_cache" } }
         },
         {
           "source": { "length": 9, "start": 442 },
@@ -325,6 +288,10 @@
             },
             "name": { "key": "all.lru_cache" }
           }
+        },
+        {
+          "source": { "length": 9, "start": 442 },
+          "target": { "name": { "key": "functools.lru_cache" } }
         },
         {
           "source": { "length": 9, "start": 514 },
@@ -436,101 +403,59 @@
         },
         {
           "source": { "length": 3, "start": 575 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "str" }
-          }
+          "target": { "name": { "key": "str" } }
         },
         {
           "source": { "length": 3, "start": 628 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "str" }
-          }
+          "target": { "name": { "key": "str" } }
         },
         {
           "source": { "length": 3, "start": 668 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "str" }
-          }
+          "target": { "name": { "key": "str" } }
         },
         {
           "source": { "length": 3, "start": 678 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "str" }
-          }
+          "target": { "name": { "key": "str" } }
         },
         {
           "source": { "length": 3, "start": 739 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "str" }
-          }
+          "target": { "name": { "key": "str" } }
         },
         {
           "source": { "length": 3, "start": 778 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "str" }
-          }
+          "target": { "name": { "key": "str" } }
         },
         {
           "source": { "length": 3, "start": 879 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "str" }
-          }
+          "target": { "name": { "key": "str" } }
         },
         {
           "source": { "length": 3, "start": 906 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "str" }
-          }
+          "target": { "name": { "key": "str" } }
         },
         {
           "source": { "length": 3, "start": 960 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "str" }
-          }
+          "target": { "name": { "key": "str" } }
         },
         {
           "source": { "length": 3, "start": 1020 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "str" }
-          }
+          "target": { "name": { "key": "str" } }
         },
         {
           "source": { "length": 3, "start": 1056 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "int" }
-          }
+          "target": { "name": { "key": "int" } }
         },
         {
           "source": { "length": 3, "start": 1061 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "str" }
-          }
+          "target": { "name": { "key": "str" } }
         },
         {
           "source": { "length": 3, "start": 1193 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "int" }
-          }
+          "target": { "name": { "key": "int" } }
         },
         {
           "source": { "length": 4, "start": 228 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.Dict" }
-          }
+          "target": { "name": { "key": "typing.Dict" } }
         },
         {
           "source": { "length": 4, "start": 310 },
@@ -552,10 +477,7 @@
         },
         {
           "source": { "length": 4, "start": 570 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.Dict" }
-          }
+          "target": { "name": { "key": "typing.Dict" } }
         },
         {
           "source": { "length": 4, "start": 594 },
@@ -572,10 +494,7 @@
         },
         {
           "source": { "length": 4, "start": 663 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.Dict" }
-          }
+          "target": { "name": { "key": "typing.Dict" } }
         },
         {
           "source": { "length": 4, "start": 673 },
@@ -588,24 +507,15 @@
         },
         {
           "source": { "length": 4, "start": 673 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.Dict" }
-          }
+          "target": { "name": { "key": "typing.Dict" } }
         },
         {
           "source": { "length": 4, "start": 900 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "bool" }
-          }
+          "target": { "name": { "key": "bool" } }
         },
         {
           "source": { "length": 4, "start": 1072 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "bool" }
-          }
+          "target": { "name": { "key": "bool" } }
         },
         {
           "source": { "length": 4, "start": 1226 },
@@ -613,10 +523,7 @@
         },
         {
           "source": { "length": 4, "start": 1256 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "bool" }
-          }
+          "target": { "name": { "key": "bool" } }
         },
         {
           "source": { "length": 4, "start": 1273 },
@@ -624,24 +531,15 @@
         },
         {
           "source": { "length": 5, "start": 244 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.Union" }
-          }
+          "target": { "name": { "key": "typing.Union" } }
         },
         {
           "source": { "length": 5, "start": 683 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "bytes" }
-          }
+          "target": { "name": { "key": "bytes" } }
         },
         {
           "source": { "length": 5, "start": 798 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "bytes" }
-          }
+          "target": { "name": { "key": "bytes" } }
         },
         {
           "source": { "length": 5, "start": 862 },
@@ -654,10 +552,7 @@
         },
         {
           "source": { "length": 5, "start": 862 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.Union" }
-          }
+          "target": { "name": { "key": "typing.Union" } }
         },
         {
           "source": { "length": 5, "start": 894 },
@@ -670,10 +565,7 @@
         },
         {
           "source": { "length": 5, "start": 894 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.Union" }
-          }
+          "target": { "name": { "key": "typing.Union" } }
         },
         {
           "source": { "length": 5, "start": 947 },
@@ -686,17 +578,11 @@
         },
         {
           "source": { "length": 5, "start": 947 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.Union" }
-          }
+          "target": { "name": { "key": "typing.Union" } }
         },
         {
           "source": { "length": 5, "start": 953 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "bytes" }
-          }
+          "target": { "name": { "key": "bytes" } }
         },
         {
           "source": { "length": 5, "start": 1007 },
@@ -709,17 +595,11 @@
         },
         {
           "source": { "length": 5, "start": 1007 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.Union" }
-          }
+          "target": { "name": { "key": "typing.Union" } }
         },
         {
           "source": { "length": 5, "start": 1013 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "float" }
-          }
+          "target": { "name": { "key": "float" } }
         },
         {
           "source": { "length": 5, "start": 1050 },
@@ -732,10 +612,7 @@
         },
         {
           "source": { "length": 5, "start": 1050 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.Union" }
-          }
+          "target": { "name": { "key": "typing.Union" } }
         },
         {
           "source": { "length": 5, "start": 1157 },
@@ -743,10 +620,7 @@
         },
         {
           "source": { "length": 6, "start": 214 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing" }
-          }
+          "target": { "name": { "key": "typing" } }
         },
         {
           "source": { "length": 7, "start": 277 },
@@ -777,10 +651,7 @@
         },
         {
           "source": { "length": 8, "start": 234 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.Optional" }
-          }
+          "target": { "name": { "key": "typing.Optional" } }
         },
         {
           "source": { "length": 8, "start": 561 },
@@ -793,10 +664,7 @@
         },
         {
           "source": { "length": 8, "start": 561 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.Optional" }
-          }
+          "target": { "name": { "key": "typing.Optional" } }
         },
         {
           "source": { "length": 8, "start": 619 },
@@ -809,10 +677,7 @@
         },
         {
           "source": { "length": 8, "start": 619 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.Optional" }
-          }
+          "target": { "name": { "key": "typing.Optional" } }
         },
         {
           "source": { "length": 8, "start": 769 },
@@ -825,10 +690,7 @@
         },
         {
           "source": { "length": 8, "start": 769 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.Optional" }
-          }
+          "target": { "name": { "key": "typing.Optional" } }
         },
         {
           "source": { "length": 8, "start": 789 },
@@ -841,10 +703,7 @@
         },
         {
           "source": { "length": 8, "start": 789 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.Optional" }
-          }
+          "target": { "name": { "key": "typing.Optional" } }
         },
         {
           "source": { "length": 9, "start": 451 },
@@ -857,10 +716,7 @@
         },
         {
           "source": { "length": 9, "start": 868 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "bytearray" }
-          }
+          "target": { "name": { "key": "bytearray" } }
         },
         {
           "source": { "length": 11, "start": 415 },
@@ -882,10 +738,7 @@
         },
         {
           "source": { "length": 12, "start": 464 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "staticmethod" }
-          }
+          "target": { "name": { "key": "staticmethod" } }
         }
       ]
     }
@@ -961,10 +814,7 @@
       "xrefs": [
         {
           "source": { "length": 3, "start": 681 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "int" }
-          }
+          "target": { "name": { "key": "int" } }
         },
         {
           "source": { "length": 4, "start": 587 },
@@ -981,17 +831,11 @@
         },
         {
           "source": { "length": 4, "start": 676 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.List" }
-          }
+          "target": { "name": { "key": "typing.List" } }
         },
         {
           "source": { "length": 5, "start": 267 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.Union" }
-          }
+          "target": { "name": { "key": "typing.Union" } }
         },
         {
           "source": { "length": 5, "start": 568 },
@@ -1004,10 +848,7 @@
         },
         {
           "source": { "length": 5, "start": 568 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.Union" }
-          }
+          "target": { "name": { "key": "typing.Union" } }
         },
         {
           "source": { "length": 5, "start": 657 },
@@ -1020,17 +861,11 @@
         },
         {
           "source": { "length": 6, "start": 232 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing" }
-          }
+          "target": { "name": { "key": "typing" } }
         },
         {
           "source": { "length": 6, "start": 244 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing" }
-          }
+          "target": { "name": { "key": "typing" } }
         },
         {
           "source": { "length": 6, "start": 669 },
@@ -1043,17 +878,11 @@
         },
         {
           "source": { "length": 6, "start": 669 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing" }
-          }
+          "target": { "name": { "key": "typing" } }
         },
         {
           "source": { "length": 7, "start": 258 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.TypeVar" }
-          }
+          "target": { "name": { "key": "typing.TypeVar" } }
         },
         {
           "source": { "length": 7, "start": 279 },
@@ -1075,10 +904,7 @@
         },
         {
           "source": { "length": 7, "start": 359 },
-          "target": {
-            "file": { "key": "typing.pyi" },
-            "name": { "key": "typing.TypeVar" }
-          }
+          "target": { "name": { "key": "typing.TypeVar" } }
         },
         {
           "source": { "length": 8, "start": 294 },

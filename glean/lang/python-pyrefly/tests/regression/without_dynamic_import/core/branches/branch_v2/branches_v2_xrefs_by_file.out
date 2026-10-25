@@ -17,17 +17,11 @@
         },
         {
           "source": { "length": 3, "start": 1088 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "str" }
-          }
+          "target": { "name": { "key": "str" } }
         },
         {
           "source": { "length": 3, "start": 1101 },
-          "target": {
-            "file": { "key": "builtins.pyi" },
-            "name": { "key": "str" }
-          }
+          "target": { "name": { "key": "str" } }
         },
         {
           "source": { "length": 4, "start": 815 },
