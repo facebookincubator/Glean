@@ -8,10 +8,10 @@
 
 package glean.lang.kotlin.indexer
 
-import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
+import org.jetbrains.kotlin.config.CommonConfigurationKeys
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.JVMConfigurationKeys
 import org.jetbrains.kotlin.resolve.jvm.extensions.AnalysisHandlerExtension
@@ -33,7 +33,7 @@ class KotlinIndexerPluginCompilerPluginRegistrar : CompilerPluginRegistrar() {
     )
 
     val messageCollector =
-        configuration.get(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, MessageCollector.NONE)
+        configuration.get(CommonConfigurationKeys.MESSAGE_COLLECTOR_KEY, MessageCollector.NONE)
     messageCollector.report(
         CompilerMessageSeverity.LOGGING,
         "Loaded Kotlin Indexer Plugin, with outputDir = '$outputDir'.",
@@ -45,6 +45,8 @@ class KotlinIndexerPluginCompilerPluginRegistrar : CompilerPluginRegistrar() {
     // Register it to a specific extension point in the compiler, the analysis part
     AnalysisHandlerExtension.registerExtension(extension)
   }
+
+  override val pluginId: String = "glean.lang.kotlin.indexer"
 
   override val supportsK2: Boolean = true
 }
