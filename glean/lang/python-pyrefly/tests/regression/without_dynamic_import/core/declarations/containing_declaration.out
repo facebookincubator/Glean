@@ -713,6 +713,16 @@
     "key": {
       "container": { "module": { "key": { "name": { "key": "bar.quux" } } } },
       "declaration": {
+        "variable": {
+          "key": { "name": { "key": "bar.quux.<comprehension>.x" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "container": { "module": { "key": { "name": { "key": "bar.quux" } } } },
+      "declaration": {
         "variable": { "key": { "name": { "key": "bar.quux.comp" } } }
       }
     }

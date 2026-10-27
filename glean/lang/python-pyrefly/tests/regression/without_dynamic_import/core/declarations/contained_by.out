@@ -456,6 +456,16 @@
     "key": {
       "containee": {
         "variable": {
+          "key": { "name": { "key": "bar.quux.<comprehension>.x" } }
+        }
+      },
+      "container": { "module": { "key": { "name": { "key": "bar.quux" } } } }
+    }
+  },
+  {
+    "key": {
+      "containee": {
+        "variable": {
           "key": { "name": { "key": "bar.quux.Foo.func.<locals>.ex" } }
         }
       },

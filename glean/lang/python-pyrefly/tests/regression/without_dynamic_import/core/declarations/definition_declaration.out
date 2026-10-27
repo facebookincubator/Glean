@@ -1777,6 +1777,27 @@
     "key": {
       "declaration": {
         "variable": {
+          "key": { "name": { "key": "bar.quux.<comprehension>.x" } }
+        }
+      },
+      "definition": {
+        "variable": {
+          "key": {
+            "container": {
+              "module": { "key": { "name": { "key": "bar.quux" } } }
+            },
+            "declaration": {
+              "key": { "name": { "key": "bar.quux.<comprehension>.x" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
           "key": { "name": { "key": "bar.quux.Foo.func.<locals>.ex" } }
         }
       },
