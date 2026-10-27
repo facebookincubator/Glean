@@ -1,0 +1,4 @@
+query: |
+  { L, K } where
+    codemarkup.search.SearchByName { searchcase = Sensitive, name = "Options", language = Cpp, location = L, kind = K }
+transform: [gensort, []]

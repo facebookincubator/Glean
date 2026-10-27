@@ -13,14 +13,27 @@ module Glean.Glass.SymbolId.Cxx (
     {- instances -}
     cxxEntityDefinitionType
   , cxxEntityKind
+  , sidlMarker
+  , sidlSymbolTokens
+  , sidlKindToken
+  , sidlKindFromToken
+  , parseSidlLine
+  , splitSidlSymbolId
 
   ) where
 
-import Data.Text as Text ( Text, intercalate, break, replace, splitOn, pack)
+import Data.Text as Text
+  ( Text, intercalate, break, replace, splitOn, pack, null, isInfixOf
+  , compareLength)
+import Data.Text.Read ( decimal )
+import Data.Int ( Int64 )
+import Thrift.Protocol ( ThriftEnum(allThriftEnumValues) )
 import Data.Maybe
+import Control.Monad ( guard )
 import Control.Monad.Catch ( throwM )
 
 import Glean.Glass.SymbolId.Class
+import Glean.Glass.SymbolId.Cxx.Parse ( isMarkerToken )
 
 import qualified Glean
 import qualified Glean.Haxl.Repos as Glean
@@ -29,6 +42,7 @@ import Glean.Glass.Types
 import qualified Glean.Glass.Types as Glass
 import qualified Glean.Schema.CodeCxx.Types as Cxx
 import qualified Glean.Schema.Cxx1.Types as Cxx
+import qualified Glean.Schema.Src.Types as Src
 
 import Glean.Angle
 import qualified Glean.Schema.CodemarkupCxx.Types as Code
@@ -38,7 +52,7 @@ import Glean.Glass.Utils (fetchData)
 instance Symbol Cxx.Entity where
   toSymbol _ = throwM $ SymbolError "Cxx.Entity: use toSymbolWithPath"
 
-  toSymbolWithPath e (Path path) = (root++) <$> case e of
+  toSymbolWithPath e (Path path) = (prefix++) <$> case e of
       Cxx.Entity_defn defn -> toSymbol defn
       -- these are "second class" in that they're less significant in
       -- glass activities than defns, so we tag them to differentiate
@@ -48,6 +62,7 @@ instance Symbol Cxx.Entity where
         sym <- toSymbol decl
         pure (sym ++ [".decl"])
       Cxx.Entity_enumerator enum -> toSymbolPredicate enum
+      Cxx.Entity_sidlDecl decl -> toSymbolPredicate decl
       Cxx.Entity_objcSelectorSlot (Cxx.ObjcSelectorSlotEntity method idx) -> do
         sym <- case method of
           Cxx.ObjcMethodEntity_decl decl -> do
@@ -64,6 +79,10 @@ instance Symbol Cxx.Entity where
         "" -> []
         p | rest == "" -> [mempty] -- no path (e.g. "test" repo) produces //
           | otherwise -> [p]
+      -- SIDL ids already carry their full file path.
+      prefix = case e of
+        Cxx.Entity_sidlDecl{} -> []
+        _ -> root
 
 instance Symbol Cxx.Declaration where
   toSymbol d = case d of
@@ -118,6 +137,77 @@ instance Symbol Cxx.ObjcContainerDefinition_key where
 
 instance Symbol Cxx.Enumerator_key where
   toSymbol (Cxx.Enumerator_key name decl _) = decl <:> name
+
+instance Symbol Cxx.SidlDeclaration_key where
+  toSymbol (Cxx.SidlDeclaration_key name kind range) = do
+    nameTok <- toSymbol name
+    filePath <- Glean.keyOf (Src.range_file range)
+    let line = Glean.unNat (Src.range_lineBegin range)
+    case nameTok of
+      [s] -> either (throwM . SymbolError . ("Cxx.SidlDeclaration: " <>)) pure
+        (sidlSymbolTokens kind filePath s line)
+      _ -> throwM $ SymbolError "Cxx.SidlDeclaration: bad SIDL name"
+
+sidlMarker :: Text
+sidlMarker = ".sidl"
+
+-- | Rejects inputs that would not decode back to the same values.
+sidlSymbolTokens :: Cxx.SidlKind -> Text -> Text -> Int64 -> Either Text [Text]
+sidlSymbolTokens kind filePath name line = case sidlKindToken kind of
+  Nothing -> Left "unknown SIDL kind"
+  Just kindTok
+    | not (isSidlToken name) -> Left "bad SIDL name"
+    | not (all isSidlToken fileSegs) -> Left "bad SIDL file path"
+    | line < 0 -> Left "bad SIDL line"
+    | otherwise -> Right $
+        sidlMarker : kindTok : fileSegs
+          ++ [name, Text.pack (show line)]
+  where
+    fileSegs = Text.splitOn "/" filePath
+
+isSidlToken :: Text -> Bool
+isSidlToken t =
+  not (Text.null t) && not ("/" `Text.isInfixOf` t) && not (isMarkerToken t)
+
+sidlKindToken :: Cxx.SidlKind -> Maybe Text
+sidlKindToken kind = case kind of
+  Cxx.SidlKind_Struct -> Just "struct"
+  Cxx.SidlKind_Enum -> Just "enum"
+  Cxx.SidlKind_Enumerator -> Just "enumerator"
+  Cxx.SidlKind_Alias -> Just "alias"
+  Cxx.SidlKind_Const -> Just "const"
+  Cxx.SidlKind_Interface -> Just "interface"
+  Cxx.SidlKind_Method -> Just "method"
+  Cxx.SidlKind_Field -> Just "field"
+  Cxx.SidlKind__UNKNOWN{} -> Nothing
+
+sidlKindFromToken :: Text -> Maybe Cxx.SidlKind
+sidlKindFromToken tok = lookup tok
+  [ (kindTok, kind)
+  | kind <- allThriftEnumValues
+  , Just kindTok <- [sidlKindToken kind]
+  ]
+
+-- | Accepts only the canonical decimal digits that 'sidlSymbolTokens' emits.
+parseSidlLine :: Text -> Maybe Int64
+parseSidlLine t
+  | Text.compareLength t (length (show (maxBound :: Int64))) == GT = Nothing
+  | otherwise = case decimal t of
+      Right (n, _)
+        | Text.pack (show n) == t && n <= toInteger (maxBound :: Int64) ->
+            Just (fromInteger n)
+      _ -> Nothing
+
+-- | Decodes kind, file, and name; the caller decodes the line.
+splitSidlSymbolId :: [Text] -> Maybe (Cxx.SidlKind, Text, Text)
+splitSidlSymbolId toks = case toks of
+  kindTok : rest | length rest >= 2 -> do
+    kind <- sidlKindFromToken kindTok
+    let declName = last rest
+        fileSegs = init rest
+    guard (all isSidlToken rest)
+    return (kind, Text.intercalate "/" fileSegs, declName)
+  _ -> Nothing
 
 instance Symbol Cxx.EnumDeclaration where
   toSymbol e = toSymbolPredicate e
@@ -370,6 +460,7 @@ instance ToSymbolParent Cxx.Entity where
     Cxx.Entity_decl x -> toSymbolParent x
     Cxx.Entity_defn{} -> return Nothing
     Cxx.Entity_enumerator x -> Glean.keyOf x >>= toSymbolParent
+    Cxx.Entity_sidlDecl{} -> return Nothing
     Cxx.Entity_objcSelectorSlot{} -> return Nothing
     Cxx.Entity_EMPTY -> return Nothing
 
@@ -495,6 +586,7 @@ cxxEntityDefinitionType e = case e of
   Cxx.Entity_decl{} -> Glass.DefinitionKind_Declaration
   Cxx.Entity_defn{} -> Glass.DefinitionKind_Definition
   Cxx.Entity_enumerator{} -> Glass.DefinitionKind_Definition -- is this ok?
+  Cxx.Entity_sidlDecl{} -> Glass.DefinitionKind_Definition
   Cxx.Entity_objcSelectorSlot (Cxx.ObjcSelectorSlotEntity method _) -> do
     case method of
       Cxx.ObjcMethodEntity_decl{} -> Glass.DefinitionKind_Declaration
@@ -510,8 +602,24 @@ cxxEntityKind e = case e of
   Cxx.Entity_decl x -> toSymbolDeclKind x
   Cxx.Entity_defn x -> toSymbolDefnKind x
   Cxx.Entity_enumerator{} -> return $ Just SymbolKind_Enumerator
+  Cxx.Entity_sidlDecl decl -> toSymbolSidlKind decl
   Cxx.Entity_objcSelectorSlot{} -> return $ Just SymbolKind_Method
   Cxx.Entity_EMPTY -> return Nothing
+
+toSymbolSidlKind
+  :: Cxx.SidlDeclaration -> Glean.RepoHaxl u w (Maybe Glass.SymbolKind)
+toSymbolSidlKind decl = do
+  Cxx.SidlDeclaration_key _name kind _range <- Glean.keyOf decl
+  return $ case kind of
+    Cxx.SidlKind_Struct -> Just SymbolKind_Struct
+    Cxx.SidlKind_Enum -> Just SymbolKind_Enum
+    Cxx.SidlKind_Enumerator -> Just SymbolKind_Enumerator
+    Cxx.SidlKind_Alias -> Just SymbolKind_Type
+    Cxx.SidlKind_Const -> Just SymbolKind_Constant
+    Cxx.SidlKind_Interface -> Just SymbolKind_Interface
+    Cxx.SidlKind_Method -> Just SymbolKind_Method
+    Cxx.SidlKind_Field -> Just SymbolKind_Field
+    Cxx.SidlKind__UNKNOWN{} -> Nothing
 
 -- to match idelsp/GleanLSPConverter.php
 -- Glean-side implementation in codemarkup.cxx.angle. This exists to
@@ -584,6 +692,11 @@ toSymbolDefnKind k = case k of
 -- make sure the generated scope/local name fragments match clangd
 --
 instance ToQName Cxx.Entity where
+  -- SIDL tokens are file positions, not scopes.
+  toQName (Cxx.Entity_sidlDecl decl) = do
+    Cxx.SidlDeclaration_key name _kind _range <- Glean.keyOf decl
+    nameStr <- Glean.keyOf name
+    return $ Right (Name nameStr, Name "")
   toQName e = do
     symId <- toSymbolWithPath e (Path mempty) -- we already had the symbolid tho
     return $ case symId of -- this is a hack, should use the real scope/qname

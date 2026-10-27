@@ -1,0 +1,311 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "IEchoService" },
+            "kind": 5,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 32,
+              "columnBegin": 1,
+              "lineEnd": 36,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "Millis" },
+            "kind": 3,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 13,
+              "columnBegin": 1,
+              "lineEnd": 13,
+              "columnEnd": 22
+            }
+          }
+        }
+      },
+      "kind": 1
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "Mode" },
+            "kind": 1,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 15,
+              "columnBegin": 1,
+              "lineEnd": 18,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "kind": 11
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "Off" },
+            "kind": 2,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 16,
+              "columnBegin": 3,
+              "lineEnd": 16,
+              "columnEnd": 9
+            }
+          }
+        }
+      },
+      "kind": 23
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "On" },
+            "kind": 2,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 17,
+              "columnBegin": 3,
+              "lineEnd": 17,
+              "columnEnd": 8
+            }
+          }
+        }
+      },
+      "kind": 23
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "Options" },
+            "kind": 0,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 21,
+              "columnBegin": 1,
+              "lineEnd": 25,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "kind": 24
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "Request" },
+            "kind": 0,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 27,
+              "columnBegin": 1,
+              "lineEnd": 30,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "kind": 24
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "configure" },
+            "kind": 6,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 35,
+              "columnBegin": 3,
+              "lineEnd": 35,
+              "columnEnd": 40
+            }
+          }
+        }
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "echo" },
+            "kind": 6,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 33,
+              "columnBegin": 3,
+              "lineEnd": 33,
+              "columnEnd": 29
+            }
+          }
+        }
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "kLimit" },
+            "kind": 4,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 11,
+              "columnBegin": 1,
+              "lineEnd": 11,
+              "columnEnd": 23
+            }
+          }
+        }
+      },
+      "kind": 15
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "mode" },
+            "kind": 7,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 28,
+              "columnBegin": 3,
+              "lineEnd": 28,
+              "columnEnd": 15
+            }
+          }
+        }
+      },
+      "kind": 9
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "options" },
+            "kind": 7,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 29,
+              "columnBegin": 3,
+              "lineEnd": 29,
+              "columnEnd": 21
+            }
+          }
+        }
+      },
+      "kind": 9
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "retries" },
+            "kind": 7,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 24,
+              "columnBegin": 3,
+              "lineEnd": 24,
+              "columnEnd": 19
+            }
+          }
+        }
+      },
+      "kind": 9
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "timeout" },
+            "kind": 7,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 22,
+              "columnBegin": 3,
+              "lineEnd": 22,
+              "columnEnd": 20
+            }
+          }
+        }
+      },
+      "kind": 9
+    }
+  }
+]

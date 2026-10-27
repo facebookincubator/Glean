@@ -16,11 +16,16 @@ import Data.Text ( Text )
 import qualified Data.Text as Text
 import qualified Data.Set as Set
 import Data.Maybe
+import Data.Int ( Int64 )
 
 import TestRunner ( testRunner )
 import Glean.Init ( withUnitTest )
 
+import Glean.Glass.SymbolId.Cxx
+  ( sidlMarker, sidlSymbolTokens, sidlKindToken, sidlKindFromToken
+  , parseSidlLine, splitSidlSymbolId )
 import Glean.Glass.SymbolId.Cxx.Parse
+import qualified Glean.Schema.Cxx1.Types as Cxx
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
@@ -47,6 +52,17 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "conv_fn_1" conv_fn_1
   , TestLabel "conv_fn_2" conv_fn_2
   , TestLabel "conv_fn_3" conv_fn_3
+  , TestLabel "marker_tokens" marker_tokens
+  , TestLabel "sidl_field" sidl_field
+  , TestLabel "sidl_kind_tokens" sidl_kind_tokens
+  , TestLabel "sidl_kind_roundtrip" sidl_kind_roundtrip
+  , TestLabel "sidl_kind_unknown" sidl_kind_unknown
+  , TestLabel "sidl_roundtrip" sidl_roundtrip
+  , TestLabel "sidl_encode_rejects" sidl_encode_rejects
+  , TestLabel "sidl_line" sidl_line
+  , TestLabel "sidl_line_rejects" sidl_line_rejects
+  , TestLabel "sidl_split" sidl_split
+  , TestLabel "sidl_split_rejects" sidl_split_rejects
   ]
 
 namespace1 :: Test
@@ -170,6 +186,135 @@ conv_fn_3 = test
   (conv_sig "T &" [] <$>
     anon_defn "fbcode" ["foo", "anything"]) (sym
       "fbcode/foo/anything/.t/T+&")
+
+marker_tokens :: Test
+marker_tokens = test expected [ (t, isMarkerToken t) | (t, _) <- expected ]
+  where
+    expected =
+      [ (t, True) | t <- [".decl", ".ctor", ".d", ".c", ".f", ".o", ".t"] ] ++
+      [ (t, False) | t <- ["foo", "", ".", ".sidl", "d", ".x"] ]
+
+sidl_field :: Test
+sidl_field = test
+  (ok ".sidl" ["field","fbcode","foo","bar.sidl","id"] "42")
+  (sym ".sidl/field/fbcode/foo/bar.sidl/id/42")
+
+sidl_kinds :: [(Cxx.SidlKind, Text)]
+sidl_kinds =
+  [ (Cxx.SidlKind_Struct, "struct")
+  , (Cxx.SidlKind_Enum, "enum")
+  , (Cxx.SidlKind_Enumerator, "enumerator")
+  , (Cxx.SidlKind_Alias, "alias")
+  , (Cxx.SidlKind_Const, "const")
+  , (Cxx.SidlKind_Interface, "interface")
+  , (Cxx.SidlKind_Method, "method")
+  , (Cxx.SidlKind_Field, "field")
+  ]
+
+sidl_kind_tokens :: Test
+sidl_kind_tokens = test
+  (map (Just . snd) sidl_kinds)
+  (map (sidlKindToken . fst) sidl_kinds)
+
+sidl_kind_roundtrip :: Test
+sidl_kind_roundtrip = test
+  (map (Just . snd) sidl_kinds)
+  (map (\(_, tok) -> sidlKindFromToken tok >>= sidlKindToken) sidl_kinds)
+
+sidl_kind_unknown :: Test
+sidl_kind_unknown = test (Nothing, Nothing, Nothing)
+  ( sidlKindFromToken "unknown"
+  , sidlKindFromToken "bogus"
+  , sidlKindToken (Cxx.SidlKind__UNKNOWN 99)
+  )
+
+sidl_line :: Test
+sidl_line = test
+  [Just 42, Just 0]
+  [parseSidlLine "42", parseSidlLine "0"]
+
+sidl_line_rejects :: Test
+sidl_line_rejects = test
+  [Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing]
+  [ parseSidlLine "-1"
+  , parseSidlLine "042"
+  , parseSidlLine "(42)"
+  , parseSidlLine ""
+  , parseSidlLine "bogus"
+  , parseSidlLine "42 "
+  , parseSidlLine " 42"
+  , parseSidlLine "99999999999999999999999"
+  ]
+
+sidl_split :: Test
+sidl_split = test
+  (Just (Cxx.SidlKind_Field, "fbcode/foo/bar.sidl", "id"))
+  (splitSidlSymbolId ["field","fbcode","foo","bar.sidl","id"])
+
+sidl_split_rejects :: Test
+sidl_split_rejects = test
+  [Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing]
+  [ splitSidlSymbolId ["field","id"]
+  , splitSidlSymbolId ["field","fbcode",".d","bar.sidl","id"]
+  , splitSidlSymbolId ["field","fbcode","foo","bar.sidl",".f"]
+  , splitSidlSymbolId ["bogus","fbcode","foo","bar.sidl","id"]
+  , splitSidlSymbolId ["field","fbcode","foo","bar.sidl",""]
+  , splitSidlSymbolId ["field","fbcode","","bar.sidl","id"]
+  , splitSidlSymbolId ["field","fbcode","fo/o","bar.sidl","id"]
+  , splitSidlSymbolId ["field","fbcode","foo","bar.sidl","i/d"]
+  ]
+
+sidl_roundtrip :: Test
+sidl_roundtrip = test (map (Right . Just) decls)
+  [ decodeSidl <$> sidlSymbolTokens kind file name line
+  | (kind, file, name, line) <- decls
+  ]
+  where
+    decls :: [(Cxx.SidlKind, Text, Text, Int64)]
+    decls =
+      [ (kind, file, name, line)
+      | kind <- map fst sidl_kinds
+      , (file, name, line) <-
+          [ ("fbcode/foo/bar.sidl", "id", 42)
+          , ("bar.sidl", "id", 0)
+          , ("fbcode/.sidl/a.b/bar.sidl", "T+&", 7)
+          , ("fbcode/foo/bar.sidl", "id", maxBound)
+          ]
+      ]
+
+sidl_encode_rejects :: Test
+sidl_encode_rejects = test
+  [ Left "unknown SIDL kind"
+  , Left "bad SIDL name"
+  , Left "bad SIDL name"
+  , Left "bad SIDL name"
+  , Left "bad SIDL file path"
+  , Left "bad SIDL file path"
+  , Left "bad SIDL file path"
+  , Left "bad SIDL line"
+  ]
+  [ sidlSymbolTokens (Cxx.SidlKind__UNKNOWN 99) "fbcode/bar.sidl" "id" 1
+  , field "fbcode/bar.sidl" "" 1
+  , field "fbcode/bar.sidl" "i/d" 1
+  , field "fbcode/bar.sidl" ".f" 1
+  , field "fbcode/.d/bar.sidl" "id" 1
+  , field "fbcode//bar.sidl" "id" 1
+  , field "/fbcode/bar.sidl" "id" 1
+  , field "fbcode/bar.sidl" "id" (-1)
+  ]
+  where
+    field = sidlSymbolTokens Cxx.SidlKind_Field
+
+decodeSidl :: [Text] -> Maybe (Cxx.SidlKind, Text, Text, Int64)
+decodeSidl toks = case sym (Text.intercalate "/" toks) of
+  Right env
+    | Right (CxxDefn (CxxAny path scope (Name lineTok))) <-
+        compileSymbolEnv env
+    , path == sidlMarker -> do
+        (kind, file, name) <- splitSidlSymbolId (unNames scope)
+        line <- parseSidlLine lineTok
+        return (kind, file, name, line)
+  _ -> Nothing
 
 -- Helpers
 

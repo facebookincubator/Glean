@@ -14,6 +14,7 @@ module Glean.Glass.Search.Cxx
   ( {- instances -}
   ) where
 
+import Data.Int ( Int64 )
 import Data.Text ( Text )
 import qualified Data.Text as Text
 import Data.Set ( Set )
@@ -25,6 +26,7 @@ import Glean.Haxl.Repos (ReposHaxl)
 import Glean.Glass.Search.Class
     ( ResultLocation, SearchResult(None), Search(..), searchSymbolId )
 import Glean.Glass.Query ( entityLocation )
+import Glean.Glass.SymbolId.Cxx ( sidlMarker, parseSidlLine, splitSidlSymbolId )
 import qualified Glean.Glass.SymbolId.Cxx.Parse as P
 
 import qualified Glean.Schema.CodeCxx.Types as Cxx
@@ -47,6 +49,20 @@ cxxSymbolSearch t = case P.validateSymbolId t of
       P.CxxDecl e -> cxxSymbolExprEvalDecl t e
       P.CxxDefn e -> cxxSymbolExprEvalDefn t e
 
+-- | Search for the entity named by a C++ symbol id that ends in @.decl@,
+-- i.e. a declaration rather than a definition. Each kind of parsed id
+-- (constructor, function, operator, ...) goes to the declaration lookup
+-- for that kind of symbol.
+--
+-- A SIDL symbol id, such as
+--
+-- > fbsource/cpp/.sidl/struct/fbcode/foo/foo.sidl/Options/21
+--
+-- parses as 'P.CxxAny' with path @.sidl@. It names a
+-- @cxx1.SidlDeclaration@, not a C++ declaration under a path prefix, so
+-- 'searchSidlDeclaration' looks it up. Glass never adds @.decl@ to a
+-- SIDL symbol id; with it, the id still resolves to the same SIDL
+-- declaration.
 cxxSymbolExprEvalDecl
   :: [Text]
   -> P.CxxSymbolExpr
@@ -66,8 +82,18 @@ cxxSymbolExprEvalDecl t exp = case exp of
   P.CxxLegacyCTorParams{..} ->
     let scope' = cScope <> [P.Name ".ctor"] -- hack into scope query builder
     in searchSymbolId t $ lookupDeclaration cPath scope' cName
-  P.CxxAny{..} -> searchDeclarations t cPath cScope cName
+  P.CxxAny{..}
+    | cPath == sidlMarker -> searchSidlDeclaration t cScope cName
+    | otherwise -> searchDeclarations t cPath cScope cName
 
+-- | Search for the entity named by a C++ symbol id without @.decl@: a
+-- definition, or an entity with no separate declaration, such as an
+-- enumerator. Same dispatch as 'cxxSymbolExprEvalDecl', with the
+-- definition lookups.
+--
+-- SIDL symbol ids never end in @.decl@, so they arrive here. A SIDL
+-- declaration has no separate definition: 'searchSidlDeclaration'
+-- returns the @cxx1.SidlDeclaration@ itself.
 cxxSymbolExprEvalDefn
   :: [Text] -> P.CxxSymbolExpr -> ReposHaxl u w (SearchResult (ResultLocation Cxx.Entity))
 cxxSymbolExprEvalDefn t exp = case exp of
@@ -85,7 +111,70 @@ cxxSymbolExprEvalDefn t exp = case exp of
   P.CxxLegacyCTorParams{..} ->
     let scope' = cScope <> [P.Name ".ctor"] -- hack into scope query builder
     in searchSymbolId t $ lookupDefinition cPath scope' cName
-  P.CxxAny{..} -> searchDefinitions t cPath cScope cName
+  P.CxxAny{..}
+    | cPath == sidlMarker -> searchSidlDeclaration t cScope cName
+    | otherwise -> searchDefinitions t cPath cScope cName
+
+-- | Find the SIDL declaration named by a SIDL symbol id, as a
+-- @code.cxx.Entity.sidlDecl@ entity with its location in the @.sidl@
+-- file.
+--
+-- The C++ symbol id parser has already split the id. For
+--
+-- > fbsource/cpp/.sidl/struct/fbcode/foo/foo.sidl/Options/21
+--
+-- the scope is @struct@, @fbcode@, @foo@, @foo.sidl@, @Options@ and the
+-- local name is @21@. Returns 'None' if they don't decode as a SIDL id
+-- (see 'parseSidlSymbolId').
+searchSidlDeclaration
+  :: [Text]
+  -> [P.Name]
+  -> P.Name
+  -> ReposHaxl u w (SearchResult (ResultLocation Cxx.Entity))
+searchSidlDeclaration t scope name =
+  case parseSidlSymbolId scope name of
+    Nothing -> return $ None "Cxx.searchSidlDeclaration: not a SIDL symbol id"
+    Just (kind, filePath, declName, line) ->
+      searchSymbolId t (lookupSidlDeclaration filePath kind declName line)
+
+-- | Decode the scope and local name of a parsed SIDL symbol id into the
+-- declaration's kind, file path, name and first line. 'Nothing' if they
+-- don't have that shape (see 'splitSidlSymbolId' and 'parseSidlLine').
+parseSidlSymbolId
+  :: [P.Name] -> P.Name -> Maybe (Cxx.SidlKind, Text, Text, Int64)
+parseSidlSymbolId scope (P.Name lineTok) = do
+  (kind, filePath, declName) <- splitSidlSymbolId (map P.unName scope)
+  line <- parseSidlLine lineTok
+  return (kind, filePath, declName, line)
+
+-- | The @cxx1.SidlDeclaration@ with this file, kind, name and first
+-- line, as a @sidlDecl@ entity, with its location from
+-- @codemarkup.EntityLocation@ (see 'entityFooter'). These four values
+-- are what a SIDL symbol id encodes.
+lookupSidlDeclaration
+  :: Text -> Cxx.SidlKind -> Text -> Int64
+  -> Angle (ResultLocation Cxx.Entity)
+lookupSidlDeclaration filePath kind name line =
+  vars $ \(entity :: Angle Cxx.Entity) (codeEntity :: Angle Code.Entity)
+    (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
+    (lname :: Angle Text) (decl :: Angle Cxx.SidlDeclaration)
+    (declName :: Angle Cxx.Name) ->
+    tuple (entity, file, rangespan, lname) `where_` ([
+      file .= predicate @Src.File (string filePath),
+      declName .= predicate @Cxx.Name (string name),
+      decl .= predicate @Cxx.SidlDeclaration (
+        rec $
+          field @"name" (asPredicate declName) $
+          field @"kind" (enum kind) $
+          field @"range" (
+            rec $
+              field @"file" (asPredicate file) $
+              field @"lineBegin" (nat (fromIntegral line))
+            end)
+        end),
+      alt @"sidlDecl" (asPredicate decl) .= sig entity
+    -- file is bound exactly above, so no prefix anchor.
+    ] <> entityFooter "" entity codeEntity file rangespan lname)
 
 -- this is the most common path, for e.g. classes and functions
 --

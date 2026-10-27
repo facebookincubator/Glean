@@ -1,0 +1,3 @@
+query: codemarkup.cxx.CxxIdlEntityUses { target = { cxx = { sidlDecl = _ } } }
+perf: True
+transform: [gensort, []]

@@ -1,0 +1,36 @@
+/*
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+package glean.sidl;
+
+const int32 kLimit = 7;
+
+using Millis = uint64;
+
+enum Mode : int16 {
+  Off = 0,
+  On = 1
+}
+
+/** Retry policy for a request. */
+struct Options {
+  1: Millis timeout;
+  /** Upper bound on retries. */
+  2: int32 retries;
+}
+
+struct Request {
+  1: Mode mode;
+  2: Options options;
+}
+
+service IEchoService {
+  1: int32 echo(int32 value);
+
+  2: Options configure(Request request);
+}

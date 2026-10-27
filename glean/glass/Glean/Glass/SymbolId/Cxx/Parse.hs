@@ -20,6 +20,7 @@ module Glean.Glass.SymbolId.Cxx.Parse (
     unNames,
     CxxTaggedSymbolExpr(..),
     CxxSymbolExpr(..),
+    isMarkerToken,
 
     -- testing
     toQualifier
@@ -57,6 +58,14 @@ tokenize ".f" = TFunction
 tokenize ".o" = TOperator
 tokenize ".t" = TConversionOperator
 tokenize n = TName n
+
+-- | Whether 'tokenize' reads this symbol id segment as a tag, such as
+-- @.decl@ or @.ctor@, rather than as a name. A name segment equal to a
+-- tag would be parsed back as that tag.
+isMarkerToken :: Text -> Bool
+isMarkerToken t = case tokenize t of
+  TName{} -> False
+  _ -> True
 
 name :: Text -> Name
 name = Name

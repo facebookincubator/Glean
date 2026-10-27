@@ -1,0 +1,2167 @@
+[
+  "@generated",
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "Admin" },
+          "kind": 2,
+          "range": {
+            "file": {
+              "key": "xplat/arfx/osf/sidl/src/__tests__/snapshots/flagsToolCalls/PermissionService.sidl"
+            },
+            "lineBegin": 8,
+            "columnBegin": 3,
+            "lineEnd": 8,
+            "columnEnd": 15
+          }
+        }
+      },
+      "from": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "Admin" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Permission" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "flags_tools" },
+                          "parent": {
+                            "key": {
+                              "name": { "key": "examples" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "osf" },
+                                  "parent": {
+                                    "key": { "name": { "key": "arfx" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "isScoped": true,
+                "type": { "key": "uint32_t" },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 199,
+                  "columnBegin": 1,
+                  "lineEnd": 207,
+                  "columnEnd": 1
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 206,
+              "columnBegin": 3,
+              "lineEnd": 206,
+              "columnEnd": 14
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "Bar" },
+          "kind": 2,
+          "range": {
+            "file": { "key": "xplat/arfx/osf/examples/echo/EchoService.sidl" },
+            "lineBegin": 15,
+            "columnBegin": 3,
+            "lineEnd": 15,
+            "columnEnd": 9
+          }
+        }
+      },
+      "from": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "Bar" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "EchoEnum" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "isScoped": true,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 20,
+                  "columnBegin": 1,
+                  "lineEnd": 26,
+                  "columnEnd": 1
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 24,
+              "columnBegin": 3,
+              "lineEnd": 24,
+              "columnEnd": 9
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "BindParams" },
+          "kind": 0,
+          "range": {
+            "file": { "key": "xplat/arfx/osf/core/sidl/BindParams.sidl" },
+            "lineBegin": 9,
+            "columnBegin": 1,
+            "lineEnd": 16,
+            "columnEnd": 1
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "BindParams" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 10,
+                "columnBegin": 1,
+                "lineEnd": 13,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "EchoEnum" },
+          "kind": 1,
+          "range": {
+            "file": { "key": "xplat/arfx/osf/examples/echo/EchoService.sidl" },
+            "lineBegin": 13,
+            "columnBegin": 1,
+            "lineEnd": 17,
+            "columnEnd": 1
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "enum_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "EchoEnum" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "isScoped": true,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 20,
+                "columnBegin": 1,
+                "lineEnd": 26,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "EchoStringStruct" },
+          "kind": 0,
+          "range": {
+            "file": { "key": "xplat/arfx/osf/examples/echo/EchoService.sidl" },
+            "lineBegin": 3,
+            "columnBegin": 1,
+            "lineEnd": 5,
+            "columnEnd": 1
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "EchoStringStruct" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 16,
+                "columnBegin": 1,
+                "lineEnd": 16,
+                "columnEnd": 26
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "Foo" },
+          "kind": 2,
+          "range": {
+            "file": { "key": "xplat/arfx/osf/examples/echo/EchoService.sidl" },
+            "lineBegin": 14,
+            "columnBegin": 3,
+            "lineEnd": 14,
+            "columnEnd": 5
+          }
+        }
+      },
+      "from": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "Foo" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "EchoEnum" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "isScoped": true,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 20,
+                  "columnBegin": 1,
+                  "lineEnd": 26,
+                  "columnEnd": 1
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 22,
+              "columnBegin": 3,
+              "lineEnd": 22,
+              "columnEnd": 9
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "GrantResult" },
+          "kind": 0,
+          "range": {
+            "file": {
+              "key": "xplat/arfx/osf/sidl/src/__tests__/snapshots/flagsToolCalls/PermissionService.sidl"
+            },
+            "lineBegin": 14,
+            "columnBegin": 1,
+            "lineEnd": 18,
+            "columnEnd": 1
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "GrantResult" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "flags_tools" },
+                        "parent": {
+                          "key": {
+                            "name": { "key": "examples" },
+                            "parent": {
+                              "key": {
+                                "name": { "key": "osf" },
+                                "parent": {
+                                  "key": { "name": { "key": "arfx" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 211,
+                "columnBegin": 1,
+                "lineEnd": 215,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "HasFields" },
+          "kind": 0,
+          "range": {
+            "file": { "key": "xplat/arfx/osf/core/sidl/BindParams.sidl" },
+            "lineBegin": 40,
+            "columnBegin": 1,
+            "lineEnd": 46,
+            "columnEnd": 1
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "HasFields" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 59,
+                "columnBegin": 1,
+                "lineEnd": 65,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "IDefaultValuesHandler" },
+          "kind": 5,
+          "range": {
+            "file": {
+              "key": "xplat/arfx/osf/sidl/src/__tests__/snapshots/defaultValues/defaultValues.sidl"
+            },
+            "lineBegin": 82,
+            "columnBegin": 1,
+            "lineEnd": 85,
+            "columnEnd": 1
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "IDefaultValuesHandler" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "default_values" },
+                        "parent": {
+                          "key": {
+                            "name": { "key": "examples" },
+                            "parent": {
+                              "key": {
+                                "name": { "key": "osf" },
+                                "parent": {
+                                  "key": { "name": { "key": "arfx" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": { "class_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 234,
+                "columnBegin": 1,
+                "lineEnd": 246,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "IEchoCallback" },
+          "kind": 5,
+          "range": {
+            "file": { "key": "xplat/arfx/osf/examples/echo/EchoService.sidl" },
+            "lineBegin": 7,
+            "columnBegin": 1,
+            "lineEnd": 11,
+            "columnEnd": 1
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "IEchoCallback" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 56,
+                "columnBegin": 1,
+                "lineEnd": 56,
+                "columnEnd": 23
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "IEchoService" },
+          "kind": 5,
+          "range": {
+            "file": { "key": "xplat/arfx/osf/examples/echo/EchoService.sidl" },
+            "lineBegin": 24,
+            "columnBegin": 1,
+            "lineEnd": 27,
+            "columnEnd": 1
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "IEchoService" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 47,
+                "columnBegin": 1,
+                "lineEnd": 53,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "KeptVal" },
+          "kind": 2,
+          "range": {
+            "file": { "key": "x.sidl" },
+            "lineBegin": 17,
+            "columnBegin": 3,
+            "lineEnd": 17,
+            "columnEnd": 13
+          }
+        }
+      },
+      "from": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "KeptVal" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "EnumeratorNegatives" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "isScoped": true,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 79,
+                  "columnBegin": 1,
+                  "lineEnd": 88,
+                  "columnEnd": 1
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 87,
+              "columnBegin": 3,
+              "lineEnd": 87,
+              "columnEnd": 13
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "Millis" },
+          "kind": 3,
+          "range": {
+            "file": { "key": "xplat/arfx/osf/examples/echo/EchoService.sidl" },
+            "lineBegin": 20,
+            "columnBegin": 1,
+            "lineEnd": 20,
+            "columnEnd": 21
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "typeAlias": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Millis" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "type": { "key": "long" },
+              "kind": 1,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 35,
+                "columnBegin": 1,
+                "lineEnd": 35,
+                "columnEnd": 19
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "Multi" },
+          "kind": 0,
+          "range": {
+            "file": { "key": "x.sidl" },
+            "lineBegin": 3,
+            "columnBegin": 1,
+            "lineEnd": 4,
+            "columnEnd": 1
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Multi" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 96,
+                "columnBegin": 1,
+                "lineEnd": 96,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "MultiSecond" },
+          "kind": 0,
+          "range": {
+            "file": { "key": "x.sidl" },
+            "lineBegin": 6,
+            "columnBegin": 1,
+            "lineEnd": 7,
+            "columnEnd": 1
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "MultiSecond" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 104,
+                "columnBegin": 1,
+                "lineEnd": 104,
+                "columnEnd": 21
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "MultiSecondVal" },
+          "kind": 2,
+          "range": {
+            "file": { "key": "x.sidl" },
+            "lineBegin": 8,
+            "columnBegin": 3,
+            "lineEnd": 8,
+            "columnEnd": 16
+          }
+        }
+      },
+      "from": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "MultiSecondVal" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "MultiSecondEnum" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "isScoped": true,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 106,
+                  "columnBegin": 1,
+                  "lineEnd": 109,
+                  "columnEnd": 1
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 108,
+              "columnBegin": 3,
+              "lineEnd": 108,
+              "columnEnd": 20
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "MultiVal" },
+          "kind": 2,
+          "range": {
+            "file": { "key": "x.sidl" },
+            "lineBegin": 5,
+            "columnBegin": 3,
+            "lineEnd": 5,
+            "columnEnd": 10
+          }
+        }
+      },
+      "from": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "MultiVal" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "MultiEnum" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "isScoped": true,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 98,
+                  "columnBegin": 1,
+                  "lineEnd": 101,
+                  "columnEnd": 1
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 100,
+              "columnBegin": 3,
+              "lineEnd": 100,
+              "columnEnd": 14
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "Nested" },
+          "kind": 0,
+          "range": {
+            "file": { "key": "x.sidl" },
+            "lineBegin": 10,
+            "columnBegin": 1,
+            "lineEnd": 11,
+            "columnEnd": 1
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Nested" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 112,
+                "columnBegin": 1,
+                "lineEnd": 112,
+                "columnEnd": 16
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "NestedVal" },
+          "kind": 2,
+          "range": {
+            "file": { "key": "x.sidl" },
+            "lineBegin": 13,
+            "columnBegin": 3,
+            "lineEnd": 13,
+            "columnEnd": 11
+          }
+        }
+      },
+      "from": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "NestedVal" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "NestedEnum" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "isScoped": true,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 114,
+                  "columnBegin": 1,
+                  "lineEnd": 117,
+                  "columnEnd": 1
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 116,
+              "columnBegin": 3,
+              "lineEnd": 116,
+              "columnEnd": 15
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "NodeType" },
+          "kind": 1,
+          "range": {
+            "file": { "key": "xplat/arfx/osf/core/sidl/NodeType.sidl" },
+            "lineBegin": 5,
+            "columnBegin": 1,
+            "lineEnd": 12,
+            "columnEnd": 1
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "enum_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "NodeType" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "isScoped": true,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 29,
+                "columnBegin": 1,
+                "lineEnd": 32,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "NotConnected" },
+          "kind": 2,
+          "range": {
+            "file": {
+              "key": "xplat/arfx/osf/sidl/src/__tests__/snapshots/docComments/docComments.sidl"
+            },
+            "lineBegin": 31,
+            "columnBegin": 3,
+            "lineEnd": 31,
+            "columnEnd": 18
+          }
+        }
+      },
+      "from": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "NotConnected" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "ReadError" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "doccomments" },
+                          "parent": {
+                            "key": {
+                              "name": { "key": "examples" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "osf" },
+                                  "parent": {
+                                    "key": { "name": { "key": "arfx" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "isScoped": true,
+                "type": { "key": "int16_t" },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 171,
+                  "columnBegin": 1,
+                  "lineEnd": 181,
+                  "columnEnd": 1
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 174,
+              "columnBegin": 3,
+              "lineEnd": 174,
+              "columnEnd": 18
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "NotReady" },
+          "kind": 2,
+          "range": {
+            "file": {
+              "key": "xplat/arfx/osf/sidl/src/__tests__/snapshots/docComments/docComments.sidl"
+            },
+            "lineBegin": 33,
+            "columnBegin": 3,
+            "lineEnd": 33,
+            "columnEnd": 31
+          }
+        }
+      },
+      "from": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "NotReady" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "ReadError" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "doccomments" },
+                          "parent": {
+                            "key": {
+                              "name": { "key": "examples" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "osf" },
+                                  "parent": {
+                                    "key": { "name": { "key": "arfx" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "isScoped": true,
+                "type": { "key": "int16_t" },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 171,
+                  "columnBegin": 1,
+                  "lineEnd": 181,
+                  "columnEnd": 1
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 178,
+              "columnBegin": 3,
+              "lineEnd": 178,
+              "columnEnd": 42
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "Permission" },
+          "kind": 1,
+          "range": {
+            "file": {
+              "key": "xplat/arfx/osf/sidl/src/__tests__/snapshots/flagsToolCalls/PermissionService.sidl"
+            },
+            "lineBegin": 5,
+            "columnBegin": 1,
+            "lineEnd": 9,
+            "columnEnd": 1
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "enum_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Permission" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "flags_tools" },
+                        "parent": {
+                          "key": {
+                            "name": { "key": "examples" },
+                            "parent": {
+                              "key": {
+                                "name": { "key": "osf" },
+                                "parent": {
+                                  "key": { "name": { "key": "arfx" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "isScoped": true,
+              "type": { "key": "uint32_t" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 199,
+                "columnBegin": 1,
+                "lineEnd": 207,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "Read" },
+          "kind": 2,
+          "range": {
+            "file": {
+              "key": "xplat/arfx/osf/sidl/src/__tests__/snapshots/flagsToolCalls/PermissionService.sidl"
+            },
+            "lineBegin": 6,
+            "columnBegin": 3,
+            "lineEnd": 6,
+            "columnEnd": 15
+          }
+        }
+      },
+      "from": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "Read" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Permission" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "flags_tools" },
+                          "parent": {
+                            "key": {
+                              "name": { "key": "examples" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "osf" },
+                                  "parent": {
+                                    "key": { "name": { "key": "arfx" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "isScoped": true,
+                "type": { "key": "uint32_t" },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 199,
+                  "columnBegin": 1,
+                  "lineEnd": 207,
+                  "columnEnd": 1
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 202,
+              "columnBegin": 3,
+              "lineEnd": 202,
+              "columnEnd": 13
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "ReadError" },
+          "kind": 1,
+          "range": {
+            "file": {
+              "key": "xplat/arfx/osf/sidl/src/__tests__/snapshots/docComments/docComments.sidl"
+            },
+            "lineBegin": 28,
+            "columnBegin": 1,
+            "lineEnd": 35,
+            "columnEnd": 1
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "enum_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "ReadError" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "doccomments" },
+                        "parent": {
+                          "key": {
+                            "name": { "key": "examples" },
+                            "parent": {
+                              "key": {
+                                "name": { "key": "osf" },
+                                "parent": {
+                                  "key": { "name": { "key": "arfx" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "isScoped": true,
+              "type": { "key": "int16_t" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 171,
+                "columnBegin": 1,
+                "lineEnd": 181,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "Timestamp" },
+          "kind": 3,
+          "range": {
+            "file": {
+              "key": "xplat/arfx/osf/sidl/src/__tests__/snapshots/alias_primitive/alias_primitive.sidl"
+            },
+            "lineBegin": 4,
+            "columnBegin": 1,
+            "lineEnd": 4,
+            "columnEnd": 25
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "typeAlias": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Timestamp" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "type": { "key": "unsigned long long" },
+              "kind": 1,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 38,
+                "columnBegin": 1,
+                "lineEnd": 38,
+                "columnEnd": 36
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "Unknown" },
+          "kind": 2,
+          "range": {
+            "file": {
+              "key": "xplat/arfx/osf/sidl/src/__tests__/snapshots/docComments/docComments.sidl"
+            },
+            "lineBegin": 34,
+            "columnBegin": 3,
+            "lineEnd": 34,
+            "columnEnd": 13
+          }
+        }
+      },
+      "from": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "Unknown" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "ReadError" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "doccomments" },
+                          "parent": {
+                            "key": {
+                              "name": { "key": "examples" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "osf" },
+                                  "parent": {
+                                    "key": { "name": { "key": "arfx" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "isScoped": true,
+                "type": { "key": "int16_t" },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 171,
+                  "columnBegin": 1,
+                  "lineEnd": 181,
+                  "columnEnd": 1
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 180,
+              "columnBegin": 3,
+              "lineEnd": 180,
+              "columnEnd": 13
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "Write" },
+          "kind": 2,
+          "range": {
+            "file": {
+              "key": "xplat/arfx/osf/sidl/src/__tests__/snapshots/flagsToolCalls/PermissionService.sidl"
+            },
+            "lineBegin": 7,
+            "columnBegin": 3,
+            "lineEnd": 7,
+            "columnEnd": 15
+          }
+        }
+      },
+      "from": {
+        "enumerator": {
+          "key": {
+            "name": { "key": "Write" },
+            "enumeration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Permission" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "flags_tools" },
+                          "parent": {
+                            "key": {
+                              "name": { "key": "examples" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "osf" },
+                                  "parent": {
+                                    "key": { "name": { "key": "arfx" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "isScoped": true,
+                "type": { "key": "uint32_t" },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 199,
+                  "columnBegin": 1,
+                  "lineEnd": 207,
+                  "columnEnd": 1
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 204,
+              "columnBegin": 3,
+              "lineEnd": 204,
+              "columnEnd": 14
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "echo" },
+          "kind": 6,
+          "range": {
+            "file": { "key": "xplat/arfx/osf/examples/echo/EchoService.sidl" },
+            "lineBegin": 25,
+            "columnBegin": 3,
+            "lineEnd": 25,
+            "columnEnd": 30
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "echo" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "IEchoService" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "signature": {
+                "key": {
+                  "returns": { "key": "int" },
+                  "parameters": [
+                    { "name": { "key": "x" }, "type": { "key": "int" } }
+                  ]
+                }
+              },
+              "method": {
+                "isVirtual": true,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 49,
+                "columnBegin": 3,
+                "lineEnd": 49,
+                "columnEnd": 25
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "echoDefaults" },
+          "kind": 6,
+          "range": {
+            "file": {
+              "key": "xplat/arfx/osf/sidl/src/__tests__/snapshots/defaultValues/defaultValues.sidl"
+            },
+            "lineBegin": 84,
+            "columnBegin": 3,
+            "lineEnd": 84,
+            "columnEnd": 65
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "echoDefaultsAsync" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "IDefaultValuesHandler" },
+                          "scope": {
+                            "namespace_": {
+                              "key": {
+                                "name": { "key": "default_values" },
+                                "parent": {
+                                  "key": {
+                                    "name": { "key": "examples" },
+                                    "parent": {
+                                      "key": {
+                                        "name": { "key": "osf" },
+                                        "parent": {
+                                          "key": { "name": { "key": "arfx" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "signature": {
+                "key": {
+                  "returns": {
+                    "key": "FutureStatusOr<arfx::osf::examples::default_values::DefaultValuesStruct>"
+                  },
+                  "parameters": [
+                    {
+                      "name": { "key": "input" },
+                      "type": {
+                        "key": "const arfx::osf::examples::default_values::DefaultValuesStruct &"
+                      }
+                    }
+                  ]
+                }
+              },
+              "method": {
+                "isVirtual": true,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 245,
+                "columnBegin": 3,
+                "lineEnd": 245,
+                "columnEnd": 201
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "echoString" },
+          "kind": 6,
+          "range": {
+            "file": { "key": "xplat/arfx/osf/examples/echo/EchoService.sidl" },
+            "lineBegin": 23,
+            "columnBegin": 3,
+            "lineEnd": 23,
+            "columnEnd": 47
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "echoString" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "IEchoService" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "signature": {
+                "key": {
+                  "returns": { "key": "int" },
+                  "parameters": [
+                    { "name": { "key": "x" }, "type": { "key": "int" } }
+                  ]
+                }
+              },
+              "method": {
+                "isVirtual": true,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 51,
+                "columnBegin": 3,
+                "lineEnd": 51,
+                "columnEnd": 31
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "flags" },
+          "kind": 7,
+          "range": {
+            "file": { "key": "xplat/arfx/osf/core/sidl/BindParams.sidl" },
+            "lineBegin": 42,
+            "columnBegin": 3,
+            "lineEnd": 42,
+            "columnEnd": 12
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "flags" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "HasFields" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "type": { "key": "int" },
+              "kind": { "field": { "mutable_": false } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 63,
+                "columnBegin": 3,
+                "lineEnd": 63,
+                "columnEnd": 11
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "getDefaults" },
+          "kind": 6,
+          "range": {
+            "file": {
+              "key": "xplat/arfx/osf/sidl/src/__tests__/snapshots/defaultValues/defaultValues.sidl"
+            },
+            "lineBegin": 83,
+            "columnBegin": 3,
+            "lineEnd": 83,
+            "columnEnd": 39
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "getDefaultsAsync" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "IDefaultValuesHandler" },
+                          "scope": {
+                            "namespace_": {
+                              "key": {
+                                "name": { "key": "default_values" },
+                                "parent": {
+                                  "key": {
+                                    "name": { "key": "examples" },
+                                    "parent": {
+                                      "key": {
+                                        "name": { "key": "osf" },
+                                        "parent": {
+                                          "key": { "name": { "key": "arfx" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "signature": {
+                "key": {
+                  "returns": {
+                    "key": "FutureStatusOr<arfx::osf::examples::default_values::DefaultValuesStruct>"
+                  },
+                  "parameters": [ ]
+                }
+              },
+              "method": {
+                "isVirtual": true,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 243,
+                "columnBegin": 3,
+                "lineEnd": 243,
+                "columnEnd": 129
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "granted" },
+          "kind": 7,
+          "range": {
+            "file": {
+              "key": "xplat/arfx/osf/sidl/src/__tests__/snapshots/flagsToolCalls/PermissionService.sidl"
+            },
+            "lineBegin": 17,
+            "columnBegin": 3,
+            "lineEnd": 17,
+            "columnEnd": 24
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "granted" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "GrantResult" },
+                          "scope": {
+                            "namespace_": {
+                              "key": {
+                                "name": { "key": "flags_tools" },
+                                "parent": {
+                                  "key": {
+                                    "name": { "key": "examples" },
+                                    "parent": {
+                                      "key": {
+                                        "name": { "key": "osf" },
+                                        "parent": {
+                                          "key": { "name": { "key": "arfx" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "type": { "key": "arfx::osf::examples::flags_tools::Permission" },
+              "kind": { "field": { "mutable_": false } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 214,
+                "columnBegin": 3,
+                "lineEnd": 214,
+                "columnEnd": 61
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "kLimit" },
+          "kind": 4,
+          "range": {
+            "file": { "key": "xplat/arfx/osf/examples/echo/EchoService.sidl" },
+            "lineBegin": 22,
+            "columnBegin": 1,
+            "lineEnd": 22,
+            "columnEnd": 23
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "kLimit" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "type": { "key": "const int" },
+              "kind": {
+                "global_": { "kind": 0, "attribute": 2, "definition": true }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 41,
+                "columnBegin": 1,
+                "lineEnd": 41,
+                "columnEnd": 31
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "kMaxSamples" },
+          "kind": 4,
+          "range": {
+            "file": {
+              "key": "xplat/arfx/osf/sidl/src/__tests__/snapshots/docComments/docComments.sidl"
+            },
+            "lineBegin": 15,
+            "columnBegin": 1,
+            "lineEnd": 15,
+            "columnEnd": 29
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "kMaxSamples" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "doccomments" },
+                        "parent": {
+                          "key": {
+                            "name": { "key": "examples" },
+                            "parent": {
+                              "key": {
+                                "name": { "key": "osf" },
+                                "parent": {
+                                  "key": { "name": { "key": "arfx" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "type": { "key": "const int32_t" },
+              "kind": {
+                "global_": { "kind": 0, "attribute": 2, "definition": true }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 185,
+                "columnBegin": 1,
+                "lineEnd": 185,
+                "columnEnd": 41
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "kServiceId" },
+          "kind": 4,
+          "range": {
+            "file": {
+              "key": "xplat/arfx/osf/examples/const_cross_package/dep_consts.sidl"
+            },
+            "lineBegin": 5,
+            "columnBegin": 1,
+            "lineEnd": 5,
+            "columnEnd": 29
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "kServiceId" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "type": { "key": "const unsigned short" },
+              "kind": {
+                "global_": { "kind": 0, "attribute": 2, "definition": true }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 44,
+                "columnBegin": 1,
+                "lineEnd": 44,
+                "columnEnd": 47
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "kUndocumentedLimit" },
+          "kind": 4,
+          "range": {
+            "file": {
+              "key": "xplat/arfx/osf/sidl/src/__tests__/snapshots/docComments/docComments.sidl"
+            },
+            "lineBegin": 17,
+            "columnBegin": 1,
+            "lineEnd": 17,
+            "columnEnd": 35
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "kUndocumentedLimit" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "doccomments" },
+                        "parent": {
+                          "key": {
+                            "name": { "key": "examples" },
+                            "parent": {
+                              "key": {
+                                "name": { "key": "osf" },
+                                "parent": {
+                                  "key": { "name": { "key": "arfx" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "type": { "key": "const int32_t" },
+              "kind": {
+                "global_": { "kind": 0, "attribute": 2, "definition": true }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 188,
+                "columnBegin": 1,
+                "lineEnd": 188,
+                "columnEnd": 47
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "targetVersion" },
+          "kind": 7,
+          "range": {
+            "file": { "key": "xplat/arfx/osf/core/sidl/BindParams.sidl" },
+            "lineBegin": 11,
+            "columnBegin": 3,
+            "lineEnd": 11,
+            "columnEnd": 38
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "targetVersion" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "BindParams" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "type": { "key": "int" },
+              "kind": { "field": { "mutable_": false } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 3,
+                "lineEnd": 12,
+                "columnEnd": 19
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "to": {
+        "key": {
+          "name": { "key": "version" },
+          "kind": 7,
+          "range": {
+            "file": { "key": "xplat/arfx/osf/core/sidl/BindParams.sidl" },
+            "lineBegin": 41,
+            "columnBegin": 3,
+            "lineEnd": 41,
+            "columnEnd": 14
+          }
+        }
+      },
+      "from": {
+        "declaration": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "version" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "HasFields" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "type": { "key": "int" },
+              "kind": { "field": { "mutable_": false } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 61,
+                "columnBegin": 3,
+                "lineEnd": 61,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

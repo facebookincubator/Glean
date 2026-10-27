@@ -9,6 +9,7 @@ type Entity =
     defn : Definition |
     enumerator : cxx1.Enumerator |
     objcSelectorSlot : ObjcSelectorSlotEntity |
+    sidlDecl : cxx1.SidlDeclaration |
   }
 
 type SymbolId = cxx1.USR

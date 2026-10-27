@@ -1,0 +1,728 @@
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "IEchoService" },
+              "kind": 5,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 32,
+                "columnBegin": 1,
+                "lineEnd": 36,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 452, "length": 12 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "IEchoService" },
+              "kind": 5,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 32,
+                "columnBegin": 1,
+                "lineEnd": 36,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 733, "length": 12 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Millis" },
+              "kind": 3,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 13,
+                "columnBegin": 1,
+                "lineEnd": 13,
+                "columnEnd": 22
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 894, "length": 6 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Millis" },
+              "kind": 3,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 13,
+                "columnBegin": 1,
+                "lineEnd": 13,
+                "columnEnd": 22
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test_types.h" },
+      "span": { "start": 1922, "length": 6 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Mode" },
+              "kind": 1,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 15,
+                "columnBegin": 1,
+                "lineEnd": 18,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 936, "length": 4 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Mode" },
+              "kind": 1,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 15,
+                "columnBegin": 1,
+                "lineEnd": 18,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 976, "length": 4 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Mode" },
+              "kind": 1,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 15,
+                "columnBegin": 1,
+                "lineEnd": 18,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 993, "length": 4 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Mode" },
+              "kind": 1,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 15,
+                "columnBegin": 1,
+                "lineEnd": 18,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 1010, "length": 4 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Mode" },
+              "kind": 1,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 15,
+                "columnBegin": 1,
+                "lineEnd": 18,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test_types.h" },
+      "span": { "start": 2576, "length": 4 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Mode" },
+              "kind": 1,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 15,
+                "columnBegin": 1,
+                "lineEnd": 18,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test_types.h" },
+      "span": { "start": 2603, "length": 4 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Off" },
+              "kind": 2,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 16,
+                "columnBegin": 3,
+                "lineEnd": 16,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 1016, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Off" },
+              "kind": 2,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 16,
+                "columnBegin": 3,
+                "lineEnd": 16,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test_types.h" },
+      "span": { "start": 2609, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "On" },
+              "kind": 2,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 17,
+                "columnBegin": 3,
+                "lineEnd": 17,
+                "columnEnd": 8
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 982, "length": 2 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "On" },
+              "kind": 2,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 17,
+                "columnBegin": 3,
+                "lineEnd": 17,
+                "columnEnd": 8
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 999, "length": 2 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Options" },
+              "kind": 0,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 21,
+                "columnBegin": 1,
+                "lineEnd": 25,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "fwd.cpp" },
+      "span": { "start": 353, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Options" },
+              "kind": 0,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 21,
+                "columnBegin": 1,
+                "lineEnd": 25,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 594, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Options" },
+              "kind": 0,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 21,
+                "columnBegin": 1,
+                "lineEnd": 25,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 851, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Options" },
+              "kind": 0,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 21,
+                "columnBegin": 1,
+                "lineEnd": 25,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.h" },
+      "span": { "start": 417, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Options" },
+              "kind": 0,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 21,
+                "columnBegin": 1,
+                "lineEnd": 25,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test_types.h" },
+      "span": { "start": 2824, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Options" },
+              "kind": 0,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 21,
+                "columnBegin": 1,
+                "lineEnd": 25,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test_types.h" },
+      "span": { "start": 3603, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Request" },
+              "kind": 0,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 27,
+                "columnBegin": 1,
+                "lineEnd": 30,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 799, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Request" },
+              "kind": 0,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 27,
+                "columnBegin": 1,
+                "lineEnd": 30,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test_types.h" },
+      "span": { "start": 3648, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "configure" },
+              "kind": 6,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 35,
+                "columnBegin": 3,
+                "lineEnd": 35,
+                "columnEnd": 40
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 1066, "length": 14 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "echo" },
+              "kind": 6,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 33,
+                "columnBegin": 3,
+                "lineEnd": 33,
+                "columnEnd": 29
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 1031, "length": 9 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "kLimit" },
+              "kind": 4,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 11,
+                "columnBegin": 1,
+                "lineEnd": 11,
+                "columnEnd": 23
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 1047, "length": 6 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "mode" },
+              "kind": 7,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 28,
+                "columnBegin": 3,
+                "lineEnd": 28,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 962, "length": 4 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "options" },
+              "kind": 7,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 29,
+                "columnBegin": 3,
+                "lineEnd": 29,
+                "columnEnd": 21
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 877, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "retries" },
+              "kind": 7,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 24,
+                "columnBegin": 3,
+                "lineEnd": 24,
+                "columnEnd": 19
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 631, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "timeout" },
+              "kind": 7,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 22,
+                "columnBegin": 3,
+                "lineEnd": 22,
+                "columnEnd": 20
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 919, "length": 7 }
+    }
+  }
+]

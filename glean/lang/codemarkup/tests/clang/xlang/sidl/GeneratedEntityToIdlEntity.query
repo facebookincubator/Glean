@@ -1,0 +1,3 @@
+query: codemarkup.GeneratedEntityToIdlEntity { idlEntity = { entity = { just = { cxx = { sidlDecl = _ } } } } }
+perf: True
+transform: [gensort, []]

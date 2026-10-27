@@ -1,0 +1,1967 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "enum_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Mode" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "sidl" },
+                          "parent": { "key": { "name": { "key": "glean" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "isScoped": true,
+                "type": { "key": "int16_t" },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 23,
+                  "columnBegin": 1,
+                  "lineEnd": 28,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "Mode" },
+                "kind": 1,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 15,
+                  "columnBegin": 1,
+                  "lineEnd": 18,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "configureAsync" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "IEchoService" },
+                            "scope": {
+                              "namespace_": {
+                                "key": {
+                                  "name": { "key": "sidl" },
+                                  "parent": {
+                                    "key": { "name": { "key": "glean" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": {
+                      "key": "FutureStatusOr<glean::sidl::Options>"
+                    },
+                    "parameters": [
+                      {
+                        "name": { "key": "request" },
+                        "type": { "key": "const glean::sidl::Request &" }
+                      }
+                    ]
+                  }
+                },
+                "method": {
+                  "isVirtual": true,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 60,
+                  "columnBegin": 3,
+                  "lineEnd": 60,
+                  "columnEnd": 128
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "configure" },
+                "kind": 6,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 35,
+                  "columnBegin": 3,
+                  "lineEnd": 35,
+                  "columnEnd": 40
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "echoAsync" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "IEchoService" },
+                            "scope": {
+                              "namespace_": {
+                                "key": {
+                                  "name": { "key": "sidl" },
+                                  "parent": {
+                                    "key": { "name": { "key": "glean" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "FutureStatusOr<int32_t>" },
+                    "parameters": [
+                      {
+                        "name": { "key": "value" },
+                        "type": { "key": "int32_t" }
+                      }
+                    ]
+                  }
+                },
+                "method": {
+                  "isVirtual": true,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 58,
+                  "columnBegin": 3,
+                  "lineEnd": 58,
+                  "columnEnd": 84
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "echo" },
+                "kind": 6,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 33,
+                  "columnBegin": 3,
+                  "lineEnd": 33,
+                  "columnEnd": 29
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "IEchoService" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "sidl" },
+                          "parent": { "key": { "name": { "key": "glean" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "kind": { "class_": { } },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 20,
+                  "columnBegin": 1,
+                  "lineEnd": 20,
+                  "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "IEchoService" },
+                "kind": 5,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 32,
+                  "columnBegin": 1,
+                  "lineEnd": 36,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "IEchoService" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "sidl" },
+                          "parent": { "key": { "name": { "key": "glean" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "kind": { "class_": { } },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 55,
+                  "columnBegin": 1,
+                  "lineEnd": 61,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "IEchoService" },
+                "kind": 5,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 32,
+                  "columnBegin": 1,
+                  "lineEnd": 36,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Options" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "sidl" },
+                          "parent": { "key": { "name": { "key": "glean" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "kind": { "struct_": { } },
+                "source": {
+                  "file": { "key": "test.h" },
+                  "lineBegin": 13,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 14
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "Options" },
+                "kind": 0,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 21,
+                  "columnBegin": 1,
+                  "lineEnd": 25,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Options" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "sidl" },
+                          "parent": { "key": { "name": { "key": "glean" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "kind": { "struct_": { } },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 18,
+                  "columnBegin": 1,
+                  "lineEnd": 18,
+                  "columnEnd": 14
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "Options" },
+                "kind": 0,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 21,
+                  "columnBegin": 1,
+                  "lineEnd": 25,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Options" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "sidl" },
+                          "parent": { "key": { "name": { "key": "glean" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "kind": { "struct_": { } },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 38,
+                  "columnBegin": 1,
+                  "lineEnd": 44,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "Options" },
+                "kind": 0,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 21,
+                  "columnBegin": 1,
+                  "lineEnd": 25,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Request" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "sidl" },
+                          "parent": { "key": { "name": { "key": "glean" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "kind": { "struct_": { } },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 19,
+                  "columnBegin": 1,
+                  "lineEnd": 19,
+                  "columnEnd": 14
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "Request" },
+                "kind": 0,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 27,
+                  "columnBegin": 1,
+                  "lineEnd": 30,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Request" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "sidl" },
+                          "parent": { "key": { "name": { "key": "glean" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "kind": { "struct_": { } },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 47,
+                  "columnBegin": 1,
+                  "lineEnd": 52,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "Request" },
+                "kind": 0,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 27,
+                  "columnBegin": 1,
+                  "lineEnd": 30,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "typeAlias": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Millis" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "sidl" },
+                          "parent": { "key": { "name": { "key": "glean" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "uint64_t" },
+                "kind": 1,
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 34,
+                  "columnBegin": 1,
+                  "lineEnd": 34,
+                  "columnEnd": 23
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "Millis" },
+                "kind": 3,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 13,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 22
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "kLimit" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "sidl" },
+                          "parent": { "key": { "name": { "key": "glean" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "const int32_t" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 2, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 31,
+                  "columnBegin": 1,
+                  "lineEnd": 31,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "kLimit" },
+                "kind": 4,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 23
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "mode" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "Request" },
+                            "scope": {
+                              "namespace_": {
+                                "key": {
+                                  "name": { "key": "sidl" },
+                                  "parent": {
+                                    "key": { "name": { "key": "glean" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "glean::sidl::Mode" },
+                "kind": { "field": { "mutable_": false } },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 49,
+                  "columnBegin": 3,
+                  "lineEnd": 49,
+                  "columnEnd": 53
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "mode" },
+                "kind": 7,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 28,
+                  "columnBegin": 3,
+                  "lineEnd": 28,
+                  "columnEnd": 15
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "options" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "Request" },
+                            "scope": {
+                              "namespace_": {
+                                "key": {
+                                  "name": { "key": "sidl" },
+                                  "parent": {
+                                    "key": { "name": { "key": "glean" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "glean::sidl::Options" },
+                "kind": { "field": { "mutable_": false } },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 51,
+                  "columnBegin": 14,
+                  "lineEnd": 51,
+                  "columnEnd": 48
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "options" },
+                "kind": 7,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 29,
+                  "columnBegin": 3,
+                  "lineEnd": 29,
+                  "columnEnd": 21
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "retries" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "Options" },
+                            "scope": {
+                              "namespace_": {
+                                "key": {
+                                  "name": { "key": "sidl" },
+                                  "parent": {
+                                    "key": { "name": { "key": "glean" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int32_t" },
+                "kind": { "field": { "mutable_": false } },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 43,
+                  "columnBegin": 3,
+                  "lineEnd": 43,
+                  "columnEnd": 22
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "retries" },
+                "kind": 7,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 24,
+                  "columnBegin": 3,
+                  "lineEnd": 24,
+                  "columnEnd": 19
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "timeout" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "Options" },
+                            "scope": {
+                              "namespace_": {
+                                "key": {
+                                  "name": { "key": "sidl" },
+                                  "parent": {
+                                    "key": { "name": { "key": "glean" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "glean::sidl::Millis" },
+                "kind": { "field": { "mutable_": false } },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 40,
+                  "columnBegin": 14,
+                  "lineEnd": 40,
+                  "columnEnd": 47
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "timeout" },
+                "kind": 7,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 22,
+                  "columnBegin": 3,
+                  "lineEnd": 22,
+                  "columnEnd": 20
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "enum_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "Mode" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "sidl" },
+                              "parent": {
+                                "key": { "name": { "key": "glean" } }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "isScoped": true,
+                    "type": { "key": "int16_t" },
+                    "source": {
+                      "file": { "key": "test_types.h" },
+                      "lineBegin": 23,
+                      "columnBegin": 1,
+                      "lineEnd": 28,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "enumerators": [
+                  {
+                    "key": {
+                      "name": { "key": "Off" },
+                      "enumeration": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Mode" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": {
+                                    "name": { "key": "sidl" },
+                                    "parent": {
+                                      "key": { "name": { "key": "glean" } }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "isScoped": true,
+                          "type": { "key": "int16_t" },
+                          "source": {
+                            "file": { "key": "test_types.h" },
+                            "lineBegin": 23,
+                            "columnBegin": 1,
+                            "lineEnd": 28,
+                            "columnEnd": 1
+                          }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test_types.h" },
+                        "lineBegin": 25,
+                        "columnBegin": 3,
+                        "lineEnd": 25,
+                        "columnEnd": 9
+                      }
+                    }
+                  },
+                  {
+                    "key": {
+                      "name": { "key": "On" },
+                      "enumeration": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Mode" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": {
+                                    "name": { "key": "sidl" },
+                                    "parent": {
+                                      "key": { "name": { "key": "glean" } }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "isScoped": true,
+                          "type": { "key": "int16_t" },
+                          "source": {
+                            "file": { "key": "test_types.h" },
+                            "lineBegin": 23,
+                            "columnBegin": 1,
+                            "lineEnd": 28,
+                            "columnEnd": 1
+                          }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test_types.h" },
+                        "lineBegin": 27,
+                        "columnBegin": 3,
+                        "lineEnd": 27,
+                        "columnEnd": 8
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "Mode" },
+                "kind": 1,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 15,
+                  "columnBegin": 1,
+                  "lineEnd": 18,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "IEchoService" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "sidl" },
+                              "parent": {
+                                "key": { "name": { "key": "glean" } }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "kind": { "class_": { } },
+                    "source": {
+                      "file": { "key": "test_types.h" },
+                      "lineBegin": 55,
+                      "columnBegin": 1,
+                      "lineEnd": 61,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "bases": [
+                  {
+                    "base": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": "IService" },
+                            "scope": {
+                              "namespace_": {
+                                "key": {
+                                  "name": { "key": "osf" },
+                                  "parent": {
+                                    "key": { "name": { "key": "arfx" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "kind": { "class_": { } },
+                        "source": {
+                          "file": { "key": "osf_stubs.h" },
+                          "lineBegin": 21,
+                          "columnBegin": 1,
+                          "lineEnd": 24,
+                          "columnEnd": 1
+                        }
+                      }
+                    },
+                    "access": 0,
+                    "isVirtual": false
+                  }
+                ],
+                "members": {
+                  "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": {
+                                "key": { "name": { "key": "echoAsync" } }
+                              },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "IEchoService" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "sidl" },
+                                            "parent": {
+                                              "key": {
+                                                "name": { "key": "glean" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "FutureStatusOr<int32_t>" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "value" },
+                                  "type": { "key": "int32_t" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": true,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test_types.h" },
+                            "lineBegin": 58,
+                            "columnBegin": 3,
+                            "lineEnd": 58,
+                            "columnEnd": 84
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": {
+                                "key": { "name": { "key": "configureAsync" } }
+                              },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "IEchoService" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "sidl" },
+                                            "parent": {
+                                              "key": {
+                                                "name": { "key": "glean" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": {
+                                "key": "FutureStatusOr<glean::sidl::Options>"
+                              },
+                              "parameters": [
+                                {
+                                  "name": { "key": "request" },
+                                  "type": {
+                                    "key": "const glean::sidl::Request &"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": true,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test_types.h" },
+                            "lineBegin": 60,
+                            "columnBegin": 3,
+                            "lineEnd": 60,
+                            "columnEnd": 128
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "IEchoService" },
+                "kind": 5,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 32,
+                  "columnBegin": 1,
+                  "lineEnd": 36,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "Options" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "sidl" },
+                              "parent": {
+                                "key": { "name": { "key": "glean" } }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test_types.h" },
+                      "lineBegin": 38,
+                      "columnBegin": 1,
+                      "lineEnd": 44,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "timeout" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Options" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "sidl" },
+                                            "parent": {
+                                              "key": {
+                                                "name": { "key": "glean" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "glean::sidl::Millis" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test_types.h" },
+                            "lineBegin": 40,
+                            "columnBegin": 14,
+                            "lineEnd": 40,
+                            "columnEnd": 47
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "retries" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Options" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "sidl" },
+                                            "parent": {
+                                              "key": {
+                                                "name": { "key": "glean" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int32_t" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test_types.h" },
+                            "lineBegin": 43,
+                            "columnBegin": 3,
+                            "lineEnd": 43,
+                            "columnEnd": 22
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "Options" },
+                "kind": 0,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 21,
+                  "columnBegin": 1,
+                  "lineEnd": 25,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "Request" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "sidl" },
+                              "parent": {
+                                "key": { "name": { "key": "glean" } }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test_types.h" },
+                      "lineBegin": 47,
+                      "columnBegin": 1,
+                      "lineEnd": 52,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "mode" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Request" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "sidl" },
+                                            "parent": {
+                                              "key": {
+                                                "name": { "key": "glean" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "glean::sidl::Mode" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test_types.h" },
+                            "lineBegin": 49,
+                            "columnBegin": 3,
+                            "lineEnd": 49,
+                            "columnEnd": 53
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "options" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Request" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "sidl" },
+                                            "parent": {
+                                              "key": {
+                                                "name": { "key": "glean" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "glean::sidl::Options" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test_types.h" },
+                            "lineBegin": 51,
+                            "columnBegin": 14,
+                            "lineEnd": 51,
+                            "columnEnd": 48
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "Request" },
+                "kind": 0,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 27,
+                  "columnBegin": 1,
+                  "lineEnd": 30,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "kLimit" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "sidl" },
+                          "parent": { "key": { "name": { "key": "glean" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "const int32_t" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 2, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 31,
+                  "columnBegin": 1,
+                  "lineEnd": 31,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "kLimit" },
+                "kind": 4,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 23
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "Off" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "Mode" },
+                      "scope": {
+                        "namespace_": {
+                          "key": {
+                            "name": { "key": "sidl" },
+                            "parent": { "key": { "name": { "key": "glean" } } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "isScoped": true,
+                  "type": { "key": "int16_t" },
+                  "source": {
+                    "file": { "key": "test_types.h" },
+                    "lineBegin": 23,
+                    "columnBegin": 1,
+                    "lineEnd": 28,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test_types.h" },
+                "lineBegin": 25,
+                "columnBegin": 3,
+                "lineEnd": 25,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "Off" },
+                "kind": 2,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 16,
+                  "columnBegin": 3,
+                  "lineEnd": 16,
+                  "columnEnd": 9
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "On" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "Mode" },
+                      "scope": {
+                        "namespace_": {
+                          "key": {
+                            "name": { "key": "sidl" },
+                            "parent": { "key": { "name": { "key": "glean" } } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "isScoped": true,
+                  "type": { "key": "int16_t" },
+                  "source": {
+                    "file": { "key": "test_types.h" },
+                    "lineBegin": 23,
+                    "columnBegin": 1,
+                    "lineEnd": 28,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test_types.h" },
+                "lineBegin": 27,
+                "columnBegin": 3,
+                "lineEnd": 27,
+                "columnEnd": 8
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 31,
+        "file": {
+          "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+        },
+        "entity": {
+          "cxx": {
+            "sidlDecl": {
+              "key": {
+                "name": { "key": "On" },
+                "kind": 2,
+                "range": {
+                  "file": {
+                    "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                  },
+                  "lineBegin": 17,
+                  "columnBegin": 3,
+                  "lineEnd": 17,
+                  "columnEnd": 8
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

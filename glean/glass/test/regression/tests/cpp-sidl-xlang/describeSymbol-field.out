@@ -1,0 +1,50 @@
+[
+    "@generated",
+    {
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 10,
+        "language": 1,
+        "location": {
+            "filepath": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl",
+            "range": {
+                "columnBegin": 3,
+                "columnEnd": 21,
+                "lineBegin": 22,
+                "lineEnd": 22
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "",
+            "localName": "timeout"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "timeout",
+        "sym": "test/cpp/.sidl/field/fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl/timeout/22",
+        "sym_location": {
+            "filepath": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl",
+            "range": {
+                "columnBegin": 3,
+                "columnEnd": 21,
+                "lineBegin": 22,
+                "lineEnd": 22
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": []
+    }
+]

@@ -1,0 +1,6 @@
+query: |
+  { E, I } where
+    T = cxx1.FileXRefs { xmap = { file = "test.cpp" } };
+    codemarkup.cxx.CxxFileEntityIdl { trace = T, ent = E, idlEnt = I }
+perf: True
+transform: [gensort, []]

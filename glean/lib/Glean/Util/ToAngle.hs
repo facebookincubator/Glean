@@ -135,6 +135,7 @@ instance ToAngle Cxx.Entity where
     Cxx.Entity_decl x -> alt @"decl" (toAngle x)
     Cxx.Entity_defn x -> alt @"defn" (toAngle x)
     Cxx.Entity_enumerator x -> alt @"enumerator" (mkKey x)
+    Cxx.Entity_sidlDecl x -> alt @"sidlDecl" (mkKey x)
     Cxx.Entity_objcSelectorSlot x -> alt @"objcSelectorSlot" (toAngle x)
     Cxx.Entity_EMPTY -> error "unknown Entity"
 
@@ -146,6 +147,8 @@ instance Prune Cxx.Entity where
       Cxx.Entity_defn (prune x)
     Cxx.Entity_enumerator x ->
       Cxx.Entity_enumerator (mkFact (getId x) Nothing Nothing)
+    Cxx.Entity_sidlDecl x ->
+      Cxx.Entity_sidlDecl (mkFact (getId x) Nothing Nothing)
     Cxx.Entity_objcSelectorSlot x ->
       Cxx.Entity_objcSelectorSlot x
     Cxx.Entity_EMPTY -> error "unknown Entity"
@@ -432,6 +435,17 @@ instance Normalize Cxx.ObjcSelector where
 instance Normalize Cxx.Name where
   normalize (Cxx.Name x y) = Cxx.Name (normalize x) (normalize y)
 
+instance Normalize Cxx.SidlKind where
+  normalize = id
+
+instance Normalize Cxx.SidlDeclaration where
+  normalize (Cxx.SidlDeclaration x y) =
+    Cxx.SidlDeclaration (normalize x) (normalize y)
+
+instance Normalize Cxx.SidlDeclaration_key where
+  normalize (Cxx.SidlDeclaration_key x y z) =
+    Cxx.SidlDeclaration_key (normalize x) (normalize y) (normalize z)
+
 instance Normalize Cxx.Type where
   normalize (Cxx.Type x y) = Cxx.Type (normalize x) (normalize y)
 
@@ -510,6 +524,16 @@ instance ToAngleFull Cxx.ObjcCategoryId where
       field @"categoryName" (toAngleFull y)
     end
   toAngleFull _ = error "toAngleFull not implemented"
+
+instance ToAngleFull Cxx.SidlDeclaration_key where
+  toAngleFull
+      (Cxx.SidlDeclaration_key (Cxx.Name _ (Just name)) kind range) =
+    rec $
+      field @"name" (toAngleFull name) $
+      field @"kind" (enum kind) $
+      field @"range" (toAngleFull range)
+    end
+  toAngleFull _ = error "Not fully resolved"
 
 instance ToAngleFull Src.Range where
   toAngleFull (Src.Range (Src.File _ (Just f)) x y z t) =
@@ -1120,7 +1144,10 @@ instance ToAngleFull Code.Entity where
       alt @"python" (alt @"decl" (toAngleFull x))
     Code.Entity_cxx (Cxx.Entity_decl x) ->
       alt @"cxx" (alt @"decl" (toAngleFull x))
-    _ -> error "Only thrift or python entities are expected"
+    Code.Entity_cxx (Cxx.Entity_sidlDecl (Cxx.SidlDeclaration _ (Just k))) ->
+      alt @"cxx" (alt @"sidlDecl" (toAngleFull k))
+    _ -> error $ "Only thrift, python or cxx (decl, or sidlDecl with its key) "
+      ++ "entities are expected"
 
 instance ToAngleFull Code.SymbolId where
   toAngleFull (Code.SymbolId_cxx x) = alt @"cxx" (toAngleFull x)
@@ -1150,6 +1177,8 @@ instance Normalize Code.Entity where
         Code.Entity_python (Py.Entity_decl (normalize x))
       Code.Entity_cxx (Cxx.Entity_decl x) ->
         Code.Entity_cxx (Cxx.Entity_decl (normalize x))
+      Code.Entity_cxx (Cxx.Entity_sidlDecl x) ->
+        Code.Entity_cxx (Cxx.Entity_sidlDecl (normalize x))
       _ -> error $
         "Only thrift or python or cxx entities are expected, got: " <> show entity
 

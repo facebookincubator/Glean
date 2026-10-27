@@ -47,6 +47,7 @@ import qualified Glean.Util.Range as Range
 
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Code.Types as Code
+import qualified Glean.Schema.CodeCxx.Types as Cxx
 import qualified Glean.Schema.Src.Types as Src
 
 import qualified Glean.Glass.Attributes as Attributes
@@ -1063,7 +1064,7 @@ getStaticAttributes e repo sym mLang = memo $ do
     , asKind <$> mKind
     , Just $ asLanguage (entityLanguage e)
     , asDefinitionType <$> entityDefinitionType e
-    , asLang =<< mLang
+    , asCrossLanguage e mLang
     ]
   where
     asLocalName (Name local) = ("symbolName", Attribute_aString local)
@@ -1080,6 +1081,11 @@ getStaticAttributes e repo sym mLang = memo $ do
     asLang Language_Python = Just ("crossLanguage",
       Attribute_aString "python")
     asLang _ = Nothing
+    -- SIDL declarations are C++ entities in the same DB, so they come
+    -- back as plain refs with no xlang language.
+    asCrossLanguage (Code.Entity_cxx Cxx.Entity_sidlDecl{}) _ =
+      Just ("crossLanguage", Attribute_aString "sidl")
+    asCrossLanguage _ mLang = asLang =<< mLang
 
     -- memoizing getStaticAttributes can save a lot of work because a
     -- symbol reference often occurs multiple times in a file.

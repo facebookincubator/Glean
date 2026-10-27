@@ -1,0 +1,3 @@
+query: codemarkup.FindEntityDefinition { entity = { cxx = { sidlDecl = _ } } }
+perf: True
+transform: [gensort, []]

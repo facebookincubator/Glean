@@ -108,6 +108,8 @@ predicate CxxFindDefinitionOfEntity:
   }
   ( { { defn = A }, { defn = B } } where A = B )
   |
+  ( { { sidlDecl = A }, { sidlDecl = B } } where A = B )
+  |
    (
      { { decl = D }, DefEnt }
      where
@@ -142,6 +144,10 @@ predicate CxxEntityLocation:
       { enumerator = { name = cxx1.Name Name, source = Range } } = Entity;
       { file = File } = Range;
       nothing = Destination; # we only have the range for enumerators
+    ) | (
+      { sidlDecl = { name = cxx1.Name Name, range = Range } } = Entity;
+      { file = File } = Range;
+      nothing = Destination;
     );
 
 # Finding references in a file
@@ -166,6 +172,10 @@ predicate CxxFileEntityXRefLocations:
 
 # Fixed C++ xrefs, keyed by a specific cxx1.FileXRefs fact
 # We will expand any targets as best we can
+#
+# Also the SIDL xrefs of the variable xrefs: glass zips the variable xrefs
+# client side (Query/Cxx.hs), so only xrefs it doesn't compute go here.
+# Each xmap.froms entry holds the use spans of the same targets entry.
 predicate CxxFileEntityXMapFixedXRefLocations:
   {
     trace: cxx1.FileXRefs,
@@ -173,9 +183,15 @@ predicate CxxFileEntityXMapFixedXRefLocations:
     entity: code.cxx.Entity,
   }
   { Trace, XRef, Entity } where
-    cxx1.FileXRefs { xmap = { fixed = Fixeds } } = Trace;
-    cxx1.FixedXRef { XRefTarget, From } = Fixeds[..];
-    CxxXRefTargetLocation { XRefTarget, Entity, Location };
+    ( cxx1.FileXRefs { xmap = { fixed = Fixeds } } = Trace;
+      cxx1.FixedXRef { XRefTarget, From } = Fixeds[..];
+      CxxXRefTargetLocation { XRefTarget, Entity, Location };
+    ) | (
+      cxx1.FileXRefs { xmap = { froms = Froms }, targets = Ts } = Trace;
+      { From, cxx1.XRefTargets Targets } = (prim.zip Froms Ts)[..];
+      XRefTarget = Targets[..];
+      CxxXRefTargetSidlLocation { XRefTarget, Entity, Location };
+    );
     { spans = PackedSpans, spellings = PackedSpellings } = From;
     Spans = prim.unpackByteSpans PackedSpans;
     Spellings = prim.unpackByteSpans PackedSpellings;
@@ -219,11 +235,37 @@ predicate CxxXRefTargetLocation:
       { file = TargetFile } = Range;
       { Name, TargetFile, { range = Range }, nothing } = Location;
       { enumerator = Enum } = Entity;
+    ) | (
+    # the SIDL declaration a generated target was generated from
+      CxxXRefTargetSidlLocation { XRefTarget, Entity, Location };
     )
     # objcSelector -- not an entity type
     # objcSelectorSlot -- can't implement due to array indexing
     # unknown -- just a file and a point in the file tbd
     # indirect -- can't implement due to recursion
+
+# A target generated from SIDL also refers to its SIDL declaration, which
+# lives in the same DB. The generator annotates one declaration of a
+# family (normally the definition), so look up the whole family.
+predicate CxxXRefTargetSidlLocation:
+  {
+    target: cxx1.XRefTarget,
+    entity: code.cxx.Entity,
+    location: codemarkup.types.Location,
+  }
+  { XRefTarget, Entity, Location } where
+    XRefTargetToEntity { XRefTarget, TargetEntity };
+    ( { decl = Decl } = TargetEntity;
+      cxx1.DeclFamilyOf { decl = Decl, family = FamDecl };
+      cxx1.CxxToSidl { from = { declaration = FamDecl }, to = SidlDecl };
+    ) | (
+      { enumerator = En } = TargetEntity;
+      cxx1.CxxToSidl { from = { enumerator = En }, to = SidlDecl };
+    );
+    SidlDecl = cxx1.SidlDeclaration { name = cxx1.Name Name, range = Range };
+    { file = TargetFile } = Range;
+    { Name, TargetFile, { range = Range }, nothing } = Location;
+    { sidlDecl = SidlDecl } = Entity;
 
 #
 # Find xrefs associated with decls in this file / trace
@@ -341,6 +383,34 @@ predicate CxxEntityIdl:
       entity = { just = { fbthrift = { decl = Thrift } } },
       range = nothing } = I
 
+# The SIDL declaration a C++ entity was generated from. It is in the same
+# DB, so document xrefs to it are plain xrefs (CxxXRefTargetSidlLocation),
+# not IdlEntities in CxxFileEntityIdl.
+predicate CxxEntitySidlIdl:
+  {
+    ent: code.cxx.Entity,
+    idlEnt: code.IdlEntity,
+  }
+  { E, I } where
+    # A SIDL annotation is on one declaration in the family.
+    (
+      ( { decl = Decl } = E ) |
+      ( { defn = Defn } = E;
+        cxx1.DefToBaseDecl { Defn, Decl };
+        code.cxx.DeclToDef { Decl, Defn } );
+      cxx1.DeclFamilyOf { decl = Decl, family = FamDecl };
+      cxx1.CxxToSidl { from = { declaration = FamDecl }, to = SidlDecl }
+    ) | (
+      { enumerator = En } = E;
+      cxx1.CxxToSidl { from = { enumerator = En }, to = SidlDecl }
+    );
+    SidlDecl = cxx1.SidlDeclaration { range = SidlRange };
+    { file = SidlFile } = SidlRange;
+    { lang = Sidl,
+      file = SidlFile,
+      entity = { just = { cxx = { sidlDecl = SidlDecl } } },
+      range = nothing } = I
+
 # Bulk fetch any idl entities associated with the xref in the filexrefs
 predicate CxxFileEntityIdl:
   {
@@ -388,9 +458,16 @@ predicate CxxIdlEntityUses:
     span: src.ByteSpan,
   }
 { Target, File, Span} where
-  { fbthrift = { decl = Thrift } } = Target;
-  cxx1.ThriftToCxx { Thrift, { declaration = CxxDecl } };
-  CxxEntityUses { { decl = CxxDecl }, File, Span }
+  (
+    { fbthrift = { decl = Thrift } } = Target;
+    cxx1.ThriftToCxx { Thrift, { declaration = CxxDecl } };
+    CxxEntityUses { { decl = CxxDecl }, File, Span }
+  ) | (
+    { cxx = { sidlDecl = SidlDecl } } = Target;
+    cxx1.SidlToCxx { to = SidlDecl, from = XRefTarget };
+    XRefTargetToEntity { XRefTarget, Entity };
+    CxxEntityUses { Entity, File, Span }
+  )
 
 predicate CxxEntityUses:
   {
@@ -453,9 +530,26 @@ predicate CxxEntityKind:
     ({ decl = Decl } = CxxD;
      CxxDeclKind { Decl, Kind }) |
     ({ enumerator = _ } = CxxD; Enumerator = Kind) |
+    ({ sidlDecl = { kind = SidlKind } } = CxxD;
+     CxxSidlKind { SidlKind, Kind }) |
     ({ defn = Defn } = CxxD;
      cxx1.DefToBaseDecl { Defn, Decl };
      CxxDeclKind { Decl, Kind } )
+
+predicate CxxSidlKind:
+  {
+    sidlKind: cxx1.SidlKind,
+    kind: codemarkup.types.SymbolKind,
+  }
+  { SidlKind, Kind } where
+    (Struct : cxx1.SidlKind = SidlKind; Struct = Kind) |
+    (Enum : cxx1.SidlKind = SidlKind; Enum_ = Kind) |
+    (Enumerator : cxx1.SidlKind = SidlKind; Enumerator = Kind) |
+    (Alias : cxx1.SidlKind = SidlKind; Type = Kind) |
+    (Const : cxx1.SidlKind = SidlKind; Constant = Kind) |
+    (Interface : cxx1.SidlKind = SidlKind; Interface = Kind) |
+    (Method : cxx1.SidlKind = SidlKind; Method = Kind) |
+    (Field : cxx1.SidlKind = SidlKind; Field = Kind)
 
 predicate CxxDeclKind:
   {
@@ -505,6 +599,9 @@ predicate CxxEntityInfo:
      CxxDeclInfo { Decl, Info }) |
     ({ enumerator = _ } = CxxD;
      { kind = Enumerator, isAbstract = false } = Info) |
+    ({ sidlDecl = _ } = CxxD;
+     CxxEntityKind { CxxD, Kind };
+     { kind = Kind, isAbstract = false } = Info) |
     ({ defn = Defn } = CxxD;
      cxx1.DefToBaseDecl { Defn, Decl };
      CxxDeclInfo { Decl, Info }; )

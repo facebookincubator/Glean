@@ -70,6 +70,7 @@ prettyCxxSignature opts e qualified = case text of
       Cxx.Entity_defn def -> prettyDefinition def qualified
       Cxx.Entity_enumerator x ->
         prettyEnumerator x -- clangd doesn't qualify enumerators
+      Cxx.Entity_sidlDecl x -> prettySidlDeclaration x
       Cxx.Entity_objcSelectorSlot slot -> prettyObjcSelectorSlot slot
       Cxx.Entity_EMPTY -> intentionallyEmpty
 
@@ -106,6 +107,11 @@ prettyEnumerator (Cxx.Enumerator _ mkey) = case mkey of
 --   * Which doesn't have all values of the enum
 --   * but it is easy to read
 --   * and it WILL be correctly cpp-highlighted
+
+prettySidlDeclaration :: Cxx.SidlDeclaration -> Text
+prettySidlDeclaration (Cxx.SidlDeclaration _ mkey) = case mkey of
+  Nothing -> missingKey
+  Just (Cxx.SidlDeclaration_key name _ _) -> prettyName name
 
 prettyDecl :: Cxx.Declaration -> Qualified -> Text
 prettyDecl d qualified = case d of

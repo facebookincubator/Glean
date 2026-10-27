@@ -1,0 +1,65 @@
+[
+    "@generated",
+    [
+        {
+            "filepath": "fwd.cpp",
+            "range": {
+                "columnBegin": 34,
+                "columnEnd": 41,
+                "lineBegin": 12,
+                "lineEnd": 12
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "test.cpp",
+            "range": {
+                "columnBegin": 32,
+                "columnEnd": 39,
+                "lineBegin": 25,
+                "lineEnd": 25
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "test.cpp",
+            "range": {
+                "columnBegin": 9,
+                "columnEnd": 16,
+                "lineBegin": 35,
+                "lineEnd": 35
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "test.h",
+            "range": {
+                "columnBegin": 39,
+                "columnEnd": 46,
+                "lineBegin": 16,
+                "lineEnd": 16
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "test_types.h",
+            "range": {
+                "columnBegin": 29,
+                "columnEnd": 36,
+                "lineBegin": 51,
+                "lineEnd": 51
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "test_types.h",
+            "range": {
+                "columnBegin": 54,
+                "columnEnd": 61,
+                "lineBegin": 60,
+                "lineEnd": 60
+            },
+            "repository": "test"
+        }
+    ]
+]

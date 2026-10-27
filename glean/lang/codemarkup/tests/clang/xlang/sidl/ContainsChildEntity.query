@@ -1,0 +1,2 @@
+query: codemarkup.ContainsChildEntity { parent = { cxx = { sidlDecl = _ } } }
+transform: [gensort, []]

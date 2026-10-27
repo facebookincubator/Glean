@@ -177,7 +177,43 @@ fixedXRefs
 fixedXRefs mlimit xmapId = searchRecursiveWithLimit mlimit $
   cxxFileEntityXMapFixedXRefLocations xmapId
 
--- and the external xrefs (zip)
+-- | The "variable" (external) xrefs of a @cxx1.FileXRefs@ fact.
+--
+-- A @cxx1.FileXRefs@ splits a file's xrefs whose target is outside the
+-- file into two parallel lists: @xmap.froms@ (the use spans, as
+-- @cxx1.From@) and @targets@ (a @cxx1.XRefTargets@ per @From@). This
+-- fetches both lists and the target data in bulk, then zips them here.
+-- For each use span it returns:
+--
+-- * an xref to each target: a declaration, enumerator or ObjC selector
+--   slot, with an indirect target resolved to its final target;
+-- * an xref to the definition of each target declaration that has one;
+-- * for each indirect target reached through a @using@ declaration in
+--   this file, an xref from that declaration to the final target (see
+--   'mkIndirectXRef').
+--
+-- Angle queries, keyed by the @cxx1.FileXRefs@ fact id:
+--
+-- * 'variableXRefs': the @cxx1.FileXRefs@ fact itself, for its
+--   @xmap.froms@ and @targets@. Not limited by @mlimit@.
+-- * 'externalDeclToDefXRefs':
+--   @codemarkup.cxx.CxxFileEntityXMapVariableXRefDeclToDefs@, the
+--   definition of each target declaration.
+-- * 'externalDeclToLocations':
+--   @codemarkup.cxx.CxxFileEntityXMapVariableXRefDeclLocations@, the
+--   location of each target declaration.
+--
+-- Per target, 'cxxXRefTargetToLocation' queries
+-- @cxx1.DeclarationLocationNameSpan@ for a declaration missing from the
+-- 'externalDeclToLocations' map (e.g. the final target of an indirect
+-- xref), and fetches the keys of enumerator and indirect target facts.
+-- 'mkIndirectXRef' also fetches @cxx1.XRefIndirectTarget@ and
+-- @cxx1.UsingDeclaration@ keys.
+--
+-- The 'Bool' is True if either @codemarkup@ query hits @mlimit@.
+--
+-- Xrefs that codemarkup derives from these targets in full come from
+-- 'fixedXRefs' instead (see @CxxFileEntityXMapFixedXRefLocations@).
 externalXRefs
   :: Maybe Int
   -> Glean.IdOf Cxx.FileXRefs

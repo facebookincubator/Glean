@@ -1,0 +1,2 @@
+query: codemarkup.EntityComments { entity = { cxx = { sidlDecl = _ } } }
+transform: [gensort, []]

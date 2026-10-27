@@ -26,6 +26,24 @@ struct Foo {
   // Unrecognized Thrift kind (no "idl"): skipped with a warning, not a crash.
   /** Glean {"file": "some/module.thrift", "name": "FutureKind", "kind": "interaction"} */
   virtual void unknown_kind();
+
+  // Newline between "Glean" and the brace: not an annotation, skipped.
+  /** Glean
+   * {"file": "some/module.thrift", "service": "MyService", "function": "newline_skipped"} */
+  virtual void newline_skipped();
+
+  // Two annotations in one comment, Thrift second: only the Thrift one decodes.
+  /** Glean {"idl": "ligen", "kind": "method", "name": "ligen_first"} Glean {"file": "some/module.thrift", "service": "MyService", "function": "thrift_second"} */
+  virtual void thrift_second();
+
+  // Nested object with a brace inside a string: one annotation, decoded.
+  /** Glean {"file": "some/module.thrift", "service": "MyService", "function": "nested_object", "extra": {"note": "a } in a string", "list": [{"x": 1}]}} */
+  virtual void nested_object();
+
+  // Annotation spanning two lines: decoded up to its matching brace.
+  /** Glean {"file": "some/module.thrift", "service": "MyService",
+       "function": "multi_line"} */
+  virtual void multi_line();
 };
 
 // Ligen class annotation at namespace scope: also skipped.

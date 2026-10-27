@@ -1,0 +1,7 @@
+query: |
+  { E, I } where
+    D = cxx1.RecordDefinition { declaration = { name = { name = "Options" } } };
+    E = { cxx = { defn = { record_ = D } } } : code.Entity;
+    codemarkup.GeneratedEntityToIdlEntity { entity = E, idlEntity = I }
+perf: True
+transform: [gensort, []]

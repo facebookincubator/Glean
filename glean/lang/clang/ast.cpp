@@ -6,8 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+#include <map>
+#include <string_view>
 #include <utility>
 #include <variant>
+#include <vector>
 
 #include <clang/AST/DeclBase.h>
 #include <clang/AST/DeclVisitor.h>
@@ -16,7 +19,6 @@
 #include <clang/Sema/SemaConsumer.h>
 #include <llvm/Config/llvm-config.h>
 #include <llvm/Support/SHA1.h>
-#include <re2/re2.h>
 
 #include <folly/json/json.h>
 #include "folly/MapUtil.h"
@@ -40,7 +42,6 @@ namespace {
 
 using namespace facebook::glean::clangx;
 using namespace facebook::glean::cpp;
-using namespace re2;
 
 template <typename T>
 T identity(T x) {
@@ -419,6 +420,132 @@ class DeclarationTargets {
   ClangDB& db;
   std::set<DeclRef> refsInContext;
 };
+
+struct JsonStringState {
+  bool inString = false;
+  bool escaped = false;
+
+  bool consume(char c) {
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (c == '\\') {
+        escaped = true;
+      } else if (c == '"') {
+        inString = false;
+      }
+      return true;
+    }
+    if (c == '"') {
+      inString = true;
+      return true;
+    }
+    return false;
+  }
+};
+
+constexpr std::string_view kGleanTag = "Glean";
+
+std::size_t findJsonObjectEnd(
+    const std::string& comment_str,
+    std::size_t openPos) {
+  if (openPos >= comment_str.size() || comment_str[openPos] != '{') {
+    return std::string::npos;
+  }
+  int depth = 0;
+  JsonStringState state;
+  for (std::size_t i = openPos; i < comment_str.size(); ++i) {
+    const char c = comment_str[i];
+    if (state.consume(c)) {
+      continue;
+    }
+    if (c == '{') {
+      ++depth;
+    } else if (c == '}' && --depth == 0) {
+      return i;
+    }
+  }
+  return std::string::npos;
+}
+
+std::size_t findNextGleanOutsideString(
+    const std::string& comment_str,
+    std::size_t openPos) {
+  JsonStringState state;
+  std::size_t scanPos = openPos;
+  std::size_t searchFrom = openPos;
+  while (searchFrom < comment_str.size()) {
+    const auto candidate = comment_str.find(kGleanTag, searchFrom);
+    if (candidate == std::string::npos) {
+      break;
+    }
+    while (scanPos < candidate) {
+      state.consume(comment_str[scanPos]);
+      ++scanPos;
+    }
+    if (!state.inString) {
+      return candidate;
+    }
+    searchFrom = candidate + kGleanTag.size();
+  }
+  return std::string::npos;
+}
+
+std::string blankDocCommentMarkers(std::string_view text) {
+  std::string out(text);
+  JsonStringState state;
+  bool lineStart = false;
+  for (auto& c : out) {
+    if (state.consume(c)) {
+      lineStart = false;
+    } else if (c == '\n') {
+      lineStart = true;
+    } else if (lineStart && (c == '*' || c == '/' || c == '!')) {
+      c = ' ';
+    } else if (c != ' ' && c != '\t') {
+      lineStart = false;
+    }
+  }
+  return out;
+}
+
+std::vector<std::string> extractGleanJsonAnnotations(
+    const std::string& comment_str) {
+  std::vector<std::string> annotations;
+  std::size_t offset = 0;
+  while (offset < comment_str.size()) {
+    const auto gleanPos = comment_str.find(kGleanTag, offset);
+    if (gleanPos == std::string::npos) {
+      break;
+    }
+    const auto openPos = comment_str.find('{', gleanPos);
+    if (openPos == std::string::npos) {
+      break;
+    }
+    const auto endPos = findJsonObjectEnd(comment_str, openPos);
+    if (endPos == std::string::npos) {
+      const auto resume = findNextGleanOutsideString(comment_str, openPos);
+      if (resume == std::string::npos) {
+        break;
+      }
+      offset = resume;
+      continue;
+    }
+    const auto newline = comment_str.find('\n', gleanPos);
+    if (newline != std::string::npos && newline < openPos) {
+      const auto nextGlean =
+          comment_str.find(kGleanTag, gleanPos + kGleanTag.size());
+      offset = (nextGlean != std::string::npos && nextGlean < openPos)
+          ? gleanPos + kGleanTag.size()
+          : endPos + 1;
+      continue;
+    }
+    annotations.push_back(blankDocCommentMarkers(
+        std::string_view(comment_str).substr(openPos, endPos - openPos + 1)));
+    offset = endPos + 1;
+  }
+  return annotations;
+}
 
 struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   using Base = clang::RecursiveASTVisitor<ASTVisitor>;
@@ -967,6 +1094,164 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     return {{}, ThriftContext{file_fact, {}, {}}};
   }
 
+  struct SidlAnnotation {
+    std::string name;
+    Cxx::SidlKind kind;
+    Src::Range range;
+  };
+
+  static std::optional<SidlAnnotation> decodeSidlAnnotation(
+      const ASTVisitor& visitor,
+      const folly::dynamic& json) {
+    static const std::map<std::string, Cxx::SidlKind> kinds = {
+        {"struct", Cxx::SidlKind::Struct},
+        {"enum", Cxx::SidlKind::Enum_},
+        {"enumerator", Cxx::SidlKind::Enumerator},
+        {"alias", Cxx::SidlKind::Alias},
+        {"const", Cxx::SidlKind::Const},
+        {"interface", Cxx::SidlKind::Interface},
+        {"method", Cxx::SidlKind::Method},
+        {"field", Cxx::SidlKind::Field}};
+    auto getString = [&](const char* key) -> std::optional<std::string> {
+      auto* value = json.get_ptr(key);
+      if (value == nullptr || !value->isString()) {
+        return std::nullopt;
+      }
+      return value->asString();
+    };
+    auto getInt = [&](const char* key) -> std::optional<int64_t> {
+      auto* value = json.get_ptr(key);
+      if (value == nullptr || !value->isInt()) {
+        return std::nullopt;
+      }
+      return value->getInt();
+    };
+    const auto file = getString("file");
+    const auto name = getString("name");
+    const auto kind = getString("kind");
+    const auto kindIt = kind ? kinds.find(*kind) : kinds.end();
+    const auto line = getInt("line");
+    const auto column = getInt("column");
+    const auto endLine = getInt("endLine");
+    const auto endColumn = getInt("endColumn");
+    std::string reason;
+    if (!file || file->empty()) {
+      reason = "missing file";
+    } else if (!name || name->empty()) {
+      reason = "missing name";
+    } else if (kindIt == kinds.end()) {
+      reason = "unknown kind";
+    } else if (!line || !column || !endLine || !endColumn) {
+      reason = "missing range";
+    } else if (*line < 1) {
+      reason = "line < 1";
+    } else if (*column < 0) {
+      reason = "column < 0";
+    } else if (*endLine < *line) {
+      reason = "endLine < line";
+    } else if (*endColumn < 1) {
+      reason = "endColumn < 1";
+    } else if (*endLine == *line && *endColumn <= *column) {
+      reason = "endColumn <= column on one line";
+    }
+    if (!reason.empty()) {
+      LOG(WARNING) << "Skipping malformed Sidl json annotation: " << reason
+                   << ", name=" << (name ? *name : "<missing>")
+                   << ", file=" << (file ? *file : "<missing>")
+                   << ", kind=" << (kind ? *kind : "<missing>");
+      return std::nullopt;
+    }
+    // Unlike Thrift paths, SIDL paths are repo-relative with no cell prefix.
+    // SIDL columns are 0-based exclusive; Src::Range is 1-based inclusive.
+    Src::Range range{
+        visitor.db.fact<Src::File>(*file),
+        static_cast<uint64_t>(*line),
+        static_cast<uint64_t>(*column) + 1,
+        static_cast<uint64_t>(*endLine),
+        static_cast<uint64_t>(*endColumn)};
+    return SidlAnnotation{*name, kindIt->second, range};
+  }
+
+  static void emitCxxToSidlFact(
+      const ASTVisitor& visitor,
+      const Cxx::XRefTarget& target,
+      const SidlAnnotation& ann) {
+    auto declaration = visitor.db.fact<Cxx::SidlDeclaration>(
+        visitor.db.fact<Cxx::Name>(ann.name), ann.kind, ann.range);
+    visitor.db.fact<Cxx::CxxToSidl>(target, declaration);
+  }
+
+  static bool isSidlAnnotation(const folly::dynamic& json) {
+    auto* idl = json.get_ptr("idl");
+    return idl != nullptr && idl->isString() && idl->asString() == "sidl";
+  }
+
+  static void genSidlFact(
+      const ASTVisitor& visitor,
+      const Cxx::XRefTarget& target,
+      const folly::dynamic& json,
+      const std::optional<std::string>& enumeratorName = std::nullopt) {
+    try {
+      auto ann = decodeSidlAnnotation(visitor, json);
+      if (!ann) {
+        return;
+      }
+      if (enumeratorName.has_value() && ann->name != *enumeratorName) {
+        LOG(WARNING) << "Skipping Sidl json annotation for enumerator "
+                     << *enumeratorName << ": annotation names " << ann->name;
+        return;
+      }
+      emitCxxToSidlFact(visitor, target, *ann);
+    } catch (const std::exception& e) {
+      LOG(WARNING) << "Couldn't decode Sidl json annotation: " << e.what();
+    }
+  }
+
+  static std::optional<folly::dynamic> parseGleanJsonAnnotation(
+      const std::string& json_annotation) {
+    try {
+      return folly::parseJson(json_annotation);
+    } catch (const folly::json::parse_error&) {
+      LOG(WARNING) << "Couldn't parse Glean json annotation: "
+                   << json_annotation;
+    } catch (const std::exception& e) {
+      LOG(WARNING) << "Couldn't decode Glean json annotation: " << e.what();
+    }
+    return std::nullopt;
+  }
+
+  template <typename F>
+  static void forEachGleanJsonAnnotation(
+      const ASTVisitor& visitor,
+      const clang::RawComment& comment,
+      F&& fn) {
+    auto comment_str = comment.getRawText(visitor.db.sourceManager()).str();
+    for (const auto& json_annotation :
+         extractGleanJsonAnnotations(comment_str)) {
+      if (auto json = parseGleanJsonAnnotation(json_annotation)) {
+        fn(*json);
+      }
+    }
+  }
+
+  // Clang may attach an enumerator's comment to the next enumerator.
+  static void genSidlFactFromComment(
+      const ASTVisitor& visitor,
+      const Cxx::XRefTarget& target,
+      const clang::Decl* decl,
+      const std::optional<std::string>& enumeratorName = std::nullopt) {
+    auto* comment = decl->getASTContext().getRawCommentForDeclNoCache(decl);
+    if (!comment) {
+      return;
+    }
+    forEachGleanJsonAnnotation(
+        visitor, *comment, [&](const folly::dynamic& json) {
+          if (isSidlAnnotation(json)) {
+            genSidlFact(visitor, target, json, enumeratorName);
+          }
+        });
+  }
+
   /** Generate CxxToThrift facts from the cxx declaration fact
    * and json in declaration comment.
    *
@@ -1021,12 +1306,24 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         throw ThriftDecodingException(
             "Expect a Thrift context with qualname and kind from EnumDecl");
       }
+      if (result->thrift_type.has_value()) {
+        LOG(WARNING)
+            << "Multiple Thrift json annotations for one enum declaration; "
+               "its Thrift type comes from the last one";
+      }
       result->thrift_type = Fbthrift::NamedType{
           thrift_ctx_.qual_name.value(), thrift_ctx_.kind.value()};
     } else if constexpr (
         std::is_same<Decl, ClassDecl>::value ||
         std::is_same<Decl, NamespaceDecl>::value) {
-      result->thrift_ctx = thrift_ctx_res;
+      if (thrift_ctx_res.has_value()) {
+        if (result->thrift_ctx.has_value()) {
+          LOG(WARNING) << "Multiple Thrift json annotations with a Thrift "
+                          "context for one declaration; propagating the last "
+                          "one's context";
+        }
+        result->thrift_ctx = thrift_ctx_res;
+      }
     }
 
     // For all type of decls, expect namespace, we should generate a thrift fact
@@ -1086,33 +1383,23 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
                 crange.range.file, // might be "<builtin>"
                 crange.span);
 
-            std::string json_annotation;
-            // Some entities generated from thrift may have a json object as a
-            // comment. This object encodes the Glean fact of the generating
-            // entity We use it to generate CxxToThrift facts
-            auto comment_str =
-                comment->getRawText(visitor.db.sourceManager()).str();
-
-            static const RE2 thrift_regex(R"(Glean.*({.*}))");
-            if (RE2::PartialMatch(
-                    comment_str, thrift_regex, &json_annotation)) {
-              try {
-                auto json = folly::parseJson(json_annotation);
-                // Annotations tagged with an "idl" belong to a non-Thrift
-                // codegen (e.g. Ligen emits `Glean{"idl":"ligen",...}`) and are
-                // indexed by their own pipeline; the Thrift decoder can't
-                // interpret them yet, so skip them
-                if (json.get_ptr("idl") == nullptr) {
-                  genThriftFacts(visitor, decl, result, json);
-                }
-              } catch (const folly::json::parse_error&) {
-                LOG(WARNING)
-                    << "Couldn't parse Thrift json annotation: " << comment_str;
-              } catch (const ThriftDecodingException& e) {
-                LOG(WARNING)
-                    << "Thrift json decoding internal error: " << e.what();
-              }
-            };
+            forEachGleanJsonAnnotation(
+                visitor, *comment, [&](const folly::dynamic& json) {
+                  // Other "idl" values are indexed by their own pipelines.
+                  if (isSidlAnnotation(json)) {
+                    genSidlFact(
+                        visitor,
+                        Cxx::XRefTarget::declaration(result->declaration()),
+                        json);
+                  } else if (json.get_ptr("idl") == nullptr) {
+                    try {
+                      genThriftFacts(visitor, decl, result, json);
+                    } catch (const ThriftDecodingException& e) {
+                      LOG(WARNING) << "Thrift json decoding internal error: "
+                                   << e.what();
+                    }
+                  }
+                });
           }
         }
       }
@@ -1368,7 +1655,13 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     void define(ASTVisitor& visitor, const clang::EnumDecl* d) const {
       std::vector<Fact<Cxx::Enumerator>> enumerators;
       for (const auto& e : d->enumerators()) {
-        enumerators.push_back(visitor.enumerator(decl, thrift_type, e));
+        auto enumerator = visitor.enumerator(decl, thrift_type, e);
+        genSidlFactFromComment(
+            visitor,
+            Cxx::XRefTarget::enumerator(enumerator),
+            e,
+            e->getName().str());
+        enumerators.push_back(enumerator);
       }
 
       if (auto usr_hash = getUsrHash(d)) {

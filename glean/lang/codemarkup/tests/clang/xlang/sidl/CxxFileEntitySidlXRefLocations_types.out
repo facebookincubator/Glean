@@ -1,0 +1,290 @@
+[
+  "@generated",
+  {
+    "key": {
+      "tuplefield0": {
+        "target": {
+          "name": "Millis",
+          "file": {
+            "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+          },
+          "location": {
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 13,
+              "columnBegin": 1,
+              "lineEnd": 13,
+              "columnEnd": 22
+            }
+          }
+        },
+        "source": { "span": { "start": 1922, "length": 6 } }
+      },
+      "tuplefield1": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "Millis" },
+            "kind": 3,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 13,
+              "columnBegin": 1,
+              "lineEnd": 13,
+              "columnEnd": 22
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "target": {
+          "name": "Mode",
+          "file": {
+            "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+          },
+          "location": {
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 15,
+              "columnBegin": 1,
+              "lineEnd": 18,
+              "columnEnd": 1
+            }
+          }
+        },
+        "source": { "span": { "start": 2576, "length": 4 } }
+      },
+      "tuplefield1": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "Mode" },
+            "kind": 1,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 15,
+              "columnBegin": 1,
+              "lineEnd": 18,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "target": {
+          "name": "Mode",
+          "file": {
+            "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+          },
+          "location": {
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 15,
+              "columnBegin": 1,
+              "lineEnd": 18,
+              "columnEnd": 1
+            }
+          }
+        },
+        "source": { "span": { "start": 2603, "length": 4 } }
+      },
+      "tuplefield1": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "Mode" },
+            "kind": 1,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 15,
+              "columnBegin": 1,
+              "lineEnd": 18,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "target": {
+          "name": "Off",
+          "file": {
+            "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+          },
+          "location": {
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 16,
+              "columnBegin": 3,
+              "lineEnd": 16,
+              "columnEnd": 9
+            }
+          }
+        },
+        "source": { "span": { "start": 2609, "length": 3 } }
+      },
+      "tuplefield1": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "Off" },
+            "kind": 2,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 16,
+              "columnBegin": 3,
+              "lineEnd": 16,
+              "columnEnd": 9
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "target": {
+          "name": "Options",
+          "file": {
+            "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+          },
+          "location": {
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 21,
+              "columnBegin": 1,
+              "lineEnd": 25,
+              "columnEnd": 1
+            }
+          }
+        },
+        "source": { "span": { "start": 2824, "length": 7 } }
+      },
+      "tuplefield1": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "Options" },
+            "kind": 0,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 21,
+              "columnBegin": 1,
+              "lineEnd": 25,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "target": {
+          "name": "Options",
+          "file": {
+            "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+          },
+          "location": {
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 21,
+              "columnBegin": 1,
+              "lineEnd": 25,
+              "columnEnd": 1
+            }
+          }
+        },
+        "source": { "span": { "start": 3603, "length": 7 } }
+      },
+      "tuplefield1": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "Options" },
+            "kind": 0,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 21,
+              "columnBegin": 1,
+              "lineEnd": 25,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "target": {
+          "name": "Request",
+          "file": {
+            "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+          },
+          "location": {
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 27,
+              "columnBegin": 1,
+              "lineEnd": 30,
+              "columnEnd": 1
+            }
+          }
+        },
+        "source": { "span": { "start": 3648, "length": 7 } }
+      },
+      "tuplefield1": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "Request" },
+            "kind": 0,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 27,
+              "columnBegin": 1,
+              "lineEnd": 30,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  }
+]

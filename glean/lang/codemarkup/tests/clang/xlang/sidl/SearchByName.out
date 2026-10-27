@@ -1,0 +1,69 @@
+[
+  "@generated",
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "Options",
+        "file": { "key": "test.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test.h" },
+            "lineBegin": 13,
+            "columnBegin": 1,
+            "lineEnd": 13,
+            "columnEnd": 14
+          }
+        },
+        "destination": {
+          "file": { "key": "test.h" },
+          "span": { "start": 342, "length": 7 }
+        }
+      },
+      "tuplefield1": { "just": 24 }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "Options",
+        "file": { "key": "test_types.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test_types.h" },
+            "lineBegin": 18,
+            "columnBegin": 1,
+            "lineEnd": 18,
+            "columnEnd": 14
+          }
+        },
+        "destination": {
+          "file": { "key": "test_types.h" },
+          "span": { "start": 425, "length": 7 }
+        }
+      },
+      "tuplefield1": { "just": 24 }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "Options",
+        "file": { "key": "test_types.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test_types.h" },
+            "lineBegin": 38,
+            "columnBegin": 1,
+            "lineEnd": 44,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test_types.h" },
+          "span": { "start": 1702, "length": 7 }
+        }
+      },
+      "tuplefield1": { "just": 24 }
+    }
+  }
+]

@@ -1543,4 +1543,30 @@ predicate ThriftToCxx:
   stored { To, From }
     where cxx1.CxxToThrift { From, To }
 
+type SidlKind =
+  enum {
+    Struct | Enum | Enumerator | Alias | Const | Interface | Method | Field
+  }
+
+predicate SidlDeclaration:
+  {
+    name: Name,
+    kind: SidlKind,
+    range: src.Range
+  }
+
+predicate CxxToSidl:
+  {
+    from: cxx1.XRefTarget,
+    to: SidlDeclaration
+  }
+
+predicate SidlToCxx:
+  {
+    to: SidlDeclaration,
+    from: cxx1.XRefTarget
+  }
+  stored { To, From }
+    where cxx1.CxxToSidl { From, To }
+
 }

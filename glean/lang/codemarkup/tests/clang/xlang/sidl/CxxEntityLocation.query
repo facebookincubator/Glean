@@ -1,0 +1,3 @@
+query: codemarkup.cxx.CxxEntityLocation { entity = { sidlDecl = _ } }
+perf: True
+transform: [gensort, []]

@@ -1,0 +1,44 @@
+[
+  "@generated",
+  {
+    "key": {
+      "tuplefield0": {
+        "target": {
+          "name": "Options",
+          "file": {
+            "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+          },
+          "location": {
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 21,
+              "columnBegin": 1,
+              "lineEnd": 25,
+              "columnEnd": 1
+            }
+          }
+        },
+        "source": { "span": { "start": 353, "length": 7 } }
+      },
+      "tuplefield1": {
+        "sidlDecl": {
+          "key": {
+            "name": { "key": "Options" },
+            "kind": 0,
+            "range": {
+              "file": {
+                "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+              },
+              "lineBegin": 21,
+              "columnBegin": 1,
+              "lineEnd": 25,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  }
+]

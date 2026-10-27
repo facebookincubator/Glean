@@ -1,0 +1,654 @@
+[
+    "@generated",
+    {
+        "definitions": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "retriesOf(const glean::sidl::Options &)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "int retriesOf(const glean::sidl::Options& options)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 5,
+                    "columnEnd": 14,
+                    "lineBegin": 12,
+                    "lineEnd": 12
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 12,
+                    "lineEnd": 14
+                },
+                "sym": "test/cpp//retriesOf/.f/const+glean::sidl::Options+%26"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "options"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "retriesOf"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "const glean::sidl::Options& options"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 43,
+                    "columnEnd": 50,
+                    "lineBegin": 12,
+                    "lineEnd": 12
+                },
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 50,
+                    "lineBegin": 12,
+                    "lineEnd": 12
+                },
+                "sym": "test/cpp//retriesOf/options/.decl"
+            }
+        ],
+        "digest": {
+            "hash": "9a5576bc2e6fe20fa70692cba42979cc1e0171cc",
+            "size": 409
+        },
+        "referenced_file_digests": {
+            "test": {
+                "fwd.cpp": {
+                    "hash": "9a5576bc2e6fe20fa70692cba42979cc1e0171cc",
+                    "size": 409
+                },
+                "test.cpp": {
+                    "hash": "a33419bc1b19710aba9eac51c3c817041eeb4ed6",
+                    "size": 1219
+                },
+                "test.h": {
+                    "hash": "1f56c73314e5e78db36b2a84a8f95fbb580ded12",
+                    "size": 436
+                },
+                "test_types.h": {
+                    "hash": "da976ef63733c73076af2a2a697d56ea40d73425",
+                    "size": 3711
+                }
+            }
+        },
+        "references": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Options"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Options"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "sidl"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 34,
+                    "columnEnd": 41,
+                    "lineBegin": 12,
+                    "lineEnd": 12
+                },
+                "sym": "test/cpp/.sidl/struct/fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl/Options/21",
+                "target": {
+                    "filepath": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 21,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "glean"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "namespace glean"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 6
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 21,
+                    "columnEnd": 26,
+                    "lineBegin": 12,
+                    "lineEnd": 12
+                },
+                "sym": "test/cpp//glean/.decl",
+                "target": {
+                    "filepath": "test.h",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 16,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "sidl"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "glean"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "namespace sidl"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 6
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 28,
+                    "columnEnd": 32,
+                    "lineBegin": 12,
+                    "lineEnd": 12
+                },
+                "sym": "test/cpp//glean/sidl/.decl",
+                "target": {
+                    "filepath": "test.h",
+                    "range": {
+                        "columnBegin": 18,
+                        "columnEnd": 22,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Options"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "glean::sidl"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Options"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 34,
+                    "columnEnd": 41,
+                    "lineBegin": 12,
+                    "lineEnd": 12
+                },
+                "sym": "test/cpp//glean/sidl/Options",
+                "target": {
+                    "filepath": "test_types.h",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 15,
+                        "lineBegin": 38,
+                        "lineEnd": 38
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Options"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "glean::sidl"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Options"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 34,
+                    "columnEnd": 41,
+                    "lineBegin": 12,
+                    "lineEnd": 12
+                },
+                "sym": "test/cpp//glean/sidl/Options/.decl",
+                "target": {
+                    "filepath": "test.h",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 15,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "optionsRetries(const glean::sidl::Options &)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "int optionsRetries(const glean::sidl::Options& options)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 10,
+                    "columnEnd": 24,
+                    "lineBegin": 13,
+                    "lineEnd": 13
+                },
+                "sym": "test/cpp//optionsRetries/.f/const+glean::sidl::Options+%26",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 19,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "optionsRetries(const glean::sidl::Options &)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "int optionsRetries(const glean::sidl::Options& options)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 10,
+                    "columnEnd": 24,
+                    "lineBegin": 13,
+                    "lineEnd": 13
+                },
+                "sym": "test/cpp//optionsRetries/.f/const+glean::sidl::Options+%26/.decl",
+                "target": {
+                    "filepath": "test.h",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 19,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "options"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "retriesOf"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "const glean::sidl::Options& options"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 25,
+                    "columnEnd": 32,
+                    "lineBegin": 13,
+                    "lineEnd": 13
+                },
+                "sym": "test/cpp//retriesOf/options/.decl",
+                "target": {
+                    "filepath": "fwd.cpp",
+                    "range": {
+                        "columnBegin": 43,
+                        "columnEnd": 50,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "test.h"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 4
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 18,
+                    "lineBegin": 9,
+                    "lineEnd": 9
+                },
+                "sym": "test/pp/test.h",
+                "target": {
+                    "filepath": "test.h",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "revision": "testhash",
+        "truncated": false
+    }
+]

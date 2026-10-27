@@ -62,5 +62,188 @@
         }
       }
     }
+  },
+  {
+    "key": {
+      "from": {
+        "declaration": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "multi_line" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "method": {
+                "isVirtual": true,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 46,
+                "columnBegin": 3,
+                "lineEnd": 46,
+                "columnEnd": 27
+              }
+            }
+          }
+        }
+      },
+      "to": {
+        "function_": {
+          "key": {
+            "service_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "some/module.thrift" } },
+                    "name": { "key": "MyService" }
+                  }
+                }
+              }
+            },
+            "name": { "key": "multi_line" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "from": {
+        "declaration": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "nested_object" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "method": {
+                "isVirtual": true,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 41,
+                "columnBegin": 3,
+                "lineEnd": 41,
+                "columnEnd": 30
+              }
+            }
+          }
+        }
+      },
+      "to": {
+        "function_": {
+          "key": {
+            "service_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "some/module.thrift" } },
+                    "name": { "key": "MyService" }
+                  }
+                }
+              }
+            },
+            "name": { "key": "nested_object" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "from": {
+        "declaration": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "thrift_second" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "method": {
+                "isVirtual": true,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 37,
+                "columnBegin": 3,
+                "lineEnd": 37,
+                "columnEnd": 30
+              }
+            }
+          }
+        }
+      },
+      "to": {
+        "function_": {
+          "key": {
+            "service_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "some/module.thrift" } },
+                    "name": { "key": "MyService" }
+                  }
+                }
+              }
+            },
+            "name": { "key": "thrift_second" }
+          }
+        }
+      }
+    }
   }
 ]

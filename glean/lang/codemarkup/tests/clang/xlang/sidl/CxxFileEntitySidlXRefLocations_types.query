@@ -1,0 +1,6 @@
+query: |
+  { X, E } where
+    codemarkup.cxx.CxxFileEntityXRefLocations { file = "test_types.h", xref = X, entity = E };
+    { sidlDecl = _ } = E
+perf: True
+transform: [gensort, []]

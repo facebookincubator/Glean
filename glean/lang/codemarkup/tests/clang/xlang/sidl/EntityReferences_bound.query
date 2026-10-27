@@ -1,0 +1,6 @@
+query: |
+  { F, R } where
+    S = cxx1.SidlDeclaration { name = "Options" };
+    codemarkup.EntityReferences { target = { cxx = { sidlDecl = S } }, file = F, range = R }
+perf: True
+transform: [gensort, []]
