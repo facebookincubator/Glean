@@ -114,7 +114,7 @@ DatabaseImpl::DatabaseImpl(
 
     // We only need usets_ for writable DBs, and it takes time and
     // memory to load them so omit this for ReadOnly DBs.
-    usets_ = loadOwnershipSets();
+    usets_ = loadOwnershipSets(visibilityStorage());
   }
 
   // Enable the fact owner cache when the DB is read-only

@@ -11,6 +11,7 @@
 #include <fmt/core.h>
 #include <array>
 #include <cstring>
+#include <optional>
 #include <utility>
 
 #include <glean/rts/ownership/uset.h>
@@ -87,31 +88,65 @@ folly::Optional<T> readAdminValue(C& container, AdminId id) {
   return result;
 }
 
-/// The ownership tables in units, unit names, sets, owners and owner-pages
-/// order.
+namespace {
+
+/// Write one expression into the selected ownership table.
 template <typename C>
-auto ownershipStatsTables() {
-  return std::array{
-      &C::Family::ownershipUnits,
-      &C::Family::ownershipUnitIds,
-      &C::Family::ownershipSets,
-      &C::Family::factOwners,
-      &C::Family::factOwnerPages};
+void putOwnerSet(
+    typename C::Writer& writer,
+    const typename C::Family& family,
+    UsetId id,
+    SetOp op,
+    const OwnerSet& set) {
+  binary::Output key;
+  key.nat(id);
+  binary::Output value;
+  value.nat(op);
+  serializeEliasFano(value, set);
+  writer.put(family, key.bytes(), value.bytes());
 }
 
+/// Write promoted expressions under their assigned IDs. `upper` is the
+/// exclusive end of their ID range and the Elias-Fano universe size.
+template <typename C>
+void putOwnerSets(
+    typename C::Writer& writer,
+    const typename C::Family& family,
+    Usets& sets,
+    UsetId upper) {
+  auto id = sets.getFirstId();
+  for (auto& expression : sets.toEliasFano(upper)) {
+    if ((id % 1000000) == 0) {
+      VLOG(1) << "storeOwnership: " << id;
+    }
+    putOwnerSet<C>(writer, family, id++, expression.op, expression.set);
+    expression.set.free();
+  }
+}
+
+} // namespace
+
 /**
- * The owner sets stored in a DB, for adding new ones. New sets take their
- * IDs from the DB's ID counter, which they share with units. Must only be
- * used under the write lock.
+ * The owner sets of one ownership relation stored in a DB, for adding new
+ * ones. New sets take their IDs from the relation's ID counter, which they
+ * share with its units. Must only be used under the write lock.
  */
 template <typename C>
 class OwnerSets {
  public:
   using Writer = typename C::Writer;
 
-  /** `next` is the DB's ID counter and `stored` the sets already in the DB. */
-  OwnerSets(UsetId& next, StoredUsets stored)
-      : next_(next), stored_(std::move(stored)) {}
+  /** `family` stores the sets, and the admin key `nextIdKey` persists `next`,
+   *  the relation's ID counter. `stored` are the sets already in the DB. */
+  OwnerSets(
+      const typename C::Family& family,
+      AdminId nextIdKey,
+      UsetId& next,
+      StoredUsets stored)
+      : family_(family),
+        nextIdKey_(nextIdKey),
+        next_(next),
+        stored_(std::move(stored)) {}
 
   /** The ID of the stored set equal to `uset`, or INVALID_USET. */
   UsetId find(Uset* uset) const {
@@ -127,7 +162,8 @@ class OwnerSets {
     if (added) {
       ++next_;
       auto serialized = stored->toEliasFano(next_);
-      putSet(writer, stored->id, serialized.op, serialized.set);
+      putOwnerSet<C>(
+          writer, family_, stored->id, serialized.op, serialized.set);
       serialized.set.free();
       putNextId(writer);
     }
@@ -137,18 +173,12 @@ class OwnerSets {
   /** Writes `sets`, which were numbered from the counter's value or above
    *  when they were computed. */
   void commit(Usets&& sets, Writer& writer) {
-    UsetId id = sets.getFirstId();
+    const auto id = sets.getFirstId();
     if (id < next_) {
       rts::error("can't store sets from {}: IDs up to {} are taken", id, next_);
     }
     const auto upper = static_cast<UsetId>(id + sets.size());
-    for (auto& serialized : sets.toEliasFano(upper)) {
-      if ((id % 1000000) == 0) {
-        VLOG(1) << "storeOwnership: " << id;
-      }
-      putSet(writer, id++, serialized.op, serialized.set);
-      serialized.set.free();
-    }
+    putOwnerSets<C>(writer, family_, sets, upper);
     VLOG(1) << "storeOwnership: writing sets (" << sets.size() << ")";
     next_ = upper;
     putNextId(writer);
@@ -156,25 +186,56 @@ class OwnerSets {
   }
 
  private:
-  /** Serialize one ownership set (op + Elias-Fano payload) into the
-   *  ownershipSets column family keyed by its UsetId. */
-  static void putSet(Writer& writer, UsetId id, SetOp op, const OwnerSet& set) {
-    binary::Output key;
-    key.nat(id);
-    binary::Output value;
-    value.nat(op);
-    serializeEliasFano(value, set);
-    writer.put(C::Family::ownershipSets, key.bytes(), value.bytes());
-  }
-
   void putNextId(Writer& writer) const {
-    writer.put(
-        C::Family::admin, bytesOf(AdminId::NEXT_UNIT_ID), bytesOf(next_));
+    writer.put(C::Family::admin, bytesOf(nextIdKey_), bytesOf(next_));
   }
 
+  const typename C::Family& family_;
+  AdminId nextIdKey_;
   UsetId& next_;
   StoredUsets stored_;
 };
+
+/// Where an ownership relation is stored, and its state for writing.
+template <typename C>
+struct OwnershipRelationStorage {
+  /// Unit name -> UnitId, stored as a raw uint32_t.
+  const typename C::Family& units;
+  /// UnitId -> unit name, for a relation that can add units after sets. Its
+  /// unit count then comes from the highest named unit; otherwise sets follow
+  /// the units, and the count ends at the first set.
+  const typename C::Family* unitNames;
+  /// UsetId -> (Operation, [UsetId])
+  const typename C::Family& sets;
+  /// An interval map from fact IDs to owners.
+  const typename C::Family& owners;
+  /// Pages of fact owners for reads after finalization, if the relation
+  /// keeps them.
+  const typename C::Family* ownerPages;
+  /// The admin key of the number of facts without an owner, if the relation
+  /// counts them.
+  std::optional<AdminId> orphanFactsKey;
+  /// The relation's first unit ID.
+  const UnitId& firstUnit;
+  /// The admin key that persists `nextId`.
+  AdminId nextIdKey{};
+  /// The next unused ID of the relation's units and sets.
+  UsetId& nextId;
+  /// The stored sets, while the DB is writable.
+  std::unique_ptr<OwnerSets<C>>& writableSets;
+};
+
+/// The relation's tables in units, unit names, sets, owners and owner-pages
+/// order. Optional tables have a nullptr entry.
+template <typename C>
+auto ownershipStatsTables(const OwnershipRelationStorage<C>& storage) {
+  return std::array{
+      &storage.units,
+      storage.unitNames,
+      &storage.sets,
+      &storage.owners,
+      storage.ownerPages};
+}
 
 ///
 /// Common operations for DB implementations abstracted over
@@ -213,22 +274,35 @@ struct DatabaseCommon : Database {
    *  sets. Must only be accessed under the write lock. */
   std::unique_ptr<OwnerSets<C>> usets_;
 
+  /// Where visibility ownership is stored.
+  OwnershipRelationStorage<C> visibilityStorage();
+
   std::vector<size_t> loadOwnershipUnitCounters();
   folly::F14FastMap<uint64_t, size_t> loadOwnershipDerivedCounters();
 
+  /// Iterates over the sets stored in `family`. `emptyNextId` is the first ID
+  /// reported when the table is empty.
   std::unique_ptr<rts::OwnershipSetIterator> getSetIterator(
-      DatabaseCommon<C>& db);
+      const typename C::Family& family,
+      rts::UsetId emptyNextId);
 
-  std::unique_ptr<OwnerSets<C>> loadOwnershipSets();
+  /// Load the stored sets of a relation, for writing.
+  std::unique_ptr<OwnerSets<C>> loadOwnershipSets(
+      const OwnershipRelationStorage<C>& storage);
 
   folly::Optional<uint32_t> getUnitId(folly::ByteRange unit) override;
+
+  /// The ID of the unit named `unit` in a units table.
+  folly::Optional<uint32_t> readUnitId(
+      const typename C::Family& units,
+      folly::ByteRange unit);
   folly::Optional<std::string> getUnit(uint32_t unit_id) override;
   /** Returns the highest UnitId that has a name in the ownershipUnitIds
    *  table. WARNING: this does NOT return the next available ID in the
    *  shared namespace — use next_uset_id for that. */
   std::vector<std::pair<std::string, uint32_t>> getUnitsByPrefix(
       folly::ByteRange prefix) override;
-  uint32_t nextUnitId();
+  uint32_t nextUnitId(const typename C::Family& unitNames, UnitId firstUnit);
 
   void addBatchDescriptor(BatchDescriptor batchDescriptor) override;
   void markBatchDescriptorAsWritten(folly::ByteRange location) override;
@@ -276,12 +350,21 @@ struct DatabaseCommon : Database {
    *  advances next_uset_id past all stored set IDs. */
   void storeOwnership(ComputedOwnership& ownership) override;
 
+  /// Writes computed ownership into a relation's tables: the promoted sets,
+  /// numbered from the relation's next ID, and the fact-owner intervals. An
+  /// interval without an owner never replaces a stored owner.
+  void storeRelationOwnership(
+      const OwnershipRelationStorage<C>& storage,
+      ComputedOwnership& ownership);
+
   /** Persist derived-fact ownership. Rebases set IDs from the
    *  DefineOwnership's local namespace into the DB's global namespace
    *  via a substitution map, interning new sets one at a time. */
   void addDefineOwnership(DefineOwnership& def) override;
 
   rts::UsetId getOwner(Id id) override;
+
+  UsetId readFactOwner(const typename C::Family& family, Id id);
 
   std::unique_ptr<rts::Ownership> getOwnership() override;
 
@@ -370,34 +453,47 @@ struct DatabaseCommon : Database {
     uint64_t bytes = 0;
   };
 
-  using TableGroup = decltype(ownershipStatsTables<C>());
+  using TableGroup = decltype(ownershipStatsTables(
+      std::declval<const OwnershipRelationStorage<C>&>()));
   using TableStatsGroup = std::array<TableStats, std::tuple_size_v<TableGroup>>;
 
   /// Prepares and measures the table group in one backend operation. Returns
   /// estimates in input order, with zeros for missing optional tables.
   virtual TableStatsGroup tableStats(const TableGroup& tables) = 0;
 
-  /// Unit and set counts come from the ID counters; sizes and the number of
-  /// owner entries are the storage engine's estimates.
-  OwnershipStats getOwnershipStats();
+  /// The stats of a relation. Unit and set counts come from its ID counters;
+  /// sizes and the number of owner entries are the storage engine's
+  /// estimates.
+  OwnershipStats getOwnershipStats(const OwnershipRelationStorage<C>& storage);
 };
 
 template <typename C>
-OwnershipStats DatabaseCommon<C>::getOwnershipStats() {
+OwnershipStats DatabaseCommon<C>::getOwnershipStats(
+    const OwnershipRelationStorage<C>& storage) {
   container_.requireOpen();
-  const auto [units, unitIds, sets, owners, ownerPages] =
-      tableStats(ownershipStatsTables<C>());
+  const auto [units, unitNames, sets, owners, ownerPages] =
+      tableStats(ownershipStatsTables(storage));
 
   OwnershipStats stats{};
-  stats.num_units = nextUnitId() - first_unit_id; // accurate
-  stats.units_size = units.bytes + unitIds.bytes; // estimate
-  stats.num_sets = next_uset_id - stats.num_units; // accurate
+  if (storage.unitNames) {
+    stats.num_units = nextUnitId(*storage.unitNames, storage.firstUnit) -
+        storage.firstUnit; // accurate
+    stats.num_sets = storage.nextId - stats.num_units; // accurate
+  } else {
+    const auto firstSet =
+        getSetIterator(storage.sets, storage.nextId)->sizes().first;
+    stats.num_units = firstSet - storage.firstUnit; // accurate
+    stats.num_sets = storage.nextId - firstSet; // accurate
+  }
+  stats.units_size = units.bytes + unitNames.bytes; // estimate
   stats.sets_size = sets.bytes; // estimate
   stats.num_owner_entries = owners.entries + ownerPages.entries; // estimate
   stats.owners_size = owners.bytes + ownerPages.bytes; // estimate
 
-  const auto orphans =
-      readAdminValue<int64_t>(container_, AdminId::ORPHAN_FACTS);
+  folly::Optional<int64_t> orphans;
+  if (storage.orphanFactsKey) {
+    orphans = readAdminValue<int64_t>(container_, *storage.orphanFactsKey);
+  }
   stats.num_orphan_facts = orphans ? *orphans : -1;
 
   return stats;
@@ -423,6 +519,21 @@ std::vector<size_t> DatabaseCommon<C>::loadOwnershipUnitCounters() {
   }
 
   return result;
+}
+
+template <typename C>
+OwnershipRelationStorage<C> DatabaseCommon<C>::visibilityStorage() {
+  return {
+      .units = C::Family::ownershipUnits,
+      .unitNames = &C::Family::ownershipUnitIds,
+      .sets = C::Family::ownershipSets,
+      .owners = C::Family::factOwners,
+      .ownerPages = &C::Family::factOwnerPages,
+      .orphanFactsKey = AdminId::ORPHAN_FACTS,
+      .firstUnit = first_unit_id,
+      .nextIdKey = AdminId::NEXT_UNIT_ID,
+      .nextId = next_uset_id,
+      .writableSets = usets_};
 }
 
 template <typename C>
@@ -520,10 +631,14 @@ DatabaseCommon<C>::getUnprocessedBatchDescriptors() {
 
 template <typename C>
 std::unique_ptr<rts::OwnershipSetIterator> DatabaseCommon<C>::getSetIterator(
-    DatabaseCommon<C>& db) {
+    const typename C::Family& family,
+    rts::UsetId emptyNextId) {
   struct SetIterator : rts::OwnershipSetIterator {
-    explicit SetIterator(DatabaseCommon<C>& db)
-        : iter(db.container_.read(C::Family::ownershipSets)) {
+    SetIterator(
+        DatabaseCommon<C>& db,
+        const typename C::Family& family,
+        rts::UsetId emptyNextId)
+        : iter(db.container_.read(family)) {
       size_t last;
 
       iter.seek_last();
@@ -536,7 +651,7 @@ std::unique_ptr<rts::OwnershipSetIterator> DatabaseCommon<C>::getSetIterator(
 
       iter.seek_first();
       if (!iter.valid()) {
-        first_ = db.next_uset_id;
+        first_ = emptyNextId;
         size_ = 0;
       } else {
         binary::Input key(iter.key());
@@ -583,14 +698,15 @@ std::unique_ptr<rts::OwnershipSetIterator> DatabaseCommon<C>::getSetIterator(
     typename C::Iterator iter;
   };
 
-  return std::make_unique<SetIterator>(db);
+  return std::make_unique<SetIterator>(*this, family, emptyNextId);
 }
 
 template <typename C>
-std::unique_ptr<OwnerSets<C>> DatabaseCommon<C>::loadOwnershipSets() {
+std::unique_ptr<OwnerSets<C>> DatabaseCommon<C>::loadOwnershipSets(
+    const OwnershipRelationStorage<C>& storage) {
   auto t = makeAutoTimer("loadOwnershipSets");
 
-  auto iter = getSetIterator(*this);
+  auto iter = getSetIterator(storage.sets, storage.nextId);
   auto pair = iter->sizes();
   auto first = pair.first;
   auto size = pair.second;
@@ -613,16 +729,24 @@ std::unique_ptr<OwnerSets<C>> DatabaseCommon<C>::loadOwnershipSets() {
   }
   auto stats = usets.statistics();
 
-  LOG(INFO) << "loadOwnershipSets loaded " << stats.adds << " sets, "
-            << stats.bytes << " bytes";
+  LOG(INFO) << "loadOwnershipSets loaded " << stats.adds << " sets from "
+            << storage.sets.name << ", " << stats.bytes << " bytes";
 
-  return std::make_unique<OwnerSets<C>>(next_uset_id, std::move(usets));
+  return std::make_unique<OwnerSets<C>>(
+      storage.sets, storage.nextIdKey, storage.nextId, std::move(usets));
 }
 
 template <typename C>
 folly::Optional<uint32_t> DatabaseCommon<C>::getUnitId(folly::ByteRange unit) {
+  return readUnitId(C::Family::ownershipUnits, unit);
+}
+
+template <typename C>
+folly::Optional<uint32_t> DatabaseCommon<C>::readUnitId(
+    const typename C::Family& units,
+    folly::ByteRange unit) {
   uint32_t r;
-  if (container_.get(C::Family::ownershipUnits, unit, [&](auto val) {
+  if (container_.get(units, unit, [&](auto val) {
         assert(val.size() == sizeof(uint32_t));
         r = folly::loadUnaligned<uint32_t>(val.data());
       })) {
@@ -633,14 +757,16 @@ folly::Optional<uint32_t> DatabaseCommon<C>::getUnitId(folly::ByteRange unit) {
 }
 
 template <typename C>
-uint32_t DatabaseCommon<C>::nextUnitId() {
-  auto iter = container_.read(C::Family::ownershipUnitIds);
+uint32_t DatabaseCommon<C>::nextUnitId(
+    const typename C::Family& unitNames,
+    UnitId firstUnit) {
+  auto iter = container_.read(unitNames);
 
   size_t max_unit_id;
 
   iter.seek_last();
   if (!iter.valid()) {
-    max_unit_id = first_unit_id;
+    max_unit_id = firstUnit;
   } else {
     binary::Input key(iter.key());
     max_unit_id = key.trustedNat();
@@ -909,12 +1035,19 @@ DatabaseCommon<C>::getOwnershipUnitIterator() {
 
 template <typename C>
 void DatabaseCommon<C>::storeOwnership(ComputedOwnership& ownership) {
+  storeRelationOwnership(visibilityStorage(), ownership);
+}
+
+template <typename C>
+void DatabaseCommon<C>::storeRelationOwnership(
+    const OwnershipRelationStorage<C>& storage,
+    ComputedOwnership& ownership) {
   container_.requireOpen();
 
   if (ownership.sets_.size() > 0) {
     auto t = makeAutoTimer("storeOwnership(sets)");
     typename C::Writer writer = container_.write();
-    usets_->commit(std::move(ownership.sets_), writer);
+    storage.writableSets->commit(std::move(ownership.sets_), writer);
     writer.commit();
   }
 
@@ -923,8 +1056,7 @@ void DatabaseCommon<C>::storeOwnership(ComputedOwnership& ownership) {
 
     auto hasOwner = [&](EncodedNat& key) -> bool {
       bool r = false;
-      container_.get(
-          C::Family::factOwners, key.byteRange(), [&](auto) { r = true; });
+      container_.get(storage.owners, key.byteRange(), [&](auto) { r = true; });
       return r;
     };
 
@@ -935,13 +1067,13 @@ void DatabaseCommon<C>::storeOwnership(ComputedOwnership& ownership) {
       EncodedNat key(id.toWord());
       if (usetid != INVALID_USET || !hasOwner(key)) {
         if (usetid != INVALID_USET) {
-          CHECK_LT(usetid, next_uset_id);
+          CHECK_LT(usetid, storage.nextId);
         }
         // This is an interval map, and we might be writing multiple sparse sets
         // of intervals where the gaps are indicated by INVALID_USET. Therefore
         // don't overwrite an existing owner with INVALID_USET.
         EncodedNat val(usetid);
-        writer.put(C::Family::factOwners, key.byteRange(), val.byteRange());
+        writer.put(storage.owners, key.byteRange(), val.byteRange());
       }
     }
     VLOG(1) << "storeOwnership: writing facts: " << ownership.facts_.size()
@@ -1078,16 +1210,28 @@ UsetId DatabaseCommon<C>::getOwner(Id id) {
     return cached.value();
   } else {
     // cache is not enabled; fall back to reading from the DB.
-    auto iter = container_.read(C::Family::factOwners);
+    return readFactOwner(C::Family::factOwners, id);
+  }
+}
 
-    EncodedNat key(id.toWord());
-    iter.seek_key_lower(key.byteRange());
-    if (iter.valid()) {
-      binary::Input val(iter.value());
-      return val.trustedNat();
-    } else {
-      return INVALID_USET;
+/// Read an interval owner. Visibility and accessibility maps encode 32-bit
+/// UsetId values as natural numbers, including INVALID_USET for unowned gaps.
+template <typename C>
+UsetId DatabaseCommon<C>::readFactOwner(
+    const typename C::Family& family,
+    Id id) {
+  auto iter = container_.read(family);
+  EncodedNat key(id.toWord());
+  iter.seek_key_lower(key.byteRange());
+  if (iter.valid()) {
+    binary::Input value(iter.value());
+    const auto owner = value.trustedNat();
+    if (owner > INVALID_USET) {
+      rts::error("invalid {}: owner ID out of range: {}", family.name, owner);
     }
+    return static_cast<UsetId>(owner);
+  } else {
+    return INVALID_USET;
   }
 }
 
@@ -1350,35 +1494,33 @@ void DatabaseCommon<C>::FactOwnerCache::prepare(C& container) {
 
 namespace {
 
-/** Adapter exposing a DatabaseCommon's persisted ownership data
- *  through the Ownership interface (set lookup, iteration, etc.). */
+/// Adapter for the persisted ownership of the relation stored as `storage`.
 template <typename C>
 struct StoredOwnership : Ownership {
-  explicit StoredOwnership(DatabaseCommon<C>* db) : db_(db) {}
+  StoredOwnership(DatabaseCommon<C>* db, OwnershipRelationStorage<C> storage)
+      : db_(db), storage_(std::move(storage)) {}
 
   UsetId nextSetId() override {
-    return db_->next_uset_id;
+    return storage_.nextId;
   }
 
   UsetId lookupSet(Uset* uset) override {
-    if (!db_->usets_) {
+    if (!storage_.writableSets) {
       rts::error("rocksdb: lookupSet on read-only DB");
-    } else {
-      return db_->usets_->find(uset);
     }
+    return storage_.writableSets->find(uset);
   }
 
   folly::Optional<SetExpr<SetU32>> getUset(UsetId id) override {
     EncodedNat key(id);
     folly::Optional<SetExpr<SetU32>> r;
-    if (db_->container_.get(
-            C::Family::ownershipSets, key.byteRange(), [&](auto val) {
-              binary::Input inp(val);
-              SetExpr<SetU32> exp;
-              exp.op = static_cast<SetOp>(inp.trustedNat());
-              exp.set = SetU32::fromEliasFano(deserializeEliasFano(inp));
-              r = exp;
-            })) {
+    if (db_->container_.get(storage_.sets, key.byteRange(), [&](auto val) {
+          binary::Input inp(val);
+          SetExpr<SetU32> exp;
+          exp.op = static_cast<SetOp>(inp.trustedNat());
+          exp.set = SetU32::fromEliasFano(deserializeEliasFano(inp));
+          r = exp;
+        })) {
       return r;
     } else {
       return folly::none;
@@ -1386,19 +1528,20 @@ struct StoredOwnership : Ownership {
   }
 
   std::unique_ptr<rts::OwnershipSetIterator> getSetIterator() override {
-    return db_->getSetIterator(*db_);
+    return db_->getSetIterator(storage_.sets, nextSetId());
   }
 
   folly::Optional<UnitId> getUnitId(folly::ByteRange unit) override {
-    return db_->getUnitId(unit);
+    return db_->readUnitId(storage_.units, unit);
   }
 
   OwnershipStats getStats() override {
-    return db_->getOwnershipStats();
+    return db_->getOwnershipStats(storage_);
   }
 
  private:
   DatabaseCommon<C>* db_;
+  OwnershipRelationStorage<C> storage_;
 };
 
 } // namespace
@@ -1406,7 +1549,7 @@ struct StoredOwnership : Ownership {
 template <typename C>
 std::unique_ptr<rts::Ownership> DatabaseCommon<C>::getOwnership() {
   container_.requireOpen();
-  return std::make_unique<StoredOwnership<C>>(this);
+  return std::make_unique<StoredOwnership<C>>(this, visibilityStorage());
 }
 
 } // namespace db
