@@ -24,15 +24,6 @@ namespace glean {
 namespace rocks {
 namespace impl {
 
-enum class AdminId : uint32_t {
-  NEXT_ID,
-  VERSION,
-  STARTING_ID,
-  FIRST_UNIT_ID,
-  NEXT_UNIT_ID,
-  ORPHAN_FACTS,
-};
-
 struct DatabaseImpl final : DatabaseCommon<ContainerImpl> {
   int64_t db_version;
   Id starting_id;
@@ -100,36 +91,10 @@ struct DatabaseImpl final : DatabaseCommon<ContainerImpl> {
 
   /// Ownership (most of this is in common.h)
 
-  OwnershipStats getOwnershipStats() override;
+  /// Flushes the present tables together, then reads RocksDB's estimates of
+  /// their sizes and number of keys using one range.
+  TableStatsGroup tableStats(const TableGroup& tables) override;
 };
-
-extern const char* admin_names[];
-
-template <typename T>
-folly::Optional<T> readAdminValue(ContainerImpl& container_, AdminId id) {
-  container_.requireOpen();
-  rocksdb::PinnableSlice val;
-  binary::Output key;
-  key.fixed(id);
-  auto s = container_.db->Get(
-      rocksdb::ReadOptions(),
-      container_.family(Family::admin),
-      slice(key),
-      &val);
-  if (!s.IsNotFound()) {
-    check(s);
-    binary::Input value = input(val);
-    auto result = value.fixed<T>();
-    if (!value.empty()) {
-      rts::error(
-          "corrupt database - invalid {}",
-          admin_names[static_cast<uint32_t>(id)]);
-    }
-    return result;
-  } else {
-    return {};
-  };
-}
 
 } // namespace impl
 } // namespace rocks

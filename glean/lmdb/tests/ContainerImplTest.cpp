@@ -18,6 +18,7 @@
 #include <folly/testing/TestUtil.h>
 
 #include "glean/lmdb/container-impl.h"
+#include "glean/lmdb/database-impl.h"
 
 namespace facebook::glean::lmdb::impl {
 
@@ -147,6 +148,16 @@ TEST_F(ContainerImplTest, DataPersistsAfterReopeningReadOnly) {
   const auto v = readMeta(reopened, "persisted");
   ASSERT_TRUE(v.has_value());
   EXPECT_EQ(*v, "value");
+}
+
+TEST_F(ContainerImplTest, TableStatsReportInvalidHandle) {
+  DatabaseImpl database(std::move(*container_), Id::lowest(), 0, 7);
+  const DatabaseImpl::TableGroup tables{&Family::ownershipUnits};
+  mdb_dbi_close(
+      database.container_.db.get(),
+      database.container_.family(Family::ownershipUnits));
+
+  EXPECT_THROW(database.tableStats(tables), std::runtime_error);
 }
 
 // Mirrors the shutdown flow: flush a still-writable container, then back it

@@ -93,31 +93,10 @@ struct DatabaseImpl final : DatabaseCommon<ContainerImpl> {
 
   /// Ownership (most of this is in common.h)
 
-  OwnershipStats getOwnershipStats() override;
+  /// Reads the tables' entry counts and page sizes from `mdb_stat` using one
+  /// read transaction.
+  TableStatsGroup tableStats(const TableGroup& tables) override;
 };
-
-extern const char* admin_names[];
-
-template <typename T>
-folly::Optional<T> readAdminValue(ContainerImpl& container_, AdminId id) {
-  container_.requireOpen();
-  folly::ByteRange val;
-  binary::Output key;
-  key.fixed(id);
-  auto txn = container_.txn_read();
-  if (txn.get(container_.family(Family::admin), key.bytes(), val)) {
-    binary::Input value(val);
-    auto result = value.fixed<T>();
-    if (!value.empty()) {
-      rts::error(
-          "corrupt database - invalid {}",
-          admin_names[static_cast<uint32_t>(id)]);
-    }
-    return result;
-  } else {
-    return {};
-  };
-}
 
 } // namespace impl
 } // namespace lmdb

@@ -9,7 +9,9 @@
 #pragma once
 
 #include <fmt/core.h>
+#include <array>
 #include <cstring>
+#include <utility>
 
 #include <glean/rts/ownership/uset.h>
 #include "glean/rts/binary.h"
@@ -53,6 +55,48 @@ inline T fromBytes(const folly::ByteRange slice) {
   T x;
   std::memcpy(&x, slice.data(), slice.size());
   return x;
+}
+
+/// The names of the admin keys, indexed by AdminId, for error messages.
+inline constexpr const char* admin_names[] = {
+    "NEXT_ID",
+    "VERSION",
+    "STARTING_ID",
+    "FIRST_UNIT_ID",
+    "NEXT_UNIT_ID",
+    "ORPHAN_FACTS",
+};
+
+/// Reads the value of an admin key, or none if it isn't set. Fails if the
+/// value is shorter than a T, and reports a corrupt database if bytes remain.
+template <typename T, typename C>
+folly::Optional<T> readAdminValue(C& container, AdminId id) {
+  container.requireOpen();
+  binary::Output key;
+  key.fixed(id);
+  folly::Optional<T> result;
+  container.get(C::Family::admin, key.bytes(), [&](folly::ByteRange bytes) {
+    binary::Input value(bytes);
+    result = value.fixed<T>();
+    if (!value.empty()) {
+      rts::error(
+          "corrupt database - invalid {}",
+          admin_names[static_cast<uint32_t>(id)]);
+    }
+  });
+  return result;
+}
+
+/// The ownership tables in units, unit names, sets, owners and owner-pages
+/// order.
+template <typename C>
+auto ownershipStatsTables() {
+  return std::array{
+      &C::Family::ownershipUnits,
+      &C::Family::ownershipUnitIds,
+      &C::Family::ownershipSets,
+      &C::Family::factOwners,
+      &C::Family::factOwnerPages};
 }
 
 /**
@@ -318,8 +362,46 @@ struct DatabaseCommon : Database {
 
   FactOwnerCache factOwnerCache_;
 
-  virtual OwnershipStats getOwnershipStats() = 0;
+  /// The size of one table, as estimated by the storage engine.
+  struct TableStats {
+    /// The number of keys.
+    uint64_t entries = 0;
+    /// The space the table takes, in bytes.
+    uint64_t bytes = 0;
+  };
+
+  using TableGroup = decltype(ownershipStatsTables<C>());
+  using TableStatsGroup = std::array<TableStats, std::tuple_size_v<TableGroup>>;
+
+  /// Prepares and measures the table group in one backend operation. Returns
+  /// estimates in input order, with zeros for missing optional tables.
+  virtual TableStatsGroup tableStats(const TableGroup& tables) = 0;
+
+  /// Unit and set counts come from the ID counters; sizes and the number of
+  /// owner entries are the storage engine's estimates.
+  OwnershipStats getOwnershipStats();
 };
+
+template <typename C>
+OwnershipStats DatabaseCommon<C>::getOwnershipStats() {
+  container_.requireOpen();
+  const auto [units, unitIds, sets, owners, ownerPages] =
+      tableStats(ownershipStatsTables<C>());
+
+  OwnershipStats stats{};
+  stats.num_units = nextUnitId() - first_unit_id; // accurate
+  stats.units_size = units.bytes + unitIds.bytes; // estimate
+  stats.num_sets = next_uset_id - stats.num_units; // accurate
+  stats.sets_size = sets.bytes; // estimate
+  stats.num_owner_entries = owners.entries + ownerPages.entries; // estimate
+  stats.owners_size = owners.bytes + ownerPages.bytes; // estimate
+
+  const auto orphans =
+      readAdminValue<int64_t>(container_, AdminId::ORPHAN_FACTS);
+  stats.num_orphan_facts = orphans ? *orphans : -1;
+
+  return stats;
+}
 
 template <typename C>
 std::vector<size_t> DatabaseCommon<C>::loadOwnershipUnitCounters() {

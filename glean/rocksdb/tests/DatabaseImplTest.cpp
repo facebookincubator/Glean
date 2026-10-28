@@ -20,7 +20,9 @@
 #include <folly/Range.h>
 #include <folly/init/Init.h>
 #include <folly/testing/TestUtil.h>
+#include <rocksdb/utilities/stackable_db.h>
 
+#include "glean/rocksdb/container-impl.h"
 #include "glean/rocksdb/rocksdb.h"
 
 namespace facebook::glean::rocks {
@@ -53,6 +55,44 @@ struct StoredFact {
   rts::Pid type = rts::Pid::invalid();
   std::string key;
   std::string value;
+};
+
+class StatsTestDB final : public rocksdb::StackableDB {
+ public:
+  explicit StatsTestDB(std::unique_ptr<rocksdb::DB> database)
+      : StackableDB(std::move(database)) {}
+
+  using StackableDB::Flush;
+  using StackableDB::GetIntProperty;
+
+  rocksdb::Status Flush(
+      const rocksdb::FlushOptions& options,
+      rocksdb::ColumnFamilyHandle* family) override {
+    flushes.push_back({family});
+    return StackableDB::Flush(options, family);
+  }
+
+  rocksdb::Status Flush(
+      const rocksdb::FlushOptions& options,
+      const std::vector<rocksdb::ColumnFamilyHandle*>& families) override {
+    flushes.push_back(families);
+    if (!flushStatus.ok()) {
+      return flushStatus;
+    }
+    return StackableDB::Flush(options, families);
+  }
+
+  bool GetIntProperty(
+      rocksdb::ColumnFamilyHandle* family,
+      const rocksdb::Slice& property,
+      uint64_t* value) override {
+    return intPropertiesAvailable &&
+        StackableDB::GetIntProperty(family, property, value);
+  }
+
+  std::vector<std::vector<rocksdb::ColumnFamilyHandle*>> flushes;
+  rocksdb::Status flushStatus = rocksdb::Status::OK();
+  bool intPropertiesAvailable = true;
 };
 
 class DatabaseImplTest : public ::testing::Test {
@@ -228,6 +268,60 @@ TEST_F(DatabaseImplTest, OwnershipStatsReportNoUnitsAndUnknownOrphanCount) {
   EXPECT_EQ(stats.num_units, 0);
   EXPECT_EQ(stats.num_sets, 0);
   EXPECT_EQ(stats.num_orphan_facts, -1);
+}
+
+TEST_F(DatabaseImplTest, OwnershipStatsFlushTablesTogether) {
+  database_->addOwnership({{bytes("a.cpp"), {}}});
+  auto& container = static_cast<impl::ContainerImpl&>(database_->container());
+  auto recorder = std::make_unique<StatsTestDB>(std::move(container.db));
+  const auto* observed = recorder.get();
+  container.db = std::move(recorder);
+
+  const auto stats = database_->getOwnership()->getStats();
+
+  EXPECT_GT(stats.units_size, 0);
+  ASSERT_EQ(observed->flushes.size(), 1);
+  const std::vector<rocksdb::ColumnFamilyHandle*> expected{
+      container.family(impl::Family::ownershipUnits),
+      container.family(impl::Family::ownershipUnitIds),
+      container.family(impl::Family::ownershipSets),
+      container.family(impl::Family::factOwners),
+      container.family(impl::Family::factOwnerPages)};
+  EXPECT_EQ(observed->flushes.front(), expected);
+}
+
+TEST_F(DatabaseImplTest, OwnershipStatsReportFlushFailure) {
+  database_->addOwnership({{bytes("a.cpp"), {}}});
+  auto& container = static_cast<impl::ContainerImpl&>(database_->container());
+  auto recorder = std::make_unique<StatsTestDB>(std::move(container.db));
+  recorder->flushStatus =
+      rocksdb::Status::IOError("ownership stats flush failed");
+  const auto* observed = recorder.get();
+  container.db = std::move(recorder);
+
+  EXPECT_THROW(database_->getOwnership()->getStats(), std::runtime_error);
+  EXPECT_EQ(observed->flushes.size(), 1);
+}
+
+TEST_F(DatabaseImplTest, OwnershipStatsReportMissingKeyEstimate) {
+  database_->addOwnership({{bytes("a.cpp"), {}}});
+  auto& container = static_cast<impl::ContainerImpl&>(database_->container());
+  auto recorder = std::make_unique<StatsTestDB>(std::move(container.db));
+  recorder->intPropertiesAvailable = false;
+  container.db = std::move(recorder);
+
+  EXPECT_THROW(database_->getOwnership()->getStats(), std::runtime_error);
+}
+
+TEST_F(DatabaseImplTest, OwnershipStatsReadStoredEstimatesInReadOnlyMode) {
+  database_->addOwnership({{bytes("a.cpp"), {}}});
+  database_->container().flush();
+  database_.reset();
+  database_ = openDatabase(db::Mode::ReadOnly, startingId(), kVersion);
+
+  const auto stats = database_->getOwnership()->getStats();
+
+  EXPECT_GT(stats.units_size, 0);
 }
 
 // ============================================================

@@ -19,15 +19,6 @@ namespace impl {
 
 using namespace rts;
 
-const char* admin_names[] = {
-    "NEXT_ID",
-    "VERSION",
-    "STARTING_ID",
-    "FIRST_UNIT_ID",
-    "NEXT_UNIT_ID",
-    "ORPHAN_FACTS",
-};
-
 namespace {
 
 template <typename T, typename F>
@@ -541,45 +532,22 @@ void DatabaseImpl::commit(rts::FactSet& facts) {
   stats_.set(std::move(new_stats));
 }
 
-rts::OwnershipStats DatabaseImpl::getOwnershipStats() {
-  uint64_t units_size, unit_ids_size, sets_size, owners_size, num_owners,
-      owner_pages_size, num_owner_pages;
-  MDB_stat stat;
+/// Measure all requested tables with `mdb_stat` in one read transaction.
+/// Entries count keys; bytes include branch, leaf and overflow pages at
+/// LMDB's page size.
+DatabaseImpl::TableStatsGroup DatabaseImpl::tableStats(
+    const TableGroup& tables) {
   Txn txn = container_.txn_read();
-
-  auto stat_db_size = [&](MDB_stat& stat) -> size_t {
-    return (size_t)stat.ms_psize *
-        (stat.ms_branch_pages + stat.ms_leaf_pages + stat.ms_overflow_pages);
-  };
-
-  mdb_stat(txn.ptr(), container_.family(Family::ownershipUnits), &stat);
-  units_size = stat_db_size(stat);
-
-  mdb_stat(txn.ptr(), container_.family(Family::ownershipUnitIds), &stat);
-  unit_ids_size = stat_db_size(stat);
-
-  mdb_stat(txn.ptr(), container_.family(Family::ownershipSets), &stat);
-  sets_size = stat_db_size(stat);
-
-  mdb_stat(txn.ptr(), container_.family(Family::factOwners), &stat);
-  num_owners = stat.ms_entries;
-  owners_size = stat_db_size(stat);
-
-  mdb_stat(txn.ptr(), container_.family(Family::factOwnerPages), &stat);
-  num_owner_pages = stat.ms_entries;
-  owner_pages_size = stat_db_size(stat);
-
-  OwnershipStats stats;
-  stats.num_units = nextUnitId() - first_unit_id; // accurate
-  stats.units_size = units_size + unit_ids_size; // estimate
-  stats.num_sets = next_uset_id - stats.num_units; // accurate
-  stats.sets_size = sets_size; // estimate
-  stats.num_owner_entries = num_owners + num_owner_pages; // estimate
-  stats.owners_size = owners_size + owner_pages_size; // estimate
-
-  auto orphans = readAdminValue<int64_t>(container_, AdminId::ORPHAN_FACTS);
-  stats.num_orphan_facts = orphans ? *orphans : -1;
-
+  TableStatsGroup stats{};
+  for (size_t i = 0; i < tables.size(); i++) {
+    if (const auto* family = tables[i]) {
+      MDB_stat stat;
+      check(mdb_stat(txn.ptr(), container_.family(*family), &stat));
+      const uint64_t pages =
+          stat.ms_branch_pages + stat.ms_leaf_pages + stat.ms_overflow_pages;
+      stats[i] = {.entries = stat.ms_entries, .bytes = stat.ms_psize * pages};
+    }
+  }
   return stats;
 }
 
