@@ -223,6 +223,11 @@ struct OwnershipRelationStorage {
   UsetId& nextId;
   /// The stored sets, while the DB is writable.
   std::unique_ptr<OwnerSets<C>>& writableSets;
+  /// Append-only log of derived facts' owners:
+  /// (Pid, nat) -> ([Fid], [UsetId])
+  const typename C::Family& derivedRaw;
+  /// Per-predicate counters for the keys of `derivedRaw`.
+  folly::F14FastMap<uint64_t, size_t>& derivedCounters;
 };
 
 /// The relation's tables in units, unit names, sets, owners and owner-pages
@@ -278,7 +283,8 @@ struct DatabaseCommon : Database {
   OwnershipRelationStorage<C> visibilityStorage();
 
   std::vector<size_t> loadOwnershipUnitCounters();
-  folly::F14FastMap<uint64_t, size_t> loadOwnershipDerivedCounters();
+  folly::F14FastMap<uint64_t, size_t> loadDerivedCounters(
+      const OwnershipRelationStorage<C>& storage);
 
   /// Iterates over the sets stored in `family`. `emptyNextId` is the first ID
   /// reported when the table is empty.
@@ -361,6 +367,15 @@ struct DatabaseCommon : Database {
    *  DefineOwnership's local namespace into the DB's global namespace
    *  via a substitution map, interning new sets one at a time. */
   void addDefineOwnership(DefineOwnership& def) override;
+
+  /// Rebases the sets a derivation batch promoted, numbered from the
+  /// relation's next ID when the batch started, into the relation's stored
+  /// sets, then appends the batch's per-predicate owners, rebased the same
+  /// way, to the relation's derived log.
+  void addDerivedOwners(
+      const OwnershipRelationStorage<C>& storage,
+      const Usets& batchSets,
+      std::map<Pid, DefineOwnership::PerPredicate>& owners);
 
   rts::UsetId getOwner(Id id) override;
 
@@ -533,16 +548,18 @@ OwnershipRelationStorage<C> DatabaseCommon<C>::visibilityStorage() {
       .firstUnit = first_unit_id,
       .nextIdKey = AdminId::NEXT_UNIT_ID,
       .nextId = next_uset_id,
-      .writableSets = usets_};
+      .writableSets = usets_,
+      .derivedRaw = C::Family::ownershipDerivedRaw,
+      .derivedCounters = ownership_derived_counters};
 }
 
 template <typename C>
-folly::F14FastMap<uint64_t, size_t>
-DatabaseCommon<C>::loadOwnershipDerivedCounters() {
+folly::F14FastMap<uint64_t, size_t> DatabaseCommon<C>::loadDerivedCounters(
+    const OwnershipRelationStorage<C>& storage) {
   container_.requireOpen();
   folly::F14FastMap<uint64_t, size_t> result;
 
-  auto iter = container_.read(C::Family::ownershipDerivedRaw);
+  auto iter = container_.read(storage.derivedRaw);
 
   for (iter.seek_first(); iter.valid(); iter.next()) {
     binary::Input key(iter.key());
@@ -961,8 +978,11 @@ template <typename C>
 std::unique_ptr<rts::DerivedFactOwnershipIterator>
 DatabaseCommon<C>::getDerivedFactOwnershipIterator(Pid pid) {
   struct DerivedFactIterator : rts::DerivedFactOwnershipIterator {
-    explicit DerivedFactIterator(Pid pid, C& container_)
-        : pid_(pid), iter(container_.read(C::Family::ownershipDerivedRaw)) {
+    DerivedFactIterator(
+        Pid pid,
+        C& container_,
+        const typename C::Family& derivedRaw)
+        : pid_(pid), iter(container_.read(derivedRaw)) {
       EncodedNat key(pid.toWord());
       iter.seek_key(key.byteRange());
     }
@@ -995,7 +1015,8 @@ DatabaseCommon<C>::getDerivedFactOwnershipIterator(Pid pid) {
     typename C::Iterator iter;
   };
 
-  return std::make_unique<DerivedFactIterator>(pid, container_);
+  return std::make_unique<DerivedFactIterator>(
+      pid, container_, visibilityStorage().derivedRaw);
 }
 
 template <typename C>
@@ -1083,19 +1104,27 @@ void DatabaseCommon<C>::storeRelationOwnership(
 }
 
 // Called once per batch. Can't be run in parallel.
-// Will add data into:
-// - Family::ownershipSets
-// - Family::ownershipDerivedRaw
-// - Family::admin
 template <typename C>
 void DatabaseCommon<C>::addDefineOwnership(DefineOwnership& def) {
   auto t = makeAutoTimer("addDefineOwnership");
   container_.requireOpen();
+  addDerivedOwners(visibilityStorage(), def.sets(), def.defines_);
+}
 
-  VLOG(1) << "addDefineOwnership: " << def.sets().size() << " sets";
+// Will add data into the relation's tables:
+// - sets (ownershipSets)
+// - derivedRaw (ownershipDerivedRaw)
+// - Family::admin
+template <typename C>
+void DatabaseCommon<C>::addDerivedOwners(
+    const OwnershipRelationStorage<C>& storage,
+    const Usets& batchSets,
+    std::map<Pid, DefineOwnership::PerPredicate>& owners) {
+  VLOG(1) << "addDefineOwnership: " << batchSets.size() << " sets for "
+          << storage.sets.name;
 
   // add new owner sets
-  if (def.sets().getNextId() > def.sets().getFirstId()) {
+  if (batchSets.getNextId() > batchSets.getFirstId()) {
     folly::F14FastMap<UsetId, UsetId> substitution;
     auto subst = [&](uint32_t old) -> uint32_t {
       auto n = substitution.find(old);
@@ -1107,29 +1136,29 @@ void DatabaseCommon<C>::addDefineOwnership(DefineOwnership& def) {
     };
 
     typename C::Writer writer = container_.write();
-    const auto firstNewId = next_uset_id;
+    const auto firstNewId = storage.nextId;
 
-    def.sets().foreachPromoted([&](const Uset* uset) {
+    batchSets.foreachPromoted([&](const Uset* uset) {
       std::set<UsetId> s;
       uset->exp.set.foreach([&](uint32_t elt) {
         UsetId newelt = subst(elt);
-        if (newelt >= next_uset_id) {
+        if (newelt >= storage.nextId) {
           rts::error(
-              "set id out of range: {} {} {}", newelt, next_uset_id, elt);
+              "set id out of range: {} {} {}", newelt, storage.nextId, elt);
         }
         s.insert(newelt);
       });
       const auto newId =
-          usets_->intern({uset->exp.op, SetU32::from(s)}, writer);
+          storage.writableSets->intern({uset->exp.op, SetU32::from(s)}, writer);
       VLOG(2) << "rebased set " << uset->id << " -> " << newId;
       substitution[uset->id] = newId;
     });
 
-    VLOG(1) << "addDefineOwnership: writing sets (" << next_uset_id - firstNewId
-            << ")";
+    VLOG(1) << "addDefineOwnership: writing sets ("
+            << storage.nextId - firstNewId << ")";
     writer.commit();
 
-    for (auto& [_, pred] : def.defines_) {
+    for (auto& [_, pred] : owners) {
       for (auto& owner : pred.owners_) {
         owner = subst(owner);
       }
@@ -1142,12 +1171,12 @@ void DatabaseCommon<C>::addDefineOwnership(DefineOwnership& def) {
 
   typename C::Writer writer = container_.write();
 
-  for (const auto& [pid, pred] : def) {
+  for (const auto& [pid, pred] : owners) {
     VLOG(1) << "addDefineOwnership: "
             << pred.owners_.size() + pred.new_owners_.size()
             << " owners, for pid " << pid.toWord();
 
-    // ownershipDerivedRaw :: (Pid,nat) -> vector<int64_t>
+    // derivedRaw :: (Pid,nat) -> vector<int64_t>
     //
     // Similarly to ownershipRaw, this is basically just an
     // append-only log. The nat in the key is a per-Pid counter that
@@ -1156,7 +1185,7 @@ void DatabaseCommon<C>::addDefineOwnership(DefineOwnership& def) {
 
     binary::Output key;
     key.nat(pid.toWord());
-    const auto [it, _] = ownership_derived_counters.insert({pid.toWord(), 0});
+    const auto [it, _] = storage.derivedCounters.insert({pid.toWord(), 0});
     key.nat(it->second++);
 
     binary::Output val;
@@ -1182,7 +1211,7 @@ void DatabaseCommon<C>::addDefineOwnership(DefineOwnership& def) {
             sizeof(typename std::remove_reference<
                    decltype(pred.new_owners_)>::type::value_type));
 
-    writer.put(C::Family::ownershipDerivedRaw, key.bytes(), val.bytes());
+    writer.put(storage.derivedRaw, key.bytes(), val.bytes());
 
     VLOG(1) << "addDefineOwnership wrote "
             << pred.ids_.size() + pred.new_ids_.size() << " entries for pid "

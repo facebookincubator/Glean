@@ -110,7 +110,7 @@ DatabaseImpl::DatabaseImpl(
   if (container_.mode != Mode::ReadOnly) {
     // These are only used when writing
     ownership_unit_counters = loadOwnershipUnitCounters();
-    ownership_derived_counters = loadOwnershipDerivedCounters();
+    ownership_derived_counters = loadDerivedCounters(visibilityStorage());
 
     // We only need usets_ for writable DBs, and it takes time and
     // memory to load them so omit this for ReadOnly DBs.
