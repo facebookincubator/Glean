@@ -23,8 +23,7 @@ struct DefineOwnership {
       : first_id_(first_id),
         ownership_(ownership),
         defines_(),
-        usets_(ownership->nextSetId()),
-        newSets_() {}
+        usets_(ownership->nextSetId()) {}
 
   // record that a fact was derived from some other facts
   void derivedFrom(Pid pid, Id id, const std::set<UsetId>& deps);
@@ -52,16 +51,19 @@ struct DefineOwnership {
     return defines_.end();
   }
 
+  /// The sets that derivedFrom() promoted for this batch, numbered from the
+  /// ownership's next set ID. addDefineOwnership() stores every one of them.
+  const Usets& sets() const {
+    return usets_;
+  }
+
   // first fact Id in the current batch
   Id first_id_;
   Ownership* ownership_;
   std::map<Pid, PerPredicate> defines_;
 
+ private:
   Usets usets_;
-
-  // new sets in order of creation, needed for rebasing the sets against
-  // the DB later.
-  std::vector<Uset*> newSets_;
 };
 
 struct DerivedFactOwnership {

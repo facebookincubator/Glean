@@ -198,6 +198,15 @@ struct Usets {
     return p;
   }
 
+  /// Intern a non-empty expression and return its promoted ID.
+  /// Its members and operation are preserved; promotion keeps it alive.
+  UsetId intern(std::unique_ptr<Uset> expression) {
+    CHECK_NE(expression->exp.set.size(), 0);
+    auto* canonical = add(std::move(expression));
+    promote(canonical);
+    return canonical->id;
+  }
+
   /** Convenience: wrap a bare SetU32 in a new Uset and add it. */
   Uset* add(SetU32 set, uint32_t refs = 0) {
     return add(std::unique_ptr<Uset>(new Uset(std::move(set), refs)));
@@ -292,6 +301,14 @@ struct Usets {
       return nullptr;
     }
     return idIndex_[id - firstId];
+  }
+
+  /// Pass every promoted set to `f`, in UsetId order.
+  template <typename F>
+  void foreachPromoted(F&& f) const {
+    for (auto uset : idIndex_) {
+      f(uset);
+    }
   }
 
   size_t size() const {

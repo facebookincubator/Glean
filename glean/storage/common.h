@@ -878,10 +878,10 @@ void DatabaseCommon<C>::addDefineOwnership(DefineOwnership& def) {
   auto t = makeAutoTimer("addDefineOwnership");
   container_.requireOpen();
 
-  VLOG(1) << "addDefineOwnership: " << def.usets_.size() << " sets";
+  VLOG(1) << "addDefineOwnership: " << def.sets().size() << " sets";
 
   // add new owner sets
-  if (def.newSets_.size() > 0) {
+  if (def.sets().getNextId() > def.sets().getFirstId()) {
     folly::F14FastMap<UsetId, UsetId> substitution;
     auto subst = [&](uint32_t old) -> uint32_t {
       auto n = substitution.find(old);
@@ -895,7 +895,7 @@ void DatabaseCommon<C>::addDefineOwnership(DefineOwnership& def) {
     typename C::Writer writer = container_.write();
     const auto firstNewId = next_uset_id;
 
-    for (auto uset : def.newSets_) {
+    def.sets().foreachPromoted([&](const Uset* uset) {
       std::set<UsetId> s;
       uset->exp.set.foreach([&](uint32_t elt) {
         UsetId newelt = subst(elt);
@@ -905,12 +905,11 @@ void DatabaseCommon<C>::addDefineOwnership(DefineOwnership& def) {
         }
         s.insert(newelt);
       });
-
-      auto oldId = uset->id;
-      auto id = usets_->intern({uset->exp.op, SetU32::from(s)}, writer);
-      VLOG(2) << "rebased set " << oldId << " -> " << id;
-      substitution[oldId] = id;
-    }
+      const auto newId =
+          usets_->intern({uset->exp.op, SetU32::from(s)}, writer);
+      VLOG(2) << "rebased set " << uset->id << " -> " << newId;
+      substitution[uset->id] = newId;
+    });
 
     VLOG(1) << "addDefineOwnership: writing sets (" << next_uset_id - firstNewId
             << ")";

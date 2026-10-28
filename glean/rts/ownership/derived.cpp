@@ -28,27 +28,14 @@ void DefineOwnership::derivedFrom(
   const auto [it, _] = defines_.insert({pid, PerPredicate()});
   PerPredicate& pred = it->second;
 
-  SetU32 set = SetU32::from(deps);
-  size_t size = set.size();
-
   UsetId usetid;
-  if (size == 1) {
+  if (deps.size() == 1) {
     usetid = *deps.begin();
   } else {
-    auto uset = std::make_unique<Uset>(std::move(set), And, 0);
-    // If this set already exists in the DB, it will be de-duplicated
-    // when we write these sets in addDefineOwnership().
-    auto q = uset.get();
-    auto p = usets_.add(std::move(uset));
-    if (p == q) {
-      usets_.promote(p);
-      usetid = p->id;
-      newSets_.push_back(p);
-      VLOG(2) << "new set: " << usetid << ", size = " << size;
-    } else {
-      usetid = p->id;
-      VLOG(2) << "existing set in batch: " << usetid;
-    }
+    const auto nextId = usets_.getNextId();
+    usetid = usets_.intern(std::make_unique<Uset>(SetU32::from(deps), And, 0));
+    VLOG(2) << (usetid == nextId ? "new set: " : "existing set in batch: ")
+            << usetid << ", size = " << deps.size();
   }
 
   if (id >= first_id_) {
@@ -191,18 +178,15 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
 
   for (auto& pair : factOwnerSets) {
     if (pair.second.size() > 1) {
-      SetU32 set = SetU32::from(pair.second);
-      auto uset = std::make_unique<Uset>(std::move(set), Or, 0);
-      auto usetid = ownership.lookupSet(uset.get());
+      const auto nextId = usets.getNextId();
+      auto expression =
+          std::make_unique<Uset>(SetU32::from(pair.second), Or, 0);
+      auto usetid = ownership.lookupSet(expression.get());
       if (usetid == INVALID_USET) {
-        auto p = usets.add(std::move(uset));
-        usets.promote(p);
-        usetid = p->id;
-        VLOG(2) << "new set: " << usetid;
-      } else {
-        VLOG(2) << "existing set: " << usetid;
+        usetid = usets.intern(std::move(expression));
       }
       factOwners[pair.first] = usetid;
+      VLOG(2) << (usetid == nextId ? "new set: " : "existing set: ") << usetid;
     }
   }
 

@@ -8,6 +8,7 @@
 
 #include "glean/rts/ownership/expression.h"
 
+#include <memory>
 #include <set>
 
 namespace facebook::glean::rts {
@@ -44,11 +45,8 @@ UsetId OwnershipExpressionBuilder::make(
     op = Or;
   }
 
-  auto expression =
-      std::make_unique<Uset>(SetU32::from(normalized), op, /* refs */ 1);
-  auto* canonical = expressions_.add(std::move(expression));
-  expressions_.promote(canonical);
-  return canonical->id;
+  return expressions_.intern(
+      std::make_unique<Uset>(SetU32::from(normalized), op, /* refs */ 1));
 }
 
 } // namespace facebook::glean::rts
