@@ -10,6 +10,7 @@
 #include "glean/rocksdb/database-impl.h"
 #include "glean/rocksdb/util.h"
 
+#include <algorithm>
 #include <limits>
 
 #include <rocksdb/filter_policy.h>
@@ -126,6 +127,20 @@ void exportStatistics(std::shared_ptr<rocksdb::Statistics> stats) {}
 } // namespace
 #endif
 
+namespace {
+
+/// How many bytes of samples to train a ZSTD dictionary of `dict_bytes` on.
+/// RocksDB recommends ~100x the dictionary size; the result is capped because
+/// `CompressionOptions::zstd_max_train_bytes` is a uint32_t.
+uint32_t zstdTrainingBytes(uint32_t dict_bytes) {
+  constexpr uint64_t kTrainingToDictionaryRatio = 100;
+  return static_cast<uint32_t>(std::min<uint64_t>(
+      dict_bytes * kTrainingToDictionaryRatio,
+      std::numeric_limits<uint32_t>::max()));
+}
+
+} // namespace
+
 ContainerImpl::ContainerImpl(
     const std::string& path,
     Mode m,
@@ -183,6 +198,13 @@ ContainerImpl::ContainerImpl(
   // writeOptions.disableWAL = true;
 
   options.compression = rocksdb::CompressionType::kLZ4Compression;
+  if (const auto dict_bytes = container_options.bottommost_zstd_dict_bytes) {
+    options.bottommost_compression = rocksdb::CompressionType::kZSTD;
+    options.bottommost_compression_opts.enabled = true;
+    options.bottommost_compression_opts.max_dict_bytes = *dict_bytes;
+    options.bottommost_compression_opts.zstd_max_train_bytes =
+        zstdTrainingBytes(*dict_bytes);
+  }
 
   statistics = rocksdb::CreateDBStatistics();
   options.statistics = statistics;
@@ -311,6 +333,14 @@ void ContainerImpl::optimize(bool compact) {
         const auto nlevels = db->NumberLevels(handle);
         if (nlevels != 2) {
           rocksdb::CompactRangeOptions copts;
+          if (options.bottommost_compression !=
+              rocksdb::CompressionType::kDisableCompressionOption) {
+            // Without this, files that don't overlap (e.g. in entities, whose
+            // keys are increasing fact ids) are only moved to the bottommost
+            // level and keep their LZ4 compression.
+            copts.bottommost_level_compaction =
+                rocksdb::BottommostLevelCompaction::kForceOptimized;
+          }
           check(db->CompactRange(copts, handle, nullptr, nullptr));
         }
       }

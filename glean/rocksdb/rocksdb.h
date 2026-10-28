@@ -17,6 +17,9 @@
 #include "glean/rts/store.h"
 #include "glean/storage/db.h"
 
+#include <cstdint>
+#include <optional>
+
 namespace rocksdb {
 class Cache;
 class Iterator;
@@ -42,6 +45,10 @@ struct ContainerOptions {
   /// Background compaction and flush threads; 0 keeps RocksDB's default.
   /// The thread pool is process-wide, so this applies to every open DB.
   int background_jobs = 0;
+  /// If set, the bottommost level is compressed with ZSTD instead of LZ4,
+  /// using a per-file dictionary of this many bytes (0: no dictionary), and
+  /// optimize() with compaction rewrites every bottommost file.
+  std::optional<uint32_t> bottommost_zstd_dict_bytes;
 };
 
 std::unique_ptr<Container> open(

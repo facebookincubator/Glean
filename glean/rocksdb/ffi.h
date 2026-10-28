@@ -39,6 +39,7 @@ const char* glean_rocksdb_container_open(
     int mode,
     bool cache_index_and_filter_blocks,
     int background_jobs,
+    int bottommost_zstd_dict_bytes,
     SharedCache* cache,
     Container** container);
 
