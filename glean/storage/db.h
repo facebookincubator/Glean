@@ -135,18 +135,23 @@ struct Database : rts::Lookup {
   /// DB's global namespace.
   virtual void addDefineOwnership(rts::DefineOwnership& def) = 0;
 
-  /// Iterate over raw derived-fact ownership entries for a given predicate.
+  /// Iterate over raw derived-fact owners in a kind for a given
+  /// predicate.
   virtual std::unique_ptr<rts::DerivedFactOwnershipIterator>
-  getDerivedFactOwnershipIterator(Pid pid) = 0;
+  getDerivedFactOwnershipIterator(rts::OwnershipKind kind, Pid pid) = 0;
 
   virtual folly::Optional<uint32_t> getUnitId(folly::ByteRange) = 0;
   virtual folly::Optional<std::string> getUnit(uint32_t) = 0;
   virtual std::vector<std::pair<std::string, uint32_t>> getUnitsByPrefix(
       folly::ByteRange prefix) = 0;
 
-  /// Persist the results of computeOwnership(): serializes promoted
-  /// sets to Elias-Fano encoding and writes the fact→owner interval map.
-  virtual void storeOwnership(rts::ComputedOwnership& ownership) = 0;
+  /// Persist computed ownership of a kind: serializes promoted sets to
+  /// Elias-Fano encoding and writes the fact→owner interval map, without
+  /// replacing an owner by INVALID_USET. Accessibility ownership must first
+  /// be stored with storeAccessibilityOwnership().
+  virtual void storeOwnership(
+      rts::OwnershipKind kind,
+      rts::ComputedOwnership& ownership) = 0;
 
   virtual void storeAccessibilityOwnership(
       rts::ComputedAccessibilityOwnership& ownership) = 0;

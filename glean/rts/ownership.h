@@ -23,6 +23,18 @@ namespace rts {
 
 using UnitId = uint32_t;
 
+/// The questions that ownership answers about each fact, each stored as its
+/// own relation from facts to owners.
+enum class OwnershipKind {
+  /// The source units that keep a fact current, for incremental indexing.
+  Visibility,
+  /// The ACL groups a caller needs in order to read a fact.
+  Accessibility,
+};
+
+/// The kind's name, for logging.
+const char* ownershipKindName(OwnershipKind kind);
+
 using MutableOwnerSet = folly::compression::MutableEliasFanoCompressedList;
 using OwnerSet = folly::compression::EliasFanoCompressedList;
 

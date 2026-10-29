@@ -122,6 +122,8 @@ instance DatabaseOps (Database Memory) where
   getUnit _ _ = return (error "unimplemented getUnit")
   getUnitsByPrefix _ _ = return []
   storeOwnership _ _ _ = return ()  -- can't fail, otherwise we fail tests
+  storeAccessibilityOwnership _ _ _ = return ()
+  getAccessibilityOwnership _ = return Nothing
   getOwnership _ = return Nothing
   addDefineOwnership _ _ =
     return (error "unimplemented addDefineOwnership")

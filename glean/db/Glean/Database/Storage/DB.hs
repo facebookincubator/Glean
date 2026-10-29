@@ -11,7 +11,7 @@ module Glean.Database.Storage.DB (
     DB(..), Container(..), withContainer, checkpoint
   ) where
 
-import Control.Exception (bracketOnError)
+import Control.Exception (bracketOnError, mask_)
 import Control.Monad
 import Data.Int
 import qualified Data.HashMap.Strict as HashMap
@@ -187,6 +187,18 @@ instance DatabaseOps DB where
   getOwnership db = fmap Just $
     unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
     construct $ invoke $ glean_rocksdb_get_ownership db_ptr
+
+  storeAccessibilityOwnership db _ ownership =
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
+    with ownership $ \ownership_ptr ->
+      invoke $ glean_rocksdb_store_accessibility_ownership db_ptr ownership_ptr
+
+  getAccessibilityOwnership db = mask_ $
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr -> do
+      ptr <- invoke $ glean_rocksdb_get_accessibility_ownership db_ptr
+      if ptr == nullPtr
+        then return Nothing
+        else Just <$> construct (return ptr)
 
   getUnitId db unit =
     unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
@@ -432,6 +444,16 @@ foreign import ccall unsafe glean_rocksdb_get_ownership
 foreign import ccall safe glean_rocksdb_add_define_ownership
   :: Ptr DB
   -> Ptr DefineOwnership
+  -> IO CString
+
+foreign import ccall safe glean_rocksdb_store_accessibility_ownership
+  :: Ptr DB
+  -> Ptr ComputedAccessibilityOwnership
+  -> IO CString
+
+foreign import ccall unsafe glean_rocksdb_get_accessibility_ownership
+  :: Ptr DB
+  -> Ptr (Ptr Ownership)
   -> IO CString
 
 foreign import ccall unsafe glean_rocksdb_get_derived_fact_ownership_iterator

@@ -958,6 +958,11 @@ void glean_computed_ownership_free(ComputedOwnership* own) {
   ffi::free_(own);
 }
 
+void glean_computed_accessibility_ownership_free(
+    ComputedAccessibilityOwnership* own) {
+  ffi::free_(own);
+}
+
 const char* glean_computed_ownership_unit_count(
     ComputedOwnership* own,
     uint32_t* result) {

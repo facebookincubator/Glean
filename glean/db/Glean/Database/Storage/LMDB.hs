@@ -173,6 +173,8 @@ instance DatabaseOps (Database LMDB) where
   computeOwnership (Database db _) = computeOwnership db
   storeOwnership (Database db _) = storeOwnership db
   getOwnership (Database db _) = getOwnership db
+  storeAccessibilityOwnership (Database db _) = storeAccessibilityOwnership db
+  getAccessibilityOwnership (Database db _) = getAccessibilityOwnership db
   getUnitId (Database db _) = getUnitId db
   getUnit (Database db _) = getUnit db
   getUnitsByPrefix (Database db _) = getUnitsByPrefix db

@@ -14,6 +14,7 @@ module Glean.RTS.Foreign.Ownership
   , firstUsetId
   , Ownership
   , ComputedOwnership
+  , ComputedAccessibilityOwnership
   , computedOwnershipUnitCount
   , augmentWithACL
   , Slice
@@ -90,7 +91,7 @@ newtype UnitId = UnitId Word32
 
 -- | Id of an ownership set
 newtype UsetId = UsetId Word32
-  deriving (Storable, Show)
+  deriving (Eq, Ord, Storable, Show)
 
 firstUsetId :: UsetId
 firstUsetId = UsetId 0
@@ -108,6 +109,18 @@ instance Object ComputedOwnership where
   wrap = ComputedOwnership
   unwrap (ComputedOwnership p) = p
   destroy = glean_computed_ownership_free
+
+newtype ComputedAccessibilityOwnership =
+  ComputedAccessibilityOwnership (ForeignPtr ComputedAccessibilityOwnership)
+
+instance Object ComputedAccessibilityOwnership where
+  wrap = ComputedAccessibilityOwnership
+  unwrap (ComputedAccessibilityOwnership p) = p
+  destroy = glean_computed_accessibility_ownership_free
+
+foreign import ccall unsafe "&glean_computed_accessibility_ownership_free"
+  glean_computed_accessibility_ownership_free
+  :: Destroy ComputedAccessibilityOwnership
 
 compute
   :: (CanLookup db, CanLookup base)

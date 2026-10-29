@@ -148,6 +148,14 @@ const char* glean_rocksdb_store_ownership(
 
 const char* glean_rocksdb_get_ownership(Database* db, Ownership** ownership);
 
+const char* glean_rocksdb_store_accessibility_ownership(
+    Database* db,
+    ComputedAccessibilityOwnership* ownership);
+
+const char* glean_rocksdb_get_accessibility_ownership(
+    Database* db,
+    Ownership** ownership);
+
 const char* glean_rocksdb_add_define_ownership(
     Database* db,
     DefineOwnership* define);

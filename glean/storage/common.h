@@ -9,6 +9,7 @@
 #pragma once
 
 #include <fmt/core.h>
+#include <folly/lang/Assume.h>
 #include <array>
 #include <cstring>
 #include <optional>
@@ -199,12 +200,12 @@ class OwnerSets {
   StoredUsets stored_;
 };
 
-/// Where an ownership relation is stored, and its state for writing.
+/// Where an ownership kind is stored, and its state for writing.
 template <typename C>
 struct OwnershipKindStorage {
   /// Unit name -> UnitId, stored as a raw uint32_t.
   const typename C::Family& units;
-  /// UnitId -> unit name, for a relation that can add units after sets. Its
+  /// UnitId -> unit name, for a kind that can add units after sets. Its
   /// unit count then comes from the highest named unit; otherwise sets follow
   /// the units, and the count ends at the first set.
   const typename C::Family* unitNames;
@@ -212,17 +213,17 @@ struct OwnershipKindStorage {
   const typename C::Family& sets;
   /// An interval map from fact IDs to owners.
   const typename C::Family& owners;
-  /// Pages of fact owners for reads after finalization, if the relation
+  /// Pages of fact owners for reads after finalization, if the kind
   /// keeps them.
   const typename C::Family* ownerPages;
-  /// The admin key of the number of facts without an owner, if the relation
+  /// The admin key of the number of facts without an owner, if the kind
   /// counts them.
   std::optional<AdminId> orphanFactsKey;
-  /// The relation's first unit ID.
+  /// The kind's first unit ID.
   const UnitId& firstUnit;
   /// The admin key that persists `nextId`.
   AdminId nextIdKey{};
-  /// The next unused ID of the relation's units and sets.
+  /// The next unused ID of the kind's units and sets.
   UsetId& nextId;
   /// The stored sets, while the DB is writable.
   std::unique_ptr<OwnerSets<C>>& writableSets;
@@ -233,7 +234,7 @@ struct OwnershipKindStorage {
   folly::F14FastMap<uint64_t, size_t>& derivedCounters;
 };
 
-/// The relation's tables in units, unit names, sets, owners and owner-pages
+/// The kind's tables in units, unit names, sets, owners and owner-pages
 /// order. Optional tables have a nullptr entry.
 template <typename C>
 auto ownershipStatsTables(const OwnershipKindStorage<C>& storage) {
@@ -302,10 +303,12 @@ struct DatabaseCommon : Database {
   /// Where accessibility ownership is stored.
   OwnershipKindStorage<C> accessibilityStorage();
 
+  /// Storage tables and state for the requested ownership kind.
+  OwnershipKindStorage<C> ownershipStorage(OwnershipKind kind);
+
  public:
   std::vector<size_t> loadOwnershipUnitCounters();
-  folly::F14FastMap<uint64_t, size_t> loadDerivedCounters(
-      const OwnershipKindStorage<C>& storage);
+  folly::F14FastMap<uint64_t, size_t> loadDerivedCounters(OwnershipKind kind);
 
   /// Iterates over the sets stored in `family`. `emptyNextId` is the first ID
   /// reported when the table is empty.
@@ -313,7 +316,7 @@ struct DatabaseCommon : Database {
       const typename C::Family& family,
       rts::UsetId emptyNextId);
 
-  /// Load the stored sets of a relation, for writing.
+  /// Load the stored sets of a kind, for writing.
   std::unique_ptr<OwnerSets<C>> loadOwnershipSets(
       const OwnershipKindStorage<C>& storage);
 
@@ -367,18 +370,19 @@ struct DatabaseCommon : Database {
       folly::ByteRange ids);
 
   std::unique_ptr<rts::DerivedFactOwnershipIterator>
-  getDerivedFactOwnershipIterator(Pid pid) override;
+  getDerivedFactOwnershipIterator(OwnershipKind kind, Pid pid) override;
 
   std::unique_ptr<rts::OwnershipUnitIterator> getOwnershipUnitIterator()
       override;
 
-  /** Persist the results of computeOwnership(): serializes promoted
+  /** Persist computed ownership of a relation: serializes promoted
    *  sets to Elias-Fano, writes the fact→UsetId interval map, and
-   *  advances next_uset_id past all stored set IDs. */
-  void storeOwnership(ComputedOwnership& ownership) override;
+   *  advances the relation's next ID past all stored set IDs. */
+  void storeOwnership(OwnershipKind kind, ComputedOwnership& ownership)
+      override;
 
-  /// Writes computed ownership into a relation's tables: the promoted sets,
-  /// numbered from the relation's next ID, and the fact-owner intervals. An
+  /// Writes computed ownership into a kind's tables: the promoted sets,
+  /// numbered from the kind's next ID, and the fact-owner intervals. An
   /// interval without an owner never replaces a stored owner.
   void storeComputedOwnership(
       const OwnershipKindStorage<C>& storage,
@@ -395,9 +399,9 @@ struct DatabaseCommon : Database {
   void addDefineOwnership(DefineOwnership& def) override;
 
   /// Rebases the sets a derivation batch promoted, numbered from the
-  /// relation's next ID when the batch started, into the relation's stored
+  /// kind's next ID when the batch started, into the kind's stored
   /// sets, then appends the batch's per-predicate owners, rebased the same
-  /// way, to the relation's derived log.
+  /// way, to the kind's derived log.
   void addDerivedOwners(
       const OwnershipKindStorage<C>& storage,
       const Usets& batchSets,
@@ -502,7 +506,7 @@ struct DatabaseCommon : Database {
   /// estimates in input order, with zeros for missing optional tables.
   virtual TableStatsGroup tableStats(const TableGroup& tables) = 0;
 
-  /// The stats of a relation. Unit and set counts come from its ID counters;
+  /// The stats of a kind. Unit and set counts come from its ID counters;
   /// sizes and the number of owner entries are the storage engine's
   /// estimates.
   OwnershipStats getOwnershipStats(const OwnershipKindStorage<C>& storage);
@@ -621,6 +625,18 @@ OwnershipKindStorage<C> DatabaseCommon<C>::accessibilityStorage() {
 }
 
 template <typename C>
+OwnershipKindStorage<C> DatabaseCommon<C>::ownershipStorage(
+    OwnershipKind kind) {
+  switch (kind) {
+    case OwnershipKind::Visibility:
+      return visibilityStorage();
+    case OwnershipKind::Accessibility:
+      return accessibilityStorage();
+  }
+  folly::assume_unreachable();
+}
+
+template <typename C>
 rts::UnitId DatabaseCommon<C>::readFirstAccessibilityUnit() {
   if (next_accessibility_id == 0) {
     return 0;
@@ -635,11 +651,11 @@ rts::UnitId DatabaseCommon<C>::readFirstAccessibilityUnit() {
 
 template <typename C>
 folly::F14FastMap<uint64_t, size_t> DatabaseCommon<C>::loadDerivedCounters(
-    const OwnershipKindStorage<C>& storage) {
+    OwnershipKind kind) {
   container_.requireOpen();
   folly::F14FastMap<uint64_t, size_t> result;
 
-  auto iter = container_.read(storage.derivedRaw);
+  auto iter = container_.read(ownershipStorage(kind).derivedRaw);
 
   for (iter.seek_first(); iter.valid(); iter.next()) {
     binary::Input key(iter.key());
@@ -648,7 +664,8 @@ folly::F14FastMap<uint64_t, size_t> DatabaseCommon<C>::loadDerivedCounters(
     ++i->second;
   }
 
-  VLOG(1) << "derived fact owners for " << result.size() << " pids";
+  VLOG(1) << "derived fact " << ownershipKindName(kind) << " owners for "
+          << result.size() << " pids";
   return result;
 }
 
@@ -1055,8 +1072,8 @@ uint32_t DatabaseCommon<C>::registerUnits(
 }
 
 template <typename C>
-std::unique_ptr<rts::DerivedFactOwnershipIterator>
-DatabaseCommon<C>::getDerivedFactOwnershipIterator(Pid pid) {
+std::unique_ptr<rts::DerivedFactOwnershipIterator> DatabaseCommon<
+    C>::getDerivedFactOwnershipIterator(OwnershipKind kind, Pid pid) {
   struct DerivedFactIterator : rts::DerivedFactOwnershipIterator {
     DerivedFactIterator(
         Pid pid,
@@ -1096,7 +1113,7 @@ DatabaseCommon<C>::getDerivedFactOwnershipIterator(Pid pid) {
   };
 
   return std::make_unique<DerivedFactIterator>(
-      pid, container_, visibilityStorage().derivedRaw);
+      pid, container_, ownershipStorage(kind).derivedRaw);
 }
 
 template <typename C>
@@ -1135,8 +1152,16 @@ DatabaseCommon<C>::getOwnershipUnitIterator() {
 }
 
 template <typename C>
-void DatabaseCommon<C>::storeOwnership(ComputedOwnership& ownership) {
-  storeComputedOwnership(visibilityStorage(), ownership);
+void DatabaseCommon<C>::storeOwnership(
+    OwnershipKind kind,
+    ComputedOwnership& ownership) {
+  auto storage = ownershipStorage(kind);
+  if (!storage.writableSets) {
+    rts::error(
+        "can't store {} ownership: no stored sets to extend",
+        ownershipKindName(kind));
+  }
+  storeComputedOwnership(storage, ownership);
 }
 
 template <typename C>
@@ -1255,7 +1280,7 @@ void DatabaseCommon<C>::addDefineOwnership(DefineOwnership& def) {
   addDerivedOwners(visibilityStorage(), def.sets(), def.defines_);
 }
 
-// Will add data into the relation's tables:
+// Will add data into the kind's tables:
 // - sets (ownershipSets or accessibilitySets)
 // - derivedRaw (ownershipDerivedRaw or accessibilityDerivedRaw)
 // - Family::admin
@@ -1673,7 +1698,7 @@ void DatabaseCommon<C>::FactOwnerCache::prepare(C& container) {
 
 namespace {
 
-/// Adapter for the persisted ownership of the relation stored as `storage`.
+/// Adapter for the persisted ownership of the kind stored as `storage`.
 template <typename C>
 struct StoredOwnership : Ownership {
   StoredOwnership(DatabaseCommon<C>* db, OwnershipKindStorage<C> storage)

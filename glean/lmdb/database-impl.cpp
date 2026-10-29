@@ -114,9 +114,9 @@ DatabaseImpl::DatabaseImpl(
   if (container_.mode != Mode::ReadOnly) {
     // These are only used when writing
     ownership_unit_counters = loadOwnershipUnitCounters();
-    ownership_derived_counters = loadDerivedCounters(visibilityStorage());
+    ownership_derived_counters = loadDerivedCounters(OwnershipKind::Visibility);
     accessibility_derived_counters =
-        loadDerivedCounters(accessibilityStorage());
+        loadDerivedCounters(OwnershipKind::Accessibility);
 
     // We only need the stored sets for writable DBs, and it takes time and
     // memory to load them so omit this for ReadOnly DBs.

@@ -56,6 +56,7 @@ typedef struct Ownership Ownership;
 typedef struct OwnershipStats OwnershipStats;
 typedef struct DefineOwnership DefineOwnership;
 typedef struct ComputedOwnership ComputedOwnership;
+typedef struct ComputedAccessibilityOwnership ComputedAccessibilityOwnership;
 typedef struct Slice Slice;
 typedef struct Slices Slices;
 
@@ -440,6 +441,9 @@ const char* glean_ownership_compute(
 void glean_ownership_free(Ownership* own);
 
 void glean_computed_ownership_free(ComputedOwnership* own);
+
+void glean_computed_accessibility_ownership_free(
+    ComputedAccessibilityOwnership* own);
 
 const char* glean_ownership_next_set_id(Ownership* ownership, uint32_t* result);
 

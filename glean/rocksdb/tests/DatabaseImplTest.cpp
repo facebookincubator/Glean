@@ -425,6 +425,46 @@ TEST_F(DatabaseImplTest, AccessibilityRejectsIncompatibleRewrite) {
       publicUnit);
 }
 
+TEST_F(DatabaseImplTest, AccessibilityOwnersAppendWithoutReplacingOwners) {
+  commitThreeFacts();
+  constexpr rts::UnitId publicUnit = 100;
+  constexpr rts::UnitId alphaUnit = publicUnit + 1;
+  storeAccessibilityOwners(
+      *database_,
+      publicUnit,
+      {{startingId(), publicUnit}, {startingId() + 1, rts::INVALID_USET}});
+
+  rts::Usets sets(publicUnit + 2);
+  const auto either = sets.intern(
+      std::make_unique<rts::Uset>(
+          rts::SetU32::from({publicUnit, alphaUnit}), rts::Or, 0));
+  rts::ComputedOwnership appended(
+      std::move(sets),
+      {{startingId(), rts::INVALID_USET},
+       {startingId() + 2, either},
+       {database_->firstFreeId(), rts::INVALID_USET}});
+  database_->storeOwnership(rts::OwnershipKind::Accessibility, appended);
+
+  const auto expectAppended = [&] {
+    EXPECT_EQ(database_->getAccessibilityOwner(startingId()), publicUnit);
+    EXPECT_EQ(
+        database_->getAccessibilityOwner(startingId() + 1), rts::INVALID_USET);
+    EXPECT_EQ(database_->getAccessibilityOwner(startingId() + 2), either);
+    const auto expression =
+        database_->getAccessibilityOwnership()->getUset(either);
+    ASSERT_TRUE(expression.has_value());
+    EXPECT_EQ(expression->op, rts::Or);
+    EXPECT_EQ(
+        rts::SetU32::to(expression->set),
+        (std::set<uint32_t>{publicUnit, alphaUnit}));
+  };
+  expectAppended();
+
+  database_.reset();
+  database_ = openDatabase(db::Mode::ReadOnly, startingId(), kVersion);
+  expectAppended();
+}
+
 TEST_F(DatabaseImplTest, DerivedAccessibilityOwnersHaveTheirOwnLog) {
   commitThreeFacts();
   constexpr rts::UnitId publicUnit = 100;
@@ -437,7 +477,7 @@ TEST_F(DatabaseImplTest, DerivedAccessibilityOwnersHaveTheirOwnLog) {
   const auto visibilityNextId = database_->getOwnership()->nextSetId();
 
   // One batch, as derivation writes it: its sets are numbered from the
-  // relation's next ID, and its owners refer to them.
+  // kind's next ID, and its owners refer to them.
   const auto addDerived = [&](rts::Id fact, const std::set<uint32_t>& inputs) {
     auto& database = static_cast<impl::DatabaseImpl&>(*database_);
     const db::OwnershipKindStorage<impl::ContainerImpl> storage{
@@ -468,24 +508,14 @@ TEST_F(DatabaseImplTest, DerivedAccessibilityOwnersHaveTheirOwnLog) {
   database_ = openDatabase(db::Mode::ReadWrite, startingId(), kVersion);
   addDerived(startingId() + 2, {alphaUnit, first});
 
-  // Each entry of the log is keyed by the pid and a per-pid counter. Its
-  // value holds the facts' IDs, then their owners.
   std::vector<std::pair<std::vector<rts::Id>, std::vector<rts::UsetId>>>
       entries;
-  auto& database = static_cast<impl::DatabaseImpl&>(*database_);
-  auto log = database.container_.read(impl::Family::accessibilityDerivedRaw);
-  for (log.seek_first(); log.valid(); log.next()) {
-    binary::Input key(log.key());
-    EXPECT_EQ(key.trustedNat(), pid.toWord());
-    EXPECT_EQ(key.trustedNat(), entries.size());
-    const auto value = log.value();
-    const auto count = value.size() / (sizeof(rts::Id) + sizeof(rts::UsetId));
-    const auto* ids = reinterpret_cast<const rts::Id*>(value.data());
-    const auto* owners = reinterpret_cast<const rts::UsetId*>(
-        value.data() + count * sizeof(rts::Id));
+  auto log = database_->getDerivedFactOwnershipIterator(
+      rts::OwnershipKind::Accessibility, pid);
+  while (const auto entry = log->get()) {
     entries.emplace_back(
-        std::vector<rts::Id>(ids, ids + count),
-        std::vector<rts::UsetId>(owners, owners + count));
+        std::vector<rts::Id>(entry->ids.begin(), entry->ids.end()),
+        std::vector<rts::UsetId>(entry->owners.begin(), entry->owners.end()));
   }
   const decltype(entries) expected = {
       {{startingId() + 1}, {first}}, {{startingId() + 2}, {second}}};
@@ -503,7 +533,10 @@ TEST_F(DatabaseImplTest, DerivedAccessibilityOwnersHaveTheirOwnLog) {
   }
 
   EXPECT_FALSE(
-      database_->getDerivedFactOwnershipIterator(pid)->get().has_value());
+      database_
+          ->getDerivedFactOwnershipIterator(rts::OwnershipKind::Visibility, pid)
+          ->get()
+          .has_value());
   EXPECT_EQ(database_->getOwnership()->nextSetId(), visibilityNextId);
 }
 

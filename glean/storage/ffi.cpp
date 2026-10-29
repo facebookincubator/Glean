@@ -287,11 +287,25 @@ const char* glean_rocksdb_database_predicateStats(
 const char* glean_rocksdb_store_ownership(
     Database* db,
     ComputedOwnership* ownership) {
-  return ffi::wrap([=] { db->storeOwnership(*ownership); });
+  return ffi::wrap(
+      [=] { db->storeOwnership(rts::OwnershipKind::Visibility, *ownership); });
 }
 
 const char* glean_rocksdb_get_ownership(Database* db, Ownership** ownership) {
   return ffi::wrap([=] { *ownership = db->getOwnership().release(); });
+}
+
+const char* glean_rocksdb_store_accessibility_ownership(
+    Database* db,
+    ComputedAccessibilityOwnership* ownership) {
+  return ffi::wrap([=] { db->storeAccessibilityOwnership(*ownership); });
+}
+
+const char* glean_rocksdb_get_accessibility_ownership(
+    Database* db,
+    Ownership** ownership) {
+  return ffi::wrap(
+      [=] { *ownership = db->getAccessibilityOwnership().release(); });
 }
 
 const char* glean_rocksdb_add_define_ownership(
@@ -305,7 +319,9 @@ const char* glean_rocksdb_get_derived_fact_ownership_iterator(
     uint64_t pid,
     DerivedFactOwnershipIterator** iter) {
   return ffi::wrap([=] {
-    *iter = db->getDerivedFactOwnershipIterator(Pid::fromWord(pid)).release();
+    *iter = db->getDerivedFactOwnershipIterator(
+                  rts::OwnershipKind::Visibility, Pid::fromWord(pid))
+                .release();
   });
 }
 

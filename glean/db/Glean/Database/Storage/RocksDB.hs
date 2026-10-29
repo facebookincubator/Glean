@@ -204,6 +204,8 @@ instance DatabaseOps (Database RocksDB) where
   computeOwnership (Database db) = computeOwnership db
   storeOwnership (Database db) = storeOwnership db
   getOwnership (Database db) = getOwnership db
+  storeAccessibilityOwnership (Database db) = storeAccessibilityOwnership db
+  getAccessibilityOwnership (Database db) = getAccessibilityOwnership db
   getUnitId (Database db) = getUnitId db
   getUnit (Database db) = getUnit db
   getUnitsByPrefix (Database db) = getUnitsByPrefix db

@@ -246,6 +246,11 @@ class CanLookup db => DatabaseOps db where
 
   storeOwnership :: db -> WriteLock w -> ComputedOwnership -> IO ()
 
+  storeAccessibilityOwnership
+    :: db -> WriteLock w -> ComputedAccessibilityOwnership -> IO ()
+
+  getAccessibilityOwnership :: db -> IO (Maybe Ownership)
+
   -- | Fetch the 'Ownership' interface for this DB. This is used to
   -- make a 'Slice' (a view of a subset of the facts in the DB).
   --
@@ -313,6 +318,8 @@ instance DatabaseOps (Some DatabaseOps) where
   flush (Some db) = flush db
   computeOwnership (Some db) = computeOwnership db
   storeOwnership (Some db) = storeOwnership db
+  storeAccessibilityOwnership (Some db) = storeAccessibilityOwnership db
+  getAccessibilityOwnership (Some db) = getAccessibilityOwnership db
   getOwnership (Some db) = getOwnership db
   getUnitId (Some db) = getUnitId db
   getUnit (Some db) = getUnit db

@@ -26,6 +26,7 @@
 #include <folly/container/F14Set.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/futures/Future.h>
+#include <folly/lang/Assume.h>
 
 #include <algorithm>
 #include <initializer_list>
@@ -85,6 +86,16 @@ OwnerSet deserializeEliasFano(binary::Input& in) {
   set.lower = set.data.begin() + lower;
   set.upper = set.data.begin() + upper;
   return set;
+}
+
+const char* ownershipKindName(OwnershipKind kind) {
+  switch (kind) {
+    case OwnershipKind::Visibility:
+      return "visibility";
+    case OwnershipKind::Accessibility:
+      return "accessibility";
+  }
+  folly::assume_unreachable();
 }
 
 namespace {
