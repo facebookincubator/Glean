@@ -29,6 +29,7 @@
 #include "glean/rocksdb/database-impl.h"
 #include "glean/rocksdb/rocksdb.h"
 #include "glean/rts/cache.h"
+#include "glean/rts/ownership/expression.h"
 #include "glean/rts/stacked.h"
 #include "glean/storage/common.h"
 
@@ -341,6 +342,24 @@ TEST_F(DatabaseImplTest, OwnershipStatsReadStoredEstimatesInReadOnlyMode) {
   const auto stats = database_->getOwnership()->getStats();
 
   EXPECT_GT(stats.units_size, 0);
+}
+
+TEST_F(DatabaseImplTest, ReopenedOwnerSetsKeepTheirOperation) {
+  commitThreeFacts();
+  database_->addOwnership({{bytes("a.cpp"), {}}, {bytes("b.cpp"), {}}});
+  rts::Usets sets(2);
+  const auto conjunction = rts::OwnershipExpressionBuilder(sets).allOf({0, 1});
+  rts::ComputedOwnership ownership(std::move(sets), {});
+  database_->storeOwnership(rts::OwnershipKind::Visibility, ownership);
+
+  database_.reset();
+  database_ = openDatabase(db::Mode::ReadWrite, startingId(), kVersion);
+
+  auto stored = database_->getOwnership();
+  rts::Uset sameConjunction(rts::SetU32::from({0, 1}), rts::And, 0);
+  rts::Uset disjunction(rts::SetU32::from({0, 1}), rts::Or, 0);
+  EXPECT_EQ(stored->lookupSet(&sameConjunction), conjunction);
+  EXPECT_EQ(stored->lookupSet(&disjunction), rts::INVALID_USET);
 }
 
 TEST_F(DatabaseImplTest, AccessibilityMapPreservesIntervalsAndStatsOnReopen) {

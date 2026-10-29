@@ -839,7 +839,9 @@ std::unique_ptr<OwnerSets<C>> DatabaseCommon<C>::loadOwnershipSets(
             size);
       }
     });
-    usets.add(std::make_unique<Uset>(std::move(set), 0), iterPair->first);
+    usets.add(
+        std::make_unique<Uset>(std::move(set), iterPair->second.op, 0),
+        iterPair->first);
   }
   auto stats = usets.statistics();
 
