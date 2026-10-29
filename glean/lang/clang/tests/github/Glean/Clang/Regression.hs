@@ -26,4 +26,9 @@ main = getArgs >>= \args ->
       , "xrefs/coro1"             -- Needs Clang 15
       , "xrefs/using-directive4"  -- Needs Clang 15
       , "index_failure/cpp"
+        -- Upstream clang 19.1.7 reports these global variables as
+        -- non-definitions; the goldens come from platform010-clang-19.
+      , "declarations/var1"
+      , "record_definitions/class1"
+      , "xrefs/var1"
       ]
