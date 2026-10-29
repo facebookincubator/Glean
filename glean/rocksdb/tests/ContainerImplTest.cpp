@@ -24,6 +24,7 @@
 #include <folly/init/Init.h>
 #include <folly/testing/TestUtil.h>
 #include <rocksdb/db.h>
+#include <rocksdb/table.h>
 #include <rocksdb/table_properties.h>
 
 namespace facebook::glean::rocks::impl {
@@ -99,6 +100,18 @@ void writeEntitiesInBatches(ContainerImpl& c) {
     writer.commit();
     c.flush();
   }
+}
+
+std::vector<std::string> filterPolicyNames(
+    ContainerImpl& c,
+    const Family& family) {
+  rocksdb::TablePropertiesCollection props;
+  check(c.db->GetPropertiesOfAllTables(c.family(family), &props));
+  std::vector<std::string> names;
+  for (const auto& [file, p] : props) {
+    names.push_back(p->filter_policy_name);
+  }
+  return names;
 }
 
 void removeBatchDescriptorsFamily(const std::string& path) {
@@ -285,6 +298,41 @@ TEST_F(ContainerImplTest, BottommostZstdRecompressesNonOverlappingFiles) {
         fact = toString(v);
       });
   EXPECT_EQ(fact, std::optional<std::string>{"fact 4321 of predicate 2"});
+}
+
+TEST_F(ContainerImplTest, EntitiesHaveNoBloomFilterButKeysDo) {
+  {
+    auto writer = container_->write();
+    writer.put(Family::entities, bytes("fact-id"), bytes("fact"));
+    writer.put(Family::keys, bytes("fact-key"), bytes("fact-id"));
+    writer.commit();
+  }
+  container_->optimize(/*compact=*/false);
+
+  EXPECT_EQ(
+      filterPolicyNames(*container_, Family::entities),
+      std::vector<std::string>{""});
+  EXPECT_THAT(
+      filterPolicyNames(*container_, Family::keys),
+      ::testing::ElementsAre(::testing::Not(::testing::IsEmpty())));
+
+  container_.reset();
+  ContainerImpl reopened(
+      dbPath(), Mode::ReadOnly, ContainerOptions{}, folly::none);
+  std::optional<std::string> fact;
+  reopened.get(Family::entities, bytes("fact-id"), [&](folly::ByteRange v) {
+    fact = toString(v);
+  });
+  EXPECT_EQ(fact, std::optional<std::string>{"fact"});
+}
+
+TEST(FamilyOptionsTest, EntitiesLeaveNonBlockBasedTableFactoryUnchanged) {
+  rocksdb::ColumnFamilyOptions opts;
+  opts.table_factory.reset(rocksdb::NewPlainTableFactory());
+
+  Family::entities.options(opts);
+
+  EXPECT_STREQ(opts.table_factory->Name(), "PlainTable");
 }
 
 TEST_F(ContainerImplTest, WritableBackupCapturesUnflushedData) {

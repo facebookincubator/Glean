@@ -36,6 +36,20 @@ const Family Family::entities("entities", [](auto& opts) {
   // NOTE: Setting inplace_update_support=true leads to rocksdb assertion
   // failures when iteration backwards.
   opts.inplace_update_support = false;
+
+  // No bloom filter: lookupById only calls Get for ids in
+  // [startingId, firstFreeId), and fact ids are dense, so every Get finds its
+  // key and a filter could never skip a read. Only block-based tables have
+  // this filter, so any other table format is left as it is.
+  const auto* block_based_options =
+      opts.table_factory
+          ->template GetOptions<rocksdb::BlockBasedTableOptions>();
+  if (block_based_options == nullptr) {
+    return;
+  }
+  auto table_options = *block_based_options;
+  table_options.filter_policy.reset();
+  opts.table_factory.reset(rocksdb::NewBlockBasedTableFactory(table_options));
 });
 const Family Family::keys("keys", [](auto& opts) {
   opts.prefix_extractor.reset(
