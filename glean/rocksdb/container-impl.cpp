@@ -118,7 +118,22 @@ const Family Family::batchDescriptors(
     [](auto& opts) { opts.OptimizeForPointLookup(10); },
     false);
 
-// Stores locations of fact batches
+const Family Family::accessibilityUnits("accessibilityUnits", [](auto& opts) {
+  opts.OptimizeForPointLookup(10);
+});
+const Family Family::accessibilitySets("accessibilitySets", [](auto& opts) {
+  opts.inplace_update_support = false;
+});
+const Family Family::accessibilityOwners("accessibilityOwners", [](auto& opts) {
+  opts.inplace_update_support = false;
+});
+
+// The accessibility counterpart of ownershipDerivedRaw.
+// accessibilityDerivedRaw: (Pid, nat) -> ( [Fid], [UsetId] )
+const Family Family::accessibilityDerivedRaw(
+    "accessibilityDerivedRaw",
+    [](auto& opts) { opts.inplace_update_support = false; },
+    false);
 
 #ifndef GLEAN_FACEBOOK
 namespace {
@@ -272,10 +287,12 @@ ContainerImpl::ContainerImpl(
       auto family = Family::family(i);
       assert(family != nullptr);
 
-      // Backward compatibility: don't create batchDescriptors column family
-      // for old DBs in read-only mode. This column family is droped in
-      // optimisation step and only used during writing.
-      if (mode == Mode::ReadOnly && family == &Family::batchDescriptors) {
+      // Accessibility families are created on their first write.
+      if (family == &Family::accessibilityUnits ||
+          family == &Family::accessibilitySets ||
+          family == &Family::accessibilityOwners ||
+          family == &Family::accessibilityDerivedRaw ||
+          (mode == Mode::ReadOnly && family == &Family::batchDescriptors)) {
         continue;
       }
 
@@ -316,6 +333,20 @@ void ContainerImpl::requireOpen() const {
 rocksdb::ColumnFamilyHandle* ContainerImpl::family(const Family& family) const {
   assert(family.index < families.size());
   return families[family.index];
+}
+
+rocksdb::ColumnFamilyHandle* ContainerImpl::writeFamily(const Family& family) {
+  requireOpen();
+  if (mode == Mode::ReadOnly) {
+    rts::error("rocksdb: database is read-only");
+  }
+  auto*& handle = families[family.index];
+  if (!handle) {
+    rocksdb::ColumnFamilyOptions opts(options);
+    family.options(opts);
+    check(db->CreateColumnFamily(opts, family.name, &handle));
+  }
+  return handle;
 }
 
 void ContainerImpl::writeData(folly::ByteRange key, folly::ByteRange value) {

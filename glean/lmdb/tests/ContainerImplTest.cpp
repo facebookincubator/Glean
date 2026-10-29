@@ -160,6 +160,36 @@ TEST_F(ContainerImplTest, TableStatsReportInvalidHandle) {
   EXPECT_THROW(database.tableStats(tables), std::runtime_error);
 }
 
+TEST_F(ContainerImplTest, AccessibilityUnavailableOnLegacyReadOnlyDatabase) {
+  writeMeta(*container_, "persisted", "value");
+  {
+    DatabaseImpl database(std::move(*container_), Id::lowest(), 0, 7);
+    auto txn = database.container_.txn_write();
+    for (const auto* family :
+         {&Family::accessibilityUnits,
+          &Family::accessibilitySets,
+          &Family::accessibilityOwners,
+          &Family::accessibilityDerivedRaw}) {
+      check(mdb_drop(txn.ptr(), database.container_.family(*family), 1));
+    }
+    txn.commit();
+  }
+  container_.reset();
+
+  DatabaseImpl reopened(
+      ContainerImpl(dbPath(), Mode::ReadOnly), Id::lowest(), 0, 7);
+  EXPECT_EQ(readMeta(reopened.container_, "persisted"), "value");
+  EXPECT_EQ(reopened.getAccessibilityOwnership(), nullptr);
+  EXPECT_EQ(reopened.getAccessibilityOwner(Id::lowest()), rts::INVALID_USET);
+  for (const auto* family :
+       {&Family::accessibilityUnits,
+        &Family::accessibilitySets,
+        &Family::accessibilityOwners,
+        &Family::accessibilityDerivedRaw}) {
+    EXPECT_THROW(reopened.container_.read(*family), std::runtime_error);
+  }
+}
+
 // Mirrors the shutdown flow: flush a still-writable container, then back it
 // up. The backup must be a self-contained, readable copy.
 TEST_F(ContainerImplTest, FlushThenBackupProducesReadableCopy) {

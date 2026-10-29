@@ -15,6 +15,8 @@
 #include <folly/Optional.h>
 #include <folly/Range.h>
 
+#include <string>
+
 namespace facebook {
 namespace glean {
 namespace rts {
@@ -116,6 +118,37 @@ struct ComputedOwnership {
 
   // Maps fact Ids to owner sets, represented as intervals
   std::vector<std::pair<Id, UsetId>> facts_;
+};
+
+/// A computed fact-to-accessibility-owner relation, ready for storage.
+///
+/// Accessibility owners describe which callers may read a fact. Visibility
+/// owners record the source units that keep the fact current. Both use Boolean
+/// expressions: OR allows any member, while AND requires every member. Public
+/// access is a unit selected by every caller.
+///
+/// The unit names, expressions and fact-owner intervals share these invariants:
+/// - units_[i] has ID firstUnitId_ + i. The vector is nonempty and starts with
+///   "public"; subsequent entries name ACL groups or special access units.
+/// - owners_.sets_ starts immediately after the unit IDs. Units and expressions
+///   share one ID namespace.
+/// - owners_.facts_ has strictly increasing fact-ID boundaries. Each owner
+///   applies until the next boundary and is a unit ID, an expression ID, or
+///   INVALID_USET for an unowned interval. A boundary at firstFreeId() can
+///   close the final interval.
+struct ComputedAccessibilityOwnership {
+  ComputedAccessibilityOwnership(
+      UnitId firstUnitId,
+      std::vector<std::string> units,
+      Usets sets,
+      std::vector<std::pair<Id, UsetId>> facts)
+      : firstUnitId_(firstUnitId),
+        units_(std::move(units)),
+        owners_(std::move(sets), std::move(facts)) {}
+
+  UnitId firstUnitId_;
+  std::vector<std::string> units_;
+  ComputedOwnership owners_;
 };
 
 /**

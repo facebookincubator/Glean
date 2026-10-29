@@ -92,7 +92,8 @@ struct DatabaseImpl final : DatabaseCommon<ContainerImpl> {
   /// Ownership (most of this is in common.h)
 
   /// Flushes the present tables together, then reads RocksDB's estimates of
-  /// their sizes and number of keys using one range.
+  /// their sizes and number of keys using one range. Missing optional tables
+  /// have zero entries and bytes.
   TableStatsGroup tableStats(const TableGroup& tables) override;
 };
 

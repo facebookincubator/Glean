@@ -62,6 +62,15 @@ struct Family {
   static const Family factOwners;
   static const Family factOwnerPages;
   static const Family batchDescriptors;
+  // Family definitions follow their registry in container-impl.cpp.
+  // NOLINTNEXTLINE(facebook-hte-NonPodStaticDeclaration)
+  static const Family accessibilityUnits;
+  // NOLINTNEXTLINE(facebook-hte-NonPodStaticDeclaration)
+  static const Family accessibilitySets;
+  // NOLINTNEXTLINE(facebook-hte-NonPodStaticDeclaration)
+  static const Family accessibilityOwners;
+  // NOLINTNEXTLINE(facebook-hte-NonPodStaticDeclaration)
+  static const Family accessibilityDerivedRaw;
 
   static size_t count() {
     return families.size();
@@ -84,35 +93,51 @@ struct Family {
 struct Iterator {
   Iterator() {}
 
-  Iterator(rocksdb::DB* db, rocksdb::ColumnFamilyHandle* f)
-      : iter(db->NewIterator(rocksdb::ReadOptions(), f)) {
+  /// A missing column family produces an empty iterator.
+  Iterator(rocksdb::DB* db, rocksdb::ColumnFamilyHandle* f) {
+    if (!f) {
+      return;
+    }
+    iter.reset(db->NewIterator(rocksdb::ReadOptions(), f));
     if (!iter) {
       rts::error("rocksdb: couldn't allocate iterator");
     }
   }
 
   void seek_first() {
-    iter->SeekToFirst();
+    if (iter) {
+      iter->SeekToFirst();
+    }
   }
   void seek_last() {
-    iter->SeekToLast();
+    if (iter) {
+      iter->SeekToLast();
+    }
   }
   void seek_key(folly::ByteRange key) {
-    iter->Seek(slice(key));
+    if (iter) {
+      iter->Seek(slice(key));
+    }
   }
   void seek_key_lower(folly::ByteRange key) {
-    iter->SeekForPrev(slice(key));
+    if (iter) {
+      iter->SeekForPrev(slice(key));
+    }
   };
 
   void next() {
-    iter->Next();
+    if (iter) {
+      iter->Next();
+    }
   }
   void prev() {
-    iter->Prev();
+    if (iter) {
+      iter->Prev();
+    }
   }
 
   bool valid() {
-    return iter->Valid();
+    return iter && iter->Valid();
   }
 
   folly::ByteRange key() {
@@ -175,14 +200,21 @@ struct ContainerImpl final : Container {
 
   rocksdb::ColumnFamilyHandle* family(const Family& family) const;
 
+  /// Returns a writable handle, creating the family on its first write.
+  rocksdb::ColumnFamilyHandle* writeFamily(const Family& family);
+
   Iterator read(const Family& f) {
     return Iterator(db.get(), family(f));
   }
 
   template <typename F>
   bool get(const Family& fam, folly::ByteRange key, F&& f) {
+    auto* handle = family(fam);
+    if (!handle) {
+      return false;
+    }
     rocksdb::PinnableSlice val;
-    auto s = db->Get(rocksdb::ReadOptions(), family(fam), slice(key), &val);
+    auto s = db->Get(rocksdb::ReadOptions(), handle, slice(key), &val);
     if (s.IsNotFound()) {
       return false;
     } else {
@@ -196,7 +228,7 @@ struct ContainerImpl final : Container {
     explicit Writer(ContainerImpl& c) : container_(c) {}
 
     void put(const Family& f, folly::ByteRange k, folly::ByteRange v) {
-      check(batch.Put(container_.family(f), slice(k), slice(v)));
+      check(batch.Put(container_.writeFamily(f), slice(k), slice(v)));
     }
 
     void commit() {

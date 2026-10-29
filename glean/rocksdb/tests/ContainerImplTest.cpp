@@ -353,6 +353,107 @@ TEST_F(ContainerImplTest, WritableBackupCapturesUnflushedData) {
   EXPECT_EQ(*v, "value");
 }
 
+TEST_F(ContainerImplTest, PlainDatabaseBackupOpensWithLegacyColumnFamilies) {
+  writeMeta(*container_, "persisted", "value");
+  container_.reset();
+  container_ = std::make_unique<ContainerImpl>(
+      dbPath(), Mode::ReadWrite, ContainerOptions{}, folly::none);
+  container_->optimize(/*compact=*/false);
+
+  const std::string backupPath = dbPath() + "/backup";
+  std::filesystem::create_directory(backupPath);
+  container_->backup(backupPath);
+  container_.reset();
+
+  const std::string restoredPath = dbPath() + "/restored";
+  restore(restoredPath, backupPath);
+
+  const std::vector<std::string> legacyFamilies{
+      "default",
+      "admin",
+      "entities",
+      "keys",
+      "stats",
+      "meta",
+      "ownershipUnits",
+      "ownershipUnitIds",
+      "ownershipRaw",
+      "ownershipDerivedRaw",
+      "ownershipSets",
+      "factOwners",
+      "factOwnerPages",
+      "batchDescriptors"};
+  std::vector<rocksdb::ColumnFamilyDescriptor> descriptors;
+  descriptors.reserve(legacyFamilies.size());
+  for (const auto& name : legacyFamilies) {
+    descriptors.emplace_back(name, rocksdb::ColumnFamilyOptions{});
+  }
+
+  std::vector<rocksdb::ColumnFamilyHandle*> handles;
+  std::unique_ptr<rocksdb::DB> db;
+  const auto status = rocksdb::DB::Open(
+      rocksdb::Options{}, restoredPath, descriptors, &handles, &db);
+  ASSERT_TRUE(status.ok()) << status.ToString();
+  for (auto* handle : handles) {
+    if (handle->GetName() == "meta") {
+      std::string value;
+      check(db->Get(rocksdb::ReadOptions{}, handle, "persisted", &value));
+      EXPECT_EQ(value, "value");
+    }
+    check(db->DestroyColumnFamilyHandle(handle));
+  }
+}
+
+TEST_F(ContainerImplTest, AccessibilityDataIsCreatedOnWriteAndPersists) {
+  const std::vector<const Family*> durableFamilies{
+      &Family::accessibilityUnits,
+      &Family::accessibilitySets,
+      &Family::accessibilityOwners};
+  container_.reset();
+  container_ = std::make_unique<ContainerImpl>(
+      dbPath(), Mode::ReadOnly, ContainerOptions{}, folly::none);
+  for (const auto* family : durableFamilies) {
+    EXPECT_THAT(readFamilyValues(*container_, *family), ::testing::IsEmpty());
+    bool callbackInvoked = false;
+    EXPECT_FALSE(container_->get(*family, bytes("key"), [&](folly::ByteRange) {
+      callbackInvoked = true;
+    }));
+    EXPECT_FALSE(callbackInvoked);
+  }
+  EXPECT_THAT(
+      readFamilyValues(*container_, Family::accessibilityDerivedRaw),
+      ::testing::IsEmpty());
+
+  container_.reset();
+  container_ = std::make_unique<ContainerImpl>(
+      dbPath(), Mode::ReadWrite, ContainerOptions{}, folly::none);
+  {
+    auto writer = container_->write();
+    for (const auto* family : durableFamilies) {
+      writer.put(*family, bytes("key"), bytes(family->name));
+    }
+    writer.put(
+        Family::accessibilityDerivedRaw, bytes("derived"), bytes("owner"));
+    writer.commit();
+  }
+  EXPECT_THAT(
+      readFamilyValues(*container_, Family::accessibilityDerivedRaw),
+      ::testing::ElementsAre("owner"));
+  container_->optimize(/*compact=*/false);
+  container_.reset();
+
+  ContainerImpl reopened(
+      dbPath(), Mode::ReadOnly, ContainerOptions{}, folly::none);
+  for (const auto* family : durableFamilies) {
+    EXPECT_THAT(
+        readFamilyValues(reopened, *family),
+        ::testing::ElementsAre(family->name));
+  }
+  EXPECT_THAT(
+      readFamilyValues(reopened, Family::accessibilityDerivedRaw),
+      ::testing::IsEmpty());
+}
+
 TEST_F(ContainerImplTest, ReadOnlyCheckpointProducesOpenableSnapshot) {
   writeMeta(*container_, "checkpointed", "value");
   container_->flush();

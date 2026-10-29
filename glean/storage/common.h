@@ -42,6 +42,8 @@ enum class AdminId : uint32_t {
   NEXT_UNIT_ID,
   /** Number of facts with no ownership unit after storeOwnership(). */
   ORPHAN_FACTS,
+  /** Next unused accessibility unit/set ID; unset if none is stored. */
+  NEXT_ACCESSIBILITY_ID,
 };
 
 template <typename T>
@@ -66,6 +68,7 @@ inline constexpr const char* admin_names[] = {
     "FIRST_UNIT_ID",
     "NEXT_UNIT_ID",
     "ORPHAN_FACTS",
+    "NEXT_ACCESSIBILITY_ID",
 };
 
 /// Reads the value of an admin key, or none if it isn't set. Fails if the
@@ -198,7 +201,7 @@ class OwnerSets {
 
 /// Where an ownership relation is stored, and its state for writing.
 template <typename C>
-struct OwnershipRelationStorage {
+struct OwnershipKindStorage {
   /// Unit name -> UnitId, stored as a raw uint32_t.
   const typename C::Family& units;
   /// UnitId -> unit name, for a relation that can add units after sets. Its
@@ -233,7 +236,7 @@ struct OwnershipRelationStorage {
 /// The relation's tables in units, unit names, sets, owners and owner-pages
 /// order. Optional tables have a nullptr entry.
 template <typename C>
-auto ownershipStatsTables(const OwnershipRelationStorage<C>& storage) {
+auto ownershipStatsTables(const OwnershipKindStorage<C>& storage) {
   return std::array{
       &storage.units,
       storage.unitNames,
@@ -268,23 +271,41 @@ struct DatabaseCommon : Database {
    *  both units AND promoted sets. Persisted as AdminId::NEXT_UNIT_ID. */
   rts::UsetId next_uset_id;
 
+  /// Next unused accessibility unit/set ID. Zero means no stored accessibility.
+  /// A stored table contains a public unit, so this is positive even when
+  /// that unit's ID is zero.
+  rts::UsetId next_accessibility_id{};
+
+  /// The first accessibility unit, `public`, when accessibility is stored.
+  rts::UnitId first_accessibility_unit{};
+
   /** Per-unit batch count: ownership_unit_counters[i] is the number
    *  of ownership batches that reference unit (first_unit_id + i).
    *  Invariant: next_uset_id == first_unit_id + ownership_unit_counters.size()
    *  (before any sets are stored). */
   std::vector<size_t> ownership_unit_counters;
   folly::F14FastMap<uint64_t, size_t> ownership_derived_counters;
+  folly::F14FastMap<uint64_t, size_t> accessibility_derived_counters;
 
-  /** The stored owner sets, used during writes to deduplicate and add
-   *  sets. Must only be accessed under the write lock. */
+  /** The stored visibility owner sets, used during writes to deduplicate and
+   *  add sets. Must only be accessed under the write lock. */
   std::unique_ptr<OwnerSets<C>> usets_;
 
-  /// Where visibility ownership is stored.
-  OwnershipRelationStorage<C> visibilityStorage();
+  /// The stored accessibility owner sets, the counterpart of usets_. Null for
+  /// read-only DBs and until accessibility ownership is stored.
+  std::unique_ptr<OwnerSets<C>> accessibility_usets_;
 
+ protected:
+  /// Where visibility ownership is stored.
+  OwnershipKindStorage<C> visibilityStorage();
+
+  /// Where accessibility ownership is stored.
+  OwnershipKindStorage<C> accessibilityStorage();
+
+ public:
   std::vector<size_t> loadOwnershipUnitCounters();
   folly::F14FastMap<uint64_t, size_t> loadDerivedCounters(
-      const OwnershipRelationStorage<C>& storage);
+      const OwnershipKindStorage<C>& storage);
 
   /// Iterates over the sets stored in `family`. `emptyNextId` is the first ID
   /// reported when the table is empty.
@@ -294,7 +315,7 @@ struct DatabaseCommon : Database {
 
   /// Load the stored sets of a relation, for writing.
   std::unique_ptr<OwnerSets<C>> loadOwnershipSets(
-      const OwnershipRelationStorage<C>& storage);
+      const OwnershipKindStorage<C>& storage);
 
   folly::Optional<uint32_t> getUnitId(folly::ByteRange unit) override;
 
@@ -359,9 +380,14 @@ struct DatabaseCommon : Database {
   /// Writes computed ownership into a relation's tables: the promoted sets,
   /// numbered from the relation's next ID, and the fact-owner intervals. An
   /// interval without an owner never replaces a stored owner.
-  void storeRelationOwnership(
-      const OwnershipRelationStorage<C>& storage,
+  void storeComputedOwnership(
+      const OwnershipKindStorage<C>& storage,
       ComputedOwnership& ownership);
+
+  void storeAccessibilityOwnership(
+      ComputedAccessibilityOwnership& ownership) override;
+  UsetId getAccessibilityOwner(Id id) override;
+  std::unique_ptr<Ownership> getAccessibilityOwnership() override;
 
   /** Persist derived-fact ownership. Rebases set IDs from the
    *  DefineOwnership's local namespace into the DB's global namespace
@@ -373,7 +399,7 @@ struct DatabaseCommon : Database {
   /// sets, then appends the batch's per-predicate owners, rebased the same
   /// way, to the relation's derived log.
   void addDerivedOwners(
-      const OwnershipRelationStorage<C>& storage,
+      const OwnershipKindStorage<C>& storage,
       const Usets& batchSets,
       std::map<Pid, DefineOwnership::PerPredicate>& owners);
 
@@ -469,7 +495,7 @@ struct DatabaseCommon : Database {
   };
 
   using TableGroup = decltype(ownershipStatsTables(
-      std::declval<const OwnershipRelationStorage<C>&>()));
+      std::declval<const OwnershipKindStorage<C>&>()));
   using TableStatsGroup = std::array<TableStats, std::tuple_size_v<TableGroup>>;
 
   /// Prepares and measures the table group in one backend operation. Returns
@@ -479,12 +505,36 @@ struct DatabaseCommon : Database {
   /// The stats of a relation. Unit and set counts come from its ID counters;
   /// sizes and the number of owner entries are the storage engine's
   /// estimates.
-  OwnershipStats getOwnershipStats(const OwnershipRelationStorage<C>& storage);
+  OwnershipStats getOwnershipStats(const OwnershipKindStorage<C>& storage);
+
+ protected:
+  /// The ID of the first accessibility unit, `public`, or zero when the DB
+  /// stores no accessibility ownership.
+  rts::UnitId readFirstAccessibilityUnit();
+
+ private:
+  /// Validates the computed unit and expression ID ranges before storage:
+  /// - There must be at least one unit, numbered consecutively from
+  ///   firstUnitId_. Expressions must start immediately after the units, at
+  ///   firstUnitId_ + units_.size().
+  /// - If accessibility is already stored, the computed range's exclusive end
+  ///   (first expression ID + number of expressions) must equal the stored
+  ///   next_accessibility_id.
+  /// Throws if either check fails, before storeAccessibilityOwnership writes
+  /// any tables.
+  void validateAccessibilityIdRange(
+      const ComputedAccessibilityOwnership& ownership) const;
+
+  /// Writes the accessibility units and starts the accessibility ID counter
+  /// after them, with an empty cache of stored sets.
+  void storeAccessibilityUnits(
+      UnitId firstUnit,
+      const std::vector<std::string>& units);
 };
 
 template <typename C>
 OwnershipStats DatabaseCommon<C>::getOwnershipStats(
-    const OwnershipRelationStorage<C>& storage) {
+    const OwnershipKindStorage<C>& storage) {
   container_.requireOpen();
   const auto [units, unitNames, sets, owners, ownerPages] =
       tableStats(ownershipStatsTables(storage));
@@ -537,7 +587,7 @@ std::vector<size_t> DatabaseCommon<C>::loadOwnershipUnitCounters() {
 }
 
 template <typename C>
-OwnershipRelationStorage<C> DatabaseCommon<C>::visibilityStorage() {
+OwnershipKindStorage<C> DatabaseCommon<C>::visibilityStorage() {
   return {
       .units = C::Family::ownershipUnits,
       .unitNames = &C::Family::ownershipUnitIds,
@@ -554,8 +604,38 @@ OwnershipRelationStorage<C> DatabaseCommon<C>::visibilityStorage() {
 }
 
 template <typename C>
+OwnershipKindStorage<C> DatabaseCommon<C>::accessibilityStorage() {
+  return {
+      .units = C::Family::accessibilityUnits,
+      .unitNames = nullptr,
+      .sets = C::Family::accessibilitySets,
+      .owners = C::Family::accessibilityOwners,
+      .ownerPages = nullptr,
+      .orphanFactsKey = std::nullopt,
+      .firstUnit = first_accessibility_unit,
+      .nextIdKey = AdminId::NEXT_ACCESSIBILITY_ID,
+      .nextId = next_accessibility_id,
+      .writableSets = accessibility_usets_,
+      .derivedRaw = C::Family::accessibilityDerivedRaw,
+      .derivedCounters = accessibility_derived_counters};
+}
+
+template <typename C>
+rts::UnitId DatabaseCommon<C>::readFirstAccessibilityUnit() {
+  if (next_accessibility_id == 0) {
+    return 0;
+  }
+  const auto unit =
+      readUnitId(C::Family::accessibilityUnits, binary::stringRange("public"));
+  if (!unit) {
+    rts::error("stored accessibility ownership has no public unit");
+  }
+  return *unit;
+}
+
+template <typename C>
 folly::F14FastMap<uint64_t, size_t> DatabaseCommon<C>::loadDerivedCounters(
-    const OwnershipRelationStorage<C>& storage) {
+    const OwnershipKindStorage<C>& storage) {
   container_.requireOpen();
   folly::F14FastMap<uint64_t, size_t> result;
 
@@ -720,7 +800,7 @@ std::unique_ptr<rts::OwnershipSetIterator> DatabaseCommon<C>::getSetIterator(
 
 template <typename C>
 std::unique_ptr<OwnerSets<C>> DatabaseCommon<C>::loadOwnershipSets(
-    const OwnershipRelationStorage<C>& storage) {
+    const OwnershipKindStorage<C>& storage) {
   auto t = makeAutoTimer("loadOwnershipSets");
 
   auto iter = getSetIterator(storage.sets, storage.nextId);
@@ -1056,12 +1136,12 @@ DatabaseCommon<C>::getOwnershipUnitIterator() {
 
 template <typename C>
 void DatabaseCommon<C>::storeOwnership(ComputedOwnership& ownership) {
-  storeRelationOwnership(visibilityStorage(), ownership);
+  storeComputedOwnership(visibilityStorage(), ownership);
 }
 
 template <typename C>
-void DatabaseCommon<C>::storeRelationOwnership(
-    const OwnershipRelationStorage<C>& storage,
+void DatabaseCommon<C>::storeComputedOwnership(
+    const OwnershipKindStorage<C>& storage,
     ComputedOwnership& ownership) {
   container_.requireOpen();
 
@@ -1103,6 +1183,70 @@ void DatabaseCommon<C>::storeRelationOwnership(
   }
 }
 
+template <typename C>
+void DatabaseCommon<C>::validateAccessibilityIdRange(
+    const ComputedAccessibilityOwnership& ownership) const {
+  const auto firstSet = ownership.owners_.sets_.getFirstId();
+  if (ownership.units_.empty() || firstSet < ownership.firstUnitId_ ||
+      firstSet - ownership.firstUnitId_ != ownership.units_.size()) {
+    rts::error(
+        "invalid accessibility unit range: first unit {}, first set {}, {} units",
+        ownership.firstUnitId_,
+        firstSet,
+        ownership.units_.size());
+  }
+  const auto upper =
+      firstSet + static_cast<UsetId>(ownership.owners_.sets_.size());
+  if (next_accessibility_id != 0 && next_accessibility_id != upper) {
+    rts::error(
+        "incompatible accessibility ID range: stored {}, computed {}",
+        next_accessibility_id,
+        upper);
+  }
+}
+
+template <typename C>
+void DatabaseCommon<C>::storeAccessibilityUnits(
+    UnitId firstUnit,
+    const std::vector<std::string>& units) {
+  auto writer = container_.write();
+  auto nextUnit = firstUnit;
+  for (const auto& name : units) {
+    const auto unit = nextUnit++;
+    writer.put(
+        C::Family::accessibilityUnits, binary::byteRange(name), bytesOf(unit));
+  }
+  writer.put(
+      C::Family::admin,
+      bytesOf(AdminId::NEXT_ACCESSIBILITY_ID),
+      bytesOf(nextUnit));
+  writer.commit();
+  first_accessibility_unit = firstUnit;
+  next_accessibility_id = nextUnit;
+  accessibility_usets_ = std::make_unique<OwnerSets<C>>(
+      C::Family::accessibilitySets,
+      AdminId::NEXT_ACCESSIBILITY_ID,
+      next_accessibility_id,
+      StoredUsets());
+}
+
+template <typename C>
+void DatabaseCommon<C>::storeAccessibilityOwnership(
+    ComputedAccessibilityOwnership& ownership) {
+  container_.requireOpen();
+  validateAccessibilityIdRange(ownership);
+  storeAccessibilityUnits(ownership.firstUnitId_, ownership.units_);
+  storeComputedOwnership(accessibilityStorage(), ownership.owners_);
+}
+
+template <typename C>
+UsetId DatabaseCommon<C>::getAccessibilityOwner(Id id) {
+  if (next_accessibility_id == 0 || !id || id >= this->firstFreeId()) {
+    return INVALID_USET;
+  }
+  return readFactOwner(C::Family::accessibilityOwners, id);
+}
+
 // Called once per batch. Can't be run in parallel.
 template <typename C>
 void DatabaseCommon<C>::addDefineOwnership(DefineOwnership& def) {
@@ -1112,14 +1256,20 @@ void DatabaseCommon<C>::addDefineOwnership(DefineOwnership& def) {
 }
 
 // Will add data into the relation's tables:
-// - sets (ownershipSets)
-// - derivedRaw (ownershipDerivedRaw)
+// - sets (ownershipSets or accessibilitySets)
+// - derivedRaw (ownershipDerivedRaw or accessibilityDerivedRaw)
 // - Family::admin
 template <typename C>
 void DatabaseCommon<C>::addDerivedOwners(
-    const OwnershipRelationStorage<C>& storage,
+    const OwnershipKindStorage<C>& storage,
     const Usets& batchSets,
     std::map<Pid, DefineOwnership::PerPredicate>& owners) {
+  if (!storage.writableSets) {
+    rts::error(
+        "can't add derived owners to {}: no stored sets to extend",
+        storage.sets.name);
+  }
+
   VLOG(1) << "addDefineOwnership: " << batchSets.size() << " sets for "
           << storage.sets.name;
 
@@ -1526,7 +1676,7 @@ namespace {
 /// Adapter for the persisted ownership of the relation stored as `storage`.
 template <typename C>
 struct StoredOwnership : Ownership {
-  StoredOwnership(DatabaseCommon<C>* db, OwnershipRelationStorage<C> storage)
+  StoredOwnership(DatabaseCommon<C>* db, OwnershipKindStorage<C> storage)
       : db_(db), storage_(std::move(storage)) {}
 
   UsetId nextSetId() override {
@@ -1570,7 +1720,7 @@ struct StoredOwnership : Ownership {
 
  private:
   DatabaseCommon<C>* db_;
-  OwnershipRelationStorage<C> storage_;
+  OwnershipKindStorage<C> storage_;
 };
 
 } // namespace
@@ -1579,6 +1729,15 @@ template <typename C>
 std::unique_ptr<rts::Ownership> DatabaseCommon<C>::getOwnership() {
   container_.requireOpen();
   return std::make_unique<StoredOwnership<C>>(this, visibilityStorage());
+}
+
+template <typename C>
+std::unique_ptr<Ownership> DatabaseCommon<C>::getAccessibilityOwnership() {
+  container_.requireOpen();
+  if (next_accessibility_id == 0) {
+    return nullptr;
+  }
+  return std::make_unique<StoredOwnership<C>>(this, accessibilityStorage());
 }
 
 } // namespace db

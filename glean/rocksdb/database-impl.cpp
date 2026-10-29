@@ -98,6 +98,10 @@ DatabaseImpl::DatabaseImpl(
       });
   VLOG(1) << fmt::format("next_uset_id: {}", next_uset_id);
 
+  next_accessibility_id = initAdminValue(
+      container_, AdminId::NEXT_ACCESSIBILITY_ID, rts::UsetId{0}, false, [] {});
+  first_accessibility_unit = readFirstAccessibilityUnit();
+
   db_version = initAdminValue(
       container_,
       AdminId::VERSION,
@@ -115,10 +119,15 @@ DatabaseImpl::DatabaseImpl(
     // These are only used when writing
     ownership_unit_counters = loadOwnershipUnitCounters();
     ownership_derived_counters = loadDerivedCounters(visibilityStorage());
+    accessibility_derived_counters =
+        loadDerivedCounters(accessibilityStorage());
 
-    // We only need usets_ for writable DBs, and it takes time and
+    // We only need the stored sets for writable DBs, and it takes time and
     // memory to load them so omit this for ReadOnly DBs.
     usets_ = loadOwnershipSets(visibilityStorage());
+    if (next_accessibility_id != 0) {
+      accessibility_usets_ = loadOwnershipSets(accessibilityStorage());
+    }
   }
 
   // Enable the fact owner cache when the DB is read-only

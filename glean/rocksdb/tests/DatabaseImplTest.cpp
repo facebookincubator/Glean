@@ -10,10 +10,13 @@
 
 #include <cstdint>
 #include <cstdio>
+#include <map>
 #include <memory>
 #include <optional>
+#include <set>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -23,7 +26,9 @@
 #include <rocksdb/utilities/stackable_db.h>
 
 #include "glean/rocksdb/container-impl.h"
+#include "glean/rocksdb/database-impl.h"
 #include "glean/rocksdb/rocksdb.h"
+#include "glean/storage/common.h"
 
 namespace facebook::glean::rocks {
 
@@ -94,6 +99,18 @@ class StatsTestDB final : public rocksdb::StackableDB {
   rocksdb::Status flushStatus = rocksdb::Status::OK();
   bool intPropertiesAvailable = true;
 };
+
+void storeAccessibilityOwners(
+    db::Database& database,
+    rts::UnitId firstUnit,
+    std::vector<std::pair<rts::Id, rts::UsetId>> facts) {
+  rts::ComputedAccessibilityOwnership ownership(
+      firstUnit,
+      {"public", "acl:alpha"},
+      rts::Usets(firstUnit + 2),
+      std::move(facts));
+  database.storeAccessibilityOwnership(ownership);
+}
 
 class DatabaseImplTest : public ::testing::Test {
  protected:
@@ -322,6 +339,236 @@ TEST_F(DatabaseImplTest, OwnershipStatsReadStoredEstimatesInReadOnlyMode) {
   const auto stats = database_->getOwnership()->getStats();
 
   EXPECT_GT(stats.units_size, 0);
+}
+
+TEST_F(DatabaseImplTest, AccessibilityMapPreservesIntervalsAndStatsOnReopen) {
+  commitThreeFacts();
+  constexpr rts::UnitId publicUnit = 100;
+  constexpr rts::UnitId alphaUnit = publicUnit + 1;
+  storeAccessibilityOwners(
+      *database_,
+      publicUnit,
+      {{startingId(), publicUnit},
+       {startingId() + 2, alphaUnit},
+       {startingId() + 3, rts::INVALID_USET}});
+
+  auto ownership = database_->getAccessibilityOwnership();
+  ASSERT_NE(ownership, nullptr);
+  const auto stats = ownership->getStats();
+  EXPECT_EQ(stats.num_units, 2);
+  EXPECT_EQ(stats.num_sets, 0);
+  EXPECT_EQ(stats.num_owner_entries, 3);
+  EXPECT_GT(stats.owners_size, 0);
+  EXPECT_EQ(database_->getAccessibilityOwner(startingId()), publicUnit);
+  EXPECT_EQ(database_->getAccessibilityOwner(startingId() + 1), publicUnit);
+  EXPECT_EQ(database_->getAccessibilityOwner(startingId() + 2), alphaUnit);
+  EXPECT_EQ(
+      database_->getAccessibilityOwner(startingId() + 3), rts::INVALID_USET);
+
+  ownership.reset();
+  database_.reset();
+  database_ = openDatabase(db::Mode::ReadOnly, startingId(), kVersion);
+  EXPECT_EQ(database_->getAccessibilityOwner(startingId() + 1), publicUnit);
+  EXPECT_EQ(database_->getAccessibilityOwner(startingId() + 2), alphaUnit);
+}
+
+TEST_F(
+    DatabaseImplTest,
+    AccessibilityRejectsMisplacedUnitsWithoutChangingTables) {
+  commitThreeFacts();
+  const auto reject = [&](rts::ComputedAccessibilityOwnership ownership) {
+    EXPECT_THROW(
+        database_->storeAccessibilityOwnership(ownership), std::runtime_error);
+    EXPECT_EQ(database_->getAccessibilityOwnership(), nullptr);
+    auto& container = static_cast<impl::ContainerImpl&>(database_->container());
+    for (const auto* family :
+         {&impl::Family::accessibilityUnits,
+          &impl::Family::accessibilitySets,
+          &impl::Family::accessibilityOwners}) {
+      auto iter = container.read(*family);
+      iter.seek_first();
+      EXPECT_FALSE(iter.valid());
+    }
+  };
+
+  reject({0, {}, rts::Usets(0), {}});
+  reject({2, {"public"}, rts::Usets(1), {}});
+  reject({0, {"public"}, rts::Usets(2), {}});
+  reject({rts::INVALID_USET, {"public"}, rts::Usets(rts::INVALID_USET), {}});
+}
+
+TEST_F(DatabaseImplTest, AccessibilityRejectsIncompatibleRewrite) {
+  commitThreeFacts();
+  constexpr rts::UnitId publicUnit = 100;
+  storeAccessibilityOwners(
+      *database_,
+      publicUnit,
+      {{startingId(), publicUnit},
+       {database_->firstFreeId(), rts::INVALID_USET}});
+
+  EXPECT_THROW(
+      storeAccessibilityOwners(
+          *database_, publicUnit + 100, {{startingId(), publicUnit + 100}}),
+      std::runtime_error);
+  auto ownership = database_->getAccessibilityOwnership();
+  ASSERT_NE(ownership, nullptr);
+  EXPECT_EQ(ownership->getUnitId(bytes("public")), publicUnit);
+  EXPECT_EQ(ownership->getStats().num_owner_entries, 2);
+  EXPECT_EQ(database_->getAccessibilityOwner(startingId()), publicUnit);
+
+  ownership.reset();
+  database_.reset();
+  database_ = openDatabase(db::Mode::ReadOnly, startingId(), kVersion);
+  EXPECT_EQ(database_->getAccessibilityOwner(startingId()), publicUnit);
+  EXPECT_EQ(
+      database_->getAccessibilityOwnership()->getUnitId(bytes("public")),
+      publicUnit);
+}
+
+TEST_F(DatabaseImplTest, DerivedAccessibilityOwnersHaveTheirOwnLog) {
+  commitThreeFacts();
+  constexpr rts::UnitId publicUnit = 100;
+  constexpr rts::UnitId alphaUnit = publicUnit + 1;
+  constexpr rts::UsetId first = publicUnit + 2;
+  constexpr rts::UsetId second = first + 1;
+  storeAccessibilityOwners(
+      *database_, publicUnit, {{startingId(), publicUnit}});
+  const auto pid = rts::Pid::lowest() + 1;
+  const auto visibilityNextId = database_->getOwnership()->nextSetId();
+
+  // One batch, as derivation writes it: its sets are numbered from the
+  // relation's next ID, and its owners refer to them.
+  const auto addDerived = [&](rts::Id fact, const std::set<uint32_t>& inputs) {
+    auto& database = static_cast<impl::DatabaseImpl&>(*database_);
+    const db::OwnershipKindStorage<impl::ContainerImpl> storage{
+        .units = impl::Family::accessibilityUnits,
+        .unitNames = nullptr,
+        .sets = impl::Family::accessibilitySets,
+        .owners = impl::Family::accessibilityOwners,
+        .ownerPages = nullptr,
+        .orphanFactsKey = std::nullopt,
+        .firstUnit = database.first_accessibility_unit,
+        .nextIdKey = db::AdminId::NEXT_ACCESSIBILITY_ID,
+        .nextId = database.next_accessibility_id,
+        .writableSets = database.accessibility_usets_,
+        .derivedRaw = impl::Family::accessibilityDerivedRaw,
+        .derivedCounters = database.accessibility_derived_counters};
+    rts::Usets batch(storage.nextId);
+    const auto owner = batch.intern(
+        std::make_unique<rts::Uset>(rts::SetU32::from(inputs), rts::And, 0));
+    std::map<rts::Pid, rts::DefineOwnership::PerPredicate> owners;
+    owners[pid].new_ids_ = {fact};
+    owners[pid].new_owners_ = {owner};
+    database.addDerivedOwners(storage, batch, owners);
+  };
+  addDerived(startingId() + 1, {publicUnit, alphaUnit});
+
+  // Reopening for writing continues the log.
+  database_.reset();
+  database_ = openDatabase(db::Mode::ReadWrite, startingId(), kVersion);
+  addDerived(startingId() + 2, {alphaUnit, first});
+
+  // Each entry of the log is keyed by the pid and a per-pid counter. Its
+  // value holds the facts' IDs, then their owners.
+  std::vector<std::pair<std::vector<rts::Id>, std::vector<rts::UsetId>>>
+      entries;
+  auto& database = static_cast<impl::DatabaseImpl&>(*database_);
+  auto log = database.container_.read(impl::Family::accessibilityDerivedRaw);
+  for (log.seek_first(); log.valid(); log.next()) {
+    binary::Input key(log.key());
+    EXPECT_EQ(key.trustedNat(), pid.toWord());
+    EXPECT_EQ(key.trustedNat(), entries.size());
+    const auto value = log.value();
+    const auto count = value.size() / (sizeof(rts::Id) + sizeof(rts::UsetId));
+    const auto* ids = reinterpret_cast<const rts::Id*>(value.data());
+    const auto* owners = reinterpret_cast<const rts::UsetId*>(
+        value.data() + count * sizeof(rts::Id));
+    entries.emplace_back(
+        std::vector<rts::Id>(ids, ids + count),
+        std::vector<rts::UsetId>(owners, owners + count));
+  }
+  const decltype(entries) expected = {
+      {{startingId() + 1}, {first}}, {{startingId() + 2}, {second}}};
+  EXPECT_EQ(entries, expected);
+
+  auto ownership = database_->getAccessibilityOwnership();
+  EXPECT_EQ(ownership->nextSetId(), second + 1);
+  for (const auto& [owner, members] :
+       {std::pair{first, std::set<uint32_t>{publicUnit, alphaUnit}},
+        std::pair{second, std::set<uint32_t>{alphaUnit, first}}}) {
+    const auto expression = ownership->getUset(owner);
+    ASSERT_TRUE(expression.has_value());
+    EXPECT_EQ(expression->op, rts::And);
+    EXPECT_EQ(rts::SetU32::to(expression->set), members);
+  }
+
+  EXPECT_FALSE(
+      database_->getDerivedFactOwnershipIterator(pid)->get().has_value());
+  EXPECT_EQ(database_->getOwnership()->nextSetId(), visibilityNextId);
+}
+
+TEST_F(DatabaseImplTest, AccessibilityPublicUnitZeroSurvivesReopen) {
+  commitThreeFacts();
+  storeAccessibilityOwners(
+      *database_,
+      0,
+      {{startingId(), 0}, {database_->firstFreeId(), rts::INVALID_USET}});
+  auto ownership = database_->getAccessibilityOwnership();
+  ASSERT_NE(ownership, nullptr);
+  EXPECT_EQ(ownership->nextSetId(), 2);
+  EXPECT_EQ(database_->getAccessibilityOwner(startingId() + 1), 0);
+
+  ownership.reset();
+  database_.reset();
+  database_ = openDatabase(db::Mode::ReadOnly, startingId(), kVersion);
+  ownership = database_->getAccessibilityOwnership();
+  ASSERT_NE(ownership, nullptr);
+  EXPECT_EQ(ownership->getUnitId(bytes("public")), 0);
+  EXPECT_EQ(database_->getAccessibilityOwner(startingId() + 1), 0);
+  EXPECT_EQ(
+      database_->getAccessibilityOwner(database_->firstFreeId()),
+      rts::INVALID_USET);
+}
+
+TEST_F(DatabaseImplTest, AccessibilityRejectsPersistedIdsWiderThanUsetId) {
+  commitThreeFacts();
+  storeAccessibilityOwners(*database_, 0, {{startingId(), 0}});
+  auto& container = static_cast<impl::ContainerImpl&>(database_->container());
+  {
+    auto writer = container.write();
+    rts::EncodedNat key(startingId().toWord());
+    rts::EncodedNat value(uint64_t{1} << 32);
+    writer.put(
+        impl::Family::accessibilityOwners, key.byteRange(), value.byteRange());
+    writer.put(impl::Family::factOwners, key.byteRange(), value.byteRange());
+    writer.commit();
+  }
+
+  EXPECT_THROW(
+      database_->getAccessibilityOwner(startingId()), std::runtime_error);
+  EXPECT_THROW(database_->getOwner(startingId()), std::runtime_error);
+}
+
+TEST_F(DatabaseImplTest, OpenRejectsMisSizedNextAccessibilityId) {
+  auto& container = static_cast<impl::ContainerImpl&>(database_->container());
+  {
+    binary::Output key;
+    key.fixed(db::AdminId::NEXT_ACCESSIBILITY_ID);
+    binary::Output value;
+    value.fixed(uint64_t{1});
+    auto writer = container.write();
+    writer.put(impl::Family::admin, key.bytes(), value.bytes());
+    writer.commit();
+  }
+  database_.reset();
+
+  try {
+    openDatabase(db::Mode::ReadOnly, startingId(), kVersion);
+    ADD_FAILURE() << "opened a database with a mis-sized NEXT_ACCESSIBILITY_ID";
+  } catch (const std::exception& e) {
+    const std::string_view message = e.what();
+    EXPECT_NE(message.find("NEXT_ACCESSIBILITY_ID"), std::string_view::npos);
+  }
 }
 
 // ============================================================

@@ -67,6 +67,15 @@ const Family Family::factOwnerPages("factOwnerPages", 0);
 // The value is a tuple of (batch format, is the batch written)
 const Family Family::batchDescriptors("batchDescriptors", 0, false);
 
+const Family Family::accessibilityUnits("accessibilityUnits", 0);
+const Family Family::accessibilitySets("accessibilitySets", 0);
+const Family Family::accessibilityOwners("accessibilityOwners", 0);
+
+// The accessibility counterpart of ownershipDerivedRaw.
+// accessibilityDerivedRaw: (Pid, nat) -> ( [Fid], [UsetId] )
+const Family
+    Family::accessibilityDerivedRaw("accessibilityDerivedRaw", 0, false);
+
 ContainerImpl::ContainerImpl(const std::string& path, Mode m)
     : db(nullptr, &mdb_env_close) {
   mode = m;
@@ -107,8 +116,18 @@ ContainerImpl::ContainerImpl(const std::string& path, Mode m)
       if (mode != Mode::ReadOnly) {
         familyFlags |= MDB_CREATE; // create it if it doesn't exist
       }
-      check(mdb_dbi_open(
-          txn.ptr(), family->name, familyFlags, &families[family->index]));
+      MDB_dbi dbi;
+      const auto status =
+          mdb_dbi_open(txn.ptr(), family->name, familyFlags, &dbi);
+      if (status == MDB_NOTFOUND && mode == Mode::ReadOnly &&
+          (family == &Family::accessibilityUnits ||
+           family == &Family::accessibilitySets ||
+           family == &Family::accessibilityOwners ||
+           family == &Family::accessibilityDerivedRaw)) {
+        continue;
+      }
+      check(status);
+      families[family->index] = dbi;
     }
     txn.commit();
   }
@@ -128,9 +147,17 @@ void ContainerImpl::requireOpen() const {
   }
 }
 
-MDB_dbi ContainerImpl::family(const Family& family) const {
+std::optional<MDB_dbi> ContainerImpl::tryFamily(const Family& family) const {
   assert(family.index < families.size());
   return families[family.index];
+}
+
+MDB_dbi ContainerImpl::family(const Family& family) const {
+  const auto dbi = tryFamily(family);
+  if (!dbi) {
+    rts::error("lmdb: missing column family {}", family.name);
+  }
+  return *dbi;
 }
 
 void ContainerImpl::writeData(folly::ByteRange key, folly::ByteRange value) {
@@ -143,8 +170,11 @@ void ContainerImpl::writeData(folly::ByteRange key, folly::ByteRange value) {
 void ContainerImpl::optimize(bool /* compact */) {
   Txn txn = txn_write();
   for (uint32_t i = 0; i < families.size(); i++) {
-    if (!Family::family(i)->keep) {
-      check(mdb_drop(txn.ptr(), families[i], 0 /* empty */));
+    const auto* family = CHECK_NOTNULL(Family::family(i));
+    if (!family->keep) {
+      if (const auto dbi = tryFamily(*family)) {
+        check(mdb_drop(txn.ptr(), *dbi, 0 /* empty */));
+      }
     }
   }
 }

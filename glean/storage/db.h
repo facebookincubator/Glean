@@ -29,7 +29,12 @@ struct Database;
 
 /// A rocksdb container for storing facts
 struct Container {
-  virtual ~Container() {}
+  Container() = default;
+  Container(const Container&) = delete;
+  Container(Container&&) = default;
+  Container& operator=(const Container&) = delete;
+  Container& operator=(Container&&) = delete;
+  virtual ~Container() = default;
 
   /// Close the 'Container' - accessing it afterwards isn't allowed.
   virtual void close() noexcept = 0;
@@ -143,9 +148,16 @@ struct Database : rts::Lookup {
   /// sets to Elias-Fano encoding and writes the fact→owner interval map.
   virtual void storeOwnership(rts::ComputedOwnership& ownership) = 0;
 
+  virtual void storeAccessibilityOwnership(
+      rts::ComputedAccessibilityOwnership& ownership) = 0;
+
+  virtual rts::UsetId getAccessibilityOwner(Id id) = 0;
+
   /// Return an Ownership handle for querying set and fact ownership at
   /// runtime (set lookup, iteration, fact→owner resolution).
   virtual std::unique_ptr<rts::Ownership> getOwnership() = 0;
+
+  virtual std::unique_ptr<rts::Ownership> getAccessibilityOwnership() = 0;
 
   /// Enable the read-only fact-owner page cache. Call only after the DB
   /// is finalized and prepareFactOwnerCache() has run.

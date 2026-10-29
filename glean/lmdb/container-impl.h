@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <optional>
+
 #include "glean/lmdb/util.h"
 #include "glean/storage/db.h"
 #include "lmdb.h"
@@ -54,6 +56,15 @@ struct Family {
   static const Family factOwners;
   static const Family factOwnerPages;
   static const Family batchDescriptors;
+  // Family definitions follow their registry in container-impl.cpp.
+  // NOLINTNEXTLINE(facebook-hte-NonPodStaticDeclaration)
+  static const Family accessibilityUnits;
+  // NOLINTNEXTLINE(facebook-hte-NonPodStaticDeclaration)
+  static const Family accessibilitySets;
+  // NOLINTNEXTLINE(facebook-hte-NonPodStaticDeclaration)
+  static const Family accessibilityOwners;
+  // NOLINTNEXTLINE(facebook-hte-NonPodStaticDeclaration)
+  static const Family accessibilityDerivedRaw;
 
   static size_t count() {
     return families.size();
@@ -85,7 +96,7 @@ struct Iterator : Cursor {
 struct ContainerImpl final : Container {
   Mode mode;
   std::unique_ptr<MDB_env, decltype(&mdb_env_close)> db;
-  std::vector<MDB_dbi> families;
+  std::vector<std::optional<MDB_dbi>> families;
   size_t key_size;
 
   using Family = impl::Family;
@@ -123,6 +134,8 @@ struct ContainerImpl final : Container {
   void optimize(bool compact) override;
 
   void flush() override;
+
+  std::optional<MDB_dbi> tryFamily(const Family& family) const;
 
   MDB_dbi family(const Family& family) const;
 
