@@ -155,6 +155,21 @@ predicate BelongToConfig:
   schema: maybe Value,
 }
 
+predicate FieldCoordinate :
+  {
+    schema: Value,
+    parentType: Value,
+    name: Value,
+  }
+
+predicate FieldReference :
+  {
+    file: src.File,
+    span: src.ByteSpan,
+    buildConfig: Value,
+    field: FieldCoordinate,
+  }
+
 predicate ScalarTypeDef :
   {
     name: Value,

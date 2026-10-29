@@ -1,0 +1,9 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
+schema hack.graphql.1 {
+import graphql
+import hack
+
+predicate FieldDefinition : graphql.FieldCoordinate -> hack.Declaration
+
+}

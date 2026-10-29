@@ -4,8 +4,10 @@ schema codemarkup.graphql.1 {
 
 import src
 import code.graphql
+import code.hack
 import codemarkup.types
 import graphql
+import hack.graphql
 
 #
 # Resolving locations to entities
@@ -49,6 +51,25 @@ predicate GraphQLFileEntityXRefLocations:
     graphql.DeclarationLocation { Decl, DstFile, DstSpan };
     graphql.DeclHasName { Decl, graphql.Value Name };
     { Name, DstFile, { span = DstSpan }, nothing } = Location;
+
+predicate GraphQLFileFieldSymbolRefs:
+  {
+    file: src.File,
+    source: codemarkup.types.RangeSpan,
+    field: graphql.FieldCoordinate,
+  }
+  { File, { span = Span }, Field } where
+    graphql.FieldReference { file = File, span = Span, field = Field };
+    !(graphql.FieldReference { file = File, span = Span, field = Other };
+      Other != Field);
+
+predicate GraphQLFieldSymbolToHack:
+  {
+    field: graphql.FieldCoordinate,
+    entity: code.hack.Entity,
+  }
+  { Field, { decl = Decl } } where
+    hack.graphql.FieldDefinition Field -> Decl;
 
 #
 # Language entity uses

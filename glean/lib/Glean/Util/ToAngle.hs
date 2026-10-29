@@ -631,6 +631,29 @@ instance ToAngle GraphQL.Declaration where
     GraphQL.Declaration_directive_ x -> alt @"directive_" (mkKey x)
     GraphQL.Declaration_EMPTY -> error "unknown GraphQL.Declaration"
 
+instance Normalize GraphQL.Value where
+  normalize (GraphQL.Value _ (Just value)) = GraphQL.Value 0 (Just value)
+  normalize _ = error "Not fully resolved"
+
+instance ToAngleFull GraphQL.FieldCoordinate_key where
+  toAngleFull (GraphQL.FieldCoordinate_key
+      (GraphQL.Value _ (Just schema))
+      (GraphQL.Value _ (Just parentType))
+      (GraphQL.Value _ (Just name))) =
+    rec $
+      field @"schema" (string schema) $
+      field @"parentType" (string parentType) $
+      field @"name" (string name)
+    end
+  toAngleFull _ = error "Not fully resolved"
+
+instance Normalize GraphQL.FieldCoordinate where
+  normalize (GraphQL.FieldCoordinate _
+      (Just (GraphQL.FieldCoordinate_key schema parentType name))) =
+    GraphQL.FieldCoordinate 0 $ Just $ GraphQL.FieldCoordinate_key
+      (normalize schema) (normalize parentType) (normalize name)
+  normalize _ = error "Not fully resolved"
+
 -- Hack
 
 instance ToAngle Hack.Declaration where
@@ -693,6 +716,164 @@ instance Prune Hack.ContainerDeclaration where
     Hack.ContainerDeclaration_trait x ->
       Hack.ContainerDeclaration_trait (mkFact (getId x) Nothing Nothing)
     Hack.ContainerDeclaration_EMPTY -> error "unknown ContainerDeclaration"
+
+instance Normalize Hack.Name where
+  normalize (Hack.Name _ (Just name)) = Hack.Name 0 (Just name)
+  normalize _ = error "Not fully resolved"
+
+instance ToAngleFull Hack.NamespaceQName_key where
+  toAngleFull (Hack.NamespaceQName_key (Hack.Name _ (Just name)) parent) =
+    rec $
+      field @"name" (string name) $
+      field @"parent" (namespaceQNameFull parent)
+    end
+  toAngleFull _ = error "Not fully resolved"
+
+namespaceQNameFull
+  :: Maybe Hack.NamespaceQName -> Angle (Maybe Hack.NamespaceQName)
+namespaceQNameFull Nothing = nothing
+namespaceQNameFull (Just (Hack.NamespaceQName _ (Just key))) =
+  just (predicate (toAngleFull key))
+namespaceQNameFull _ = error "Not fully resolved"
+
+instance Normalize Hack.NamespaceQName where
+  normalize (Hack.NamespaceQName _
+      (Just (Hack.NamespaceQName_key name parent))) =
+    Hack.NamespaceQName 0 $ Just $ Hack.NamespaceQName_key
+      (normalize name) (normalize parent)
+  normalize _ = error "Not fully resolved"
+
+instance ToAngleFull Hack.QName_key where
+  toAngleFull (Hack.QName_key (Hack.Name _ (Just name)) namespace_) =
+    rec $
+      field @"name" (string name) $
+      field @"namespace_" (namespaceQNameFull namespace_)
+    end
+  toAngleFull _ = error "Not fully resolved"
+
+instance Normalize Hack.QName where
+  normalize (Hack.QName _ (Just (Hack.QName_key name namespace_))) =
+    Hack.QName 0 $ Just $ Hack.QName_key
+      (normalize name) (normalize namespace_)
+  normalize _ = error "Not fully resolved"
+
+instance ToAngleFull Hack.ClassDeclaration_key where
+  toAngleFull (Hack.ClassDeclaration_key (Hack.QName _ (Just name))) =
+    rec $ field @"name" (toAngleFull name) end
+  toAngleFull _ = error "Not fully resolved"
+
+instance Normalize Hack.ClassDeclaration where
+  normalize (Hack.ClassDeclaration _
+      (Just (Hack.ClassDeclaration_key name))) =
+    Hack.ClassDeclaration 0 $ Just $
+      Hack.ClassDeclaration_key (normalize name)
+  normalize _ = error "Not fully resolved"
+
+instance ToAngleFull Hack.InterfaceDeclaration_key where
+  toAngleFull (Hack.InterfaceDeclaration_key (Hack.QName _ (Just name))) =
+    rec $ field @"name" (toAngleFull name) end
+  toAngleFull _ = error "Not fully resolved"
+
+instance Normalize Hack.InterfaceDeclaration where
+  normalize (Hack.InterfaceDeclaration _
+      (Just (Hack.InterfaceDeclaration_key name))) =
+    Hack.InterfaceDeclaration 0 $ Just $
+      Hack.InterfaceDeclaration_key (normalize name)
+  normalize _ = error "Not fully resolved"
+
+instance ToAngleFull Hack.TraitDeclaration_key where
+  toAngleFull (Hack.TraitDeclaration_key (Hack.QName _ (Just name))) =
+    rec $ field @"name" (toAngleFull name) end
+  toAngleFull _ = error "Not fully resolved"
+
+instance Normalize Hack.TraitDeclaration where
+  normalize (Hack.TraitDeclaration _
+      (Just (Hack.TraitDeclaration_key name))) =
+    Hack.TraitDeclaration 0 $ Just $
+      Hack.TraitDeclaration_key (normalize name)
+  normalize _ = error "Not fully resolved"
+
+instance ToAngleFull Hack.EnumDeclaration_key where
+  toAngleFull (Hack.EnumDeclaration_key (Hack.QName _ (Just name))) =
+    rec $ field @"name" (toAngleFull name) end
+  toAngleFull _ = error "Not fully resolved"
+
+instance Normalize Hack.EnumDeclaration where
+  normalize (Hack.EnumDeclaration _
+      (Just (Hack.EnumDeclaration_key name))) =
+    Hack.EnumDeclaration 0 $ Just $
+      Hack.EnumDeclaration_key (normalize name)
+  normalize _ = error "Not fully resolved"
+
+instance ToAngleFull Hack.TypedefDeclaration_key where
+  toAngleFull (Hack.TypedefDeclaration_key (Hack.QName _ (Just name))) =
+    rec $ field @"name" (toAngleFull name) end
+  toAngleFull _ = error "Not fully resolved"
+
+instance Normalize Hack.TypedefDeclaration where
+  normalize (Hack.TypedefDeclaration _
+      (Just (Hack.TypedefDeclaration_key name))) =
+    Hack.TypedefDeclaration 0 $ Just $
+      Hack.TypedefDeclaration_key (normalize name)
+  normalize _ = error "Not fully resolved"
+
+instance ToAngleFull Hack.ContainerDeclaration where
+  toAngleFull container = case container of
+    Hack.ContainerDeclaration_class_ (Hack.ClassDeclaration _ (Just key)) ->
+      alt @"class_" (toAngleFull key)
+    Hack.ContainerDeclaration_enum_ (Hack.EnumDeclaration _ (Just key)) ->
+      alt @"enum_" (toAngleFull key)
+    Hack.ContainerDeclaration_interface_
+        (Hack.InterfaceDeclaration _ (Just key)) ->
+      alt @"interface_" (toAngleFull key)
+    Hack.ContainerDeclaration_trait (Hack.TraitDeclaration _ (Just key)) ->
+      alt @"trait" (toAngleFull key)
+    Hack.ContainerDeclaration_EMPTY -> error "unknown ContainerDeclaration"
+    _ -> error "Not fully resolved"
+
+instance Normalize Hack.ContainerDeclaration where
+  normalize container = case container of
+    Hack.ContainerDeclaration_class_ x ->
+      Hack.ContainerDeclaration_class_ (normalize x)
+    Hack.ContainerDeclaration_enum_ x ->
+      Hack.ContainerDeclaration_enum_ (normalize x)
+    Hack.ContainerDeclaration_interface_ x ->
+      Hack.ContainerDeclaration_interface_ (normalize x)
+    Hack.ContainerDeclaration_trait x ->
+      Hack.ContainerDeclaration_trait (normalize x)
+    Hack.ContainerDeclaration_EMPTY -> error "unknown ContainerDeclaration"
+
+instance ToAngleFull Hack.MethodDeclaration_key where
+  toAngleFull (Hack.MethodDeclaration_key
+      (Hack.Name _ (Just name)) container) =
+    rec $
+      field @"name" (string name) $
+      field @"container" (toAngleFull container)
+    end
+  toAngleFull _ = error "Not fully resolved"
+
+instance Normalize Hack.MethodDeclaration where
+  normalize (Hack.MethodDeclaration _
+      (Just (Hack.MethodDeclaration_key name container))) =
+    Hack.MethodDeclaration 0 $ Just $ Hack.MethodDeclaration_key
+      (normalize name) (normalize container)
+  normalize _ = error "Not fully resolved"
+
+instance ToAngleFull Hack.Declaration where
+  toAngleFull declaration = case declaration of
+    Hack.Declaration_container x -> alt @"container" (toAngleFull x)
+    Hack.Declaration_method (Hack.MethodDeclaration _ (Just key)) ->
+      alt @"method" (toAngleFull key)
+    Hack.Declaration_typedef_ (Hack.TypedefDeclaration _ (Just key)) ->
+      alt @"typedef_" (toAngleFull key)
+    _ -> error "Expected a Hack container, method, or typedef declaration"
+
+instance Normalize Hack.Declaration where
+  normalize declaration = case declaration of
+    Hack.Declaration_container x -> Hack.Declaration_container (normalize x)
+    Hack.Declaration_method x -> Hack.Declaration_method (normalize x)
+    Hack.Declaration_typedef_ x -> Hack.Declaration_typedef_ (normalize x)
+    _ -> error "Expected a Hack container, method, or typedef declaration"
 
 -- Haskell
 
@@ -1138,6 +1319,8 @@ instance ToAngle Scip.SomeEntity where
 
 instance ToAngleFull Code.Entity where
   toAngleFull entity = case entity of
+    Code.Entity_hack (Hack.Entity_decl x) ->
+      alt @"hack" (alt @"decl" (toAngleFull x))
     Code.Entity_fbthrift (Fbthrift.Entity_decl x) ->
       alt @"fbthrift" (alt @"decl" (toAngleFull x))
     Code.Entity_python (Py.Entity_decl x) ->
@@ -1146,13 +1329,17 @@ instance ToAngleFull Code.Entity where
       alt @"cxx" (alt @"decl" (toAngleFull x))
     Code.Entity_cxx (Cxx.Entity_sidlDecl (Cxx.SidlDeclaration _ (Just k))) ->
       alt @"cxx" (alt @"sidlDecl" (toAngleFull k))
-    _ -> error $ "Only thrift, python or cxx (decl, or sidlDecl with its key) "
-      ++ "entities are expected"
+    _ -> error $
+      "Only hack, thrift, python or cxx "
+        ++ "(decl, or sidlDecl with its key) entities are expected"
 
 instance ToAngleFull Code.SymbolId where
   toAngleFull (Code.SymbolId_cxx x) = alt @"cxx" (toAngleFull x)
   toAngleFull (Code.SymbolId_scip x) = alt @"scip" (toAngleFull x)
   toAngleFull (Code.SymbolId_swift x) = alt @"swift" (toAngleFull x)
+  toAngleFull (Code.SymbolId_graphql (GraphQL.FieldCoordinate _ (Just key))) =
+    alt @"graphql" (toAngleFull key)
+  toAngleFull (Code.SymbolId_graphql _) = error "Not fully resolved"
   toAngleFull Code.SymbolId_EMPTY = error "unknown Code.SymbolId"
 
 instance ToAngleFull Scip.Symbol where
@@ -1163,6 +1350,7 @@ instance Normalize Code.SymbolId  where
   normalize (Code.SymbolId_cxx x) = Code.SymbolId_cxx (normalize x)
   normalize (Code.SymbolId_scip x) = Code.SymbolId_scip (normalize x)
   normalize (Code.SymbolId_swift x) = Code.SymbolId_swift (normalize x)
+  normalize (Code.SymbolId_graphql x) = Code.SymbolId_graphql (normalize x)
   normalize Code.SymbolId_EMPTY = Code.SymbolId_EMPTY
 
 instance Normalize Scip.Symbol where
@@ -1171,6 +1359,8 @@ instance Normalize Scip.Symbol where
 
 instance Normalize Code.Entity where
     normalize entity = case entity of
+      Code.Entity_hack (Hack.Entity_decl x) ->
+        Code.Entity_hack (Hack.Entity_decl (normalize x))
       Code.Entity_fbthrift (Fbthrift.Entity_decl x) ->
         Code.Entity_fbthrift (Fbthrift.Entity_decl (normalize x))
       Code.Entity_python (Py.Entity_decl x) ->
@@ -1180,7 +1370,8 @@ instance Normalize Code.Entity where
       Code.Entity_cxx (Cxx.Entity_sidlDecl x) ->
         Code.Entity_cxx (Cxx.Entity_sidlDecl (normalize x))
       _ -> error $
-        "Only thrift or python or cxx entities are expected, got: " <> show entity
+        "Only hack, thrift, python or cxx entities are expected, got: "
+          <> show entity
 
 instance ToAngleFull Text where
   toAngleFull x = string x

@@ -22,6 +22,7 @@ import code.python
 import code.scip
 import code.swift
 import codemarkup.types
+import graphql
 
 type Entity =
   {
@@ -50,6 +51,7 @@ type SymbolId =
     scip : code.scip.SymbolId |
     cxx : code.cxx.SymbolId |
     swift : code.swift.SymbolId |
+    graphql : graphql.FieldCoordinate |
   }
 
 type Language =

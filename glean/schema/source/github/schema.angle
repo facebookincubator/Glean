@@ -47,6 +47,7 @@ schema all.1 :
   glean.test.6,
   graphql,
   hack,
+  hack.graphql,
   hs,
   kotlin.alpha,
   lsif,

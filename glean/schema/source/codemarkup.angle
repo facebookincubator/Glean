@@ -305,6 +305,9 @@ predicate FileXRefsGenericEntities: {
   | ( codemarkup.graphql.GraphQLFileEntityXRefLocations { File, XRef, E }
     ; { plainEntity = { xref = XRef, entity = { graphql = E } } } = GenEntity
     )
+  | ( codemarkup.graphql.GraphQLFileFieldSymbolRefs { File, Source, Field }
+    ; { xlangSymbol = { source = Source, symbol = { graphql = Field } } } = GenEntity
+    )
   | ( codemarkup.dataswarm.DataswarmFileEntityXRefLocations { File, XRef, E }
     ; { plainEntity = { xref = XRef, entity = { dataswarm = E } } } = GenEntity
     )
@@ -321,9 +324,12 @@ predicate SymbolToEntity:
     entity: code.Entity,
   }
   { Symbol, Entity } where
-  { cxx = CxxSymbol } = Symbol
+  ({ cxx = CxxSymbol } = Symbol
     ; codemarkup.cxx.SymbolToEntity { CxxSymbol, CxxEntity }
-    ; { cxx = CxxEntity } = Entity;
+    ; { cxx = CxxEntity } = Entity)
+  | ({ graphql = Field } = Symbol
+    ; codemarkup.graphql.GraphQLFieldSymbolToHack { Field, HackEntity }
+    ; { hack = HackEntity } = Entity);
 
 # Finding xrefs. All references in a file and their targets
 predicate FileEntityXRefLocations:
