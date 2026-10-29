@@ -12,10 +12,72 @@
 
 #include <folly/container/F14Map.h>
 #include <set>
+#include <stdexcept>
 
 namespace facebook {
 namespace glean {
 namespace rts {
+
+ACLExpressionBuilder::ACLExpressionBuilder(Usets& usets, UnitId publicUnit)
+    : expressionBuilder_(usets), publicUnit_(publicUnit) {
+  if (publicUnit_ >= usets.getFirstId()) {
+    throw std::runtime_error("public unit must precede ownership expressions");
+  }
+  publicOwner_ = expressionBuilder_.anyOf({publicUnit_});
+}
+
+UsetId ACLExpressionBuilder::ownerForPathExpression(
+    SetOp op,
+    const std::vector<UsetId>& owners) {
+  return combine(op, owners);
+}
+
+UsetId ACLExpressionBuilder::ownerForPath(
+    const std::vector<std::vector<UnitId>>& ruleGroups) {
+  if (ruleGroups.empty()) {
+    return publicOwner_;
+  }
+
+  std::vector<UsetId> ruleOwners;
+  ruleOwners.reserve(ruleGroups.size());
+  for (const auto& alternatives : ruleGroups) {
+    ruleOwners.push_back(combine(Or, alternatives));
+  }
+  return combine(And, ruleOwners);
+}
+
+UsetId ACLExpressionBuilder::combine(
+    SetOp op,
+    const std::vector<UsetId>& owners) {
+  std::vector<UsetId> normalized;
+  normalized.reserve(owners.size());
+
+  for (const auto owner : owners) {
+    const auto isPublic = owner == publicUnit_ || owner == publicOwner_;
+    if (op == Or) {
+      if (isPublic) {
+        return publicOwner_;
+      }
+      if (owner == INVALID_USET) {
+        continue;
+      }
+    } else {
+      if (owner == INVALID_USET) {
+        return INVALID_USET;
+      }
+      if (isPublic) {
+        continue;
+      }
+    }
+    normalized.push_back(owner);
+  }
+
+  if (normalized.empty()) {
+    return op == Or ? INVALID_USET : publicOwner_;
+  }
+  return op == Or ? expressionBuilder_.anyOf(normalized)
+                  : expressionBuilder_.allOf(normalized);
+}
 
 namespace {
 

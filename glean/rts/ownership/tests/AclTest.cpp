@@ -9,6 +9,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <set>
+#include <stdexcept>
 
 #include "glean/rts/ownership/acl.h"
 
@@ -24,12 +25,11 @@ Uset* makePromotedOrSet(Usets& usets, const std::set<UsetId>& members) {
   return added;
 }
 
-// Helper: create a UnitACLAssignment concisely.
-// levels is outer=AND, inner=OR of group UsetIds.
+// Helper: pair a visibility source unit with its matched ACL rules.
 UnitACLAssignment makeAssignment(
-    UnitId unitId,
-    std::vector<std::vector<UsetId>> levels) {
-  return UnitACLAssignment{unitId, std::move(levels)};
+    UnitId visibilityUnit,
+    std::vector<std::vector<UnitId>> ruleGroups) {
+  return UnitACLAssignment{visibilityUnit, std::move(ruleGroups)};
 }
 
 // Helper: recursively render a Uset expression tree as a human-readable string.
@@ -58,6 +58,80 @@ std::string usetToString(const Usets& usets, UsetId id, UsetId firstSetId) {
 }
 
 } // namespace
+
+TEST(ACLExpressionBuilderTest, RejectsPublicUnitsInExpressionRange) {
+  Usets usets(/* firstId */ 100);
+  EXPECT_THROW(ACLExpressionBuilder(usets, 100), std::runtime_error);
+  EXPECT_THROW(ACLExpressionBuilder(usets, INVALID_USET), std::runtime_error);
+  EXPECT_EQ(usets.size(), 0);
+}
+
+TEST(ACLExpressionBuilderTest, PublicAndInaccessibleOwnersAreNormalized) {
+  Usets usets(/* firstId */ 100);
+  ACLExpressionBuilder builder(usets, /* publicUnit */ 0);
+  const auto restricted = builder.ownerForPath({{1}});
+
+  EXPECT_EQ(
+      builder.ownerForPathExpression(
+          Or, {restricted, builder.ownerForPath({})}),
+      builder.ownerForPath({}));
+  EXPECT_EQ(
+      builder.ownerForPathExpression(
+          And, {builder.ownerForPath({}), restricted}),
+      restricted);
+  EXPECT_EQ(
+      builder.ownerForPathExpression(And, {restricted, INVALID_USET}),
+      INVALID_USET);
+  EXPECT_EQ(builder.ownerForPathExpression(Or, {}), INVALID_USET);
+  EXPECT_EQ(builder.ownerForPathExpression(And, {}), builder.ownerForPath({}));
+}
+
+TEST(ACLExpressionBuilderTest, NestedPathBuildsAConjunctionOfAlternatives) {
+  Usets usets(/* firstId */ 100);
+  ACLExpressionBuilder builder(usets, /* publicUnit */ 0);
+
+  const auto owner = builder.ownerForPath({{1, 2}, {3}});
+  const auto* conjunction = usets.lookupById(owner);
+  ASSERT_NE(conjunction, nullptr);
+  EXPECT_EQ(conjunction->exp.op, And);
+
+  std::vector<UsetId> levels;
+  conjunction->exp.set.foreach(
+      [&](UsetId expression) { levels.push_back(expression); });
+  ASSERT_EQ(levels.size(), 2);
+  for (const auto level : levels) {
+    const auto* alternatives = usets.lookupById(level);
+    ASSERT_NE(alternatives, nullptr);
+    EXPECT_EQ(alternatives->exp.op, Or);
+  }
+}
+
+TEST(ACLExpressionBuilderTest, EquivalentPathsShareAnOwner) {
+  Usets usets(/* firstId */ 100);
+  ACLExpressionBuilder builder(usets, /* publicUnit */ 0);
+
+  const auto first = builder.ownerForPath({{2, 1}, {3}});
+  const auto second = builder.ownerForPath({{1, 2}, {3}});
+
+  EXPECT_EQ(first, second);
+  EXPECT_EQ(builder.ownerForPathExpression(Or, {first, first}), first);
+}
+
+TEST(ACLExpressionBuilderTest, PathWithoutMatchingLevelsIsPublic) {
+  Usets usets(/* firstId */ 100);
+  ACLExpressionBuilder builder(usets, /* publicUnit */ 0);
+
+  const auto owner = builder.ownerForPath({});
+  EXPECT_EQ(owner, builder.ownerForPath({{0}}));
+  EXPECT_GE(owner, usets.getFirstId());
+}
+
+TEST(ACLExpressionBuilderTest, EmptyMatchingLevelIsInaccessible) {
+  Usets usets(/* firstId */ 100);
+  ACLExpressionBuilder builder(usets, /* publicUnit */ 0);
+
+  EXPECT_EQ(builder.ownerForPath({{1}, {}}), INVALID_USET);
+}
 
 // Verify that facts owned by a promoted set with matching UnitIds are
 // augmented with the expected AND(owner, aclCnf) structure.

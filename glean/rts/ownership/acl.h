@@ -9,6 +9,7 @@
 #pragma once
 
 #include "glean/rts/ownership.h"
+#include "glean/rts/ownership/expression.h"
 #include "glean/rts/ownership/uset.h"
 
 #include <string>
@@ -25,26 +26,59 @@ struct ACLConfigEntry {
   std::vector<UsetId> groupUsetIds;
 };
 
-/// Per-file ACL assignment: a UnitId (representing a single file path)
-//  and its matching ACL levels.
-/// Each inner vector represents groups at one directory level (ORed).
-/// The outer vector represents levels that are ANDed together.
+/// A directory prefix and the alternative accessibility group units it allows.
+/// A path matches a rule when it equals the prefix or starts with prefix + "/".
+/// All directory rules matching a path must be satisfied.
+struct DirectoryACLRule {
+  std::string directory;
+  std::vector<UnitId> groups;
+};
+
+/// Per-file ACL assignment: a visibility source unit and its matching
+/// directory rules. Each inner list contains the ACL group IDs
+/// allowed by one rule (OR); the outer list contains all matching rules (AND).
 struct UnitACLAssignment {
   UnitId unitId;
-  std::vector<std::vector<UsetId>> levels; // outer=AND, inner=OR
+  std::vector<std::vector<UsetId>> levels;
+};
+
+/// Builds accessibility expressions from matched directory rules and combines
+/// owners with Boolean AND/OR. Every ACL slice must select the public unit.
+class ACLExpressionBuilder {
+ public:
+  /// Adds expressions to usets, which must outlive this builder. publicUnit is
+  /// a leaf below usets.getFirstId(); its stored OR(publicUnit) expression is
+  /// the owner of public facts.
+  ACLExpressionBuilder(Usets& usets, UnitId publicUnit);
+
+  /// Combines accessibility owners translated from a visibility expression's
+  /// members, preserving its operator. Simplifies public and INVALID_USET
+  /// owners and reuses equivalent expressions.
+  UsetId ownerForPathExpression(SetOp op, const std::vector<UsetId>& owners);
+
+  /// Builds the owner for a path from directory rules matched by the caller.
+  /// Each inner list contains alternative accessibility group unit IDs (OR);
+  /// all matching rules must be satisfied (AND). For example, {{a, b}, {c}}
+  /// means (a OR b) AND c. An empty outer list is public; an empty inner list
+  /// is inaccessible (INVALID_USET).
+  UsetId ownerForPath(const std::vector<std::vector<UnitId>>& ruleGroups);
+
+ private:
+  UsetId combine(SetOp op, const std::vector<UsetId>& owners);
+
+  OwnershipExpressionBuilder expressionBuilder_;
+  UnitId publicUnit_;
+  UsetId publicOwner_;
 };
 
 /// Augment computed ownership with ACL constraints.
 ///
-/// For each UnitACLAssignment `a`:
-/// 1. Transform a.levels vec of vec into a proper boolean expression Uset using
-/// Set32 (outer vec -> AND, inner vec -> OR)
-/// 2. for each (fact, uset) in `ownership`, for each unit in uset, get the CNF
-/// for that unit from output of 1.,
-//  and AND those and the uset
+/// For each assignment, combine alternative groups with OR and matching rules
+/// with AND. Add these constraints to each fact whose owner contains the
+/// assignment's visibility unit.
 ///
 /// @param ownership  The computed ownership (modified in-place)
-/// @param assignments  Per-unit ACL assignments (UnitId → levels of group IDs)
+/// @param assignments  Visibility source units and their matched ACL rules
 void augmentOwnershipWithACL(
     ComputedOwnership& ownership,
     const std::vector<UnitACLAssignment>& assignments);
