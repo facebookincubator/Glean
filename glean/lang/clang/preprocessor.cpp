@@ -19,6 +19,9 @@ namespace {
 using namespace facebook::glean::clangx;
 using namespace facebook::glean::cpp;
 
+/// Records what the preprocessor does in a `ClangDB`: the files it enters or
+/// skips, and the macros defined, undefined and used, as `pp1` facts and as
+/// events of each file's `cxx1.PPTrace`.
 struct PPCallbacks final : public clang::PPCallbacks {
   explicit PPCallbacks(ClangDB* d) : db(*d) {}
 
@@ -128,6 +131,25 @@ struct PPCallbacks final : public clang::PPCallbacks {
     db.ppevent(Cxx::PPEvent::undef(undef), src);
   }
 
+  /// A macro use that we record.
+  struct MacroUse {
+    /// The macro name, as reported by the preprocessor callback.
+    const clang::Token* name;
+    /// The definition the name resolves to, or null if it isn't a defined
+    /// macro (e.g. in `#ifdef`).
+    const clang::MacroInfo* FOLLY_NULLABLE info;
+    /// The location of `info`, or none if `info` is null.
+    folly::Optional<Src::Loc> defloc;
+    /// Whether the macro is expanded, as opposed to tested by `#ifdef`,
+    /// `#ifndef` or `defined`.
+    bool expand;
+  };
+
+  /// Records a use of the macro `name` over `range`, the source range the
+  /// preprocessor reports for it. The macro is expanded if `expand`, or else
+  /// tested by `#ifdef`, `#ifndef` or `defined`. `def` is the definition the
+  /// name resolves to, if any. Uses of built-in macros such as `__LINE__` and
+  /// of predefined macros such as `__cplusplus` aren't recorded.
   void macroUsed(
       const clang::Token& name,
       const clang::MacroDefinition& def,
@@ -143,123 +165,16 @@ struct PPCallbacks final : public clang::PPCallbacks {
     const auto start = Clock::now();
 #endif
 
-    // Getting the location is expensive and there are a lot fewer macro
-    // definition sites than there are macro expansions so let's cache those
-    // locations.
-    folly::Optional<Src::Loc> defloc;
-    if (auto info = def.getMacroInfo()) {
-      if (info->isBuiltinMacro()) { // e.g. __LINE__
-        return;
-      }
-      if (auto entry = folly::get_optional(macros, info)) {
-        const auto& loc = *entry;
-        // If an entry exists but is none, it means it's a predefined macro.
-        if (!loc.has_value()) {
-          return;
-        }
-        defloc = loc.value();
-      } else {
-        auto loc = info->getDefinitionLoc();
-        if (db.sourceManager().getFileID(loc) ==
-            db.preprocessor().getPredefinesFileID()) { // e.g. __cplusplus
-          // Cache predefined macro.
-          macros.insert({info, folly::none});
-          return;
-        }
-        defloc = db.srcLoc(loc);
-        macros.insert({info, defloc.value()});
-      }
+    const auto* info = def.getMacroInfo();
+    if (info && info->isBuiltinMacro()) { // e.g. __LINE__
+      return;
     }
 
-    // We absolutely don't want to let Clang resolve nested macro expansion
-    // ranges here (via db.srcRange -> getExpansionRange) as doing so turned out
-    // to be horrendously expensive. Instead, when we see a top-level expansion
-    // (the range isn't isMacroID) we resolve it ourselves and store it in
-    // 'expansion'. Subsequent nested expansions must be part of this top-level
-    // expansion so we just use that range. There is a subtlety with how we
-    // handle expansions in macro arguments, see comments below. This is a
-    // massive win in performance - at one time, this function accounted for
-    // >40% of the running time in Strobelight (cf. T59197014).
-    const ClangDB::SourceRange src =
-        (range.getBegin().isMacroID() && expansion.has_value())
-
-        // This is part of the current top-level expansion, just use its
-        // range.
-        ? expansion.value()
-
-        // Manually convert this to a CharSourceRange and call the more
-        // efficient immediateSourceRange rather than srcRange.
-        : db.immediateSrcRange(
-              clang::CharSourceRange::getCharRange(
-                  {// getBegin points at the start of the first token
-                   range.getBegin(),
-
-                   // getEnd points at the start of the last token.
-                   range.getEnd().getLocWithOffset(
-                       // Skip over the last token to make this an proper
-                       // (exclusive) char range.
-                       range.getBegin() == range.getEnd()
-                           // The macro expansion range is only one token which
-                           // must be the macro name.
-                           ? name.getLength()
-
-                           // Multiple tokens which means the last token must be
-                           // the closing parenthesis.
-                           : 1)}));
-
-    if (range.getBegin().isMacroID() && !expansion.has_value()) {
-      // This really shouldn't happen.
-      LOG(ERROR) << "Unexpected nested macro expansion at "
-                 << range.printToString(db.sourceManager());
+    if (isTopLevel(range)) {
+      topLevelMacroUsed(name, info, range, expand);
+    } else {
+      nestedMacroUsed(name, info, range, expand);
     }
-
-    // Don't update expansion if this is an expansion of a macro argument.
-    // Consider:
-    //
-    //   #define ONE 1
-    //   #define TWO 2
-    //   #define FOO ONE
-    //   #define MACRO(x) x+TWO
-    //   int y = MACRO(FOO);
-    //
-    // Here, we get the following calls:
-    //
-    //   MACRO(...) - the outer expansion (not isMacroID)
-    //   FOO - argument (not isMacroID)
-    //   ONE - definition of FOO (isMacroID)
-    //   TWO - definition of MACRO(x) (isMacroID)
-    //
-    // We set expansion in the MACRO(...) call but if we then update it in
-    // the FOO call, we'd assign the (nested) expansion of TWO to the range
-    // of FOO. Instead, we don't update and assign the expansions of both
-    // ONE and TWO (but not FOO!) to the range of MACRO(FOO). This is arguably
-    // slightly less wrong. There doesn't seem to be an easy way to do better
-    // without actually resolving the MacroID ranges. Perhaps we could hook
-    // into the lexer somehow.
-    if (!range.getBegin().isMacroID() &&
-        (!expansion.has_value() || src.file != expansion->file ||
-         src.span.start + src.span.length >
-             expansion->span.start + expansion->span.length)) {
-      expansion = src;
-    }
-
-    // Resolve the name range manually, too. For top-level expansions, it's
-    // the (inclusive for now) range of the name token. For nested expansions
-    // the current schema is broken anyway - we assign the range of the
-    // top-level expansion (it should be spelling file + range).
-    const auto name_r = name.getLocation().isMacroID()
-        ? src
-        : db.immediateSrcRange(
-              clang::CharSourceRange::getCharRange(
-                  {name.getLocation(), name.getEndLoc()}));
-
-    auto use = db.fact<Pp::Use>(
-        macro(name),
-        maybe(defloc),
-        expand,
-        src.range,
-        Src::ByteSpan{name_r.span.start, name_r.span.length});
-    db.ppevent(Cxx::PPEvent::use(use), src);
 
 #if PROFILE_macroUsed
     const auto end = Clock::now();
@@ -270,6 +185,170 @@ struct PPCallbacks final : public clang::PPCallbacks {
       LOG(INFO) << "macroUsed " << time.count() << "us (" << count << ")";
     }
 #endif
+  }
+
+  /// Whether a macro use whose expansion range is `range` is top-level:
+  /// written in a file, possibly in the arguments of another macro, rather
+  /// than produced by expanding another macro.
+  static bool isTopLevel(clang::SourceRange range) {
+    return !range.getBegin().isMacroID();
+  }
+
+  /// Records a top-level use. It is located at the macro name plus its
+  /// arguments, if any.
+  void topLevelMacroUsed(
+      const clang::Token& name,
+      const clang::MacroInfo* FOLLY_NULLABLE info,
+      clang::SourceRange range,
+      bool expand) {
+    const auto use = recordedUse(name, info, expand);
+    if (!use.has_value()) {
+      return;
+    }
+    const auto src = topLevelSrcRange(name, range);
+    enterTopLevelExpansion(src);
+    const auto name_range = db.immediateSrcRange(
+        clang::CharSourceRange::getCharRange(
+            {name.getLocation(), name.getEndLoc()}));
+    db.ppevent(Cxx::PPEvent::use(useFact(*use, src, name_range)), src);
+  }
+
+  /// The range of a top-level use: the macro name, plus its arguments if any.
+  ClangDB::SourceRange topLevelSrcRange(
+      const clang::Token& name,
+      clang::SourceRange range) {
+    // Manually convert this to a CharSourceRange and call the more efficient
+    // immediateSrcRange rather than srcRange.
+    return db.immediateSrcRange(
+        clang::CharSourceRange::getCharRange(
+            {// getBegin points at the start of the first token
+             range.getBegin(),
+
+             // getEnd points at the start of the last token.
+             range.getEnd().getLocWithOffset(
+                 // Skip over the last token to make this a proper
+                 // (exclusive) char range.
+                 range.getBegin() == range.getEnd()
+                     // The macro expansion range is only one token which
+                     // must be the macro name.
+                     ? name.getLength()
+
+                     // Multiple tokens which means the last token must be
+                     // the closing parenthesis.
+                     : 1)}));
+  }
+
+  /// Makes `src` the current top-level expansion, unless `src` is in the same
+  /// file and doesn't end after it, as with a macro argument. Consider:
+  ///
+  ///   #define ONE 1
+  ///   #define TWO 2
+  ///   #define FOO ONE
+  ///   #define MACRO(x) x+TWO
+  ///   int y = MACRO(FOO);
+  ///
+  /// The preprocessor reports the top-level expansions of `MACRO(FOO)` and of
+  /// its argument `FOO`, then the nested expansions of `ONE` and `TWO`. As
+  /// `MACRO(FOO)` stays the current top-level expansion, both nested
+  /// expansions happen within it.
+  void enterTopLevelExpansion(const ClangDB::SourceRange& src) {
+    if (!expansion.has_value() || src.file != expansion->file ||
+        endOffset(src.span) > endOffset(expansion->span)) {
+      expansion = src;
+    }
+  }
+
+  /// Records a use produced by expanding another macro, such as `N` in
+  ///
+  ///   #define N 1
+  ///   #define M N
+  ///   int x = M;
+  ///
+  /// It is located at the current top-level expansion (`M`), which contains
+  /// it.
+  void nestedMacroUsed(
+      const clang::Token& name,
+      const clang::MacroInfo* FOLLY_NULLABLE info,
+      clang::SourceRange range,
+      bool expand) {
+    const auto use = recordedUse(name, info, expand);
+    if (!use.has_value()) {
+      return;
+    }
+    // We absolutely don't want to let Clang resolve nested macro expansion
+    // ranges here (via db.srcRange -> getExpansionRange) as doing so turned out
+    // to be horrendously expensive (cf. T59197014). Nested expansions are part
+    // of the current top-level expansion, so we just use its range.
+    if (!expansion.has_value()) {
+      // This really shouldn't happen.
+      LOG(ERROR) << "Unexpected nested macro expansion at "
+                 << range.printToString(db.sourceManager());
+    }
+    const auto src = expansion.has_value() ? expansion.value()
+                                           : topLevelSrcRange(name, range);
+    // The current schema can't locate the name of a nested use, so we use the
+    // range of the top-level expansion (it should be the spelling location).
+    const auto name_range = name.getLocation().isMacroID()
+        ? src
+        : db.immediateSrcRange(
+              clang::CharSourceRange::getCharRange(
+                  {name.getLocation(), name.getEndLoc()}));
+    db.ppevent(Cxx::PPEvent::use(useFact(*use, src, name_range)), src);
+  }
+
+  /// The use of the macro `name` that resolves to `info` (null if `name`
+  /// isn't a defined macro), or none if we don't record it because the macro
+  /// is predefined, such as `__cplusplus`.
+  folly::Optional<MacroUse> recordedUse(
+      const clang::Token& name,
+      const clang::MacroInfo* FOLLY_NULLABLE info,
+      bool expand) {
+    if (info == nullptr) {
+      return MacroUse{&name, nullptr, folly::none, expand};
+    }
+    auto defloc = definitionLoc(info);
+    if (!defloc.has_value()) {
+      return folly::none;
+    }
+    return MacroUse{&name, info, std::move(defloc), expand};
+  }
+
+  /// The location of the macro definition `info`, or none for a predefined
+  /// macro, whose definition isn't in a file.
+  ///
+  /// Cached, because getting the location is expensive and there are far
+  /// fewer macro definitions than macro uses.
+  folly::Optional<Src::Loc> definitionLoc(const clang::MacroInfo* info) {
+    if (auto entry = folly::get_optional(macros, info)) {
+      return *entry;
+    }
+    const auto loc = info->getDefinitionLoc();
+    folly::Optional<Src::Loc> result;
+    if (db.sourceManager().getFileID(loc) !=
+        db.preprocessor().getPredefinesFileID()) {
+      result = db.srcLoc(loc);
+    }
+    macros.insert({info, result});
+    return result;
+  }
+
+  /// A `pp1.Use` fact for `use` in `range`, with the macro name at
+  /// `name_range`.
+  Fact<Pp::Use> useFact(
+      const MacroUse& use,
+      const ClangDB::SourceRange& range,
+      const ClangDB::SourceRange& name_range) {
+    return db.fact<Pp::Use>(
+        macro(*use.name),
+        maybe(use.defloc),
+        use.expand,
+        range.range,
+        name_range.span);
+  }
+
+  /// The offset just past the end of `span`.
+  static uint64_t endOffset(const Src::ByteSpan& span) {
+    return span.start + span.length;
   }
 
   void MacroExpands(
@@ -290,11 +369,11 @@ struct PPCallbacks final : public clang::PPCallbacks {
   ClangDB& db;
   folly::Optional<ClangDB::Include> last_include;
 
-  // The range of the current top-level macro expansion (see comments in
-  // macroUsed).
+  /// The range of the current top-level macro expansion (see
+  /// `enterTopLevelExpansion`).
   folly::Optional<ClangDB::SourceRange> expansion;
 
-  // Cached locations of macro definitions (see macroUsed).
+  /// Cached results of `definitionLoc`.
   folly::F14FastMap<const clang::MacroInfo*, folly::Optional<Src::Loc>> macros;
 };
 
