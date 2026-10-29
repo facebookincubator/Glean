@@ -30,6 +30,7 @@
 
 #include <algorithm>
 #include <initializer_list>
+#include <queue>
 
 namespace facebook {
 namespace glean {
@@ -94,6 +95,16 @@ const char* ownershipKindName(OwnershipKind kind) {
       return "visibility";
     case OwnershipKind::Accessibility:
       return "accessibility";
+  }
+  folly::assume_unreachable();
+}
+
+UsetId getOwner(Lookup& lookup, OwnershipKind kind, Id id) {
+  switch (kind) {
+    case OwnershipKind::Visibility:
+      return lookup.getOwner(id);
+    case OwnershipKind::Accessibility:
+      return lookup.getAccessibilityOwner(id);
   }
   folly::assume_unreachable();
 }
@@ -223,13 +234,154 @@ collectUsets(uint32_t firstUsetId, TrieArray<Uset>& utrie) {
   return usets;
 }
 
-/** Propagate ownership sets transitively through fact references.
+/** What the reference walk keeps for one ownership relation.
+ *
+ *  `facts` holds the owners of the facts in this DB, indexed from its starting
+ *  ID, and `sparse` the owners of facts in its base DB(s). Their pointers carry
+ *  references baked in by the trie rather than taken with use(), so replacing
+ *  an owner drops the old one (see OWNERSHIP.md).
+ */
+struct OwnershipKindWalk {
+  OwnershipKindWalk(
+      OwnershipKind kind,
+      Usets& usets,
+      std::vector<Uset*> facts,
+      folly::F14FastMap<uint64_t, Uset*> sparse)
+      : kind(kind),
+        usets(usets),
+        facts(std::move(facts)),
+        sparse(std::move(sparse)),
+        merge(usets) {}
+
+  /** Resolve a fact ID to its current ownership Uset*. Local facts
+   *  (id >= min_id) live in the dense `facts` vector; base-DB facts
+   *  (id < min_id) are tracked sparsely in an F14 map. */
+  Uset*& owner(Id id, Id min_id) {
+    if (id < min_id) {
+      return sparse[id.toWord()];
+    } else {
+      const auto index = id.toWord() - min_id.toWord();
+      assert(index < facts.size());
+      return facts[index];
+    }
+  }
+
+  /** Whether the fact has an ownership set or queued sets. Unlike owner(),
+   *  this never adds an entry to `sparse`. */
+  bool reaches(Id id, Id min_id) {
+    if (id >= min_id) {
+      const auto index = id.toWord() - min_id.toWord();
+      assert(index < facts.size());
+      if (facts[index]) {
+        return true;
+      }
+    } else if (const auto entry = sparse.find(id.toWord());
+               entry != sparse.end() && entry->second) {
+      return true;
+    }
+    return merge.contains(id);
+  }
+
+  /** Merge the fact's initial set with the sets queued by its referrers,
+   *  record the result as the fact's owner and promote it. Returns the set
+   *  to propagate to the facts it references.
+   *
+   *  If the fact is in a base DB, then we record its owner as (set || X)
+   *  where X is the existing owner of the fact. We only propagate `set`,
+   *  not `X`, to the facts it refers to. */
+  Uset* settle(Id id, Id min_id, Lookup* base_lookup) {
+    auto set = owner(id, min_id);
+    auto merged = merge.addUsetAndMerge(id, set);
+    owner(id, min_id) = merged;
+    if (set) {
+      usets.drop(set);
+    }
+    usets.promote(merged);
+
+    if (id < min_id) {
+      auto base_owner = getOwner(*base_lookup, kind, id);
+      if (base_owner != INVALID_USET) {
+        auto mergedWithBase = usets.merge(SetU32::from({base_owner}), merged);
+        usets.promote(mergedWithBase);
+        owner(id, min_id) = mergedWithBase;
+      }
+    }
+    ++owned_facts;
+    return merged;
+  }
+
+  /** Queue `set` for deferred merging into each fact in `refs`. Base-DB
+   *  facts with nothing queued before join `order`. */
+  void propagate(
+      Uset* set,
+      const std::vector<Id>& refs,
+      Id min_id,
+      std::priority_queue<Id>& order) {
+    for (const auto ref : refs) {
+      const bool newlyQueued = merge.addUset(ref, set);
+      if (newlyQueued && ref < min_id) {
+        order.push(ref);
+      }
+
+      // Memory pressure relief: if the deferred-merge queue exceeds
+      // 1 GB, flush it now by merging all pending facts eagerly.
+      // The results are stored in owner().
+      if (merge.bytes() > compact_threshold) {
+        auto factIds = merge.factIds();
+        for (const auto factId : factIds) {
+          auto& me = owner(factId, min_id);
+          auto result = merge.addUsetAndMerge(factId, me);
+          if (me) {
+            usets.drop(me);
+          }
+          me = result;
+        }
+      }
+    }
+  }
+
+  void dump(size_t visited_facts, size_t base_facts) const {
+    const auto& mergeStats = merge.statistics();
+    VLOG(1) << fmt::format(
+        "{}: UsetsMergeCache: {} hits, {} misses, hit rate: {:.2f}%",
+        ownershipKindName(kind),
+        mergeStats.hits,
+        mergeStats.misses,
+        mergeStats.hitRate());
+    auto ustats = usets.statistics();
+    VLOG(1) << fmt::format(
+        "{}: {} of {} facts ({} visited in base DBs), {} usets, {} promoted, {} bytes, {} adds, {} dups",
+        ownershipKindName(kind),
+        owned_facts,
+        visited_facts,
+        base_facts,
+        usets.size(),
+        ustats.promoted,
+        ustats.bytes,
+        ustats.adds,
+        ustats.dups);
+  }
+
+  const OwnershipKind kind;
+  Usets& usets;
+  std::vector<Uset*> facts;
+  folly::F14FastMap<uint64_t, Uset*> sparse;
+  UsetsMerge merge;
+  size_t owned_facts = 0;
+};
+
+/** Propagate ownership sets transitively through fact references, for
+ *  every relation in `walks`.
  *
  *  Facts can only reference facts with lower IDs. We iterate in reverse
  *  (highest ID first), so by the time we visit a fact, every higher-ID
  *  fact that references it has already propagated its ownership set down.
  *  The final set for a fact is the union of its own initial set (from the
  *  trie) with the sets propagated from all its transitive referrers.
+ *
+ *  Each fact's clause is traversed once, when any relation has a set or a
+ *  queued contribution for it. Every such relation then merges, promotes and
+ *  propagates its own sets.
  *
  *  Merges are deferred via UsetsMerge: for each referenced fact we queue
  *  the referrer's set, and merge them all at once (balanced reduction)
@@ -241,140 +393,76 @@ collectUsets(uint32_t firstUsetId, TrieArray<Uset>& utrie) {
  *  the base DB's existing owner to form (set || base_owner).
  *
  *  On completion, every fact whose set was materialised has been
- *  promoted (assigned a persistent UsetId in `usets`).
+ *  promoted (assigned a persistent UsetId in its relation's `usets`).
  */
 FOLLY_NOINLINE void completeOwnership(
-    std::vector<Uset*>& facts,
-    folly::F14FastMap<uint64_t, Uset*>& sparse,
-    Usets& usets,
+    const std::vector<OwnershipKindWalk*>& walks,
     const Inventory& inventory,
     Lookup& lookup,
     Lookup* base_lookup) {
-  struct Stats {
-    Usets& usets;
-    const UsetsMerge::Cache::Stats& mergeStats;
-    size_t local_facts = 0;
-    size_t base_facts = 0;
-    size_t owned_facts = 0;
-
-    void bumpLocal() {
-      ++local_facts;
-    }
-
-    void bumpBase() {
-      ++base_facts;
-    }
-
-    void bumpOwned() {
-      ++owned_facts;
-      if (owned_facts % 1000000 == 0) {
-        dump();
-      }
-    }
-
-    void dump() {
-      VLOG(1) << fmt::format(
-          "UsetsMergeCache: {} hits, {} misses, hit rate: {:.2f}%",
-          mergeStats.hits,
-          mergeStats.misses,
-          mergeStats.hitRate());
-      auto ustats = usets.statistics();
-      VLOG(1) << fmt::format(
-          "{} of {} facts ({} visited in base DBs), {} usets, {} promoted, {} bytes, {} adds, {} dups",
-          owned_facts,
-          local_facts + base_facts,
-          base_facts,
-          usets.size(),
-          ustats.promoted,
-          ustats.bytes,
-          ustats.adds,
-          ustats.dups);
+  size_t local_facts = 0;
+  size_t base_facts = 0;
+  size_t owned_facts = 0;
+  const auto dump = [&] {
+    for (const auto* walk : walks) {
+      walk->dump(local_facts + base_facts, base_facts);
     }
   };
-  UsetsMerge usetsMerge{usets};
-  Stats stats{usets, usetsMerge.statistics()};
 
   // `tracker` is a syscall callback that collects fact IDs referenced
   // by a fact's clause into `refs`. Used by predicate->traverse() below.
   std::vector<Id> refs;
   const auto tracker = syscall([&refs](Id id, Pid) { refs.push_back(id); });
 
-  if (facts.size() == 0) {
+  if (std::all_of(
+          walks.begin(), walks.end(), [](const OwnershipKindWalk* walk) {
+            return walk->facts.empty();
+          })) {
     return;
   }
 
   const auto min_id = lookup.startingId();
 
-  // Resolve a fact ID to its current ownership Uset*.  Local facts
-  // (id >= min_id) live in the dense `facts` vector; base-DB facts
-  // (id < min_id) are tracked sparsely in an F14 map.
-  const auto owner = [&](Id id) -> Uset*& {
-    if (id < min_id) {
-      return sparse[id.toWord()];
-    } else {
-      return facts[id.toWord() - min_id.toWord()];
-    }
-  };
-
   // Base-DB facts for Phase 2. processFact pushes each base fact it starts
   // queuing sets for.
   std::priority_queue<Id> order;
 
+  // The kinds that reach the current fact, and the sets they propagate.
+  std::vector<OwnershipKindWalk*> reaching;
+  std::vector<Uset*> propagated;
+
   auto processFact = [&, min_id](Fact::Ref fact) {
-    // `set == nullptr` means that the fact doesn't have an ownership set - we
+    reaching.clear();
+    for (auto* walk : walks) {
+      if (walk->reaches(fact.id, min_id)) {
+        reaching.push_back(walk);
+      }
+    }
+    // A fact that no kind reaches doesn't have an ownership set - we
     // might want to make that an error eventually?
-    if (auto set = owner(fact.id); set || usetsMerge.contains(fact.id)) {
-      auto merged = usetsMerge.addUsetAndMerge(fact.id, set);
-      owner(fact.id) = merged;
-      if (set) {
-        usets.drop(set);
-      }
-      set = merged;
-      usets.promote(set);
+    if (reaching.empty()) {
+      return;
+    }
 
-      // If the fact is in a base DB, then we record its owner as (set || X)
-      // where X is the existing owner of the fact. We only propagate `set`,
-      // not `X`, to the facts it refers to.
-      if (fact.id < min_id) {
-        auto base_owner = base_lookup->getOwner(fact.id);
-        if (base_owner != INVALID_USET) {
-          auto mergedWithBase = usets.merge(SetU32::from({base_owner}), set);
-          usets.promote(mergedWithBase);
-          owner(fact.id) = mergedWithBase;
-        }
-      }
+    propagated.clear();
+    for (auto* walk : reaching) {
+      propagated.push_back(walk->settle(fact.id, min_id, base_lookup));
+    }
 
-      // Walk the fact's clause to find all referenced fact IDs, populating
-      // `refs` via `tracker`.
-      const auto* predicate = inventory.lookupPredicate(fact.type);
-      assert(predicate);
-      predicate->traverse(tracker, fact.clause);
+    // Walk the fact's clause to find all referenced fact IDs, populating
+    // `refs` via `tracker`.
+    const auto* predicate = inventory.lookupPredicate(fact.type);
+    assert(predicate);
+    predicate->traverse(tracker, fact.clause);
 
-      for (const auto ref : refs) {
-        const bool newlyQueued = usetsMerge.addUset(ref, set);
-        if (newlyQueued && ref < min_id) {
-          order.push(ref);
-        }
+    for (size_t i = 0; i < reaching.size(); ++i) {
+      reaching[i]->propagate(propagated[i], refs, min_id, order);
+    }
 
-        // Memory pressure relief: if the deferred-merge queue exceeds
-        // 1 GB, flush it now by merging all pending facts eagerly.
-        // The results are stored in owner().
-        if (usetsMerge.bytes() > compact_threshold) {
-          auto factIds = usetsMerge.factIds();
-          for (const auto factId : factIds) {
-            auto& me = owner(factId);
-            auto result = usetsMerge.addUsetAndMerge(factId, me);
-            if (me) {
-              usets.drop(me);
-            }
-            me = result;
-          }
-        }
-      }
-
-      // TODO: We can drop the current's fact ownership info here - could
-      // shrink the vector. facts.shrink(fact.id);
-      stats.bumpOwned();
+    // TODO: We can drop the current's fact ownership info here - could
+    // shrink the vector. facts.shrink(fact.id);
+    if (++owned_facts % 1000000 == 0) {
+      dump();
     }
   };
 
@@ -400,7 +488,7 @@ FOLLY_NOINLINE void completeOwnership(
     auto it = page.end();
     while (it != page.begin()) {
       --it;
-      stats.bumpLocal();
+      ++local_facts;
       processFact((*it)->ref());
       refs.clear();
     }
@@ -442,15 +530,17 @@ FOLLY_NOINLINE void completeOwnership(
   } while (page);
 
   fetcher.wait();
-  stats.dump();
+  dump();
 
   // --- Phase 2: propagate into base DB(s) ---
   //
-  // Process base facts with ownership in `sparse` or deferred in UsetsMerge
-  // in descending ID order, following their references deeper into the base.
-  // Duplicates are skipped via `prev`.
-  for (auto [id, uset] : sparse) {
-    order.push(Id::fromWord(id));
+  // Process base facts with ownership in any kind's `sparse` map or
+  // deferred in its UsetsMerge in descending ID order, following their
+  // references deeper into the base. Duplicates are skipped via `prev`.
+  for (const auto* walk : walks) {
+    for (const auto& [id, uset] : walk->sparse) {
+      order.push(Id::fromWord(id));
+    }
   }
   Id prev = Id::invalid();
   for (; !order.empty(); order.pop()) {
@@ -461,14 +551,77 @@ FOLLY_NOINLINE void completeOwnership(
       prev = id;
     }
     base_lookup->factById(id, [&](Pid type, Fact::Clause clause) {
-      stats.bumpBase();
+      ++base_facts;
       processFact({id, type, clause});
       refs.clear();
     });
   }
 
-  stats.dump();
-  usetsMerge.clear();
+  dump();
+  for (auto* walk : walks) {
+    walk->merge.clear();
+  }
+}
+
+/** Encode each fact's owner as intervals of fact IDs: the owners of base-DB
+ *  facts first, then those of the facts in this DB, from `min_id` up to
+ *  `max_id`. INVALID_USET marks facts without an owner. */
+std::vector<std::pair<Id, UsetId>>
+ownerIntervals(const OwnershipKindWalk& walk, Id min_id, Id max_id) {
+  std::vector<std::pair<Id, UsetId>> factOwners;
+
+  // Collect fact ownership for facts in the base DB(s). This data is sparse,
+  // but we currently store it as intervals in factOwners because that's the
+  // only way to store fact ownership currently. This is a terrible
+  // representation since there are typically almost no adjacent facts with the
+  // same owner in this dataset.
+  //
+  // TODO: use a more suitable representation for the sparse ownership
+  std::vector<std::pair<uint64_t, Uset*>> order;
+  for (auto& pr : walk.sparse) {
+    order.emplace_back(pr);
+  }
+  std::sort(order.begin(), order.end());
+  Id prev = Id::lowest() - 1;
+  UsetId current = INVALID_USET;
+  for (auto& fact_uset : order) {
+    const auto fact_id = Id::fromWord(fact_uset.first);
+    const auto usetid = fact_uset.second->id;
+    VLOG(5) << fmt::format("sparse owner: {} -> {}", fact_id.toWord(), usetid);
+    if (fact_id != prev + 1 // expect fact IDs to be consecutive. Otherwise some
+                            // facts are missing.
+        || usetid != current // factOwners encode fact ranges, so if the usetid
+                             // is the same, no need to emplace back to it
+    ) {
+      if (fact_id != prev + 1) {
+        factOwners.emplace_back(prev + 1, INVALID_USET);
+      }
+      factOwners.emplace_back(fact_id, usetid);
+      current = usetid;
+    }
+    prev = fact_id;
+  }
+  // fill the gap between the sparse and dense mappings with INVALID_USET
+  if (prev + 1 < min_id) {
+    factOwners.emplace_back(prev + 1, INVALID_USET);
+    current = INVALID_USET;
+  }
+
+  Id id = min_id;
+  for (auto* set : walk.facts) {
+    auto usetid = set ? set->id : INVALID_USET;
+    if (usetid != current) {
+      factOwners.emplace_back(id, usetid);
+      current = usetid;
+    }
+    id++;
+  }
+  // if dense didn't cover the whole Id range, add a final interval of
+  // INVALID_USET
+  if (id < max_id - 1 && current != INVALID_USET) {
+    factOwners.emplace_back(id, INVALID_USET);
+  }
+  return factOwners;
 }
 } // namespace
 
@@ -538,67 +691,15 @@ std::unique_ptr<ComputedOwnership> computeOwnership(
   // The trie is no longer required, so free it
   utrie.reset();
 
-  const auto owner = [&](Id id) -> Uset*& {
-    return flattened.dense[id.toWord() - min_id.toWord()];
-  };
-
-  completeOwnership(
-      flattened.dense, flattened.sparse, usets, inventory, lookup, base_lookup);
+  OwnershipKindWalk visibility(
+      OwnershipKind::Visibility,
+      usets,
+      std::move(flattened.dense),
+      std::move(flattened.sparse));
+  completeOwnership({&visibility}, inventory, lookup, base_lookup);
   t.log("completeOwnership");
 
-  std::vector<std::pair<Id, UsetId>> factOwners;
-
-  // Collect fact ownership for facts in the base DB(s). This data is sparse,
-  // but we currently store it as intervals in factOwners because that's the
-  // only way to store fact ownership currently. This is a terrible
-  // representation since there are typically almost no adjacent facts with the
-  // same owner in this dataset.
-  //
-  // TODO: use a more suitable representation for the sparse ownership
-  std::vector<std::pair<uint64_t, Uset*>> order;
-  for (auto& pr : flattened.sparse) {
-    order.emplace_back(pr);
-  }
-  std::sort(order.begin(), order.end());
-  Id prev = Id::lowest() - 1;
-  UsetId current = INVALID_USET;
-  for (auto& fact_uset : order) {
-    const auto fact_id = Id::fromWord(fact_uset.first);
-    const auto usetid = fact_uset.second->id;
-    VLOG(5) << fmt::format("sparse owner: {} -> {}", fact_id.toWord(), usetid);
-    if (fact_id != prev + 1 // expect fact IDs to be consecutive. Otherwise some
-                            // facts are missing.
-        || usetid != current // factOwners encode fact ranges, so if the usetid
-                             // is the same, no need to emplace back to it
-    ) {
-      if (fact_id != prev + 1) {
-        factOwners.emplace_back(prev + 1, INVALID_USET);
-      }
-      factOwners.emplace_back(fact_id, usetid);
-      current = usetid;
-    }
-    prev = fact_id;
-  }
-  // fill the gap between the sparse and dense mappings with INVALID_USET
-  if (prev + 1 < min_id) {
-    factOwners.emplace_back(prev + 1, INVALID_USET);
-    current = INVALID_USET;
-  }
-
-  Id id = min_id;
-  for (; id < min_id + flattened.dense.size(); id++) {
-    auto& set = owner(id);
-    auto usetid = set ? set->id : INVALID_USET;
-    if (usetid != current) {
-      factOwners.emplace_back(id, usetid);
-      current = usetid;
-    }
-  }
-  // if dense didn't cover the whole Id range, add a final interval of
-  // INVALID_USET
-  if (id < max_id - 1 && current != INVALID_USET) {
-    factOwners.emplace_back(id, INVALID_USET);
-  }
+  auto factOwners = ownerIntervals(visibility, min_id, max_id);
 
   return std::make_unique<ComputedOwnership>(
       std::move(usets), std::move(factOwners));

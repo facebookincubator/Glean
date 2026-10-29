@@ -136,7 +136,14 @@ iterating in reverse (highest ID first), we guarantee that when we visit
 a fact, every higher-ID fact that references it has already propagated its
 ownership set down.
 
-For each fact F (visited in reverse order):
+Each ownership kind that the walk computes keeps its own state: the
+dense owner array, the sparse map for base-DB facts, its `Usets` store and
+its `UsetsMerge` queue (`OwnershipKindWalk` in `ownership.cpp`). The walk
+traverses a fact's clause once when any relation has a set or a queued set
+for it.
+
+For each fact F (visited in reverse order), each relation that reaches F
+performs these steps:
 
 1. **Merge**: combine F's initial trie set with all sets queued by
    higher-ID referrers (via `UsetsMerge::addUsetAndMerge`).
@@ -149,12 +156,12 @@ merges are flushed eagerly (the "early merge" path).
 
 For **stacked DBs**, the sets of facts in the base DB (id < min_id) are
 tracked in a sparse map. Their final set is OR'd with the base DB's
-existing owner: `owner(F) = set || base_owner`.
+existing owner in the same relation: `owner(F) = set || base_owner`.
 
 After processing all local facts, a second pass propagates ownership
-through base-DB facts using a priority queue (max-heap). It holds the base
-facts that units claim and every base fact that `processFact` queues a set
-for.
+through base-DB facts using a priority queue (max-heap), shared by all
+relations. It holds the base facts that units claim and every base fact
+that `processFact` queues a set for.
 
 Output: the `Usets` store now contains all promoted sets, and a
 `factOwners` interval map records each fact's `UsetId`.

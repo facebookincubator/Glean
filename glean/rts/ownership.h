@@ -199,6 +199,9 @@ struct OwnershipUnitIterator {
 struct Inventory;
 struct Lookup;
 
+/// The owner of a fact in the given kind, or INVALID_USET.
+UsetId getOwner(Lookup& lookup, OwnershipKind kind, Id id);
+
 /**
  * Compute ownership data for non-derived facts
  */
