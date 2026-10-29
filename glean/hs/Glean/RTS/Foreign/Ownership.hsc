@@ -31,6 +31,7 @@ module Glean.RTS.Foreign.Ownership
   , DerivedFactOwnershipIterator
   , computeDerivedOwnership
   , getFactOwner
+  , getFactAccessibilityOwner
   , SetOp(..)
   , getOwnershipSet
   , OwnershipStats(..)
@@ -290,6 +291,15 @@ getFactOwner lookup (Fid fid) =
       then return Nothing
       else return (Just (UsetId usetId))
 
+getFactAccessibilityOwner :: CanLookup a => a -> Fid -> IO (Maybe UsetId)
+getFactAccessibilityOwner lookup (Fid fid) =
+  withLookup lookup $ \p_lookup -> do
+    owner <- invoke $
+      glean_get_fact_accessibility_owner p_lookup (fromIntegral fid)
+    if owner == (#const facebook::glean::rts::INVALID_USET)
+      then return Nothing
+      else return (Just (UsetId owner))
+
 data SetOp = Or | And
   deriving (Eq, Ord, Enum)
 
@@ -483,6 +493,12 @@ foreign import ccall safe glean_ownership_compute
   -> IO CString
 
 foreign import ccall unsafe glean_get_fact_owner
+  :: Ptr Lookup
+  -> Word64
+  -> Ptr Word32
+  -> IO CString
+
+foreign import ccall unsafe glean_get_fact_accessibility_owner
   :: Ptr Lookup
   -> Word64
   -> Ptr Word32

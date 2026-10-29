@@ -164,6 +164,10 @@ struct LookupCache {
       return base->getOwner(id);
     }
 
+    UsetId getAccessibilityOwner(Id id) override {
+      return base->getAccessibilityOwner(id);
+    }
+
     Lookup* base;
     LookupCache* cache;
     const ReplacementPolicy replacementPolicy;

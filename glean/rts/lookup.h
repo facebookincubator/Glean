@@ -145,6 +145,9 @@ struct Lookup {
       std::optional<Fact::Ref> restart = {}) = 0;
 
   virtual UsetId getOwner(Id id) = 0;
+
+  /// Returns INVALID_USET when the fact has no accessibility owner.
+  virtual UsetId getAccessibilityOwner(Id id) = 0;
 };
 
 /**
@@ -197,6 +200,10 @@ struct EmptyLookup final : Lookup {
   }
 
   UsetId getOwner(Id) override {
+    return INVALID_USET;
+  }
+
+  UsetId getAccessibilityOwner(Id) override {
     return INVALID_USET;
   }
 
@@ -254,6 +261,11 @@ struct Section : Lookup {
 
   UsetId getOwner(Id id) override {
     return isWithinBounds(id) ? base()->getOwner(id) : INVALID_USET;
+  }
+
+  UsetId getAccessibilityOwner(Id id) override {
+    return isWithinBounds(id) ? base()->getAccessibilityOwner(id)
+                              : INVALID_USET;
   }
 
   Lookup* base() const {

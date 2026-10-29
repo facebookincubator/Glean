@@ -137,6 +137,13 @@ struct StackedBase : Iface {
     }
   }
 
+  UsetId getAccessibilityOwner(Id id) override {
+    auto owner = stacked->getAccessibilityOwner(id);
+    return owner != INVALID_USET ? owner
+        : id < mid               ? base->getAccessibilityOwner(id)
+                                 : INVALID_USET;
+  }
+
  protected:
   Lookup* base;
   Iface* stacked;

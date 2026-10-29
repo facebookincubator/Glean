@@ -1015,6 +1015,14 @@ glean_get_fact_owner(Lookup* lookup, glean_fact_id_t fact, uint32_t* uset_id) {
   return ffi::wrap([=] { *uset_id = lookup->getOwner(Id::fromWord(fact)); });
 }
 
+const char* glean_get_fact_accessibility_owner(
+    Lookup* lookup,
+    glean_fact_id_t fact,
+    uint32_t* owner) {
+  return ffi::wrap(
+      [=] { *owner = lookup->getAccessibilityOwner(Id::fromWord(fact)); });
+}
+
 const char* glean_get_ownership_set(
     Ownership* ownership,
     uint32_t uset_id,

@@ -18,6 +18,11 @@ namespace rts {
 
 /// A set of facts which new facts can be added to.
 struct Define : Lookup {
+  /// New facts receive accessibility ownership during database finalization.
+  UsetId getAccessibilityOwner(Id) override {
+    return INVALID_USET;
+  }
+
   /// Add a fact to the set and return its id. This can be an existing id
   /// if the fact is already in the set, a new id if it's a new fact and
   /// Id::INVALID if the set contains a fact with the same type and key but a

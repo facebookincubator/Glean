@@ -61,6 +61,11 @@ struct ConstantLookup : public Lookup {
   UsetId getOwner(Id) override {
     throw std::runtime_error("ConstantLookup::getOwner not implemented");
   }
+
+  [[noreturn]] UsetId getAccessibilityOwner(Id) override {
+    throw std::runtime_error(
+        "ConstantLookup::getAccessibilityOwner not implemented");
+  }
 };
 
 // A Lookup that tracks calls and can return nothing (simulating missing facts)
@@ -116,6 +121,10 @@ struct TrackingLookup : public Lookup {
     return std::make_unique<EmptyIterator>();
   }
   UsetId getOwner(Id) override {
+    return INVALID_USET;
+  }
+
+  UsetId getAccessibilityOwner(Id) override {
     return INVALID_USET;
   }
 };

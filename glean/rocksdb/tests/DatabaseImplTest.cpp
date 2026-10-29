@@ -28,6 +28,8 @@
 #include "glean/rocksdb/container-impl.h"
 #include "glean/rocksdb/database-impl.h"
 #include "glean/rocksdb/rocksdb.h"
+#include "glean/rts/cache.h"
+#include "glean/rts/stacked.h"
 #include "glean/storage/common.h"
 
 namespace facebook::glean::rocks {
@@ -602,6 +604,85 @@ TEST_F(DatabaseImplTest, OpenRejectsMisSizedNextAccessibilityId) {
     const std::string_view message = e.what();
     EXPECT_NE(message.find("NEXT_ACCESSIBILITY_ID"), std::string_view::npos);
   }
+}
+
+TEST_F(DatabaseImplTest, AccessibilityLookupCacheReadsStoredFactOwners) {
+  commitThreeFacts();
+  constexpr rts::UnitId publicUnit = 100;
+  constexpr rts::UnitId alphaUnit = publicUnit + 1;
+  storeAccessibilityOwners(
+      *database_,
+      publicUnit,
+      {{startingId(), publicUnit},
+       {startingId() + 1, alphaUnit},
+       {startingId() + 2, rts::INVALID_USET}});
+
+  ASSERT_EQ(database_->firstFreeId(), startingId() + 3);
+  auto ownership = database_->getAccessibilityOwnership();
+  ASSERT_NE(ownership, nullptr);
+  EXPECT_EQ(ownership->getStats().num_owner_entries, 3);
+  EXPECT_EQ(ownership->nextSetId(), publicUnit + 2);
+
+  {
+    rts::LookupCache::Options options;
+    options.capacity = 1024;
+    options.shards = 1;
+    auto stats = std::make_shared<rts::LookupCache::Stats>();
+    rts::LookupCache cache(options, stats);
+    auto lookup = cache.anchor(database_.get());
+
+    EXPECT_EQ(lookup.getAccessibilityOwner(startingId()), publicUnit);
+    EXPECT_EQ(lookup.getAccessibilityOwner(startingId() + 1), alphaUnit);
+    EXPECT_EQ(
+        lookup.getAccessibilityOwner(startingId() + 2), rts::INVALID_USET);
+    EXPECT_EQ(lookup.getOwner(startingId()), rts::INVALID_USET);
+
+    rts::Section bounded(&lookup, startingId(), startingId() + 1);
+    EXPECT_EQ(bounded.getAccessibilityOwner(startingId()), publicUnit);
+    EXPECT_EQ(
+        bounded.getAccessibilityOwner(startingId() + 1), rts::INVALID_USET);
+  }
+
+  database_.reset();
+  database_ = openDatabase(db::Mode::ReadOnly, startingId(), kVersion);
+  EXPECT_EQ(database_->getAccessibilityOwner(startingId()), publicUnit);
+  EXPECT_EQ(database_->getAccessibilityOwner(startingId() + 1), alphaUnit);
+}
+
+TEST_F(DatabaseImplTest, StackedAccessibilityLookupUsesTheTopmostStoredOwner) {
+  commitThreeFacts();
+  constexpr rts::UnitId basePublic = 100;
+  constexpr rts::UnitId layerPublic = 200;
+  storeAccessibilityOwners(
+      *database_,
+      basePublic,
+      {{startingId(), basePublic},
+       {startingId() + 1, basePublic + 1},
+       {startingId() + 2, rts::INVALID_USET}});
+
+  folly::test::TemporaryDirectory layerDirectory;
+  auto container = open(
+      layerDirectory.path().string(), db::Mode::Create, ContainerOptions{}, {});
+  auto layer =
+      std::move(*container).openDatabase(database_->firstFreeId(), 0, kVersion);
+  rts::FactSet facts(layer->startingId());
+  const auto newFact = defineFact(facts, rts::Pid::lowest(), "layer", "value");
+  layer->commit(facts);
+  storeAccessibilityOwners(
+      *layer,
+      layerPublic,
+      {{startingId() + 1, layerPublic},
+       {startingId() + 2, rts::INVALID_USET},
+       {newFact, layerPublic + 1}});
+
+  rts::Stacked<rts::Lookup> lookup(database_.get(), layer.get());
+  EXPECT_EQ(lookup.getAccessibilityOwner(startingId()), basePublic);
+  EXPECT_EQ(lookup.getAccessibilityOwner(startingId() + 1), layerPublic);
+  EXPECT_EQ(lookup.getAccessibilityOwner(startingId() + 2), rts::INVALID_USET);
+  EXPECT_EQ(lookup.getAccessibilityOwner(newFact), layerPublic + 1);
+  EXPECT_EQ(
+      lookup.getAccessibilityOwner(layer->firstFreeId()), rts::INVALID_USET);
+  EXPECT_EQ(lookup.getOwner(startingId() + 1), rts::INVALID_USET);
 }
 
 // ============================================================

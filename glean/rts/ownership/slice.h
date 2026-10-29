@@ -241,6 +241,10 @@ struct Sliced : Lookup, folly::NonCopyableNonMovable {
     return base_->getOwner(id);
   }
 
+  UsetId getAccessibilityOwner(Id id) override {
+    return base_->getAccessibilityOwner(id);
+  }
+
  private:
   Lookup* base_;
   Slice visibilitySlice_;

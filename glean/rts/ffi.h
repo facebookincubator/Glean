@@ -456,6 +456,11 @@ const char* glean_get_ownership_set(
 const char*
 glean_get_fact_owner(Lookup* lookup, glean_fact_id_t fact, uint32_t* uset_id);
 
+const char* glean_get_fact_accessibility_owner(
+    Lookup* lookup,
+    glean_fact_id_t fact,
+    uint32_t* owner);
+
 /// Compute a Slice over `ownership` for the given set of units, layered on
 /// top of the slices of the base DBs in the stack.
 ///
