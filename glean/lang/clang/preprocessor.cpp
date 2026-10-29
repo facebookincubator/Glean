@@ -12,6 +12,8 @@
 #include "preprocessor.h"
 #endif
 
+#include <vector>
+
 #include <llvm/Config/llvm-config.h>
 
 namespace {
@@ -173,7 +175,7 @@ struct PPCallbacks final : public clang::PPCallbacks {
     if (isTopLevel(range)) {
       topLevelMacroUsed(name, info, range, expand);
     } else {
-      nestedMacroUsed(name, info, range, expand);
+      nestedMacroUsed(name, info, expand);
     }
 
 #if PROFILE_macroUsed
@@ -201,12 +203,16 @@ struct PPCallbacks final : public clang::PPCallbacks {
       const clang::MacroInfo* FOLLY_NULLABLE info,
       clang::SourceRange range,
       bool expand) {
+    const auto src = topLevelSrcRange(name, range);
+    if (expand) {
+      // Even for predefined macros, whose uses we don't record, so that the
+      // nested uses they produce are never attributed to an earlier expansion.
+      enterTopLevelExpansion(src);
+    }
     const auto use = recordedUse(name, info, expand);
     if (!use.has_value()) {
       return;
     }
-    const auto src = topLevelSrcRange(name, range);
-    enterTopLevelExpansion(src);
     const auto name_range = db.immediateSrcRange(
         clang::CharSourceRange::getCharRange(
             {name.getLocation(), name.getEndLoc()}));
@@ -264,36 +270,79 @@ struct PPCallbacks final : public clang::PPCallbacks {
   ///   #define M N
   ///   int x = M;
   ///
-  /// It is located at the current top-level expansion (`M`), which contains
-  /// it.
+  /// in the trace of the file containing the top-level expansion (`M`). The use
+  /// is located at that top-level expansion.
   void nestedMacroUsed(
       const clang::Token& name,
       const clang::MacroInfo* FOLLY_NULLABLE info,
-      clang::SourceRange range,
       bool expand) {
     const auto use = recordedUse(name, info, expand);
     if (!use.has_value()) {
       return;
     }
-    // We absolutely don't want to let Clang resolve nested macro expansion
-    // ranges here (via db.srcRange -> getExpansionRange) as doing so turned out
-    // to be horrendously expensive (cf. T59197014). Nested expansions are part
-    // of the current top-level expansion, so we just use its range.
-    if (!expansion.has_value()) {
-      // This really shouldn't happen.
-      LOG(ERROR) << "Unexpected nested macro expansion at "
-                 << range.printToString(db.sourceManager());
+    // Don't let Clang resolve nested macro expansion ranges (via db.srcRange
+    // -> getExpansionRange): that turned out to be horrendously expensive
+    // (cf. T59197014). The memoized start of the top-level expansion is cheap,
+    // and its range is usually the current top-level expansion.
+    const auto& sm = db.sourceManager();
+    const auto root = expansionRoot(name.getLocation());
+    const auto [root_id, root_offset] = sm.getDecomposedLoc(root);
+    auto* file = db.fileData(root_id);
+    if (file == nullptr) {
+      return;
     }
-    const auto src = expansion.has_value() ? expansion.value()
-                                           : topLevelSrcRange(name, range);
-    // The current schema can't locate the name of a nested use, so we use the
-    // range of the top-level expansion (it should be the spelling location).
-    const auto name_range = name.getLocation().isMacroID()
-        ? src
-        : db.immediateSrcRange(
-              clang::CharSourceRange::getCharRange(
-                  {name.getLocation(), name.getEndLoc()}));
-    db.ppevent(Cxx::PPEvent::use(useFact(*use, src, name_range)), src);
+    listExpandedUse(*use, file, root, root_offset);
+  }
+
+  /// The file location where the top-level macro expansion containing `loc`
+  /// starts. Memoized for each macro expansion it walks through.
+  ///
+  /// This doesn't rely on the most recent top-level `MacroExpands` callback,
+  /// because some expansions don't start with one: `_Pragma`, built-in and
+  /// predefined macros, and macro arguments read across the end of a file.
+  clang::SourceLocation expansionRoot(clang::SourceLocation loc) {
+    const auto& sm = db.sourceManager();
+    std::vector<unsigned> unresolved_ids;
+    while (loc.isMacroID()) {
+      const auto id = sm.getFileID(loc);
+      if (auto root = folly::get_optional(expansion_roots, id.getHashValue())) {
+        loc = *root;
+        break;
+      }
+      unresolved_ids.push_back(id.getHashValue());
+      loc = sm.getSLocEntry(id).getExpansion().getExpansionLocStart();
+    }
+    for (const auto id : unresolved_ids) {
+      expansion_roots.insert({id, loc});
+    }
+    return loc;
+  }
+
+  /// Lists a nested use in the trace of `file`, located at the top-level
+  /// macro use that starts at `root`.
+  void listExpandedUse(
+      const MacroUse& use,
+      ClangDB::FileData* file,
+      clang::SourceLocation root,
+      unsigned root_offset) {
+    const auto site = topLevelSite(root, file, root_offset);
+    db.ppevent(Cxx::PPEvent::use(useFact(use, site, site)), file);
+  }
+
+  /// The range of the top-level macro use that starts at `root`, which is at
+  /// `root_offset` in `file`: the current top-level expansion (arguments
+  /// included) if it contains `root`, or else just the token at `root`.
+  ClangDB::SourceRange topLevelSite(
+      clang::SourceLocation root,
+      ClangDB::FileData* file,
+      unsigned root_offset) {
+    if (expansion.has_value() && expansion->file == file &&
+        expansion->span.start <= root_offset &&
+        root_offset < endOffset(expansion->span)) {
+      return expansion.value();
+    }
+    return db.immediateSrcRange(
+        clang::CharSourceRange::getTokenRange(root, root));
   }
 
   /// The use of the macro `name` that resolves to `info` (null if `name`
@@ -372,6 +421,10 @@ struct PPCallbacks final : public clang::PPCallbacks {
   /// The range of the current top-level macro expansion (see
   /// `enterTopLevelExpansion`).
   folly::Optional<ClangDB::SourceRange> expansion;
+
+  /// Memoized results of `expansionRoot`, by the hash value of the `FileID` of
+  /// each macro expansion.
+  folly::F14FastMap<unsigned, clang::SourceLocation> expansion_roots;
 
   /// Cached results of `definitionLoc`.
   folly::F14FastMap<const clang::MacroInfo*, folly::Optional<Src::Loc>> macros;

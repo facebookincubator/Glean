@@ -20,13 +20,13 @@
           "definition": { "file": { "key": "h.h" }, "line": 10, "column": 9 },
           "expand": true,
           "source": {
-            "file": { "key": "h.h" },
-            "lineBegin": 13,
-            "columnBegin": 17,
-            "lineEnd": 13,
-            "columnEnd": 17
+            "file": { "key": "test.cpp" },
+            "lineBegin": 11,
+            "columnBegin": 1,
+            "lineEnd": 11,
+            "columnEnd": 7
           },
-          "nameSpan": { "start": 301, "length": 1 }
+          "nameSpan": { "start": 253, "length": 7 }
         }
       }
     }
@@ -51,13 +51,13 @@
           "definition": { "file": { "key": "h.h" }, "line": 11, "column": 9 },
           "expand": true,
           "source": {
-            "file": { "key": "h.h" },
-            "lineBegin": 13,
-            "columnBegin": 17,
-            "lineEnd": 13,
-            "columnEnd": 17
+            "file": { "key": "test.cpp" },
+            "lineBegin": 11,
+            "columnBegin": 1,
+            "lineEnd": 11,
+            "columnEnd": 7
           },
-          "nameSpan": { "start": 301, "length": 1 }
+          "nameSpan": { "start": 253, "length": 7 }
         }
       }
     }
@@ -117,13 +117,13 @@
           },
           "expand": true,
           "source": {
-            "file": { "key": "h.h" },
-            "lineBegin": 13,
-            "columnBegin": 17,
-            "lineEnd": 13,
-            "columnEnd": 17
+            "file": { "key": "test.cpp" },
+            "lineBegin": 11,
+            "columnBegin": 1,
+            "lineEnd": 11,
+            "columnEnd": 7
           },
-          "nameSpan": { "start": 301, "length": 1 }
+          "nameSpan": { "start": 253, "length": 7 }
         }
       }
     }

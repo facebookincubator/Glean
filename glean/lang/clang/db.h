@@ -230,7 +230,17 @@ class ClangDB {
     folly::Optional<Fact<Cxx::IncludeTree>> include_tree;
   };
 
+  /// Appends `event` to the `cxx1.PPTrace` of the file containing `range`.
+  /// Does nothing if `range` isn't in a file the preprocessor entered.
   void ppevent(PrePPEvent event, SourceRange range);
+  /// Appends `event` to the `cxx1.PPTrace` of `file`. Does nothing if `file`
+  /// is null.
+  void ppevent(PrePPEvent event, FileData* file);
+  /// The per-file state of the file `id`, or null if `id` isn't a file the
+  /// preprocessor entered (see `files`).
+  FileData* fileData(clang::FileID id) const {
+    return folly::get_default(files, id, nullptr);
+  }
   void include(
       const Include& inc,
       Fact<Src::File> file,

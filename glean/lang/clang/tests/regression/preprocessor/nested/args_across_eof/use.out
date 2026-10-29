@@ -21,13 +21,13 @@
       "definition": { "file": { "key": "open.h" }, "line": 9, "column": 9 },
       "expand": true,
       "source": {
-        "file": { "key": "test.cpp" },
+        "file": { "key": "open.h" },
         "lineBegin": 11,
-        "columnBegin": 5,
+        "columnBegin": 9,
         "lineEnd": 11,
-        "columnEnd": 5
+        "columnEnd": 12
       },
-      "nameSpan": { "start": 255, "length": 1 }
+      "nameSpan": { "start": 267, "length": 4 }
     }
   },
   {

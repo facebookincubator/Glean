@@ -132,8 +132,12 @@ ClangDB::fileFromEntry(const clang::FileEntryRef& entry) {
 }
 
 void ClangDB::ppevent(PrePPEvent event, SourceRange range) {
-  if (range.file) {
-    range.file->events.push_back(std::move(event));
+  ppevent(std::move(event), range.file);
+}
+
+void ClangDB::ppevent(PrePPEvent event, FileData* file) {
+  if (file) {
+    file->events.push_back(std::move(event));
   }
 }
 
