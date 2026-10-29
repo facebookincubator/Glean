@@ -9,6 +9,30 @@ true under the current visibility policy. This is the mechanism that powers
 incremental indexing: when a file changes, only the facts it owns need to be
 re-derived.
 
+## Visibility and accessibility ownership
+
+**Visibility ownership** records the source units that keep a fact current.
+It powers incremental indexing and includes the ownership of derived facts.
+The existing ownership tables and `getOwner()` store and read this relation.
+
+**Accessibility ownership** records the ACL groups a caller needs to read a
+fact. For ACL-enabled databases, finalization streams the fact-to-visibility
+owner intervals and translates each distinct visibility owner once. Source
+units become the ACL groups guarding their paths. OR expressions keep their
+alternatives, and AND expressions keep their requirements. A public source
+unit becomes a public ACL unit included in every caller's accessibility slice.
+
+Accessibility is stored as a fact-to-accessibility-owner interval map, with
+its own expression and ACL unit tables. Neighboring intervals with the same
+accessibility owner merge. `getAccessibilityOwner()` reads this per-fact
+relation, taking the first owner found when traversing database layers from
+top to bottom, as `getOwner()` does for visibility ownership.
+
+Queries evaluate each kind of ownership against its own slice and return
+facts that pass both. ACL-constrained callers can read only facts with an
+accessibility owner, so finalization also prepares the database for these
+queries.
+
 ## Key types
 
 ### The shared ID namespace

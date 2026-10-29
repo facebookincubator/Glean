@@ -170,11 +170,12 @@ template <typename Slice>
 struct Sliced : Lookup, folly::NonCopyableNonMovable {
   ~Sliced() override = default;
 
-  Sliced(Lookup* base, Slice slice) : base_(base), slice_(std::move(slice)) {}
+  Sliced(Lookup* base, Slice visibilitySlice)
+      : base_(base), visibilitySlice_(std::move(visibilitySlice)) {}
 
   Id idByKey(Pid type, folly::ByteRange key) override {
     auto id = base_->idByKey(type, key);
-    if (id && slice_.visible(base_->getOwner(id))) {
+    if (id && visibilitySlice_.visible(base_->getOwner(id))) {
       return id;
     } else {
       return Id::invalid();
@@ -204,13 +205,13 @@ struct Sliced : Lookup, folly::NonCopyableNonMovable {
 
   std::unique_ptr<FactIterator> enumerate(Id from, Id upto) override {
     return FactIterator::filter(base_->enumerate(from, upto), [&](Id id) {
-      return slice_.visible(base_->getOwner(id));
+      return visibilitySlice_.visible(base_->getOwner(id));
     });
   }
 
   std::unique_ptr<FactIterator> enumerateBack(Id from, Id downto) override {
     return FactIterator::filter(base_->enumerate(from, downto), [&](Id id) {
-      return slice_.visible(base_->getOwner(id));
+      return visibilitySlice_.visible(base_->getOwner(id));
     });
   }
 
@@ -219,7 +220,7 @@ struct Sliced : Lookup, folly::NonCopyableNonMovable {
       folly::ByteRange prefix,
       std::optional<Fact::Ref> restart) override {
     return FactIterator::filter(base_->seek(type, prefix, restart), [&](Id id) {
-      return slice_.visible(base_->getOwner(id));
+      return visibilitySlice_.visible(base_->getOwner(id));
     });
   }
 
@@ -231,7 +232,7 @@ struct Sliced : Lookup, folly::NonCopyableNonMovable {
       std::optional<Fact::Ref> restart) override {
     return FactIterator::filter(
         base_->seekWithinSection(type, prefix, from, to, restart),
-        [&](Id id) { return slice_.visible(base_->getOwner(id)); });
+        [&](Id id) { return visibilitySlice_.visible(base_->getOwner(id)); });
   }
 
   UsetId getOwner(Id id) override {
@@ -242,7 +243,7 @@ struct Sliced : Lookup, folly::NonCopyableNonMovable {
 
  private:
   Lookup* base_;
-  Slice slice_;
+  Slice visibilitySlice_;
 };
 
 } // namespace rts

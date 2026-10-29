@@ -181,9 +181,9 @@ withOpenDBLookup env repo odb@OpenDB{ odbBaseSlices = baseSlices, .. }
         Lookup.withCanLookup baseHandle $ \baseLookup ->
           withOpenDBStack env baseRepo baseLookup $ \base -> do
             bounds <- stackedBoundaries base lookup
-            let ownershipSlices = catMaybes baseSlices
+            let visibilitySlices = catMaybes baseSlices
             withStackedACLLookup env repo odb baseRepo baseOdb aclEnabled
-              ownershipSlices base lookup $ \stackedLookup ->
+              visibilitySlices base lookup $ \stackedLookup ->
               f bounds stackedLookup
 
 withOpenDBStack
@@ -261,8 +261,9 @@ loadAclMetadata handle = do
           | (name, uid) <- HashMap.toList parsed ]
   return (mFirstACLID, aclMapping)
 
--- | Build an ACL-aware ownership slice for a single DB layer, and pass it to
--- a continuation. Passes Nothing if ACL filtering is not needed for this layer.
+-- | Build a caller accessibility slice for one layer using ACL units in its
+-- existing ownership table, and pass it to a continuation. Returns Nothing
+-- when caller ACL filtering is disabled for that layer.
 --
 -- The slice makes file units (non-ACL units) visible by default, and ACL
 -- groups invisible unless they match the query's ACL group names.
@@ -276,17 +277,17 @@ loadAclMetadata handle = do
 -- [firstACLID, firstACLID + #groups) (see registerACLUnits); we
 -- subtract the caller's own groups (resolved via Storage.getUnitId) and
 -- exclude the rest.
-buildLayerACLSlice
+buildLegacyLayerAccessibilitySlice
   :: Env
   -> Repo
   -> OpenDB
   -> Bool  -- ^ whether ACL filtering is enabled for this query
   -> (Maybe Ownership.Slice -> IO a)
   -> IO a
-buildLayerACLSlice _env _repo _odb False f = do
+buildLegacyLayerAccessibilitySlice _env _repo _odb False f = do
   vlog 1 "[ACL-Slice] ACL filtering disabled, skipping ACL slice"
   f Nothing
-buildLayerACLSlice env repo odb True f
+buildLegacyLayerAccessibilitySlice env repo odb True f
   | odbACLMode odb == ACLDisabled = do
       vlog 1 "[ACL-Slice] ACL mode disabled, skipping ACL slice"
       f Nothing
@@ -301,20 +302,19 @@ buildLayerACLSlice env repo odb True f
         if null candidates
           then return []
           else envResolveAclGroups env candidates
-      buildLayerACLSliceForGroups repo odb aclGroupNames f
+      buildLegacyLayerAccessibilitySliceForGroups repo odb aclGroupNames f
 
--- | Build the ACL ownership slice for a single layer given the caller's
--- already-resolved subset of that layer's ACL group names.
+-- | Build a caller accessibility slice given the already-resolved subset of
+-- this layer's ACL groups.
 --
--- Precondition: 'ACLDisabled' layers are handled by 'buildLayerACLSlice' before
--- it resolves, so they never reach here.
-buildLayerACLSliceForGroups
+-- Only ACL-enabled layers reach this function.
+buildLegacyLayerAccessibilitySliceForGroups
   :: Repo
   -> OpenDB
   -> [Text]  -- ^ caller's ACL groups for this layer ([] = public-only)
   -> (Maybe Ownership.Slice -> IO a)
   -> IO a
-buildLayerACLSliceForGroups repo odb aclGroupNames f =
+buildLegacyLayerAccessibilitySliceForGroups repo odb aclGroupNames f =
       case odbFirstACLID odb of
         Nothing ->
           dbError repo $
@@ -346,11 +346,12 @@ buildLayerACLSliceForGroups repo odb aclGroupNames f =
                   excludeUnits = coerce
                     (sort (filter (`Set.notMember` userSet) allGroups))
                     :: [UnitId]
-              aclSlice <- Ownership.slice ownership [] excludeUnits True
+              accessibilitySlice <-
+                Ownership.slice ownership [] excludeUnits True
               vlog 1 "[ACL-Slice] Slice created successfully"
-              f (Just aclSlice)
+              f (Just accessibilitySlice)
 
--- | Wrap a lookup with the given ownership/ACL slices, or pass it through
+-- | Wrap a lookup with visibility or accessibility slices, or pass it through
 -- unchanged when there are none. An empty list must NOT be handed to
 -- slicedStack: an empty Slices treats every UsetId as not-covered and hides
 -- all facts.
@@ -360,7 +361,7 @@ withMaybeSliced [] lk k = k lk
 withMaybeSliced slices lk k =
   Lookup.withCanLookup (Ownership.slicedStack slices lk) k
 
--- | Apply the ACL slice (if any) for a flat (non-stacked) database and
+-- | Apply the accessibility slice (if any) for a flat database and
 -- run the continuation with the resulting (possibly sliced) lookup.
 withFlatACLLookup
   :: Env
@@ -371,36 +372,38 @@ withFlatACLLookup
   -> (Lookup -> IO a)
   -> IO a
 withFlatACLLookup env repo odb aclEnabled lookup f =
-  buildLayerACLSlice env repo odb aclEnabled $ \mAclSlice ->
-    withMaybeSliced (maybeToList mAclSlice) lookup f
+  buildLegacyLayerAccessibilitySlice env repo odb aclEnabled $
+    \mAccessibilitySlice ->
+      withMaybeSliced (maybeToList mAccessibilitySlice) lookup f
 
--- | Build ACL slices for all layers in a stacked DB (base layers only).
--- Walks the DB stack recursively and builds an ACL slice for each layer
--- that has ACL data (firstACLID). Returns the list of ACL slices.
-withStackedACLSlices
+-- | Build caller accessibility slices for the base layers of a stacked DB.
+-- Walks the stack recursively and builds an accessibility slice for each
+-- layer that has ACL data (firstACLID).
+withLegacyStackedAccessibilitySlices
   :: Env
   -> Repo       -- ^ Base repo (immediate parent)
   -> OpenDB     -- ^ Base OpenDB
   -> Bool -- ^ whether ACL filtering is enabled (resolved per-layer)
   -> ([Ownership.Slice] -> IO a)
   -> IO a
-withStackedACLSlices env baseRepo baseOdb aclEnabled f = do
-  -- Build ACL slice for this base layer
-  buildLayerACLSlice env baseRepo baseOdb aclEnabled $ \mSlice -> do
-    -- Recurse to deeper layers
-    parent <- repoParent env baseRepo
-    case parent of
-      Nothing -> f (maybeToList mSlice)
-      Just parentRepo ->
-        withOpenDatabase env parentRepo $ \parentOdb ->
-          withStackedACLSlices env parentRepo parentOdb aclEnabled
-            $ \parentSlices ->
-            f (maybeToList mSlice ++ parentSlices)
+withLegacyStackedAccessibilitySlices env baseRepo baseOdb aclEnabled f = do
+  -- Build the accessibility slice for this base layer
+  buildLegacyLayerAccessibilitySlice env baseRepo baseOdb aclEnabled $
+    \mSlice -> do
+      -- Recurse to deeper layers
+      parent <- repoParent env baseRepo
+      case parent of
+        Nothing -> f (maybeToList mSlice)
+        Just parentRepo ->
+          withOpenDatabase env parentRepo $ \parentOdb ->
+            withLegacyStackedAccessibilitySlices env parentRepo parentOdb
+              aclEnabled $ \parentSlices ->
+                f (maybeToList mSlice ++ parentSlices)
 
--- | Apply ownership + ACL slices for a stacked database and run the
--- continuation with the combined stacked lookup. This wires together the
--- base ACL slices (walked over the base stack), the top-layer ACL slice,
--- and the pre-existing ownership slices into a single sliced/stacked lookup.
+-- | Apply incremental visibility and caller accessibility slices to a
+-- stacked database and run the continuation with the combined lookup.
+-- The base layers use both slice lists; the top layer uses its caller
+-- accessibility slice.
 withStackedACLLookup
   :: Env
   -> Repo               -- ^ Top (stacked) repo
@@ -408,21 +411,24 @@ withStackedACLLookup
   -> Repo               -- ^ Base repo (immediate parent)
   -> OpenDB             -- ^ Base OpenDB
   -> Bool               -- ^ whether ACL filtering is enabled (per-layer)
-  -> [Ownership.Slice]  -- ^ Ownership slices for the base stack
+  -> [Ownership.Slice]  -- ^ Visibility slices for the base stack
   -> Lookup             -- ^ Base stack lookup
   -> Lookup             -- ^ Top layer lookup
   -> (Lookup -> IO a)
   -> IO a
 withStackedACLLookup env repo odb baseRepo baseOdb aclEnabled
-    ownershipSlices base lookup f =
-  -- Build ACL slices for base layers (walk the base stack)
-  withStackedACLSlices env baseRepo baseOdb aclEnabled $ \baseACLSlices ->
-  -- Build ACL slice for the top layer
-  buildLayerACLSlice env repo odb aclEnabled $ \mTopACLSlice ->
+    visibilitySlices base lookup f =
+  -- Build accessibility slices for the base layers
+  withLegacyStackedAccessibilitySlices env baseRepo baseOdb aclEnabled $
+    \baseAccessibilitySlices ->
+  -- Build the accessibility slice for the top layer
+  buildLegacyLayerAccessibilitySlice env repo odb aclEnabled $
+    \mTopAccessibilitySlice ->
     -- Slice each side only if it has slices (empty would hide everything),
     -- then stack the (possibly sliced) base under the top layer.
-    withMaybeSliced (ownershipSlices ++ baseACLSlices) base $ \slicedBase ->
-    withMaybeSliced (maybeToList mTopACLSlice) lookup $ \slicedTop ->
+    withMaybeSliced (visibilitySlices ++ baseAccessibilitySlices) base $
+      \slicedBase ->
+    withMaybeSliced (maybeToList mTopAccessibilitySlice) lookup $ \slicedTop ->
     Lookup.withCanLookup (Stacked.stacked slicedBase slicedTop) f
 
 newDB :: Repo -> STM DB
