@@ -1,0 +1,123 @@
+[
+  "@generated",
+  {
+    "key": {
+      "macro": { "key": "TYPE" },
+      "definition": { "file": { "key": "a.h" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "target.h" },
+        "lineBegin": 10,
+        "columnBegin": 11,
+        "lineEnd": 10,
+        "columnEnd": 14
+      },
+      "nameSpan": { "start": 249, "length": 4 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "WRAP" },
+      "definition": { "file": { "key": "target.h" }, "line": 9, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "target.h" },
+        "lineBegin": 10,
+        "columnBegin": 11,
+        "lineEnd": 10,
+        "columnEnd": 14
+      },
+      "nameSpan": { "start": 249, "length": 4 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "TYPE" },
+      "definition": { "file": { "key": "b.h" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "target.h" },
+        "lineBegin": 12,
+        "columnBegin": 11,
+        "lineEnd": 12,
+        "columnEnd": 14
+      },
+      "nameSpan": { "start": 291, "length": 4 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "WRAP" },
+      "definition": { "file": { "key": "target.h" }, "line": 9, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "target.h" },
+        "lineBegin": 12,
+        "columnBegin": 11,
+        "lineEnd": 12,
+        "columnEnd": 14
+      },
+      "nameSpan": { "start": 291, "length": 4 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "TYPE" },
+      "definition": { "file": { "key": "a.h" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "target.h" },
+        "lineBegin": 14,
+        "columnBegin": 11,
+        "lineEnd": 14,
+        "columnEnd": 14
+      },
+      "nameSpan": { "start": 333, "length": 4 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "WRAP" },
+      "definition": { "file": { "key": "target.h" }, "line": 9, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "target.h" },
+        "lineBegin": 14,
+        "columnBegin": 11,
+        "lineEnd": 14,
+        "columnEnd": 14
+      },
+      "nameSpan": { "start": 333, "length": 4 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "TYPE" },
+      "definition": { "file": { "key": "b.h" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "target.h" },
+        "lineBegin": 16,
+        "columnBegin": 11,
+        "lineEnd": 16,
+        "columnEnd": 14
+      },
+      "nameSpan": { "start": 375, "length": 4 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "WRAP" },
+      "definition": { "file": { "key": "target.h" }, "line": 9, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "target.h" },
+        "lineBegin": 16,
+        "columnBegin": 11,
+        "lineEnd": 16,
+        "columnEnd": 14
+      },
+      "nameSpan": { "start": 375, "length": 4 }
+    }
+  }
+]

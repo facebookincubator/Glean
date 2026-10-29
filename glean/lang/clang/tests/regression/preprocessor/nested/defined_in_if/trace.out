@@ -1,0 +1,234 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "events": [
+        {
+          "include_": {
+            "include_": {
+              "key": {
+                "file": { "key": "h.h" },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 9,
+                  "columnEnd": 14
+                },
+                "pathSpan": { "start": 230, "length": 5 }
+              }
+            }
+          }
+        },
+        {
+          "define": {
+            "key": {
+              "macro": { "key": "HAS_Y" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 10,
+                "columnBegin": 9,
+                "lineEnd": 10,
+                "columnEnd": 13
+              }
+            }
+          }
+        },
+        {
+          "define": {
+            "key": {
+              "macro": { "key": "Y" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 9,
+                "lineEnd": 11,
+                "columnEnd": 9
+              }
+            }
+          }
+        },
+        {
+          "use": {
+            "key": {
+              "macro": { "key": "HAS_X" },
+              "definition": {
+                "file": { "key": "h.h" },
+                "line": 10,
+                "column": 9
+              },
+              "expand": true,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 5,
+                "lineEnd": 12,
+                "columnEnd": 9
+              },
+              "nameSpan": { "start": 275, "length": 5 }
+            }
+          }
+        },
+        {
+          "use": {
+            "key": {
+              "macro": { "key": "X" },
+              "expand": false,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 5,
+                "lineEnd": 12,
+                "columnEnd": 9
+              },
+              "nameSpan": { "start": 275, "length": 5 }
+            }
+          }
+        },
+        {
+          "use": {
+            "key": {
+              "macro": { "key": "HAS_Y" },
+              "definition": {
+                "file": { "key": "test.cpp" },
+                "line": 10,
+                "column": 9
+              },
+              "expand": true,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 15,
+                "columnBegin": 5,
+                "lineEnd": 15,
+                "columnEnd": 9
+              },
+              "nameSpan": { "start": 299, "length": 5 }
+            }
+          }
+        },
+        {
+          "use": {
+            "key": {
+              "macro": { "key": "Y" },
+              "definition": {
+                "file": { "key": "test.cpp" },
+                "line": 11,
+                "column": 9
+              },
+              "expand": false,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 15,
+                "columnBegin": 5,
+                "lineEnd": 15,
+                "columnEnd": 9
+              },
+              "nameSpan": { "start": 299, "length": 5 }
+            }
+          }
+        },
+        {
+          "use": {
+            "key": {
+              "macro": { "key": "HAS_X" },
+              "definition": {
+                "file": { "key": "h.h" },
+                "line": 10,
+                "column": 9
+              },
+              "expand": true,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 18,
+                "columnBegin": 5,
+                "lineEnd": 18,
+                "columnEnd": 9
+              },
+              "nameSpan": { "start": 323, "length": 5 }
+            }
+          }
+        },
+        {
+          "use": {
+            "key": {
+              "macro": { "key": "X" },
+              "expand": false,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 18,
+                "columnBegin": 5,
+                "lineEnd": 18,
+                "columnEnd": 9
+              },
+              "nameSpan": { "start": 323, "length": 5 }
+            }
+          }
+        },
+        {
+          "use": {
+            "key": {
+              "macro": { "key": "HAS_Y" },
+              "definition": {
+                "file": { "key": "test.cpp" },
+                "line": 10,
+                "column": 9
+              },
+              "expand": true,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 18,
+                "columnBegin": 14,
+                "lineEnd": 18,
+                "columnEnd": 18
+              },
+              "nameSpan": { "start": 332, "length": 5 }
+            }
+          }
+        },
+        {
+          "use": {
+            "key": {
+              "macro": { "key": "Y" },
+              "definition": {
+                "file": { "key": "test.cpp" },
+                "line": 11,
+                "column": 9
+              },
+              "expand": false,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 18,
+                "columnBegin": 14,
+                "lineEnd": 18,
+                "columnEnd": 18
+              },
+              "nameSpan": { "start": 332, "length": 5 }
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "h.h" },
+      "events": [
+        {
+          "define": {
+            "key": {
+              "macro": { "key": "HAS_X" },
+              "source": {
+                "file": { "key": "h.h" },
+                "lineBegin": 10,
+                "columnBegin": 9,
+                "lineEnd": 10,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+]

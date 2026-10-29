@@ -1,0 +1,198 @@
+[
+  "@generated",
+  {
+    "key": {
+      "macro": { "key": "CAT" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 9, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 14,
+        "columnBegin": 9,
+        "lineEnd": 14,
+        "columnEnd": 15
+      },
+      "nameSpan": { "start": 343, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "FOO_1" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 14,
+        "columnBegin": 9,
+        "lineEnd": 14,
+        "columnEnd": 15
+      },
+      "nameSpan": { "start": 343, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "PICK" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 13, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 14,
+        "columnBegin": 9,
+        "lineEnd": 14,
+        "columnEnd": 15
+      },
+      "nameSpan": { "start": 343, "length": 4 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "XCAT" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 14,
+        "columnBegin": 9,
+        "lineEnd": 14,
+        "columnEnd": 15
+      },
+      "nameSpan": { "start": 343, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "one" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 12, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 14,
+        "columnBegin": 9,
+        "lineEnd": 14,
+        "columnEnd": 15
+      },
+      "nameSpan": { "start": 343, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "CAT" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 9, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 15,
+        "columnBegin": 9,
+        "lineEnd": 15,
+        "columnEnd": 20
+      },
+      "nameSpan": { "start": 360, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "FOO_1" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 15,
+        "columnBegin": 9,
+        "lineEnd": 15,
+        "columnEnd": 20
+      },
+      "nameSpan": { "start": 360, "length": 12 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "one" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 12, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 15,
+        "columnBegin": 9,
+        "lineEnd": 15,
+        "columnEnd": 20
+      },
+      "nameSpan": { "start": 360, "length": 12 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "CAT" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 9, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 16,
+        "columnBegin": 9,
+        "lineEnd": 16,
+        "columnEnd": 15
+      },
+      "nameSpan": { "start": 382, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "FOO_1" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 16,
+        "columnBegin": 9,
+        "lineEnd": 16,
+        "columnEnd": 15
+      },
+      "nameSpan": { "start": 382, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "PICK" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 13, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 16,
+        "columnBegin": 9,
+        "lineEnd": 16,
+        "columnEnd": 15
+      },
+      "nameSpan": { "start": 382, "length": 4 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "XCAT" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 16,
+        "columnBegin": 9,
+        "lineEnd": 16,
+        "columnEnd": 15
+      },
+      "nameSpan": { "start": 382, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "one" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 12, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 16,
+        "columnBegin": 9,
+        "lineEnd": 16,
+        "columnEnd": 15
+      },
+      "nameSpan": { "start": 382, "length": 7 }
+    }
+  }
+]

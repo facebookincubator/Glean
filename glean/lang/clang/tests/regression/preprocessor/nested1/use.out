@@ -1,0 +1,138 @@
+[
+  "@generated",
+  {
+    "key": {
+      "macro": { "key": "INNER" },
+      "definition": { "file": { "key": "test.h" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 14,
+        "columnBegin": 9,
+        "lineEnd": 14,
+        "columnEnd": 16
+      },
+      "nameSpan": { "start": 317, "length": 8 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "OUTER" },
+      "definition": { "file": { "key": "test.h" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 14,
+        "columnBegin": 9,
+        "lineEnd": 14,
+        "columnEnd": 16
+      },
+      "nameSpan": { "start": 317, "length": 5 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "INNER" },
+      "definition": { "file": { "key": "test.h" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 15,
+        "columnBegin": 9,
+        "lineEnd": 15,
+        "columnEnd": 16
+      },
+      "nameSpan": { "start": 335, "length": 8 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "OUTER" },
+      "definition": { "file": { "key": "test.h" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 15,
+        "columnBegin": 9,
+        "lineEnd": 15,
+        "columnEnd": 16
+      },
+      "nameSpan": { "start": 335, "length": 5 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "CAT" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 16,
+        "columnBegin": 9,
+        "lineEnd": 16,
+        "columnEnd": 13
+      },
+      "nameSpan": { "start": 353, "length": 5 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "INNER" },
+      "definition": { "file": { "key": "test.h" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 16,
+        "columnBegin": 9,
+        "lineEnd": 16,
+        "columnEnd": 13
+      },
+      "nameSpan": { "start": 353, "length": 5 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "LOCAL" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 12, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 16,
+        "columnBegin": 9,
+        "lineEnd": 16,
+        "columnEnd": 13
+      },
+      "nameSpan": { "start": 353, "length": 5 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "ONE" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 16,
+        "columnBegin": 9,
+        "lineEnd": 16,
+        "columnEnd": 13
+      },
+      "nameSpan": { "start": 353, "length": 5 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "OUTER" },
+      "definition": { "file": { "key": "test.h" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 16,
+        "columnBegin": 9,
+        "lineEnd": 16,
+        "columnEnd": 13
+      },
+      "nameSpan": { "start": 353, "length": 5 }
+    }
+  }
+]

@@ -1,0 +1,131 @@
+[
+  "@generated",
+  {
+    "key": {
+      "define": {
+        "key": {
+          "macro": { "key": "HSTR" },
+          "source": {
+            "file": { "key": "h.h" },
+            "lineBegin": 10,
+            "columnBegin": 9,
+            "lineEnd": 10,
+            "columnEnd": 12
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "HSTR" },
+          "definition": { "file": { "key": "h.h" }, "line": 10, "column": 9 },
+          "expand": true,
+          "source": {
+            "file": { "key": "h.h" },
+            "lineBegin": 13,
+            "columnBegin": 17,
+            "lineEnd": 13,
+            "columnEnd": 17
+          },
+          "nameSpan": { "start": 301, "length": 1 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "define": {
+        "key": {
+          "macro": { "key": "HMSG" },
+          "source": {
+            "file": { "key": "h.h" },
+            "lineBegin": 11,
+            "columnBegin": 9,
+            "lineEnd": 11,
+            "columnEnd": 12
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "HMSG" },
+          "definition": { "file": { "key": "h.h" }, "line": 11, "column": 9 },
+          "expand": true,
+          "source": {
+            "file": { "key": "h.h" },
+            "lineBegin": 13,
+            "columnBegin": 17,
+            "lineEnd": 13,
+            "columnEnd": 17
+          },
+          "nameSpan": { "start": 301, "length": 1 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "define": {
+        "key": {
+          "macro": { "key": "Q" },
+          "source": {
+            "file": { "key": "h.h" },
+            "lineBegin": 12,
+            "columnBegin": 9,
+            "lineEnd": 12,
+            "columnEnd": 9
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "Q" },
+          "definition": { "file": { "key": "h.h" }, "line": 12, "column": 9 },
+          "expand": true,
+          "source": {
+            "file": { "key": "h.h" },
+            "lineBegin": 13,
+            "columnBegin": 17,
+            "lineEnd": 13,
+            "columnEnd": 17
+          },
+          "nameSpan": { "start": 301, "length": 1 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "define": {
+        "key": {
+          "macro": { "key": "MSG" },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 10,
+            "columnBegin": 9,
+            "lineEnd": 10,
+            "columnEnd": 11
+          }
+        }
+      },
+      "use": {
+        "key": {
+          "macro": { "key": "MSG" },
+          "definition": {
+            "file": { "key": "test.cpp" },
+            "line": 10,
+            "column": 9
+          },
+          "expand": true,
+          "source": {
+            "file": { "key": "h.h" },
+            "lineBegin": 13,
+            "columnBegin": 17,
+            "lineEnd": 13,
+            "columnEnd": 17
+          },
+          "nameSpan": { "start": 301, "length": 1 }
+        }
+      }
+    }
+  }
+]

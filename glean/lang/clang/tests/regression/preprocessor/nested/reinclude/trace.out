@@ -1,0 +1,179 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "events": [
+        {
+          "include_": {
+            "include_": {
+              "key": {
+                "file": { "key": "defs.h" },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 9,
+                  "columnEnd": 17
+                },
+                "pathSpan": { "start": 230, "length": 8 }
+              }
+            }
+          }
+        },
+        {
+          "include_": {
+            "include_": {
+              "key": {
+                "file": { "key": "defs.h" },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 10,
+                  "columnBegin": 1,
+                  "lineEnd": 10,
+                  "columnEnd": 17
+                },
+                "pathSpan": { "start": 248, "length": 8 }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "defs.h" },
+      "events": [
+        {
+          "use": {
+            "key": {
+              "macro": { "key": "DEFS" },
+              "definition": {
+                "file": { "key": "defs.h" },
+                "line": 10,
+                "column": 9
+              },
+              "expand": false,
+              "source": {
+                "file": { "key": "defs.h" },
+                "lineBegin": 9,
+                "columnBegin": 9,
+                "lineEnd": 9,
+                "columnEnd": 13
+              },
+              "nameSpan": { "start": 229, "length": 4 }
+            }
+          }
+        },
+        {
+          "use": {
+            "key": {
+              "macro": { "key": "OUTER" },
+              "definition": {
+                "file": { "key": "defs.h" },
+                "line": 12,
+                "column": 9
+              },
+              "expand": true,
+              "source": {
+                "file": { "key": "defs.h" },
+                "lineBegin": 14,
+                "columnBegin": 9,
+                "lineEnd": 14,
+                "columnEnd": 13
+              },
+              "nameSpan": { "start": 297, "length": 5 }
+            }
+          }
+        },
+        {
+          "use": {
+            "key": {
+              "macro": { "key": "INNER" },
+              "definition": {
+                "file": { "key": "defs.h" },
+                "line": 11,
+                "column": 9
+              },
+              "expand": true,
+              "source": {
+                "file": { "key": "defs.h" },
+                "lineBegin": 14,
+                "columnBegin": 9,
+                "lineEnd": 14,
+                "columnEnd": 13
+              },
+              "nameSpan": { "start": 297, "length": 5 }
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "defs.h" },
+      "events": [
+        {
+          "use": {
+            "key": {
+              "macro": { "key": "DEFS" },
+              "expand": false,
+              "source": {
+                "file": { "key": "defs.h" },
+                "lineBegin": 9,
+                "columnBegin": 9,
+                "lineEnd": 9,
+                "columnEnd": 13
+              },
+              "nameSpan": { "start": 229, "length": 4 }
+            }
+          }
+        },
+        {
+          "define": {
+            "key": {
+              "macro": { "key": "DEFS" },
+              "source": {
+                "file": { "key": "defs.h" },
+                "lineBegin": 10,
+                "columnBegin": 9,
+                "lineEnd": 10,
+                "columnEnd": 12
+              }
+            }
+          }
+        },
+        {
+          "define": {
+            "key": {
+              "macro": { "key": "INNER" },
+              "source": {
+                "file": { "key": "defs.h" },
+                "lineBegin": 11,
+                "columnBegin": 9,
+                "lineEnd": 11,
+                "columnEnd": 13
+              }
+            }
+          }
+        },
+        {
+          "define": {
+            "key": {
+              "macro": { "key": "OUTER" },
+              "source": {
+                "file": { "key": "defs.h" },
+                "lineBegin": 12,
+                "columnBegin": 9,
+                "lineEnd": 12,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+]

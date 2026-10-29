@@ -1,0 +1,63 @@
+[
+  "@generated",
+  {
+    "key": {
+      "macro": { "key": "L" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 12, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h.h" },
+        "lineBegin": 11,
+        "columnBegin": 17,
+        "lineEnd": 11,
+        "columnEnd": 17
+      },
+      "nameSpan": { "start": 262, "length": 1 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "V" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h.h" },
+        "lineBegin": 11,
+        "columnBegin": 17,
+        "lineEnd": 11,
+        "columnEnd": 17
+      },
+      "nameSpan": { "start": 262, "length": 1 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "W" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h.h" },
+        "lineBegin": 11,
+        "columnBegin": 17,
+        "lineEnd": 11,
+        "columnEnd": 17
+      },
+      "nameSpan": { "start": 262, "length": 1 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "Z" },
+      "definition": { "file": { "key": "h.h" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h.h" },
+        "lineBegin": 11,
+        "columnBegin": 17,
+        "lineEnd": 11,
+        "columnEnd": 17
+      },
+      "nameSpan": { "start": 262, "length": 1 }
+    }
+  }
+]

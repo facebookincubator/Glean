@@ -1,0 +1,93 @@
+[
+  "@generated",
+  {
+    "key": {
+      "macro": { "key": "CONFIG" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h.h" },
+        "lineBegin": 10,
+        "columnBegin": 11,
+        "lineEnd": 10,
+        "columnEnd": 16
+      },
+      "nameSpan": { "start": 244, "length": 6 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "VALUE" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 9, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h.h" },
+        "lineBegin": 10,
+        "columnBegin": 11,
+        "lineEnd": 10,
+        "columnEnd": 16
+      },
+      "nameSpan": { "start": 244, "length": 6 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "CONFIG" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h.h" },
+        "lineBegin": 11,
+        "columnBegin": 12,
+        "lineEnd": 11,
+        "columnEnd": 17
+      },
+      "nameSpan": { "start": 263, "length": 6 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "VALUE" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 9, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h.h" },
+        "lineBegin": 11,
+        "columnBegin": 12,
+        "lineEnd": 11,
+        "columnEnd": 17
+      },
+      "nameSpan": { "start": 263, "length": 6 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "CONFIG" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 12,
+        "columnBegin": 16,
+        "lineEnd": 12,
+        "columnEnd": 21
+      },
+      "nameSpan": { "start": 296, "length": 6 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "VALUE" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 9, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 12,
+        "columnBegin": 16,
+        "lineEnd": 12,
+        "columnEnd": 21
+      },
+      "nameSpan": { "start": 296, "length": 6 }
+    }
+  }
+]

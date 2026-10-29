@@ -1,0 +1,243 @@
+[
+  "@generated",
+  {
+    "key": {
+      "macro": { "key": "LEAF" },
+      "definition": { "file": { "key": "h3.h" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h4.h" },
+        "lineBegin": 11,
+        "columnBegin": 27,
+        "lineEnd": 11,
+        "columnEnd": 29
+      },
+      "nameSpan": { "start": 276, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "MID" },
+      "definition": { "file": { "key": "h2.h" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h4.h" },
+        "lineBegin": 11,
+        "columnBegin": 27,
+        "lineEnd": 11,
+        "columnEnd": 29
+      },
+      "nameSpan": { "start": 276, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "TOP" },
+      "definition": { "file": { "key": "h1.h" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h4.h" },
+        "lineBegin": 11,
+        "columnBegin": 27,
+        "lineEnd": 11,
+        "columnEnd": 29
+      },
+      "nameSpan": { "start": 276, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "LEAF" },
+      "definition": { "file": { "key": "h3.h" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h4.h" },
+        "lineBegin": 12,
+        "columnBegin": 27,
+        "lineEnd": 12,
+        "columnEnd": 29
+      },
+      "nameSpan": { "start": 309, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "MID" },
+      "definition": { "file": { "key": "h2.h" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h4.h" },
+        "lineBegin": 12,
+        "columnBegin": 27,
+        "lineEnd": 12,
+        "columnEnd": 29
+      },
+      "nameSpan": { "start": 309, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "TOP" },
+      "definition": { "file": { "key": "h1.h" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h4.h" },
+        "lineBegin": 12,
+        "columnBegin": 27,
+        "lineEnd": 12,
+        "columnEnd": 29
+      },
+      "nameSpan": { "start": 309, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "LEAF" },
+      "definition": { "file": { "key": "h3.h" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h4.h" },
+        "lineBegin": 12,
+        "columnBegin": 33,
+        "lineEnd": 12,
+        "columnEnd": 35
+      },
+      "nameSpan": { "start": 315, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "MID" },
+      "definition": { "file": { "key": "h2.h" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h4.h" },
+        "lineBegin": 12,
+        "columnBegin": 33,
+        "lineEnd": 12,
+        "columnEnd": 35
+      },
+      "nameSpan": { "start": 315, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "LEAF" },
+      "definition": { "file": { "key": "h3.h" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 10,
+        "columnBegin": 9,
+        "lineEnd": 10,
+        "columnEnd": 11
+      },
+      "nameSpan": { "start": 245, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "MID" },
+      "definition": { "file": { "key": "h2.h" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 10,
+        "columnBegin": 9,
+        "lineEnd": 10,
+        "columnEnd": 11
+      },
+      "nameSpan": { "start": 245, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "TOP" },
+      "definition": { "file": { "key": "h1.h" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 10,
+        "columnBegin": 9,
+        "lineEnd": 10,
+        "columnEnd": 11
+      },
+      "nameSpan": { "start": 245, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "LEAF" },
+      "definition": { "file": { "key": "h3.h" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 11,
+        "columnBegin": 9,
+        "lineEnd": 11,
+        "columnEnd": 11
+      },
+      "nameSpan": { "start": 258, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "MID" },
+      "definition": { "file": { "key": "h2.h" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 11,
+        "columnBegin": 9,
+        "lineEnd": 11,
+        "columnEnd": 11
+      },
+      "nameSpan": { "start": 258, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "LEAF" },
+      "definition": { "file": { "key": "h3.h" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 12,
+        "columnBegin": 9,
+        "lineEnd": 12,
+        "columnEnd": 11
+      },
+      "nameSpan": { "start": 271, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "MID" },
+      "definition": { "file": { "key": "h2.h" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 12,
+        "columnBegin": 9,
+        "lineEnd": 12,
+        "columnEnd": 11
+      },
+      "nameSpan": { "start": 271, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "TOP" },
+      "definition": { "file": { "key": "h1.h" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 12,
+        "columnBegin": 9,
+        "lineEnd": 12,
+        "columnEnd": 11
+      },
+      "nameSpan": { "start": 271, "length": 3 }
+    }
+  }
+]

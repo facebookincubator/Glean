@@ -1,0 +1,63 @@
+[
+  "@generated",
+  {
+    "key": {
+      "macro": { "key": "HMSG" },
+      "definition": { "file": { "key": "h.h" }, "line": 11, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h.h" },
+        "lineBegin": 13,
+        "columnBegin": 17,
+        "lineEnd": 13,
+        "columnEnd": 17
+      },
+      "nameSpan": { "start": 301, "length": 1 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "HSTR" },
+      "definition": { "file": { "key": "h.h" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h.h" },
+        "lineBegin": 13,
+        "columnBegin": 17,
+        "lineEnd": 13,
+        "columnEnd": 17
+      },
+      "nameSpan": { "start": 301, "length": 1 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "MSG" },
+      "definition": { "file": { "key": "test.cpp" }, "line": 10, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h.h" },
+        "lineBegin": 13,
+        "columnBegin": 17,
+        "lineEnd": 13,
+        "columnEnd": 17
+      },
+      "nameSpan": { "start": 301, "length": 1 }
+    }
+  },
+  {
+    "key": {
+      "macro": { "key": "Q" },
+      "definition": { "file": { "key": "h.h" }, "line": 12, "column": 9 },
+      "expand": true,
+      "source": {
+        "file": { "key": "h.h" },
+        "lineBegin": 13,
+        "columnBegin": 17,
+        "lineEnd": 13,
+        "columnEnd": 17
+      },
+      "nameSpan": { "start": 301, "length": 1 }
+    }
+  }
+]
