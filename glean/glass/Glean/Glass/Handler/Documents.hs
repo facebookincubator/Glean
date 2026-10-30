@@ -63,7 +63,7 @@ import Glean.Glass.SymbolSig ( toSymbolSignatureText )
 import Glean.Glass.Pretty.Cxx as Cxx (Qualified(..))
 import Glean.Glass.Types
 import Glean.Glass.RepoMapping (
-   mirrorConfig, Mirror(Mirror)
+   mirrorConfig, Mirror(Mirror), wwwHackGraphQL
   )
 import qualified Glean.Glass.Env as Glass
 import Glean.Glass.XRefs
@@ -231,9 +231,9 @@ fetchSymbolsAndAttributesGlean
       fetchContent
       ExtraSymbolOpts{..} be mlang dbInfo (requestOptions_attribute_opts opts)
 
-  res1 <- if oAmendLinesOnRevisionMismatch
+  (res1, amendNewRefs) <- if oAmendLinesOnRevisionMismatch
           then amendRefLinesIfMismatch res1
-          else return res1
+          else return (res1, id)
 
   (res2, attributesLog) <- do
     (t, result) <- elapsedTime $ traceSpan tracer "addDynamicAttributes" $
@@ -246,7 +246,7 @@ fetchSymbolsAndAttributesGlean
     return result
 
   let be = fromMaybe (gleanBackend, dbInfo) mOtherBackend
-  res3 <- resolveXlangXrefs env path res2 repo be mlang
+  res3 <- resolveXlangXrefs env path res2 repo be mlang amendNewRefs
 
   let res4 = toDocumentSymbolResult res3
   let res5 = translateMirroredRepoListXResult req res4
@@ -268,12 +268,12 @@ fetchSymbolsAndAttributesGlean
 
     amendRefLinesIfMismatch res = do
       case requestOptions_revision opts of
-        Nothing -> return res -- no requested revision, no need to amend
+        Nothing -> return (res, id) -- no requested revision, no need to amend
         Just revision1 -> do
           let revision2 = revision res
           match <- fromMaybe False <$> contentMatch revision1 revision2
           if match
-            then return res -- revision match, no need to amend
+            then return (res, id) -- revision match, no need to amend
             else
               let op = do
                   -- obtain line mapping from source diff
@@ -282,10 +282,10 @@ fetchSymbolsAndAttributesGlean
                       getFileLineDiff sourceControl repo path revision1 revision2
                   let mapping = parseGitDiff diffResult
                       -- apply line mapping to references and definitions
-                  return res {
+                  return (res {
                     refs  = applyLineMappingToRefs mapping (refs res),
                     defs = applyLineMappingToDefs mapping (defs res)
-                  }
+                  }, applyLineMappingToRefs mapping)
               in do
                 (t, result) <- elapsedTime op
                 let metricName = "glass.amend_lines.latency_ms"
@@ -733,6 +733,8 @@ resolveXlangXrefs
   -> RepoName
   -> (b, GleanDBInfo)
   -> Maybe Language
+  -> ([(Code.Entity, ReferenceRangeSymbolX)]
+      -> [(Code.Entity, ReferenceRangeSymbolX)])
   -> IO DocumentSymbols
 resolveXlangXrefs
     env@Glass.Env{tracer, sourceControl, repoMapping}
@@ -740,7 +742,7 @@ resolveXlangXrefs
     docSyms@DocumentSymbols{..}
     scsrepo
     (gleanBackend, dbInfo)
-    sourceLang = do
+    sourceLang amendNewRefs = do
   case (unresolvedXrefsXlang, srcFile) of
     ((_, xref) : _, Just srcFile) -> do
        -- we assume all xlang xrefs belong to the same db
@@ -751,31 +753,59 @@ resolveXlangXrefs
           targetRepo = case repoPathToMirror scsrepo path of
               Just (Mirror _mirror _prefix origin) -> origin
               Nothing -> scsrepo
-      gleanDBs <- getGleanRepos tracer sourceControl repoMapping dbInfo
-        targetRepo (Just targetLang) Nothing ChooseLatest Nothing
-      let gleanBe = GleanBackend {gleanDBs, tracer, gleanBackend}
-      let (ents, symbols) =
-            partitionEithers $ mapMaybe (mangle targetLang) unresolvedXrefsXlang
-      xlangRefs <- backendRunHaxl gleanBe env $ do
-        xrefsXlang <- join <$>
-          mapM (\gleanDB -> withRepo (snd gleanDB) $ do
-            xrefs <- resolveEntitiesRange targetRepo symbols ents
-            mapM
-              (toReferenceSymbolXlang targetRepo srcFile offsets targetLang)
-              xrefs)
-          (NonEmpty.toList gleanDBs)
-        return $ xRefDataToRefEntitySymbol <$> xrefsXlang
-      return $ docSyms  { refs = refs ++ xlangRefs, unresolvedXrefsXlang = [] }
+      mGleanDBs <- case xref of
+        Right Code.SymbolId_graphql{} -> do
+          r <- try $ getSpecificGleanDBs tracer sourceControl dbInfo
+            ChooseLatest (wwwHackGraphQL :| [])
+          return $ case r of
+            Left (_ :: ServerException) -> Nothing
+            Right dbs -> Just dbs
+        _ -> Just <$> getGleanRepos tracer sourceControl repoMapping dbInfo
+          targetRepo (Just targetLang) Nothing ChooseLatest Nothing
+      case mGleanDBs of
+        Nothing -> return docSyms
+        Just gleanDBs -> do
+          let gleanBe = GleanBackend {gleanDBs, tracer, gleanBackend}
+          let (ents, symbols) = partitionEithers $
+                mapMaybe (mangle targetLang) unresolvedXrefsXlang
+          xlangRefs <- backendRunHaxl gleanBe env $ do
+            xrefsXlang <- join <$>
+              mapM (\gleanDB -> withRepo (snd gleanDB) $ do
+                xrefs <- resolveEntitiesRange targetRepo symbols ents
+                resolved <- mapM
+                  (toReferenceSymbolXlang targetRepo srcFile offsets targetLang)
+                  xrefs
+                return $ if targetLang == Language_Hack
+                  then map (addTargetRevision (snd gleanDB)) resolved
+                  else resolved)
+              (NonEmpty.toList gleanDBs)
+            return $ xRefDataToRefEntitySymbol <$> xrefsXlang
+          return $ docSyms {
+            refs = refs ++ amendNewRefs xlangRefs,
+            unresolvedXrefsXlang = []
+          }
     _ -> return docSyms
   where
     targetLanguage xref mlang =
       case xref of
         Left (Code.IdlEntity _ _ ent _)  ->
           maybe (Language__UNKNOWN 0) entityLanguage ent
+        Right Code.SymbolId_graphql{} -> Language_Hack
         Right _ ->
           case mlang of
             Just Language_Swift -> Language_Cpp
             _ -> Language__UNKNOWN 0
+
+    addTargetRevision gleanRepo ref@XRefData{xrefSymbol=symbol} =
+      let target = referenceRangeSymbolX_target symbol
+          Revision targetRevision = getDBRevision (scmRevisions dbInfo)
+            gleanRepo (locationRange_repository target)
+          AttributeList attributes = referenceRangeSymbolX_attributes symbol
+      in ref { xrefSymbol = symbol {
+        referenceRangeSymbolX_attributes = AttributeList $
+          KeyedAttribute "targetRevision" (Attribute_aString targetRevision)
+            : attributes
+      } }
 
     mangle :: Language -> XlangXRef
       -> Maybe (Either
@@ -1010,7 +1040,8 @@ toReferenceSymbolXlang
 toReferenceSymbolXlang
   repoName file srcOffsets lang
   ((xrefEntity, rangeSpanSrc), (xlangFile, xrefRange)) = do
-    toReferenceSymbolGen repoName file srcOffsets rangeSpanSrc xlangFile
+    let symbolFile = if lang == Language_Hack then xlangFile else file
+    toReferenceSymbolGen repoName symbolFile srcOffsets rangeSpanSrc xlangFile
       xrefEntity xrefRange Nothing (Just lang)
 
 -- | Building a resolved definition symbol is just taking a direct xref to it,
@@ -1080,6 +1111,7 @@ getStaticAttributes e repo sym mLang = memo $ do
       Attribute_aString "thrift")
     asLang Language_Python = Just ("crossLanguage",
       Attribute_aString "python")
+    asLang Language_Hack = Just ("crossLanguage", Attribute_aString "hack")
     asLang _ = Nothing
     -- SIDL declarations are C++ entities in the same DB, so they come
     -- back as plain refs with no xlang language.

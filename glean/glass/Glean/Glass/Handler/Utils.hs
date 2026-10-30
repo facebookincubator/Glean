@@ -23,6 +23,7 @@ module Glean.Glass.Handler.Utils (
     GleanBackend(..),
     backendRunHaxl,
     getGleanRepos,
+    getSpecificGleanDBs,
 
     revisionSpecifierError,
 

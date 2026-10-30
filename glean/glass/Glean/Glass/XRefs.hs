@@ -90,8 +90,8 @@ resolveSymbolsToEntities symbolRanges = do
   -- have to build a map from symbol to entities which we look up at the end.
   let symbols = uniq $ fst <$> symbolRanges
   symbolEnts <- fetchSymbolEntities symbols
-  let symbolEntsMap = Map.fromList symbolEnts
-  pure $ mapMaybe (mapMaybeFst symbolEntsMap) symbolRanges
+  let symbolEntsMap = Map.fromList $ first normalize <$> symbolEnts
+  pure $ mapMaybe (mapMaybeFst symbolEntsMap . first normalize) symbolRanges
   where
     mapMaybeFst :: forall k v a. Ord k => Map k v -> (k, a) -> Maybe (v, a)
     mapMaybeFst map (k, x) = (, x) <$> Map.lookup k map

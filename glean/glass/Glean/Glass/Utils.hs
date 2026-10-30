@@ -222,9 +222,17 @@ translateDocumentSymbolListXResult oldRepo newRepo prefixPath newRev result =
         Types.documentSymbolListXResult_revision = fromMaybe defaultRev newRev,
         Types.documentSymbolListXResult_references = references'}
   where
-    translateRef ref =
-      let t = translateLocationRange $ Types.referenceRangeSymbolX_target ref in
-      ref{Types.referenceRangeSymbolX_target = t}
+    translateRef ref
+      | nativeHackRef ref = ref
+      | otherwise =
+          let t = translateLocationRange $
+                Types.referenceRangeSymbolX_target ref in
+          ref{Types.referenceRangeSymbolX_target = t}
+    nativeHackRef ref =
+      let Types.AttributeList attributes =
+            Types.referenceRangeSymbolX_attributes ref
+      in Types.KeyedAttribute "crossLanguage" (Types.Attribute_aString "hack")
+          `elem` attributes
     translateLocationRange ref@(Types.LocationRange repo path range) =
       if repo == oldRepo then
           Types.LocationRange  newRepo (translatePath path) range
