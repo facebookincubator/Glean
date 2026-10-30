@@ -14,6 +14,7 @@ module Glean.Glass.RepoMapping
   , supportsCxxDeclarationSources
   , mirrorConfig
   , Mirror(..)
+  , wwwHackGraphQL
   ) where
 
 import Data.Set (Set)
@@ -47,6 +48,10 @@ gleanRequiredIndices = Set.empty
 
 supportsCxxDeclarationSources :: GleanDBName -> Bool
 supportsCxxDeclarationSources = const True
+
+-- | DB holding hack.graphql facts, queried explicitly for GraphQL xrefs
+wwwHackGraphQL :: GleanDBName
+wwwHackGraphQL = GleanDBName "www.hack.graphql"
 
 -- Some repos can be mirrored
 data Mirror = Mirror
