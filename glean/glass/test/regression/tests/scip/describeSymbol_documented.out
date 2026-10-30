@@ -46,7 +46,7 @@
             }
         ],
         "repo_hash": "testhash",
-        "signature": "Initialize a logger that shows the time since start and since the\nprevious log message, rather than absolute time.",
+        "signature": "pub fn init_delta_logger()",
         "sym": "test/rs/rust-analyzer/cargo/delta_log/0.0.0/init_delta_logger%28%29.",
         "sym_location": {
             "filepath": "delta_log.rs",

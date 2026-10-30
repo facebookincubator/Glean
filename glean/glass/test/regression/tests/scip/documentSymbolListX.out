@@ -24,6 +24,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -56,6 +62,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "prefix_raw: usize"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -94,6 +106,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -126,6 +144,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -164,6 +188,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -196,6 +226,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -234,6 +270,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "ctx: &RelativePathCtx"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -266,6 +308,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -304,6 +352,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "f: &mut {unknown}"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -336,6 +390,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -374,6 +434,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "f: &mut {unknown}"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -406,6 +472,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -444,6 +516,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -476,6 +554,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "other: &RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -514,6 +598,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -546,6 +636,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "other: &RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -584,6 +680,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "S: Serializer + ?Sized"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -616,6 +718,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -654,6 +762,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "serializer: S"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -686,6 +800,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "let path_str: {unknown}"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -724,6 +844,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "'de"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -756,6 +882,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "D: Deserializer<'de> + ?Sized"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -794,6 +926,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "deserializer: D"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -826,6 +964,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "f: &mut {unknown}"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -864,6 +1008,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "'de"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -896,6 +1046,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: &Visitor"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -934,6 +1090,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "formatter: &mut {unknown}"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -966,6 +1128,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "E: Error + ?Sized"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1004,6 +1172,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: Visitor"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -1036,6 +1210,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "value: &str"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1074,6 +1254,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "let mut split: {unknown}"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -1106,6 +1292,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "let prefix_str: {unknown}"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1144,6 +1336,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "let path_str: {unknown}"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -1176,6 +1374,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "let prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1214,6 +1418,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -1246,6 +1456,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "let path: !"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1284,6 +1500,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "let path_str: {unknown}"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -1316,6 +1538,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "let None: {unknown}"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1354,6 +1582,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "'a"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -1386,6 +1620,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "A: Allocator + ?Sized"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1424,6 +1664,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -1456,6 +1702,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "alloc: &A"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1494,6 +1746,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "let mut block: BlockBuilder<'_>"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -1526,6 +1784,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "value: Value<'_>"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1564,6 +1828,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "let block: {unknown}"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -1596,6 +1866,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "path: {unknown}"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1634,6 +1910,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "let prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -1666,6 +1948,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "let path: {unknown}"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1704,6 +1992,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "T: ?Sized"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -1736,6 +2030,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: &RelativePathCtx"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1774,6 +2074,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -1806,6 +2112,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "let valid_prefix: usize"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1844,6 +2156,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "let invalid_prefix: usize"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -1876,6 +2194,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1914,6 +2238,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -1946,6 +2276,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "s: impl ?Sized"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1984,6 +2320,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -2016,6 +2358,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub type Map<T> = std::collections::BTreeMap<RelativePath, T>"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2054,6 +2402,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -2086,6 +2440,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Dummy"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2124,6 +2484,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Hhi"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -2156,6 +2522,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Root"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2194,6 +2566,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Tmp"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -2226,6 +2604,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub struct RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2264,7 +2648,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "Representation invariant: the empty path is always encoded as `None`.\nThis allows us to construct `RelativePath` in `const` contexts\n(because `Path::new` is not a `const fn`)."
+                            "aString": "path: {unknown}"
                         },
                         "key": "symbolSignature"
                     },
@@ -2305,6 +2689,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -2337,6 +2727,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub struct RelativePathCtx"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2375,6 +2771,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub dummy: {unknown}"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -2407,6 +2809,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub hhi: {unknown}"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2445,6 +2853,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub root: {unknown}"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -2477,6 +2891,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub tmp: {unknown}"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2515,6 +2935,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "struct Visitor"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -2547,6 +2973,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "extern crate relative_path"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2585,6 +3017,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "type Error = String"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -2617,6 +3055,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2655,6 +3099,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub fn is_hhi(self) -> bool"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -2687,6 +3137,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "fn try_from(prefix_raw: usize) -> Result<Self, String>"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2725,6 +3181,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub fn prefix_path(&self, prefix: Prefix) -> &Path"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -2757,6 +3219,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub const EMPTY: Self"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2795,7 +3263,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "Deserialize this value from the given Serde deserializer.\n\nSee the [Implementing `Deserialize`][impl-deserialize] section of the\nmanual for more information about how to implement this method.\n\n[impl-deserialize]: https://serde.rs/impl-deserialize.html"
+                            "aString": "fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>\nwhere\n    D: serde::Deserializer<'de>,"
                         },
                         "key": "symbolSignature"
                     },
@@ -2836,7 +3304,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "Convert the given ocamlrep Value to a value of type `Self`, if possible."
+                            "aString": "fn from_ocamlrep(value: ocamlrep::Value<'_>) -> Result<Self, ocamlrep::FromError>"
                         },
                         "key": "symbolSignature"
                     },
@@ -2877,7 +3345,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "Serialize this value into the given Serde serializer.\n\nSee the [Implementing `Serialize`] section of the manual for more\ninformation about how to implement this method.\n\n```edition2021\nuse serde::ser::{Serialize, SerializeStruct, Serializer};\n\nstruct Person {\n    name: String,\n    age: u8,\n    phones: Vec<String>,\n}\n\n// This is what #[derive(Serialize)] would generate.\nimpl Serialize for Person {\n    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>\n    where\n        S: Serializer,\n    {\n        let mut s = serializer.serialize_struct(\"Person\", 3)?;\n        s.serialize_field(\"name\", &self.name)?;\n        s.serialize_field(\"age\", &self.age)?;\n        s.serialize_field(\"phones\", &self.phones)?;\n        s.end()\n    }\n}\n```\n\n[Implementing `Serialize`]: https://serde.rs/impl-serialize.html"
+                            "aString": "fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>\nwhere\n    S: serde::Serializer,"
                         },
                         "key": "symbolSignature"
                     },
@@ -2918,7 +3386,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "Allocate an OCaml representation of `self` using the given Allocator.\n\nImplementors of this method must not mutate or drop any values after\npassing them to `Allocator::add` (or invoking `to_ocamlrep` on them),\nelse `Allocator::memoized` may return incorrect results (this can\ngenerally only be done using internal-mutability types like `RefCell`,\n`Mutex`, or atomics, or by using `unsafe`)."
+                            "aString": "fn to_ocamlrep<'a, A>(&'a self, alloc: &'a A) -> ocamlrep::Value<'a>\nwhere\n    A: ocamlrep::Allocator,"
                         },
                         "key": "symbolSignature"
                     },
@@ -2959,6 +3427,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "fn cmp(&self, other: &Self) -> std::cmp::Ordering"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -2991,6 +3465,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -3029,6 +3509,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -3061,6 +3547,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub fn has_extension(&self, s: impl AsRef<Path>) -> bool"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -3099,6 +3591,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub fn is_empty(&self) -> bool"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -3131,6 +3629,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub fn is_hhi(&self) -> bool"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -3169,6 +3673,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub fn make(prefix: Prefix, path: PathBuf) -> Self"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -3201,6 +3711,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering>"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -3239,7 +3755,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "The relative path compared to the prefix"
+                            "aString": "pub fn path(&self) -> &Path"
                         },
                         "key": "symbolSignature"
                     },
@@ -3280,7 +3796,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "The relative path compared to the prefix as a string"
+                            "aString": "pub fn path_str(&self) -> &str"
                         },
                         "key": "symbolSignature"
                     },
@@ -3321,6 +3837,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub fn prefix(&self) -> Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -3353,6 +3875,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub fn to_absolute(&self, ctx: &RelativePathCtx) -> PathBuf"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -3391,7 +3919,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "The value produced by this visitor."
+                            "aString": "pub(super) type Value = RelativePath"
                         },
                         "key": "symbolSignature"
                     },
@@ -3432,7 +3960,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "Format a message stating what data this Visitor expects to receive.\n\nThis is used in error messages. The message should complete the sentence\n\"This Visitor expects to receive ...\", for example the message could be\n\"an integer between 0 and 64\". The message should not be capitalized and\nshould not end with a period.\n\n```edition2021\n# use std::fmt;\n#\n# struct S {\n#     max: usize,\n# }\n#\n# impl<'de> serde::de::Visitor<'de> for S {\n#     type Value = ();\n#\nfn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {\n    write!(formatter, \"an integer between 0 and {}\", self.max)\n}\n# }\n```"
+                            "aString": "fn expecting(&self, formatter: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result"
                         },
                         "key": "symbolSignature"
                     },
@@ -3473,7 +4001,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "The input contains a string. The lifetime of the string is ephemeral and\nit may be destroyed after this method returns.\n\nThis method allows the `Deserializer` to avoid a copy by retaining\nownership of any buffered data. `Deserialize` implementations that do\nnot benefit from taking ownership of `String` data should indicate that\nto the deserializer by using `Deserializer::deserialize_str` rather than\n`Deserializer::deserialize_string`.\n\nIt is never correct to implement `visit_string` without implementing\n`visit_str`. Implement neither, both, or just `visit_str`."
+                            "aString": "fn visit_str<E>(self, value: &str) -> Result<RelativePath, E>\nwhere\n    E: serde::de::Error,"
                         },
                         "key": "symbolSignature"
                     },
@@ -3514,6 +4042,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub mod map"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -3546,6 +4080,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "mod tests"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -3584,6 +4124,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "fn test_invalid_usize_prefix()"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -3616,6 +4162,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "fn test_valid_usize_prefix()"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -3654,6 +4206,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "prefix_raw: usize"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -3702,6 +4260,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -3744,6 +4308,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -3792,6 +4362,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -3837,6 +4413,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -3879,6 +4461,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -3927,6 +4515,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "ctx: &RelativePathCtx"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -3969,6 +4563,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -4017,6 +4617,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -4059,6 +4665,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: &Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -4107,6 +4719,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "other: &RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -4149,6 +4767,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "other: &RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -4197,6 +4821,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -4239,6 +4869,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "other: &RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -4287,6 +4923,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "S: Serializer + ?Sized"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -4332,6 +4974,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "S: Serializer + ?Sized"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -4374,6 +5022,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "S: Serializer + ?Sized"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -4422,6 +5076,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -4464,6 +5124,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "serializer: S"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -4512,6 +5178,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "'de"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -4554,6 +5226,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "'de"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -4602,6 +5280,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "D: Deserializer<'de> + ?Sized"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -4644,6 +5328,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "D: Deserializer<'de> + ?Sized"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -4692,6 +5382,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "D: Deserializer<'de> + ?Sized"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -4734,6 +5430,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "deserializer: D"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -4782,6 +5484,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "'de"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -4824,6 +5532,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "E: Error + ?Sized"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -4872,6 +5586,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "E: Error + ?Sized"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -4914,6 +5634,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "E: Error + ?Sized"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -4962,6 +5688,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "E: Error + ?Sized"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -5004,6 +5736,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: Visitor"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -5052,6 +5790,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: Visitor"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -5094,6 +5838,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "value: &str"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -5142,6 +5892,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "let mut split: {unknown}"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -5184,6 +5940,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "let mut split: {unknown}"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -5232,6 +5994,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "let prefix_str: {unknown}"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -5274,6 +6042,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "let path_str: {unknown}"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -5322,6 +6096,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "let prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -5364,6 +6144,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -5412,6 +6198,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "let path: !"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -5454,6 +6246,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "let path_str: {unknown}"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -5502,6 +6300,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "'a"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -5544,6 +6348,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "'a"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -5592,6 +6402,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "'a"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -5634,6 +6450,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "A: Allocator + ?Sized"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -5682,6 +6504,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -5724,6 +6552,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -5772,6 +6606,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "alloc: &A"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -5817,6 +6657,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "alloc: &A"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -5859,6 +6705,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "alloc: &A"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -5907,6 +6759,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "alloc: &A"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -5949,6 +6807,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "alloc: &A"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -5997,6 +6861,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "let mut block: BlockBuilder<'_>"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -6042,6 +6912,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "let mut block: BlockBuilder<'_>"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -6084,6 +6960,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "let mut block: BlockBuilder<'_>"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -6132,6 +7014,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "value: Value<'_>"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -6174,6 +7062,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "let block: {unknown}"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -6222,6 +7116,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "let block: {unknown}"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -6264,6 +7164,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "path: {unknown}"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -6312,6 +7218,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "path: {unknown}"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -6354,6 +7266,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "let prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -6402,6 +7320,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "let path: {unknown}"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -6444,6 +7368,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "T: ?Sized"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -6492,6 +7422,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &RelativePathCtx"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -6534,6 +7470,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: &RelativePathCtx"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -6582,6 +7524,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &RelativePathCtx"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -6624,6 +7572,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: &RelativePathCtx"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -6672,6 +7626,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -6714,6 +7674,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "let valid_prefix: usize"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -6762,6 +7728,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "let invalid_prefix: usize"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -6804,6 +7776,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -6852,6 +7830,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -6894,6 +7878,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "s: impl ?Sized"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -6942,6 +7932,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "self: &RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -6984,6 +7980,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub type Map<T> = std::collections::BTreeMap<RelativePath, T>"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -7032,6 +8034,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -7074,6 +8082,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -7122,6 +8136,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -7164,6 +8184,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -7212,6 +8238,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -7254,6 +8286,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -7302,6 +8340,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -7344,6 +8388,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -7392,6 +8442,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -7434,6 +8490,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -7482,6 +8544,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -7524,6 +8592,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -7572,6 +8646,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -7614,6 +8694,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -7662,6 +8748,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -7704,6 +8796,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -7752,6 +8850,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -7794,6 +8898,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -7842,6 +8952,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -7884,6 +9000,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -7932,6 +9054,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -7974,6 +9102,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -8022,6 +9156,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -8064,6 +9204,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub enum Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -8112,6 +9258,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Dummy"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -8154,6 +9306,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Dummy"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -8202,6 +9360,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Dummy"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -8244,6 +9408,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Dummy"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -8292,6 +9462,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Dummy"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -8334,6 +9510,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Dummy"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -8382,6 +9564,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Hhi"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -8424,6 +9612,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Hhi"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -8472,6 +9666,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Hhi"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -8514,6 +9714,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Hhi"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -8562,6 +9768,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Root"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -8604,6 +9816,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Root"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -8652,6 +9870,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Root"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -8694,6 +9918,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Root"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -8742,6 +9972,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Tmp"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -8784,6 +10020,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Tmp"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -8832,6 +10074,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Tmp"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -8874,6 +10122,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Tmp"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -8922,6 +10176,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub struct RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -8964,6 +10224,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub struct RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -9012,6 +10278,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub struct RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -9054,6 +10326,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub struct RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -9102,6 +10380,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub struct RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -9144,6 +10428,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub struct RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -9192,6 +10482,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub struct RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -9234,6 +10530,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub struct RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -9282,6 +10584,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub struct RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -9324,6 +10632,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub struct RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -9372,6 +10686,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub struct RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -9414,6 +10734,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub struct RelativePath"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -9462,6 +10788,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub struct RelativePath"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -9507,7 +10839,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "Representation invariant: the empty path is always encoded as `None`.\nThis allows us to construct `RelativePath` in `const` contexts\n(because `Path::new` is not a `const fn`)."
+                            "aString": "path: {unknown}"
                         },
                         "key": "symbolSignature"
                     },
@@ -9558,7 +10890,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "Representation invariant: the empty path is always encoded as `None`.\nThis allows us to construct `RelativePath` in `const` contexts\n(because `Path::new` is not a `const fn`)."
+                            "aString": "path: {unknown}"
                         },
                         "key": "symbolSignature"
                     },
@@ -9609,7 +10941,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "Representation invariant: the empty path is always encoded as `None`.\nThis allows us to construct `RelativePath` in `const` contexts\n(because `Path::new` is not a `const fn`)."
+                            "aString": "path: {unknown}"
                         },
                         "key": "symbolSignature"
                     },
@@ -9660,7 +10992,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "Representation invariant: the empty path is always encoded as `None`.\nThis allows us to construct `RelativePath` in `const` contexts\n(because `Path::new` is not a `const fn`)."
+                            "aString": "path: {unknown}"
                         },
                         "key": "symbolSignature"
                     },
@@ -9711,6 +11043,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -9753,6 +11091,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -9801,6 +11145,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -9846,6 +11196,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -9888,6 +11244,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -9936,6 +11298,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -9978,6 +11346,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -10026,6 +11400,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -10068,6 +11448,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "prefix: Prefix"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -10116,6 +11502,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub struct RelativePathCtx"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -10158,6 +11550,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub struct RelativePathCtx"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -10206,6 +11604,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub dummy: {unknown}"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -10248,6 +11652,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub hhi: {unknown}"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -10296,6 +11706,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub root: {unknown}"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -10338,6 +11754,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub tmp: {unknown}"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -10386,6 +11808,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "struct Visitor"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -10428,6 +11856,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Visitor"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -10476,6 +11910,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "extern crate relative_path"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -10518,6 +11958,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "extern crate relative_path"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -10566,6 +12012,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub fn is_hhi(self) -> bool"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -10608,6 +12060,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub fn prefix_path(&self, prefix: Prefix) -> &Path"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -10656,6 +12114,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "pub const EMPTY: Self"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolLanguage"
@@ -10698,6 +12162,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "pub fn make(prefix: Prefix, path: PathBuf) -> Self"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -10746,7 +12216,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "The relative path compared to the prefix"
+                            "aString": "pub fn path(&self) -> &Path"
                         },
                         "key": "symbolSignature"
                     },
@@ -10797,7 +12267,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "The relative path compared to the prefix"
+                            "aString": "pub fn path(&self) -> &Path"
                         },
                         "key": "symbolSignature"
                     },
@@ -10848,7 +12318,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "The relative path compared to the prefix"
+                            "aString": "pub fn path(&self) -> &Path"
                         },
                         "key": "symbolSignature"
                     },
@@ -10899,7 +12369,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "The relative path compared to the prefix"
+                            "aString": "pub fn path(&self) -> &Path"
                         },
                         "key": "symbolSignature"
                     },
@@ -10950,7 +12420,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "The relative path compared to the prefix"
+                            "aString": "pub fn path(&self) -> &Path"
                         },
                         "key": "symbolSignature"
                     },
@@ -11001,7 +12471,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "The relative path compared to the prefix"
+                            "aString": "pub fn path(&self) -> &Path"
                         },
                         "key": "symbolSignature"
                     },

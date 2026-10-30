@@ -31,9 +31,26 @@ prettyScipSignature
   -> Scip.SomeEntity
   -> Glean.RepoHaxl u w (Maybe (SimpleDocStream (Maybe SymbolId)))
 prettyScipSignature opts (Scip.SomeEntity defn) = do
-  text <- fetchData (definitionHover (Glean.getId defn)) -- just first result
+  signature <- fetchData (definitionSignature defnId)
+  -- Older indexers put the signature in a code block in the documentation
+  text <- case signature of
+    Just _ -> return signature
+    Nothing -> fetchData (definitionHover defnId) -- just first result
   let docStream = layoutSmart opts . pretty <$> text
   return $ reAnnotateS (const Nothing) <$> docStream
+  where
+    defnId = Glean.getId defn
+
+definitionSignature :: Glean.IdOf Scip.Definition -> Angle Text
+definitionSignature defnId = vars $ \text signature ->
+  text `where_` [
+    wild .= predicate @Scip.DefinitionSignature (
+      rec $
+        field @"defn" (asPredicate (factId defnId)) $
+        field @"signature" (asPredicate signature)
+      end),
+    signature .= predicate @Scip.Documentation text
+  ]
 
 definitionHover :: Glean.IdOf Scip.Definition -> Angle Text
 definitionHover defnId = vars $ \text docText ->

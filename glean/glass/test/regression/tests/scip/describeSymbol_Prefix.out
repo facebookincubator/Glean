@@ -32,6 +32,7 @@
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
+        "signature": "pub enum Prefix",
         "sym": "test/rs/rust-analyzer/cargo/relative_path/0.0.0/Prefix%23",
         "sym_location": {
             "filepath": "relative_path.rs",

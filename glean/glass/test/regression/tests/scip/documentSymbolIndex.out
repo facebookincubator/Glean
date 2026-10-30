@@ -19,6 +19,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "extern crate relative_path"
                         }
                     },
                     "range": {
@@ -44,6 +47,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -69,7 +75,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "The relative path compared to the prefix"
+                            "aString": "pub fn path(&self) -> &Path"
                         }
                     },
                     "range": {
@@ -95,6 +101,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -130,7 +139,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "Representation invariant: the empty path is always encoded as `None`.\nThis allows us to construct `RelativePath` in `const` contexts\n(because `Path::new` is not a `const fn`)."
+                            "aString": "path: {unknown}"
                         }
                     },
                     "range": {
@@ -166,6 +175,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -191,7 +203,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "The relative path compared to the prefix as a string"
+                            "aString": "pub fn path_str(&self) -> &str"
                         }
                     },
                     "range": {
@@ -217,6 +229,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -252,7 +267,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "The relative path compared to the prefix"
+                            "aString": "pub fn path(&self) -> &Path"
                         }
                     },
                     "range": {
@@ -288,6 +303,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -311,6 +329,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -344,6 +365,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub fn prefix(&self) -> Prefix"
                         }
                     },
                     "range": {
@@ -369,6 +393,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -402,6 +429,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "prefix: Prefix"
                         }
                     },
                     "range": {
@@ -437,6 +467,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -460,6 +493,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub fn is_hhi(&self) -> bool"
                         }
                     },
                     "range": {
@@ -485,6 +521,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -518,6 +557,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "prefix: Prefix"
                         }
                     },
                     "range": {
@@ -551,6 +593,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub fn is_hhi(self) -> bool"
                         }
                     },
                     "range": {
@@ -586,6 +631,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -609,6 +657,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "ctx: &RelativePathCtx"
                         }
                     },
                     "range": {
@@ -632,6 +683,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub struct RelativePathCtx"
                         }
                     },
                     "range": {
@@ -665,6 +719,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub fn to_absolute(&self, ctx: &RelativePathCtx) -> PathBuf"
                         }
                     },
                     "range": {
@@ -690,6 +747,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -723,6 +783,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -756,6 +819,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "ctx: &RelativePathCtx"
                         }
                     },
                     "range": {
@@ -789,6 +855,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "prefix: Prefix"
                         }
                     },
                     "range": {
@@ -822,6 +891,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub fn prefix_path(&self, prefix: Prefix) -> &Path"
                         }
                     },
                     "range": {
@@ -857,7 +929,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "The relative path compared to the prefix"
+                            "aString": "pub fn path(&self) -> &Path"
                         }
                     },
                     "range": {
@@ -893,6 +965,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub struct RelativePath"
                         }
                     },
                     "range": {
@@ -928,6 +1003,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -951,6 +1029,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "f: &mut {unknown}"
                         }
                     },
                     "range": {
@@ -974,6 +1055,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result"
                         }
                     },
                     "range": {
@@ -999,6 +1083,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub struct RelativePath"
                         }
                     },
                     "range": {
@@ -1034,6 +1121,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -1057,6 +1147,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "f: &mut {unknown}"
                         }
                     },
                     "range": {
@@ -1080,6 +1173,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result"
                         }
                     },
                     "range": {
@@ -1105,6 +1201,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub struct RelativePath"
                         }
                     },
                     "range": {
@@ -1140,6 +1239,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -1163,6 +1265,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "other: &RelativePath"
                         }
                     },
                     "range": {
@@ -1186,6 +1291,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "fn cmp(&self, other: &Self) -> std::cmp::Ordering"
                         }
                     },
                     "range": {
@@ -1211,6 +1319,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -1244,6 +1355,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "prefix: Prefix"
                         }
                     },
                     "range": {
@@ -1279,6 +1393,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "other: &RelativePath"
                         }
                     },
                     "range": {
@@ -1312,6 +1429,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "prefix: Prefix"
                         }
                     },
                     "range": {
@@ -1347,6 +1467,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -1380,6 +1503,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "other: &RelativePath"
                         }
                     },
                     "range": {
@@ -1415,7 +1541,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "The relative path compared to the prefix"
+                            "aString": "pub fn path(&self) -> &Path"
                         }
                     },
                     "range": {
@@ -1451,7 +1577,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "The relative path compared to the prefix"
+                            "aString": "pub fn path(&self) -> &Path"
                         }
                     },
                     "range": {
@@ -1487,6 +1613,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub struct RelativePath"
                         }
                     },
                     "range": {
@@ -1522,6 +1651,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -1545,6 +1677,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "other: &RelativePath"
                         }
                     },
                     "range": {
@@ -1568,6 +1703,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering>"
                         }
                     },
                     "range": {
@@ -1593,6 +1731,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -1626,6 +1767,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "other: &RelativePath"
                         }
                     },
                     "range": {
@@ -1661,6 +1805,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub struct RelativePath"
                         }
                     },
                     "range": {
@@ -1696,6 +1843,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "S: Serializer + ?Sized"
                         }
                     },
                     "range": {
@@ -1719,6 +1869,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "S: Serializer + ?Sized"
                         }
                     },
                     "range": {
@@ -1752,6 +1905,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "S: Serializer + ?Sized"
                         }
                     },
                     "range": {
@@ -1785,6 +1941,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "S: Serializer + ?Sized"
                         }
                     },
                     "range": {
@@ -1818,6 +1977,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -1841,6 +2003,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "serializer: S"
                         }
                     },
                     "range": {
@@ -1866,7 +2031,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "Serialize this value into the given Serde serializer.\n\nSee the [Implementing `Serialize`] section of the manual for more\ninformation about how to implement this method.\n\n```edition2021\nuse serde::ser::{Serialize, SerializeStruct, Serializer};\n\nstruct Person {\n    name: String,\n    age: u8,\n    phones: Vec<String>,\n}\n\n// This is what #[derive(Serialize)] would generate.\nimpl Serialize for Person {\n    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>\n    where\n        S: Serializer,\n    {\n        let mut s = serializer.serialize_struct(\"Person\", 3)?;\n        s.serialize_field(\"name\", &self.name)?;\n        s.serialize_field(\"age\", &self.age)?;\n        s.serialize_field(\"phones\", &self.phones)?;\n        s.end()\n    }\n}\n```\n\n[Implementing `Serialize`]: https://serde.rs/impl-serialize.html"
+                            "aString": "fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>\nwhere\n    S: serde::Serializer,"
                         }
                     },
                     "range": {
@@ -1892,6 +2057,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -1925,6 +2093,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let path_str: {unknown}"
                         }
                     },
                     "range": {
@@ -1950,6 +2121,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "serializer: S"
                         }
                     },
                     "range": {
@@ -1985,6 +2159,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "'de"
                         }
                     },
                     "range": {
@@ -2008,6 +2185,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "'de"
                         }
                     },
                     "range": {
@@ -2041,6 +2221,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub struct RelativePath"
                         }
                     },
                     "range": {
@@ -2076,6 +2259,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "D: Deserializer<'de> + ?Sized"
                         }
                     },
                     "range": {
@@ -2099,6 +2285,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "D: Deserializer<'de> + ?Sized"
                         }
                     },
                     "range": {
@@ -2132,6 +2321,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "D: Deserializer<'de> + ?Sized"
                         }
                     },
                     "range": {
@@ -2165,6 +2357,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "deserializer: D"
                         }
                     },
                     "range": {
@@ -2190,7 +2385,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "Deserialize this value from the given Serde deserializer.\n\nSee the [Implementing `Deserialize`][impl-deserialize] section of the\nmanual for more information about how to implement this method.\n\n[impl-deserialize]: https://serde.rs/impl-deserialize.html"
+                            "aString": "fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>\nwhere\n    D: serde::Deserializer<'de>,"
                         }
                     },
                     "range": {
@@ -2216,6 +2411,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "'de"
                         }
                     },
                     "range": {
@@ -2249,6 +2447,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "D: Deserializer<'de> + ?Sized"
                         }
                     },
                     "range": {
@@ -2284,6 +2485,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "struct Visitor"
                         }
                     },
                     "range": {
@@ -2309,6 +2513,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "'de"
                         }
                     },
                     "range": {
@@ -2332,6 +2539,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "'de"
                         }
                     },
                     "range": {
@@ -2365,6 +2575,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "struct Visitor"
                         }
                     },
                     "range": {
@@ -2400,6 +2613,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub struct RelativePath"
                         }
                     },
                     "range": {
@@ -2435,7 +2651,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "The value produced by this visitor."
+                            "aString": "pub(super) type Value = RelativePath"
                         }
                     },
                     "range": {
@@ -2461,6 +2677,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &Visitor"
                         }
                     },
                     "range": {
@@ -2484,6 +2703,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "formatter: &mut {unknown}"
                         }
                     },
                     "range": {
@@ -2509,7 +2731,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "Format a message stating what data this Visitor expects to receive.\n\nThis is used in error messages. The message should complete the sentence\n\"This Visitor expects to receive ...\", for example the message could be\n\"an integer between 0 and 64\". The message should not be capitalized and\nshould not end with a period.\n\n```edition2021\n# use std::fmt;\n#\n# struct S {\n#     max: usize,\n# }\n#\n# impl<'de> serde::de::Visitor<'de> for S {\n#     type Value = ();\n#\nfn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {\n    write!(formatter, \"an integer between 0 and {}\", self.max)\n}\n# }\n```"
+                            "aString": "fn expecting(&self, formatter: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result"
                         }
                     },
                     "range": {
@@ -2535,6 +2757,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "E: Error + ?Sized"
                         }
                     },
                     "range": {
@@ -2558,6 +2783,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "E: Error + ?Sized"
                         }
                     },
                     "range": {
@@ -2591,6 +2819,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: Visitor"
                         }
                     },
                     "range": {
@@ -2614,6 +2845,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "value: &str"
                         }
                     },
                     "range": {
@@ -2637,6 +2871,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub struct RelativePath"
                         }
                     },
                     "range": {
@@ -2672,7 +2909,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "The input contains a string. The lifetime of the string is ephemeral and\nit may be destroyed after this method returns.\n\nThis method allows the `Deserializer` to avoid a copy by retaining\nownership of any buffered data. `Deserialize` implementations that do\nnot benefit from taking ownership of `String` data should indicate that\nto the deserializer by using `Deserializer::deserialize_str` rather than\n`Deserializer::deserialize_string`.\n\nIt is never correct to implement `visit_string` without implementing\n`visit_str`. Implement neither, both, or just `visit_str`."
+                            "aString": "fn visit_str<E>(self, value: &str) -> Result<RelativePath, E>\nwhere\n    E: serde::de::Error,"
                         }
                     },
                     "range": {
@@ -2698,6 +2935,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "E: Error + ?Sized"
                         }
                     },
                     "range": {
@@ -2733,6 +2973,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "value: &str"
                         }
                     },
                     "range": {
@@ -2766,6 +3009,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let mut split: {unknown}"
                         }
                     },
                     "range": {
@@ -2791,6 +3037,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let mut split: {unknown}"
                         }
                     },
                     "range": {
@@ -2824,6 +3073,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let prefix_str: {unknown}"
                         }
                     },
                     "range": {
@@ -2849,6 +3101,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let mut split: {unknown}"
                         }
                     },
                     "range": {
@@ -2882,6 +3137,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let path_str: {unknown}"
                         }
                     },
                     "range": {
@@ -2907,6 +3165,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let prefix_str: {unknown}"
                         }
                     },
                     "range": {
@@ -2940,6 +3201,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let prefix: Prefix"
                         }
                     },
                     "range": {
@@ -2965,6 +3229,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -2998,6 +3265,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Root"
                         }
                     },
                     "range": {
@@ -3033,6 +3303,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -3066,6 +3339,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Hhi"
                         }
                     },
                     "range": {
@@ -3101,6 +3377,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -3134,6 +3413,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Tmp"
                         }
                     },
                     "range": {
@@ -3169,6 +3451,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -3202,6 +3487,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Dummy"
                         }
                     },
                     "range": {
@@ -3237,6 +3525,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "E: Error + ?Sized"
                         }
                     },
                     "range": {
@@ -3272,6 +3563,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: Visitor"
                         }
                     },
                     "range": {
@@ -3307,6 +3601,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let path_str: {unknown}"
                         }
                     },
                     "range": {
@@ -3340,6 +3637,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let path: !"
                         }
                     },
                     "range": {
@@ -3365,6 +3665,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let path_str: {unknown}"
                         }
                     },
                     "range": {
@@ -3388,6 +3691,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let path_str: {unknown}"
                         }
                     },
                     "range": {
@@ -3423,6 +3729,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let None: {unknown}"
                         }
                     },
                     "range": {
@@ -3448,6 +3757,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "E: Error + ?Sized"
                         }
                     },
                     "range": {
@@ -3483,6 +3795,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: Visitor"
                         }
                     },
                     "range": {
@@ -3518,6 +3833,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let prefix: Prefix"
                         }
                     },
                     "range": {
@@ -3551,6 +3869,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let path: !"
                         }
                     },
                     "range": {
@@ -3584,6 +3905,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub struct RelativePath"
                         }
                     },
                     "range": {
@@ -3619,7 +3943,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "Representation invariant: the empty path is always encoded as `None`.\nThis allows us to construct `RelativePath` in `const` contexts\n(because `Path::new` is not a `const fn`)."
+                            "aString": "path: {unknown}"
                         }
                     },
                     "range": {
@@ -3653,6 +3977,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "prefix: Prefix"
                         }
                     },
                     "range": {
@@ -3688,6 +4015,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "deserializer: D"
                         }
                     },
                     "range": {
@@ -3721,6 +4051,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "struct Visitor"
                         }
                     },
                     "range": {
@@ -3756,6 +4089,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub struct RelativePath"
                         }
                     },
                     "range": {
@@ -3791,6 +4127,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "'a"
                         }
                     },
                     "range": {
@@ -3814,6 +4153,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "'a"
                         }
                     },
                     "range": {
@@ -3847,6 +4189,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "'a"
                         }
                     },
                     "range": {
@@ -3880,6 +4225,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "'a"
                         }
                     },
                     "range": {
@@ -3913,6 +4261,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "A: Allocator + ?Sized"
                         }
                     },
                     "range": {
@@ -3936,6 +4287,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "A: Allocator + ?Sized"
                         }
                     },
                     "range": {
@@ -3969,6 +4323,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -3992,6 +4349,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "alloc: &A"
                         }
                     },
                     "range": {
@@ -4017,7 +4377,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "Allocate an OCaml representation of `self` using the given Allocator.\n\nImplementors of this method must not mutate or drop any values after\npassing them to `Allocator::add` (or invoking `to_ocamlrep` on them),\nelse `Allocator::memoized` may return incorrect results (this can\ngenerally only be done using internal-mutability types like `RefCell`,\n`Mutex`, or atomics, or by using `unsafe`)."
+                            "aString": "fn to_ocamlrep<'a, A>(&'a self, alloc: &'a A) -> ocamlrep::Value<'a>\nwhere\n    A: ocamlrep::Allocator,"
                         }
                     },
                     "range": {
@@ -4043,6 +4403,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "alloc: &A"
                         }
                     },
                     "range": {
@@ -4076,6 +4439,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let mut block: BlockBuilder<'_>"
                         }
                     },
                     "range": {
@@ -4101,6 +4467,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -4134,6 +4503,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "alloc: &A"
                         }
                     },
                     "range": {
@@ -4167,6 +4539,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "alloc: &A"
                         }
                     },
                     "range": {
@@ -4200,6 +4575,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let mut block: BlockBuilder<'_>"
                         }
                     },
                     "range": {
@@ -4233,6 +4611,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "prefix: Prefix"
                         }
                     },
                     "range": {
@@ -4268,6 +4649,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -4301,6 +4685,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "alloc: &A"
                         }
                     },
                     "range": {
@@ -4334,6 +4721,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "alloc: &A"
                         }
                     },
                     "range": {
@@ -4367,6 +4757,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let mut block: BlockBuilder<'_>"
                         }
                     },
                     "range": {
@@ -4402,7 +4795,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "The relative path compared to the prefix"
+                            "aString": "pub fn path(&self) -> &Path"
                         }
                     },
                     "range": {
@@ -4438,6 +4831,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let mut block: BlockBuilder<'_>"
                         }
                     },
                     "range": {
@@ -4473,6 +4869,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -4498,6 +4897,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub struct RelativePath"
                         }
                     },
                     "range": {
@@ -4533,6 +4935,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "value: Value<'_>"
                         }
                     },
                     "range": {
@@ -4558,7 +4963,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "Convert the given ocamlrep Value to a value of type `Self`, if possible."
+                            "aString": "fn from_ocamlrep(value: ocamlrep::Value<'_>) -> Result<Self, ocamlrep::FromError>"
                         }
                     },
                     "range": {
@@ -4584,6 +4989,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "value: Value<'_>"
                         }
                     },
                     "range": {
@@ -4617,6 +5025,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let block: {unknown}"
                         }
                     },
                     "range": {
@@ -4642,6 +5053,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let block: {unknown}"
                         }
                     },
                     "range": {
@@ -4675,6 +5089,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let prefix: Prefix"
                         }
                     },
                     "range": {
@@ -4700,6 +5117,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let block: {unknown}"
                         }
                     },
                     "range": {
@@ -4733,6 +5153,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let path: {unknown}"
                         }
                     },
                     "range": {
@@ -4758,6 +5181,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let prefix: Prefix"
                         }
                     },
                     "range": {
@@ -4791,6 +5217,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let path: {unknown}"
                         }
                     },
                     "range": {
@@ -4824,6 +5253,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub fn make(prefix: Prefix, path: PathBuf) -> Self"
                         }
                     },
                     "range": {
@@ -4859,6 +5291,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "T: ?Sized"
                         }
                     },
                     "range": {
@@ -4882,6 +5317,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "T: ?Sized"
                         }
                     },
                     "range": {
@@ -4915,6 +5353,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub type Map<T> = std::collections::BTreeMap<RelativePath, T>"
                         }
                     },
                     "range": {
@@ -4938,6 +5379,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub struct RelativePath"
                         }
                     },
                     "range": {
@@ -4973,6 +5417,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Root"
                         }
                     },
                     "range": {
@@ -4998,6 +5445,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub mod map"
                         }
                     },
                     "range": {
@@ -5023,6 +5473,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub type Map<T> = std::collections::BTreeMap<RelativePath, T>"
                         }
                     },
                     "range": {
@@ -5056,6 +5509,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "extern crate relative_path"
                         }
                     },
                     "range": {
@@ -5091,6 +5547,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub struct RelativePathCtx"
                         }
                     },
                     "range": {
@@ -5116,6 +5575,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub root: {unknown}"
                         }
                     },
                     "range": {
@@ -5141,6 +5603,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub hhi: {unknown}"
                         }
                     },
                     "range": {
@@ -5166,6 +5631,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Hhi"
                         }
                     },
                     "range": {
@@ -5191,6 +5659,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub tmp: {unknown}"
                         }
                     },
                     "range": {
@@ -5216,6 +5687,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub dummy: {unknown}"
                         }
                     },
                     "range": {
@@ -5241,6 +5715,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub struct RelativePathCtx"
                         }
                     },
                     "range": {
@@ -5276,6 +5753,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePathCtx"
                         }
                     },
                     "range": {
@@ -5299,6 +5779,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "prefix: Prefix"
                         }
                     },
                     "range": {
@@ -5322,6 +5805,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -5355,6 +5841,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub fn prefix_path(&self, prefix: Prefix) -> &Path"
                         }
                     },
                     "range": {
@@ -5380,6 +5869,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "prefix: Prefix"
                         }
                     },
                     "range": {
@@ -5415,6 +5907,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePathCtx"
                         }
                     },
                     "range": {
@@ -5448,6 +5943,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -5481,6 +5979,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Root"
                         }
                     },
                     "range": {
@@ -5514,6 +6015,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub root: {unknown}"
                         }
                     },
                     "range": {
@@ -5549,6 +6053,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePathCtx"
                         }
                     },
                     "range": {
@@ -5582,6 +6089,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -5615,6 +6125,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Hhi"
                         }
                     },
                     "range": {
@@ -5648,6 +6161,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub hhi: {unknown}"
                         }
                     },
                     "range": {
@@ -5683,6 +6199,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePathCtx"
                         }
                     },
                     "range": {
@@ -5716,6 +6235,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -5749,6 +6271,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Tmp"
                         }
                     },
                     "range": {
@@ -5782,6 +6307,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub tmp: {unknown}"
                         }
                     },
                     "range": {
@@ -5817,6 +6345,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Dummy"
                         }
                     },
                     "range": {
@@ -5842,6 +6373,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePathCtx"
                         }
                     },
                     "range": {
@@ -5875,6 +6409,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -5908,6 +6445,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Dummy"
                         }
                     },
                     "range": {
@@ -5941,6 +6481,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub dummy: {unknown}"
                         }
                     },
                     "range": {
@@ -5976,6 +6519,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "mod tests"
                         }
                     },
                     "range": {
@@ -6001,6 +6547,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "extern crate relative_path"
                         }
                     },
                     "range": {
@@ -6036,6 +6585,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Tmp"
                         }
                     },
                     "range": {
@@ -6061,6 +6613,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "fn test_valid_usize_prefix()"
                         }
                     },
                     "range": {
@@ -6086,6 +6641,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let valid_prefix: usize"
                         }
                     },
                     "range": {
@@ -6111,6 +6669,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let valid_prefix: usize"
                         }
                     },
                     "range": {
@@ -6144,6 +6705,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -6177,6 +6741,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -6210,6 +6777,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Dummy"
                         }
                     },
                     "range": {
@@ -6245,6 +6815,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "fn test_invalid_usize_prefix()"
                         }
                     },
                     "range": {
@@ -6270,6 +6843,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let invalid_prefix: usize"
                         }
                     },
                     "range": {
@@ -6295,6 +6871,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "let invalid_prefix: usize"
                         }
                     },
                     "range": {
@@ -6328,6 +6907,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -6363,6 +6945,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -6398,6 +6983,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -6433,6 +7021,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: Prefix"
                         }
                     },
                     "range": {
@@ -6456,6 +7047,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub fn is_hhi(self) -> bool"
                         }
                     },
                     "range": {
@@ -6481,6 +7075,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -6516,6 +7113,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "type Error = String"
                         }
                     },
                     "range": {
@@ -6541,6 +7141,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "prefix_raw: usize"
                         }
                     },
                     "range": {
@@ -6564,6 +7167,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "fn try_from(prefix_raw: usize) -> Result<Self, String>"
                         }
                     },
                     "range": {
@@ -6589,6 +7195,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "prefix_raw: usize"
                         }
                     },
                     "range": {
@@ -6624,6 +7233,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -6657,6 +7269,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Root"
                         }
                     },
                     "range": {
@@ -6692,6 +7307,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -6725,6 +7343,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Hhi"
                         }
                     },
                     "range": {
@@ -6760,6 +7381,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -6793,6 +7417,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Dummy"
                         }
                     },
                     "range": {
@@ -6828,6 +7455,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -6861,6 +7491,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Tmp"
                         }
                     },
                     "range": {
@@ -6896,6 +7529,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -6931,6 +7567,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &Prefix"
                         }
                     },
                     "range": {
@@ -6954,6 +7593,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "f: &mut {unknown}"
                         }
                     },
                     "range": {
@@ -6977,6 +7619,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result"
                         }
                     },
                     "range": {
@@ -7002,6 +7647,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &Prefix"
                         }
                     },
                     "range": {
@@ -7037,6 +7685,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Root"
                         }
                     },
                     "range": {
@@ -7072,6 +7723,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Hhi"
                         }
                     },
                     "range": {
@@ -7107,6 +7761,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Tmp"
                         }
                     },
                     "range": {
@@ -7142,6 +7799,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Dummy"
                         }
                     },
                     "range": {
@@ -7177,6 +7837,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub struct RelativePath"
                         }
                     },
                     "range": {
@@ -7202,6 +7865,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -7235,6 +7901,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "prefix: Prefix"
                         }
                     },
                     "range": {
@@ -7262,7 +7931,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "Representation invariant: the empty path is always encoded as `None`.\nThis allows us to construct `RelativePath` in `const` contexts\n(because `Path::new` is not a `const fn`)."
+                            "aString": "path: {unknown}"
                         }
                     },
                     "range": {
@@ -7288,6 +7957,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub struct RelativePath"
                         }
                     },
                     "range": {
@@ -7323,6 +7995,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "prefix: Prefix"
                         }
                     },
                     "range": {
@@ -7346,6 +8021,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "path: {unknown}"
                         }
                     },
                     "range": {
@@ -7369,6 +8047,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -7402,6 +8083,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub fn make(prefix: Prefix, path: PathBuf) -> Self"
                         }
                     },
                     "range": {
@@ -7427,6 +8111,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "prefix: Prefix"
                         }
                     },
                     "range": {
@@ -7460,6 +8147,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "prefix: Prefix"
                         }
                     },
                     "range": {
@@ -7495,6 +8185,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "path: {unknown}"
                         }
                     },
                     "range": {
@@ -7530,7 +8223,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "Representation invariant: the empty path is always encoded as `None`.\nThis allows us to construct `RelativePath` in `const` contexts\n(because `Path::new` is not a `const fn`)."
+                            "aString": "path: {unknown}"
                         }
                     },
                     "range": {
@@ -7566,6 +8259,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "path: {unknown}"
                         }
                     },
                     "range": {
@@ -7601,6 +8297,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub const EMPTY: Self"
                         }
                     },
                     "range": {
@@ -7626,6 +8325,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub enum Prefix"
                         }
                     },
                     "range": {
@@ -7659,6 +8361,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Dummy"
                         }
                     },
                     "range": {
@@ -7692,6 +8397,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "prefix: Prefix"
                         }
                     },
                     "range": {
@@ -7729,7 +8437,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "Representation invariant: the empty path is always encoded as `None`.\nThis allows us to construct `RelativePath` in `const` contexts\n(because `Path::new` is not a `const fn`)."
+                            "aString": "path: {unknown}"
                         }
                     },
                     "range": {
@@ -7765,6 +8473,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -7788,6 +8499,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub fn is_empty(&self) -> bool"
                         }
                     },
                     "range": {
@@ -7813,6 +8527,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -7846,6 +8563,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub const EMPTY: Self"
                         }
                     },
                     "range": {
@@ -7881,6 +8601,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -7904,6 +8627,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "s: impl ?Sized"
                         }
                     },
                     "range": {
@@ -7927,6 +8653,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "pub fn has_extension(&self, s: impl AsRef<Path>) -> bool"
                         }
                     },
                     "range": {
@@ -7952,6 +8681,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "self: &RelativePath"
                         }
                     },
                     "range": {
@@ -7985,6 +8717,9 @@
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "s: impl ?Sized"
                         }
                     },
                     "range": {
@@ -8020,7 +8755,7 @@
                             "aString": ""
                         },
                         "symbolSignature": {
-                            "aString": "The relative path compared to the prefix"
+                            "aString": "pub fn path(&self) -> &Path"
                         }
                     },
                     "range": {
