@@ -13,11 +13,21 @@
 
 #pragma once
 
+#include <deque>
+#include <map>
+#include <set>
+#include <stdexcept>
+#include <string>
+#include <tuple>
+#include <unordered_map>
+#include <vector>
+
 #include <boost/icl/interval_set.hpp>
 #include <boost/operators.hpp>
 #include <boost/variant.hpp>
-#include <folly/Format.h>
-#include <tuple>
+#include <folly/Conv.h>
+#include <folly/FBString.h>
+#include <folly/Optional.h>
 
 #include "glean/rts/binary.h"
 #include "glean/rts/cache.h"
