@@ -74,6 +74,13 @@ import Util.STM
 foreign import ccall unsafe "unistd.h _exit"
   c_exitImmediately :: CInt -> IO ()
 
+-- | How long to wait before 'c_exitImmediately'. The Scuba logger only queues
+-- its samples, and the Scribe client sends them from a background thread, in
+-- batches every 25ms. Exiting without waiting loses the samples logged just
+-- before, such as those of skipped incomplete backups.
+exitGracePeriod :: Seconds
+exitGracePeriod = 2
+
 
 type PortNumber = Int
 
@@ -284,6 +291,7 @@ waitForTerminateSignalsAndGracefulShutdown
       -- exit(3) in the unix package and would run the very atexit/static-dtor
       -- teardown we are trying to avoid.
       flush
+      sleep exitGracePeriod
       c_exitImmediately 0
 
   where
