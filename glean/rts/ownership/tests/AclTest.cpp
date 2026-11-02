@@ -10,6 +10,9 @@
 #include <gtest/gtest.h>
 #include <set>
 #include <stdexcept>
+#include <string_view>
+#include <utility>
+#include <vector>
 
 #include "glean/rts/ownership/acl.h"
 
@@ -55,6 +58,39 @@ std::string usetToString(const Usets& usets, UsetId id, UsetId firstSetId) {
   });
   result += ")";
   return result;
+}
+
+// Helper: whether a caller selecting `units` can read facts owned by `owner`.
+// IDs without an expression in `usets` are units.
+bool allows(const Usets& usets, UsetId owner, const std::set<UnitId>& units) {
+  if (owner == INVALID_USET) {
+    return false;
+  }
+  const auto* expression = usets.lookupById(owner);
+  if (!expression) {
+    return units.count(owner) > 0;
+  }
+  bool any = false;
+  bool all = true;
+  expression->exp.set.foreach([&](UsetId member) {
+    const bool allowed = allows(usets, member, units);
+    any = any || allowed;
+    all = all && allowed;
+  });
+  return expression->exp.op == Or ? any : all;
+}
+
+constexpr UnitId kPublic = 0;
+constexpr UnitId kAlpha = 1;
+constexpr UnitId kBravo = 2;
+
+// Helper: the owner that `rules` give `path`, built in `usets`.
+UsetId ownerOfPath(
+    Usets& usets,
+    std::vector<DirectoryACLRule> rules,
+    std::string_view path) {
+  ACLExpressionBuilder builder(usets, kPublic);
+  return builder.ownerForPath(DirectoryACLRules(std::move(rules)).match(path));
 }
 
 } // namespace
@@ -131,6 +167,94 @@ TEST(ACLExpressionBuilderTest, EmptyMatchingLevelIsInaccessible) {
   ACLExpressionBuilder builder(usets, /* publicUnit */ 0);
 
   EXPECT_EQ(builder.ownerForPath({{1}, {}}), INVALID_USET);
+}
+
+TEST(DirectoryACLRulesTest, PathWithoutMatchingRuleIsPublic) {
+  Usets usets(/* firstId */ 100);
+
+  const auto owner = ownerOfPath(usets, {{"alpha", {kAlpha}}}, "public/p.cpp");
+
+  EXPECT_TRUE(allows(usets, owner, {kPublic}));
+}
+
+TEST(DirectoryACLRulesTest, NestedRulesMustAllBeSatisfied) {
+  Usets usets(/* firstId */ 100);
+
+  const auto owner = ownerOfPath(
+      usets,
+      {{"alpha/bravo", {kBravo}}, {"alpha", {kAlpha}}},
+      "alpha/bravo/b.cpp");
+
+  EXPECT_FALSE(allows(usets, owner, {kPublic, kAlpha}));
+  EXPECT_FALSE(allows(usets, owner, {kPublic, kBravo}));
+  EXPECT_TRUE(allows(usets, owner, {kPublic, kAlpha, kBravo}));
+}
+
+TEST(DirectoryACLRulesTest, AnyGroupOfARuleSatisfiesIt) {
+  Usets usets(/* firstId */ 100);
+
+  const auto owner =
+      ownerOfPath(usets, {{"either", {kAlpha, kBravo}}}, "either/e.cpp");
+
+  EXPECT_FALSE(allows(usets, owner, {kPublic}));
+  EXPECT_TRUE(allows(usets, owner, {kPublic, kAlpha}));
+  EXPECT_TRUE(allows(usets, owner, {kPublic, kBravo}));
+}
+
+TEST(DirectoryACLRulesTest, RuleWithoutGroupsIsInaccessible) {
+  Usets usets(/* firstId */ 100);
+
+  const auto owner =
+      ownerOfPath(usets, {{"denied", {}}, {"alpha", {kAlpha}}}, "denied/d.cpp");
+
+  EXPECT_EQ(owner, INVALID_USET);
+}
+
+TEST(DirectoryACLRulesTest, RulesMatchWholePathComponents) {
+  const std::vector<DirectoryACLRule> rules{{"alpha", {kAlpha}}};
+  for (const auto& [path, restricted] :
+       std::vector<std::pair<std::string_view, bool>>{
+           {"alpha", true},
+           {"alpha/a.cpp", true},
+           {"alphabet/x.cpp", false},
+           {"alph", false}}) {
+    SCOPED_TRACE(path);
+    Usets usets(/* firstId */ 100);
+
+    const auto owner = ownerOfPath(usets, rules, path);
+
+    EXPECT_EQ(allows(usets, owner, {kPublic}), !restricted);
+    EXPECT_TRUE(allows(usets, owner, {kPublic, kAlpha}));
+  }
+}
+
+TEST(DirectoryACLRulesTest, TrailingSeparatorsMatchWholePathComponents) {
+  const DirectoryACLRules rules({{"alpha/", {kAlpha}}});
+  const std::vector<std::vector<UnitId>> restricted{{kAlpha}};
+  const std::vector<std::vector<UnitId>> publicPath;
+
+  EXPECT_EQ(rules.match("alpha"), restricted);
+  EXPECT_EQ(rules.match("alpha/a.cpp"), restricted);
+  EXPECT_EQ(rules.match("alphabet/x.cpp"), publicPath);
+}
+
+TEST(DirectoryACLRulesTest, TrailingSeparatorKeepsDeniedPathsInaccessible) {
+  Usets usets(/* firstId */ 100);
+
+  const auto owner = ownerOfPath(usets, {{"denied/", {}}}, "denied/d.cpp");
+
+  EXPECT_EQ(owner, INVALID_USET);
+}
+
+TEST(DirectoryACLRulesTest, EquivalentDirectoryPrefixesKeepEveryRestriction) {
+  Usets usets(/* firstId */ 100);
+
+  const auto owner = ownerOfPath(
+      usets, {{"alpha", {kAlpha}}, {"alpha/", {kBravo}}}, "alpha/a.cpp");
+
+  EXPECT_FALSE(allows(usets, owner, {kPublic, kAlpha}));
+  EXPECT_FALSE(allows(usets, owner, {kPublic, kBravo}));
+  EXPECT_TRUE(allows(usets, owner, {kPublic, kAlpha, kBravo}));
 }
 
 // Verify that facts owned by a promoted set with matching UnitIds are

@@ -11,12 +11,47 @@
 #include "glean/rts/timer.h"
 
 #include <folly/container/F14Map.h>
+#include <algorithm>
 #include <set>
 #include <stdexcept>
 
 namespace facebook {
 namespace glean {
 namespace rts {
+
+DirectoryACLRules::DirectoryACLRules(std::vector<DirectoryACLRule> rules)
+    : rules_(std::move(rules)) {
+  for (auto& rule : rules_) {
+    while (rule.directory.size() > 1 && rule.directory.back() == '/') {
+      rule.directory.pop_back();
+    }
+  }
+  std::sort(rules_.begin(), rules_.end(), [](const auto& a, const auto& b) {
+    return a.directory < b.directory;
+  });
+}
+
+std::vector<std::vector<UnitId>> DirectoryACLRules::match(
+    std::string_view path) const {
+  std::vector<std::vector<UnitId>> matching;
+  for (auto prefix = path;;) {
+    auto rule = std::lower_bound(
+        rules_.begin(),
+        rules_.end(),
+        prefix,
+        [](const DirectoryACLRule& candidate, std::string_view directory) {
+          return std::string_view(candidate.directory) < directory;
+        });
+    for (; rule != rules_.end() && rule->directory == prefix; ++rule) {
+      matching.push_back(rule->groups);
+    }
+    const auto slash = prefix.rfind('/');
+    if (slash == std::string_view::npos) {
+      return matching;
+    }
+    prefix = prefix.substr(0, slash);
+  }
+}
 
 ACLExpressionBuilder::ACLExpressionBuilder(Usets& usets, UnitId publicUnit)
     : expressionBuilder_(usets), publicUnit_(publicUnit) {

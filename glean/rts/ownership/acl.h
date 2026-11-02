@@ -13,6 +13,7 @@
 #include "glean/rts/ownership/uset.h"
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace facebook {
@@ -32,6 +33,21 @@ struct ACLConfigEntry {
 struct DirectoryACLRule {
   std::string directory;
   std::vector<UnitId> groups;
+};
+
+/// The directory rules of a database, with trailing separators normalized and
+/// sorted to find the rules matching a source path.
+class DirectoryACLRules {
+ public:
+  explicit DirectoryACLRules(std::vector<DirectoryACLRule> rules);
+
+  /// The allowed groups of each rule matching `path`, the input of
+  /// ACLExpressionBuilder::ownerForPath. Rules for longer directories come
+  /// first.
+  std::vector<std::vector<UnitId>> match(std::string_view path) const;
+
+ private:
+  std::vector<DirectoryACLRule> rules_;
 };
 
 /// Per-file ACL assignment: a visibility source unit and its matching
