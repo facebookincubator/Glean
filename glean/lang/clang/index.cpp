@@ -26,6 +26,7 @@
 #include <folly/Conv.h>
 #include <folly/FileUtil.h>
 #include <folly/Range.h>
+#include <folly/String.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/json/json.h>
 
