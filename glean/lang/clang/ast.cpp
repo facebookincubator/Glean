@@ -6,6 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+#include <functional>
 #include <map>
 #include <string_view>
 #include <utility>
@@ -578,7 +579,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   };
 
   // Memoization of a function which can fail to produce a result
-  template <typename Key, typename Value, typename Proj = folly::Identity>
+  template <typename Key, typename Value, typename Proj = std::identity>
   struct MemoOptional {
     using key_type = Key;
     using value_type = Value;
