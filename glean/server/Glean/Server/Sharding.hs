@@ -55,7 +55,6 @@ import Foreign.C.Types (CInt(..))
 import System.Exit (die)
 import System.Posix.Signals (installHandler, sigTERM, Handler (Catch), sigINT)
 import System.Time.Extra ( showDuration, sleep, Seconds )
-import Util.Control.Exception ( swallow )
 import Util.EventBase ( EventBaseDataplane )
 import Util.Log ( vlog, logInfo, flush )
 import Util.STM
@@ -148,7 +147,7 @@ databasesUpdatedCallback
   -> MVar (Maybe [DbShard])
   -> HashSet Repo
   -> IO ()
-databasesUpdatedCallback evb shardKey currentShards dbs = swallow $ do
+databasesUpdatedCallback evb shardKey currentShards dbs =
   modifyMVar_ currentShards $ \prevShards -> do
     let newShards = sort $ map dbShard $ HashSet.toList dbs
 
@@ -164,9 +163,10 @@ databasesUpdatedCallback evb shardKey currentShards dbs = swallow $ do
 -- changes are detected, it waits 1s so that multiple changes are
 -- processed in a single batch, and then invokes the callback.
 --
--- The doPeriodically on the outside is just a fallback in case something
--- goes wrong; it ensures that the exception is caught and logged, and we
--- don't immediately retry in a loop.
+-- The doPeriodically on the outside catches and logs an exception, from the
+-- callback or elsewhere, and restarts the loop 30s later. The restart invokes
+-- the callback again even if the DBs haven't changed, so a failed update (e.g.
+-- a timed-out SMC call) is retried rather than lost until the next change.
 --
 dbUpdateNotifierThread
   :: Env

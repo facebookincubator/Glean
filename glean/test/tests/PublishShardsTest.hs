@@ -9,6 +9,8 @@
 module PublishShardsTest (main) where
 
 import Control.Concurrent.Async
+import Control.Exception (throwIO)
+import Control.Monad (when)
 import Util.STM
 import Data.Foldable (toList)
 import Data.Time
@@ -38,12 +40,22 @@ main =
         [ TestLabel "publish incomplete DBs" publishIncompleteDBs
         , TestLabel "publish complete DBs" publishCompleteDBs
         , TestLabel "stop publishing after timeout" stopPublishingCompletedDBs
+        , TestLabel "retry a failed publish" retryFailedPublish
         ]
 
 runTest :: Bool -> (IO [Repo] -> IO ()) -> IO ()
-runTest term test = do
+runTest term = runTestWith term (\_ -> return ())
+
+-- | Like 'runTest', running @beforePublish@ before each publish; if it throws,
+-- that publish fails.
+runTestWith :: Bool -> (Int -> IO ()) -> (IO [Repo] -> IO ()) -> IO ()
+runTestWith term beforePublish test = do
   published <- newTVarIO mempty
-  let callback = atomically . writeTVar published
+  attempts <- newTVarIO (0 :: Int)
+  let callback repos = do
+        attempt <- atomically $ stateTVar attempts $ \n -> (n, n + 1)
+        beforePublish attempt
+        atomically $ writeTVar published repos
   terminating <- newTVarIO term
   withTest setupFakeDBs setupCloudDBs $ \evb cfgAPI dbdir backupdir ->
     withDatabases evb (dbConfig dbdir $ serverConfig backupdir) cfgAPI $ \env ->
@@ -105,3 +117,16 @@ stopPublishingCompletedDBs = TestCase $
     assertBool
       "Stopped publishing completed DBs after timeout"
       (completeRepo `notElem` repos)
+
+-- The first publish fails and the DBs never change afterwards: the notifier
+-- must still call the callback again. The server's callback relies on this to
+-- retry an SMC update that failed, e.g. timed out.
+retryFailedPublish :: Test
+retryFailedPublish = TestCase $
+  runTestWith False failFirst $ \readShards -> do
+    repos <- readShards
+    assertBool "DBs are published after a failed publish"
+      (incompleteRepo `elem` repos)
+  where
+    failFirst attempt =
+      when (attempt == 0) $ throwIO $ userError "publish failed"
