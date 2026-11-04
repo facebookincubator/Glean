@@ -170,6 +170,33 @@ predicate FieldReference :
     field: FieldCoordinate,
   }
 
+# A definition-local literal path to one selection, in the canonical
+# `fb_graphql_path::selection_path::GraphQLSelectionPath` form: the
+# definition name, then `name` or `alias:name` per field, `on(Type)` per
+# typed inline fragment, and `spread(Fragment)` for a terminal fragment spread,
+# joined by `.`. For example `MyQuery.viewer.on(User).display_name:name` or
+# `MyFragment.friends.spread(FriendFields)`. A path stops at a fragment spread;
+# the fragment's own selections have paths rooted at the fragment.
+predicate LiteralPath : string
+
+# The selection named by a literal path. A field is located at its name token
+# (the span its FieldReference uses), a fragment spread at its fragment name.
+predicate LiteralPathSelection :
+  {
+    path: LiteralPath,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+
+# LiteralPathSelection keyed by file, to list the selections of a document.
+predicate FileLiteralPaths :
+  {
+    file: src.File,
+    span: src.ByteSpan,
+    path: LiteralPath,
+  } stored
+  { File, Span, Path } where LiteralPathSelection { Path, File, Span }
+
 predicate ScalarTypeDef :
   {
     name: Value,
