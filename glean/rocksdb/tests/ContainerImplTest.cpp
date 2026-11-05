@@ -16,14 +16,17 @@
 #include <filesystem>
 #include <limits>
 #include <optional>
+#include <random>
 #include <string>
 #include <vector>
 
 #include <fmt/core.h>
 #include <folly/Range.h>
 #include <folly/init/Init.h>
+#include <folly/system/HardwareConcurrency.h>
 #include <folly/testing/TestUtil.h>
 #include <rocksdb/db.h>
+#include <rocksdb/statistics.h>
 #include <rocksdb/table.h>
 #include <rocksdb/table_properties.h>
 
@@ -298,6 +301,51 @@ TEST_F(ContainerImplTest, BottommostZstdRecompressesNonOverlappingFiles) {
         fact = toString(v);
       });
   EXPECT_EQ(fact, std::optional<std::string>{"fact 4321 of predicate 2"});
+}
+
+TEST_F(ContainerImplTest, FullCompactionSplitsAcrossSubcompactions) {
+  if (folly::available_concurrency() < 2) {
+    GTEST_SKIP() << "subcompactions need at least two hardware threads";
+  }
+  // Without ZSTD, files with increasing keys are only moved down the levels,
+  // never rewritten, so there would be no compaction to split.
+  container_.reset();
+  tmpDir_ = std::make_unique<folly::test::TemporaryDirectory>();
+  container_ = std::make_unique<ContainerImpl>(
+      dbPath(),
+      Mode::Create,
+      ContainerOptions{.bottommost_zstd_dict_bytes = 4096},
+      folly::none);
+  // RocksDB only splits a compaction whose input is at least twice the target
+  // file size (64 MB by default), so shrink it rather than write 128 MB.
+  check(container_->db->SetOptions(
+      container_->family(Family::entities),
+      {{"target_file_size_base", "65536"}}));
+  constexpr uint64_t kBatches = 4;
+  constexpr uint64_t kRowsPerBatch = 1000;
+  std::mt19937_64 random(42);
+  for (uint64_t batch = 0; batch < kBatches; ++batch) {
+    auto writer = container_->write();
+    for (uint64_t i = 0; i < kRowsPerBatch; ++i) {
+      std::string incompressible(1024, '\0');
+      for (auto& c : incompressible) {
+        c = static_cast<char>(random());
+      }
+      writer.put(
+          Family::entities,
+          bytes(bigEndianKey(batch * kRowsPerBatch + i)),
+          bytes(incompressible));
+    }
+    writer.commit();
+    container_->flush();
+  }
+
+  container_->optimize(/*compact=*/true);
+
+  rocksdb::HistogramData subcompactions;
+  container_->statistics->histogramData(
+      rocksdb::NUM_SUBCOMPACTIONS_SCHEDULED, &subcompactions);
+  EXPECT_GT(subcompactions.max, 1);
 }
 
 TEST_F(ContainerImplTest, EntitiesHaveNoBloomFilterButKeysDo) {

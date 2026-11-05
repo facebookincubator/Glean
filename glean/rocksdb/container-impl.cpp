@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <limits>
 
+#include <folly/system/HardwareConcurrency.h>
 #include <rocksdb/filter_policy.h>
 #include <rocksdb/slice_transform.h>
 #include <rocksdb/statistics.h>
@@ -166,6 +167,16 @@ uint32_t zstdTrainingBytes(uint32_t dict_bytes) {
   return static_cast<uint32_t>(std::min<uint64_t>(
       dict_bytes * kTrainingToDictionaryRatio,
       std::numeric_limits<uint32_t>::max()));
+}
+
+/// How many threads the full compaction in optimize() may split each column
+/// family's compaction across. RocksDB runs each subcompaction on its own
+/// thread over a slice of the key range; with the default of one, rewriting a
+/// large DB (e.g. recompressing it with ZSTD) runs on a single core for hours.
+/// The cap leaves cores for other work on a server finishing several DBs.
+uint32_t fullCompactionThreads() {
+  constexpr uint32_t kMaxThreads = 16;
+  return std::clamp(folly::available_concurrency(), 1u, kMaxThreads);
 }
 
 } // namespace
@@ -378,6 +389,7 @@ void ContainerImpl::optimize(bool compact) {
         const auto nlevels = db->NumberLevels(handle);
         if (nlevels != 2) {
           rocksdb::CompactRangeOptions copts;
+          copts.max_subcompactions = fullCompactionThreads();
           if (options.bottommost_compression !=
               rocksdb::CompressionType::kDisableCompressionOption) {
             // Without this, files that don't overlap (e.g. in entities, whose
