@@ -44,7 +44,29 @@ struct Foo {
   /** Glean {"file": "some/module.thrift", "service": "MyService",
        "function": "multi_line"} */
   virtual void multi_line();
+
+  // Ordinary block comment: decoded, so annotations can stay out of the docs.
+  /* Glean {"file": "some/module.thrift", "service": "MyService", "function": "block_comment"} */
+  virtual void block_comment();
+
+  // Ordinary line comments spanning two lines: decoded.
+  // Glean {"file": "some/module.thrift", "service": "MyService",
+  //   "function": "line_comments"}
+  virtual void line_comments();
+
+  // Ordinary comment above a doc comment: decoded, and the doc is kept.
+  // Glean {"file": "some/module.thrift", "service": "MyService", "function": "above_doc"}
+  /** Docs for above_doc. */
+  virtual void above_doc();
+
+  // Ordinary comment after code: not attached to the next declaration.
+  virtual void before_trailing(); // Glean {"file": "some/module.thrift", "service": "MyService", "function": "trailing_skipped"}
+  virtual void after_trailing();
 };
+
+// Thrift struct annotated in an ordinary comment.
+// Glean {"file": "some/module.thrift", "name": "OrdinaryStruct", "kind": "struct"}
+struct OrdinaryStruct {};
 
 // Ligen class annotation at namespace scope: also skipped.
 /** Glean{"file":"some/mod.ligen","idl":"ligen","kind":"class","name":"LigenClass"} */

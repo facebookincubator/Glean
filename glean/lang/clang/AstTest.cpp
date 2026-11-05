@@ -759,6 +759,163 @@ struct MyStruct {
   EXPECT_EQ(result.count<Src::IndexFailure>(), 0);
 }
 
+TEST(AstTest, ReadsGleanAnnotationsFromOrdinaryComments) {
+  const auto result = indexCode(R"cpp(
+struct S {
+  /* Glean {"file": "some/module.thrift", "service": "MyService", "function": "block"} */
+  virtual void block();
+  // Glean {"file": "some/module.thrift", "service": "MyService", "function": "line"}
+  virtual void line();
+  // Glean {"file": "some/module.thrift", "service": "MyService",
+  //   "function": "lines"}
+  virtual void lines();
+  /* Glean {"file": "some/module.thrift", "service": "MyService",
+   *   "function": "starred"} */
+  virtual void starred();
+};
+)cpp");
+
+  ASSERT_TRUE(result.parsed);
+  EXPECT_EQ(result.count<Cxx::CxxToThrift>(), 4);
+  EXPECT_EQ(
+      result.thriftIdentifiers,
+      (Identifiers{"MyService", "block", "line", "lines", "starred"}));
+  EXPECT_EQ(result.count<Cxx::DeclarationComment>(), 0);
+  EXPECT_EQ(result.count<Src::IndexFailure>(), 0);
+}
+
+TEST(AstTest, ReadsGleanAnnotationsBesideDocComments) {
+  const auto result = indexCode(R"cpp(
+struct S {
+  // Glean {"file": "some/module.thrift", "service": "MyService", "function": "above"}
+  /** Docs for above, with braces {} and a semicolon; */
+  virtual void above();
+
+  // Glean {"file": "some/module.thrift", "service": "MyService", "function": "apart"}
+
+  /** Docs for apart. */
+  virtual void apart();
+
+  /** Docs that clang drops, since the annotation's braces separate them. */
+  // Glean {"file": "some/module.thrift", "service": "MyService", "function": "below"}
+  virtual void below();
+};
+)cpp");
+
+  ASSERT_TRUE(result.parsed);
+  EXPECT_EQ(result.count<Cxx::CxxToThrift>(), 3);
+  EXPECT_EQ(
+      result.thriftIdentifiers,
+      (Identifiers{"MyService", "above", "apart", "below"}));
+  EXPECT_EQ(result.count<Cxx::DeclarationComment>(), 2);
+  EXPECT_EQ(result.count<Src::IndexFailure>(), 0);
+}
+
+TEST(AstTest, DoesNotAttachOrdinaryCommentsAcrossDeclarationsOrFromTrailing) {
+  const auto result = indexCode(R"cpp(
+struct S {
+  // Glean {"file": "some/module.thrift", "service": "MyService", "function": "first"}
+  virtual void first(); virtual void second();
+  virtual void third(); // Glean {"file": "some/module.thrift", "service": "MyService", "function": "trailing"}
+  virtual void fourth();
+};
+)cpp");
+
+  ASSERT_TRUE(result.parsed);
+  EXPECT_EQ(result.count<Cxx::CxxToThrift>(), 1);
+  EXPECT_EQ(result.thriftIdentifiers, (Identifiers{"MyService", "first"}));
+  EXPECT_EQ(result.count<Src::IndexFailure>(), 0);
+}
+
+TEST(AstTest, PropagatesThriftContextFromOrdinaryComments) {
+  const auto result = indexCode(R"cpp(
+// Glean {"file": "some/module.thrift"}
+namespace module_constants {
+// Glean {"constant": "kConst"}
+inline constexpr int kConst = 1;
+} // namespace module_constants
+// Glean {"file": "some/module.thrift", "name": "MyStruct", "kind": "struct"}
+struct MyStruct {
+  // Glean {"field": "my_field"}
+  int my_field;
+};
+// Glean {"file": "some/module.thrift", "name": "MyEnum", "kind": "enum"}
+enum class MyEnum { A };
+)cpp");
+
+  ASSERT_TRUE(result.parsed);
+  EXPECT_EQ(result.count<Cxx::CxxToThrift>(), 5);
+  EXPECT_EQ(
+      result.thriftIdentifiers,
+      (Identifiers{"A", "MyEnum", "MyStruct", "kConst", "my_field"}));
+  EXPECT_EQ(result.count<Src::IndexFailure>(), 0);
+}
+
+TEST(AstTest, ReadsSidlEnumeratorAnnotationsFromOrdinaryComments) {
+  CapturingLogSink sink;
+  ScopedLogSink scopedSink(sink);
+  const auto result = indexCode(R"cpp(
+enum class E {
+  // Glean {"idl":"sidl","file":"x.sidl","name":"V","kind":"enumerator","line":2,"column":2,"endLine":2,"endColumn":3}
+  V = 0,
+  /* Glean {"idl":"sidl","file":"x.sidl","name":"W","kind":"enumerator","line":3,"column":2,"endLine":3,"endColumn":3} */
+  W = 1,
+};
+)cpp");
+
+  ASSERT_TRUE(result.parsed);
+  EXPECT_EQ(result.count<Cxx::CxxToSidl>(), 2);
+  EXPECT_EQ(result.count<Src::IndexFailure>(), 0);
+  EXPECT_EQ(sink.warningCount(), 0);
+}
+
+TEST(AstTest, DocCommentCannotSwallowOrdinaryCommentAnnotation) {
+  const auto result = indexCode(R"cpp(
+struct S {
+  // Glean {"file": "some/module.thrift", "service": "MyService", "function": "kept"}
+  /** Docs that mention Glean {"unterminated */
+  virtual void kept();
+};
+)cpp");
+
+  ASSERT_TRUE(result.parsed);
+  EXPECT_EQ(result.count<Cxx::CxxToThrift>(), 1);
+  EXPECT_EQ(result.thriftIdentifiers, (Identifiers{"MyService", "kept"}));
+  EXPECT_EQ(result.count<Cxx::DeclarationComment>(), 1);
+  EXPECT_EQ(result.count<Src::IndexFailure>(), 0);
+}
+
+TEST(AstTest, AttachesOrdinaryCommentsWhereClangAttachesDocComments) {
+  constexpr std::string_view code = R"cpp(
+#define DECLARE(name) virtual void name();
+// Glean {"file": "some/module.thrift", "name": "Box", "kind": "struct"}
+template <typename T>
+struct Box {
+  // Glean {"file": "some/module.thrift", "service": "MyService", "function": "get"}
+  T get() const;
+  // Glean {"file": "some/module.thrift", "service": "MyService", "function": "macro"}
+  DECLARE(macro)
+};
+int use(const Box<int>& box) { return box.get(); }
+)cpp";
+  std::string docCode(code);
+  for (size_t pos = 0;
+       (pos = docCode.find("// Glean", pos)) != std::string::npos;
+       pos += 3) {
+    docCode.replace(pos, 2, "///");
+  }
+
+  const auto ordinary = indexCode(std::string(code));
+  const auto doc = indexCode(docCode);
+
+  ASSERT_TRUE(ordinary.parsed);
+  ASSERT_TRUE(doc.parsed);
+  EXPECT_EQ(doc.count<Cxx::CxxToThrift>(), 3);
+  EXPECT_EQ(ordinary.count<Cxx::CxxToThrift>(), doc.count<Cxx::CxxToThrift>());
+  EXPECT_EQ(ordinary.thriftIdentifiers, doc.thriftIdentifiers);
+  EXPECT_EQ(ordinary.count<Src::IndexFailure>(), 0);
+}
+
 TEST(AstTest, RecordsMethodOverrideEdges) {
   const auto result = indexCode(R"cpp(
 struct Base {

@@ -6,8 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+#include <algorithm>
 #include <functional>
+#include <iterator>
 #include <map>
+#include <optional>
+#include <string>
 #include <string_view>
 #include <utility>
 #include <variant>
@@ -15,9 +19,14 @@
 
 #include <clang/AST/DeclBase.h>
 #include <clang/AST/DeclVisitor.h>
+#include <clang/AST/RawCommentList.h>
 #include <clang/AST/RecursiveASTVisitor.h>
+#include <clang/Basic/SourceManager.h>
 #include <clang/Index/USRGeneration.h>
+#include <clang/Lex/Preprocessor.h>
 #include <clang/Sema/SemaConsumer.h>
+#include <llvm/ADT/DenseMap.h>
+#include <llvm/ADT/SmallVector.h>
 #include <llvm/Config/llvm-config.h>
 #include <llvm/Support/SHA1.h>
 
@@ -547,6 +556,268 @@ std::vector<std::string> extractGleanJsonAnnotations(
   }
   return annotations;
 }
+
+// The locations where clang looks for the doc comment of `decl`, after
+// `getDeclLocsForCommentSearch` in clang/lib/AST/ASTContext.cpp.
+llvm::SmallVector<clang::SourceLocation, 2> commentSearchLocations(
+    const clang::Decl& decl,
+    const clang::SourceManager& sourceManager) {
+  if (decl.isImplicit()) {
+    return {};
+  }
+  if (const auto* function = clang::dyn_cast<clang::FunctionDecl>(&decl);
+      function &&
+      function->getTemplateSpecializationKind() ==
+          clang::TSK_ImplicitInstantiation) {
+    return {};
+  }
+  if (const auto* var = clang::dyn_cast<clang::VarDecl>(&decl); var &&
+      var->isStaticDataMember() &&
+      var->getTemplateSpecializationKind() ==
+          clang::TSK_ImplicitInstantiation) {
+    return {};
+  }
+  if (const auto* record = clang::dyn_cast<clang::CXXRecordDecl>(&decl);
+      record &&
+      record->getTemplateSpecializationKind() ==
+          clang::TSK_ImplicitInstantiation) {
+    return {};
+  }
+  if (const auto* specialization =
+          clang::dyn_cast<clang::ClassTemplateSpecializationDecl>(&decl)) {
+    const auto kind = specialization->getSpecializationKind();
+    if (kind == clang::TSK_ImplicitInstantiation ||
+        kind == clang::TSK_Undeclared) {
+      return {};
+    }
+  }
+  if (const auto* enum_ = clang::dyn_cast<clang::EnumDecl>(&decl); enum_ &&
+      enum_->getTemplateSpecializationKind() ==
+          clang::TSK_ImplicitInstantiation) {
+    return {};
+  }
+  if (const auto* tag = clang::dyn_cast<clang::TagDecl>(&decl);
+      tag && tag->isEmbeddedInDeclarator() && !tag->isCompleteDefinition()) {
+    return {};
+  }
+  if (clang::isa<clang::ParmVarDecl>(decl) ||
+      clang::isa<clang::TemplateTypeParmDecl>(decl) ||
+      clang::isa<clang::NonTypeTemplateParmDecl>(decl) ||
+      clang::isa<clang::TemplateTemplateParmDecl>(decl)) {
+    return {};
+  }
+
+  // Declarations that rarely have more than one declarator are found by their
+  // start, and the others by their name.
+  const bool byStart = clang::isa<clang::ObjCMethodDecl>(decl) ||
+      clang::isa<clang::ObjCContainerDecl>(decl) ||
+      clang::isa<clang::ObjCPropertyDecl>(decl) ||
+      clang::isa<clang::RedeclarableTemplateDecl>(decl) ||
+      clang::isa<clang::ClassTemplateSpecializationDecl>(decl) ||
+      clang::isa<clang::TypedefDecl>(decl);
+  const auto base = byStart ? decl.getBeginLoc() : decl.getLocation();
+  if (!decl.getLocation().isMacroID()) {
+    return {base};
+  }
+  // A declaration expanded from a macro takes the comment at the expansion,
+  // unless it is nested in another declaration from a macro, and otherwise the
+  // comment inside the macro.
+  llvm::SmallVector<clang::SourceLocation, 2> locations;
+  const auto* context = decl.getDeclContext();
+  if (!(context &&
+        clang::Decl::castFromDeclContext(context)->getLocation().isMacroID())) {
+    locations.push_back(sourceManager.getExpansionLoc(base));
+  }
+  locations.push_back(sourceManager.getSpellingLoc(decl.getBeginLoc()));
+  return locations;
+}
+
+// Clang only attaches doc comments to declarations, so this collects ordinary
+// comments, to read Glean annotations out of them as well. Comments that each
+// start a line and are only separated by whitespace with at most one line
+// break form a run, the way clang merges adjacent doc comments; a comment
+// that follows code on its line is not collected.
+class OrdinaryComments : public clang::CommentHandler {
+ public:
+  explicit OrdinaryComments(clang::Preprocessor& pp) : pp_(pp) {
+    pp_.addCommentHandler(this);
+  }
+
+  ~OrdinaryComments() override {
+    pp_.removeCommentHandler(this);
+  }
+
+  OrdinaryComments(const OrdinaryComments&) = delete;
+  OrdinaryComments& operator=(const OrdinaryComments&) = delete;
+  OrdinaryComments(OrdinaryComments&&) = delete;
+  OrdinaryComments& operator=(OrdinaryComments&&) = delete;
+
+  bool HandleComment(clang::Preprocessor& pp, clang::SourceRange range)
+      override {
+    const auto& sourceManager = pp.getSourceManager();
+    const auto loc = range.getBegin();
+    if (!loc.isFileID() ||
+        (sourceManager.isInSystemHeader(loc) &&
+         !pp.getLangOpts().RetainCommentsFromSystemHeaders)) {
+      return false;
+    }
+    const clang::RawComment comment(
+        sourceManager, range, pp.getLangOpts().CommentOpts, false);
+    if (!comment.isOrdinary()) {
+      return false;
+    }
+    const auto [file, begin] = sourceManager.getDecomposedLoc(loc);
+    const auto end = sourceManager.getDecomposedLoc(range.getEnd()).second;
+    bool invalid = false;
+    const auto buffer = sourceManager.getBufferData(file, &invalid);
+    if (invalid || !startsLine(buffer, begin)) {
+      return false;
+    }
+    const auto text = buffer.slice(begin, end);
+    const bool mentionsGlean =
+        std::string_view(text.data(), text.size()).find(kGleanTag) !=
+        std::string_view::npos;
+    auto& runs = runs_[file];
+    // Runs stay sorted, for attachedAt to search them.
+    if (!runs.empty() && begin < runs.back().end) {
+      return false;
+    }
+    if (!runs.empty() && adjacent(buffer, runs.back().end, begin)) {
+      runs.back().end = end;
+      runs.back().mentionsGlean |= mentionsGlean;
+    } else {
+      runs.push_back({begin, end, mentionsGlean});
+    }
+    return false;
+  }
+
+  // The text of the run that clang would attach to `decl` if it were a doc
+  // comment, if it mentions Glean. `doc` is the doc comment clang attached to
+  // `decl`, which may sit between the run and the declaration.
+  std::optional<std::string> attachedTo(
+      const clang::Decl& decl,
+      const clang::RawComment* doc) const {
+    const auto& sourceManager = pp_.getSourceManager();
+    for (const auto loc : commentSearchLocations(decl, sourceManager)) {
+      if (auto text = attachedAt(loc, doc, sourceManager)) {
+        return text;
+      }
+    }
+    return std::nullopt;
+  }
+
+ private:
+  struct Run {
+    unsigned begin;
+    unsigned end;
+    bool mentionsGlean;
+  };
+
+  static bool startsLine(llvm::StringRef buffer, unsigned offset) {
+    while (offset > 0) {
+      switch (buffer[--offset]) {
+        case ' ':
+        case '\t':
+        case '\f':
+        case '\v':
+          break;
+        case '\n':
+        case '\r':
+          return true;
+        default:
+          return false;
+      }
+    }
+    return true;
+  }
+
+  static bool adjacent(llvm::StringRef buffer, unsigned end, unsigned begin) {
+    unsigned newlines = 0;
+    for (unsigned i = end; i < begin; ++i) {
+      switch (buffer[i]) {
+        case ' ':
+        case '\t':
+        case '\f':
+        case '\v':
+          break;
+        case '\n':
+        case '\r':
+          if (++newlines > 1) {
+            return false;
+          }
+          // \r\n and \n\r are one line break
+          if (i + 1 < begin &&
+              (buffer[i + 1] == '\n' || buffer[i + 1] == '\r') &&
+              buffer[i + 1] != buffer[i]) {
+            ++i;
+          }
+          break;
+        default:
+          return false;
+      }
+    }
+    return true;
+  }
+
+  std::optional<std::string> attachedAt(
+      clang::SourceLocation loc,
+      const clang::RawComment* doc,
+      const clang::SourceManager& sourceManager) const {
+    if (loc.isInvalid() || !loc.isFileID()) {
+      return std::nullopt;
+    }
+    const auto decomposed = sourceManager.getDecomposedLoc(loc);
+    const auto file = decomposed.first;
+    const auto offset = decomposed.second;
+    const auto it = runs_.find(file);
+    if (it == runs_.end()) {
+      return std::nullopt;
+    }
+    const auto& runs = it->second;
+    const auto next = std::partition_point(
+        runs.begin(), runs.end(), [offset](const Run& run) {
+          return run.begin < offset;
+        });
+    if (next == runs.begin()) {
+      return std::nullopt;
+    }
+    const auto& run = *std::prev(next);
+    if (!run.mentionsGlean || run.end > offset) {
+      return std::nullopt;
+    }
+    bool invalid = false;
+    const auto buffer = sourceManager.getBufferData(file, &invalid);
+    if (invalid) {
+      return std::nullopt;
+    }
+    // As clang requires of a doc comment, nothing between the run and the
+    // declaration can end a declaration or start a preprocessor directive,
+    // other than the declaration's doc comment.
+    auto skipFrom = offset;
+    auto skipTo = offset;
+    if (doc != nullptr) {
+      const auto [docFile, docBegin] =
+          sourceManager.getDecomposedLoc(doc->getBeginLoc());
+      const auto docEnd =
+          sourceManager.getDecomposedLoc(doc->getEndLoc()).second;
+      if (docFile == file && run.end <= docBegin && docEnd <= offset) {
+        skipFrom = docBegin;
+        skipTo = docEnd;
+      }
+    }
+    const auto separates = [&](unsigned from, unsigned to) {
+      return buffer.slice(from, to).find_first_of(";{}#@") !=
+          llvm::StringRef::npos;
+    };
+    if (separates(run.end, skipFrom) || separates(skipTo, offset)) {
+      return std::nullopt;
+    }
+    return buffer.slice(run.begin, run.end).str();
+  }
+
+  clang::Preprocessor& pp_;
+  llvm::DenseMap<clang::FileID, std::vector<Run>> runs_;
+};
 
 struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   using Base = clang::RecursiveASTVisitor<ASTVisitor>;
@@ -1223,15 +1494,31 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   template <typename F>
   static void forEachGleanJsonAnnotation(
-      const ASTVisitor& visitor,
-      const clang::RawComment& comment,
+      const std::string& comment_str,
       F&& fn) {
-    auto comment_str = comment.getRawText(visitor.db.sourceManager()).str();
     for (const auto& json_annotation :
          extractGleanJsonAnnotations(comment_str)) {
       if (auto json = parseGleanJsonAnnotation(json_annotation)) {
         fn(*json);
       }
+    }
+  }
+
+  // Calls `fn` with the Glean annotations in `decl`'s doc comment `doc`, then
+  // with those in the ordinary comments before it. Each comment is scanned on
+  // its own, so that one can't swallow the annotations of the other.
+  template <typename F>
+  static void forEachGleanJsonAnnotation(
+      const ASTVisitor& visitor,
+      const clang::Decl& decl,
+      const clang::RawComment* doc,
+      const F& fn) {
+    if (doc != nullptr) {
+      forEachGleanJsonAnnotation(
+          doc->getRawText(visitor.db.sourceManager()).str(), fn);
+    }
+    if (auto text = visitor.ordinaryComments.attachedTo(decl, doc)) {
+      forEachGleanJsonAnnotation(*text, fn);
     }
   }
 
@@ -1241,12 +1528,11 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       const Cxx::XRefTarget& target,
       const clang::Decl* decl,
       const std::optional<std::string>& enumeratorName = std::nullopt) {
-    auto* comment = decl->getASTContext().getRawCommentForDeclNoCache(decl);
-    if (!comment) {
-      return;
-    }
     forEachGleanJsonAnnotation(
-        visitor, *comment, [&](const folly::dynamic& json) {
+        visitor,
+        *decl,
+        decl->getASTContext().getRawCommentForDeclNoCache(decl),
+        [&](const folly::dynamic& json) {
           if (isSidlAnnotation(json)) {
             genSidlFact(visitor, target, json, enumeratorName);
           }
@@ -1376,32 +1662,32 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
           visitor.db.fact<Cxx::ExternCDeclaration>(result->declaration());
         }
         if (DeclTraits::canHaveComments(decl)) {
-          if (auto comment =
-                  decl->getASTContext().getRawCommentForDeclNoCache(decl)) {
+          const auto* comment =
+              decl->getASTContext().getRawCommentForDeclNoCache(decl);
+          if (comment) {
             auto crange = visitor.db.srcRange(comment->getSourceRange());
             visitor.db.fact<Cxx::DeclarationComment>(
                 result->declaration(),
                 crange.range.file, // might be "<builtin>"
                 crange.span);
-
-            forEachGleanJsonAnnotation(
-                visitor, *comment, [&](const folly::dynamic& json) {
-                  // Other "idl" values are indexed by their own pipelines.
-                  if (isSidlAnnotation(json)) {
-                    genSidlFact(
-                        visitor,
-                        Cxx::XRefTarget::declaration(result->declaration()),
-                        json);
-                  } else if (json.get_ptr("idl") == nullptr) {
-                    try {
-                      genThriftFacts(visitor, decl, result, json);
-                    } catch (const ThriftDecodingException& e) {
-                      LOG(WARNING) << "Thrift json decoding internal error: "
-                                   << e.what();
-                    }
-                  }
-                });
           }
+          forEachGleanJsonAnnotation(
+              visitor, *decl, comment, [&](const folly::dynamic& json) {
+                // Other "idl" values are indexed by their own pipelines.
+                if (isSidlAnnotation(json)) {
+                  genSidlFact(
+                      visitor,
+                      Cxx::XRefTarget::declaration(result->declaration()),
+                      json);
+                } else if (json.get_ptr("idl") == nullptr) {
+                  try {
+                    genThriftFacts(visitor, decl, result, json);
+                  } catch (const ThriftDecodingException& e) {
+                    LOG(WARNING)
+                        << "Thrift json decoding internal error: " << e.what();
+                  }
+                }
+              });
         }
       }
       return result;
@@ -3435,9 +3721,13 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     db.finish();
   }
 
-  ASTVisitor(ClangDB* d, clang::ASTContext& ctx)
+  ASTVisitor(
+      ClangDB* d,
+      clang::ASTContext& ctx,
+      const OrdinaryComments& comments)
       : db(*d),
         astContext(ctx),
+        ordinaryComments(comments),
         usingTracker(ctx.getTranslationUnitDecl(), *d),
         declTargets(*d),
         scopes(*this),
@@ -3455,6 +3745,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   ClangDB& db;
   clang::ASTContext& astContext;
+  const OrdinaryComments& ordinaryComments;
 
   UsingTracker usingTracker;
   DeclarationTargets declTargets;
@@ -3505,7 +3796,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 // ASTConsumer uses ASTVisitor to traverse the Clang AST
 //
 struct ASTConsumer : public clang::ASTConsumer {
-  explicit ASTConsumer(ClangDB* d) : db(d) {}
+  explicit ASTConsumer(ClangDB* d)
+      : db(d), ordinaryComments(d->preprocessor()) {}
 
   void HandleTranslationUnit(clang::ASTContext& ctx) override {
     // Clang is sometimes generating a bogus AST when there are
@@ -3544,13 +3836,14 @@ struct ASTConsumer : public clang::ASTConsumer {
 #endif
       return policy;
     }());
-    ASTVisitor visitor(db, ctx);
+    ASTVisitor visitor(db, ctx, ordinaryComments);
     VLOG(1) << "traversing";
     visitor.TraverseDecl(ctx.getTranslationUnitDecl());
     visitor.finish();
   }
 
   ClangDB* db;
+  OrdinaryComments ordinaryComments;
 };
 
 } // namespace
