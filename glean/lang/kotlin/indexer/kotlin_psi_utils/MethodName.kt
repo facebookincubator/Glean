@@ -14,8 +14,7 @@ import glean.lang.kotlin.predicates.MethodNamePredicate
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.descriptors.annotations.Annotations
 import org.jetbrains.kotlin.descriptors.buildPossiblyInnerType
-import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
-import org.jetbrains.kotlin.js.descriptorUtils.nameIfStandardType
+import org.jetbrains.kotlin.js.descriptorUtils.getKotlinTypeFqName
 import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.isFlexible
 import org.jetbrains.kotlin.types.typeUtil.constituentTypes
@@ -66,7 +65,7 @@ fun KotlinType.gleanType(): JavaKotlinTypePredicate {
       return this.upperIfFlexible().gleanType()
     }
 
-    val fqNameMaybeNullable = this.getJetTypeFqName(false)
+    val fqNameMaybeNullable = this.getKotlinTypeFqName(false)
     val fqName =
         if (this.isMarkedNullable) fqNameMaybeNullable.substringBefore("?") else fqNameMaybeNullable
     val possiblyInnerType =

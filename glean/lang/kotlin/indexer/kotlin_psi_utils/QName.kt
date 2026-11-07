@@ -19,8 +19,7 @@ import org.jetbrains.kotlin.descriptors.annotations.Annotations
 import org.jetbrains.kotlin.descriptors.buildPossiblyInnerType
 import org.jetbrains.kotlin.descriptors.containingPackage
 import org.jetbrains.kotlin.descriptors.impl.PackageFragmentDescriptorImpl
-import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
-import org.jetbrains.kotlin.js.descriptorUtils.nameIfStandardType
+import org.jetbrains.kotlin.js.descriptorUtils.getKotlinTypeFqName
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.types.KotlinType
@@ -142,7 +141,7 @@ fun KotlinType.path(): PathPredicate {
       return this.upperIfFlexible().path()
     }
 
-    val fqNameMaybeNullable = this.getJetTypeFqName(false)
+    val fqNameMaybeNullable = this.getKotlinTypeFqName(false)
     val fqName =
         if (this.isMarkedNullable) fqNameMaybeNullable.substringBefore("?") else fqNameMaybeNullable
     val possiblyInnerType = this.buildPossiblyInnerType() ?: return fqName.path()

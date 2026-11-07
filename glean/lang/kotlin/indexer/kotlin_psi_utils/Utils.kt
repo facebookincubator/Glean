@@ -8,6 +8,10 @@
 
 package glean.lang.kotlin.indexer.kotlin_psi_utils
 
+import org.jetbrains.kotlin.builtins.KotlinBuiltIns
+import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.types.KotlinType
+
 private val FBSOURCE = "^/.*[/-]fbsource/".toRegex()
 
 private val NOISE = "^[0-9]+-[0-9]+/".toRegex()
@@ -20,3 +24,8 @@ fun normalizePath(path: String): String {
   val m2 = NOISE.replaceFirst(m1, "")
   return RE_NOISE.replaceFirst(m2, "")
 }
+
+// Copy of the compiler's `org.jetbrains.kotlin.js.descriptorUtils.nameIfStandardType`, which Kotlin
+// 2.4 removed.
+internal val KotlinType.nameIfStandardType: Name?
+  get() = constructor.declarationDescriptor?.takeIf(KotlinBuiltIns::isBuiltIn)?.name

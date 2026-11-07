@@ -8,6 +8,7 @@
 
 package glean.lang.kotlin.indexer
 
+import com.facebook.kotlin.compilercompat.MessageCollectorAccessCompat as MessageCollectorAccess
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
@@ -25,6 +26,7 @@ import org.jetbrains.kotlin.resolve.jvm.extensions.AnalysisHandlerExtension
  */
 @OptIn(org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi::class)
 class KotlinIndexerPluginCompilerPluginRegistrar : CompilerPluginRegistrar() {
+  @OptIn(MessageCollectorAccess::class)
   override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
     val outputDir = configuration.get(JVMConfigurationKeys.OUTPUT_DIRECTORY)
     checkNotNull(
