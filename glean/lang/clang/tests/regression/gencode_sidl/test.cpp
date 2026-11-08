@@ -6,9 +6,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/** Glean {"idl":"sidl","file":"xplat/arfx/osf/core/sidl/BindParams.sidl","name":"BindParams","kind":"struct","line":9,"column":0,"endLine":16,"endColumn":1} */
+/** Glean {"idl":"sidl","file":"xplat/arfx/orbit/osf/core/sidl/BindParams.sidl","name":"BindParams","kind":"struct","line":9,"column":0,"endLine":16,"endColumn":1} */
 struct BindParams {
-  /** Glean {"idl":"sidl","file":"xplat/arfx/osf/core/sidl/BindParams.sidl","name":"targetVersion","kind":"field","line":11,"column":2,"endLine":11,"endColumn":38} */
+  /** Glean {"idl":"sidl","file":"xplat/arfx/orbit/osf/core/sidl/BindParams.sidl","name":"targetVersion","kind":"field","line":11,"column":2,"endLine":11,"endColumn":38} */
   int targetVersion;
 };
 
@@ -25,7 +25,7 @@ enum class EchoEnum {
   Baz = 10,
 };
 
-/** Glean {"idl":"sidl","file":"xplat/arfx/osf/core/sidl/NodeType.sidl","name":"NodeType","kind":"enum","line":5,"column":0,"endLine":12,"endColumn":1} */
+/** Glean {"idl":"sidl","file":"xplat/arfx/orbit/osf/core/sidl/NodeType.sidl","name":"NodeType","kind":"enum","line":5,"column":0,"endLine":12,"endColumn":1} */
 enum class NodeType {
   Phone = 0,
   Glasses = 1,
@@ -55,11 +55,11 @@ struct IEchoService {
 /** Glean {"idl":"sidl","file":"xplat/arfx/osf/examples/echo/EchoService.sidl","name":"IEchoCallback","kind":"interface","line":7,"column":0,"endLine":11,"endColumn":1} */
 struct IEchoCallback {};
 
-/** Glean {"idl":"sidl","file":"xplat/arfx/osf/core/sidl/BindParams.sidl","name":"HasFields","kind":"struct","line":40,"column":0,"endLine":46,"endColumn":1} */
+/** Glean {"idl":"sidl","file":"xplat/arfx/orbit/osf/core/sidl/BindParams.sidl","name":"HasFields","kind":"struct","line":40,"column":0,"endLine":46,"endColumn":1} */
 struct HasFields {
-  /** Glean {"idl":"sidl","file":"xplat/arfx/osf/core/sidl/BindParams.sidl","name":"version","kind":"field","line":41,"column":2,"endLine":41,"endColumn":14} */
+  /** Glean {"idl":"sidl","file":"xplat/arfx/orbit/osf/core/sidl/BindParams.sidl","name":"version","kind":"field","line":41,"column":2,"endLine":41,"endColumn":14} */
   int version;
-  /** Glean {"idl":"sidl","file":"xplat/arfx/osf/core/sidl/BindParams.sidl","name":"flags","kind":"field","line":42,"column":2,"endLine":42,"endColumn":12} */
+  /** Glean {"idl":"sidl","file":"xplat/arfx/orbit/osf/core/sidl/BindParams.sidl","name":"flags","kind":"field","line":42,"column":2,"endLine":42,"endColumn":12} */
   int flags;
   int plain;
 };

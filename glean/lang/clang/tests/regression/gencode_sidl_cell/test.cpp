@@ -8,7 +8,7 @@
 
 // Indexed in cell fbcode; SIDL paths stay repo-relative, without the cell prefix Thrift paths get.
 
-/** Glean {"idl":"sidl","file":"xplat/arfx/osf/core/sidl/BindParams.sidl","name":"CellStruct","kind":"struct","line":9,"column":0,"endLine":16,"endColumn":1} */
+/** Glean {"idl":"sidl","file":"xplat/arfx/orbit/osf/core/sidl/BindParams.sidl","name":"CellStruct","kind":"struct","line":9,"column":0,"endLine":16,"endColumn":1} */
 struct CellStruct {
   int version;
 };

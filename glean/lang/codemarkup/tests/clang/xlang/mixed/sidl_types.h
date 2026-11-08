@@ -8,9 +8,9 @@
 
 // The SIDL files are not indexed, so declarations come from the annotations.
 
-/** Glean {"idl":"sidl","file":"xplat/arfx/osf/core/sidl/BindParams.sidl","name":"BindParams","kind":"struct","line":9,"column":0,"endLine":16,"endColumn":1} */
+/** Glean {"idl":"sidl","file":"xplat/arfx/orbit/osf/core/sidl/BindParams.sidl","name":"BindParams","kind":"struct","line":9,"column":0,"endLine":16,"endColumn":1} */
 struct BindParams {
-  /** Glean {"idl":"sidl","file":"xplat/arfx/osf/core/sidl/BindParams.sidl","name":"version","kind":"field","line":10,"column":2,"endLine":10,"endColumn":14} */
+  /** Glean {"idl":"sidl","file":"xplat/arfx/orbit/osf/core/sidl/BindParams.sidl","name":"version","kind":"field","line":10,"column":2,"endLine":10,"endColumn":14} */
   int version;
 };
 
