@@ -68,7 +68,7 @@
           "name": { "key": "NodeType" },
           "kind": 1,
           "range": {
-            "file": { "key": "xplat/arfx/osf/core/sidl/NodeType.sidl" },
+            "file": { "key": "xplat/arfx/orbit/osf/core/sidl/NodeType.sidl" },
             "lineBegin": 5,
             "columnBegin": 1,
             "lineEnd": 12,
@@ -526,7 +526,7 @@
           "name": { "key": "BindParams" },
           "kind": 0,
           "range": {
-            "file": { "key": "xplat/arfx/osf/core/sidl/BindParams.sidl" },
+            "file": { "key": "xplat/arfx/orbit/osf/core/sidl/BindParams.sidl" },
             "lineBegin": 9,
             "columnBegin": 1,
             "lineEnd": 16,
@@ -664,7 +664,7 @@
           "name": { "key": "HasFields" },
           "kind": 0,
           "range": {
-            "file": { "key": "xplat/arfx/osf/core/sidl/BindParams.sidl" },
+            "file": { "key": "xplat/arfx/orbit/osf/core/sidl/BindParams.sidl" },
             "lineBegin": 40,
             "columnBegin": 1,
             "lineEnd": 46,
@@ -1051,7 +1051,7 @@
           "name": { "key": "flags" },
           "kind": 7,
           "range": {
-            "file": { "key": "xplat/arfx/osf/core/sidl/BindParams.sidl" },
+            "file": { "key": "xplat/arfx/orbit/osf/core/sidl/BindParams.sidl" },
             "lineBegin": 42,
             "columnBegin": 3,
             "lineEnd": 42,
@@ -1384,7 +1384,7 @@
           "name": { "key": "targetVersion" },
           "kind": 7,
           "range": {
-            "file": { "key": "xplat/arfx/osf/core/sidl/BindParams.sidl" },
+            "file": { "key": "xplat/arfx/orbit/osf/core/sidl/BindParams.sidl" },
             "lineBegin": 11,
             "columnBegin": 3,
             "lineEnd": 11,
@@ -1434,7 +1434,7 @@
           "name": { "key": "version" },
           "kind": 7,
           "range": {
-            "file": { "key": "xplat/arfx/osf/core/sidl/BindParams.sidl" },
+            "file": { "key": "xplat/arfx/orbit/osf/core/sidl/BindParams.sidl" },
             "lineBegin": 41,
             "columnBegin": 3,
             "lineEnd": 41,

@@ -8,8 +8,8 @@
         "referenced_file_digests": {
             "test-xlang": {
                 "sidl_types.h": {
-                    "hash": "33c7b73849afff16677b192242ea56dc8790becd",
-                    "size": 1057
+                    "hash": "747d0eb9f24e7ac1bbf44ea7a849ceaff180641e",
+                    "size": 1069
                 },
                 "test.cpp": {
                     "hash": "ef38b795e0e985640534c34bbfbe3d9bd695b58a",
@@ -93,9 +93,9 @@
                         "lineBegin": 12,
                         "lineEnd": 12
                     },
-                    "sym": "test-xlang/cpp/.sidl/struct/xplat/arfx/osf/core/sidl/BindParams.sidl/BindParams/9",
+                    "sym": "test-xlang/cpp/.sidl/struct/xplat/arfx/orbit/osf/core/sidl/BindParams.sidl/BindParams/9",
                     "target": {
-                        "filepath": "xplat/arfx/osf/core/sidl/BindParams.sidl",
+                        "filepath": "xplat/arfx/orbit/osf/core/sidl/BindParams.sidl",
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 2,
@@ -868,9 +868,9 @@
                         "lineBegin": 15,
                         "lineEnd": 15
                     },
-                    "sym": "test-xlang/cpp/.sidl/field/xplat/arfx/osf/core/sidl/BindParams.sidl/version/10",
+                    "sym": "test-xlang/cpp/.sidl/field/xplat/arfx/orbit/osf/core/sidl/BindParams.sidl/version/10",
                     "target": {
-                        "filepath": "xplat/arfx/osf/core/sidl/BindParams.sidl",
+                        "filepath": "xplat/arfx/orbit/osf/core/sidl/BindParams.sidl",
                         "range": {
                             "columnBegin": 3,
                             "columnEnd": 15,
