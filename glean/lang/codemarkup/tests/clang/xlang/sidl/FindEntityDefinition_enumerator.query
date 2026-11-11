@@ -1,0 +1,8 @@
+query: |
+  { E, Def } where
+    cxx1.EnumDefinition { declaration = { name = { name = "Mode" } }, enumerators = Es };
+    En = Es[..];
+    E = { cxx = { enumerator = En } } : code.Entity;
+    codemarkup.FindEntityDefinition { entity = E, definition = Def }
+perf: True
+transform: [gensort, []]

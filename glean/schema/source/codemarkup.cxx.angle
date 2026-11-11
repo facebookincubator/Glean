@@ -100,7 +100,8 @@ predicate CxxResolveDeclarationToEntity:
 # If an entity is a declaration, try to find its definition, which
 # might be in a different file. There might be multiple definitions
 # (but presumably not linked in the same binary, because that would
-# violate the One Definition Rule).
+# violate the One Definition Rule). For a generated decl or enumerator
+# the .sidl origin counts as a definition alongside the .cpp defn.
 predicate CxxFindDefinitionOfEntity:
   {
     entity: code.cxx.Entity,
@@ -133,6 +134,12 @@ predicate CxxFindDefinitionOfEntity:
      where
        cxx1.DefToBaseDecl { Defn, Decl };
        CxxDeclToSidlXRefTargetLocation { Decl, Entity, _ }
+   )
+  |
+   (
+     { { enumerator = En }, { sidlDecl = SidlDecl } }
+     where
+       cxx1.CxxToSidl { from = { enumerator = En }, to = SidlDecl }
    )
 
 # Finding entities' locations
@@ -283,8 +290,8 @@ predicate CxxXRefTargetSidlLocation:
 #
 # Find xrefs associated with decls in this file / trace
 #
-# For decls, compute unique xrefs to defns
-# For defns, compute unique xrefs to decls (decl families)
+# For decls, compute unique xrefs to defns and to SIDL origins
+# For defns, compute unique xrefs to decls (decl families) and to SIDL origins
 #
 predicate CxxFileEntityTraceDeclToDefXRefLocations:
   {
@@ -297,10 +304,10 @@ predicate CxxFileEntityTraceDeclToDefXRefLocations:
     Trace = cxx1.Trace { File, cxx1.Declarations Decls, _ };
     Decl = Decls[..];
     cxx1.DeclarationNameSpan { Decl, _, Span };
-    # Get xrefs from decl to defn ,and defn back to decl family
     ({ Entity, Location } where
       CxxDeclToDefXRefTargetLocation { Decl, Entity, Location } |
-      CxxDefToDeclFamilyXRefTargetLocation { Decl, Entity, Location }
+      CxxDefToDeclFamilyXRefTargetLocation { Decl, Entity, Location } |
+      CxxDeclToSidlXRefTargetLocation { Decl, Entity, Location }
     );
     { Location, { span = Span }} = XRef;
 

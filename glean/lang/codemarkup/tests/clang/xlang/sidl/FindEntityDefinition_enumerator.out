@@ -1,0 +1,133 @@
+[
+  "@generated",
+  {
+    "key": {
+      "tuplefield0": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "Off" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "Mode" },
+                      "scope": {
+                        "namespace_": {
+                          "key": {
+                            "name": { "key": "sidl" },
+                            "parent": { "key": { "name": { "key": "glean" } } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "isScoped": true,
+                  "type": { "key": "int16_t" },
+                  "source": {
+                    "file": { "key": "test_types.h" },
+                    "lineBegin": 23,
+                    "columnBegin": 1,
+                    "lineEnd": 28,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test_types.h" },
+                "lineBegin": 25,
+                "columnBegin": 3,
+                "lineEnd": 25,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "Off" },
+              "kind": 2,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 16,
+                "columnBegin": 3,
+                "lineEnd": 16,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "On" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "Mode" },
+                      "scope": {
+                        "namespace_": {
+                          "key": {
+                            "name": { "key": "sidl" },
+                            "parent": { "key": { "name": { "key": "glean" } } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "isScoped": true,
+                  "type": { "key": "int16_t" },
+                  "source": {
+                    "file": { "key": "test_types.h" },
+                    "lineBegin": 23,
+                    "columnBegin": 1,
+                    "lineEnd": 28,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test_types.h" },
+                "lineBegin": 27,
+                "columnBegin": 3,
+                "lineEnd": 27,
+                "columnEnd": 8
+              }
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "sidlDecl": {
+            "key": {
+              "name": { "key": "On" },
+              "kind": 2,
+              "range": {
+                "file": {
+                  "key": "fbcode/glean/lang/codemarkup/tests/clang/xlang/sidl/test.sidl"
+                },
+                "lineBegin": 17,
+                "columnBegin": 3,
+                "lineEnd": 17,
+                "columnEnd": 8
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]
