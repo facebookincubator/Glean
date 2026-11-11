@@ -1,0 +1,7 @@
+query: |
+  { E, Def } where
+    D = cxx1.RecordDeclaration { name = { name = "Options" } };
+    E = { cxx = { decl = { record_ = D } } } : code.Entity;
+    codemarkup.FindEntityDefinition { entity = E, definition = Def }
+perf: True
+transform: [gensort, []]

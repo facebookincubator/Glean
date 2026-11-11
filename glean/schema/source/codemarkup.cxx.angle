@@ -121,6 +121,19 @@ predicate CxxFindDefinitionOfEntity:
         { decl = D } = DefEnt;
       )
    )
+  |
+   (
+     { { decl = D }, Entity }
+     where
+       CxxDeclToSidlXRefTargetLocation { D, Entity, _ }
+   )
+  |
+   (
+     { { defn = Defn }, Entity }
+     where
+       cxx1.DefToBaseDecl { Defn, Decl };
+       CxxDeclToSidlXRefTargetLocation { Decl, Entity, _ }
+   )
 
 # Finding entities' locations
 
@@ -309,6 +322,21 @@ predicate CxxDeclToDefXRefTargetLocation:
     Destination = { just = { NameFile, NameSpan } };
     { Name, TargetFile, { range = Range }, Destination } = Location;
     { defn = Defn } = Entity;
+
+# Only one decl in a family is marked, so check the whole family.
+predicate CxxDeclToSidlXRefTargetLocation:
+  {
+    decl: cxx1.Declaration,
+    entity: code.cxx.Entity,
+    location: codemarkup.types.Location
+  }
+  { Decl, Entity, Location } where
+    cxx1.DeclFamilyOf { decl = Decl, family = FamDecl };
+    cxx1.CxxToSidl { from = { declaration = FamDecl }, to = SidlDecl };
+    SidlDecl = cxx1.SidlDeclaration { name = cxx1.Name Name, range = Range };
+    { file = TargetFile } = Range;
+    { Name, TargetFile, { range = Range }, nothing } = Location;
+    { sidlDecl = SidlDecl } = Entity;
 
 # For a given Decl, find any DeclFamily entries
 # We will turn these into xrefs
