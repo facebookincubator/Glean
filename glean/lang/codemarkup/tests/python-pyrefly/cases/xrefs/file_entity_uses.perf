@@ -1,9 +1,11 @@
 {
   "@generated": null,
   "facts_searched": {
+    "python.DeclarationLocation.4": 11,
     "python.DeclarationsByFile.4": 25,
-    "python.XRefsViaNameByTarget.4": 14,
+    "python.DisambiguatedName.4": 11,
+    "python.TargetUses.4": 39,
     "src.File.1": 1
   },
-  "full_scans": [ ]
+  "full_scans": [ "python.TargetUses.4" ]
 }

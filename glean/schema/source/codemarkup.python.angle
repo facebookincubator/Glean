@@ -86,7 +86,18 @@ predicate PythonEntityUses:
     span: src.ByteSpan,
   }
   { { decl = D }, File, Span } where
-  python.DeclarationUses { declaration = D, file = File, span = Span}
+  if (python.TargetUses _) then (
+    python.DeclarationToName D -> Name;
+    (
+      python.DeclarationLocation { declaration = D, file = DeclFile };
+      python.TargetUses { { local = { Name, DeclFile } }, File, Spans };
+    ) | (
+      python.TargetUses { { external = Name }, File, Spans };
+    );
+    Span = Spans[..];
+  ) else (
+    python.DeclarationUses { declaration = D, file = File, span = Span };
+  )
 
 #
 # Language-specific symbol info

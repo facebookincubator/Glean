@@ -1,0 +1,22 @@
+[
+  {"predicate": "python.DeclarationLocation.4", "facts": [
+    {"key": {"declaration": {"cls": {"key": {"name": {"key": "shared.item"}}}}, "file": {"key": "a.py"}, "span": {"start": 0, "length": 1}}},
+    {"key": {"declaration": {"variable": {"key": {"name": {"key": "shared.item"}}}}, "file": {"key": "b.py"}, "span": {"start": 0, "length": 1}}},
+    {"key": {"declaration": {"func": {"key": {"name": {"key": "old.only"}}}}, "file": {"key": "old.py"}, "span": {"start": 0, "length": 1}}},
+    {"key": {"declaration": {"func": {"key": {"name": {"key": "shared.func"}}}}, "file": {"key": "a.py"}, "span": {"start": 0, "length": 1}}},
+    {"key": {"declaration": {"func": {"key": {"name": {"key": "shared.func"}}}}, "file": {"key": "b.py"}, "span": {"start": 0, "length": 1}}}
+  ]},
+  {"predicate": "python.XRefsViaNameByTarget.4", "facts": [
+    {"key": {"target": {"key": "shared.item"}, "file": {"key": "use.py"}, "spans": [{"start": 10, "length": 1}, {"start": 20, "length": 1}, {"start": 30, "length": 1}, {"start": 40, "length": 1}]}},
+    {"key": {"target": {"key": "old.only"}, "file": {"key": "use.py"}, "spans": [{"start": 50, "length": 1}]}},
+    {"key": {"target": {"key": "shared.func"}, "file": {"key": "use.py"}, "spans": [{"start": 60, "length": 1}, {"start": 70, "length": 1}]}}
+  ]},
+  {"predicate": "python.TargetUses.4", "facts": [
+    {"key": {"target": {"local": {"key": {"name": {"key": "shared.item"}, "file": {"key": "a.py"}}}}, "file": {"key": "use.py"}, "spans": [{"start": 10, "length": 1}, {"start": 11, "length": 1}]}},
+    {"key": {"target": {"local": {"key": {"name": {"key": "shared.item"}, "file": {"key": "b.py"}}}}, "file": {"key": "use.py"}, "spans": [{"start": 20, "length": 1}]}},
+    {"key": {"target": {"external": {"key": "shared.item"}}, "file": {"key": "use.py"}, "spans": [{"start": 30, "length": 1}]}},
+    {"key": {"target": {"local": {"key": {"name": {"key": "shared.item"}, "file": {"key": "undeclared.py"}}}}, "file": {"key": "use.py"}, "spans": [{"start": 40, "length": 1}]}},
+    {"key": {"target": {"local": {"key": {"name": {"key": "shared.func"}, "file": {"key": "a.py"}}}}, "file": {"key": "use.py"}, "spans": [{"start": 60, "length": 1}]}},
+    {"key": {"target": {"local": {"key": {"name": {"key": "shared.func"}, "file": {"key": "b.py"}}}}, "file": {"key": "use.py"}, "spans": [{"start": 70, "length": 1}]}}
+  ]}
+]

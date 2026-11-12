@@ -1,0 +1,8 @@
+query: |
+  { DeclFile, File, Span } where
+    Name = "shared.item" | "shared.func" | "old.only";
+    python.DeclarationWithName { name = python.Name Name, declaration = D };
+    python.DeclarationLocation { declaration = D, file = DeclFile };
+    codemarkup.EntityReferences { target = { python = { decl = D } }, file = File, range = { span = Span } };
+transform: [gensort, []]
+perf: true
