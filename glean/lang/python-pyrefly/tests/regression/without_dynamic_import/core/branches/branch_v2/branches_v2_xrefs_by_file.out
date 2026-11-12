@@ -96,6 +96,15 @@
           }
         },
         {
+          "source": { "length": 6, "start": 820 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v2/main.py"
+            },
+            "name": { "key": "main.MainClass.helper" }
+          }
+        },
+        {
           "source": { "length": 6, "start": 976 },
           "target": {
             "file": {
@@ -111,6 +120,15 @@
               "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v2/main.py"
             },
             "name": { "key": "main.MainClass.helper" }
+          }
+        },
+        {
+          "source": { "length": 7, "start": 856 },
+          "target": {
+            "file": {
+              "key": "glean/lang/python-pyrefly/tests/regression/without_dynamic_import/core/branches/branch_v2/main.py"
+            },
+            "name": { "key": "main.MainClass.version" }
           }
         },
         {
