@@ -51,7 +51,10 @@ jobs:
       - name: Install indexer (python)
         run: |
           apt-get install -y python3-pip
-          npm install -g @sourcegraph/scip-python
+          # Pin the version because test output depends on it. If you bump
+          # the version here, you probably need to also do:
+          #   cabal run glean-snapshot-python-scip -- --replace-all
+          npm install -g @sourcegraph/scip-python@0.6.8
 
       - name: Install indexer (flow)
         run: npm install -g flow-bin
