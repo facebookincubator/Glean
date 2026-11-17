@@ -88,6 +88,11 @@ CXX_GTEST_SOURCES_BinaryTest = \
 CXX_GTEST_LIBS_BinaryTest = glean_cpp_rts
 CXX_GTEST_FLAGS_BinaryTest = -DOSS=1
 
+CXX_GTEST_SOURCES_SliceTest = \
+    glean/rts/tests/SliceTest.cpp
+CXX_GTEST_LIBS_SliceTest = glean_cpp_rts
+CXX_GTEST_FLAGS_SliceTest = -DOSS=1
+
 # End of C++ library definitions
 
 # Determine all C++ libraries

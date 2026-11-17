@@ -686,6 +686,11 @@ TEST(OwnershipTest, SliceSerializationPreservesVisibleMembers) {
   EXPECT_TRUE(restored->visible(203));
   EXPECT_TRUE(restored->visible(265));
   EXPECT_FALSE(restored->visible(266));
+  // The range must be exact, not rounded up to a multiple of 64: a padded
+  // range overlaps the next DB in a stack and hides its facts (see
+  // Slices::visible).
+  EXPECT_EQ(restored->end(), 270);
+  EXPECT_FALSE(restored->inRange(270));
 }
 
 TEST(OwnershipTest, ComputeOwnershipPropagatesOwnersTransitively) {

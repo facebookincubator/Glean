@@ -10,6 +10,7 @@
 #include <fmt/core.h>
 #include <algorithm>
 
+#include "glean/rts/error.h"
 #include "glean/rts/ownership/slice.h"
 #include "glean/rts/timer.h"
 
@@ -271,6 +272,9 @@ void Slice::serialize(binary::Output& o) const {
   std::vector<uint64_t> words(set_.num_blocks());
   to_block_range(set_, words.begin());
   serialize::put(o, words, serialize::AsBytes());
+  // The bit count, so that deserialize() restores the exact range. Slices
+  // stored before this field existed end after the words; see deserialize().
+  serialize::put(o, uint64_t(set_.size()));
 }
 
 std::unique_ptr<Slice> Slice::deserialize(binary::Input& i) {
@@ -280,6 +284,20 @@ std::unique_ptr<Slice> Slice::deserialize(binary::Input& i) {
   serialize::get(i, words, serialize::AsBytes());
   boost::dynamic_bitset<uint64_t> set(words.size() * 64);
   from_block_range(words.begin(), words.end(), set);
+  // Restore the exact size. Without it the slice would claim a range rounded
+  // up to a multiple of 64 UsetIds, overlapping the next DB in a stack, and
+  // Slices::visible() would then hide that DB's facts. Slices serialized
+  // before the size was stored have no trailing field and keep the rounded
+  // size.
+  if (!i.empty()) {
+    uint64_t size;
+    serialize::get(i, size);
+    if (size > set.size()) {
+      rts::error(
+          "Slice::deserialize: size {} exceeds {} bits", size, set.size());
+    }
+    set.resize(size);
+  }
   return std::make_unique<Slice>(first, std::move(set));
 }
 
