@@ -24,8 +24,10 @@ main = getArgs >>= \args ->
         -- TODO: re-enable when using a fixed LLVM
       ] ++ concatMap (\test -> ["--omit", test])
       -- Upstream clang 19.1.7 reports these global variables as
-      -- non-definitions; the goldens come from platform010-clang-19.
+      -- non-definitions, and starts alignas fields after the attribute
+      -- (xlang/sidl); the goldens come from platform010-clang-21.
       [ "declarations/var1"
       , "xrefs/var1"
+      , "xlang/sidl"
       ]
     path = "glean/lang/codemarkup/tests/clang"
