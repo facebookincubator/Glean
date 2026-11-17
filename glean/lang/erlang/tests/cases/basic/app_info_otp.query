@@ -1,0 +1,3 @@
+# Checks that the indexer still records OTP apps. stdlib is part of every
+# Erlang/OTP release, so this result does not change when OTP is upgraded.
+query: erlang.AppInfo { name = "stdlib", type_ = Otp }

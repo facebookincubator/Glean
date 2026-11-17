@@ -1,3 +1,6 @@
-query: erlang.AppInfo _
-perf: True
+# Only first-party and third-party apps. OTP apps are left out on purpose:
+# the set of OTP apps depends on the Erlang/OTP release that the toolchain
+# ships, so listing them here breaks this test on every OTP upgrade.
+# app_info_otp.query checks that OTP apps are still indexed.
+query: erlang.AppInfo { type_ = FirstParty | ThirdParty }
 transform: [gensort, []]
