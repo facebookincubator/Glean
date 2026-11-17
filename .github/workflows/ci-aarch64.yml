@@ -111,8 +111,8 @@ jobs:
       - name: Build glean-clang
         run: make glean-clang
 
-      - name: Build hiedb-indexer
-        run: make glean-hiedb
+      - name: Build hie-indexer
+        run: make glean-hie
 
   # check the vscode extension builds
   vscode:

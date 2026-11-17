@@ -1838,7 +1838,7 @@
       },
       "xref": {
         "key": {
-          "symbol": { "key": "scip-dotnet nuget . . ``/" },
+          "symbol": { "key": "scip-dotnet nuget . . System/" },
           "location": {
             "key": {
               "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
@@ -1847,33 +1847,6 @@
                 "columnBegin": 14,
                 "lineEnd": 2,
                 "columnEnd": 19
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
-      "range": {
-        "lineBegin": 2,
-        "columnBegin": 22,
-        "lineEnd": 2,
-        "columnEnd": 27
-      },
-      "xref": {
-        "key": {
-          "symbol": { "key": "scip-dotnet nuget . . System/" },
-          "location": {
-            "key": {
-              "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
-              "range": {
-                "lineBegin": 2,
-                "columnBegin": 22,
-                "lineEnd": 2,
-                "columnEnd": 27
               }
             }
           }
@@ -1892,7 +1865,7 @@
       },
       "xref": {
         "key": {
-          "symbol": { "key": "scip-dotnet nuget . . ``/" },
+          "symbol": { "key": "scip-dotnet nuget . . System/" },
           "location": {
             "key": {
               "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
@@ -1913,21 +1886,21 @@
       "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
       "range": {
         "lineBegin": 3,
-        "columnBegin": 22,
+        "columnBegin": 21,
         "lineEnd": 3,
-        "columnEnd": 27
+        "columnEnd": 31
       },
       "xref": {
         "key": {
-          "symbol": { "key": "scip-dotnet nuget . . System/" },
+          "symbol": { "key": "scip-dotnet nuget . . Collections/" },
           "location": {
             "key": {
               "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
               "range": {
                 "lineBegin": 3,
-                "columnBegin": 22,
+                "columnBegin": 21,
                 "lineEnd": 3,
-                "columnEnd": 27
+                "columnEnd": 31
               }
             }
           }
@@ -1940,19 +1913,19 @@
       "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
       "range": {
         "lineBegin": 3,
-        "columnBegin": 29,
+        "columnBegin": 33,
         "lineEnd": 3,
         "columnEnd": 39
       },
       "xref": {
         "key": {
-          "symbol": { "key": "scip-dotnet nuget . . Collections/" },
+          "symbol": { "key": "scip-dotnet nuget . . Generic/" },
           "location": {
             "key": {
               "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
               "range": {
                 "lineBegin": 3,
-                "columnBegin": 29,
+                "columnBegin": 33,
                 "lineEnd": 3,
                 "columnEnd": 39
               }
@@ -1966,33 +1939,6 @@
     "key": {
       "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
       "range": {
-        "lineBegin": 3,
-        "columnBegin": 41,
-        "lineEnd": 3,
-        "columnEnd": 47
-      },
-      "xref": {
-        "key": {
-          "symbol": { "key": "scip-dotnet nuget . . Generic/" },
-          "location": {
-            "key": {
-              "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
-              "range": {
-                "lineBegin": 3,
-                "columnBegin": 41,
-                "lineEnd": 3,
-                "columnEnd": 47
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
-      "range": {
         "lineBegin": 4,
         "columnBegin": 14,
         "lineEnd": 4,
@@ -2000,7 +1946,7 @@
       },
       "xref": {
         "key": {
-          "symbol": { "key": "scip-dotnet nuget . . ``/" },
+          "symbol": { "key": "scip-dotnet nuget . . System/" },
           "location": {
             "key": {
               "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
@@ -2021,36 +1967,9 @@
       "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
       "range": {
         "lineBegin": 4,
-        "columnBegin": 22,
+        "columnBegin": 21,
         "lineEnd": 4,
-        "columnEnd": 27
-      },
-      "xref": {
-        "key": {
-          "symbol": { "key": "scip-dotnet nuget . . System/" },
-          "location": {
-            "key": {
-              "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
-              "range": {
-                "lineBegin": 4,
-                "columnBegin": 22,
-                "lineEnd": 4,
-                "columnEnd": 27
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
-      "range": {
-        "lineBegin": 4,
-        "columnBegin": 29,
-        "lineEnd": 4,
-        "columnEnd": 30
+        "columnEnd": 22
       },
       "xref": {
         "key": {
@@ -2060,9 +1979,9 @@
               "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
               "range": {
                 "lineBegin": 4,
-                "columnBegin": 29,
+                "columnBegin": 21,
                 "lineEnd": 4,
-                "columnEnd": 30
+                "columnEnd": 22
               }
             }
           }
@@ -2081,7 +2000,7 @@
       },
       "xref": {
         "key": {
-          "symbol": { "key": "scip-dotnet nuget . . ``/" },
+          "symbol": { "key": "scip-dotnet nuget . . System/" },
           "location": {
             "key": {
               "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
@@ -2102,36 +2021,9 @@
       "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
       "range": {
         "lineBegin": 5,
-        "columnBegin": 22,
+        "columnBegin": 21,
         "lineEnd": 5,
-        "columnEnd": 27
-      },
-      "xref": {
-        "key": {
-          "symbol": { "key": "scip-dotnet nuget . . System/" },
-          "location": {
-            "key": {
-              "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
-              "range": {
-                "lineBegin": 5,
-                "columnBegin": 22,
-                "lineEnd": 5,
-                "columnEnd": 27
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
-      "range": {
-        "lineBegin": 5,
-        "columnBegin": 29,
-        "lineEnd": 5,
-        "columnEnd": 32
+        "columnEnd": 24
       },
       "xref": {
         "key": {
@@ -2141,9 +2033,9 @@
               "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
               "range": {
                 "lineBegin": 5,
-                "columnBegin": 29,
+                "columnBegin": 21,
                 "lineEnd": 5,
-                "columnEnd": 32
+                "columnEnd": 24
               }
             }
           }
@@ -2162,7 +2054,7 @@
       },
       "xref": {
         "key": {
-          "symbol": { "key": "scip-dotnet nuget . . ``/" },
+          "symbol": { "key": "scip-dotnet nuget . . System/" },
           "location": {
             "key": {
               "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
@@ -2183,36 +2075,9 @@
       "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
       "range": {
         "lineBegin": 6,
-        "columnBegin": 22,
+        "columnBegin": 21,
         "lineEnd": 6,
-        "columnEnd": 27
-      },
-      "xref": {
-        "key": {
-          "symbol": { "key": "scip-dotnet nuget . . System/" },
-          "location": {
-            "key": {
-              "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
-              "range": {
-                "lineBegin": 6,
-                "columnBegin": 22,
-                "lineEnd": 6,
-                "columnEnd": 27
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
-      "range": {
-        "lineBegin": 6,
-        "columnBegin": 29,
-        "lineEnd": 6,
-        "columnEnd": 31
+        "columnEnd": 23
       },
       "xref": {
         "key": {
@@ -2222,9 +2087,9 @@
               "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
               "range": {
                 "lineBegin": 6,
-                "columnBegin": 29,
+                "columnBegin": 21,
                 "lineEnd": 6,
-                "columnEnd": 31
+                "columnEnd": 23
               }
             }
           }
@@ -2237,9 +2102,9 @@
       "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
       "range": {
         "lineBegin": 6,
-        "columnBegin": 33,
+        "columnBegin": 25,
         "lineEnd": 6,
-        "columnEnd": 36
+        "columnEnd": 28
       },
       "xref": {
         "key": {
@@ -2249,9 +2114,9 @@
               "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
               "range": {
                 "lineBegin": 6,
-                "columnBegin": 33,
+                "columnBegin": 25,
                 "lineEnd": 6,
-                "columnEnd": 36
+                "columnEnd": 28
               }
             }
           }
@@ -2270,7 +2135,7 @@
       },
       "xref": {
         "key": {
-          "symbol": { "key": "scip-dotnet nuget . . ``/" },
+          "symbol": { "key": "scip-dotnet nuget . . System/" },
           "location": {
             "key": {
               "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
@@ -2291,36 +2156,9 @@
       "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
       "range": {
         "lineBegin": 7,
-        "columnBegin": 22,
+        "columnBegin": 21,
         "lineEnd": 7,
-        "columnEnd": 27
-      },
-      "xref": {
-        "key": {
-          "symbol": { "key": "scip-dotnet nuget . . System/" },
-          "location": {
-            "key": {
-              "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
-              "range": {
-                "lineBegin": 7,
-                "columnBegin": 22,
-                "lineEnd": 7,
-                "columnEnd": 27
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
-      "range": {
-        "lineBegin": 7,
-        "columnBegin": 29,
-        "lineEnd": 7,
-        "columnEnd": 37
+        "columnEnd": 29
       },
       "xref": {
         "key": {
@@ -2330,9 +2168,9 @@
               "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
               "range": {
                 "lineBegin": 7,
-                "columnBegin": 29,
+                "columnBegin": 21,
                 "lineEnd": 7,
-                "columnEnd": 37
+                "columnEnd": 29
               }
             }
           }
@@ -2351,7 +2189,7 @@
       },
       "xref": {
         "key": {
-          "symbol": { "key": "scip-dotnet nuget . . ``/" },
+          "symbol": { "key": "scip-dotnet nuget . . System/" },
           "location": {
             "key": {
               "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
@@ -2372,36 +2210,9 @@
       "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
       "range": {
         "lineBegin": 8,
-        "columnBegin": 22,
+        "columnBegin": 21,
         "lineEnd": 8,
-        "columnEnd": 27
-      },
-      "xref": {
-        "key": {
-          "symbol": { "key": "scip-dotnet nuget . . System/" },
-          "location": {
-            "key": {
-              "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
-              "range": {
-                "lineBegin": 8,
-                "columnBegin": 22,
-                "lineEnd": 8,
-                "columnEnd": 27
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
-      "range": {
-        "lineBegin": 8,
-        "columnBegin": 29,
-        "lineEnd": 8,
-        "columnEnd": 37
+        "columnEnd": 29
       },
       "xref": {
         "key": {
@@ -2411,9 +2222,9 @@
               "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
               "range": {
                 "lineBegin": 8,
-                "columnBegin": 29,
+                "columnBegin": 21,
                 "lineEnd": 8,
-                "columnEnd": 37
+                "columnEnd": 29
               }
             }
           }
@@ -2426,9 +2237,9 @@
       "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
       "range": {
         "lineBegin": 8,
-        "columnBegin": 39,
+        "columnBegin": 31,
         "lineEnd": 8,
-        "columnEnd": 43
+        "columnEnd": 35
       },
       "xref": {
         "key": {
@@ -2438,9 +2249,9 @@
               "file": { "key": "obj/Debug/net7.0/src.GlobalUsings.g.cs" },
               "range": {
                 "lineBegin": 8,
-                "columnBegin": 39,
+                "columnBegin": 31,
                 "lineEnd": 8,
-                "columnEnd": 43
+                "columnEnd": 35
               }
             }
           }
