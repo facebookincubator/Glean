@@ -1,0 +1,2 @@
+query: python.ImportStatement { as_name = "client.annotations" }
+transform: [normord, []]

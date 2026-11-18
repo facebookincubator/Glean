@@ -1,0 +1,2 @@
+query: python.DeclarationLocation { declaration = { imp = python.ImportStatement { as_name = "client.annotations" } } }
+transform: [normord, []]

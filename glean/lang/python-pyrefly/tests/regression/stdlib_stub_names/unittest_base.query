@@ -1,0 +1,2 @@
+query: python.BaseClassToDerived { base = python.ClassDeclaration { name = "unittest.case.TestCase" } }
+transform: [normord, []]
