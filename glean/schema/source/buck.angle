@@ -125,6 +125,14 @@ predicate TargetSources :
     srcs : [File],
   }
 
+# Buck target runtime resources, separate from compile inputs in TargetSources.
+# Dictionary aliases are omitted; entries retain source/generated/output labels.
+predicate TargetResources :
+  {
+    target : Target,
+    resources : [File],
+  }
+
 # Which targets mention a file in headers, exportedHeaders, or srcs.
 # (Making the TargetSources a direct owner of the file).
 #
