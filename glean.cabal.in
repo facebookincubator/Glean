@@ -300,6 +300,7 @@ library thrift-annotation
     exposed-modules:
         Facebook.Thrift.Annotation.Cpp.Cpp.Types
         Hack.Types
+        Python.Types
         Rust.Types
         Scope.Types
         Facebook.Thrift.Annotation.Thrift.Thrift.Types
