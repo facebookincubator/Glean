@@ -1,1 +1,11 @@
-[ "@generated" ]
+[
+  "@generated",
+  {
+    "key": {
+      "base": { "key": { "name": { "key": "unittest.case.TestCase" } } },
+      "derived": {
+        "key": { "name": { "key": "client.ProfileMessageButtonServiceTest" } }
+      }
+    }
+  }
+]

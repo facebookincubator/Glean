@@ -6,7 +6,7 @@
         "imp": {
           "key": {
             "as_name": { "key": "client.annotations" },
-            "from_name": { "key": "stubs.__future__.annotations" }
+            "from_name": { "key": "__future__.annotations" }
           }
         }
       },
