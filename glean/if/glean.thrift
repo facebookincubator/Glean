@@ -10,6 +10,7 @@ include "glean/github/if/fb303.thrift"
 include "glean/if/facebook/auth.thrift"
 include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/thrift.thrift"
+include "thrift/annotation/python.thrift"
 
 @thrift.AllowLegacyMissingUris
 package;
@@ -28,6 +29,11 @@ namespace py3 glean
 // Basic types
 
 // Uniquely identifies a fact in a database
+
+@python.Py3EnableCppAdapter
+@cpp.Adapter{name = "::apache::thrift::StringTypeAdapter<folly::fbstring>"}
+typedef binary StringType_facts
+
 typedef i64 Id
 typedef list<Id> (hs.type = "VectorStorable") listOfIds
 typedef map<Id, listOfIds> (hs.type = "HashMap") multimapOfIds
@@ -140,7 +146,8 @@ union Dependencies {
 // Thrift API
 
 // decodes to a term (or a sequence of terms?)
-@cpp.Type{name = "folly::fbstring"}
+@python.Py3EnableCppAdapter
+@cpp.Adapter{name = "::apache::thrift::StringTypeAdapter<folly::fbstring>"}
 typedef binary Value
 
 // Special value Fact 0 "" "" returned when nothing found
@@ -170,8 +177,8 @@ struct Batch {
   // which occur before them in this sequence and to facts in the underlying
   // database with ids below firstId. If ids isn't supplied, the facts here
   // are assumed to have sequential ids starting with firstId.
-  @cpp.Type{name = "folly::fbstring"}
-  3: binary facts;
+
+  3: StringType_facts facts;
 
   // If supplied, this list contains the ids for the facts in the batch. It
   // must satisfy the following conditions:
