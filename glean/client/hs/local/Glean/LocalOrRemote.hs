@@ -59,6 +59,7 @@ import Control.Monad.Extra
 import qualified Data.ByteString.Char8 as BC
 import Data.Default
 import Data.IORef
+import Data.Text (Text)
 import Options.Applicative as O
 import System.IO
 import Text.Printf
@@ -90,7 +91,9 @@ data Logging = EnableLogging | DisableLogging
 -- | Specifies what kind of 'Backend' to construct.
 data Service
   = Local Local.Config Logging
-  | Remote (ThriftSource ClientConfig)
+  | Remote (ThriftSource ClientConfig) (Maybe Text)
+    -- ^ The 'Text' is a ServiceRouter @client_id@ for outbound requests;
+    -- 'Nothing' leaves ServiceRouter to pick its default.
   deriving Show
 
 -- | Use the provided 'Service' to make a 'Backend'.  (note in fact
@@ -127,7 +130,7 @@ withBackend evb cfgapi service schema settings inner = case service of
         case logging of
           EnableLogging -> inner . LoggingBackend
           DisableLogging -> inner
-    Remote src -> do
+    Remote src clientId -> do
       config <- ThriftSource.loadDefault cfgapi src
       let (config', opts) = settings (config, def)
       case Remote.thriftServiceWithTimeout config' opts of
@@ -147,7 +150,7 @@ withBackend evb cfgapi service schema settings inner = case service of
                 Service.serviceToString (clientConfig_serv config')
         Just thriftService -> do
           client <- Remote.clientInfo
-          inner $ Remote.ThriftBackend
+          inner $ maybe id backendWithClientId clientId $ Remote.ThriftBackend
             config'
             evb
             thriftService
@@ -162,9 +165,15 @@ options = optionsLong "service"
 
 optionsLong :: String -> O.Parser Service
 optionsLong self =
-  Remote <$> Remote.optionsLong self <|>
+  Remote <$> Remote.optionsLong self <*> clientId <|>
   Local <$> Local.options <*> logging
   where
+    clientId = O.optional $ O.strOption
+      (  O.long "client-id"
+      <> O.metavar "ID"
+      <> O.help ("ServiceRouter client_id to attribute requests to"
+          <> " (default: chosen by ServiceRouter)")
+      )
     logging = (\b -> if b then EnableLogging else DisableLogging) <$> O.switch
       (  O.long "enable-logging"
       <> O.help "Log requests to Scuba/Hive/..."
