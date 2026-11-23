@@ -16,7 +16,6 @@ glean --service glean.write.test derive --db aosp.oculus.14.java/localtest \
     scip.LowerCaseDisplayNameSymbol \
     scip.DefinitionLocation \
     scip.ReferenceLocation \
-    scip.SymbolDisplayName \
     scip.EnclosedSymbol \
     scip.IsImplemented
 glean --service glean.write.test finish --db aosp.oculus.14.java/localtest

@@ -55,12 +55,13 @@ predicate DisplayNameSymbol:
     symbol: Symbol
   }
 
+# The same pairs as DisplayNameSymbol, keyed by symbol. The indexer writes
+# both predicates.
 predicate SymbolDisplayName:
   {
     symbol: Symbol,
     displayName: DisplayName
-  } stored { Symbol, DisplayName } where
-    scip.DisplayNameSymbol { DisplayName, Symbol }
+  }
 
 predicate LowerCaseDisplayNameSymbol: {
   displayName: string,

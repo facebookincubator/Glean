@@ -82,7 +82,6 @@ scipDerivedPredicates =
   [ "scip.LowerCaseDisplayNameSymbol"
   , "scip.DefinitionLocation"
   , "scip.ReferenceLocation"
-  , "scip.SymbolDisplayName"
   , "scip.EnclosedSymbol"
   , "scip.IsImplemented"
   ]
