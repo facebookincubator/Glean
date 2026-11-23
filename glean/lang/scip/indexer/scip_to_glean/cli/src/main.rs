@@ -495,6 +495,7 @@ mod tests {
             "src.FileLines.1",
             "scip.DisplayName.1",
             "scip.DisplayNameSymbol.1",
+            "scip.SymbolDisplayName.1",
             "scip.SymbolSignature.1",
         ] {
             assert!(
@@ -510,6 +511,62 @@ mod tests {
                 .all(|json| find_predicate_facts(json, "scip.Metadata.1").is_some()),
             "every shard should carry scip.Metadata"
         );
+    }
+
+    #[test]
+    fn test_symbol_display_name_mirrors_display_name_symbol() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let mut doc = Document::new();
+        doc.relative_path = "test.java".to_string();
+        // Two symbols share a display name, and a third has its own.
+        for (symbol, display_name, line) in [
+            ("semanticdb maven . . a/Foo#", "Foo", 0),
+            ("semanticdb maven . . b/Foo#", "Foo", 1),
+            ("semanticdb maven . . Bar#", "Bar", 2),
+        ] {
+            let mut occ = ScipOccurrence::new();
+            occ.symbol = symbol.to_string();
+            occ.range = vec![line, 6, 9];
+            occ.symbol_roles = 1; // Definition
+            doc.occurrences.push(occ);
+            let mut info = ScipSymbolInformation::new();
+            info.symbol = symbol.to_string();
+            info.display_name = display_name.to_string();
+            doc.symbols.push(info);
+        }
+        write_scip_index(&mut scip_file, doc);
+
+        build_json(build_args(
+            scip_file.path().to_path_buf(),
+            output_json.path().to_path_buf(),
+        ))
+        .expect("failure building JSON");
+        let output = std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        let pairs = |predicate: &str| -> Vec<(u64, u64)> {
+            let mut pairs: Vec<(u64, u64)> = find_predicate_facts(&output, predicate)
+                .unwrap_or_else(|| panic!("{predicate} not found"))
+                .as_array()
+                .expect("facts should be array")
+                .iter()
+                .map(|fact| {
+                    let key = &fact["key"];
+                    (
+                        key["symbol"].as_u64().expect("symbol should be a fact id"),
+                        key["displayName"]
+                            .as_u64()
+                            .expect("displayName should be a fact id"),
+                    )
+                })
+                .collect();
+            pairs.sort();
+            pairs
+        };
+        let symbol_display_names = pairs("scip.SymbolDisplayName.1");
+        assert_eq!(symbol_display_names.len(), 3);
+        assert_eq!(symbol_display_names, pairs("scip.DisplayNameSymbol.1"));
     }
 
     /// Helper to create a SCIP index file with a single document

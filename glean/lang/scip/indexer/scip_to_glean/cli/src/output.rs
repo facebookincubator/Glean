@@ -105,6 +105,9 @@ struct Metadata {
     tool_info: Option<ToolInfo>,
     version: i32,
 }
+/// The key of both `scip.DisplayNameSymbol` and `scip.SymbolDisplayName`.
+/// The two predicates have the same fields in a different order, and Glean
+/// matches JSON fields by name, so one value serves as either key.
 #[derive(Serialize, Clone, Eq, PartialEq, Hash)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 struct DisplayNameSymbol {
@@ -633,7 +636,7 @@ impl GleanJSONOutput {
         fn sub<T: Serialize>(
             mut w: impl std::io::Write,
             name: &str,
-            mut items: Vec<Owned<T>>,
+            items: &[Owned<T>],
             batches: &mut Batches<'_>,
         ) -> std::io::Result<()> {
             if items.is_empty() {
@@ -641,7 +644,7 @@ impl GleanJSONOutput {
             }
 
             // Reverse item list to match behavior of Haskell code, which puts the last entries first
-            items.reverse();
+            let items: Vec<&Owned<T>> = items.iter().rev().collect();
 
             // Glean attributes all the facts of a batch to the batch's unit.
             let units: Vec<Option<UnitId>> = items.iter().map(|item| item.unit).collect();
@@ -692,53 +695,59 @@ impl GleanJSONOutput {
 
         w.write_all(b"[")?;
         // Match the ordering in scipDependencyOrder
-        sub(&mut w, "src.File", self.src_files, batches)?;
-        sub(&mut w, "src.FileLines", self.file_lines, batches)?;
-        sub(&mut w, "scip.Symbol", self.symbols, batches)?;
-        sub(&mut w, "scip.LocalName", self.local_names, batches)?;
-        sub(&mut w, "scip.Documentation", self.documentation, batches)?;
-        sub(&mut w, "scip.FileLanguage", self.file_langs, batches)?;
-        sub(&mut w, "scip.FileRange", self.file_ranges, batches)?;
+        sub(&mut w, "src.File", &self.src_files, batches)?;
+        sub(&mut w, "src.FileLines", &self.file_lines, batches)?;
+        sub(&mut w, "scip.Symbol", &self.symbols, batches)?;
+        sub(&mut w, "scip.LocalName", &self.local_names, batches)?;
+        sub(&mut w, "scip.Documentation", &self.documentation, batches)?;
+        sub(&mut w, "scip.FileLanguage", &self.file_langs, batches)?;
+        sub(&mut w, "scip.FileRange", &self.file_ranges, batches)?;
         sub(
             &mut w,
             "scip.EnclosingRange",
-            self.enclosing_ranges,
+            &self.enclosing_ranges,
             batches,
         )?;
-        sub(&mut w, "scip.Definition", self.definitions, batches)?;
-        sub(&mut w, "scip.Reference", self.references, batches)?;
+        sub(&mut w, "scip.Definition", &self.definitions, batches)?;
+        sub(&mut w, "scip.Reference", &self.references, batches)?;
         sub(
             &mut w,
             "scip.SymbolDocumentation",
-            self.symbol_documentation,
+            &self.symbol_documentation,
             batches,
         )?;
         sub(
             &mut w,
             "scip.SymbolSignature",
-            self.symbol_signatures,
+            &self.symbol_signatures,
             batches,
         )?;
-        sub(&mut w, "scip.SymbolName", self.symbol_names, batches)?;
+        sub(&mut w, "scip.SymbolName", &self.symbol_names, batches)?;
         sub(
             &mut w,
             "scip.IsImplementation",
-            self.is_implementation,
+            &self.is_implementation,
             batches,
         )?;
         sub(
             &mut w,
             "scip.EnclosingSymbol",
-            self.enclosing_symbols,
+            &self.enclosing_symbols,
             batches,
         )?;
-        sub(&mut w, "scip.SymbolKind", self.symbol_kinds, batches)?;
-        sub(&mut w, "scip.Metadata", self.metadata, batches)?;
-        sub(&mut w, "scip.DisplayName", self.display_names, batches)?;
+        sub(&mut w, "scip.SymbolKind", &self.symbol_kinds, batches)?;
+        sub(&mut w, "scip.Metadata", &self.metadata, batches)?;
+        sub(&mut w, "scip.DisplayName", &self.display_names, batches)?;
         sub(
             &mut w,
             "scip.DisplayNameSymbol",
-            self.display_name_symbols,
+            &self.display_name_symbols,
+            batches,
+        )?;
+        sub(
+            &mut w,
+            "scip.SymbolDisplayName",
+            &self.display_name_symbols,
             batches,
         )?;
         w.write_all(b"]\n")?;
