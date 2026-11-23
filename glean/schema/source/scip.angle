@@ -93,6 +93,37 @@ predicate Reference:
     location: FileRange
   }
 
+# The roles in an occurrence's `symbol_roles` bitset (scip.proto:SymbolRole),
+# except `Definition`: that bit decides whether the occurrence is a
+# `Definition` or a `Reference` fact.
+type SymbolRole = enum {
+  Import |
+  WriteAccess |
+  ReadAccess |
+  Generated |
+  # "Is the symbol in test code?" Helpers in test code have it too, so it
+  # does not single out test functions.
+  Test |
+  ForwardDefinition
+}
+
+# One fact per role bit set on a definition's occurrence. No fact means the
+# indexer did not set the bit, or the converter was not asked to write roles;
+# it does not mean the role is known to be absent.
+predicate DefinitionRole:
+  {
+    defn: Definition,
+    role: SymbolRole,
+  }
+
+# One fact per role bit set on a reference's occurrence, as for
+# `DefinitionRole`.
+predicate ReferenceRole:
+  {
+    xref: Reference,
+    role: SymbolRole,
+  }
+
 predicate EnclosingRange:
   {
     range: scip.FileRange,
