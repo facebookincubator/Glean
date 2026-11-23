@@ -1,0 +1,3 @@
+query: scip.DefinitionRole _
+perf: True
+transform: [gensort, []]

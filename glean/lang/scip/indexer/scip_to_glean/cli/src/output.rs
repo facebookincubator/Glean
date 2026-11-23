@@ -15,6 +15,7 @@ use serde::Serialize;
 use crate::GleanRange;
 use crate::ToolInfo;
 use crate::angle::ScipId;
+use crate::angle::SymbolRole;
 use crate::lsif::LanguageId;
 use crate::lsif::SymbolKind;
 
@@ -59,6 +60,18 @@ struct EnclosingRange {
 struct SymbolLocation {
     location: ScipId,
     symbol: ScipId,
+}
+/// `scip.Definition` and `scip.Reference` facts have no id in this output, so
+/// role facts refer to them by key.
+#[derive(Serialize, Clone, Eq, PartialEq, Hash)]
+struct DefinitionRole {
+    defn: Key<SymbolLocation>,
+    role: u8,
+}
+#[derive(Serialize, Clone, Eq, PartialEq, Hash)]
+struct ReferenceRole {
+    xref: Key<SymbolLocation>,
+    role: u8,
 }
 #[derive(Serialize, Clone, Eq, PartialEq, Hash)]
 struct SymbolDocs {
@@ -125,6 +138,8 @@ enum Node {
     SymbolKind(Owned<Key<SymbolAndKind>>),
     Definition(Owned<Key<SymbolLocation>>),
     Reference(Owned<Key<SymbolLocation>>),
+    DefinitionRole(Owned<Key<DefinitionRole>>),
+    ReferenceRole(Owned<Key<ReferenceRole>>),
     SymbolDocumentation(Owned<IdKey<SymbolDocs>>),
     SymbolSignature(Owned<Key<SymbolSignature>>),
     File(Owned<IdKey<Box<str>>>),
@@ -155,6 +170,8 @@ pub struct GleanJSONOutput {
     symbols: Vec<Owned<IdKey<Box<str>>>>,
     definitions: Vec<Owned<Key<SymbolLocation>>>,
     references: Vec<Owned<Key<SymbolLocation>>>,
+    definition_roles: Vec<Owned<Key<DefinitionRole>>>,
+    reference_roles: Vec<Owned<Key<ReferenceRole>>>,
     local_names: Vec<Owned<IdKey<Box<str>>>>,
     symbol_names: Vec<Owned<Key<SymbolName>>>,
     is_implementation: Vec<Owned<Key<IsImplementation>>>,
@@ -184,6 +201,8 @@ where
                 Node::SymbolKind(node) => output.symbol_kinds.push(node),
                 Node::Definition(node) => output.definitions.push(node),
                 Node::Reference(node) => output.references.push(node),
+                Node::DefinitionRole(node) => output.definition_roles.push(node),
+                Node::ReferenceRole(node) => output.reference_roles.push(node),
                 Node::SymbolDocumentation(node) => output.symbol_documentation.push(node),
                 Node::SymbolSignature(node) => output.symbol_signatures.push(node),
                 Node::LocalName(node) => output.local_names.push(node),
@@ -307,6 +326,32 @@ impl GleanJSONOutput {
             },
         }));
     }
+    pub fn definition_role(&mut self, symbol_id: ScipId, file_range_id: ScipId, role: SymbolRole) {
+        self.definition_roles.push(self.owned(Key {
+            key: DefinitionRole {
+                defn: Key {
+                    key: SymbolLocation {
+                        symbol: symbol_id,
+                        location: file_range_id,
+                    },
+                },
+                role: role as u8,
+            },
+        }));
+    }
+    pub fn reference_role(&mut self, symbol_id: ScipId, file_range_id: ScipId, role: SymbolRole) {
+        self.reference_roles.push(self.owned(Key {
+            key: ReferenceRole {
+                xref: Key {
+                    key: SymbolLocation {
+                        symbol: symbol_id,
+                        location: file_range_id,
+                    },
+                },
+                role: role as u8,
+            },
+        }));
+    }
     pub fn local_name(&mut self, name_id: ScipId, text: Box<str>) {
         self.local_names.push(self.owned(IdKey {
             id: name_id,
@@ -396,6 +441,8 @@ impl GleanJSONOutput {
             + self.symbols.len()
             + self.definitions.len()
             + self.references.len()
+            + self.definition_roles.len()
+            + self.reference_roles.len()
             + self.local_names.len()
             + self.symbol_names.len()
             + self.is_implementation.len()
@@ -431,6 +478,8 @@ impl GleanJSONOutput {
             symbols,
             definitions,
             references,
+            definition_roles,
+            reference_roles,
             local_names,
             symbol_names,
             is_implementation,
@@ -476,6 +525,8 @@ impl GleanJSONOutput {
                 + symbol_kinds.len()
                 + definitions.len()
                 + references.len()
+                + definition_roles.len()
+                + reference_roles.len()
                 + enclosing_ranges.len()
                 + symbol_documentation.len()
                 + symbol_signatures.len()
@@ -489,6 +540,8 @@ impl GleanJSONOutput {
         source_nodes.extend(symbol_kinds.into_iter().map(Node::SymbolKind));
         source_nodes.extend(definitions.into_iter().map(Node::Definition));
         source_nodes.extend(references.into_iter().map(Node::Reference));
+        source_nodes.extend(definition_roles.into_iter().map(Node::DefinitionRole));
+        source_nodes.extend(reference_roles.into_iter().map(Node::ReferenceRole));
         source_nodes.extend(enclosing_ranges.into_iter().map(Node::EnclosingRange));
         source_nodes.extend(
             symbol_documentation
@@ -508,6 +561,15 @@ impl GleanJSONOutput {
         let mut current_graph: HashSet<Node> = HashSet::with_capacity(shard_capacity);
 
         let mut to_visit: Vec<Node> = Vec::new();
+
+        let symbol_location_nodes = |loc: &SymbolLocation| {
+            let location = *file_ranges.get(&loc.location).unwrap();
+            let symbol = *symbols.get(&loc.symbol).unwrap();
+            [
+                Node::FileRange(location.clone()),
+                Node::Symbol(symbol.clone()),
+            ]
+        };
 
         // source nodes are our entry into each subgraph
         for node in source_nodes {
@@ -566,10 +628,13 @@ impl GleanJSONOutput {
                             to_visit.push(Node::Symbol(symbol.clone()));
                         }
                         Node::Definition(loc) | Node::Reference(loc) => {
-                            let location = *file_ranges.get(&loc.fact.key.location).unwrap();
-                            let symbol = *symbols.get(&loc.fact.key.symbol).unwrap();
-                            to_visit.push(Node::FileRange(location.clone()));
-                            to_visit.push(Node::Symbol(symbol.clone()));
+                            to_visit.extend(symbol_location_nodes(&loc.fact.key));
+                        }
+                        Node::DefinitionRole(role) => {
+                            to_visit.extend(symbol_location_nodes(&role.fact.key.defn.key));
+                        }
+                        Node::ReferenceRole(role) => {
+                            to_visit.extend(symbol_location_nodes(&role.fact.key.xref.key));
                         }
                         Node::SymbolDocumentation(symbol_documentation) => {
                             let symbol =
@@ -710,6 +775,13 @@ impl GleanJSONOutput {
         )?;
         sub(&mut w, "scip.Definition", &self.definitions, batches)?;
         sub(&mut w, "scip.Reference", &self.references, batches)?;
+        sub(
+            &mut w,
+            "scip.DefinitionRole",
+            &self.definition_roles,
+            batches,
+        )?;
+        sub(&mut w, "scip.ReferenceRole", &self.reference_roles, batches)?;
         sub(
             &mut w,
             "scip.SymbolDocumentation",

@@ -34,6 +34,7 @@ use proto::scip::Index;
 use proto_rust::scip::Index;
 
 use crate::angle::Env;
+use crate::angle::WriteRoleFacts;
 use crate::lsif::LanguageId;
 
 mod angle;
@@ -87,6 +88,12 @@ struct BuildJsonArgs {
         help = "Attribute the facts decoded from each document to a Glean ownership unit named after the document's filepath, as written in src.File. Needed for incremental and ACL-enabled databases"
     )]
     ownership: bool,
+
+    #[arg(
+        long,
+        help = "Write scip.DefinitionRole and scip.ReferenceRole facts. The database's schema must have these predicates"
+    )]
+    symbol_roles: bool,
 }
 
 #[cfg(feature = "facebook")]
@@ -217,7 +224,12 @@ fn build_json(args: BuildJsonArgs) -> Result<()> {
         .as_ref()
         .and_then(|s| LanguageId::new(s).known());
 
-    let mut env = Env::new(args.ownership);
+    let write_role_facts = if args.symbol_roles {
+        WriteRoleFacts::Yes
+    } else {
+        WriteRoleFacts::No
+    };
+    let mut env = Env::new(args.ownership, write_role_facts);
     for input in &args.input {
         decode_scip_data(
             &mut env,
@@ -332,6 +344,7 @@ fn read_scip_file(file: &Path) -> Result<Index, Error> {
 #[cfg(test)]
 mod tests {
     use std::collections::HashMap;
+    use std::collections::HashSet;
 
     #[cfg(feature = "facebook")]
     use proto_rust::scip::Document;
@@ -344,7 +357,10 @@ mod tests {
     #[cfg(feature = "facebook")]
     use proto_rust::scip::SymbolInformation as ScipSymbolInformation;
     #[cfg(feature = "facebook")]
+    use proto_rust::scip::SymbolRole as ScipSymbolRole;
+    #[cfg(feature = "facebook")]
     use proto_rust::scip::symbol_information;
+    use protobuf::Enum;
     use tempfile::NamedTempFile;
 
     #[cfg(not(feature = "facebook"))]
@@ -358,8 +374,11 @@ mod tests {
     #[cfg(not(feature = "facebook"))]
     use super::proto::scip::SymbolInformation as ScipSymbolInformation;
     #[cfg(not(feature = "facebook"))]
+    use super::proto::scip::SymbolRole as ScipSymbolRole;
+    #[cfg(not(feature = "facebook"))]
     use super::proto::scip::symbol_information;
     use super::*;
+    use crate::angle::SymbolRole;
     use crate::lsif::SymbolKind;
 
     fn build_args(scip_path: PathBuf, output_path: PathBuf) -> BuildJsonArgs {
@@ -373,6 +392,7 @@ mod tests {
             source_root: None,
             shard: None,
             ownership: false,
+            symbol_roles: false,
         }
     }
 
@@ -413,6 +433,7 @@ mod tests {
             source_root: None,
             shard: None,
             ownership: false,
+            symbol_roles: false,
         };
 
         build_json(args).expect("failure building JSON");
@@ -438,6 +459,7 @@ mod tests {
             source_root: None,
             shard: Some(100),
             ownership: false,
+            symbol_roles: false,
         };
 
         build_json(args).expect("failure building JSON");
@@ -640,6 +662,7 @@ mod tests {
             source_root: None,
             shard: None,
             ownership: false,
+            symbol_roles: false,
         };
         build_json(args).expect("failure building JSON");
 
@@ -690,6 +713,7 @@ mod tests {
             source_root: Some(source_dir.path().to_path_buf()),
             shard: None,
             ownership: false,
+            symbol_roles: false,
         };
         build_json(args).expect("failure building JSON");
 
@@ -734,6 +758,7 @@ mod tests {
             source_root: None,
             shard: None,
             ownership: false,
+            symbol_roles: false,
         };
         build_json(args).expect("failure building JSON");
 
@@ -887,6 +912,7 @@ mod tests {
             source_root: None,
             shard: None,
             ownership: false,
+            symbol_roles: false,
         };
         build_json(args).expect("failure building JSON");
 
@@ -945,6 +971,7 @@ mod tests {
             source_root: None,
             shard: None,
             ownership: false,
+            symbol_roles: false,
         };
         build_json(args).expect("failure building JSON");
 
@@ -995,6 +1022,7 @@ mod tests {
             source_root: None,
             shard: None,
             ownership: false,
+            symbol_roles: false,
         };
         build_json(args).expect("failure building JSON");
 
@@ -1920,6 +1948,230 @@ mod tests {
             symbols.len(),
             2,
             "Both documents' symbols should be emitted"
+        );
+    }
+
+    fn occurrence(symbol: &str, range: Vec<i32>, roles: &[ScipSymbolRole]) -> ScipOccurrence {
+        let mut occ = ScipOccurrence::new();
+        occ.symbol = symbol.to_string();
+        occ.range = range;
+        occ.symbol_roles = roles.iter().fold(0, |bits, role| bits | role.value());
+        occ
+    }
+
+    /// A Rust test function's definition and a call to `parse` from its body:
+    /// both are marked as test code, and the call also as a read.
+    fn doc_with_test_roles() -> Document {
+        let mut doc = Document::new();
+        doc.relative_path = "src/tests.rs".to_string();
+        doc.language = "rust".to_string();
+        doc.occurrences.push(occurrence(
+            "rust-analyzer cargo demo 0.1.0 tests/parses_empty().",
+            vec![4, 7, 19],
+            &[ScipSymbolRole::Definition, ScipSymbolRole::Test],
+        ));
+        doc.occurrences.push(occurrence(
+            "rust-analyzer cargo demo 0.1.0 parse().",
+            vec![5, 8, 13],
+            &[ScipSymbolRole::ReadAccess, ScipSymbolRole::Test],
+        ));
+        doc
+    }
+
+    fn convert(doc: Document, write_role_facts: WriteRoleFacts) -> String {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+        write_scip_index(&mut scip_file, doc);
+
+        let mut args = build_args(
+            scip_file.path().to_path_buf(),
+            output_json.path().to_path_buf(),
+        );
+        args.symbol_roles = write_role_facts == WriteRoleFacts::Yes;
+        build_json(args).expect("failure building JSON");
+        std::fs::read_to_string(output_json.path()).expect("unable to read output")
+    }
+
+    /// Sorted `(symbol, location)` ids of the `predicate` facts.
+    fn occurrence_keys(json: &str, predicate: &str) -> Vec<(u64, u64)> {
+        let Some(facts) = find_predicate_facts(json, predicate) else {
+            return Vec::new();
+        };
+        let mut keys: Vec<_> = facts
+            .as_array()
+            .expect("facts should be array")
+            .iter()
+            .map(|fact| {
+                let key = &fact["key"];
+                (
+                    key["symbol"].as_u64().expect("symbol should be an id"),
+                    key["location"].as_u64().expect("location should be an id"),
+                )
+            })
+            .collect();
+        keys.sort_unstable();
+        keys
+    }
+
+    /// Sorted `(symbol, location, role)` of the `predicate` role facts, whose
+    /// occurrence is in `field`.
+    fn role_facts(json: &str, predicate: &str, field: &str) -> Vec<(u64, u64, u64)> {
+        let Some(facts) = find_predicate_facts(json, predicate) else {
+            return Vec::new();
+        };
+        let mut roles: Vec<_> = facts
+            .as_array()
+            .expect("facts should be array")
+            .iter()
+            .map(|fact| {
+                let occurrence = &fact["key"][field]["key"];
+                (
+                    occurrence["symbol"]
+                        .as_u64()
+                        .expect("symbol should be an id"),
+                    occurrence["location"]
+                        .as_u64()
+                        .expect("location should be an id"),
+                    fact["key"]["role"]
+                        .as_u64()
+                        .expect("role should be a number"),
+                )
+            })
+            .collect();
+        roles.sort_unstable();
+        roles
+    }
+
+    fn fact_ids(json: &str, predicate: &str) -> HashSet<u64> {
+        find_predicate_facts(json, predicate)
+            .map(|facts| {
+                facts
+                    .as_array()
+                    .expect("facts should be array")
+                    .iter()
+                    .map(|fact| fact["id"].as_u64().expect("fact should have an id"))
+                    .collect()
+            })
+            .unwrap_or_default()
+    }
+
+    #[test]
+    fn test_symbol_roles_not_written_by_default() {
+        let output = convert(doc_with_test_roles(), WriteRoleFacts::No);
+
+        assert_eq!(occurrence_keys(&output, "scip.Definition.1").len(), 1);
+        assert_eq!(occurrence_keys(&output, "scip.Reference.1").len(), 1);
+        for predicate in ["scip.DefinitionRole.1", "scip.ReferenceRole.1"] {
+            assert!(
+                find_predicate_facts(&output, predicate).is_none(),
+                "{predicate} should need --symbol-roles"
+            );
+        }
+    }
+
+    #[test]
+    fn test_symbol_roles_written_for_definitions_and_references() {
+        let output = convert(doc_with_test_roles(), WriteRoleFacts::Yes);
+
+        let [(def_symbol, def_location)] = occurrence_keys(&output, "scip.Definition.1")[..] else {
+            panic!("expected one definition");
+        };
+        assert_eq!(
+            role_facts(&output, "scip.DefinitionRole.1", "defn"),
+            vec![(def_symbol, def_location, SymbolRole::Test as u64)],
+            "the definition's only role besides Definition is Test"
+        );
+
+        let [(ref_symbol, ref_location)] = occurrence_keys(&output, "scip.Reference.1")[..] else {
+            panic!("expected one reference");
+        };
+        assert_eq!(
+            role_facts(&output, "scip.ReferenceRole.1", "xref"),
+            vec![
+                (ref_symbol, ref_location, SymbolRole::ReadAccess as u64),
+                (ref_symbol, ref_location, SymbolRole::Test as u64),
+            ],
+            "the reference has the ReadAccess and Test roles"
+        );
+    }
+
+    #[test]
+    fn test_symbol_roles_skip_definition_and_unnamed_bits() {
+        let mut doc = Document::new();
+        doc.relative_path = "lib.h".to_string();
+        doc.language = "cpp".to_string();
+        let mut declaration = occurrence(
+            "cxx . . $ Widget#",
+            vec![1, 6, 12],
+            &[ScipSymbolRole::ForwardDefinition],
+        );
+        // A bit that scip.proto does not name.
+        declaration.symbol_roles |= 0x100;
+        doc.occurrences.push(declaration);
+        doc.occurrences.push(occurrence(
+            "cxx . . $ make().",
+            vec![3, 4, 8],
+            &[ScipSymbolRole::Definition],
+        ));
+        let output = convert(doc, WriteRoleFacts::Yes);
+
+        let [(widget, declaration_location)] = occurrence_keys(&output, "scip.Reference.1")[..]
+        else {
+            panic!("a forward definition without Definition should be one reference");
+        };
+        assert_eq!(
+            role_facts(&output, "scip.ReferenceRole.1", "xref"),
+            vec![(
+                widget,
+                declaration_location,
+                SymbolRole::ForwardDefinition as u64
+            )],
+            "only ForwardDefinition, not the unnamed bit"
+        );
+        assert_eq!(occurrence_keys(&output, "scip.Definition.1").len(), 1);
+        assert!(
+            role_facts(&output, "scip.DefinitionRole.1", "defn").is_empty(),
+            "Definition alone should give no role fact"
+        );
+    }
+
+    #[test]
+    fn test_sharded_symbol_roles_carry_their_symbol_and_location() {
+        let mut scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json_dir = tempfile::TempDir::new().expect("unable to create temp dir");
+        write_scip_index(&mut scip_file, doc_with_test_roles());
+
+        let mut args = build_args(
+            scip_file.path().to_path_buf(),
+            output_json_dir.path().to_path_buf(),
+        );
+        args.shard = Some(1);
+        args.symbol_roles = true;
+        build_json(args).expect("failure building JSON");
+
+        let shards: Vec<String> = std::fs::read_dir(output_json_dir.path())
+            .unwrap()
+            .map(|entry| std::fs::read_to_string(entry.unwrap().path()).unwrap())
+            .collect();
+        let mut role_count = 0;
+        for json in &shards {
+            let symbols = fact_ids(json, "scip.Symbol.1");
+            let locations = fact_ids(json, "scip.FileRange.1");
+            let roles = role_facts(json, "scip.DefinitionRole.1", "defn")
+                .into_iter()
+                .chain(role_facts(json, "scip.ReferenceRole.1", "xref"));
+            for (symbol, location, _) in roles {
+                assert!(symbols.contains(&symbol), "symbol {symbol} not in shard");
+                assert!(
+                    locations.contains(&location),
+                    "location {location} not in shard"
+                );
+                role_count += 1;
+            }
+        }
+        assert_eq!(
+            role_count, 3,
+            "Test on the definition, ReadAccess and Test on the reference"
         );
     }
 }

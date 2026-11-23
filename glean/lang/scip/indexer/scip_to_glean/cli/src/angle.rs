@@ -22,7 +22,10 @@ use proto_rust::scip::Occurrence;
 #[cfg(feature = "facebook")]
 use proto_rust::scip::SymbolInformation;
 #[cfg(feature = "facebook")]
+use proto_rust::scip::SymbolRole as ScipSymbolRole;
+#[cfg(feature = "facebook")]
 use proto_rust::scip::symbol_information;
+use protobuf::Enum;
 use scip_symbol::Descriptor;
 use scip_symbol::DescriptorKind;
 use scip_symbol::ScipSymbol;
@@ -43,6 +46,8 @@ use crate::proto::scip::Metadata;
 use crate::proto::scip::Occurrence;
 #[cfg(not(feature = "facebook"))]
 use crate::proto::scip::SymbolInformation;
+#[cfg(not(feature = "facebook"))]
+use crate::proto::scip::SymbolRole as ScipSymbolRole;
 #[cfg(not(feature = "facebook"))]
 use crate::proto::scip::symbol_information;
 
@@ -83,6 +88,15 @@ pub struct Env {
     /// ownership unit named after the document's qualified filepath, and
     /// all other facts to `NO_DOCUMENT_UNIT`.
     ownership: bool,
+    write_role_facts: WriteRoleFacts,
+}
+
+/// `scip.DefinitionRole` and `scip.ReferenceRole` facts are optional because
+/// Glean rejects a whole write if the database's schema lacks them.
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+pub enum WriteRoleFacts {
+    No,
+    Yes,
 }
 
 /// Ownership unit of the facts that come from no SCIP document, such as
@@ -361,7 +375,7 @@ fn trim_ascii(bytes: &[u8]) -> &[u8] {
 }
 
 impl Env {
-    pub fn new(ownership: bool) -> Self {
+    pub fn new(ownership: bool, write_role_facts: WriteRoleFacts) -> Self {
         let mut env = Self {
             unique: 1,
             fact_id: HashMap::new(),
@@ -369,6 +383,7 @@ impl Env {
             kind_overrides: HashMap::new(),
             go_line_directive_maps: HashMap::new(),
             ownership,
+            write_role_facts,
         };
         env.out.set_unit(env.no_document_unit());
         env
@@ -880,6 +895,31 @@ impl Env {
         ))
     }
 
+    fn emit_occurrence_facts(
+        &mut self,
+        symbol_id: ScipId,
+        file_range_id: ScipId,
+        roles: SymbolRoleSet,
+    ) {
+        let is_definition = roles.has_def();
+        if is_definition {
+            self.out.definition(symbol_id, file_range_id);
+        } else {
+            self.out.reference(symbol_id, file_range_id);
+        }
+
+        if self.write_role_facts == WriteRoleFacts::No {
+            return;
+        }
+        for role in roles.glean_roles() {
+            if is_definition {
+                self.out.definition_role(symbol_id, file_range_id, role);
+            } else {
+                self.out.reference_role(symbol_id, file_range_id, role);
+            }
+        }
+    }
+
     fn decode_local_occurrence(
         &mut self,
         local_symbol: String,
@@ -894,11 +934,7 @@ impl Env {
         if !seen_symbol {
             self.out.symbol(symbol_id, qualified_symbol.clone());
         }
-        if sym_roles.has_def() {
-            self.out.definition(symbol_id, file_range_id);
-        } else {
-            self.out.reference(symbol_id, file_range_id);
-        }
+        self.emit_occurrence_facts(symbol_id, file_range_id, sym_roles);
 
         let local_symbol = local_symbol.into_boxed_str();
         let (name_id, seen_name) =
@@ -930,11 +966,7 @@ impl Env {
         if !seen_symbol {
             self.out.symbol(symbol_id, scip_symbol.clone());
         }
-        if sym_roles.has_def() {
-            self.out.definition(symbol_id, file_range_id);
-        } else {
-            self.out.reference(symbol_id, file_range_id);
-        }
+        self.emit_occurrence_facts(symbol_id, file_range_id, sym_roles);
 
         // Use the last descriptor's name for the local name
         let local_name = descriptors
@@ -965,10 +997,45 @@ impl Env {
     }
 }
 
+#[derive(Copy, Clone)]
 struct SymbolRoleSet(i32);
 impl SymbolRoleSet {
     fn has_def(&self) -> bool {
         self.0 & (1 << 0) != 0
+    }
+
+    /// Every role in the set except `Definition`. Bits that scip.proto does
+    /// not name are ignored.
+    fn glean_roles(self) -> impl Iterator<Item = SymbolRole> {
+        ScipSymbolRole::VALUES
+            .iter()
+            .copied()
+            .filter(move |role| self.0 & role.value() != 0)
+            .filter_map(glean_symbol_role)
+    }
+}
+
+/// `scip.SymbolRole` in scip.angle. Glean JSON encodes an enum value as its
+/// position, so the discriminants must follow the Angle order.
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+pub enum SymbolRole {
+    Import = 0,
+    WriteAccess = 1,
+    ReadAccess = 2,
+    Generated = 3,
+    Test = 4,
+    ForwardDefinition = 5,
+}
+
+fn glean_symbol_role(role: ScipSymbolRole) -> Option<SymbolRole> {
+    match role {
+        ScipSymbolRole::UnspecifiedSymbolRole | ScipSymbolRole::Definition => None,
+        ScipSymbolRole::Import => Some(SymbolRole::Import),
+        ScipSymbolRole::WriteAccess => Some(SymbolRole::WriteAccess),
+        ScipSymbolRole::ReadAccess => Some(SymbolRole::ReadAccess),
+        ScipSymbolRole::Generated => Some(SymbolRole::Generated),
+        ScipSymbolRole::Test => Some(SymbolRole::Test),
+        ScipSymbolRole::ForwardDefinition => Some(SymbolRole::ForwardDefinition),
     }
 }
 
@@ -1057,6 +1124,32 @@ fn occurrence_enclosing_range(occ: &Occurrence) -> Vec<i32> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_glean_roles_of_each_scip_role() {
+        let expected = [
+            (ScipSymbolRole::UnspecifiedSymbolRole, None),
+            (ScipSymbolRole::Definition, None),
+            (ScipSymbolRole::Import, Some(SymbolRole::Import)),
+            (ScipSymbolRole::WriteAccess, Some(SymbolRole::WriteAccess)),
+            (ScipSymbolRole::ReadAccess, Some(SymbolRole::ReadAccess)),
+            (ScipSymbolRole::Generated, Some(SymbolRole::Generated)),
+            (ScipSymbolRole::Test, Some(SymbolRole::Test)),
+            (
+                ScipSymbolRole::ForwardDefinition,
+                Some(SymbolRole::ForwardDefinition),
+            ),
+        ];
+        assert_eq!(
+            expected.len(),
+            ScipSymbolRole::VALUES.len(),
+            "every scip.proto role should be listed"
+        );
+        for (scip_role, glean_role) in expected {
+            let roles: Vec<_> = SymbolRoleSet(scip_role.value()).glean_roles().collect();
+            assert_eq!(roles, Vec::from_iter(glean_role), "roles of {scip_role:?}");
+        }
+    }
 
     #[test]
     fn test_compute_file_lines_empty() {
@@ -1153,7 +1246,7 @@ mod tests {
 
     #[test]
     fn test_file_language_of_perl() {
-        let env = Env::new(false);
+        let env = Env::new(false, WriteRoleFacts::No);
         assert!(
             matches!(
                 env.file_language_of("lib/Foo/Bar.pm"),
@@ -1176,7 +1269,7 @@ mod tests {
 
     #[test]
     fn test_file_language_of_perl_adjacent_extensions_unmapped() {
-        let env = Env::new(false);
+        let env = Env::new(false, WriteRoleFacts::No);
         assert!(
             env.file_language_of("t/basic.t").is_none(),
             "`.t` is not Perl-specific"
@@ -1193,7 +1286,7 @@ mod tests {
 
     #[test]
     fn test_file_language_of_unaffected_by_perl_arm() {
-        let env = Env::new(false);
+        let env = Env::new(false, WriteRoleFacts::No);
         assert!(matches!(
             env.file_language_of("main.rs"),
             Some(LanguageId::Rust)

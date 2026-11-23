@@ -91,7 +91,8 @@ resolveScipToGlean Nothing = do
       error "scip-to-glean not found. Please install it or \
             \pass --scip-to-glean <path>"
 
--- | Run the scip-to-glean binary
+-- | Run the scip-to-glean binary. @--symbol-roles@ is safe here because
+-- @glean index@ creates the database with its own schema.
 runRustIndexer :: FilePath -> FilePath -> FilePath
   -> Maybe FilePath -> IO Aeson.Value
 runRustIndexer rustIndexer scipFile tmpDir sourceRoot = do
@@ -100,6 +101,7 @@ runRustIndexer rustIndexer scipFile tmpDir sourceRoot = do
   let baseArgs =
         [ "--input", scipFile
         , "--infer-language"
+        , "--symbol-roles"
         , "--output", jsonPath ]
       args = case sourceRoot of
         Just root -> baseArgs ++ ["--source-root", root]

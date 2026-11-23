@@ -1,0 +1,259 @@
+[
+  "@generated",
+  {
+    "key": {
+      "xref": {
+        "key": {
+          "symbol": { "key": "lib1/lib1_test.go/local 0" },
+          "location": {
+            "key": {
+              "file": { "key": "lib1/lib1_test.go" },
+              "range": {
+                "lineBegin": 9,
+                "columnBegin": 3,
+                "lineEnd": 9,
+                "columnEnd": 3
+              }
+            }
+          }
+        }
+      },
+      "role": 2
+    }
+  },
+  {
+    "key": {
+      "xref": {
+        "key": {
+          "symbol": { "key": "lib2/lib2_test.go/local 0" },
+          "location": {
+            "key": {
+              "file": { "key": "lib2/lib2_test.go" },
+              "range": {
+                "lineBegin": 9,
+                "columnBegin": 3,
+                "lineEnd": 9,
+                "columnEnd": 3
+              }
+            }
+          }
+        }
+      },
+      "role": 2
+    }
+  },
+  {
+    "key": {
+      "xref": {
+        "key": {
+          "symbol": {
+            "key": "scip-go gomod . glean `glean/lang/go/tests/regression/lib1`/Foo1()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "lib1/lib1_test.go" },
+              "range": {
+                "lineBegin": 8,
+                "columnBegin": 5,
+                "lineEnd": 8,
+                "columnEnd": 8
+              }
+            }
+          }
+        }
+      },
+      "role": 2
+    }
+  },
+  {
+    "key": {
+      "xref": {
+        "key": {
+          "symbol": {
+            "key": "scip-go gomod . glean `glean/lang/go/tests/regression/lib2`/Foo2()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "lib2/lib2_test.go" },
+              "range": {
+                "lineBegin": 8,
+                "columnBegin": 5,
+                "lineEnd": 8,
+                "columnEnd": 8
+              }
+            }
+          }
+        }
+      },
+      "role": 2
+    }
+  },
+  {
+    "key": {
+      "xref": {
+        "key": {
+          "symbol": { "key": "scip-go gomod . glean testing/" },
+          "location": {
+            "key": {
+              "file": { "key": "lib1/lib1_test.go" },
+              "range": {
+                "lineBegin": 4,
+                "columnBegin": 3,
+                "lineEnd": 4,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      },
+      "role": 2
+    }
+  },
+  {
+    "key": {
+      "xref": {
+        "key": {
+          "symbol": { "key": "scip-go gomod . glean testing/" },
+          "location": {
+            "key": {
+              "file": { "key": "lib1/lib1_test.go" },
+              "range": {
+                "lineBegin": 7,
+                "columnBegin": 18,
+                "lineEnd": 7,
+                "columnEnd": 24
+              }
+            }
+          }
+        }
+      },
+      "role": 2
+    }
+  },
+  {
+    "key": {
+      "xref": {
+        "key": {
+          "symbol": { "key": "scip-go gomod . glean testing/" },
+          "location": {
+            "key": {
+              "file": { "key": "lib2/lib2_test.go" },
+              "range": {
+                "lineBegin": 4,
+                "columnBegin": 3,
+                "lineEnd": 4,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      },
+      "role": 2
+    }
+  },
+  {
+    "key": {
+      "xref": {
+        "key": {
+          "symbol": { "key": "scip-go gomod . glean testing/" },
+          "location": {
+            "key": {
+              "file": { "key": "lib2/lib2_test.go" },
+              "range": {
+                "lineBegin": 7,
+                "columnBegin": 18,
+                "lineEnd": 7,
+                "columnEnd": 24
+              }
+            }
+          }
+        }
+      },
+      "role": 2
+    }
+  },
+  {
+    "key": {
+      "xref": {
+        "key": {
+          "symbol": { "key": "scip-go gomod . glean testing/T#" },
+          "location": {
+            "key": {
+              "file": { "key": "lib1/lib1_test.go" },
+              "range": {
+                "lineBegin": 7,
+                "columnBegin": 26,
+                "lineEnd": 7,
+                "columnEnd": 26
+              }
+            }
+          }
+        }
+      },
+      "role": 2
+    }
+  },
+  {
+    "key": {
+      "xref": {
+        "key": {
+          "symbol": { "key": "scip-go gomod . glean testing/T#" },
+          "location": {
+            "key": {
+              "file": { "key": "lib2/lib2_test.go" },
+              "range": {
+                "lineBegin": 7,
+                "columnBegin": 26,
+                "lineEnd": 7,
+                "columnEnd": 26
+              }
+            }
+          }
+        }
+      },
+      "role": 2
+    }
+  },
+  {
+    "key": {
+      "xref": {
+        "key": {
+          "symbol": { "key": "scip-go gomod . glean testing/common#Errorf()." },
+          "location": {
+            "key": {
+              "file": { "key": "lib1/lib1_test.go" },
+              "range": {
+                "lineBegin": 9,
+                "columnBegin": 5,
+                "lineEnd": 9,
+                "columnEnd": 10
+              }
+            }
+          }
+        }
+      },
+      "role": 2
+    }
+  },
+  {
+    "key": {
+      "xref": {
+        "key": {
+          "symbol": { "key": "scip-go gomod . glean testing/common#Errorf()." },
+          "location": {
+            "key": {
+              "file": { "key": "lib2/lib2_test.go" },
+              "range": {
+                "lineBegin": 9,
+                "columnBegin": 5,
+                "lineEnd": 9,
+                "columnEnd": 10
+              }
+            }
+          }
+        }
+      },
+      "role": 2
+    }
+  }
+]
