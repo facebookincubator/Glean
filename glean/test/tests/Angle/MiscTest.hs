@@ -11,6 +11,7 @@
 module Angle.MiscTest (main) where
 
 import Control.Exception
+import qualified Data.ByteString as ByteString
 import Data.Default
 import Data.Int
 import Data.List
@@ -48,6 +49,7 @@ main = withUnitTest $ withDbTests $ \dbTestCase -> testRunner $ TestList
   , TestLabel "newold" $ newOldTest id
   , TestLabel "justCheck" $ justCheckTest dbTestCase
   , TestLabel "warnDiag" $ warnDiagTest dbTestCase
+  , TestLabel "jsonEnums" $ jsonEnumsTest dbTestCase
   ]
 
 newOldTest :: (forall a . Query a -> Query a) -> Test
@@ -141,6 +143,48 @@ scopingTest dbTestCase = dbTestCase $ \env repo -> do
       predicate @Glean.Test.NothingTest wild
   print (r :: [Glean.Test.NothingTest])
   assertEqual "angle - nothingTest" 1 (length r)
+
+-- | @enums_as_strings@ chooses how JSON results render an enum value:
+-- by name, by number, or (unset) by the server's default.
+jsonEnumsTest :: (WithDB () -> Test) -> Test
+jsonEnumsTest dbTestCase = dbTestCase $ \env repo -> do
+  let
+    -- named_enum_ has type glean.test.Enum_ = enum { red | green | blue },
+    -- so blue is number 2.
+    byName = "\"named_enum_\":\"blue\""
+    byNumber = "\"named_enum_\":2"
+
+    queryJson enumsAsStrings = do
+      UserQueryResults{..} <- userQuery env repo def
+        { userQuery_query = "glean.test.Predicate { named_enum_ = blue }"
+        , userQuery_encodings = [UserQueryEncoding_json def
+            { userQueryEncodingJSON_enums_as_strings = enumsAsStrings }]
+        , userQuery_options = Just def
+            { userQueryOptions_syntax = QuerySyntax_ANGLE
+            , userQueryOptions_max_results = Just 1
+            }
+        }
+      case userQueryResults_results of
+        UserQueryEncodedResults_json UserQueryResultsJSON{..} ->
+          return userQueryResultsJSON_facts
+        UserQueryEncodedResults_bin{} -> unexpected
+        UserQueryEncodedResults_compact{} -> unexpected
+        UserQueryEncodedResults_listbin{} -> unexpected
+        UserQueryEncodedResults_EMPTY -> unexpected
+      where
+      unexpected = assertFailure "jsonEnums: results not in JSON"
+
+    check label enumsAsStrings expected = do
+      facts <- queryJson enumsAsStrings
+      case facts of
+        [fact] -> assertBool (label <> ": " <> show fact) $
+          expected `ByteString.isInfixOf` fact
+        _ -> assertFailure $
+          label <> ": expected one fact, got " <> show facts
+
+  check "jsonEnums - names" (Just True) byName
+  check "jsonEnums - numbers" (Just False) byNumber
+  check "jsonEnums - unset uses the default (numbers)" Nothing byNumber
 
 justKeys :: (WithDB () -> Test) -> (forall a . Query a -> Query a) -> Test
 justKeys dbTestCase modify = dbTestCase $ \env repo -> do

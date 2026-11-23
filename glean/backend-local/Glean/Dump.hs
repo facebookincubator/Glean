@@ -43,6 +43,7 @@ dump backend repo withBatch = doDump =<< loadDbSchema backend repo
             jsonFacts <- forM (reverse facts) $ \(fid, Fact{..}) ->
                 factToJSON
                   True
+                  EnumAsNumber
                   mempty
                   details
                   (Fid fid)

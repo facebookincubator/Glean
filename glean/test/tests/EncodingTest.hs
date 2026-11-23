@@ -8,12 +8,14 @@
 
 module EncodingTest (main) where
 
+import Control.Monad (forM_)
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Base16 as Hex
 import qualified Data.ByteString.Char8 as ByteString
 import Data.Default
 import Data.IntMap.Strict (IntMap)
+import Data.List (isInfixOf)
 import Foreign.C.String
 import Foreign.C.Types
 import Foreign.Ptr
@@ -171,7 +173,7 @@ roundTrip Enc{..} E{..} val = TestCase $ do
 
 jsonEnc :: Enc
 jsonEnc = Enc
-  { encFact = factToJSON False
+  { encFact = factToJSON False EnumAsNumber
   , encReencode = Nothing
   , encSerialize = serializeJSON
   , encDeserialize = deserializeJSON
@@ -204,11 +206,34 @@ binaryRoundTrip val = TestCase $ do
   decoded <- decodeRts term
   assertEqual "binaryEncoding" val decoded
 
+-- | With 'EnumAsName', enum values are rendered by name, except for a
+-- selector with no declared name, which stays a number.
+jsonEnumNames :: E -> Test
+jsonEnumNames E{..} = TestCase $ do
+  term <- withBuilder $ \builder -> do
+    buildRtsValue builder kitchenSink
+    finishBuilder builder
+  encoded <- factToJSON False EnumAsName mempty eTestPredicate (Fid 10000)
+    term mempty
+  ByteString.putStrLn encoded
+  let json = ByteString.unpack encoded
+  forM_
+    [ "\"enum_\":\"e\""
+    , "\"named_record_\":{\"alpha\":\"green\","
+    , "\"named_enum_\":10,"
+    , "\"array_of_named_record\":[{\"alpha\":\"red\","
+    , "\"array_of_named_enum\":[\"blue\",\"green\",\"red\"]"
+      -- bool is an enum internally, but is still rendered as a JSON bool
+    , "\"bool_\":true,"
+    ] $ \expected ->
+      assertBool ("JSON enum names: " <> expected) $ expected `isInfixOf` json
+
 main :: IO ()
 main = withUnitTest $ do
   e <- mkE
   testRunner $ TestList
     [ TestLabel "roundTrip JSON" $ roundTrip jsonEnc e kitchenSink
     , TestLabel "roundTrip compact" $ roundTrip compactEnc e kitchenSink
+    , TestLabel "JSON enum names" $ jsonEnumNames e
     , TestLabel "roundTrip binary" $ binaryRoundTrip kitchenSink
     ]

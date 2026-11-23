@@ -527,6 +527,18 @@ struct UserQueryEncodingJSON {
   // However, note that if you use this option then non-UTF8 data
   // in a binary type may not be returned correctly, or you may
   // encounter errors.
+  3: optional bool enums_as_strings;
+  // true: return each value of an enum type as a string holding its
+  // name in the schema, e.g. "public_". false: return its number.
+  // Clients that deserialise results into the generated Thrift types
+  // need numbers, because Thrift JSON encodes enums as numbers, so
+  // they should set this to false. A value with no name in the
+  // schema is always returned as a number.
+  //
+  // Unset: the server's default, currently numbers. The default may
+  // change to names once clients that need numbers set false, so
+  // set it explicitly if you depend on either form. It is optional
+  // so that unset can be told apart from false.
 }
 
 # Encode results as Thrift Compact

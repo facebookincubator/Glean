@@ -181,7 +181,8 @@ instance Plugin QueryCommand where
           UserQueryResults{..} <- Glean.userQuery backend repo def
             { userQuery_query = query_bytes
             , userQuery_encodings = [UserQueryEncoding_json
-                def{ userQueryEncodingJSON_expand_results = recurse }]
+                def{ userQueryEncodingJSON_expand_results = recurse
+                   , userQueryEncodingJSON_enums_as_strings = Just True }]
             , userQuery_options = Just def
                 { userQueryOptions_max_results =
                     case (limit, fromIntegral <$> pageFacts queryPageOptions) of

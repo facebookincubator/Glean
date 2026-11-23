@@ -263,6 +263,7 @@ instance Encoding LegacyJSONEncoding where
     predicateDetails
     Thrift.Fact{..} = factToJSON
       (Thrift.userQueryOptions_no_base64_binary opts)
+      EnumAsNumber
       serialized
       predicateDetails
       fid
@@ -276,6 +277,12 @@ instance Encoding LegacyJSONEncoding where
             | (i,fact) <- IntMap.toList $ resNestedFacts res ]
       }
 
+-- | Enum rendering for a JSON request that leaves @enums_as_strings@
+-- unset. Numbers, because clients that deserialise the JSON into
+-- generated Thrift types need them and do not set the field yet.
+defaultJSONEnumEncoding :: JSONEnumEncoding
+defaultJSONEnumEncoding = EnumAsNumber
+
 instance Encoding Thrift.UserQueryEncodingJSON where
   type EncodedFact Thrift.UserQueryEncodingJSON = ByteString
 
@@ -284,6 +291,10 @@ instance Encoding Thrift.UserQueryEncodingJSON where
   serializeFact enc serialized fid predicateDetails Thrift.Fact{..} =
     factToJSON
       (Thrift.userQueryEncodingJSON_no_base64_binary enc)
+      (case Thrift.userQueryEncodingJSON_enums_as_strings enc of
+        Just True -> EnumAsName
+        Just False -> EnumAsNumber
+        Nothing -> defaultJSONEnumEncoding)
       serialized
       predicateDetails
       fid

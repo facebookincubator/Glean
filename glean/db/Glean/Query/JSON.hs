@@ -7,7 +7,8 @@
 -}
 
 module Glean.Query.JSON
-  ( factToJSON
+  ( JSONEnumEncoding(..)
+  , factToJSON
   , factToCompact
   ) where
 
@@ -47,17 +48,29 @@ instance Exception EncodingError
 encodingError :: String -> ST s a
 encodingError = unsafeIOToST . throwIO . EncodingError
 
+-- | How 'factToJSON' renders a value of an @enum@ type.
+data JSONEnumEncoding
+  = EnumAsNumber
+    -- ^ The position of the value in the @enum@ declaration, as a JSON
+    -- number. This is how Thrift's JSON protocol encodes enums, so clients
+    -- that deserialise results into generated Thrift types need it.
+  | EnumAsName
+    -- ^ The name of the value as declared in the schema, as a JSON string.
+    -- A selector with no declared name is rendered as a number, as with
+    -- 'EnumAsNumber'.
+
 -- | Convert a fact to JSON
 factToJSON
   :: Bool
+  -> JSONEnumEncoding
   -> IntMap ByteString
   -> PredicateDetails
   -> Fid
   -> ByteString
   -> ByteString
   -> IO ByteString
-factToJSON no_base64 expanded pred fid key value =
-  encodeFact expanded pred fid key value (jsonEncoder no_base64)
+factToJSON no_base64 enums expanded pred fid key value =
+  encodeFact expanded pred fid key value (jsonEncoder no_base64 enums)
 
 -- | Convert a fact to Thrift Compact
 factToCompact
@@ -82,6 +95,10 @@ data Encoder = Encoder
 
     -- | Booleans
   , encBool :: Bool -> Enc
+
+    -- | A value of an @enum@ type: the declared value names, in order, and
+    -- the selector, which may be outside the declared range
+  , encEnum :: [Name] -> Word64 -> Enc
 
     -- | Mangled RTS strings
   , encMangledString :: RTS.MangledStringRef -> Int -> Enc
@@ -256,9 +273,9 @@ encode expanded Encoder{..} !d = enc
                 go (size-1)
             encSetEnd
       NamedTy _ (ExpandedType _ ty) -> enc ty
-      EnumeratedTy _ -> do
+      EnumeratedTy names -> do
         x <- liftST $ RTS.dSelector d
-        encNat $ fromIntegral x
+        encEnum names $ fromIntegral x
       MaybeTy{} -> liftST $ encodingError "unsupported Maybe"
       BooleanTy{} -> do
         x <- liftST $ RTS.dSelector d
@@ -284,8 +301,8 @@ encode expanded Encoder{..} !d = enc
       encObjectField prev i name ty d $ enc ty
       return $ Just i
 
-jsonEncoder :: Bool -> Encoder
-jsonEncoder no_base64 = Encoder
+jsonEncoder :: Bool -> JSONEnumEncoding -> Encoder
+jsonEncoder no_base64 enums = Encoder
   { encByte = number . fromIntegral
   , encNat = number
   , encBool = \b -> if b
@@ -300,6 +317,14 @@ jsonEncoder no_base64 = Encoder
         ascii 'l'
         ascii 's'
         ascii 'e'
+  , encEnum = case enums of
+      EnumAsNumber -> \_ n -> number n
+      EnumAsName -> \names n -> case atMay names (fromIntegral n) of
+        Just name -> do
+          ascii '\"'
+          Buffer.byteString (Text.encodeUtf8 name)
+          ascii '\"'
+        Nothing -> number n
   , encMangledString = \ref _ -> do
       n <- liftST $ RTS.getMangledStringEscapedSize ref
       do
@@ -374,6 +399,7 @@ compactEncoder = Encoder
   { encByte = Buffer.byte
   , encNat = Thrift.encodeZigZag . fromIntegral
   , encBool = Buffer.byte . bool
+  , encEnum = \_ -> Thrift.encodeZigZag . fromIntegral
   , encMangledString = \ref n -> do
       -- length
       Thrift.encodeVarint (fromIntegral n)
