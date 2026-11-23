@@ -572,7 +572,7 @@ facts> example.Has { access = private_ }
 { "id": 1036, "key": { "class_": { "id": 1026 }, "has": { "id": 1035 }, "access": 1 } }
 ```
 
-Note that in the JSON format results, an `enum` is represented by an integer. When you make queries in code, the `enum` will be represented by an appropriate type, such as a `data` type in Haskell.
+Note that in the JSON format results, an `enum` is represented by an integer by default. The `glean query` command shows the name of the value instead, e.g. `"public_"`; API clients can ask for that by setting `enums_as_strings` in `UserQueryEncodingJSON`. When writing facts in JSON, either form is accepted. When you make queries in code, the `enum` will be represented by an appropriate type, such as a `data` type in Haskell.
 
 The boolean type `bool` is a special case of an `enum`, defined like this:
 
