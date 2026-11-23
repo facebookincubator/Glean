@@ -304,6 +304,61 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
     [_,_] -> return ()
     _ -> assertFailure "syncWriteJsonBatch - named fact that refers to anon facts"
 
+  -- Enum values can be given by name as well as by number
+  let
+    batches =
+      [ mkBatch (getName (Proxy @Glean.Test.Predicate))
+        [[s|
+        { "key":
+          { "sum_": { "d": { "key": "enums" }}
+          , "pred": { "key": "enums" }
+          , "enum_": "g"
+          , "named_enum_": "blue"
+          , "array_of_named_enum": ["green", 0]
+          }
+        }
+        |]]
+      ]
+  _ <- syncWriteJsonBatch env repo batches options
+  results <- runQuery_ env repo $ query $
+    predicate @Glean.Test.Predicate $
+      rec $ field @"pred" (byteArray "enums") end
+  case results of
+    [Glean.Test.Predicate
+      { predicate_key = Just Glean.Test.KitchenSink
+        { kitchenSink_enum_ = enum_
+        , kitchenSink_named_enum_ = named_enum
+        , kitchenSink_array_of_named_enum = array_of_named_enum
+        }
+      }] -> do
+        assertEqual "syncWriteJsonBatch - enum_ by name"
+          Glean.Test.KitchenSink_enum__g enum_
+        assertEqual "syncWriteJsonBatch - named_enum_ by name"
+          Glean.Test.Enum__blue named_enum
+        assertEqual "syncWriteJsonBatch - array_of_named_enum"
+          [Glean.Test.Enum__green, Glean.Test.Enum__red] array_of_named_enum
+    _ -> assertFailure "syncWriteJsonBatch - enums by name"
+
+  -- An unknown enum name is rejected
+  let
+    batches =
+      [ mkBatch (getName (Proxy @Glean.Test.Predicate))
+        [[s|
+        { "key":
+          { "sum_": { "d": { "key": "bad_enum" }}
+          , "pred": { "key": "bad_enum" }
+          , "named_enum_": "purple"
+          }
+        }
+        |]]
+      ]
+    label = "syncWriteJsonBatch - unknown enum name"
+  r <- tryAll $ syncWriteJsonBatch env repo batches options
+  case r of
+    Right _ -> assertFailure label
+    Left err -> assertBool label $
+      all (`isInfixOf` show err) ["or one of:", "red", "green", "blue"]
+
   -- same key with different values
   withEmptyTestDB [] $ \env repo -> do
     let

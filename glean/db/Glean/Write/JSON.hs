@@ -26,6 +26,7 @@ import Data.IORef
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Int
+import qualified Data.List as List
 import Data.Maybe
 import Compat.Prettyprinter hiding ((<>))
 import Data.Text (Text)
@@ -392,6 +393,13 @@ writeJsonFact
     (EnumeratedTy vals, J.Int n)
       | fromIntegral n < length vals ->
         lift $ invoke $ glean_push_value_selector b $ fromIntegral n
+    -- An enum value can also be given by name, as in the JSON produced
+    -- by a query with @enums_as_strings@ set.
+    (EnumeratedTy vals, J.String (J.ByteStringRef p n)) -> do
+      str <- lift $ BS.unsafePackCStringLen (castPtr p, fromIntegral n)
+      case List.elemIndex str (map Text.encodeUtf8 vals) of
+        Just i -> lift $ invoke $ glean_push_value_selector b $ fromIntegral i
+        Nothing -> termError typ v
     (MaybeTy ty, val) -> do
       lift $ invoke $ glean_push_value_selector b 1
       jsonToTerm b ty val
@@ -460,7 +468,8 @@ writeJsonFact
   expecting (SumTy fields) =
     "{\"field\" : value} (allowed fields: " <> allowed fields <> ")"
   expecting (EnumeratedTy vals) =
-    "number (< " <> pretty (length vals) <> ")"
+    "number (< " <> pretty (length vals) <> ") or one of: " <>
+      hcat (punctuate ", " [ dquotes (pretty val) | val <- vals ])
   expecting (MaybeTy ty) =
     expecting (lowerMaybe ty)
   expecting BooleanTy = "true or false"
