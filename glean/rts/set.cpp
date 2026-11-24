@@ -12,11 +12,23 @@
 #include <set>
 
 #include "glean/rts/binary.h"
+#include "glean/rts/error.h"
 #include "glean/rts/set.h"
 
 namespace facebook {
 namespace glean {
 namespace rts {
+
+namespace {
+
+template <typename Sets>
+void checkToken(const Sets& sets, SetOps::SetToken token) {
+  if (token >= sets.size()) {
+    rts::error("invalid set token {}", token);
+  }
+}
+
+} // namespace
 
 SetOps::SetToken SetOps::newSet() {
   sets.emplace_back();
@@ -25,6 +37,7 @@ SetOps::SetToken SetOps::newSet() {
 }
 
 void SetOps::insertOutputSet(SetOps::SetToken token, binary::Output* out) {
+  checkToken(sets, token);
   auto& s = sets[token];
   auto size = out->size();
   if (set_sizes[token] + size <= max_set_size) {
@@ -39,6 +52,7 @@ void SetOps::insertOutputSet(SetOps::SetToken token, binary::Output* out) {
 }
 
 void SetOps::setToArray(SetOps::SetToken token, binary::Output* out) {
+  checkToken(sets, token);
   auto& s = sets[token];
   out->packed(s.size());
   for (const auto& v : s) {
@@ -47,6 +61,7 @@ void SetOps::setToArray(SetOps::SetToken token, binary::Output* out) {
 }
 
 void SetOps::freeSet(SetOps::SetToken token) {
+  checkToken(sets, token);
   sets.erase(sets.begin() + token);
   set_sizes.erase(set_sizes.begin() + token);
 }
@@ -57,6 +72,7 @@ SetOps::SetToken SetOps::newWordSet() {
 }
 
 void SetOps::insertWordSet(SetOps::SetToken token, uint64_t value) {
+  checkToken(wordsets, token);
   auto& set = wordsets[token];
   if ((set.size() + 1) * sizeof(uint64_t) <= max_set_size) {
     set.insert(value);
@@ -72,6 +88,7 @@ void SetOps::insertBytesWordSet(
     SetToken token,
     const unsigned char* start,
     const unsigned char* end) {
+  checkToken(wordsets, token);
   auto& set = wordsets[token];
   if (set.size() * sizeof(uint64_t) + (end - start) <= max_set_size) {
     for (const unsigned char* p = start; p < end; p++) {
@@ -86,6 +103,7 @@ void SetOps::insertBytesWordSet(
 }
 
 void SetOps::wordSetToArray(SetOps::SetToken token, binary::Output* out) {
+  checkToken(wordsets, token);
   auto& s = wordsets[token];
   out->packed(s.size());
   for (const auto& v : s) {
@@ -94,6 +112,7 @@ void SetOps::wordSetToArray(SetOps::SetToken token, binary::Output* out) {
 }
 
 void SetOps::byteSetToByteArray(SetOps::SetToken token, binary::Output* out) {
+  checkToken(wordsets, token);
   auto& s = wordsets[token];
   out->packed(s.size());
   for (const auto& v : s) {
@@ -102,6 +121,7 @@ void SetOps::byteSetToByteArray(SetOps::SetToken token, binary::Output* out) {
 }
 
 void SetOps::freeWordSet(SetOps::SetToken token) {
+  checkToken(wordsets, token);
   wordsets.erase(wordsets.begin() + token);
 }
 
