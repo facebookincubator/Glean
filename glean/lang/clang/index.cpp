@@ -485,6 +485,12 @@ struct SourceIndexer {
         } else if (boost::starts_with(args[i], "--cc=")) {
           // skip this flag - llvm complains about it
         } else if (
+            args[i] == "-fexperimental-new-pass-manager" ||
+            args[i] ==
+                "-enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang") {
+          // Older clangs (e.g. AOSP's clang 12) accept these codegen-only
+          // flags; newer clangs reject them as unknown arguments.
+        } else if (
             FLAGS_clang_no_modules &&
             (args[i] == "-fmodules" || args[i] == "-fcxx-modules" ||
              boost::starts_with(args[i], "-fmodule-name="))) {
