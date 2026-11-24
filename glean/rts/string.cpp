@@ -51,6 +51,10 @@ untrustedChunks(folly::ByteRange range, Chunk&& chunk) {
 
   int k = 0;
   while (true) {
+    // U8_NEXT unconditionally reads p[i].
+    if (i >= size) {
+      rts::error("truncated terminator in mangled string");
+    }
     UChar32 c;
     // NOTE: U8_NEXT returns c<0 on overlong (invalid) points so this doesn't
     // transcode (and we don't have to worry about, say, overlong \NUL).

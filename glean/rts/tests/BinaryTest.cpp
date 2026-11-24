@@ -12,6 +12,7 @@
 #include <glog/logging.h>
 #include <gtest/gtest.h>
 #include <cstdint>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -70,6 +71,60 @@ TEST(BinaryTest, utf8String) {
   roundtripString("\0"s);
   roundtripString("abc\0def"s);
   roundtripString("abc\0\0");
+}
+
+// Each buffer is a heap allocation holding exactly the bytes under
+// validation, so any read past its end is visible to AddressSanitizer.
+TEST(BinaryTest, untrustedAsciiStringWithoutTerminatorIsRejected) {
+  const std::vector<unsigned char> unterminated{'a', 'b', 'c'};
+  EXPECT_THROW(
+      validateUntrustedString(binary::byteRange(unterminated)),
+      std::runtime_error);
+}
+
+TEST(BinaryTest, untrustedStringEndingInEscapedNulIsRejected) {
+  const std::vector<unsigned char> unterminated{'a', 'b', 0, 1};
+  binary::Input input(binary::byteRange(unterminated));
+  binary::Output demangled;
+  EXPECT_THROW(input.demangleUntrustedString(demangled), std::runtime_error);
+}
+
+TEST(BinaryTest, untrustedNonAsciiStringWithoutTerminatorIsRejected) {
+  // U+00E9 encoded as UTF-8
+  const std::vector<unsigned char> unterminated{'a', 0xc3, 0xa9};
+  EXPECT_THROW(
+      validateUntrustedString(binary::byteRange(unterminated)),
+      std::runtime_error);
+}
+
+TEST(BinaryTest, untrustedEmptyStringAtEndOfBufferIsRejected) {
+  const std::vector<unsigned char> buffer{'a'};
+  const folly::ByteRange atEnd(buffer.data() + buffer.size(), size_t{0});
+  EXPECT_THROW(validateUntrustedString(atEnd), std::runtime_error);
+}
+
+TEST(BinaryTest, untrustedStringValidationStopsAtEndOfRange) {
+  // The byte after the range is invalid UTF-8, so an error that mentions it
+  // means validation read past the end. This needs no sanitizer.
+  const std::vector<unsigned char> buffer{'a', 'b', 'c', 0xff};
+  const folly::ByteRange range(buffer.data(), size_t{3});
+  try {
+    validateUntrustedString(range);
+    ADD_FAILURE() << "unterminated string was accepted";
+  } catch (const std::runtime_error& e) {
+    EXPECT_NE(
+        std::string(e.what()).find("truncated terminator"), std::string::npos)
+        << e.what();
+  }
+}
+
+TEST(BinaryTest, untrustedStringEndingExactlyAtBufferEndIsAccepted) {
+  const std::vector<unsigned char> mangled{'a', 0, 1, 0xc3, 0xa9, 0, 0};
+  binary::Input input(binary::byteRange(mangled));
+  binary::Output demangled;
+  input.demangleUntrustedString(demangled);
+  EXPECT_TRUE(input.empty());
+  EXPECT_EQ("a\0\xc3\xa9"s, binary::mkString(demangled.bytes()));
 }
 
 TEST(SetOpsTest, OutputSetDeduplicatesAndUsesSerializedByteOrder) {
