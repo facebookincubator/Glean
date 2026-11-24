@@ -49,14 +49,21 @@ predicate Symbol: string
 
 predicate DisplayName: string
 
+# The name that the SCIP producer (the language indexer) says to show users
+# for a symbol (`SymbolInformation.display_name` in scip.proto). The field is
+# optional, so a symbol has a fact here only if its producer emitted a
+# non-empty display_name, and the exact text is the producer's choice. It can
+# differ from `SymbolName`: for a rust-analyzer local, `SymbolName` is
+# "local 42" while the display name is the source name, e.g. "'a".
 predicate DisplayNameSymbol:
   {
     displayName: DisplayName,
     symbol: Symbol
   }
 
-# The same pairs as DisplayNameSymbol, keyed by symbol. The indexer writes
-# both predicates.
+# The same pairs as `DisplayNameSymbol`, keyed by symbol instead of name.
+# scip_to_glean writes both predicates, so a symbol has a fact here only if
+# its producer emitted a non-empty display_name.
 predicate SymbolDisplayName:
   {
     symbol: Symbol,
@@ -225,6 +232,18 @@ predicate SymbolKind:
 # Parse the "scip.Symbol" to get a local name
 predicate LocalName: string
 
+# A short name that scip_to_glean parses from the `Symbol` string. Every
+# `Symbol` that scip_to_glean writes gets one:
+#   - a global symbol gets the name of its last descriptor, e.g. "myMethod"
+#     for "... com/example/MyClass#myMethod(+1).", or "" if it has none;
+#   - a local symbol gets the literal "local <id>", e.g. "local 42", without
+#     the document-path prefix that its `Symbol` carries.
+# Unlike `DisplayNameSymbol`, it does not need the producer to emit a
+# display_name, but it comes from symbol syntax rather than being chosen for
+# display.
+#
+# Neither name identifies a symbol, since different symbols can share a name;
+# the `Symbol` string is the identity.
 predicate SymbolName:
   {
     symbol: Symbol,
