@@ -47,8 +47,8 @@ struct QueryExecutor : SetOps {
     // state of this iterator for a continuation.
     Pid type;
     Id id;
-    size_t prefix_size;
-    bool first;
+    size_t prefix_size = 0;
+    bool first = false;
   };
 
   QueryExecutor(

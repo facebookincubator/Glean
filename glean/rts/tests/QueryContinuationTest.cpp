@@ -9,6 +9,7 @@
 #include <folly/lang/Bits.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <array>
 #include <stdexcept>
 #include <string>
 #include <unordered_set>
@@ -221,6 +222,121 @@ TEST(QueryContinuationTest, ResumingInsideSetComprehensionFailsCleanly) {
   const auto error = errorMessage([&] { resumeQuery(facts, cont); });
 
   EXPECT_THAT(error, HasSubstr("invalid set token"));
+}
+
+namespace {
+
+// Query bytecode for two nested fact generators, `A _; B _`, in the shape
+// Codegen.hs emits (compileFactGenerator): seek, then a loop of `next` that
+// suspends on timeout (ok == 2) and ends with endSeek.
+Subroutine nestedGeneratorsQuery(Pid outer, Pid inner) {
+  auto op = [](Op o) { return static_cast<uint64_t>(o); };
+  auto rel = [](size_t to, size_t from) {
+    return static_cast<uint64_t>(
+        static_cast<int64_t>(to) - static_cast<int64_t>(from));
+  };
+  enum : uint64_t {
+    kSeek = 0,
+    kEndSeek = 3,
+    kNext = 4,
+    kOuterType = 22,
+    kInnerType = 23,
+    kNoKey = 24,
+    kNeedValue = 25,
+    kOuterToken = 26,
+    kInnerToken = 27,
+    kOk = 28,
+    kClause = 29,
+    kKeyEndOut = 30,
+    kClauseEnd = 31,
+    kId = 32,
+    kFrameSize = 33,
+  };
+  std::vector<uint64_t> code{
+      op(Op::LoadConst),
+      outer.toWord(),
+      kOuterType,
+      op(Op::LoadConst),
+      inner.toWord(),
+      kInnerType,
+      op(Op::LoadConst),
+      0,
+      kNoKey,
+      op(Op::LoadConst),
+      0,
+      kNeedValue,
+      op(Op::CallFun_3_1),
+      kSeek,
+      kOuterType,
+      kNoKey,
+      kNoKey,
+      kOuterToken};
+  // Appends `next token; select ok [end, body]; suspend -> loop` and returns
+  // {loop, index of the end target, position after select}.
+  auto generator = [&](uint64_t token) {
+    const auto loop = code.size();
+    code.insert(
+        code.end(),
+        {op(Op::CallFun_2_5),
+         kNext,
+         token,
+         kNeedValue,
+         kOk,
+         kClause,
+         kKeyEndOut,
+         kClauseEnd,
+         kId,
+         op(Op::Select),
+         kOk,
+         2,
+         0,
+         0});
+    const auto endTarget = code.size() - 2;
+    const auto afterSelect = code.size();
+    code.insert(code.end(), {op(Op::Suspend), kOk, 0});
+    const auto body = code.size();
+    code[body - 1] = rel(loop, body);
+    code[endTarget + 1] = rel(body, afterSelect);
+    return std::array<size_t, 3>{loop, endTarget, afterSelect};
+  };
+  const auto [outerLoop, outerEndTarget, outerAfterSelect] =
+      generator(kOuterToken);
+  code.insert(
+      code.end(),
+      {op(Op::CallFun_3_1), kSeek, kInnerType, kNoKey, kNoKey, kInnerToken});
+  const auto [innerLoop, innerEndTarget, innerAfterSelect] =
+      generator(kInnerToken);
+  code.insert(code.end(), {op(Op::Jump), 0});
+  code.back() = rel(innerLoop, code.size());
+  code[innerEndTarget] = rel(code.size(), innerAfterSelect);
+  code.insert(
+      code.end(),
+      {op(Op::CallFun_1_0), kEndSeek, kInnerToken, op(Op::Jump), 0});
+  code.back() = rel(outerLoop, code.size());
+  code[outerEndTarget] = rel(code.size(), outerAfterSelect);
+  code.insert(
+      code.end(), {op(Op::CallFun_1_0), kEndSeek, kOuterToken, op(Op::Ret)});
+  return Subroutine(
+      std::move(code), kOuterType, 0, kFrameSize - kOuterType, {}, {});
+}
+
+} // namespace
+
+// The timeout is checked on every 100th `next`. With an empty inner
+// generator every even call is the inner generator's first `next`, so the
+// query suspends with a not-yet-started iterator that has no current fact.
+// The continuation records it as finished, and resuming must read only
+// iterator state that was restored.
+TEST(QueryContinuationTest, ResumingAtAnEmptyIteratorReadsOnlyRestoredState) {
+  auto facts = factsWithDistinctKeys(100000);
+  auto sub = nestedGeneratorsQuery(Pid::lowest(), Pid::lowest() + 1);
+  const auto first = runQuery(facts, sub, uint64_t{0});
+  std::string cont(first->continuation.data(), first->continuation.size());
+  ASSERT_FALSE(cont.empty()) << "query finished before timing out";
+
+  const auto rest = resumeQuery(facts, cont);
+
+  EXPECT_EQ(rest->continuation.size(), 0);
 }
 
 TEST(SetOpsTest, SetOperationsRejectTokensThatWereNeverIssued) {
