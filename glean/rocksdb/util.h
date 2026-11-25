@@ -49,9 +49,14 @@ inline rocksdb::Slice toSlice(const T& x) {
 
 template <typename T>
 inline T fromSlice(const rocksdb::Slice& slice) {
-  assert(slice.size() == sizeof(T));
+  if (slice.size() != sizeof(T)) {
+    rts::error(
+        "corrupt database - stored value has {} bytes, expected {}",
+        slice.size(),
+        sizeof(T));
+  }
   T x;
-  std::memcpy(&x, slice.data(), slice.size());
+  std::memcpy(&x, slice.data(), sizeof(T));
   return x;
 }
 

@@ -19,6 +19,7 @@
 
 #include "glean/lmdb/container-impl.h"
 #include "glean/lmdb/database-impl.h"
+#include "glean/rts/factset.h"
 
 namespace facebook::glean::lmdb::impl {
 
@@ -188,6 +189,50 @@ TEST_F(ContainerImplTest, AccessibilityUnavailableOnLegacyReadOnlyDatabase) {
         &Family::accessibilityDerivedRaw}) {
     EXPECT_THROW(reopened.container_.read(*family), std::runtime_error);
   }
+}
+
+TEST_F(ContainerImplTest, ReadOnlyOpenLoadsStoredPredicateStats) {
+  {
+    DatabaseImpl database(std::move(*container_), Id::lowest(), 0, 7);
+    rts::FactSet facts(Id::lowest());
+    const std::string clause = "keyvalue";
+    facts.define(Pid::lowest(), rts::Fact::Clause::from(bytes(clause), 3));
+    database.commit(facts);
+  }
+  container_.reset();
+
+  DatabaseImpl reopened(
+      ContainerImpl(dbPath(), Mode::ReadOnly), Id::lowest(), 0, 7);
+  EXPECT_EQ(reopened.count(Pid::lowest()), rts::Interval{1});
+}
+
+class CorruptStatsTest : public ContainerImplTest {
+ protected:
+  void expectReadOnlyOpenRejectsStatsOfSize(size_t size) {
+    {
+      DatabaseImpl database(std::move(*container_), Id::lowest(), 0, 7);
+      binary::Output key;
+      key.fixed(Pid::lowest());
+      const std::string value(size, 'A');
+      auto writer = database.container_.write();
+      writer.put(Family::stats, key.bytes(), bytes(value));
+      writer.commit();
+    }
+    container_.reset();
+
+    EXPECT_THROW(
+        DatabaseImpl(
+            ContainerImpl(dbPath(), Mode::ReadOnly), Id::lowest(), 0, 7),
+        std::runtime_error);
+  }
+};
+
+TEST_F(CorruptStatsTest, ReadOnlyOpenRejectsOversizedPredicateStats) {
+  expectReadOnlyOpenRejectsStatsOfSize(sizeof(rts::MemoryStats) * 4);
+}
+
+TEST_F(CorruptStatsTest, ReadOnlyOpenRejectsTruncatedPredicateStats) {
+  expectReadOnlyOpenRejectsStatsOfSize(sizeof(rts::MemoryStats) / 2);
 }
 
 // Mirrors the shutdown flow: flush a still-writable container, then back it

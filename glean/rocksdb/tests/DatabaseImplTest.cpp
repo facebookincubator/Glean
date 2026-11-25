@@ -753,6 +753,36 @@ TEST_F(DatabaseImplTest, ReopenRejectsUnexpectedDatabaseVersion) {
       std::runtime_error);
 }
 
+// ============================================================
+// Corrupt stored values
+// ============================================================
+
+class CorruptStatsTest : public DatabaseImplTest {
+ protected:
+  void expectReadOnlyOpenRejectsStatsOfSize(size_t size) {
+    binary::Output key;
+    key.fixed(rts::Pid::lowest());
+    const std::string value(size, 'A');
+    auto& container = static_cast<impl::ContainerImpl&>(database_->container());
+    auto writer = container.write();
+    writer.put(impl::Family::stats, key.bytes(), bytes(value));
+    writer.commit();
+    database_.reset();
+
+    EXPECT_THROW(
+        openDatabase(db::Mode::ReadOnly, startingId(), kVersion),
+        std::runtime_error);
+  }
+};
+
+TEST_F(CorruptStatsTest, ReadOnlyOpenRejectsOversizedPredicateStats) {
+  expectReadOnlyOpenRejectsStatsOfSize(sizeof(rts::MemoryStats) * 4);
+}
+
+TEST_F(CorruptStatsTest, ReadOnlyOpenRejectsTruncatedPredicateStats) {
+  expectReadOnlyOpenRejectsStatsOfSize(sizeof(rts::MemoryStats) / 2);
+}
+
 } // namespace
 
 } // namespace facebook::glean::rocks
