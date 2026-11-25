@@ -87,6 +87,18 @@ std::unique_ptr<Slice> slice(
   // The result bit set
   boost::dynamic_bitset<uint64_t> members(size, false);
 
+  // Set IDs come from storage, so check them before indexing `members`.
+  auto memberIndex = [first, size](size_t id) {
+    if (id < first || id - first >= size) {
+      error(
+          "invalid ownership set: {} is not one of the sets [{}, {})",
+          id,
+          first,
+          first + size);
+    }
+    return id - first;
+  };
+
   // `reader` reads an Elias-Fano encoded set of usets. isSubset returns
   // true if the set's unit elements are all contained in `units`.
   auto isSubset = [&, first](Reader& reader) {
@@ -175,7 +187,7 @@ std::unique_ptr<Slice> slice(
       }
     }
     do {
-      if (members[reader.value() - first]) {
+      if (members[memberIndex(reader.value())]) {
         VLOG(5) << fmt::format("orVisible: visible({})", reader.value());
         return true;
       }
@@ -220,7 +232,7 @@ std::unique_ptr<Slice> slice(
       }
     }
     do {
-      if (!members[reader.value() - first]) {
+      if (!members[memberIndex(reader.value())]) {
         VLOG(5) << fmt::format("andVisible: invisible({})", reader.value());
         return false;
       }
@@ -259,7 +271,7 @@ std::unique_ptr<Slice> slice(
         }
         break;
     }
-    members[i - first] = visible;
+    members[memberIndex(i)] = visible;
     VLOG(5) << "slice set: " << i << " " << (visible ? "visible" : "invisible");
   }
 

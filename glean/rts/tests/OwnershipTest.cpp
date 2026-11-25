@@ -17,6 +17,7 @@
 #include <gtest/gtest.h>
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <stdexcept>
 #include <string>
 #include <utility>
@@ -75,6 +76,9 @@ struct TestOwnership final : Ownership {
   UsetId firstId_;
   std::vector<SetExpr<MutableOwnerSet>> sets_; // Sets, indexed by UsetId
   std::vector<UsetId> facts_; // Owner set for each fact
+  // The {first id, number of sets} the set iterator reports, if not
+  // {firstId_, sets_.size()}
+  std::optional<std::pair<size_t, size_t>> reportedSizes_;
 };
 
 SetExpr<MutableOwnerSet> makeSetExpr(SetOp op, std::set<UsetId> members) {
@@ -96,11 +100,12 @@ std::unique_ptr<OwnershipSetIterator> TestOwnership::getSetIterator() {
   struct MemorySetIterator : OwnershipSetIterator {
     MemorySetIterator(
         UsetId firstId,
+        std::pair<size_t, size_t> reportedSizes,
         std::vector<SetExpr<MutableOwnerSet>>& sets)
-        : firstId_(firstId), sets_(sets) {}
+        : firstId_(firstId), reportedSizes_(reportedSizes), sets_(sets) {}
 
     std::pair<size_t, size_t> sizes() const override {
-      return {firstId_, sets_.size()};
+      return reportedSizes_;
     }
 
     folly::Optional<std::pair<UnitId, SetExpr<const OwnerSet*>>> get()
@@ -118,11 +123,15 @@ std::unique_ptr<OwnershipSetIterator> TestOwnership::getSetIterator() {
 
     OwnerSet ownerset;
     UsetId firstId_;
+    std::pair<size_t, size_t> reportedSizes_;
     uint32_t i_ = 0;
     std::vector<SetExpr<MutableOwnerSet>>& sets_;
   };
 
-  return std::make_unique<MemorySetIterator>(firstId_, sets_);
+  return std::make_unique<MemorySetIterator>(
+      firstId_,
+      reportedSizes_.value_or(std::make_pair(firstId_, sets_.size())),
+      sets_);
 }
 
 std::vector<bool> visibleUsets(const Slice& slice, UsetId first, UsetId end) {
@@ -911,4 +920,45 @@ TEST(OwnershipTest, DeserializeAcceptsEmptySetWithUpperBits) {
       });
 
   EXPECT_EQ(decoded, std::set<uint32_t>{});
+}
+
+TEST(OwnershipTest, SliceRejectsOrSetReferringPastTheSets) {
+  // One set, 10, whose element 74 is in the range of sets but past them.
+  TestOwnership ownership(10, makeSetExprs({{Or, {74}}}), {});
+
+  EXPECT_THROW(slice(ownership, Slices({}), {}, false), std::runtime_error);
+}
+
+TEST(OwnershipTest, SliceRejectsAndSetReferringPastTheSets) {
+  TestOwnership ownership(10, makeSetExprs({{And, {74}}}), {});
+
+  EXPECT_THROW(slice(ownership, Slices({}), {}, false), std::runtime_error);
+}
+
+TEST(OwnershipTest, SliceRejectsSetReferringToTheNextSetId) {
+  // Set 10's element 11 is the first id past the one stored set.
+  TestOwnership ownership(10, makeSetExprs({{Or, {11}}}), {});
+
+  EXPECT_THROW(slice(ownership, Slices({}), {}, false), std::runtime_error);
+}
+
+TEST(OwnershipTest, SliceRejectsSetIdsPastTheReportedSets) {
+  // The iterator yields sets 10..74 but reports only set 10.
+  std::vector<SetExpr<MutableOwnerSet>> sets;
+  sets.reserve(65);
+  for (int i = 0; i < 65; i++) {
+    sets.push_back(makeSetExpr(Or, {1}));
+  }
+  TestOwnership ownership(10, std::move(sets), {});
+  ownership.reportedSizes_ = {10, 1};
+
+  EXPECT_THROW(slice(ownership, Slices({}), {}, false), std::runtime_error);
+}
+
+TEST(OwnershipTest, SliceRejectsSetIdsBeforeTheReportedSets) {
+  // The iterator yields set 10 but reports only set 11.
+  TestOwnership ownership(10, makeSetExprs({{Or, {1}}}), {});
+  ownership.reportedSizes_ = {11, 1};
+
+  EXPECT_THROW(slice(ownership, Slices({}), {}, false), std::runtime_error);
 }
