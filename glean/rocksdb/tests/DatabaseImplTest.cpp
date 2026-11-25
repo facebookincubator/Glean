@@ -10,6 +10,7 @@
 
 #include <cstdint>
 #include <cstdio>
+#include <cstdlib>
 #include <map>
 #include <memory>
 #include <optional>
@@ -29,6 +30,7 @@
 #include "glean/rocksdb/database-impl.h"
 #include "glean/rocksdb/rocksdb.h"
 #include "glean/rts/cache.h"
+#include "glean/rts/ffi.h"
 #include "glean/rts/ownership/expression.h"
 #include "glean/rts/stacked.h"
 #include "glean/storage/common.h"
@@ -781,6 +783,77 @@ TEST_F(CorruptStatsTest, ReadOnlyOpenRejectsOversizedPredicateStats) {
 
 TEST_F(CorruptStatsTest, ReadOnlyOpenRejectsTruncatedPredicateStats) {
   expectReadOnlyOpenRejectsStatsOfSize(sizeof(rts::MemoryStats) / 2);
+}
+
+TEST_F(DatabaseImplTest, FactByIdReturnsFactWithEmptyValue) {
+  rts::FactSet facts(startingId());
+  const auto id = defineFact(facts, rts::Pid::lowest(), "just-a-key", "");
+  database_->commit(facts);
+
+  std::optional<StoredFact> stored;
+  const bool found = database_->factById(id, [&](auto type, auto clause) {
+    stored = StoredFact{type, clause.key().str(), clause.value().str()};
+  });
+
+  ASSERT_TRUE(found);
+  ASSERT_TRUE(stored.has_value());
+  EXPECT_EQ(stored->key, "just-a-key");
+  EXPECT_EQ(stored->value, "");
+}
+
+TEST_F(DatabaseImplTest, FactByIdRejectsKeySizeOneBeyondStoredClause) {
+  rts::FactSet facts(startingId());
+  const auto id = defineFact(facts, rts::Pid::lowest(), "key", "value");
+  database_->commit(facts);
+  binary::Output key;
+  key.nat(id.toWord());
+  binary::Output value;
+  value.packed(rts::Pid::lowest());
+  value.packed(uint32_t{9});
+  value.put(bytes("keyvalue"));
+  auto& container = static_cast<impl::ContainerImpl&>(database_->container());
+  auto writer = container.write();
+  writer.put(impl::Family::entities, key.bytes(), value.bytes());
+  writer.commit();
+
+  EXPECT_THROW(database_->factById(id, [](auto, auto) {}), std::runtime_error);
+}
+
+TEST_F(DatabaseImplTest, LookupFactRejectsKeySizeBeyondStoredClause) {
+  rts::FactSet facts(startingId());
+  const auto id = defineFact(facts, rts::Pid::lowest(), "key", "value");
+  database_->commit(facts);
+  binary::Output key;
+  key.nat(id.toWord());
+  binary::Output value;
+  value.packed(rts::Pid::lowest());
+  value.packed(uint32_t{1} << 20);
+  value.put(bytes(std::string(40, 'k')));
+  auto& container = static_cast<impl::ContainerImpl&>(database_->container());
+  auto writer = container.write();
+  writer.put(impl::Family::entities, key.bytes(), value.bytes());
+  writer.commit();
+
+  // The FFI entry point behind Haskell fact lookups, which copies the
+  // decoded key and value out to the caller.
+  int64_t type = 0;
+  void* foundKey = nullptr;
+  size_t foundKeySize = 0;
+  void* foundValue = nullptr;
+  size_t foundValueSize = 0;
+  const char* error = rts::c::glean_lookup_fact(
+      database_.get(),
+      id.toThrift(),
+      &type,
+      &foundKey,
+      &foundKeySize,
+      &foundValue,
+      &foundValueSize);
+
+  EXPECT_NE(error, nullptr);
+  std::free(const_cast<char*>(error));
+  std::free(foundKey);
+  std::free(foundValue);
 }
 
 } // namespace

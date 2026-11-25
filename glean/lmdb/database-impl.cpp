@@ -151,6 +151,13 @@ rts::Fact::Ref decomposeFact(Id id, const folly::ByteRange data) {
   binary::Input inp(data);
   const auto ty = inp.packed<Pid>();
   const auto key_size = inp.packed<uint32_t>();
+  if (key_size > inp.size()) {
+    rts::error(
+        "corrupt database - fact {} has key size {} but only {} bytes",
+        id.toWord(),
+        key_size,
+        inp.size());
+  }
   return rts::Fact::Ref{id, ty, rts::Fact::Clause::from(inp.bytes(), key_size)};
 }
 

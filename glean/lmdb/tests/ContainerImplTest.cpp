@@ -12,6 +12,7 @@
 #include <filesystem>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <folly/Range.h>
@@ -233,6 +234,82 @@ TEST_F(CorruptStatsTest, ReadOnlyOpenRejectsOversizedPredicateStats) {
 
 TEST_F(CorruptStatsTest, ReadOnlyOpenRejectsTruncatedPredicateStats) {
   expectReadOnlyOpenRejectsStatsOfSize(sizeof(rts::MemoryStats) / 2);
+}
+
+TEST_F(ContainerImplTest, FactByIdReturnsStoredClause) {
+  DatabaseImpl database(std::move(*container_), Id::lowest(), 0, 7);
+  rts::FactSet facts(Id::lowest());
+  const std::string clause = "keyvalue";
+  const auto id =
+      facts.define(Pid::lowest(), rts::Fact::Clause::from(bytes(clause), 3));
+  database.commit(facts);
+
+  std::optional<std::pair<std::string, std::string>> stored;
+  const bool found = database.factById(id, [&](Pid, rts::Fact::Clause c) {
+    stored = {toString(c.key()), toString(c.value())};
+  });
+
+  EXPECT_TRUE(found);
+  EXPECT_EQ(stored, std::make_pair(std::string("key"), std::string("value")));
+}
+
+TEST_F(ContainerImplTest, FactByIdReturnsFactWithEmptyValue) {
+  DatabaseImpl database(std::move(*container_), Id::lowest(), 0, 7);
+  rts::FactSet facts(Id::lowest());
+  const std::string clause = "just-a-key";
+  const auto id = facts.define(
+      Pid::lowest(), rts::Fact::Clause::from(bytes(clause), clause.size()));
+  database.commit(facts);
+
+  std::optional<std::pair<std::string, std::string>> stored;
+  const bool found = database.factById(id, [&](Pid, rts::Fact::Clause c) {
+    stored = {toString(c.key()), toString(c.value())};
+  });
+
+  EXPECT_TRUE(found);
+  EXPECT_EQ(stored, std::make_pair(clause, std::string()));
+}
+
+TEST_F(ContainerImplTest, FactByIdRejectsKeySizeOneBeyondStoredClause) {
+  DatabaseImpl database(std::move(*container_), Id::lowest(), 0, 7);
+  rts::FactSet facts(Id::lowest());
+  const std::string clause = "keyvalue";
+  const auto id =
+      facts.define(Pid::lowest(), rts::Fact::Clause::from(bytes(clause), 3));
+  database.commit(facts);
+  binary::Output key;
+  key.nat(id.toWord());
+  binary::Output value;
+  value.packed(Pid::lowest());
+  value.packed(uint32_t{9});
+  value.put(bytes(clause));
+  auto writer = database.container_.write();
+  writer.put(Family::entities, key.bytes(), value.bytes());
+  writer.commit();
+
+  EXPECT_THROW(
+      database.factById(id, [](Pid, rts::Fact::Clause) {}), std::runtime_error);
+}
+
+TEST_F(ContainerImplTest, FactByIdRejectsKeySizeBeyondStoredClause) {
+  DatabaseImpl database(std::move(*container_), Id::lowest(), 0, 7);
+  rts::FactSet facts(Id::lowest());
+  const std::string clause = "keyvalue";
+  const auto id =
+      facts.define(Pid::lowest(), rts::Fact::Clause::from(bytes(clause), 3));
+  database.commit(facts);
+  binary::Output key;
+  key.nat(id.toWord());
+  binary::Output value;
+  value.packed(Pid::lowest());
+  value.packed(uint32_t{1} << 20);
+  value.put(bytes(std::string(40, 'k')));
+  auto writer = database.container_.write();
+  writer.put(Family::entities, key.bytes(), value.bytes());
+  writer.commit();
+
+  EXPECT_THROW(
+      database.factById(id, [](Pid, rts::Fact::Clause) {}), std::runtime_error);
 }
 
 // Mirrors the shutdown flow: flush a still-writable container, then back it
