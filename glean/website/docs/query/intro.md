@@ -89,7 +89,7 @@ compact which you can encode/decode into the Thrift types.
 
 <FbInternalOnly>
 
-We have a VS Code plugin for Angle syntax highlighting in VS Code: [Glean development Support](https://www.internalfb.com/fb-vscode/marketplace/extension/nuclide.fb-glean/overview?leftNavTab=manage) the code lives [here](https://www.internalfb.com/code/fbsource/[master]/xplat/vscode/vscode-extensions/fb-glean/)
+We have a VS Code plugin for Angle syntax highlighting in VS Code: [Glean development Support](https://vs-code-extension-portal.internalmeta.com/extension/nuclide.fb-glean/overview) the code lives [here](https://www.internalfb.com/code/fbsource/[master]/xplat/vscode/vscode-extensions/fb-glean/)
 
 </FbInternalOnly>
 
