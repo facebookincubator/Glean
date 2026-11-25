@@ -346,6 +346,52 @@ TEST_F(DatabaseImplTest, OwnershipStatsReadStoredEstimatesInReadOnlyMode) {
   EXPECT_GT(stats.units_size, 0);
 }
 
+TEST_F(DatabaseImplTest, GetUnitIdRejectsMissizedStoredUnitId) {
+  auto& container = static_cast<impl::ContainerImpl&>(database_->container());
+  auto writer = container.write();
+  writer.put(impl::Family::ownershipUnits, bytes("short.cpp"), bytes("ab"));
+  writer.put(impl::Family::ownershipUnits, bytes("long.cpp"), bytes("abcdef"));
+  writer.commit();
+
+  EXPECT_THROW(database_->getUnitId(bytes("short.cpp")), std::runtime_error);
+  EXPECT_THROW(database_->getUnitId(bytes("long.cpp")), std::runtime_error);
+}
+
+TEST_F(DatabaseImplTest, GetUnitsByPrefixReturnsStoredUnitIds) {
+  const uint32_t unit = 0x01020304;
+  auto& container = static_cast<impl::ContainerImpl&>(database_->container());
+  auto writer = container.write();
+  writer.put(impl::Family::ownershipUnits, bytes("a.cpp"), db::bytesOf(unit));
+  writer.commit();
+
+  const std::vector<std::pair<std::string, uint32_t>> expected{{"a.cpp", unit}};
+  EXPECT_EQ(database_->getUnitsByPrefix(bytes("a")), expected);
+}
+
+TEST_F(DatabaseImplTest, GetUnitsByPrefixRejectsMissizedStoredUnitId) {
+  auto& container = static_cast<impl::ContainerImpl&>(database_->container());
+  auto writer = container.write();
+  writer.put(impl::Family::ownershipUnits, bytes("short.cpp"), bytes("ab"));
+  writer.put(impl::Family::ownershipUnits, bytes("long.cpp"), bytes("abcdef"));
+  writer.commit();
+
+  EXPECT_THROW(database_->getUnitsByPrefix(bytes("short")), std::runtime_error);
+  EXPECT_THROW(database_->getUnitsByPrefix(bytes("long")), std::runtime_error);
+}
+
+TEST_F(DatabaseImplTest, OpenRejectsMissizedPublicAccessibilityUnit) {
+  storeAccessibilityOwners(*database_, 100, {{startingId(), 100}});
+  auto& container = static_cast<impl::ContainerImpl&>(database_->container());
+  auto writer = container.write();
+  writer.put(impl::Family::accessibilityUnits, bytes("public"), bytes("ab"));
+  writer.commit();
+  database_.reset();
+
+  EXPECT_THROW(
+      openDatabase(db::Mode::ReadOnly, startingId(), kVersion),
+      std::runtime_error);
+}
+
 // Units far from zero give the stored Elias-Fano set many lower bits. The
 // 38-byte value is then large enough that RocksDB's memtable copy is an
 // exactly-sized std::string allocation, so ASan sees reads past it.

@@ -867,10 +867,8 @@ folly::Optional<uint32_t> DatabaseCommon<C>::readUnitId(
     const typename C::Family& units,
     folly::ByteRange unit) {
   uint32_t r;
-  if (container_.get(units, unit, [&](auto val) {
-        assert(val.size() == sizeof(uint32_t));
-        r = folly::loadUnaligned<uint32_t>(val.data());
-      })) {
+  if (container_.get(
+          units, unit, [&](auto val) { r = fromBytes<uint32_t>(val); })) {
     return r;
   } else {
     return folly::none;
@@ -923,7 +921,7 @@ DatabaseCommon<C>::getUnitsByPrefix(folly::ByteRange prefix) {
       break;
     }
     auto name = binary::mkString(key);
-    auto uid = folly::loadUnaligned<uint32_t>(iter.value().data());
+    auto uid = fromBytes<uint32_t>(iter.value());
     result.emplace_back(std::move(name), uid);
     iter.next();
   }

@@ -236,6 +236,39 @@ TEST_F(CorruptStatsTest, ReadOnlyOpenRejectsTruncatedPredicateStats) {
   expectReadOnlyOpenRejectsStatsOfSize(sizeof(rts::MemoryStats) / 2);
 }
 
+TEST_F(ContainerImplTest, GetUnitIdRejectsMissizedStoredUnitId) {
+  DatabaseImpl database(std::move(*container_), Id::lowest(), 0, 7);
+  auto writer = database.container_.write();
+  writer.put(Family::ownershipUnits, bytes("short.cpp"), bytes("ab"));
+  writer.put(Family::ownershipUnits, bytes("long.cpp"), bytes("abcdef"));
+  writer.commit();
+
+  EXPECT_THROW(database.getUnitId(bytes("short.cpp")), std::runtime_error);
+  EXPECT_THROW(database.getUnitId(bytes("long.cpp")), std::runtime_error);
+}
+
+TEST_F(ContainerImplTest, GetUnitsByPrefixReturnsStoredUnitIds) {
+  DatabaseImpl database(std::move(*container_), Id::lowest(), 0, 7);
+  const uint32_t unit = 0x01020304;
+  auto writer = database.container_.write();
+  writer.put(Family::ownershipUnits, bytes("a.cpp"), db::bytesOf(unit));
+  writer.commit();
+
+  const std::vector<std::pair<std::string, uint32_t>> expected{{"a.cpp", unit}};
+  EXPECT_EQ(database.getUnitsByPrefix(bytes("a")), expected);
+}
+
+TEST_F(ContainerImplTest, GetUnitsByPrefixRejectsMissizedStoredUnitId) {
+  DatabaseImpl database(std::move(*container_), Id::lowest(), 0, 7);
+  auto writer = database.container_.write();
+  writer.put(Family::ownershipUnits, bytes("short.cpp"), bytes("ab"));
+  writer.put(Family::ownershipUnits, bytes("long.cpp"), bytes("abcdef"));
+  writer.commit();
+
+  EXPECT_THROW(database.getUnitsByPrefix(bytes("short")), std::runtime_error);
+  EXPECT_THROW(database.getUnitsByPrefix(bytes("long")), std::runtime_error);
+}
+
 TEST_F(ContainerImplTest, FactByIdReturnsStoredClause) {
   DatabaseImpl database(std::move(*container_), Id::lowest(), 0, 7);
   rts::FactSet facts(Id::lowest());
