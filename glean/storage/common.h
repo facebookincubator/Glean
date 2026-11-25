@@ -1726,7 +1726,11 @@ struct StoredOwnership : Ownership {
     EncodedNat key(id);
     folly::Optional<SetExpr<SetU32>> r;
     if (db_->container_.get(storage_.sets, key.byteRange(), [&](auto val) {
-          binary::Input inp(val);
+          // EliasFano needs to be able to read 8 bytes past the end of
+          // the data, so we have to copy the bytes to add padding.
+          const auto padded = hs::ffi::clone_array<uint8_t>(
+              reinterpret_cast<const uint8_t*>(val.data()), val.size(), 8);
+          binary::Input inp(padded.get(), val.size());
           SetExpr<SetU32> exp;
           exp.op = static_cast<SetOp>(inp.trustedNat());
           exp.set = SetU32::fromEliasFano(deserializeEliasFano(inp));

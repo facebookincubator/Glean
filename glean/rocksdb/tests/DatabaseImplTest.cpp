@@ -346,6 +346,43 @@ TEST_F(DatabaseImplTest, OwnershipStatsReadStoredEstimatesInReadOnlyMode) {
   EXPECT_GT(stats.units_size, 0);
 }
 
+// Units far from zero give the stored Elias-Fano set many lower bits. The
+// 38-byte value is then large enough that RocksDB's memtable copy is an
+// exactly-sized std::string allocation, so ASan sees reads past it.
+TEST_F(DatabaseImplTest, GetUsetReadsOnlyTheStoredValue) {
+  constexpr rts::UnitId kFirstUnit = rts::UnitId{1} << 30;
+  constexpr uint32_t kUnits = 8;
+  database_.reset();
+  temporaryDirectory_ = std::make_unique<folly::test::TemporaryDirectory>();
+  auto container = open(databasePath(), db::Mode::Create, {}, {});
+  database_ =
+      std::move(*container).openDatabase(startingId(), kFirstUnit, kVersion);
+  std::vector<std::string> names;
+  std::vector<db::Database::OwnershipSet> units;
+  names.reserve(kUnits);
+  units.reserve(kUnits);
+  std::set<uint32_t> members;
+  for (uint32_t i = 0; i < kUnits; i++) {
+    names.push_back("unit" + std::to_string(i));
+    members.insert(kFirstUnit + i);
+  }
+  for (const auto& name : names) {
+    units.push_back({bytes(name), {}});
+  }
+  database_->addOwnership(units);
+  rts::Usets sets(kFirstUnit + kUnits);
+  const auto id = sets.intern(
+      std::make_unique<rts::Uset>(rts::SetU32::from(members), rts::Or, 0));
+  rts::ComputedOwnership ownership(std::move(sets), {});
+  database_->storeOwnership(rts::OwnershipKind::Visibility, ownership);
+
+  const auto stored = database_->getOwnership()->getUset(id);
+
+  ASSERT_TRUE(stored.has_value());
+  EXPECT_EQ(stored->op, rts::Or);
+  EXPECT_EQ(rts::SetU32::to(stored->set), members);
+}
+
 TEST_F(DatabaseImplTest, ReopenedOwnerSetsKeepTheirOperation) {
   commitThreeFacts();
   database_->addOwnership({{bytes("a.cpp"), {}}, {bytes("b.cpp"), {}}});
