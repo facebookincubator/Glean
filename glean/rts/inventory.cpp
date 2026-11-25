@@ -8,7 +8,10 @@
 
 #include "glean/rts/inventory.h"
 #include "glean/rts/bytecode/subroutine.h"
+#include "glean/rts/error.h"
 #include "glean/rts/serialize.h"
+
+#include <limits>
 
 namespace facebook {
 namespace glean {
@@ -27,7 +30,10 @@ Inventory::Inventory(std::vector<Predicate> ps) {
   first_id = Pid::invalid();
   auto last_id = Pid::lowest();
   for (const auto& p : ps) {
-    assert(p.id);
+    if (!p.id ||
+        p.id == Pid::fromWord(std::numeric_limits<Pid::word_type>::max())) {
+      error("invalid predicate id {}", p.id);
+    }
     if (!first_id) {
       first_id = p.id;
     } else {

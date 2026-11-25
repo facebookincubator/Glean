@@ -8,10 +8,15 @@
 
 #include "glean/rts/fact.h"
 #include "glean/rts/binary.h"
+#include "glean/rts/inventory.h"
+#include "glean/rts/serialize.h"
 
 #include <gtest/gtest.h>
 #include <cstdint>
+#include <limits>
 #include <stdexcept>
+#include <string>
+#include <vector>
 
 namespace facebook {
 namespace glean {
@@ -84,6 +89,80 @@ TEST(FactTest, RejectsKeyValueSizeOverflow) {
   Pid type;
   Fact::Clause clause;
   EXPECT_THROW(Fact::deserialize(input, type, clause), std::runtime_error);
+}
+
+namespace {
+
+// A serialized Inventory, in the format Inventory::serialize writes, whose
+// predicates have the given ids and empty bytecode.
+std::string serializedInventory(const std::vector<uint64_t>& pids) {
+  const Subroutine empty({}, 0, 0, 0, {}, {});
+  binary::Output out;
+  serialize::put(out, uint64_t{pids.size()});
+  for (auto pid : pids) {
+    serialize::put(out, Pid::fromWord(pid));
+    serialize::put(out, std::string("p"));
+    serialize::put(out, int32_t{1});
+    serialize::put(out, empty);
+    serialize::put(out, empty);
+  }
+  return out.string();
+}
+
+// Predicates with the given ids, in the given order, and no bytecode.
+std::vector<Predicate> predicatesWithPids(const std::vector<uint64_t>& pids) {
+  std::vector<Predicate> predicates;
+  predicates.reserve(pids.size());
+  for (auto pid : pids) {
+    predicates.push_back(
+        Predicate{Pid::fromWord(pid), "p", 1, nullptr, nullptr});
+  }
+  return predicates;
+}
+
+} // namespace
+
+TEST(InventoryTest, RoundTripsDensePredicateIds) {
+  const auto bytes =
+      serializedInventory({Pid::lowest().toWord(), Pid::lowest().toWord() + 1});
+  EXPECT_EQ(
+      Inventory::deserialize(binary::byteRange(bytes)).serialize(), bytes);
+}
+
+// For the largest predicate id, `id + 1` wraps to 0, so the predicate table is
+// sized from the other ids and the largest one is stored before its start. The
+// other ids are valid, so only the largest one can be rejected.
+TEST(InventoryTest, RejectsPredicateIdAtTheTopOfTheIdRange) {
+  const auto bytes = serializedInventory(
+      {Pid::lowest().toWord(),
+       2000,
+       std::numeric_limits<Pid::word_type>::max()});
+  EXPECT_THROW(
+      Inventory::deserialize(binary::byteRange(bytes)), std::runtime_error);
+}
+
+// An id of 0 after a nonzero id lowers the smallest id to 0, so the predicate
+// table is sized from `Pid::lowest()` but indexed from 0.
+TEST(InventoryTest, RejectsPredicateIdZero) {
+  EXPECT_THROW(Inventory{predicatesWithPids({1100, 0})}, std::runtime_error);
+}
+
+// An id of 0 before the other ids leaves the smallest id at 1100, and the 0
+// itself is stored at an index that wraps to before the table.
+TEST(InventoryTest, RejectsPredicateIdZeroBeforeOtherIds) {
+  EXPECT_THROW(Inventory{predicatesWithPids({0, 1100})}, std::runtime_error);
+}
+
+// An id of 0 on its own gives an empty table, which the 0 is stored into.
+TEST(InventoryTest, RejectsPredicateIdZeroAlone) {
+  EXPECT_THROW(Inventory{predicatesWithPids({0})}, std::runtime_error);
+}
+
+TEST(InventoryTest, AcceptsPredicateIdJustBelowTheTopOfTheIdRange) {
+  const auto bytes =
+      serializedInventory({std::numeric_limits<Pid::word_type>::max() - 1});
+  EXPECT_EQ(
+      Inventory::deserialize(binary::byteRange(bytes)).serialize(), bytes);
 }
 
 } // namespace rts
