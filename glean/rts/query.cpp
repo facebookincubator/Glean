@@ -490,7 +490,14 @@ size_t QueryExecutor::recordResult(
       auto nestedId = nested_result_pending[nested_result_pending.size() - 1];
       nested_result_pending.pop_back();
       facts.factById(nestedId, [&](Pid pid_, auto clause) {
-        inventory.lookupPredicate(pid_)->traverse(
+        auto nestedPredicate = inventory.lookupPredicate(pid_);
+        if (!nestedPredicate) {
+          error(
+              "unknown pid {} for nested fact {}",
+              pid_.toWord(),
+              nestedId.toWord());
+        }
+        nestedPredicate->traverse(
             syscalls<&QueryExecutor::nestedFact>(*this), clause);
         nested_result_ids.emplace_back(nestedId.toWord());
         nested_result_pids.emplace_back(pid_.toWord());
