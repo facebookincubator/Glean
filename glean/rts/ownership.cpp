@@ -29,7 +29,10 @@
 #include <folly/lang/Assume.h>
 
 #include <algorithm>
+#include <bit>
+#include <cstring>
 #include <initializer_list>
+#include <limits>
 #include <queue>
 
 namespace facebook {
@@ -69,23 +72,80 @@ void serializeEliasFano(binary::Output& out, const OwnerSet& set) {
   out.put(set.data);
 }
 
+namespace {
+
+bool fitsIn(folly::ByteRange data, uint64_t offset, uint64_t length) {
+  return offset <= data.size() && length <= data.size() - offset;
+}
+
+size_t countOnes(folly::ByteRange bytes) {
+  size_t ones = 0;
+  while (bytes.size() >= sizeof(uint64_t)) {
+    uint64_t word;
+    std::memcpy(&word, bytes.data(), sizeof(word));
+    ones += std::popcount(word);
+    bytes.advance(sizeof(uint64_t));
+  }
+  for (auto byte : bytes) {
+    ones += std::popcount(byte);
+  }
+  return ones;
+}
+
+} // namespace
+
 /// Deserialize an OwnerSet from a binary::Input. Note that the
 // OwnerSet points to the contents of the binary::Input, so that
 // must remain alive as long as the OwnerSet is needed.
+//
+// The header is checked against the data, so that folly's reader stays within
+// the data and the 8 bytes it may read past its end, which the caller must
+// still provide.
 OwnerSet deserializeEliasFano(binary::Input& in) {
+  const auto size = in.untrustedNat();
+  const auto numLowerBits = in.untrustedNat();
+  const auto upperSizeBytes = in.untrustedNat();
+  const auto skipPointers = in.untrustedNat();
+  const auto forwardPointers = in.untrustedNat();
+  const auto lower = in.untrustedNat();
+  const auto upper = in.untrustedNat();
+  const auto data = in.bytes();
+  if (size > std::numeric_limits<uint32_t>::max() || numLowerBits >= 32) {
+    error(
+        "invalid ownership set: {} elements of {} lower bits",
+        size,
+        numLowerBits);
+  }
+  const auto lowerSizeBytes = (size * numLowerBits + 7) / 8;
+  if (!fitsIn(data, skipPointers, 0) || !fitsIn(data, forwardPointers, 0) ||
+      !fitsIn(data, lower, lowerSizeBytes) ||
+      !fitsIn(data, upper, upperSizeBytes)) {
+    error(
+        "invalid ownership set: offsets {} {} {} {} out of range of {} bytes",
+        skipPointers,
+        forwardPointers,
+        lower,
+        upper,
+        data.size());
+  }
+  // The reader finds elements by scanning for 1-bits in the upper bits, and
+  // bounds skipTo by the 0-bits it infers from `size`.
+  const auto ones = countOnes(data.subpiece(upper, upperSizeBytes));
+  if (ones != size) {
+    error(
+        "invalid ownership set: {} elements but {} in the upper bits",
+        size,
+        ones);
+  }
   OwnerSet set;
-  set.size = in.trustedNat();
-  set.numLowerBits = in.trustedNat();
-  set.upperSizeBytes = in.trustedNat();
-  auto skipPointers = in.trustedNat();
-  auto forwardPointers = in.trustedNat();
-  auto lower = in.trustedNat();
-  auto upper = in.trustedNat();
-  set.data = in.bytes();
-  set.skipPointers = set.data.begin() + skipPointers;
-  set.forwardPointers = set.data.begin() + forwardPointers;
-  set.lower = set.data.begin() + lower;
-  set.upper = set.data.begin() + upper;
+  set.size = size;
+  set.numLowerBits = numLowerBits;
+  set.upperSizeBytes = upperSizeBytes;
+  set.data = data;
+  set.skipPointers = data.begin() + skipPointers;
+  set.forwardPointers = data.begin() + forwardPointers;
+  set.lower = data.begin() + lower;
+  set.upper = data.begin() + upper;
   return set;
 }
 

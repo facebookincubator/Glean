@@ -15,7 +15,12 @@
 #include "glean/rts/ownership/slice.h"
 
 #include <gtest/gtest.h>
+#include <algorithm>
+#include <memory>
 #include <stdexcept>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include <rapidcheck.h>
 #include <rapidcheck/gtest.h>
@@ -768,4 +773,142 @@ RC_GTEST_PROP(SetSerializationTest, testSerialization, ()) {
   SetU32 d = SetU32::fromEliasFano(c);
   b.free();
   RC_ASSERT(set == SetU32::to(d));
+}
+
+namespace {
+
+// The fields serializeEliasFano writes before the data bytes.
+struct EliasFanoHeader {
+  uint64_t size;
+  uint64_t numLowerBits;
+  uint64_t upperSizeBytes;
+  uint64_t skipPointers;
+  uint64_t forwardPointers;
+  uint64_t lower;
+  uint64_t upper;
+};
+
+// Serializes a set into a heap buffer with the 8 bytes of padding that
+// storage/common.h adds to stored sets, and passes the deserialized set to
+// `use`.
+template <typename F>
+void withStoredSet(
+    const EliasFanoHeader& header,
+    const std::vector<uint8_t>& data,
+    F&& use) {
+  binary::Output out;
+  out.nat(header.size);
+  out.nat(header.numLowerBits);
+  out.nat(header.upperSizeBytes);
+  out.nat(header.skipPointers);
+  out.nat(header.forwardPointers);
+  out.nat(header.lower);
+  out.nat(header.upper);
+  out.put(folly::ByteRange(data.data(), data.size()));
+  constexpr size_t kPadding = 8;
+  auto stored = std::make_unique<uint8_t[]>(out.size() + kPadding);
+  std::copy(out.data(), out.data() + out.size(), stored.get());
+  binary::Input in(stored.get(), out.size());
+  use(deserializeEliasFano(in));
+}
+
+void decodeStoredSet(
+    const EliasFanoHeader& header,
+    const std::vector<uint8_t>& data) {
+  withStoredSet(
+      header, data, [](const OwnerSet& set) { SetU32::fromEliasFano(set); });
+}
+
+} // namespace
+
+TEST(OwnershipTest, DeserializeRejectsUpperOffsetPastTheData) {
+  EXPECT_THROW(
+      decodeStoredSet(
+          {.size = 1, .numLowerBits = 0, .upperSizeBytes = 1, .upper = 9},
+          {0x01}),
+      std::runtime_error);
+}
+
+TEST(OwnershipTest, DeserializeRejectsLowerBitsPastTheData) {
+  // Two elements of 31 lower bits each need 8 bytes of lower bits.
+  EXPECT_THROW(
+      decodeStoredSet(
+          {.size = 2,
+           .numLowerBits = 31,
+           .upperSizeBytes = 1,
+           .lower = 1,
+           .upper = 0},
+          {0x03}),
+      std::runtime_error);
+}
+
+TEST(OwnershipTest, DeserializeRejectsLowerBitsOneByteShort) {
+  // Two elements of 31 lower bits need 8 bytes; 7 follow the lower offset.
+  EXPECT_THROW(
+      decodeStoredSet(
+          {.size = 2,
+           .numLowerBits = 31,
+           .upperSizeBytes = 1,
+           .lower = 1,
+           .upper = 0},
+          {0x03, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}),
+      std::runtime_error);
+}
+
+TEST(OwnershipTest, DeserializeRejectsMoreElementsThanUpperBitsHold) {
+  EXPECT_THROW(
+      decodeStoredSet(
+          {.size = 2, .numLowerBits = 0, .upperSizeBytes = 1}, {0x01}),
+      std::runtime_error);
+}
+
+TEST(OwnershipTest, DeserializeRejectsFewerElementsThanUpperBitsHold) {
+  // The reader bounds skipTo by the number of 0-bits it infers from `size`;
+  // with 128 1-bits and size 1 it infers 127 that are not there.
+  using Reader = folly::compression::EliasFanoReader<
+      folly::compression::EliasFanoEncoder<uint32_t, uint32_t>>;
+  EXPECT_THROW(
+      withStoredSet(
+          {.size = 1, .numLowerBits = 0, .upperSizeBytes = 16},
+          std::vector<uint8_t>(16, 0xff),
+          [](const OwnerSet& set) { Reader(set).skipTo(127); }),
+      std::runtime_error);
+}
+
+TEST(OwnershipTest, DeserializeRejectsMalformedHeaders) {
+  const std::vector<std::pair<std::string, EliasFanoHeader>> headers = {
+      {"skip pointers past the data",
+       {.size = 1, .upperSizeBytes = 1, .skipPointers = 2}},
+      {"forward pointers past the data",
+       {.size = 1, .upperSizeBytes = 1, .forwardPointers = 2}},
+      {"lower bits offset past the data",
+       {.size = 1, .upperSizeBytes = 1, .lower = 2}},
+      {"upper bits longer than the data", {.size = 1, .upperSizeBytes = 2}},
+      {"32 lower bits", {.size = 1, .numLowerBits = 32, .upperSizeBytes = 1}},
+      {"more than 2^32 elements",
+       {.size = uint64_t{1} << 32, .upperSizeBytes = 1}},
+  };
+  for (const auto& [what, header] : headers) {
+    EXPECT_THROW(decodeStoredSet(header, {0x01}), std::runtime_error) << what;
+  }
+}
+
+TEST(OwnershipTest, DeserializeRejectsTruncatedHeader) {
+  const uint8_t truncated[] = {0x01, 0x00};
+  binary::Input in(truncated, sizeof(truncated));
+  EXPECT_THROW(deserializeEliasFano(in), std::runtime_error);
+}
+
+TEST(OwnershipTest, DeserializeAcceptsEmptySetWithUpperBits) {
+  // Upper bits with no 1-bits describe an empty set, however many there are.
+  std::set<uint32_t> decoded = {0};
+
+  withStoredSet(
+      {.size = 0, .numLowerBits = 0, .upperSizeBytes = 2},
+      {0x00, 0x00},
+      [&](const OwnerSet& set) {
+        decoded = SetU32::to(SetU32::fromEliasFano(set));
+      });
+
+  EXPECT_EQ(decoded, std::set<uint32_t>{});
 }
