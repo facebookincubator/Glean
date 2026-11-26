@@ -691,6 +691,21 @@ void DatabaseCommon<C>::addBatchDescriptor(BatchDescriptor batchDescriptor) {
   writer.commit();
 }
 
+struct StoredBatchDescriptor {
+  uint32_t format;
+  bool completed;
+};
+
+inline StoredBatchDescriptor readBatchDescriptor(folly::ByteRange bytes) {
+  binary::Input value(bytes);
+  const auto format = value.untrustedNat();
+  const auto completed = value.untrustedNat();
+  if (!value.empty() || format > std::numeric_limits<uint32_t>::max()) {
+    rts::error("corrupt database - invalid batch descriptor");
+  }
+  return {static_cast<uint32_t>(format), completed != 0};
+}
+
 template <typename C>
 void DatabaseCommon<C>::markBatchDescriptorAsWritten(
     folly::ByteRange location) {
@@ -698,8 +713,7 @@ void DatabaseCommon<C>::markBatchDescriptorAsWritten(
   uint32_t format = 0;
   bool found = container_.get(
       C::Family::batchDescriptors, location, [&format](folly::ByteRange val) {
-        binary::Input input(val);
-        format = static_cast<uint32_t>(input.trustedNat());
+        format = readBatchDescriptor(val).format;
       });
   if (!found) {
     LOG(WARNING) << "batch descriptor not found for location "
@@ -731,15 +745,12 @@ DatabaseCommon<C>::getUnprocessedBatchDescriptors() {
   for (iter.seek_first(); iter.valid(); iter.next()) {
     ++total;
     auto key = iter.key();
-    auto val = iter.value();
-    binary::Input input(val);
-    uint32_t format = static_cast<uint32_t>(input.trustedNat());
-    bool completed = input.trustedNat() != 0;
-    if (!completed) {
+    const auto stored = readBatchDescriptor(iter.value());
+    if (!stored.completed) {
       Database::BatchDescriptor entry;
       entry.location =
           std::string(reinterpret_cast<const char*>(key.data()), key.size());
-      entry.format = format;
+      entry.format = stored.format;
       result.push_back(std::move(entry));
     }
   }

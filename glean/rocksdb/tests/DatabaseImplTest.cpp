@@ -939,6 +939,18 @@ TEST_F(DatabaseImplTest, LookupFactRejectsKeySizeBeyondStoredClause) {
   std::free(foundValue);
 }
 
+TEST_F(DatabaseImplTest, RejectsTruncatedBatchDescriptorValue) {
+  const auto location = bytes("location");
+  auto& container = static_cast<impl::ContainerImpl&>(database_->container());
+  auto writer = container.write();
+  writer.put(impl::Family::batchDescriptors, location, bytes("\xFF"));
+  writer.commit();
+
+  EXPECT_THROW(database_->getUnprocessedBatchDescriptors(), std::runtime_error);
+  EXPECT_THROW(
+      database_->markBatchDescriptorAsWritten(location), std::runtime_error);
+}
+
 } // namespace
 
 } // namespace facebook::glean::rocks
