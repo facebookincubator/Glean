@@ -66,6 +66,10 @@ struct Substitution {
     return base + items.size();
   }
 
+  size_t size() const {
+    return items.size();
+  }
+
   Id firstFreeId() const;
 
   static Substitution compose(

@@ -8,6 +8,7 @@
 
 #include "glean/rts/factset.h"
 #include <gtest/gtest.h>
+#include <limits>
 #include <string>
 #include <vector>
 #include "glean/rts/binary.h"
@@ -36,6 +37,10 @@ std::vector<std::string> collectKeys(FactIterator& iter) {
   }
   return keys;
 }
+
+struct DiscardStore final : Store {
+  void insert(Fact::Ref) override {}
+};
 
 } // namespace
 
@@ -537,4 +542,100 @@ TEST(FactSetTest, SerializeReorderWritesRequestedFactsInRequestedOrder) {
   EXPECT_EQ(type, Pid::lowest());
   EXPECT_EQ(clause.key().str(), "key1");
   EXPECT_EQ(clause.value().str(), "value1");
+}
+
+TEST(FactSetTest, RebaseRejectsSubstitutionBeyondTheSet) {
+  FactSet fs(Id::lowest() + 2);
+  const Substitution subst(
+      Id::lowest(),
+      std::vector<Id>{
+          Id::fromWord(5000),
+          Id::fromWord(5001),
+          Id::fromWord(5002),
+          Id::fromWord(5003),
+          Id::fromWord(5004)});
+  DiscardStore global;
+
+  EXPECT_THROW(fs.rebase(Inventory(), subst, global), std::runtime_error);
+}
+
+TEST(FactSetTest, RebaseRejectsSubstitutionStartingPastTheSet) {
+  FactSet fs(Id::lowest());
+  const Substitution subst(
+      Id::lowest() + 2,
+      std::vector<Id>{Id::fromWord(5000), Id::fromWord(5001)});
+  DiscardStore global;
+
+  EXPECT_THROW(fs.rebase(Inventory(), subst, global), std::runtime_error);
+}
+
+TEST(FactSetTest, RebaseRejectsSubstitutionEndingOnePastTheSet) {
+  FactSet fs(Id::lowest() + 2);
+  const Substitution subst(
+      Id::lowest(),
+      std::vector<Id>{
+          Id::fromWord(5000), Id::fromWord(5001), Id::fromWord(5002)});
+  DiscardStore global;
+
+  EXPECT_THROW(fs.rebase(Inventory(), subst, global), std::runtime_error);
+}
+
+TEST(FactSetTest, RebaseRejectsSubstitutionWhoseEndWrapsAround) {
+  FactSet fs(Id::lowest());
+  const Substitution subst(
+      Id::fromWord(std::numeric_limits<uint64_t>::max() - 1),
+      std::vector<Id>{
+          Id::fromWord(5000),
+          Id::fromWord(5001),
+          Id::fromWord(5002),
+          Id::fromWord(5003),
+          Id::fromWord(5004)});
+  DiscardStore global;
+
+  EXPECT_THROW(fs.rebase(Inventory(), subst, global), std::runtime_error);
+}
+
+TEST(FactSetTest, RebaseRejectsSubstitutionWhoseEndWrapsAroundAtTheTop) {
+  FactSet fs(Id::fromWord(std::numeric_limits<uint64_t>::max()));
+  const Substitution subst(
+      Id::fromWord(std::numeric_limits<uint64_t>::max() - 1),
+      std::vector<Id>{
+          Id::fromWord(5000),
+          Id::fromWord(5001),
+          Id::fromWord(5002),
+          Id::fromWord(5003),
+          Id::fromWord(5004)});
+  DiscardStore global;
+
+  EXPECT_THROW(fs.rebase(Inventory(), subst, global), std::runtime_error);
+}
+
+TEST(FactSetTest, RebaseRejectsSubstitutionFromTheSetStartWhoseEndWrapsAround) {
+  FactSet fs(Id::fromWord(std::numeric_limits<uint64_t>::max() - 1));
+  const Substitution subst(
+      Id::fromWord(std::numeric_limits<uint64_t>::max() - 1),
+      std::vector<Id>{
+          Id::fromWord(5000), Id::fromWord(5001), Id::fromWord(5002)});
+  DiscardStore global;
+
+  EXPECT_THROW(fs.rebase(Inventory(), subst, global), std::runtime_error);
+}
+
+TEST(FactSetTest, RebaseAcceptsSubstitutionEndingAtTheSetEnd) {
+  FactSet fs(Id::lowest() + 2);
+  const Substitution subst(
+      Id::lowest(), std::vector<Id>{Id::fromWord(5000), Id::fromWord(5001)});
+  DiscardStore global;
+
+  auto [local, localSubst] = fs.rebase(Inventory(), subst, global);
+
+  EXPECT_EQ(local.size(), 0);
+  EXPECT_EQ(localSubst.subst(Id::lowest() + 1), Id::fromWord(5001));
+}
+
+TEST(FactSetTest, RebaseAcceptsEmptySubstitutionOfEmptySet) {
+  FactSet fs(Id::lowest() + 5);
+  const Substitution subst(Id::lowest() + 5, std::vector<Id>{});
+  DiscardStore global;
+  EXPECT_NO_THROW(fs.rebase(Inventory(), subst, global));
 }

@@ -365,6 +365,14 @@ std::pair<FactSet, Substitution> FactSet::rebase(
     const Inventory& inventory,
     const Substitution& subst,
     Store& global) const {
+  if (subst.start() > firstFreeId() ||
+      subst.size() > distance(subst.start(), firstFreeId())) {
+    error(
+        "rebase: substitution of {} ids at {} extends beyond the fact set end {}",
+        subst.size(),
+        subst.start(),
+        firstFreeId());
+  }
   const auto new_start = subst.firstFreeId();
   auto substitute =
       Predicate::Rename([&subst](Id id, Pid) { return subst.subst(id); });
