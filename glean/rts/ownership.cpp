@@ -171,6 +171,17 @@ UsetId getOwner(Lookup& lookup, OwnershipKind kind, Id id) {
 
 namespace {
 
+/// TrieArray::insert requires a unit's intervals to be sorted and disjoint.
+bool sortedAndDisjoint(const std::vector<OwnershipUnit::Ids>& ids) {
+  for (size_t i = 0; i < ids.size(); i++) {
+    if (ids[i].start > ids[i].finish ||
+        (i > 0 && ids[i].start <= ids[i - 1].finish)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 /**
  * Fill ownership data from an iterator
  *
@@ -223,9 +234,16 @@ FOLLY_NOINLINE std::unique_ptr<TrieArray<Uset>> fillOwnership(
   uint32_t max_unit = 0;
   Stats stats;
   folly::Optional<OwnershipUnitCopy> d;
+  folly::Optional<UnitId> invalidUnit;
   for (queue.blockingRead(d); d; queue.blockingRead(d)) {
     const auto& data = d.value();
     CHECK_GE(data.unit, last_unit);
+    // After an invalid unit, keep reading so that the fetcher finishes
+    // before `queue` goes away.
+    if (invalidUnit || !sortedAndDisjoint(data.ids)) {
+      invalidUnit = invalidUnit.value_or(data.unit);
+      continue;
+    }
 
     utrie->insert(
         data.ids.data(),
@@ -254,6 +272,20 @@ FOLLY_NOINLINE std::unique_ptr<TrieArray<Uset>> fillOwnership(
     max_unit = std::max(data.unit, max_unit);
     stats.bump(max_unit, data.ids.size());
     last_unit = data.unit;
+  }
+
+  if (invalidUnit) {
+    folly::F14FastSet<Uset*> sets;
+    utrie->foreach([&](Uset* set) -> Uset* {
+      sets.insert(set);
+      return nullptr;
+    });
+    for (auto* set : sets) {
+      delete set;
+    }
+    error(
+        "ownership unit {} has unsorted or overlapping fact intervals",
+        *invalidUnit);
   }
 
   stats.dump();

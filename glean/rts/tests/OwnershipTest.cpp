@@ -1014,3 +1014,82 @@ TEST(OwnershipTest, ComputeOwnershipFollowsOwnedFactsIntoTheBase) {
   ASSERT_NE(baseOwner, nullptr);
   EXPECT_EQ(SetU32::to(baseOwner->exp.set), (std::set<uint32_t>{0}));
 }
+
+TEST(OwnershipTest, ComputeOwnershipRejectsUnsortedOwnedIntervals) {
+  // With these ids, unit 1's second interval revisits a leaf that its first
+  // interval turned into a link.
+  FactSet facts(Id::lowest() + 100);
+  unsigned char keys[] = "abc";
+  std::vector<Id> ids;
+  ids.reserve(3);
+  for (size_t i = 0; i < 3; i++) {
+    ids.push_back(facts.define(
+        Pid::lowest(), Fact::Clause::fromKey(folly::ByteRange(keys + i, 1))));
+  }
+  Inventory inventory({predicateWithReference(Pid::lowest(), folly::none)});
+  // More units follow the invalid one than the unit queue holds.
+  std::vector<TestOwnershipUnitIterator::Entry> entries = {
+      {0, {{ids[0], ids[2]}}},
+      {1, {{ids[0], ids[2]}, {ids[1], ids[1]}}},
+  };
+  for (UnitId unit = 2; unit < 300; unit++) {
+    entries.push_back({unit, {{ids[0], ids[0]}}});
+  }
+  TestOwnershipUnitIterator units(std::move(entries));
+
+  EXPECT_THROW(
+      computeOwnership(inventory, facts, nullptr, &units), std::runtime_error);
+}
+
+TEST(OwnershipTest, ComputeOwnershipRejectsIntervalsSharingAnId) {
+  FactSet facts(Id::lowest() + 100);
+  unsigned char keys[] = "abc";
+  std::vector<Id> ids;
+  ids.reserve(3);
+  for (size_t i = 0; i < 3; i++) {
+    ids.push_back(facts.define(
+        Pid::lowest(), Fact::Clause::fromKey(folly::ByteRange(keys + i, 1))));
+  }
+  Inventory inventory({predicateWithReference(Pid::lowest(), folly::none)});
+  // Unit 1's closed intervals both contain ids[1].
+  TestOwnershipUnitIterator units({
+      {0, {{ids[0], ids[2]}}},
+      {1, {{ids[0], ids[1]}, {ids[1], ids[2]}}},
+  });
+
+  EXPECT_THROW(
+      computeOwnership(inventory, facts, nullptr, &units), std::runtime_error);
+}
+
+TEST(OwnershipTest, ComputeOwnershipRejectsInvertedOwnedInterval) {
+  FactSet facts(Id::lowest() + 100);
+  unsigned char keys[] = "ab";
+  const auto first = facts.define(
+      Pid::lowest(), Fact::Clause::fromKey(folly::ByteRange(keys, 1)));
+  const auto second = facts.define(
+      Pid::lowest(), Fact::Clause::fromKey(folly::ByteRange(keys + 1, 1)));
+  Inventory inventory({predicateWithReference(Pid::lowest(), folly::none)});
+  TestOwnershipUnitIterator units({{0, {{second, first}}}});
+
+  EXPECT_THROW(
+      computeOwnership(inventory, facts, nullptr, &units), std::runtime_error);
+}
+
+TEST(OwnershipTest, ComputeOwnershipAcceptsSortedDisjointIntervals) {
+  FactSet facts(Id::lowest() + 100);
+  unsigned char keys[] = "abc";
+  std::vector<Id> ids;
+  ids.reserve(3);
+  for (size_t i = 0; i < 3; i++) {
+    ids.push_back(facts.define(
+        Pid::lowest(), Fact::Clause::fromKey(folly::ByteRange(keys + i, 1))));
+  }
+  Inventory inventory({predicateWithReference(Pid::lowest(), folly::none)});
+  TestOwnershipUnitIterator units({{0, {{ids[0], ids[0]}, {ids[2], ids[2]}}}});
+
+  const auto ownership = computeOwnership(inventory, facts, nullptr, &units);
+
+  EXPECT_NE(ownerAt(*ownership, ids[0]), INVALID_USET);
+  EXPECT_EQ(ownerAt(*ownership, ids[1]), INVALID_USET);
+  EXPECT_NE(ownerAt(*ownership, ids[2]), INVALID_USET);
+}
