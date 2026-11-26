@@ -127,6 +127,69 @@ TEST(BinaryTest, untrustedStringEndingExactlyAtBufferEndIsAccepted) {
   EXPECT_EQ("a\0\xc3\xa9"s, binary::mkString(demangled.bytes()));
 }
 
+TEST(BinaryTest, toLowerOfMangledStringLowersCharacters) {
+  binary::Output mangled;
+  // A, U+00C9, NUL, Z, U+10A0, U+023A (lowers to 3 bytes), U+10400 (4 bytes)
+  mangled.mangleString(
+      binary::byteRange("A\xc3\x89\0Z\xe1\x82\xa0\xc8\xba\xf0\x90\x90\x80"s));
+  binary::Output expected;
+  expected.mangleString(
+      binary::byteRange(
+          "a\xc3\xa9\0z\xe2\xb4\x80\xe2\xb1\xa5\xf0\x90\x90\xa8"s));
+  binary::Output lowered;
+  toLowerTrustedString(mangled.bytes(), lowered);
+  EXPECT_EQ(
+      binary::mkString(expected.bytes()), binary::mkString(lowered.bytes()));
+}
+
+TEST(BinaryTest, toLowerOfStringWithTruncatedUtf8IsRejected) {
+  // Each text ends in a lead byte whose continuation bytes are missing, so
+  // decoding it would run into the terminator or past the end of the buffer.
+  const std::vector<std::vector<unsigned char>> inputs{
+      {'x', 0xf0, 0, 0},
+      {'x', 0xe0, 0, 0},
+      {0xe0, 0, 0},
+      {0xc3, 0, 0},
+  };
+  for (const auto& mangled : inputs) {
+    binary::Output lowered;
+    EXPECT_THROW(
+        toLowerTrustedString(binary::byteRange(mangled), lowered),
+        std::runtime_error);
+  }
+}
+
+TEST(BinaryTest, toLowerOfIllFormedUtf8MidStringIsRejected) {
+  // An encoded surrogate and an overlong NUL, each followed by more text
+  const std::vector<std::vector<unsigned char>> inputs{
+      {'x', 0xed, 0xa0, 0x80, 'y', 0, 0},
+      {0xc0, 0x80, 'y', 0, 0},
+  };
+  for (const auto& mangled : inputs) {
+    binary::Output lowered;
+    EXPECT_THROW(
+        toLowerTrustedString(binary::byteRange(mangled), lowered),
+        std::runtime_error);
+  }
+}
+
+TEST(BinaryTest, toLowerStopsAtTheEndOfAnUnterminatedRange) {
+  // No terminator, so only the range bound stops the decode: a sequence cut
+  // off by the end of the range is rejected, and one that ends exactly there
+  // is decoded.
+  const std::vector<unsigned char> truncated{'x', 0xe1, 0x80};
+  binary::Output rejected;
+  EXPECT_THROW(
+      toLowerTrustedString(binary::byteRange(truncated), rejected),
+      std::runtime_error);
+
+  // U+10A0, which lowers to U+2D00
+  const std::vector<unsigned char> complete{'X', 0xe1, 0x82, 0xa0};
+  binary::Output lowered;
+  toLowerTrustedString(binary::byteRange(complete), lowered);
+  EXPECT_EQ("x\xe2\xb4\x80"s, binary::mkString(lowered.bytes()));
+}
+
 TEST(SetOpsTest, OutputSetDeduplicatesAndUsesSerializedByteOrder) {
   SetOps sets;
   const auto token = sets.newSet();

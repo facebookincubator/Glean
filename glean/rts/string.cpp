@@ -162,7 +162,10 @@ void toLowerTrustedString(folly::ByteRange range, binary::Output& output) {
       i++;
     } else {
       UChar32 c;
-      U8_NEXT_UNSAFE(range.data(), i, c);
+      U8_NEXT(range.data(), i, range.size(), c);
+      if (c < 0) {
+        rts::error("toLower of a mangled string with invalid UTF-8");
+      }
       c = u_tolower(c);
       uint8_t buf[4];
       auto j = 0;
