@@ -602,6 +602,12 @@ FOLLY_NOINLINE void completeOwnership(
       order.push(Id::fromWord(id));
     }
   }
+  if (!order.empty() && base_lookup == nullptr) {
+    error(
+        "ownership of fact {} below the first fact {} of a DB with no base",
+        order.top().toWord(),
+        min_id.toWord());
+  }
   Id prev = Id::invalid();
   for (; !order.empty(); order.pop()) {
     auto id = order.top();

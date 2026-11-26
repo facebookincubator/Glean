@@ -962,3 +962,55 @@ TEST(OwnershipTest, SliceRejectsSetIdsBeforeTheReportedSets) {
 
   EXPECT_THROW(slice(ownership, Slices({}), {}, false), std::runtime_error);
 }
+
+TEST(OwnershipTest, ComputeOwnershipRejectsOwnedFactsBelowANonStackedDb) {
+  FactSet facts(Id::lowest() + 100);
+  unsigned char key[] = "fact";
+  facts.define(Pid::lowest(), Fact::Clause::fromKey(folly::ByteRange(key, 4)));
+  Inventory inventory({predicateWithReference(Pid::lowest(), folly::none)});
+  // Two ids below the first fact: flatten() drops a single-id range.
+  TestOwnershipUnitIterator units({{0, {{Id::lowest(), Id::lowest() + 1}}}});
+
+  EXPECT_THROW(
+      computeOwnership(inventory, facts, nullptr, &units), std::runtime_error);
+}
+
+TEST(OwnershipTest, ComputeOwnershipRejectsReferencesBelowANonStackedDb) {
+  // A local fact's reference, not an owned interval, names a fact below the
+  // DB's first fact.
+  FactSet facts(Id::lowest() + 100);
+  unsigned char keys[] = "ab";
+  const auto f0 = facts.define(
+      Pid::lowest(), Fact::Clause::fromKey(folly::ByteRange(keys, 1)));
+  const auto f1 = facts.define(
+      Pid::lowest() + 1, Fact::Clause::fromKey(folly::ByteRange(keys + 1, 1)));
+  Inventory inventory({
+      predicateWithReference(Pid::lowest(), folly::none),
+      predicateWithReference(
+          Pid::lowest() + 1, {{Id::lowest(), Pid::lowest()}}),
+  });
+  TestOwnershipUnitIterator units({{0, {{f0, f1}}}});
+
+  EXPECT_THROW(
+      computeOwnership(inventory, facts, nullptr, &units), std::runtime_error);
+}
+
+TEST(OwnershipTest, ComputeOwnershipFollowsOwnedFactsIntoTheBase) {
+  FactSet base(Id::lowest());
+  unsigned char baseKey[] = "base";
+  const auto baseFact = base.define(
+      Pid::lowest(), Fact::Clause::fromKey(folly::ByteRange(baseKey, 4)));
+  FactSet facts(base.firstFreeId());
+  unsigned char key[] = "fact";
+  const auto fact = facts.define(
+      Pid::lowest(), Fact::Clause::fromKey(folly::ByteRange(key, 4)));
+  Inventory inventory({predicateWithReference(Pid::lowest(), folly::none)});
+  TestOwnershipUnitIterator units({{0, {{baseFact, fact}}}});
+
+  const auto ownership = computeOwnership(inventory, facts, &base, &units);
+
+  const auto* baseOwner =
+      ownership->sets_.lookupById(ownerAt(*ownership, baseFact));
+  ASSERT_NE(baseOwner, nullptr);
+  EXPECT_EQ(SetU32::to(baseOwner->exp.set), (std::set<uint32_t>{0}));
+}
