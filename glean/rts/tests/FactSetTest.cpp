@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include "glean/rts/binary.h"
+#include "glean/rts/lookup.h"
 
 using namespace facebook::glean::rts;
 using namespace facebook::glean;
@@ -41,6 +42,17 @@ std::vector<std::string> collectKeys(FactIterator& iter) {
 struct DiscardStore final : Store {
   void insert(Fact::Ref) override {}
 };
+
+// A FactSet holding facts `Id::lowest()` .. `Id::lowest() + n - 1` of one
+// predicate, keyed "a", "b", ... in id order.
+std::unique_ptr<FactSet> lettersFactSet(size_t n) {
+  auto fs = std::make_unique<FactSet>(Id::lowest());
+  for (size_t i = 0; i < n; ++i) {
+    const unsigned char key = 'a' + i;
+    fs->define(Pid::lowest(), clauseFrom(&key, 1, 1));
+  }
+  return fs;
+}
 
 } // namespace
 
@@ -638,4 +650,14 @@ TEST(FactSetTest, RebaseAcceptsEmptySubstitutionOfEmptySet) {
   const Substitution subst(Id::lowest() + 5, std::vector<Id>{});
   DiscardStore global;
   EXPECT_NO_THROW(fs.rebase(Inventory(), subst, global));
+}
+
+TEST(SectionTest, SeekSkipsFactsOutsideTheSection) {
+  const auto fs = lettersFactSet(4);
+  Section section(fs.get(), Id::lowest() + 2, Id::lowest() + 4);
+
+  auto iter = section.seek(Pid::lowest(), {}, std::nullopt);
+
+  const std::vector<Id> expected{Id::lowest() + 2, Id::lowest() + 3};
+  EXPECT_EQ(collectIds(*iter), expected);
 }

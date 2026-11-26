@@ -53,6 +53,7 @@ std::unique_ptr<FactIterator> Section::seek(
       auto r = base_->get(demand);
 
       while (r && !isWithinBounds(r.id)) {
+        base_->next();
         r = base_->get(demand);
       }
 
